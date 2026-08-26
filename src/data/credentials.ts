@@ -10,12 +10,172 @@ export interface Credential {
   requirements: string[];
   admissibilityHistory: string;
   stateReciprocity: Record<string, "full" | "limited" | "none" | "na">;
-  kwvrsExpertsSlugs: string[];
+  expertSlugs: string[];
   faqs: Faq[];
   sources: Source[];
 }
 
 export const credentials: Credential[] = [
+  {
+    slug: "clcp",
+    name: "Certified Life Care Planner",
+    abbreviation: "CLCP",
+    issuer: "International Commission on Health Care Certification",
+    issuerUrl: "https://www.ichcc.org/",
+    scope:
+      "The CLCP is the most widely held certification for life care planners. Scope includes the development of comprehensive, individualized life care plans for people with catastrophic injury or chronic illness, documenting every category of future care with its frequency, duration, and cost, and defending that plan through report, deposition, and trial testimony.",
+    requirements: [
+      "Qualifying healthcare or rehabilitation credential (for example RN, OT, PT, CRC, or physician)",
+      "Completion of a 120-hour post-graduate life care planning training program",
+      "Documented case experience under supervision",
+      "Passing score on the CLCP examination",
+      "Continuing education and renewal every five years",
+    ],
+    admissibilityHistory:
+      "CLCP-authored plans are routinely accepted in state and federal courts when they follow published life care planning standards, rest on treating-team recommendations, and document frequency, duration, and cost sources for each item. Challenges typically target the clinical foundation for specific items rather than the credential itself.",
+    stateReciprocity: {},
+    expertSlugs: ["jesse-wolstein", "paul-bourgeois", "daniel-wolstein", "christopher-skerritt", "matthew-putts"],
+    faqs: [
+      {
+        question: "Does a CLCP require a prior clinical credential?",
+        answer:
+          "Yes. CLCP candidates must hold a qualifying healthcare or rehabilitation credential, such as RN, OT, PT, CRC, or physician, before completing the training and examination.",
+      },
+      {
+        question: "How is life care planning methodology standardized?",
+        answer:
+          "Practice standards published by the profession's organizations call for a consistent process: record review, evaluee interview, consultation with treating providers, itemized recommendations with frequency and duration, and cost research from identified sources. A CLCP plan should be traceable at every line.",
+      },
+      {
+        question: "Can a CLCP testify on causation?",
+        answer:
+          "Causation opinions come from physicians. The CLCP projects care consistent with physician-supported recommendations and testifies to the needs, frequencies, durations, and costs in the plan.",
+      },
+      {
+        question: "How does a CLCP differ from a nurse or physician who prepares plans?",
+        answer:
+          "The CLCP is a specialty certification layered on a clinical or rehabilitation background. Nurses, physicians, and rehabilitation counselors can all hold it; the certification documents training and examination in life care planning methodology specifically.",
+      },
+    ],
+    sources: [
+      { title: "ICHCC - CLCP Certification", url: "https://www.ichcc.org/the-clcp", type: "org" },
+      { title: "IARP Life Care Planning Section", url: "https://rehabpro.org/sections/lcp", type: "org" },
+    ],
+  },
+  {
+    slug: "cnlcp",
+    name: "Certified Nurse Life Care Planner",
+    abbreviation: "CNLCP",
+    issuer: "American Association of Nurse Life Care Planners",
+    issuerUrl: "https://www.aanlcp.org/",
+    scope:
+      "The CNLCP certifies registered nurses in life care planning grounded in the nursing process: assessment, nursing diagnosis, planning, implementation, and evaluation. Nurse life care planners bring hands-on clinical knowledge of medications, supplies, skilled care, and daily care routines to the documentation of future needs, frequencies, and costs.",
+    requirements: [
+      "Active, unrestricted registered nurse license",
+      "Completion of required life care planning education hours",
+      "Documented nursing and life care planning experience",
+      "Passing score on the CNLCP examination",
+      "Continuing education and periodic recertification",
+    ],
+    admissibilityHistory:
+      "CNLCP-authored plans are routinely accepted where the nurse planner documents methodology and the clinical foundation for each recommendation. The nursing license and the certification together establish qualification to describe care needs; physician recommendations remain the source for medical items.",
+    stateReciprocity: {},
+    expertSlugs: [],
+    faqs: [
+      {
+        question: "How does the CNLCP differ from the CLCP?",
+        answer:
+          "Both certify life care planning competence. The CNLCP is open only to registered nurses and frames the plan around the nursing process; the CLCP is open to several clinical and rehabilitation disciplines. Many nurse planners hold both.",
+      },
+      {
+        question: "What does a nurse life care planner add to a catastrophic injury case?",
+        answer:
+          "Practical knowledge of skilled nursing tasks, supply quantities, medication administration, and the daily routines of bowel, bladder, skin, and respiratory care, which makes the attendant care and supply sections of a plan concrete and defensible.",
+      },
+      {
+        question: "Can a CNLCP testify to future medical costs?",
+        answer:
+          "Yes, to the projected cost of the care documented in the plan, using stated cost sources. Opinions on the medical necessity of a treatment come from the treating or examining physician.",
+      },
+    ],
+    sources: [
+      { title: "AANLCP - Certification", url: "https://www.aanlcp.org/", type: "org" },
+    ],
+  },
+  {
+    slug: "mscc",
+    name: "Medicare Set-Aside Certified Consultant",
+    abbreviation: "MSCC",
+    issuer: "International Commission on Health Care Certification",
+    issuerUrl: "https://www.ichcc.org/",
+    scope:
+      "The MSCC certifies professionals in the preparation of Medicare Set-Aside allocations for workers' compensation and liability settlements. Scope includes identifying injury-related, Medicare-covered future care, pricing it under the applicable fee schedule, and documenting the allocation in a form that satisfies Medicare's review process and protects the parties' interests.",
+    requirements: [
+      "Qualifying professional credential in a health care, rehabilitation, legal, or insurance discipline",
+      "Completion of an approved Medicare Set-Aside training program",
+      "Passing score on the MSCC examination",
+      "Continuing education and periodic renewal",
+    ],
+    admissibilityHistory:
+      "Medicare Set-Aside reports are primarily settlement and compliance documents rather than trial exhibits. Testimony arises when the allocation methodology is disputed, for example over which future care is injury-related or Medicare-covered, and in that setting the MSCC's documented methodology and pricing sources are what is examined.",
+    stateReciprocity: {},
+    expertSlugs: ["christopher-skerritt"],
+    faqs: [
+      {
+        question: "When is a Medicare Set-Aside required?",
+        answer:
+          "When a settlement closes future medical benefits and the claimant is a Medicare beneficiary or has a reasonable expectation of enrollment within the period Medicare's guidance addresses. Counsel and the MSCC confirm the review thresholds and current guidance for the specific settlement.",
+      },
+      {
+        question: "How does a Medicare Set-Aside relate to a life care plan?",
+        answer:
+          "Both project future injury-related care from the same records and physician recommendations. The set-aside is limited to Medicare-covered items priced under the fee schedule; the life care plan covers all reasonable future care at the pricing appropriate to the case.",
+      },
+      {
+        question: "Can an MSCC prepare allocations for liability settlements as well as workers' compensation?",
+        answer:
+          "Yes. The methodology is similar, though liability allocations involve additional judgment about apportionment and the absence of a formal review program comparable to the workers' compensation process.",
+      },
+    ],
+    sources: [
+      { title: "ICHCC - MSCC Certification", url: "https://www.ichcc.org/", type: "org" },
+      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-compensation-medicare-set-aside-arrangements", type: "gov" },
+    ],
+  },
+  {
+    slug: "cdms",
+    name: "Certified Disability Management Specialist",
+    abbreviation: "CDMS",
+    issuer: "Commission on Rehabilitation Counselor Certification",
+    issuerUrl: "https://www.crccertification.com/",
+    scope:
+      "The CDMS certifies professionals in disability management: coordinating medical care, benefits, and return-to-work planning for injured workers within workers' compensation and disability systems. In life care planning the credential is relevant to workers' compensation plans, where the planner must understand fee schedules, claims administration, and how future care interacts with the benefit system.",
+    requirements: [
+      "Qualifying degree or professional credential with disability management experience",
+      "Documented employment in disability management roles",
+      "Passing score on the CDMS examination",
+      "Continuing education and renewal every five years",
+    ],
+    admissibilityHistory:
+      "CDMS holders most often contribute to workers' compensation matters, where opinions are presented before administrative tribunals and in settlement negotiation rather than jury trial. The credential documents familiarity with the benefit system in which the life care plan or set-aside will be used.",
+    stateReciprocity: {},
+    expertSlugs: [],
+    faqs: [
+      {
+        question: "How does the CDMS relate to life care planning?",
+        answer:
+          "It documents expertise in the workers' compensation and disability benefit environment. A planner who holds it understands how the plan's items will be paid, disputed, and settled within that system.",
+      },
+      {
+        question: "Is the CDMS a counseling credential?",
+        answer:
+          "No. It certifies disability management practice, which is a coordination and planning role. Counseling credentials such as the CRC are separate, though some professionals hold both.",
+      },
+    ],
+    sources: [
+      { title: "CRCC - CDMS Certification", url: "https://www.crccertification.com/", type: "org" },
+    ],
+  },
   {
     slug: "crc",
     name: "Certified Rehabilitation Counselor",
@@ -23,7 +183,7 @@ export const credentials: Credential[] = [
     issuer: "Commission on Rehabilitation Counselor Certification",
     issuerUrl: "https://crccertification.com/",
     scope:
-      "The CRC is the recognized national certification for rehabilitation counselors. Scope of practice includes assessment, counseling, case management, job analysis, labor market survey, transferable skills analysis, and expert testimony related to earning capacity, employability, and vocational rehabilitation services.",
+      "The CRC is the national certification for rehabilitation counselors. In life care planning it is one of the qualifying credentials for CLCP certification and supports the plan's coverage of rehabilitation services, assistive technology, community reintegration, supported living, and the day-program and vocational services that adults with disabilities use across the life span.",
     requirements: [
       "Master's degree in rehabilitation counseling or a closely related field",
       "Supervised clinical experience per CRCC criteria",
@@ -32,24 +192,24 @@ export const credentials: Credential[] = [
       "Adherence to the CRCC Code of Professional Ethics",
     ],
     admissibilityHistory:
-      "CRC-led vocational opinions have a long and well-established history of admissibility in state and federal courts when grounded in accepted methodology (transferable skills analysis, labor market survey, DOT and O*NET data) and supported by documented reasoning.",
+      "CRC-credentialed life care planners have a long history of acceptance in state and federal courts when the plan is grounded in treating-team recommendations, documented methodology, and stated cost sources. The credential establishes the rehabilitation foundation of the plan; medical items are supported by physician recommendation.",
     stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
+    expertSlugs: ["paul-bourgeois", "daniel-wolstein", "matthew-putts"],
     faqs: [
       {
         question: "Is the CRC a license or a certification?",
         answer:
-          "The CRC is a national certification administered by CRCC. It is distinct from state licensure, though many states also license professional counselors or rehabilitation counselors separately.",
+          "The CRC is a national certification administered by CRCC. It is distinct from state licensure, though many states also license professional or rehabilitation counselors separately.",
       },
       {
-        question: "What distinguishes a CRC from a vocational case manager?",
+        question: "Why does a life care planner hold a CRC?",
         answer:
-          "The CRC is a credentialed counselor qualified to render expert opinion on earning capacity, employability, and vocational rehabilitation. Vocational case managers focus on coordinating services and returning claimants to work, without the same forensic training or opinion-giving scope.",
+          "The CRC is one of the recognized entry credentials to CLCP certification, and its training in disability, rehabilitation services, and community resources supports the non-medical sections of a life care plan such as supported living, day programs, and assistive technology.",
       },
       {
-        question: "Do courts require a CRC specifically to testify on vocational issues?",
+        question: "Do courts require a specific credential to testify on a life care plan?",
         answer:
-          "Courts do not mandate a specific credential, but CRC is among the most widely accepted credentials for vocational expert testimony. The specific credential requirement, if any, depends on jurisdictional preferences and the nature of the opinion.",
+          "No single credential is mandated. Qualification is assessed case by case on education, training, and experience, and the CRC combined with life care planning certification is widely accepted.",
       },
       {
         question: "How often must a CRC renew?",
@@ -63,279 +223,79 @@ export const credentials: Credential[] = [
     ],
   },
   {
-    slug: "clcp",
-    name: "Certified Life Care Planner",
-    abbreviation: "CLCP",
-    issuer: "International Commission on Health Care Certification",
-    issuerUrl: "https://www.ichcc.org/",
-    scope:
-      "The CLCP is the recognized certification for life care planners. Scope includes development of comprehensive, individualized life care plans for individuals with catastrophic injuries or chronic conditions, with projected cost and frequency of all recommended care.",
-    requirements: [
-      "Qualifying healthcare or rehabilitation credential (e.g., RN, OT, PT, CRC, physician)",
-      "Completion of a 120-hour post-graduate life care planning training program",
-      "Documented case experience under supervision",
-      "Passing score on the CLCP examination",
-      "Continuing education and renewal every five years",
-    ],
-    admissibilityHistory:
-      "CLCP methodology follows published standards (IALCP, IARP Life Care Planning Section) and has been accepted in both state and federal courts when grounded in treating-team recommendations, local cost data, and peer-reviewed duration literature.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "Does a CLCP require a prior clinical credential?",
-        answer:
-          "Yes. CLCP candidates must hold a qualifying healthcare or rehabilitation credential (such as RN, OT, PT, CRC, or physician) before pursuing the CLCP certification.",
-      },
-      {
-        question: "How is the life care planning methodology standardized?",
-        answer:
-          "Practice standards are published by IALCP and IARP's Life Care Planning Section, with methodology following a consensus approach that integrates treating team recommendations, peer-reviewed duration literature, and geographically matched cost data.",
-      },
-      {
-        question: "Can a CLCP testify on causation?",
-        answer:
-          "Causation opinions are generally provided by physicians. The CLCP projects the cost of care consistent with physician-supported recommendations and does not typically opine on causation.",
-      },
-    ],
-    sources: [
-      { title: "ICHCC - CLCP Certification", url: "https://www.ichcc.org/the-clcp", type: "org" },
-      { title: "IALCP Standards of Practice", url: "https://connect.rehabpro.org/lcp/home", type: "org" },
-      { title: "IARP Life Care Planning Section", url: "https://rehabpro.org/sections/lcp", type: "org" },
-    ],
-  },
-  {
-    slug: "cve",
-    name: "Certified Vocational Evaluator",
-    abbreviation: "CVE",
-    issuer: "Commission on Rehabilitation Counselor Certification (CRCC)",
-    issuerUrl: "https://crccertification.com/",
-    scope:
-      "The CVE credential indicates specialized expertise in vocational evaluation, including standardized testing, work sample assessment, situational assessment, and interpretation of aptitudes, interests, and work behaviors for vocational recommendation.",
-    requirements: [
-      "Master's degree in a relevant field",
-      "Documented supervised experience in vocational evaluation",
-      "Passing score on the CVE examination",
-      "Continuing education for renewal",
-    ],
-    admissibilityHistory:
-      "CVE-supported opinions are accepted when grounded in validated assessment instruments and accepted vocational methodology. The CVE was originally established by the Commission on Certification of Work Adjustment and Vocational Evaluation Specialists (CCWAVES) and has been maintained by the Commission on Rehabilitation Counselor Certification (CRCC) since 2009.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "How does the CVE differ from the CRC?",
-        answer:
-          "The CRC is broader rehabilitation counseling certification; the CVE is focused specifically on vocational evaluation, including standardized testing and work sample assessment. Many experts hold both credentials.",
-      },
-      {
-        question: "Is the CVE recognized in federal court testimony?",
-        answer:
-          "Yes. CVE-supported vocational opinions, like CRC-supported opinions, have been accepted in federal court when grounded in accepted methodology.",
-      },
-    ],
-    sources: [
-      { title: "CRCC - CVE Certification", url: "https://crccertification.com/cve-certification/", type: "org" },
-    ],
-  },
-  {
-    slug: "abve-d",
-    name: "American Board of Vocational Experts Diplomate",
-    abbreviation: "ABVE/D",
-    issuer: "American Board of Vocational Experts",
-    issuerUrl: "https://abve.net/",
-    scope:
-      "The ABVE Diplomate is an advanced forensic credential recognizing expertise in vocational evaluation and expert testimony for litigation. Scope covers earning capacity, employability, vocational rehabilitation, and expert witness practice.",
-    requirements: [
-      "Graduate degree in a relevant field",
-      "Documented forensic vocational experience",
-      "Publication or equivalent professional contributions",
-      "Passing score on the ABVE examination",
-      "Peer review of work samples",
-      "Continuing education for renewal",
-    ],
-    admissibilityHistory:
-      "ABVE diplomates are frequently retained in complex litigation and have an extensive record of admissibility in state and federal courts.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "What is the difference between ABVE/D and ABVE/F?",
-        answer:
-          "ABVE/D is the Diplomate designation; ABVE/F is the Fellow designation, which recognizes senior practitioners with extended forensic experience. Both are advanced forensic vocational credentials.",
-      },
-      {
-        question: "Does the ABVE credential substitute for state licensure?",
-        answer:
-          "No. ABVE is a forensic specialty credential and does not replace state licensure where required for practice.",
-      },
-    ],
-    sources: [
-      { title: "ABVE Certification Overview", url: "https://abve.net/certification/", type: "org" },
-    ],
-  },
-  {
-    slug: "abve-f",
-    name: "American Board of Vocational Experts Fellow",
-    abbreviation: "ABVE/F",
-    issuer: "American Board of Vocational Experts",
-    issuerUrl: "https://abve.net/",
-    scope:
-      "The ABVE Fellow designation recognizes senior forensic vocational experts with documented advanced experience in expert testimony, complex earning capacity cases, and contributions to the profession.",
-    requirements: [
-      "Prior ABVE Diplomate status or equivalent",
-      "Extended forensic vocational experience",
-      "Peer-reviewed contributions or publications",
-      "Passing score on the Fellow-level examination",
-      "Continuing education for renewal",
-    ],
-    admissibilityHistory:
-      "ABVE Fellows have an extensive record of admissibility and are frequently retained in high-complexity cases.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "How does a Fellow differ from a Diplomate?",
-        answer:
-          "The Fellow designation requires additional experience and professional contributions beyond the Diplomate level and is intended for senior forensic practitioners.",
-      },
-    ],
-    sources: [
-      { title: "ABVE Fellow Information", url: "https://abve.net/certification/", type: "org" },
-    ],
-  },
-  {
-    slug: "lrc",
-    name: "Licensed Rehabilitation Counselor",
-    abbreviation: "LRC",
-    issuer: "State Licensing Boards",
-    scope:
-      "LRC is a state-granted license authorizing independent practice as a rehabilitation counselor within the licensing state. Scope varies by jurisdiction and typically covers vocational counseling, case management, and rehabilitation services.",
-    requirements: [
-      "Master's degree in rehabilitation counseling or a closely related field",
-      "Supervised post-graduate experience per state requirements",
-      "Passing score on the state-accepted examination (often the NCE or CRC)",
-      "State jurisprudence requirements where applicable",
-      "Continuing education and license renewal per state rules",
-    ],
-    admissibilityHistory:
-      "State licensure is often considered a baseline indicator of professional standing and is separately relevant to expert qualification in jurisdictions that require practice-state licensure.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "Is state licensure required to testify in that state?",
-        answer:
-          "Requirements vary by jurisdiction. Some states require licensure for practice and testimony; others permit unlicensed out-of-state experts for limited forensic purposes. Check state-specific rules.",
-      },
-    ],
-    sources: [
-      { title: "CRCC - State Licensure Information", url: "https://crccertification.com/", type: "org" },
-    ],
-  },
-  {
-    slug: "fve",
-    name: "Fellow of Vocational Experts",
-    abbreviation: "FVE",
-    issuer: "American Rehabilitation Economics Association (AREA)",
-    issuerUrl: "https://americanrehabecon.com/",
-    scope:
-      "The FVE designation recognizes senior practitioners in forensic vocational evaluation and expert practice.",
-    requirements: [
-      "Senior practitioner status in vocational evaluation",
-      "Documented professional contributions",
-      "Active association membership",
-    ],
-    admissibilityHistory: "FVE-holding practitioners have testified in state and federal courts in vocational matters.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "Is FVE a primary certification?",
-        answer:
-          "FVE is a professional designation rather than a primary credential. It is typically held alongside CRC or CVE certifications.",
-      },
-    ],
-    sources: [],
-  },
-  {
-    slug: "ipec",
-    name: "International Psychometric Evaluation Certification",
-    abbreviation: "IPEC",
-    issuer: "American Board of Vocational Experts (ABVE)",
-    issuerUrl: "https://abve.net/",
-    scope:
-      "IPEC recognizes specialized training in psychometric assessment for vocational evaluation, including administration and interpretation of standardized instruments.",
-    requirements: [
-      "Completion of approved psychometric training",
-      "Supervised assessment experience",
-      "Certification examination",
-    ],
-    admissibilityHistory:
-      "Psychometrically grounded vocational opinions are generally well received when the instruments used are validated for the population and purpose at issue.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "What instruments does an IPEC-credentialed evaluator typically use?",
-        answer:
-          "Commonly used instruments include aptitude batteries, achievement tests, interest inventories, and work sample systems appropriate to the referral question.",
-      },
-    ],
-    sources: [{ title: "ABVE - Certification", url: "https://www.abve.net/certification-main", type: "org" }],
-  },
-  {
-    slug: "ceas",
-    name: "Certified Ergonomic Assessment Specialist",
-    abbreviation: "CEAS",
-    issuer: "The Back School",
-    issuerUrl: "https://thebackschool.net/",
-    scope:
-      "CEAS certifies practitioners in ergonomic assessment and job site analysis for injury prevention, return-to-work, and litigation support.",
-    requirements: [
-      "Completion of CEAS training course(s)",
-      "Passing score on the CEAS examination",
-      "Continuing education for renewal",
-    ],
-    admissibilityHistory:
-      "Ergonomic assessment is routinely used in workers' compensation and personal injury matters to analyze job-site demands relative to functional capacity.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "How does an ergonomic assessment complement a vocational evaluation?",
-        answer:
-          "An ergonomic assessment characterizes job demands in detail (forces, postures, durations), which can then be compared to documented functional capacity in a vocational or return-to-work analysis.",
-      },
-    ],
-    sources: [{ title: "CEAS - The Back School", url: "https://thebackschool.net/ceas/", type: "org" }],
-  },
-  {
     slug: "md",
     name: "Doctor of Medicine",
     abbreviation: "M.D.",
-    issuer: "Accredited Medical Schools + State Boards",
+    issuer: "Accredited Medical Schools and State Medical Boards",
     scope:
-      "The M.D. degree and associated state licensure authorize the practice of medicine. In forensic contexts, physicians provide opinions on diagnosis, causation, standard of care, prognosis, and medical recommendations underlying life care plans.",
+      "The M.D. degree with state licensure authorizes the practice of medicine. In life care planning, physicians supply the medical foundation of the plan: diagnosis, prognosis, life expectancy considerations, and the treatment, medication, surgical, and follow-up recommendations that the planner itemizes and prices. A physician life care planner can both make and document those recommendations.",
     requirements: [
       "Graduation from an accredited medical school",
-      "Completion of residency training (specialty dependent)",
-      "State medical license (DEA registration where applicable)",
-      "Board certification in the relevant specialty (where applicable)",
-      "Continuing medical education",
+      "Completion of residency training in the relevant specialty",
+      "Active state medical license",
+      "Board certification in the relevant specialty where applicable",
+      "Continuing medical education for license renewal",
     ],
     admissibilityHistory:
-      "Physician expert testimony is routinely admitted when the opinion is within the physician's specialty, supported by accepted methodology, and based on sufficient facts or data.",
+      "Physician testimony on future medical needs and prognosis is routinely admitted when the opinion is within the physician's specialty and grounded in the record. A physician-authored life care plan carries the medical recommendations and their basis in a single document, which limits disputes over whether each item has physician support.",
     stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
+    expertSlugs: ["jesse-wolstein"],
     faqs: [
+      {
+        question: "Does a physician life care planner still consult the treating physicians?",
+        answer:
+          "Yes. The plan documents the treating providers' recommendations and the physician planner's own review of the record. Where the two differ, the plan states the basis for the recommendation adopted.",
+      },
       {
         question: "Do forensic physicians need board certification?",
         answer:
-          "Courts do not categorically require board certification, but relevant specialty board certification is frequently persuasive on qualification.",
+          "Courts do not categorically require it, but board certification in the specialty relevant to the injury is frequently persuasive on qualification.",
+      },
+      {
+        question: "Can a physician planner address life expectancy?",
+        answer:
+          "A physician can present a medical opinion on life expectancy based on the evaluee's condition, function, and the relevant literature. The plan shows the sources relied on and, where appropriate, the cost of the plan across a range of life expectancies.",
       },
     ],
     sources: [{ title: "American Board of Medical Specialties", url: "https://www.abms.org/", type: "org" }],
+  },
+  {
+    slug: "rn",
+    name: "Registered Nurse",
+    abbreviation: "R.N.",
+    issuer: "State Boards of Nursing",
+    scope:
+      "Registered nurse licensure authorizes the practice of professional nursing. In life care planning, the RN is a qualifying clinical credential for both CLCP and CNLCP certification and grounds the plan in direct knowledge of skilled nursing care, medication administration, wound and skin care, supplies, and the daily routines that determine attendant care hours.",
+    requirements: [
+      "Graduation from an accredited nursing program (associate, bachelor's, or higher)",
+      "Passing score on the NCLEX-RN examination",
+      "Active, unrestricted state nursing license",
+      "Continuing education as required by the licensing state",
+    ],
+    admissibilityHistory:
+      "Nurse life care planners are routinely accepted to testify on care needs, frequencies, durations, and costs when the plan documents its methodology and the physician recommendations behind medical items. Nursing licensure is generally treated as the clinical foundation for describing care rather than a basis for medical causation opinions.",
+    stateReciprocity: {},
+    expertSlugs: ["christina-rivera"],
+    faqs: [
+      {
+        question: "What does a nurse contribute to a life care plan?",
+        answer:
+          "Clinical familiarity with the hands-on care a condition requires: skilled nursing tasks, medication and supply quantities, equipment use, and the practical hours of attendant care a person needs at each level of function.",
+      },
+      {
+        question: "Does an RN need life care planning certification to prepare plans?",
+        answer:
+          "Certification is not legally required, but the CLCP or CNLCP documents specific training and examination in life care planning methodology and is widely expected in litigation.",
+      },
+      {
+        question: "Can a nurse life care planner testify to medical necessity?",
+        answer:
+          "The nurse planner testifies to the needs documented in the plan and their cost. Opinions that a specific treatment is medically necessary or causally related come from the treating or examining physician.",
+      },
+    ],
+    sources: [
+      { title: "National Council of State Boards of Nursing", url: "https://www.ncsbn.org/", type: "org" },
+    ],
   },
   {
     slug: "phd",
@@ -343,50 +303,29 @@ export const credentials: Credential[] = [
     abbreviation: "Ph.D.",
     issuer: "Accredited Universities",
     scope:
-      "Ph.D.-level preparation in rehabilitation counseling, psychology, economics, or related fields supports doctoral-level forensic expertise including research design, advanced assessment, and testimony on specialized topics.",
+      "Doctoral preparation in rehabilitation counseling, rehabilitation science, psychology, or a related field supports research fluency and advanced assessment in life care planning. Ph.D.-level planners are often called on to explain the literature behind frequency, duration, and life expectancy recommendations and to review the methodology of opposing plans.",
     requirements: [
-      "Completion of an accredited doctoral program",
+      "Completion of an accredited doctoral program in a relevant discipline",
       "Dissertation research in a relevant area",
-      "Applicable professional licensure or certification (specialty dependent)",
+      "Applicable professional licensure or certification for the planner's clinical or rehabilitation practice",
     ],
     admissibilityHistory:
-      "Ph.D.-credentialed experts are frequently accepted on the basis of advanced academic preparation combined with applied professional credentialing.",
+      "Ph.D.-credentialed life care planners are accepted on the basis of doctoral preparation combined with applied credentials such as the CLCP or CRC. The degree is most persuasive where the dispute turns on research literature, methodology, or the reliability of the opposing plan.",
     stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
+    expertSlugs: ["paul-bourgeois"],
     faqs: [
       {
-        question: "Is a Ph.D. required to testify as a vocational expert?",
+        question: "Is a Ph.D. required to prepare or defend a life care plan?",
         answer:
-          "No. Master's-level professionals with CRC, CVE, or ABVE credentials are routinely accepted. A Ph.D. adds breadth of academic preparation and research fluency, which can be persuasive in complex matters.",
+          "No. Master's-level and nursing professionals with life care planning certification are routinely accepted. Doctoral preparation adds research and methodological depth that is useful in contested or complex matters.",
+      },
+      {
+        question: "When is a Ph.D. planner most useful?",
+        answer:
+          "In rebuttal work, in cases where life expectancy or long-term outcome literature is contested, and in matters involving cognitive or psychological disability where assessment interpretation is central to the plan.",
       },
     ],
     sources: [{ title: "U.S. Department of Education - Accreditation", url: "https://www.ed.gov/about/offices/list/ope/accred", type: "gov" }],
-  },
-  {
-    slug: "cprw",
-    name: "Certified Professional Resume Writer",
-    abbreviation: "CPRW",
-    issuer: "Professional Association of Resume Writers & Career Coaches",
-    issuerUrl: "https://www.parwcc.com/",
-    scope:
-      "The CPRW credential recognizes expertise in resume writing and career documentation, which in forensic settings supports placement analysis and mitigation evaluation in employment cases.",
-    requirements: [
-      "PARWCC membership",
-      "Passing score on the CPRW examination",
-      "Continuing education for renewal",
-    ],
-    admissibilityHistory:
-      "Career documentation expertise is typically supportive rather than standalone in forensic matters.",
-    stateReciprocity: {},
-    kwvrsExpertsSlugs: [],
-    faqs: [
-      {
-        question: "Why would a vocational firm hold a CPRW?",
-        answer:
-          "Career documentation expertise supports analysis of a claimant's job search quality in mitigation disputes and informs realistic placement projections.",
-      },
-    ],
-    sources: [{ title: "PARWCC", url: "https://www.parwcc.com/", type: "org" }],
   },
 ];
 

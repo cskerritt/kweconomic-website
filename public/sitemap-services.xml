@@ -37,9 +37,9 @@
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -47,7 +47,6 @@
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/catastrophic-injury-planning/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -384,9 +383,9 @@
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -394,7 +393,6 @@
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/elder-and-long-term-care-planning/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -732,9 +730,9 @@
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -742,7 +740,6 @@
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/expert-witness-testimony/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/expert-witness-testimony/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -1079,9 +1076,9 @@
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -1089,7 +1086,6 @@
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-plan-rebuttal/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -1426,9 +1422,9 @@
   <url><loc>https://kwvrs.com/services/life-care-planning/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/life-care-planning/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/life-care-planning/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/life-care-planning/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/life-care-planning/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -1436,7 +1432,6 @@
   <url><loc>https://kwvrs.com/services/life-care-planning/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/life-care-planning/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/life-care-planning/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -1773,9 +1768,9 @@
   <url><loc>https://kwvrs.com/services/medical-cost-projection/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/medical-cost-projection/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/medical-cost-projection/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/medical-cost-projection/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/medical-cost-projection/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -1783,7 +1778,6 @@
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/medical-cost-projection/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medical-cost-projection/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -2120,9 +2114,9 @@
   <url><loc>https://kwvrs.com/services/medicare-set-aside/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/medicare-set-aside/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/medicare-set-aside/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/medicare-set-aside/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/medicare-set-aside/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -2130,7 +2124,6 @@
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/medicare-set-aside/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/medicare-set-aside/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -2467,9 +2460,9 @@
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -2477,7 +2470,6 @@
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/pediatric-life-care-planning/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -2814,9 +2806,9 @@
   <url><loc>https://kwvrs.com/services/plan-update-and-review/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/plan-update-and-review/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/plan-update-and-review/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/plan-update-and-review/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/plan-update-and-review/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -2824,7 +2816,6 @@
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/plan-update-and-review/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/plan-update-and-review/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>
@@ -3161,9 +3152,9 @@
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/california/san-francisco</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/california/san-jose</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/amputation</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/birth-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/burn-injury</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/long-term-disability</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/matrimonial</loc><changefreq>monthly</changefreq></url>
+  <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/cerebral-palsy</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/medical-malpractice</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/motor-vehicle-accident</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/personal-injury</loc><changefreq>monthly</changefreq></url>
@@ -3171,7 +3162,6 @@
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/traumatic-brain-injury</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/workers-compensation</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/wrongful-death</loc><changefreq>monthly</changefreq></url>
-  <url><loc>https://kwvrs.com/services/workers-compensation-lcp/case/wrongful-termination</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/colorado</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/colorado/aurora</loc><changefreq>monthly</changefreq></url>
   <url><loc>https://kwvrs.com/services/workers-compensation-lcp/colorado/colorado-springs</loc><changefreq>monthly</changefreq></url>

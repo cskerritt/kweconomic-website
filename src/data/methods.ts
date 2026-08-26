@@ -242,7 +242,7 @@ export const methods: Methodology[] = [
       "[[/guides/collateral-source-rule-explained|Collateral source analysis]] is used where jurisdictional rules permit or require offsets for insurance or benefit payments related to the injury.",
     steps: [
       "Identify jurisdictional collateral source rules (traditional, modified, or statutory offset)",
-      "Catalog relevant collateral payments (private health insurance, Medicare, Medicaid, [[/case-types/long-term-disability|LTD]], [[/case-types/workers-compensation|workers' compensation]])",
+      "Catalog relevant collateral payments (private health insurance, Medicare, Medicaid, long-term disability insurance, [[/case-types/workers-compensation|workers' compensation]])",
       "Compute [[/services/forensic-economics|net damages]] in compliance with jurisdictional rules",
     ],
     dataSources: [

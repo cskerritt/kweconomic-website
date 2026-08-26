@@ -805,7 +805,7 @@ export const guides: Guide[] = [
         id: "applying-to-vocational-testimony",
         heading: "How the framework applies to vocational testimony",
         bodyHtml:
-          "<p>Vocational testimony is typically grounded in <a href=\"/methods/transferable-skills-analysis\">transferable skills analysis</a> (TSA), <a href=\"/methods/labor-market-survey\">labor market survey</a> (LMS), and interpretation of functional capacity. Reliability is established by citing accepted methodology widely used in the vocational rehabilitation profession, accepted references (DOT, <a href=\"/methods/onet-analysis\">O*NET</a>, BLS OEWS (Occupational Employment and Wage Statistics), SCODDOT (Selected Characteristics of Occupations Defined in the Revised Dictionary of Occupational Titles)), and documented reasoning that traces the opinion from the claimant's history and medical restrictions through to the final conclusion.</p><p>General acceptance is evidenced through credentialing bodies (CRCC, <a href=\"/credentials/abve-d\">ABVE</a>) and the relevant professional standards.</p>",
+          "<p>Vocational testimony is typically grounded in <a href=\"/methods/transferable-skills-analysis\">transferable skills analysis</a> (TSA), <a href=\"/methods/labor-market-survey\">labor market survey</a> (LMS), and interpretation of functional capacity. Reliability is established by citing accepted methodology widely used in the vocational rehabilitation profession, accepted references (DOT, <a href=\"/methods/onet-analysis\">O*NET</a>, BLS OEWS (Occupational Employment and Wage Statistics), SCODDOT (Selected Characteristics of Occupations Defined in the Revised Dictionary of Occupational Titles)), and documented reasoning that traces the opinion from the claimant's history and medical restrictions through to the final conclusion.</p><p>General acceptance is evidenced through credentialing bodies (CRCC, <a href=\"/credentials/clcp\">ABVE</a>) and the relevant professional standards.</p>",
       },
       {
         id: "common-objections",
@@ -861,7 +861,7 @@ export const guides: Guide[] = [
         id: "credentials-to-look-for",
         heading: "Credentials to look for",
         bodyHtml:
-          "<p>Core credentials include the <a href=\"/credentials/crc\">CRC (Certified Rehabilitation Counselor)</a> (Commission on Rehabilitation Counselor Certification, n.d.), <a href=\"/credentials/cve\">CVE (Certified Vocational Evaluator)</a>, and <a href=\"/credentials/abve-f\">ABVE Diplomate or Fellow designations</a> for advanced forensic work (American Board of Vocational Experts, n.d.). State licensure may be separately relevant depending on jurisdiction.</p>",
+          "<p>Core credentials include the <a href=\"/credentials/crc\">CRC (Certified Rehabilitation Counselor)</a> (Commission on Rehabilitation Counselor Certification, n.d.), <a href=\"/credentials/crc\">CVE (Certified Vocational Evaluator)</a>, and <a href=\"/credentials/clcp\">ABVE Diplomate or Fellow designations</a> for advanced forensic work (American Board of Vocational Experts, n.d.). State licensure may be separately relevant depending on jurisdiction.</p>",
       },
       {
         id: "scope-of-engagement",

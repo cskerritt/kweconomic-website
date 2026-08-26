@@ -63,10 +63,10 @@ export default function CaseTypeState() {
         <h2 className="font-serif text-2xl text-navy mb-2">Overview</h2>
         <p className="text-neutral-700">{caseType.summary}</p>
       </section>
-      <section id="vocational-impact" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Vocational and economic impact</h2>
-        <p className="text-neutral-700 mb-3">{caseType.vocationalImpact}</p>
-        <p className="text-neutral-700">{caseType.economicExposure}</p>
+      <section id="care-needs" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Care needs and cost exposure</h2>
+        <p className="text-neutral-700 mb-3">{caseType.careNeeds}</p>
+        <p className="text-neutral-700">{caseType.costExposure}</p>
         {caseType.lifeCareImpact && (
           <p className="text-neutral-700 mt-3">{caseType.lifeCareImpact}</p>
         )}

@@ -180,78 +180,6 @@ export const journeys: JourneyStage[] = [
   },
   {
     stage: "considering",
-    caseTypeSlug: "long-term-disability",
-    dateModified: "2026-04-21",
-    intro:
-      "LTD considerations center on which disability definition applies and whether the administrative record supports expert involvement.",
-    checklist: [
-      "Review the LTD policy and definitions",
-      "Review the administrative record",
-      "Obtain medical and functional capacity records",
-      "Estimate the value of expert vocational opinion",
-    ],
-    questionsToAsk: [
-      "How does your analysis differ by policy definition?",
-      "How do you handle ERISA's record constraints?",
-    ],
-    timeline: "1-2 weeks before retention.",
-    requiredDocuments: ["Policy", "Administrative record", "Medical records"],
-    pitfalls: ["Skipping the policy definition analysis", "Missing the ERISA record closure deadline"],
-    faqs: [
-      { question: "Are vocational experts useful in ERISA administrative appeals?", answer: "Yes, to strengthen the record before it closes." },
-    ],
-    sources: [{ title: "U.S. DOL ERISA", url: "https://www.dol.gov/general/topic/retirement/erisa", type: "gov" }],
-  },
-  {
-    stage: "considering",
-    caseTypeSlug: "wrongful-termination",
-    dateModified: "2026-04-21",
-    intro:
-      "Wrongful termination matters often require vocational and economic experts for back pay, front pay, and mitigation analysis.",
-    checklist: [
-      "Document the terminated position and comparable-occupation baseline",
-      "Catalog post-termination job search evidence",
-      "Estimate front pay horizon",
-      "Identify benefits that should be quantified",
-    ],
-    questionsToAsk: [
-      "How do you evaluate mitigation efforts?",
-      "What labor market data supports the expected time to comparable employment?",
-    ],
-    timeline: "1-3 weeks before retention.",
-    requiredDocuments: ["Employment records", "Job search documentation", "Compensation history"],
-    pitfalls: ["Thin mitigation documentation", "Missing benefits components"],
-    faqs: [
-      { question: "Are mental anguish damages part of the economic analysis?", answer: "No, those are separate non-economic damages." },
-    ],
-    sources: [{ title: "EEOC", url: "https://www.eeoc.gov/", type: "gov" }],
-  },
-  {
-    stage: "considering",
-    caseTypeSlug: "matrimonial",
-    dateModified: "2026-04-21",
-    intro:
-      "Matrimonial vocational expert considerations hinge on whether imputation is contested and the receiving court's preferences.",
-    checklist: [
-      "Confirm imputation is at issue",
-      "Inventory educational and employment history",
-      "Identify re-entry needs if applicable",
-      "Confirm expert availability for family court",
-    ],
-    questionsToAsk: [
-      "Have you testified in this state's family court?",
-      "How do you handle career-interruption re-entry?",
-    ],
-    timeline: "1-2 weeks before retention.",
-    requiredDocuments: ["Educational records", "Work history", "Current earnings"],
-    pitfalls: ["Applying personal-injury methodology unchanged", "Missing re-entry timelines"],
-    faqs: [
-      { question: "Can imputed income exceed the actual earnings history?", answer: "When supported by the vocational profile and labor market, yes." },
-    ],
-    sources: [{ title: "BLS OES", url: "https://www.bls.gov/oes/", type: "gov" }],
-  },
-  {
-    stage: "considering",
     caseTypeSlug: "motor-vehicle-accident",
     dateModified: "2026-04-21",
     intro:
@@ -318,131 +246,6 @@ export const journeys: JourneyStage[] = [
     sources: [
       { title: "American Burn Association", url: "https://ameriburn.org/", type: "org" },
       { title: "Phoenix Society for Burn Survivors", url: "https://www.phoenix-society.org/", type: "org" },
-    ],
-  },
-  {
-    stage: "retaining",
-    caseTypeSlug: "long-term-disability",
-    dateModified: "2026-04-21",
-    intro:
-      "LTD engagements focus on applying the policy's disability definition to the claimant's documented functional capacity and transferable skills. ERISA procedural constraints apply to most group LTD plans.",
-    checklist: [
-      "Obtain the LTD policy and definitions (own occupation, any occupation, reasonable occupation)",
-      "Review the administrative record and claim file",
-      "Obtain FCE and medical records documenting functional capacity",
-      "Retain vocational expert for transferable skills analysis",
-      "Document labor market evidence for any identified suitable occupations",
-    ],
-    questionsToAsk: [
-      "How do you apply the specific policy definition to the functional profile?",
-      "Do you use published labor market data for the claimant's area?",
-      "How do you handle ERISA's limited record constraints?",
-    ],
-    timeline:
-      "30-45 days for most LTD vocational engagements.",
-    requiredDocuments: [
-      "Policy and definitions",
-      "Administrative record",
-      "Medical records and FCE",
-      "Employment and salary history",
-    ],
-    pitfalls: [
-      "Confusing own-occupation and any-occupation analyses",
-      "Failing to confirm ERISA applicability",
-      "Omitting labor market viability in any-occupation analyses",
-    ],
-    faqs: [
-      {
-        question: "Does ERISA limit expert involvement?",
-        answer:
-          "ERISA cases have constrained administrative records. Expert reports are typically offered in support of claim files or in later litigation depending on the procedural posture.",
-      },
-    ],
-    sources: [
-      { title: "U.S. DOL - ERISA", url: "https://www.dol.gov/general/topic/retirement/erisa", type: "gov" },
-    ],
-  },
-  {
-    stage: "retaining",
-    caseTypeSlug: "wrongful-termination",
-    dateModified: "2026-04-21",
-    intro:
-      "Wrongful termination expert retention supports back pay, front pay, and mitigation analyses. The vocational expert evaluates the claimant's job search and the labor market for comparable employment.",
-    checklist: [
-      "Document the termination date and comparable-occupation salary baseline",
-      "Obtain employment records for the terminated position and subsequent employment",
-      "Retain vocational expert for job search and market analysis",
-      "Retain economist for back pay and front pay projection",
-      "Document mitigation efforts",
-    ],
-    questionsToAsk: [
-      "How do you evaluate mitigation efforts?",
-      "What labor market data supports the expected time to comparable employment?",
-      "How do you project front pay and to what end point?",
-    ],
-    timeline:
-      "30-60 days typical.",
-    requiredDocuments: [
-      "Pre-termination and post-termination pay records",
-      "Job application and interview records",
-      "Employment history and performance reviews",
-      "Educational and credential records",
-    ],
-    pitfalls: [
-      "Thin mitigation documentation inviting offset arguments",
-      "Inadequate front pay horizon justification",
-      "Missing lost benefits in the damages projection",
-    ],
-    faqs: [
-      {
-        question: "How long a front pay period is typical?",
-        answer:
-          "Front pay extends to expected comparable re-employment, supported by labor market data. Exact horizons vary by jurisdiction and case.",
-      },
-    ],
-    sources: [
-      { title: "EEOC", url: "https://www.eeoc.gov/", type: "gov" },
-    ],
-  },
-  {
-    stage: "retaining",
-    caseTypeSlug: "matrimonial",
-    dateModified: "2026-04-21",
-    intro:
-      "Matrimonial vocational expert retention supports earning capacity imputation for support purposes. The analysis reconstructs earning capacity from education, training, and work history, with a realistic re-entry timeline where applicable.",
-    checklist: [
-      "Identify whether imputation is at issue (voluntary underemployment, career interruption)",
-      "Obtain educational records, employment history, and any current earnings",
-      "Retain vocational expert with matrimonial experience in the jurisdiction",
-      "Scope any labor market survey to the relevant geographic area",
-      "Plan for deposition and potentially trial testimony",
-    ],
-    questionsToAsk: [
-      "Have you testified in this state's family court?",
-      "How do you handle career interruption and re-entry timelines?",
-      "What labor market data supports your earning capacity opinion?",
-    ],
-    timeline:
-      "30-45 days typical.",
-    requiredDocuments: [
-      "Educational records",
-      "Employment history and wage records",
-      "Current earnings documentation",
-      "Any prior vocational testing",
-    ],
-    pitfalls: [
-      "Applying personal-injury methodology unchanged to matrimonial context",
-      "Ignoring re-entry timelines for long career gaps",
-    ],
-    faqs: [
-      {
-        question: "Are matrimonial vocational opinions different from personal injury opinions?",
-        answer:
-          "Methodology is similar; application differs. Matrimonial focuses on prospective earning capacity for support; personal injury focuses on effect of injury on earning capacity.",
-      },
-    ],
-    sources: [
-      { title: "BLS OES", url: "https://www.bls.gov/oes/", type: "gov" },
     ],
   },
   {
@@ -1104,81 +907,6 @@ export const journeys: JourneyStage[] = [
   },
   {
     stage: "preparing-deposition",
-    caseTypeSlug: "long-term-disability",
-    dateModified: "2026-04-21",
-    intro:
-      "LTD deposition prep addresses the policy definition, transferable skills application, and administrative-record constraints.",
-    checklist: [
-      "Review the exact policy definition applied",
-      "Confirm TSA is grounded in documented restrictions",
-      "Prepare on any-occupation vs own-occupation distinctions",
-      "Document labor market viability evidence",
-    ],
-    questionsToAsk: [
-      "Which policy definition did you apply and why?",
-      "How did you document labor market viability?",
-      "How did you handle the administrative record?",
-    ],
-    timeline: "1-2 preparation sessions.",
-    requiredDocuments: ["Policy", "Administrative record", "TSA and LMS documentation"],
-    pitfalls: ["Confusing own-occupation and any-occupation", "Thin labor market evidence"],
-    faqs: [
-      { question: "Can new evidence be introduced at deposition in ERISA cases?", answer: "Typically not; the administrative record controls." },
-    ],
-    sources: [{ title: "U.S. DOL ERISA", url: "https://www.dol.gov/general/topic/retirement/erisa", type: "gov" }],
-  },
-  {
-    stage: "preparing-deposition",
-    caseTypeSlug: "wrongful-termination",
-    dateModified: "2026-04-21",
-    intro:
-      "Wrongful termination deposition prep addresses mitigation analysis, labor market comparables, and benefits computation.",
-    checklist: [
-      "Review job search documentation",
-      "Confirm labor market data for comparable positions",
-      "Prepare on front pay horizon justification",
-      "Document benefits valuation",
-    ],
-    questionsToAsk: [
-      "How did you evaluate mitigation?",
-      "What labor market data supports your expected re-employment time?",
-      "How did you compute lost benefits?",
-    ],
-    timeline: "1-2 preparation sessions.",
-    requiredDocuments: ["Job search records", "Labor market data", "Benefits documentation"],
-    pitfalls: ["Weak mitigation documentation", "Missing benefits components"],
-    faqs: [
-      { question: "How is front pay cutoff defended?", answer: "With labor market data and documented expected re-employment timeline." },
-    ],
-    sources: [{ title: "EEOC", url: "https://www.eeoc.gov/", type: "gov" }],
-  },
-  {
-    stage: "preparing-deposition",
-    caseTypeSlug: "matrimonial",
-    dateModified: "2026-04-21",
-    intro:
-      "Matrimonial deposition prep focuses on the imputation framework, re-entry timeline, and labor market data for the receiving jurisdiction.",
-    checklist: [
-      "Review imputation methodology",
-      "Document re-entry analysis where applicable",
-      "Confirm labor market sources for the relevant area",
-      "Prepare on career interruption issues",
-    ],
-    questionsToAsk: [
-      "How did you derive the imputed earning capacity?",
-      "What re-entry timeline applies and why?",
-      "Which labor market data sources did you use?",
-    ],
-    timeline: "1-2 preparation sessions.",
-    requiredDocuments: ["Imputation methodology documentation", "Labor market data"],
-    pitfalls: ["Applying personal-injury methodology unchanged", "Missing state-specific family court conventions"],
-    faqs: [
-      { question: "Can imputation be rebutted?", answer: "Yes, with evidence of diligent job search and market conditions." },
-    ],
-    sources: [{ title: "BLS OES", url: "https://www.bls.gov/oes/", type: "gov" }],
-  },
-  {
-    stage: "preparing-deposition",
     caseTypeSlug: "motor-vehicle-accident",
     dateModified: "2026-04-21",
     intro:
@@ -1406,81 +1134,6 @@ export const journeys: JourneyStage[] = [
   },
   {
     stage: "trial",
-    caseTypeSlug: "long-term-disability",
-    dateModified: "2026-04-21",
-    intro:
-      "LTD trial testimony, where applicable, addresses the policy definition, transferable skills findings, and labor market viability for any identified suitable occupations.",
-    checklist: [
-      "Review the administrative record references",
-      "Prepare policy-definition explanation for the jury or bench",
-      "Rehearse TSA and LMS presentation",
-      "Prepare on functional capacity application",
-    ],
-    questionsToAsk: [
-      "What does the policy definition require?",
-      "What occupations meet the policy criteria?",
-      "How did you apply the functional capacity evaluation?",
-    ],
-    timeline: "1 day-of-trial prep session.",
-    requiredDocuments: ["Policy", "TSA and LMS", "FCE", "Administrative record"],
-    pitfalls: ["Straying beyond the administrative record", "Confusing own-occupation and any-occupation"],
-    faqs: [
-      { question: "Do LTD cases typically go to jury?", answer: "Most ERISA LTD cases are bench trials or summary judgment; non-ERISA policies may reach jury." },
-    ],
-    sources: [{ title: "U.S. DOL ERISA", url: "https://www.dol.gov/general/topic/retirement/erisa", type: "gov" }],
-  },
-  {
-    stage: "trial",
-    caseTypeSlug: "wrongful-termination",
-    dateModified: "2026-04-21",
-    intro:
-      "Wrongful termination trial testimony addresses back pay, front pay, mitigation analysis, and lost benefits with clear presentation of methodology.",
-    checklist: [
-      "Prepare pay-category breakdown demonstrative",
-      "Rehearse mitigation analysis",
-      "Prepare on front pay horizon",
-      "Coordinate with the retaining attorney on damages framework",
-    ],
-    questionsToAsk: [
-      "Explain back pay, front pay, and benefits",
-      "How did you evaluate mitigation?",
-      "Why does front pay end on your proposed date?",
-    ],
-    timeline: "1 day-of-trial prep session.",
-    requiredDocuments: ["Damages report", "Job search documentation", "Demonstratives"],
-    pitfalls: ["Confusing back pay and front pay in front of jury", "Missing benefits presentation"],
-    faqs: [
-      { question: "How do juries respond to mitigation evidence?", answer: "Well-documented job searches are persuasive; thin documentation invites offset." },
-    ],
-    sources: [{ title: "EEOC", url: "https://www.eeoc.gov/", type: "gov" }],
-  },
-  {
-    stage: "trial",
-    caseTypeSlug: "matrimonial",
-    dateModified: "2026-04-21",
-    intro:
-      "Matrimonial testimony takes place in family court, typically bench trial, addressing imputation, re-entry timeline, and labor market data.",
-    checklist: [
-      "Prepare for family court procedure",
-      "Rehearse imputation explanation",
-      "Prepare on re-entry timeline",
-      "Coordinate with counsel on support-framework terminology",
-    ],
-    questionsToAsk: [
-      "How did you derive the imputed earning capacity?",
-      "When could the spouse realistically re-enter the workforce?",
-      "What earnings are supported by the labor market?",
-    ],
-    timeline: "1 day-of-hearing prep session.",
-    requiredDocuments: ["Imputation analysis", "Labor market data"],
-    pitfalls: ["Applying civil-litigation tone to family court", "Missing state-specific support terminology"],
-    faqs: [
-      { question: "How receptive are family courts to vocational imputation?", answer: "Widely accepted when methodology is clear and data is jurisdiction-specific." },
-    ],
-    sources: [{ title: "BLS OES", url: "https://www.bls.gov/oes/", type: "gov" }],
-  },
-  {
-    stage: "trial",
     caseTypeSlug: "motor-vehicle-accident",
     dateModified: "2026-04-21",
     intro:
@@ -1503,6 +1156,274 @@ export const journeys: JourneyStage[] = [
       { question: "How do juries respond to chronic pain testimony?", answer: "Best received when supported by objective testing and peer-reviewed literature." },
     ],
     sources: [{ title: "NHTSA", url: "https://www.nhtsa.gov/", type: "gov" }],
+  },
+  // ── Pediatric case types (birth injury, cerebral palsy) ───────
+  {
+    stage: "considering",
+    caseTypeSlug: "birth-injury",
+    dateModified: "2026-08-26",
+    intro:
+      "Before retaining a life care planner in a birth injury matter, confirm that the child's neurological injury has been characterized well enough for the treating team to describe long-term needs. The plan will usually be the largest damages component, so early documentation of baseline function matters.",
+    checklist: [
+      "Confirm the diagnosis and mechanism from the delivery and NICU records",
+      "Determine whether a neurodevelopmental evaluation has been completed or scheduled",
+      "Identify current therapies, equipment, feeding method, and seizure control",
+      "Estimate the scope of the plan from the child's functional profile before committing to the full expert complement",
+    ],
+    questionsToAsk: [
+      "Do you have pediatric life care planning experience with this type of injury?",
+      "How do you handle life expectancy for a child with this functional profile?",
+      "How do you coordinate with the developmental pediatrician and neurologist?",
+    ],
+    timeline: "2-4 weeks between initial consideration and retention, sooner if an early neurodevelopmental evaluation is scheduled.",
+    requiredDocuments: [
+      "Labor and delivery, NICU, and pediatric records",
+      "Neurodevelopmental, therapy, and early intervention evaluations",
+      "Current equipment, medication, and feeding documentation",
+    ],
+    pitfalls: [
+      "Retaining a planner without pediatric experience",
+      "Waiting until the child is older and losing the baseline picture",
+    ],
+    faqs: [
+      {
+        question: "Is a pediatric life care plan different from an adult plan?",
+        answer: "Yes. It projects needs by developmental stage, replaces equipment with growth, and addresses the transition to adult services, and it must explain its life expectancy basis carefully.",
+      },
+    ],
+    sources: [{ title: "NIH/NINDS - Neonatal Hypoxic-Ischemic Encephalopathy", url: "https://www.ninds.nih.gov/", type: "gov" }],
+  },
+  {
+    stage: "considering",
+    caseTypeSlug: "cerebral-palsy",
+    dateModified: "2026-08-26",
+    intro:
+      "Before retaining a life care planner in a cerebral palsy matter, establish the child's Gross Motor Function Classification level and current care regimen. The level drives attendant care, equipment, and medical follow-up, and it anchors every projection in the plan.",
+    checklist: [
+      "Confirm the cerebral palsy diagnosis, type, and functional classification from the records",
+      "Identify current spasticity management, orthotics, seating, and therapies",
+      "Determine whether communication, feeding, or seizure needs are present",
+      "Estimate plan scope from functional level before committing to the full expert complement",
+    ],
+    questionsToAsk: [
+      "How does functional classification shape your projections?",
+      "How do you handle equipment replacement as the child grows?",
+      "How do you address educational services and public program offsets?",
+    ],
+    timeline: "2-4 weeks between initial consideration and retention.",
+    requiredDocuments: [
+      "Pediatric neurology, physiatry, and orthopedic records",
+      "Therapy evaluations and individualized education plans",
+      "Equipment, orthotic, and medication documentation",
+    ],
+    pitfalls: [
+      "Treating the current care regimen as static rather than projecting developmental transitions",
+      "Overlooking adult residential and supported-living needs",
+    ],
+    faqs: [
+      {
+        question: "Does a cerebral palsy plan cover adulthood?",
+        answer: "Yes. It projects the transition from pediatric to adult providers, day programs or vocational services, and long-term residential or in-home care through the projected life expectancy.",
+      },
+    ],
+    sources: [{ title: "CDC - Cerebral Palsy", url: "https://www.cdc.gov/cerebral-palsy/", type: "gov" }],
+  },
+  {
+    stage: "retaining",
+    caseTypeSlug: "birth-injury",
+    dateModified: "2026-08-26",
+    intro:
+      "Retaining experts in a birth injury matter typically involves a pediatric neurologist or neonatologist on causation, a pediatric life care planner, and an economist. Early coordination ensures the planner documents baseline function and obtains treating-team recommendations before growth changes the picture.",
+    checklist: [
+      "Confirm the injury characterization from delivery, NICU, and follow-up records",
+      "Retain a life care planner with pediatric experience once liability review supports proceeding",
+      "Provide neurodevelopmental, therapy, early intervention, and school records",
+      "Arrange planner contact with the treating neurologist and developmental pediatrician",
+      "Coordinate the planner and economist on life expectancy scenarios and care settings",
+    ],
+    questionsToAsk: [
+      "How do you project needs across developmental stages?",
+      "How do you document the basis for attendant care hours and equipment replacement?",
+      "How do you present life expectancy when the literature supports a range?",
+      "Have you testified in birth injury cases?",
+    ],
+    timeline:
+      "60-120 days from retention to report, longer when a neurodevelopmental evaluation or physician conference is pending.",
+    requiredDocuments: [
+      "Labor and delivery, NICU, and pediatric records",
+      "Neurodevelopmental and therapy evaluations",
+      "Early intervention and individualized education plan records",
+      "Equipment, medication, feeding, and seizure documentation",
+      "Family caregiving log or description of daily care",
+    ],
+    pitfalls: [
+      "Retaining a planner without pediatric experience",
+      "Failing to present home-based and facility-based scenarios",
+      "Leaving life expectancy assumptions undocumented",
+    ],
+    faqs: [
+      {
+        question: "Should the planner meet the child?",
+        answer: "An in-person or video evaluation is standard practice and lets the planner document function, equipment, and daily care directly rather than relying on records alone.",
+      },
+      {
+        question: "How is family-provided care handled?",
+        answer: "The plan documents the hours and level of care the family provides and values them at market rates where the jurisdiction allows, distinguishing them from paid services already in place.",
+      },
+    ],
+    sources: [
+      { title: "NIH/NINDS - Neonatal Hypoxic-Ischemic Encephalopathy", url: "https://www.ninds.nih.gov/", type: "gov" },
+      { title: "CDC - Developmental Disabilities", url: "https://www.cdc.gov/child-development/", type: "gov" },
+    ],
+  },
+  {
+    stage: "retaining",
+    caseTypeSlug: "cerebral-palsy",
+    dateModified: "2026-08-26",
+    intro:
+      "Retaining experts in a cerebral palsy matter typically involves the causation physician, a pediatric life care planner, and an economist. The planner needs the functional classification, the current care regimen, and access to the physiatrist, orthopedist, and therapy team to project needs through each developmental transition.",
+    checklist: [
+      "Confirm diagnosis, type, and functional classification from the records",
+      "Retain a life care planner with pediatric and cerebral palsy experience",
+      "Provide neurology, physiatry, orthopedic, therapy, and school records",
+      "Arrange planner contact with the treating physiatrist and therapy team",
+      "Coordinate the planner and economist on scenarios and public program offsets",
+    ],
+    questionsToAsk: [
+      "How do you tie frequencies and replacement cycles to functional level and growth?",
+      "How do you address spasticity management such as botulinum toxin or baclofen pump care?",
+      "How do you distinguish publicly funded educational services from privately funded care?",
+      "Have you testified in cerebral palsy cases?",
+    ],
+    timeline:
+      "60-120 days from retention to report, depending on physician conference scheduling.",
+    requiredDocuments: [
+      "Pediatric neurology, physiatry, and orthopedic records",
+      "Therapy evaluations and individualized education plans",
+      "Orthotic, seating, and equipment records",
+      "Medication and spasticity management records",
+      "Description of daily care and family caregiving",
+    ],
+    pitfalls: [
+      "Projecting today's regimen unchanged into adulthood",
+      "Omitting orthopedic surgery and equipment replacement cycles",
+      "Failing to address collateral-source rules for public services",
+    ],
+    faqs: [
+      {
+        question: "Is an orthopedic surgery sequence part of the plan?",
+        answer: "Where the treating orthopedist anticipates procedures such as tendon lengthening or hip surveillance and surgery, the plan lists them with timing, hospitalization, and post-operative therapy.",
+      },
+      {
+        question: "How are communication devices handled?",
+        answer: "Augmentative communication devices are projected with the speech-language pathologist's recommendation, including replacement cycles, software, and training.",
+      },
+    ],
+    sources: [
+      { title: "CDC - Cerebral Palsy", url: "https://www.cdc.gov/cerebral-palsy/", type: "gov" },
+    ],
+  },
+  {
+    stage: "preparing-deposition",
+    caseTypeSlug: "birth-injury",
+    dateModified: "2026-08-26",
+    intro:
+      "Preparing a life care planner for deposition in a birth injury case focuses on the clinical foundation for each recommendation, the basis for attendant care hours and equipment replacement cycles, and the treatment of life expectancy and care setting scenarios.",
+    checklist: [
+      "Review the plan end-to-end against the treating-team recommendations",
+      "Confirm every cost source and replacement cycle citation",
+      "Prepare the expert on the life expectancy basis and any range presented",
+      "Review the opposing plan or critique for anticipated lines",
+      "Rehearse explanation of home-based versus facility-based scenarios",
+    ],
+    questionsToAsk: [
+      "Which treating provider supports each recommendation?",
+      "How did you determine attendant care hours?",
+      "What is the basis for the life expectancy used and what changes if it differs?",
+    ],
+    timeline: "2-3 preparation sessions recommended prior to deposition.",
+    requiredDocuments: ["Expert's full file", "Treating-team recommendation records", "Opposing plan or critique"],
+    pitfalls: ["Unsupported items without a physician source", "Undocumented life expectancy assumptions"],
+    faqs: [
+      { question: "Should the expert bring the full file to deposition?", answer: "Yes, consistent with jurisdictional subpoena requirements." },
+    ],
+    sources: [{ title: "Federal Rule of Civil Procedure 30", url: "https://www.law.cornell.edu/rules/frcp/rule_30", type: "gov" }],
+  },
+  {
+    stage: "preparing-deposition",
+    caseTypeSlug: "cerebral-palsy",
+    dateModified: "2026-08-26",
+    intro:
+      "Preparing a life care planner for deposition in a cerebral palsy case focuses on the link between functional classification and projected needs, the clinical basis for each frequency and replacement cycle, and the treatment of educational services and public program offsets.",
+    checklist: [
+      "Review the plan end-to-end against the treating-team recommendations",
+      "Confirm the functional classification and its source in the record",
+      "Prepare the expert on equipment replacement cycles and growth assumptions",
+      "Review the opposing plan or critique for anticipated lines",
+      "Rehearse explanation of public versus privately funded services",
+    ],
+    questionsToAsk: [
+      "How does the child's functional level support each recommendation?",
+      "What is the basis for each replacement cycle?",
+      "How did you treat services provided through the school system?",
+    ],
+    timeline: "2-3 preparation sessions recommended prior to deposition.",
+    requiredDocuments: ["Expert's full file", "Therapy and school records", "Opposing plan or critique"],
+    pitfalls: ["Replacement cycles without a stated basis", "Confusing public program services with privately funded care"],
+    faqs: [
+      { question: "Should the expert bring the full file to deposition?", answer: "Yes, consistent with jurisdictional subpoena requirements." },
+    ],
+    sources: [{ title: "Federal Rule of Civil Procedure 30", url: "https://www.law.cornell.edu/rules/frcp/rule_30", type: "gov" }],
+  },
+  {
+    stage: "trial",
+    caseTypeSlug: "birth-injury",
+    dateModified: "2026-08-26",
+    intro:
+      "Trial testimony in a birth injury case requires the life care planner to explain, in plain terms, what the child needs each day, how those needs change with growth, and why each item, frequency, and cost in the plan is what it is.",
+    checklist: [
+      "Prepare jury-accessible visual aids showing care by developmental stage",
+      "Rehearse direct testimony chronology from evaluation to plan",
+      "Prepare on likely cross-examination themes: life expectancy, family care, and public programs",
+      "Coordinate with the causation physician and economist",
+    ],
+    questionsToAsk: [
+      "Can you describe a typical day of care for this child?",
+      "How will the child's needs change at each stage of life?",
+      "Why is each item in the plan necessary and what supports it?",
+    ],
+    timeline: "1-2 day-of-trial prep sessions.",
+    requiredDocuments: ["Final plan", "Demonstratives", "Prior deposition transcripts"],
+    pitfalls: ["Overly technical testimony", "Inconsistency with prior deposition"],
+    faqs: [
+      { question: "How are demonstratives used?", answer: "To show care categories by developmental stage, daily care schedules, and the difference between home-based and facility-based scenarios." },
+    ],
+    sources: [{ title: "NIH/NINDS - Neonatal Hypoxic-Ischemic Encephalopathy", url: "https://www.ninds.nih.gov/", type: "gov" }],
+  },
+  {
+    stage: "trial",
+    caseTypeSlug: "cerebral-palsy",
+    dateModified: "2026-08-26",
+    intro:
+      "Trial testimony in a cerebral palsy case requires the life care planner to connect the child's functional level to concrete daily needs and to explain how equipment, therapy, and attendant care change through growth and into adulthood.",
+    checklist: [
+      "Prepare jury-accessible visual aids showing needs by functional level and age",
+      "Rehearse direct testimony chronology from evaluation to plan",
+      "Prepare on likely cross-examination themes: replacement cycles, school services, and adult care",
+      "Coordinate with the causation physician and economist",
+    ],
+    questionsToAsk: [
+      "Can you explain the child's functional level in lay terms?",
+      "What equipment and care will the child need as an adult?",
+      "What supports each frequency and replacement cycle in the plan?",
+    ],
+    timeline: "1-2 day-of-trial prep sessions.",
+    requiredDocuments: ["Final plan", "Demonstratives", "Prior deposition transcripts"],
+    pitfalls: ["Overly technical testimony", "Inconsistency with prior deposition"],
+    faqs: [
+      { question: "How are demonstratives used?", answer: "To show care categories by age, equipment replacement timelines, and the transition from pediatric to adult services." },
+    ],
+    sources: [{ title: "CDC - Cerebral Palsy", url: "https://www.cdc.gov/cerebral-palsy/", type: "gov" }],
   },
 ];
 

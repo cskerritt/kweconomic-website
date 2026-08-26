@@ -10,7 +10,7 @@ export default function CaseTypesHubPage() {
   usePageMeta({
     title: "Case Types | KWVRS Vocational, Economic, Life Care Experts",
     description:
-      "Vocational, economic, and life-care expert services across the most common civil case types: personal injury, motor vehicle, workers' compensation, wrongful death, matrimonial, and more.",
+      "Vocational, economic, and life-care expert services across the most common civil case types: personal injury, birth injury, catastrophic injury, workers' compensation, wrongful death, and more.",
     canonical: url,
   });
   return (

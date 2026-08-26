@@ -4,17 +4,16 @@ export type CaseTypeCategory =
   | "personal-injury"
   | "workers-comp"
   | "med-mal"
-  | "matrimonial"
-  | "employment"
-  | "wrongful-death";
+  | "wrongful-death"
+  | "birth-injury";
 
 export interface CaseType {
   slug: string;
   name: string;
   category: CaseTypeCategory;
   summary: string;
-  vocationalImpact: string;
-  economicExposure: string;
+  careNeeds: string;
+  costExposure: string;
   lifeCareImpact?: string;
   relevantServices: string[];
   relevantCredentials: string[];
@@ -29,59 +28,46 @@ export const caseTypes: CaseType[] = [
     name: "Traumatic Brain Injury",
     category: "personal-injury",
     summary:
-      "Traumatic brain injury (TBI) cases involve a bump, blow, or jolt to the head, or a penetrating head injury, that disrupts normal brain function. Vocational and economic damages in TBI matters are often complex because cognitive, behavioral, and emotional sequelae may coexist with physical limitations, and the injured person's pre-injury earning capacity must be reconstructed from education, training, work history, and transferable skills.",
-    vocationalImpact:
-      "TBI can reduce sustained attention, executive function, processing speed, short-term memory, and emotional regulation. These limitations often prevent an individual from returning to skilled or high-demand occupations, and in moderate-to-severe cases may preclude competitive employment entirely. A vocational evaluation establishes residual work capacity, employability, and placeability in the relevant labor market, integrating neuropsychological test results with medical restrictions and transferable skills analysis.",
-    economicExposure:
-      "Economic damages in TBI matters commonly include lost earnings, lost earning capacity, lost household services, lost fringe benefits, and the present value of future wage loss across the claimant's worklife expectancy. In catastrophic cases damages can extend into lost retirement contributions and reduced worklife expectancy.",
+      "Traumatic brain injury (TBI) matters involve a blow, jolt, or penetrating injury to the head that disrupts brain function. From a life care planning standpoint, TBI is distinctive because cognitive, behavioral, and emotional sequelae drive care needs as much as physical limitations do, and because the need for supervision and case management often persists long after acute rehabilitation ends. The life care plan documents every category of future care the injury makes necessary and the basis for each recommendation.",
+    careNeeds:
+      "TBI plans typically address physiatry and neurology follow-up, neuropsychological re-evaluation at defined intervals, cognitive rehabilitation, speech-language and occupational therapy, medications for seizures, headache, mood, and sleep, assistive technology for memory and organization, case management, home safety modifications, transportation, and attendant care or supervision. In moderate-to-severe injury the plan addresses 24-hour supervision, behavioral support, and residential or supported-living options when family caregiving is not sustainable.",
+    costExposure:
+      "Cost is driven first by the hours and level of supervision or attendant care the injury requires, then by the frequency and duration of therapies, medication, and physician follow-up across the projected life expectancy. Plans commonly present home-based and facility-based scenarios so that counsel and the economist can value each, and they identify which items are one-time, recurring, or replaced on a cycle.",
     lifeCareImpact:
-      "Life care plans for TBI routinely address cognitive rehabilitation, neuropsychological follow-up, medications, assistive technology, case management, home modifications, attendant care, and in severe cases 24-hour supervised care. Plans are typically built in coordination with the treating physiatrist, neurologist, and neuropsychologist.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["crc", "clcp", "cve", "abve-d", "md", "phd"],
+      "The planner builds the plan from the treating physiatrist, neurologist, and neuropsychologist's recommendations, then documents frequency, duration, and cost for each item using local provider rates. Life expectancy is addressed from the evaluee's functional profile, with the sources stated so the plan can be examined and defended. Where severity is contested, the plan states the clinical basis for the level of care projected.",
+    relevantServices: ["life-care-planning", "catastrophic-injury-planning", "medical-cost-projection", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "md", "rn", "phd"],
     icdCodes: ["S06", "S06.2", "S06.3", "S06.9"],
     faqs: [
       {
-        question: "What is a traumatic brain injury for litigation purposes?",
+        question: "When should a life care planner be retained in a TBI case?",
         answer:
-          "For litigation, TBI is typically defined using clinical criteria such as the Glasgow Coma Scale, loss of consciousness, post-traumatic amnesia, and imaging findings, consistent with CDC and American Congress of Rehabilitation Medicine guidance. Severity is generally classified as mild, moderate, or severe, which correlates with expected functional outcomes.",
+          "Once the injury has stabilized enough for the treating team to describe long-term needs, typically after acute rehabilitation and an initial neuropsychological evaluation. Retaining before those data exist produces a plan that has to be substantially revised.",
       },
       {
-        question: "How is earning capacity evaluated after a TBI?",
+        question: "Does a mild TBI warrant a life care plan?",
         answer:
-          "Earning capacity is evaluated by integrating the pre-injury vocational profile (education, training, skills, work history, earnings) with post-injury medical and neuropsychological findings, applying transferable skills analysis and labor market data to determine what occupations remain within the person's residual functional capacity and what those occupations pay in the relevant geographic labor market.",
+          "Sometimes. Persistent post-concussive symptoms can require ongoing therapy, medication, and periodic specialist follow-up. The planner documents what the treating providers actually recommend rather than assuming a level of care from the diagnosis alone.",
       },
       {
-        question: "Do mild TBI cases require vocational experts?",
+        question: "How is supervision quantified in a TBI life care plan?",
         answer:
-          "Mild TBI cases can require vocational experts when persistent post-concussive symptoms affect occupational performance, particularly in cognitively demanding roles. Not every mild TBI results in vocational loss, which is precisely why an objective evaluation is useful in litigation.",
+          "Supervision and attendant care are expressed in hours per day by level of service, based on functional assessment and the treating team's recommendations. The plan states who provides the care, at what rate, and whether family-provided care is valued at market rates in the jurisdiction.",
       },
       {
-        question: "How does a life care planner coordinate with treating physicians in TBI cases?",
+        question: "How does the life care planner coordinate with the neuropsychologist?",
         answer:
-          "A certified life care planner obtains recommendations from the treating team (physiatrist, neurologist, neuropsychologist, therapists) and translates those recommendations into a comprehensive, itemized plan of care with projected costs over the life expectancy of the evaluee.",
+          "The neuropsychological evaluation identifies the cognitive and behavioral deficits; the planner translates those findings into specific services, frequencies, and durations, and confirms the recommendations with the treating providers before costing them.",
       },
       {
-        question: "What economic damages categories apply to TBI cases?",
+        question: "Does a TBI affect the life expectancy used in the plan?",
         answer:
-          "Common categories include past and future lost earnings, loss of earning capacity, lost household services, lost fringe benefits, and the present value of future medical and non-medical care set out in a life care plan. Reduced worklife expectancy may also apply in severe cases.",
-      },
-      {
-        question: "Can a TBI shorten worklife expectancy?",
-        answer:
-          "Peer-reviewed literature indicates that moderate and severe TBI can reduce worklife expectancy due to earlier labor force withdrawal, reduced employment probability, and increased mortality risk. A forensic economist applies published worklife tables and, where appropriate, adjusts for severity.",
-      },
-      {
-        question: "Are TBI vocational opinions admissible under the governing framework?",
-        answer:
-          "Vocational opinions grounded in accepted methodology (transferable skills analysis, labor market survey, standardized assessments, DOT and O*NET data) and delivered by appropriately credentialed experts have a long history of admissibility in both state and federal courts.",
+          "It can, particularly in severe injury. The planner presents the basis for the life expectancy used, and where the evidence supports a range, shows the cost of the plan at each end of the range so counsel can decide how to present it.",
       },
     ],
     sources: [
       { title: "CDC: Traumatic Brain Injury and Concussion", url: "https://www.cdc.gov/traumaticbraininjury/", type: "gov" },
       { title: "NIH/NINDS: Traumatic Brain Injury Information Page", url: "https://www.ninds.nih.gov/health-information/disorders/traumatic-brain-injury-tbi", type: "gov" },
-      { title: "BLS Occupational Outlook Handbook", url: "https://www.bls.gov/ooh/", type: "gov" },
-      { title: "O*NET OnLine", url: "https://www.onetonline.org/", type: "gov" },
-      { title: "Commission on Rehabilitation Counselor Certification - CRC Scope of Practice", url: "https://crccertification.com/", type: "org" },
     ],
   },
   {
@@ -89,53 +75,47 @@ export const caseTypes: CaseType[] = [
     name: "Spinal Cord Injury",
     category: "personal-injury",
     summary:
-      "Spinal cord injury (SCI) cases address the vocational, economic, and life-care consequences of partial or complete loss of motor or sensory function below the level of injury. Outcomes vary substantially with neurological level and ASIA Impairment Scale classification, which drives the scope of both vocational opinion and life care plan.",
-    vocationalImpact:
-      "Depending on neurological level, individuals with SCI may retain capacity for seated, sedentary, or technology-assisted work, or may require substantial workplace accommodation. Vocational evaluation establishes residual functional capacity, ergonomic requirements, and realistic occupational options within the relevant labor market, including assistive technology considerations.",
-    economicExposure:
-      "Damages typically include past and future lost earnings, loss of earning capacity, lost household services, lost fringe benefits, and the present value of a comprehensive life care plan. Household services losses can be particularly significant in SCI cases.",
+      "Spinal cord injury (SCI) matters address the lifelong care consequences of partial or complete loss of motor and sensory function below the level of injury. Neurological level and completeness determine the scope of the plan, from equipment and supplies to attendant care and the medical surveillance needed to prevent secondary complications.",
+    careNeeds:
+      "SCI plans address physiatry follow-up, urology and bowel programs with supplies, skin integrity and pressure-injury prevention, respiratory care in high cervical injury, spasticity management, physical and occupational therapy, manual and power wheelchairs with seating and replacement cycles, transfer and lift equipment, hospital beds and pressure-relief surfaces, home accessibility modifications, adapted vehicles, and personal care attendants at hours determined by functional level.",
+    costExposure:
+      "Attendant care and durable medical equipment replacement dominate SCI plan cost, followed by recurring supplies and the periodic hospitalizations associated with urinary tract infection, pressure injury, and other secondary conditions. Cost rises steeply with higher neurological levels, and plans generally show the difference between home-based care with attendants and facility-based care.",
     lifeCareImpact:
-      "Life care plans for SCI commonly address routine medical care, rehabilitation therapies, durable medical equipment (wheelchairs, transfer aids, pressure-relief surfaces), home modifications, vehicle modifications, attendant care or personal care attendants, bowel and bladder supplies, and periodic replacements of equipment over the lifespan.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["clcp", "crc", "cve", "md", "phd"],
+      "The planner documents the evaluee's neurological level and functional status, obtains recommendations from the physiatrist and rehabilitation team, and projects each item's frequency, duration, and replacement cycle with the basis stated. Life expectancy is addressed with attention to level, completeness, and age at injury, and the plan is written so each line can be traced to a clinical recommendation and a local cost source.",
+    relevantServices: ["catastrophic-injury-planning", "life-care-planning", "medical-cost-projection", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
     icdCodes: ["S14", "S24", "S34"],
     faqs: [
       {
-        question: "How does neurological level affect vocational opinion in SCI cases?",
+        question: "How does neurological level shape the SCI life care plan?",
         answer:
-          "Neurological level and ASIA Impairment Scale classification determine residual motor and sensory function. Higher-level cervical injuries typically impose more extensive functional limitations, while lower thoracic or lumbar injuries may permit return to sedentary or seated work with accommodation.",
+          "Higher cervical injuries generally require ventilatory support, extensive attendant care, and power mobility; lower thoracic and lumbar injuries may permit independence in transfers and self-care with manual mobility. The plan states the level and completeness and ties each recommendation to them.",
       },
       {
-        question: "What equipment is commonly included in an SCI life care plan?",
+        question: "What equipment is included and how often is it replaced?",
         answer:
-          "Plans commonly include manual or power wheelchairs, cushions and positioning devices, transfer equipment, shower/commode chairs, hospital beds, pressure-relief mattresses, standing frames, and vehicle lifts. Replacement intervals follow manufacturer specifications and peer-reviewed guidance.",
+          "Wheelchairs, cushions, transfer equipment, shower and commode chairs, beds, pressure-relief mattresses, standing frames, and vehicle adaptations are typical. Replacement intervals follow manufacturer guidance and clinical practice and are stated in the plan for each item.",
       },
       {
-        question: "Are home modifications included in SCI damages?",
+        question: "Are home modifications part of the plan?",
         answer:
-          "Home modifications are commonly projected in a life care plan and include doorway widening, ramps, accessible bathrooms, roll-in showers, lowered counters, and lift systems. Life care planners coordinate with occupational therapists and accessibility consultants as needed.",
+          "Yes. Ramps, doorway widening, accessible bathrooms, roll-in showers, lowered work surfaces, and lift systems are projected, usually with input from an occupational therapist or accessibility consultant, and one-time costs are separated from recurring costs.",
       },
       {
-        question: "How are attendant care needs quantified?",
+        question: "How are attendant care hours determined?",
         answer:
-          "Attendant care needs are determined by functional assessment, typically expressed in hours per day by service type (personal care, homemaking, supervision). Projected costs use published home care rate data for the relevant geographic area.",
+          "By functional assessment and the treating team's recommendations, expressed in hours per day by level of service. The plan documents the rate source and addresses whether family-provided care is valued.",
       },
       {
-        question: "What services does KWVRS typically provide in SCI matters?",
+        question: "Does the plan account for complications common after SCI?",
         answer:
-          "KWVRS typically provides a vocational evaluation, a certified life care plan, and forensic economic analysis quantifying lost earnings, lost earning capacity, and present value of future care and wage loss.",
-      },
-      {
-        question: "Does SCI affect worklife expectancy?",
-        answer:
-          "Peer-reviewed literature suggests that SCI can reduce worklife expectancy, with magnitude varying by neurological level, age at injury, and secondary health conditions. Forensic economists apply published worklife tables and adjust where supported by the record.",
+          "It should. Urinary tract infections, pressure injuries, autonomic dysreflexia, and respiratory complications are addressed through preventive care, supplies, and a documented allowance for periodic hospitalization where the treating physician supports it.",
       },
     ],
     sources: [
-      { title: "Christopher & Dana Reeve Foundation - Paralysis Resource Guide", url: "https://www.christopherreeve.org/", type: "org" },
       { title: "National Spinal Cord Injury Statistical Center", url: "https://www.nscisc.uab.edu/", type: "gov" },
       { title: "ASIA Impairment Scale", url: "https://asia-spinalinjury.org/", type: "org" },
-      { title: "BLS Occupational Employment Statistics", url: "https://www.bls.gov/oes/", type: "gov" },
+      { title: "Christopher & Dana Reeve Foundation - Paralysis Resource Guide", url: "https://www.christopherreeve.org/", type: "org" },
     ],
   },
   {
@@ -143,48 +123,42 @@ export const caseTypes: CaseType[] = [
     name: "Amputation",
     category: "personal-injury",
     summary:
-      "Amputation cases involve the loss of a limb or part of a limb, with vocational, economic, and life-care implications driven by level of amputation, dominant versus non-dominant side, and the physical demands of the claimant's prior occupation. Prosthetic technology, replacement intervals, and ongoing rehabilitation are central to life care planning.",
-    vocationalImpact:
-      "Upper extremity amputations typically affect fine motor tasks, bilateral coordination, and lifting capacity. Lower extremity amputations affect standing, walking, and ambulation tolerance. A vocational evaluation integrates medical restrictions, prosthetic function, and transferable skills to determine residual employment options.",
-    economicExposure:
-      "Damages commonly include past and future lost earnings, loss of earning capacity, lost household services, prosthetic costs with projected replacements, and the present value of the full life care plan.",
+      "Amputation matters involve the loss of all or part of a limb, with care needs driven by level of amputation, upper versus lower extremity, residual limb health, and prosthetic candidacy. Prosthetic technology and its replacement schedule are usually the central life care planning question, alongside the therapy, skin care, and follow-up that keep a prosthesis usable.",
+    careNeeds:
+      "Amputation plans address prosthetist and physiatrist follow-up, prosthetic devices and components with documented service lives, socket replacement as the residual limb changes, liners, sleeves, and supplies, gait and prosthetic training, physical and occupational therapy, residual limb and skin care, pain management including phantom limb pain, mobility aids for non-prosthetic use, and psychological support. Bilateral and upper-extremity amputations often add attendant care and home modification.",
+    costExposure:
+      "Prosthetic acquisition and replacement drive cost, and the choice between mechanical, microprocessor, or myoelectric technology changes both the purchase price and the replacement cycle. Recurring supplies, therapy after each new device, and long-term joint and spine care from altered gait add to the profile across the projected life expectancy.",
     lifeCareImpact:
-      "Life care plans for amputation routinely include prosthetic devices and components with documented replacement intervals, socket replacements, gait training, occupational therapy, skin care supplies, residual limb care, and when appropriate osseointegration follow-up or advanced myoelectric technology.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["clcp", "crc", "cve", "md"],
+      "The planner documents the evaluee's amputation level, prosthetic history, and functional level, then works with the treating prosthetist and physiatrist to project the device type, components, and replacement schedule. Each item carries a stated basis and a local cost, and the plan distinguishes what is medically indicated now from what may become appropriate as technology or the evaluee's function changes.",
+    relevantServices: ["life-care-planning", "catastrophic-injury-planning", "medical-cost-projection", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
     icdCodes: ["S68", "S78", "S88", "S98"],
     faqs: [
       {
-        question: "How is prosthetic replacement projected in a life care plan?",
+        question: "How is prosthetic replacement projected?",
         answer:
-          "Prosthetic components have documented average service lives published by manufacturers and prosthetics literature. Life care planners project replacements at those intervals across the remaining life expectancy, with costs sourced from prosthetic providers in the claimant's geographic area.",
+          "Prosthetic components have manufacturer and clinical service-life expectations. The plan projects replacement at those intervals across the remaining life expectancy, with socket replacement more frequent in the early years as the residual limb matures, and costs drawn from prosthetic providers in the evaluee's area.",
       },
       {
-        question: "Do upper and lower extremity amputations have different vocational implications?",
+        question: "Are advanced prosthetics such as microprocessor knees or myoelectric hands included?",
         answer:
-          "Yes. Upper extremity amputations primarily affect fine motor tasks, grip strength, and bilateral coordination; lower extremity amputations primarily affect ambulation tolerance, standing, and stair climbing. Each profile pairs with different occupational options in the labor market.",
+          "When the treating prosthetist and physiatrist support them for the evaluee's functional level. Advanced devices carry higher acquisition costs and, for electronic components, shorter service lives, which the plan reflects.",
       },
       {
-        question: "Are myoelectric or osseointegrated prosthetics included in plans?",
+        question: "What ongoing medical care does an amputation plan include?",
         answer:
-          "They can be, when medically indicated and supported by the treating prosthetist and physiatrist. Advanced technology often has higher acquisition cost and shorter service life for electronic components, which is reflected in projected plan costs.",
+          "Prosthetist visits for adjustment and repair, physiatry follow-up, dermatology or wound care for residual limb skin problems, pain management, and orthopedic care for the contralateral limb and spine as gait changes take their toll over time.",
       },
       {
-        question: "How is residual earning capacity determined post-amputation?",
+        question: "Does an amputation plan include attendant care or home modification?",
         answer:
-          "A vocational expert integrates pre-injury work history, transferable skills, post-injury medical restrictions, functional capacity, and labor market data to identify alternative occupations and their wage ranges in the claimant's geographic labor market.",
-      },
-      {
-        question: "What household services losses are typical in amputation cases?",
-        answer:
-          "Household services losses typically include tasks requiring bilateral strength or prolonged standing, such as lawn care, heavy housework, home repair, and certain cooking activities. Loss is quantified using time-use surveys and local wage rates for equivalent services.",
+          "For single lower-extremity amputations often not; for bilateral, upper-extremity, or high-level amputations, attendant care hours, bathroom and kitchen modifications, and adapted vehicles are frequently indicated and are documented against the evaluee's functional status.",
       },
     ],
     sources: [
       { title: "Amputee Coalition", url: "https://www.amputee-coalition.org/", type: "org" },
       { title: "American Academy of Orthotists & Prosthetists", url: "https://www.oandp.org/", type: "org" },
       { title: "VA Amputation System of Care", url: "https://www.va.gov/rehab/amputation.asp", type: "gov" },
-      { title: "BLS Occupational Outlook Handbook", url: "https://www.bls.gov/ooh/", type: "gov" },
     ],
   },
   {
@@ -192,45 +166,40 @@ export const caseTypes: CaseType[] = [
     name: "Wrongful Death",
     category: "wrongful-death",
     summary:
-      "Wrongful death cases quantify the economic loss to survivors and the estate resulting from a decedent's death, most commonly as lost earnings, lost fringe benefits, lost household services, and lost personal services or guidance. The vocational component reconstructs the decedent's pre-death earning capacity; the economic component reduces projected losses to present value net of personal consumption.",
-    vocationalImpact:
-      "For a decedent, the vocational component reconstructs earning capacity at the time of death using education, training, work history, industry trajectories, and labor market data. In some jurisdictions, a claimant spouse's earning capacity is also evaluated where household services or income contributions are at issue.",
-    economicExposure:
-      "Damages typically include lost earnings and earning capacity across the decedent's worklife, lost fringe benefits, lost household services, and in some jurisdictions loss of personal consortium, care, guidance, and advice. Projections are reduced to present value using appropriate discount rates and net of personal consumption.",
-    relevantServices: ["forensic-economics", "life-care-planning"],
-    relevantCredentials: ["abve-d", "abve-f", "crc", "phd"],
+      "Wrongful death matters involve the death of an injured person, sometimes after a period of survival during which substantial care was delivered. Life care planning contributes in two ways: by documenting and valuing the care actually provided between injury and death, and, where a surviving dependent had care needs the decedent was meeting, by projecting the replacement cost of that care.",
+    careNeeds:
+      "In survival claims the planner reconstructs the care delivered from injury to death, including hospitalization, skilled nursing, home health, equipment, medications, and family-provided attendant care, and confirms that each item was medically appropriate. Where the decedent was the caregiver for a disabled spouse, child, or parent, the plan documents that dependent's ongoing needs and the paid services now required to replace the care the decedent provided.",
+    costExposure:
+      "Exposure in the survival component is the documented cost of care between injury and death, including care provided by family at market rates where the jurisdiction allows. Replacement-care exposure depends on the dependent's condition and projected life expectancy, and can be large where the decedent provided daily hands-on care to a person with a disability.",
+    lifeCareImpact:
+      "The life care planner audits the medical and billing record to establish what care was delivered and at what cost, and separates care attributable to the injury from unrelated treatment. For dependent replacement care, the planner evaluates the survivor's needs with the treating providers and projects services, frequencies, and costs in the same format as any other life care plan so the economist can reduce them to present value.",
+    relevantServices: ["medical-cost-projection", "life-care-planning", "elder-and-long-term-care-planning", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "rn", "md"],
     faqs: [
       {
-        question: "What is personal consumption and why is it deducted?",
+        question: "What does a life care planner do in a wrongful death case?",
         answer:
-          "Personal consumption is the portion of the decedent's earnings that would have been spent on the decedent's own maintenance rather than provided to survivors. It is deducted so that damages reflect the net economic loss to the survivors, consistent with standard forensic economic practice.",
+          "Two things, depending on the facts: document and value the care delivered between injury and death, and, where the decedent was caring for a dependent with a disability, project the cost of replacing that care through the dependent's life expectancy.",
       },
       {
-        question: "How is lost earning capacity projected for a decedent who had not yet entered the workforce?",
+        question: "Is family-provided care between injury and death compensable?",
         answer:
-          "For young decedents or those with limited earnings history, economists use education-based and demographic-based earnings tables from Census/CPS data, applied to an expected career path consistent with the decedent's documented abilities and plans.",
+          "Many jurisdictions allow recovery of the reasonable value of care family members provided. The planner documents the hours and level of care and applies local market rates so counsel can present the value under the governing law.",
       },
       {
-        question: "Are lost household services compensable in wrongful death cases?",
+        question: "How is replacement care for a surviving dependent projected?",
         answer:
-          "In most jurisdictions, yes. Lost household services are valued using time-use survey data and local market wage rates for equivalent services such as childcare, home maintenance, meal preparation, and transportation.",
+          "The planner evaluates the dependent's current needs with their treating providers, identifies which of those needs the decedent was meeting, and projects paid services at local rates through the dependent's projected life expectancy, noting any public benefits the jurisdiction treats as collateral.",
       },
       {
-        question: "What discount rate is applied to wrongful death damages?",
+        question: "Does the life care planner opine on cause of death?",
         answer:
-          "Forensic economists apply discount rates drawn from Treasury yields matched to the projection horizon, often in a net discount rate framework that also accounts for expected wage growth. Jurisdiction-specific rules may apply.",
-      },
-      {
-        question: "Do defense and plaintiff economists typically disagree on the same case?",
-        answer:
-          "They often disagree on worklife assumptions, growth rates, discount rates, and personal consumption percentages. Retaining an economist credentialed by a recognized forensic body helps ensure the methodology is defensible.",
+          "No. Causation is a physician question. The planner documents care needs and costs consistent with the medical record and the physicians' opinions.",
       },
     ],
     sources: [
-      { title: "BLS Occupational Employment Statistics", url: "https://www.bls.gov/oes/", type: "gov" },
-      { title: "Census Bureau - Current Population Survey", url: "https://www.census.gov/programs-surveys/cps.html", type: "gov" },
-      { title: "BLS American Time Use Survey", url: "https://www.bls.gov/tus/", type: "gov" },
       { title: "National Center for Health Statistics - Life Expectancy", url: "https://www.cdc.gov/nchs/", type: "gov" },
+      { title: "CMS - Home Health Services", url: "https://www.medicare.gov/coverage/home-health-services", type: "gov" },
     ],
   },
   {
@@ -238,42 +207,40 @@ export const caseTypes: CaseType[] = [
     name: "Medical Malpractice",
     category: "med-mal",
     summary:
-      "Medical malpractice cases address injury allegedly caused by a deviation from the accepted standard of care. Vocational, economic, and life-care analyses typically accompany standard-of-care and causation opinions, quantifying the incremental harm attributable to the alleged breach.",
-    vocationalImpact:
-      "Vocational opinions in medical malpractice focus on the post-injury loss relative to the but-for baseline, integrating the claimant's pre-event vocational profile with medical restrictions attributable to the alleged breach. Where pre-existing conditions are present, apportionment is a key consideration.",
-    economicExposure:
-      "Damages typically include past and future lost earnings, loss of earning capacity, lost household services, and present value of a life care plan focused on incremental care attributable to the alleged breach rather than unrelated baseline care.",
+      "Medical malpractice matters involve injury attributed to a departure from the accepted standard of care. The life care plan in these cases must isolate the incremental care the alleged breach made necessary from the baseline care the patient would have required anyway, which makes the causation opinions of the treating and retained physicians the foundation of the plan.",
+    careNeeds:
+      "Care categories depend on the injury: delayed-diagnosis cases may involve oncology follow-up, surgery, and palliative care; surgical and anesthesia injury may involve neurological rehabilitation, wound care, ostomy supplies, or chronic pain management; medication and hospital-acquired injury may involve dialysis, organ transplant follow-up, or long-term nursing. The plan is organized by the same categories as any life care plan, with each item flagged as incremental or baseline.",
+    costExposure:
+      "Exposure is the cost of the incremental care across the evaluee's projected life expectancy. Because baseline care is excluded, the plan's value is highly sensitive to the physician's causation and apportionment opinions and to how the pre-existing condition would have progressed absent the breach. Plans often present both the full care profile and the incremental profile so the distinction is transparent.",
     lifeCareImpact:
-      "Medical malpractice life care plans generally isolate incremental future medical and non-medical needs attributable to the alleged breach, separating baseline care the claimant would have required absent the event.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["md", "clcp", "crc", "abve-d"],
+      "The planner obtains causation and apportionment opinions from the physicians, builds the but-for baseline of expected care, and then documents the additional services, frequencies, and durations attributable to the injury. Every item carries its clinical source and local cost, and the plan states its methodology so it can be tested against the opposing expert's apportionment.",
+    relevantServices: ["life-care-planning", "medical-cost-projection", "life-care-plan-rebuttal", "expert-witness-testimony"],
+    relevantCredentials: ["md", "clcp", "cnlcp", "rn"],
     faqs: [
       {
-        question: "How is incremental harm isolated in medical malpractice damages?",
+        question: "How does the plan separate incremental care from baseline care?",
         answer:
-          "Life care planners and economists separate care and losses attributable to the alleged breach from those the claimant would have experienced in the but-for scenario, informed by medical causation opinions from treating and retained physicians.",
+          "The planner documents what care the patient would have needed for the underlying condition absent the breach, based on physician opinion and the medical record, then lists separately the care made necessary by the injury. Items that fall in both are identified so counsel can address apportionment.",
       },
       {
-        question: "What role does a standard of care expert play alongside vocational and economic experts?",
+        question: "Who provides the causation opinion the plan relies on?",
         answer:
-          "The standard of care expert establishes whether a breach occurred. Vocational, life care planning, and economic experts quantify the consequences of the breach, provided causation is supported.",
+          "Treating physicians and any retained standard-of-care and causation experts. The life care planner does not opine on causation; the plan states which physician recommendations support each care item.",
       },
       {
-        question: "Can birth injury cases use the same damages framework?",
+        question: "Can the same planner prepare a rebuttal to the opposing life care plan?",
         answer:
-          "Birth injury cases use a similar framework, with special attention to life expectancy, long-term care needs, worklife projected from demographic norms, and pediatric-specific life care planning methodology.",
+          "Yes. Rebuttal review examines the opposing plan's clinical foundation, frequencies, durations, cost sources, and treatment of baseline care, and identifies where it departs from the record or from accepted life care planning methodology.",
       },
       {
-        question: "How are pre-existing conditions handled in damages analysis?",
+        question: "How are pre-existing conditions handled?",
         answer:
-          "Pre-existing conditions are accounted for by establishing a but-for baseline of expected medical needs and earning capacity absent the breach, with damages limited to the incremental loss.",
+          "They define the baseline. The plan projects how the pre-existing condition would have progressed and what care it would have required, then limits the claimed items to the additional care caused by the injury.",
       },
     ],
     sources: [
       { title: "Agency for Healthcare Research and Quality", url: "https://www.ahrq.gov/", type: "gov" },
-      { title: "National Practitioner Data Bank", url: "https://www.npdb.hrsa.gov/", type: "gov" },
       { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/physician-fee-schedule", type: "gov" },
-      { title: "BLS Occupational Outlook Handbook", url: "https://www.bls.gov/ooh/", type: "gov" },
     ],
   },
   {
@@ -281,37 +248,41 @@ export const caseTypes: CaseType[] = [
     name: "Burn Injury",
     category: "personal-injury",
     summary:
-      "Burn injury cases involve thermal, chemical, electrical, or radiation burns with vocational and life-care consequences driven by total body surface area, depth, location, and complications such as contractures, scarring, and psychological sequelae.",
-    vocationalImpact:
-      "Burn survivors may face limitations in heat tolerance, sun exposure, manual dexterity, and public-facing work due to visible scarring. A vocational evaluation integrates reconstructive surgical plans, medical restrictions, and psychological factors when identifying suitable occupational options.",
-    economicExposure:
-      "Damages include lost earnings, lost earning capacity, lost household services, and present value of future reconstructive surgeries, skin care, compression garments, and psychological treatment.",
+      "Burn injury matters involve thermal, chemical, electrical, or radiation burns whose care needs are driven by total body surface area, depth, location, inhalation injury, and complications such as contracture, hypertrophic scarring, and heat intolerance. Because reconstruction is staged over years and skin care is lifelong, the life care plan must project both a surgical sequence and a daily maintenance regimen.",
+    careNeeds:
+      "Burn plans address burn surgeon and plastic surgeon follow-up, staged reconstructive and contracture-release surgery, laser and scar management, compression garments replaced on a documented cycle, moisturizers, sun protection, and wound supplies, physical and occupational therapy for range of motion, splinting, pain management, pulmonary follow-up after inhalation injury, and mental health treatment for post-traumatic stress, depression, and body image concerns. Severe burns of the hands or face may add adaptive equipment and attendant care.",
+    costExposure:
+      "Cost concentrates in the surgical years immediately after injury and then settles into recurring garment, supply, therapy, and mental health costs across the projected life expectancy. Pediatric burns add reconstruction as the child grows. The plan identifies which surgeries the treating surgeon has scheduled, which are anticipated, and the maintenance items that continue for life.",
     lifeCareImpact:
-      "Plans commonly include staged reconstructive surgery, compression garments with replacement intervals, specialized wound care supplies, scar management, physical and occupational therapy, and mental health services addressing PTSD and body image concerns.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["clcp", "crc", "md"],
+      "The planner obtains the reconstructive sequence from the treating burn surgeon, documents garment and supply regimens with replacement frequencies, and confirms therapy and mental health recommendations with the treating team. Each item carries a stated basis and local cost, and the plan separates one-time surgical costs from lifelong maintenance so the economist can treat each correctly.",
+    relevantServices: ["life-care-planning", "catastrophic-injury-planning", "medical-cost-projection", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
     icdCodes: ["T20", "T21", "T22", "T23", "T24", "T25"],
     faqs: [
       {
-        question: "How do compression garments factor into a life care plan?",
+        question: "How are compression garments projected in the plan?",
         answer:
-          "Compression garments are typically worn daily for extended periods and replaced multiple times per year per manufacturer specifications. Life care planners project annual replacement costs across the wear period recommended by the treating team.",
+          "Garments are worn most of the day during the scar maturation period and replaced several times a year as they lose elasticity. The plan states the wear period recommended by the treating surgeon or therapist and the replacement frequency, then applies local pricing.",
       },
       {
-        question: "Are psychological services commonly included in burn life care plans?",
+        question: "Are future reconstructive surgeries included?",
         answer:
-          "Yes, reflecting the high incidence of PTSD, depression, and body image concerns in burn survivors. Plans often include individual therapy, group therapy, and periodic psychiatric medication management.",
+          "Yes, where the treating surgeon anticipates them. The plan lists each anticipated procedure, its timing, and the associated hospitalization, therapy, and garment costs, distinguishing scheduled procedures from those that depend on how scars mature.",
       },
       {
-        question: "What vocational considerations apply to burn survivors?",
+        question: "Is mental health care part of a burn life care plan?",
         answer:
-          "Considerations include heat and sun exposure tolerance, grip strength, fine motor function, and the social dimensions of public-facing roles when visible scarring is present. These factors inform the accommodation analysis.",
+          "Usually. Post-traumatic stress, depression, and body image concerns are common after significant burns, and the plan projects individual therapy, medication management, and periodic psychiatric follow-up where the treating providers recommend them.",
+      },
+      {
+        question: "How do pediatric burns differ in the plan?",
+        answer:
+          "Growing skin over scar tissue produces contractures that require repeated release surgery through adolescence, and garments and splints are resized with growth. Pediatric plans project these cycles and the therapy that follows each procedure.",
       },
     ],
     sources: [
       { title: "American Burn Association", url: "https://ameriburn.org/", type: "org" },
       { title: "Phoenix Society for Burn Survivors", url: "https://www.phoenix-society.org/", type: "org" },
-      { title: "CDC: Burn Prevention", url: "https://www.cdc.gov/masstrauma/factsheets/public/burns.pdf", type: "gov" },
     ],
   },
   {
@@ -319,34 +290,40 @@ export const caseTypes: CaseType[] = [
     name: "Personal Injury",
     category: "personal-injury",
     summary:
-      "Personal injury cases encompass a broad range of physical and psychological harms arising from negligence. Vocational, economic, and life-care experts quantify the functional, earnings, and care consequences of the injury.",
-    vocationalImpact:
-      "A vocational evaluation establishes residual functional capacity, transferable skills, and labor market options consistent with post-injury medical restrictions. The analysis supports earning capacity opinion and accommodation planning.",
-    economicExposure:
-      "Damages may include past and future lost earnings, loss of earning capacity, lost household services, lost fringe benefits, and present value of any needed life care plan.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["crc", "cve", "abve-d", "clcp"],
+      "Personal injury matters cover a broad range of physical and psychological harm arising from negligence, from orthopedic injury and chronic pain to complex regional pain syndrome and psychological trauma. Whenever an injury requires ongoing treatment, equipment, or assistance, a life care plan documents those future needs and their cost so future medical damages rest on an itemized foundation rather than an estimate.",
+    careNeeds:
+      "Common categories include orthopedic and pain management follow-up, injections and implanted devices with replacement cycles, future surgery such as joint replacement or spinal fusion, physical therapy at maintenance frequency, medications, bracing and mobility aids, diagnostic imaging, mental health treatment, and, in more serious injury, home modification and help with household tasks or personal care.",
+    costExposure:
+      "Exposure ranges widely with injury severity. In moderate injury the plan may consist of periodic physician visits, medication, therapy, and a future surgery; in serious injury it includes equipment, attendant care, and home modification across the projected life expectancy. The plan identifies one-time, recurring, and cyclically replaced items so each can be valued appropriately.",
+    lifeCareImpact:
+      "The planner reviews the records, interviews the evaluee, and confirms recommendations with the treating physicians before projecting frequency, duration, and cost for each item at local rates. The plan states its basis for every line, addresses the evaluee's life expectancy, and is written so that a medical cost projection or full life care plan can be presented depending on the scope counsel needs.",
+    relevantServices: ["life-care-planning", "medical-cost-projection", "plan-update-and-review", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "rn", "md"],
     faqs: [
       {
-        question: "When is a vocational evaluation warranted in a personal injury case?",
+        question: "When does a personal injury case need a life care plan rather than a medical cost projection?",
         answer:
-          "A vocational evaluation is typically warranted when the injury is alleged to have reduced the claimant's earning capacity or ability to sustain competitive employment, or when future employability is contested.",
+          "A medical cost projection suits injuries with a defined, mostly medical course of future treatment. A full life care plan is indicated when the injury affects daily function and requires equipment, home modification, assistance, or coordinated care across multiple disciplines over a long horizon.",
       },
       {
-        question: "What is the difference between lost earnings and loss of earning capacity?",
+        question: "What records does the planner need?",
         answer:
-          "Lost earnings reflect actual wages the claimant did not receive. Loss of earning capacity is a broader vocational concept reflecting the difference between pre-injury and post-injury capacity to earn, regardless of whether that capacity was being fully realized prior to injury.",
+          "Complete treatment records, imaging reports, therapy notes, pharmacy records, any functional capacity or independent medical evaluation, and contact with the treating physicians to confirm future recommendations.",
       },
       {
-        question: "Are household services losses always included in personal injury damages?",
+        question: "Does the plan include care the evaluee is not currently receiving?",
         answer:
-          "Household services losses are considered when the claimant performed unpaid services (childcare, home maintenance, meal preparation) that the injury now prevents. Valuation uses time-use data and local replacement service rates.",
+          "Yes, where a treating or examining physician recommends it. The plan documents the recommendation and its source; it does not project care that no provider supports.",
+      },
+      {
+        question: "Can a plan be updated if the evaluee's condition changes before trial?",
+        answer:
+          "Yes. Plans are updated to reflect new surgery, changed recommendations, or a change in function, and the update documents what changed and why so the current plan is consistent with prior testimony.",
       },
     ],
     sources: [
-      { title: "BLS Occupational Employment Statistics", url: "https://www.bls.gov/oes/", type: "gov" },
-      { title: "BLS American Time Use Survey", url: "https://www.bls.gov/tus/", type: "gov" },
-      { title: "O*NET OnLine", url: "https://www.onetonline.org/", type: "gov" },
+      { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/physician-fee-schedule", type: "gov" },
+      { title: "National Center for Health Statistics - Life Expectancy", url: "https://www.cdc.gov/nchs/", type: "gov" },
     ],
   },
   {
@@ -354,139 +331,40 @@ export const caseTypes: CaseType[] = [
     name: "Workers' Compensation",
     category: "workers-comp",
     summary:
-      "Workers' compensation matters involve work-related injury or illness with vocational rehabilitation, return-to-work analysis, and earning capacity components governed by state-specific statutes.",
-    vocationalImpact:
-      "Vocational analysis in workers' compensation focuses on return-to-work planning, job analysis of the pre-injury position, identification of alternative work within medical restrictions, and when applicable retraining or vocational rehabilitation services.",
-    economicExposure:
-      "Economic exposure varies by jurisdiction and commonly includes temporary total disability, permanent partial or total disability, vocational rehabilitation services, and in some cases lump-sum settlements calculated against earning capacity.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["crc", "cve", "lrc"],
+      "Workers' compensation matters involve work-related injury or illness within a statutory system that pays medical benefits under a fee schedule and, in many settlements, closes future medical liability in exchange for a lump sum. Life care planning in this setting supports settlement valuation, Medicare Set-Aside allocation, and disputes over the reasonableness and necessity of future treatment.",
+    careNeeds:
+      "Plans address the injury-related care the treating physician projects: physician follow-up, medications, injections, future surgery, therapy, durable medical equipment and replacement, diagnostic testing, and, in catastrophic work injury, attendant care and home modification. Because state fee schedules govern payment, the plan typically prices items under the applicable schedule and, where useful, at usual and customary rates for comparison.",
+    costExposure:
+      "Exposure is defined by the projected cost of injury-related medical care over the claimant's life expectancy, priced under the governing fee schedule. Where the claimant is a Medicare beneficiary or reasonably expected to become one, the Medicare-covered portion must be allocated in a set-aside, and the difference between the plan and the set-aside is often the focus of settlement negotiation.",
+    lifeCareImpact:
+      "The planner documents the injury-related diagnoses, obtains the treating physician's projection of future care, and prices each item under the state fee schedule with stated sources. The same clinical foundation supports a Medicare Set-Aside allocation when one is required, and the plan distinguishes injury-related care from treatment for unrelated conditions so the carrier's obligation is stated accurately.",
+    relevantServices: ["workers-compensation-lcp", "medicare-set-aside", "medical-cost-projection", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "mscc", "cdms", "crc", "rn"],
     faqs: [
       {
-        question: "How does workers' compensation vocational rehabilitation differ from civil vocational evaluation?",
+        question: "How does a workers' compensation life care plan differ from a civil life care plan?",
         answer:
-          "Workers' compensation rehabilitation is typically forward-looking and service-oriented, aimed at returning the worker to suitable employment. Civil vocational evaluation is typically evaluative, establishing earning capacity and employability for litigation purposes.",
+          "The clinical methodology is the same, but pricing follows the state fee schedule, the scope is limited to injury-related care the carrier is responsible for, and the plan is often prepared with settlement and Medicare Set-Aside requirements in mind.",
       },
       {
-        question: "What is a job analysis in workers' compensation?",
+        question: "When is a Medicare Set-Aside needed?",
         answer:
-          "A job analysis documents the physical, cognitive, and environmental demands of the pre-injury position so that medical restrictions can be mapped to specific job requirements and modifications or alternative placement considered.",
+          "When a settlement closes future medical benefits and the claimant is a Medicare beneficiary or has a reasonable expectation of enrollment. The allocation projects Medicare-covered, injury-related care and is prepared from the same records and physician projections as the life care plan.",
       },
       {
-        question: "Are permanent partial disability ratings the same as earning capacity opinions?",
+        question: "Can the plan be used to dispute a utilization review denial?",
         answer:
-          "No. PPD ratings are impairment-based and typically derive from the AMA Guides to the Evaluation of Permanent Impairment. Earning capacity opinions are vocational and labor-market-based.",
+          "The plan documents the treating physician's recommendations and their clinical basis, which counsel can use in disputes over the reasonableness and necessity of future treatment under the state's procedures.",
+      },
+      {
+        question: "Does the plan price care at fee schedule or market rates?",
+        answer:
+          "Under the applicable fee schedule for the carrier's obligation, with market rates shown where the claimant may need to purchase care outside the system after settlement.",
       },
     ],
     sources: [
       { title: "U.S. DOL Office of Workers' Compensation Programs", url: "https://www.dol.gov/agencies/owcp", type: "gov" },
-      { title: "AMA Guides to the Evaluation of Permanent Impairment", url: "https://www.ama-assn.org/", type: "org" },
-      { title: "International Association of Rehabilitation Professionals", url: "https://rehabpro.org/", type: "org" },
-    ],
-  },
-  {
-    slug: "long-term-disability",
-    name: "Long Term Disability",
-    category: "employment",
-    summary:
-      "Long-term disability (LTD) matters assess whether a claimant is capable of performing their own or any occupation under the applicable policy definition, drawing on medical records, functional capacity evaluations, and labor market analysis.",
-    vocationalImpact:
-      "LTD vocational analysis applies the relevant policy definition (own occupation, any occupation, reasonable occupation) to the claimant's documented functional capacity and transferable skills, identifying whether suitable occupations exist within medical restrictions.",
-    economicExposure:
-      "Exposure is defined by the policy - monthly benefit amount, offsets, cost-of-living adjustments, and benefit duration to the policy maximum age.",
-    relevantServices: ["life-care-planning"],
-    relevantCredentials: ["crc", "cve", "abve-d"],
-    faqs: [
-      {
-        question: "What is the 'own occupation' versus 'any occupation' distinction?",
-        answer:
-          "Own-occupation policies assess disability based on inability to perform the claimant's pre-disability occupation. Any-occupation policies assess inability to perform any occupation for which the claimant is reasonably suited by education, training, and experience.",
-      },
-      {
-        question: "How is a transferable skills analysis used in LTD matters?",
-        answer:
-          "Transferable skills analysis identifies occupations the claimant could theoretically perform based on pre-disability skills, applied to the residual functional capacity to determine whether suitable alternative occupations exist within the policy's definition.",
-      },
-      {
-        question: "Do LTD cases often involve ERISA?",
-        answer:
-          "Employer-sponsored group LTD plans are typically governed by ERISA, which constrains procedural issues and review standards. Individual disability policies are generally governed by state insurance law.",
-      },
-    ],
-    sources: [
-      { title: "U.S. Department of Labor - ERISA", url: "https://www.dol.gov/general/topic/retirement/erisa", type: "gov" },
-      { title: "Social Security Administration - Disability Evaluation", url: "https://www.ssa.gov/disability/", type: "gov" },
-      { title: "O*NET OnLine", url: "https://www.onetonline.org/", type: "gov" },
-    ],
-  },
-  {
-    slug: "wrongful-termination",
-    name: "Wrongful Termination",
-    category: "employment",
-    summary:
-      "Wrongful termination cases quantify back pay, front pay, and mitigation efforts, often requiring a vocational evaluation of the claimant's post-termination job search, marketable skills, and comparable-occupation wage data.",
-    vocationalImpact:
-      "Vocational analysis addresses the claimant's reasonable job search, the availability of comparable positions in the relevant labor market, and the time required to secure comparable or alternative employment.",
-    economicExposure:
-      "Damages typically include back pay (from termination to trial), front pay (from trial to expected re-employment), lost benefits, and loss of earning capacity where applicable. Mitigation offsets apply.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["crc", "cve", "cprw"],
-    faqs: [
-      {
-        question: "What does 'mitigation' mean in wrongful termination cases?",
-        answer:
-          "Mitigation refers to the claimant's obligation to make reasonable efforts to obtain comparable alternative employment. A vocational expert can opine on the reasonableness of the job search and the expected time to secure comparable work.",
-      },
-      {
-        question: "How is front pay calculated?",
-        answer:
-          "Front pay projects expected future losses from the date of trial to a reasonable end point - often the expected date of comparable re-employment or a jurisdictionally accepted cutoff. Present value reduction applies.",
-      },
-      {
-        question: "Are lost retirement contributions compensable?",
-        answer:
-          "In many cases, yes. Employer retirement contributions (401(k) match, pension accruals) and projected interest are quantified as part of lost benefits.",
-      },
-    ],
-    sources: [
-      { title: "EEOC Enforcement Guidance", url: "https://www.eeoc.gov/", type: "gov" },
-      { title: "BLS Occupational Employment Statistics", url: "https://www.bls.gov/oes/", type: "gov" },
-      { title: "BLS Current Employment Statistics", url: "https://www.bls.gov/ces/", type: "gov" },
-    ],
-  },
-  {
-    slug: "matrimonial",
-    name: "Matrimonial",
-    category: "matrimonial",
-    summary:
-      "Matrimonial vocational evaluations quantify earning capacity for support and maintenance determinations, often where one spouse has been out of the workforce or is imputed an earning capacity different from actual income.",
-    vocationalImpact:
-      "A vocational evaluation reconstructs the spouse's earning capacity based on education, training, work history, and local labor market conditions, addressing any re-entry timeline and retraining needs.",
-    economicExposure:
-      "Exposure is defined by jurisdictional support formulas applied to imputed or actual income. Vocational opinions can significantly affect temporary and permanent support determinations.",
-    relevantServices: ["life-care-planning"],
-    relevantCredentials: ["crc", "cve", "abve-d"],
-    faqs: [
-      {
-        question: "What is earning capacity imputation in divorce?",
-        answer:
-          "When a court finds that a spouse is voluntarily underemployed or unemployed, it may impute earning capacity based on education, training, and labor market data, applying that figure rather than actual income to support calculations.",
-      },
-      {
-        question: "How does a vocational expert address re-entry after a career interruption?",
-        answer:
-          "The expert evaluates skill currency, retraining needs, expected re-entry wage trajectory, and a realistic timeline to reach full earning capacity, supported by labor market data.",
-      },
-      {
-        question: "Are matrimonial vocational reports different from personal injury reports?",
-        answer:
-          "Yes. Matrimonial reports focus on prospective earning capacity for support purposes, while personal injury reports focus on the effect of an injury on capacity to earn. Methodology and labor market data are similar; application differs.",
-      },
-    ],
-    sources: [
-      { title: "BLS Occupational Employment Statistics", url: "https://www.bls.gov/oes/", type: "gov" },
-      { title: "O*NET OnLine", url: "https://www.onetonline.org/", type: "gov" },
-      { title: "Census Bureau - Educational Attainment & Earnings", url: "https://www.census.gov/topics/education/educational-attainment.html", type: "gov" },
+      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-compensation-medicare-set-aside-arrangements", type: "gov" },
     ],
   },
   {
@@ -494,37 +372,77 @@ export const caseTypes: CaseType[] = [
     name: "Motor Vehicle Accident",
     category: "personal-injury",
     summary:
-      "Motor vehicle accident (MVA) cases cover a spectrum of injury severity, from soft tissue to catastrophic. Vocational, economic, and life care planning analyses scale to the functional consequences of the crash.",
-    vocationalImpact:
-      "Vocational analysis translates MVA-related injuries (orthopedic, TBI, SCI, chronic pain) into residual functional capacity and occupational options within the relevant labor market.",
-    economicExposure:
-      "Damages commonly include lost earnings, lost earning capacity, lost household services, and present value of future care in moderate-to-catastrophic cases.",
+      "Motor vehicle accident matters span the full range of injury severity, from soft tissue and orthopedic injury to traumatic brain injury, spinal cord injury, and polytrauma. The life care plan scales to the injury: a medical cost projection for a defined course of orthopedic treatment, or a full plan when the crash produces lasting functional loss that requires equipment, assistance, and coordinated long-term care.",
+    careNeeds:
+      "Typical categories include orthopedic and spine follow-up, pain management and injections, future surgery such as fusion or joint replacement, physical therapy, medications, bracing and mobility aids, imaging, and mental health treatment for post-traumatic stress and driving anxiety. Polytrauma cases add neurological rehabilitation, durable medical equipment, home modification, adapted transportation, and attendant care.",
+    costExposure:
+      "Exposure tracks the injury mix. Orthopedic and chronic pain cases are driven by future surgery, injections, and therapy; catastrophic cases are driven by attendant care and equipment across the projected life expectancy. Plans identify one-time, recurring, and replaced items and, where policy limits are at issue, present the plan in a form that supports both settlement evaluation and trial.",
     lifeCareImpact:
-      "Life care plans are indicated in catastrophic MVA cases and address ongoing orthopedic, neurological, and rehabilitative care, along with durable medical equipment and attendant care where needed.",
-    relevantServices: ["life-care-planning", "forensic-economics"],
-    relevantCredentials: ["crc", "clcp", "abve-d"],
+      "The planner reviews the trauma and follow-up records, confirms future recommendations with the treating physicians, and projects each item's frequency, duration, and local cost. In polytrauma the plan integrates recommendations from several specialists into one document with a stated basis for every line, and it addresses life expectancy where the injuries warrant it.",
+    relevantServices: ["life-care-planning", "medical-cost-projection", "catastrophic-injury-planning", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "rn", "md"],
     faqs: [
       {
-        question: "Are soft tissue MVA cases appropriate for vocational evaluation?",
+        question: "Does every motor vehicle case need a life care plan?",
         answer:
-          "They can be, particularly where chronic pain affects sustained work tolerance. Not every soft tissue case warrants vocational evaluation - the test is whether earning capacity or employability is meaningfully contested.",
+          "No. Where future treatment is defined and mostly medical, a medical cost projection is usually sufficient. A full life care plan is indicated when the injury produces lasting functional loss that requires equipment, modification, or assistance.",
       },
       {
-        question: "How are MVA life care plans different from other life care plans?",
+        question: "How are motor vehicle plans different from other life care plans?",
         answer:
-          "The methodology is the same; what differs is the injury mix. MVA plans frequently blend orthopedic, neurological, and chronic pain management care, coordinated with the relevant treating specialists.",
+          "The methodology is identical; the injury mix differs. Motor vehicle plans frequently combine orthopedic, spine, neurological, and pain management care, so the planner coordinates recommendations across several treating specialists.",
       },
       {
-        question: "Is a forensic economist needed even in smaller MVA cases?",
+        question: "How early in the case should the planner be involved?",
         answer:
-          "A forensic economist is most useful where future loss or present-value calculations are at issue. Smaller cases may rely on stipulated values rather than a full forensic economic report.",
+          "After the treating physicians can describe the expected long-term course, often once surgical decisions have been made. In catastrophic injury, earlier involvement helps document the acute care and rehabilitation phase accurately.",
+      },
+      {
+        question: "Can the plan address treatment the evaluee cannot currently afford?",
+        answer:
+          "Yes. The plan projects care that treating or examining physicians recommend regardless of whether the evaluee has been able to obtain it, and documents the recommendation and its source.",
       },
     ],
     sources: [
       { title: "NHTSA - Traffic Safety Facts", url: "https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars", type: "gov" },
       { title: "CDC - Motor Vehicle Safety", url: "https://www.cdc.gov/motorvehiclesafety/", type: "gov" },
-      { title: "BLS Occupational Outlook Handbook", url: "https://www.bls.gov/ooh/", type: "gov" },
     ],
+  },
+  {
+    slug: "birth-injury",
+    name: "Birth Injury",
+    category: "birth-injury",
+    summary: "Birth injury matters involve harm to an infant during labor and delivery, including hypoxic-ischemic encephalopathy, brachial plexus injury, and intracranial hemorrhage. Because the injured child has a full life ahead, the life care plan is usually the single largest component of damages and must address needs from infancy through adulthood.",
+    careNeeds: "Pediatric plans address neurology and developmental pediatrics follow-up, physical, occupational, and speech therapy, durable medical equipment sized and replaced as the child grows, seizure management, feeding support, educational and behavioral services, respite and attendant care, and the transition to adult providers and residential options after age 21.",
+    costExposure: "Costs are driven by attendant-care hours, equipment replacement cycles, therapy frequency by developmental stage, and the child's projected life expectancy. Plans commonly present alternative scenarios for home-based versus facility-based care so counsel and the economist can value each.",
+    lifeCareImpact: "The plan is built with the treating neurologist and developmental pediatrician and updated at developmental milestones. Life expectancy is analyzed from the child's functional profile rather than population tables alone, and the plan documents the basis for each frequency and duration recommendation.",
+    relevantServices: ["pediatric-life-care-planning", "life-care-planning", "medical-cost-projection", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
+    icdCodes: ["P10", "P11", "P14", "P91.6"],
+    faqs: [
+      { question: "When should a life care planner be retained in a birth injury case?", answer: "Early enough to attend or review the initial neurodevelopmental evaluations, typically once liability review confirms the case will proceed. Early retention lets the planner document baseline function before growth changes the picture." },
+      { question: "How is a child's life expectancy handled in the plan?", answer: "The planner documents the child's functional status, feeding method, mobility, and seizure control, and presents the life expectancy analysis with its sources so counsel can decide how to present it. Where the medical literature supports a range, the plan shows the cost impact of each end of that range." },
+      { question: "Does the plan cover care after the child turns 21?", answer: "Yes. Pediatric plans project the transition to adult providers, vocational or day-program services, and long-term residential or in-home care through the projected life expectancy." },
+    ],
+    sources: [],
+  },
+  {
+    slug: "cerebral-palsy",
+    name: "Cerebral Palsy",
+    category: "birth-injury",
+    summary: "Cerebral palsy matters, whether arising from birth injury or pediatric medical negligence, require a plan that scales with the child's Gross Motor Function Classification level and evolves through developmental stages into adulthood.",
+    careNeeds: "Plans address orthopedic and neurology follow-up, spasticity management including botulinum toxin and baclofen pump care, orthotics and seating replaced with growth, therapies, communication devices, home accessibility, transportation, attendant care, and adult residential or supported-living options.",
+    costExposure: "Attendant care and equipment dominate the cost profile. Frequency and replacement schedules are tied to the child's functional level and growth, and plans typically present home-based and facility-based scenarios.",
+    lifeCareImpact: "The life care planner works with the physiatrist, orthopedist, and therapy team to document current needs, then projects changes at each developmental transition. The plan explains the basis for every frequency and replacement cycle so it can withstand cross-examination.",
+    relevantServices: ["pediatric-life-care-planning", "catastrophic-injury-planning", "life-care-planning", "expert-witness-testimony"],
+    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
+    icdCodes: ["G80", "G80.0", "G80.1", "G80.9"],
+    faqs: [
+      { question: "How does functional classification affect the plan?", answer: "Higher classification levels generally mean more attendant care, more complex equipment, and more frequent medical follow-up. The plan states the child's current level and the clinical basis for projecting future needs." },
+      { question: "Are educational services included in a cerebral palsy life care plan?", answer: "The plan documents educational supports the child needs and distinguishes services provided by public programs from those the family must fund privately, so counsel can address collateral-source questions in the jurisdiction." },
+      { question: "How often should a pediatric plan be updated?", answer: "At major developmental transitions or at least every few years while the child is growing, and again before the transition to adult services." },
+    ],
+    sources: [],
   },
 ];
 

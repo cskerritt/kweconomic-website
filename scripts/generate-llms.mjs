@@ -254,8 +254,8 @@ async function main() {
   for (const c of caseTypes) {
     h3(c.name);
     p(c.summary);
-    if (c.vocationalImpact) p(`Vocational impact: ${c.vocationalImpact}`);
-    if (c.economicExposure) p(`Economic exposure: ${c.economicExposure}`);
+    if (c.careNeeds) p(`Care needs: ${c.careNeeds}`);
+    if (c.costExposure) p(`Cost exposure: ${c.costExposure}`);
     if (c.lifeCareImpact) p(`Life care impact: ${c.lifeCareImpact}`);
   }
 

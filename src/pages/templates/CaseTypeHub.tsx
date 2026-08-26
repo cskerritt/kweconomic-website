@@ -55,13 +55,13 @@ export default function CaseTypeHub() {
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">{caseType.summary}</p>
 
-      <section id="vocational-impact" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Vocational impact</h2>
-        <p className="text-neutral-700">{caseType.vocationalImpact}</p>
+      <section id="care-needs" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Care needs</h2>
+        <p className="text-neutral-700">{caseType.careNeeds}</p>
       </section>
-      <section id="economic-exposure" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Economic exposure</h2>
-        <p className="text-neutral-700">{caseType.economicExposure}</p>
+      <section id="cost-exposure" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Cost exposure</h2>
+        <p className="text-neutral-700">{caseType.costExposure}</p>
       </section>
       {caseType.lifeCareImpact && (
         <section id="life-care" className="mb-6">

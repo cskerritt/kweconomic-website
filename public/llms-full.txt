@@ -378,162 +378,145 @@ Fees: Testimony is billed at an hourly rate for preparation and at the applicabl
 ## Case Types
 
 ### Traumatic Brain Injury
-Traumatic brain injury (TBI) cases involve a bump, blow, or jolt to the head, or a penetrating head injury, that disrupts normal brain function. Vocational and economic damages in TBI matters are often complex because cognitive, behavioral, and emotional sequelae may coexist with physical limitations, and the injured person's pre-injury earning capacity must be reconstructed from education, training, work history, and transferable skills.
+Traumatic brain injury (TBI) matters involve a blow, jolt, or penetrating injury to the head that disrupts brain function. From a life care planning standpoint, TBI is distinctive because cognitive, behavioral, and emotional sequelae drive care needs as much as physical limitations do, and because the need for supervision and case management often persists long after acute rehabilitation ends. The life care plan documents every category of future care the injury makes necessary and the basis for each recommendation.
 
-Vocational impact: TBI can reduce sustained attention, executive function, processing speed, short-term memory, and emotional regulation. These limitations often prevent an individual from returning to skilled or high-demand occupations, and in moderate-to-severe cases may preclude competitive employment entirely. A vocational evaluation establishes residual work capacity, employability, and placeability in the relevant labor market, integrating neuropsychological test results with medical restrictions and transferable skills analysis.
+Care needs: TBI plans typically address physiatry and neurology follow-up, neuropsychological re-evaluation at defined intervals, cognitive rehabilitation, speech-language and occupational therapy, medications for seizures, headache, mood, and sleep, assistive technology for memory and organization, case management, home safety modifications, transportation, and attendant care or supervision. In moderate-to-severe injury the plan addresses 24-hour supervision, behavioral support, and residential or supported-living options when family caregiving is not sustainable.
 
-Economic exposure: Economic damages in TBI matters commonly include lost earnings, lost earning capacity, lost household services, lost fringe benefits, and the present value of future wage loss across the claimant's worklife expectancy. In catastrophic cases damages can extend into lost retirement contributions and reduced worklife expectancy.
+Cost exposure: Cost is driven first by the hours and level of supervision or attendant care the injury requires, then by the frequency and duration of therapies, medication, and physician follow-up across the projected life expectancy. Plans commonly present home-based and facility-based scenarios so that counsel and the economist can value each, and they identify which items are one-time, recurring, or replaced on a cycle.
 
-Life care impact: Life care plans for TBI routinely address cognitive rehabilitation, neuropsychological follow-up, medications, assistive technology, case management, home modifications, attendant care, and in severe cases 24-hour supervised care. Plans are typically built in coordination with the treating physiatrist, neurologist, and neuropsychologist.
+Life care impact: The planner builds the plan from the treating physiatrist, neurologist, and neuropsychologist's recommendations, then documents frequency, duration, and cost for each item using local provider rates. Life expectancy is addressed from the evaluee's functional profile, with the sources stated so the plan can be examined and defended. Where severity is contested, the plan states the clinical basis for the level of care projected.
 
 ### Spinal Cord Injury
-Spinal cord injury (SCI) cases address the vocational, economic, and life-care consequences of partial or complete loss of motor or sensory function below the level of injury. Outcomes vary substantially with neurological level and ASIA Impairment Scale classification, which drives the scope of both vocational opinion and life care plan.
+Spinal cord injury (SCI) matters address the lifelong care consequences of partial or complete loss of motor and sensory function below the level of injury. Neurological level and completeness determine the scope of the plan, from equipment and supplies to attendant care and the medical surveillance needed to prevent secondary complications.
 
-Vocational impact: Depending on neurological level, individuals with SCI may retain capacity for seated, sedentary, or technology-assisted work, or may require substantial workplace accommodation. Vocational evaluation establishes residual functional capacity, ergonomic requirements, and realistic occupational options within the relevant labor market, including assistive technology considerations.
+Care needs: SCI plans address physiatry follow-up, urology and bowel programs with supplies, skin integrity and pressure-injury prevention, respiratory care in high cervical injury, spasticity management, physical and occupational therapy, manual and power wheelchairs with seating and replacement cycles, transfer and lift equipment, hospital beds and pressure-relief surfaces, home accessibility modifications, adapted vehicles, and personal care attendants at hours determined by functional level.
 
-Economic exposure: Damages typically include past and future lost earnings, loss of earning capacity, lost household services, lost fringe benefits, and the present value of a comprehensive life care plan. Household services losses can be particularly significant in SCI cases.
+Cost exposure: Attendant care and durable medical equipment replacement dominate SCI plan cost, followed by recurring supplies and the periodic hospitalizations associated with urinary tract infection, pressure injury, and other secondary conditions. Cost rises steeply with higher neurological levels, and plans generally show the difference between home-based care with attendants and facility-based care.
 
-Life care impact: Life care plans for SCI commonly address routine medical care, rehabilitation therapies, durable medical equipment (wheelchairs, transfer aids, pressure-relief surfaces), home modifications, vehicle modifications, attendant care or personal care attendants, bowel and bladder supplies, and periodic replacements of equipment over the lifespan.
+Life care impact: The planner documents the evaluee's neurological level and functional status, obtains recommendations from the physiatrist and rehabilitation team, and projects each item's frequency, duration, and replacement cycle with the basis stated. Life expectancy is addressed with attention to level, completeness, and age at injury, and the plan is written so each line can be traced to a clinical recommendation and a local cost source.
 
 ### Amputation
-Amputation cases involve the loss of a limb or part of a limb, with vocational, economic, and life-care implications driven by level of amputation, dominant versus non-dominant side, and the physical demands of the claimant's prior occupation. Prosthetic technology, replacement intervals, and ongoing rehabilitation are central to life care planning.
+Amputation matters involve the loss of all or part of a limb, with care needs driven by level of amputation, upper versus lower extremity, residual limb health, and prosthetic candidacy. Prosthetic technology and its replacement schedule are usually the central life care planning question, alongside the therapy, skin care, and follow-up that keep a prosthesis usable.
 
-Vocational impact: Upper extremity amputations typically affect fine motor tasks, bilateral coordination, and lifting capacity. Lower extremity amputations affect standing, walking, and ambulation tolerance. A vocational evaluation integrates medical restrictions, prosthetic function, and transferable skills to determine residual employment options.
+Care needs: Amputation plans address prosthetist and physiatrist follow-up, prosthetic devices and components with documented service lives, socket replacement as the residual limb changes, liners, sleeves, and supplies, gait and prosthetic training, physical and occupational therapy, residual limb and skin care, pain management including phantom limb pain, mobility aids for non-prosthetic use, and psychological support. Bilateral and upper-extremity amputations often add attendant care and home modification.
 
-Economic exposure: Damages commonly include past and future lost earnings, loss of earning capacity, lost household services, prosthetic costs with projected replacements, and the present value of the full life care plan.
+Cost exposure: Prosthetic acquisition and replacement drive cost, and the choice between mechanical, microprocessor, or myoelectric technology changes both the purchase price and the replacement cycle. Recurring supplies, therapy after each new device, and long-term joint and spine care from altered gait add to the profile across the projected life expectancy.
 
-Life care impact: Life care plans for amputation routinely include prosthetic devices and components with documented replacement intervals, socket replacements, gait training, occupational therapy, skin care supplies, residual limb care, and when appropriate osseointegration follow-up or advanced myoelectric technology.
+Life care impact: The planner documents the evaluee's amputation level, prosthetic history, and functional level, then works with the treating prosthetist and physiatrist to project the device type, components, and replacement schedule. Each item carries a stated basis and a local cost, and the plan distinguishes what is medically indicated now from what may become appropriate as technology or the evaluee's function changes.
 
 ### Wrongful Death
-Wrongful death cases quantify the economic loss to survivors and the estate resulting from a decedent's death, most commonly as lost earnings, lost fringe benefits, lost household services, and lost personal services or guidance. The vocational component reconstructs the decedent's pre-death earning capacity; the economic component reduces projected losses to present value net of personal consumption.
+Wrongful death matters involve the death of an injured person, sometimes after a period of survival during which substantial care was delivered. Life care planning contributes in two ways: by documenting and valuing the care actually provided between injury and death, and, where a surviving dependent had care needs the decedent was meeting, by projecting the replacement cost of that care.
 
-Vocational impact: For a decedent, the vocational component reconstructs earning capacity at the time of death using education, training, work history, industry trajectories, and labor market data. In some jurisdictions, a claimant spouse's earning capacity is also evaluated where household services or income contributions are at issue.
+Care needs: In survival claims the planner reconstructs the care delivered from injury to death, including hospitalization, skilled nursing, home health, equipment, medications, and family-provided attendant care, and confirms that each item was medically appropriate. Where the decedent was the caregiver for a disabled spouse, child, or parent, the plan documents that dependent's ongoing needs and the paid services now required to replace the care the decedent provided.
 
-Economic exposure: Damages typically include lost earnings and earning capacity across the decedent's worklife, lost fringe benefits, lost household services, and in some jurisdictions loss of personal consortium, care, guidance, and advice. Projections are reduced to present value using appropriate discount rates and net of personal consumption.
+Cost exposure: Exposure in the survival component is the documented cost of care between injury and death, including care provided by family at market rates where the jurisdiction allows. Replacement-care exposure depends on the dependent's condition and projected life expectancy, and can be large where the decedent provided daily hands-on care to a person with a disability.
+
+Life care impact: The life care planner audits the medical and billing record to establish what care was delivered and at what cost, and separates care attributable to the injury from unrelated treatment. For dependent replacement care, the planner evaluates the survivor's needs with the treating providers and projects services, frequencies, and costs in the same format as any other life care plan so the economist can reduce them to present value.
 
 ### Medical Malpractice
-Medical malpractice cases address injury allegedly caused by a deviation from the accepted standard of care. Vocational, economic, and life-care analyses typically accompany standard-of-care and causation opinions, quantifying the incremental harm attributable to the alleged breach.
+Medical malpractice matters involve injury attributed to a departure from the accepted standard of care. The life care plan in these cases must isolate the incremental care the alleged breach made necessary from the baseline care the patient would have required anyway, which makes the causation opinions of the treating and retained physicians the foundation of the plan.
 
-Vocational impact: Vocational opinions in medical malpractice focus on the post-injury loss relative to the but-for baseline, integrating the claimant's pre-event vocational profile with medical restrictions attributable to the alleged breach. Where pre-existing conditions are present, apportionment is a key consideration.
+Care needs: Care categories depend on the injury: delayed-diagnosis cases may involve oncology follow-up, surgery, and palliative care; surgical and anesthesia injury may involve neurological rehabilitation, wound care, ostomy supplies, or chronic pain management; medication and hospital-acquired injury may involve dialysis, organ transplant follow-up, or long-term nursing. The plan is organized by the same categories as any life care plan, with each item flagged as incremental or baseline.
 
-Economic exposure: Damages typically include past and future lost earnings, loss of earning capacity, lost household services, and present value of a life care plan focused on incremental care attributable to the alleged breach rather than unrelated baseline care.
+Cost exposure: Exposure is the cost of the incremental care across the evaluee's projected life expectancy. Because baseline care is excluded, the plan's value is highly sensitive to the physician's causation and apportionment opinions and to how the pre-existing condition would have progressed absent the breach. Plans often present both the full care profile and the incremental profile so the distinction is transparent.
 
-Life care impact: Medical malpractice life care plans generally isolate incremental future medical and non-medical needs attributable to the alleged breach, separating baseline care the claimant would have required absent the event.
+Life care impact: The planner obtains causation and apportionment opinions from the physicians, builds the but-for baseline of expected care, and then documents the additional services, frequencies, and durations attributable to the injury. Every item carries its clinical source and local cost, and the plan states its methodology so it can be tested against the opposing expert's apportionment.
 
 ### Burn Injury
-Burn injury cases involve thermal, chemical, electrical, or radiation burns with vocational and life-care consequences driven by total body surface area, depth, location, and complications such as contractures, scarring, and psychological sequelae.
+Burn injury matters involve thermal, chemical, electrical, or radiation burns whose care needs are driven by total body surface area, depth, location, inhalation injury, and complications such as contracture, hypertrophic scarring, and heat intolerance. Because reconstruction is staged over years and skin care is lifelong, the life care plan must project both a surgical sequence and a daily maintenance regimen.
 
-Vocational impact: Burn survivors may face limitations in heat tolerance, sun exposure, manual dexterity, and public-facing work due to visible scarring. A vocational evaluation integrates reconstructive surgical plans, medical restrictions, and psychological factors when identifying suitable occupational options.
+Care needs: Burn plans address burn surgeon and plastic surgeon follow-up, staged reconstructive and contracture-release surgery, laser and scar management, compression garments replaced on a documented cycle, moisturizers, sun protection, and wound supplies, physical and occupational therapy for range of motion, splinting, pain management, pulmonary follow-up after inhalation injury, and mental health treatment for post-traumatic stress, depression, and body image concerns. Severe burns of the hands or face may add adaptive equipment and attendant care.
 
-Economic exposure: Damages include lost earnings, lost earning capacity, lost household services, and present value of future reconstructive surgeries, skin care, compression garments, and psychological treatment.
+Cost exposure: Cost concentrates in the surgical years immediately after injury and then settles into recurring garment, supply, therapy, and mental health costs across the projected life expectancy. Pediatric burns add reconstruction as the child grows. The plan identifies which surgeries the treating surgeon has scheduled, which are anticipated, and the maintenance items that continue for life.
 
-Life care impact: Plans commonly include staged reconstructive surgery, compression garments with replacement intervals, specialized wound care supplies, scar management, physical and occupational therapy, and mental health services addressing PTSD and body image concerns.
+Life care impact: The planner obtains the reconstructive sequence from the treating burn surgeon, documents garment and supply regimens with replacement frequencies, and confirms therapy and mental health recommendations with the treating team. Each item carries a stated basis and local cost, and the plan separates one-time surgical costs from lifelong maintenance so the economist can treat each correctly.
 
 ### Personal Injury
-Personal injury cases encompass a broad range of physical and psychological harms arising from negligence. Vocational, economic, and life-care experts quantify the functional, earnings, and care consequences of the injury.
+Personal injury matters cover a broad range of physical and psychological harm arising from negligence, from orthopedic injury and chronic pain to complex regional pain syndrome and psychological trauma. Whenever an injury requires ongoing treatment, equipment, or assistance, a life care plan documents those future needs and their cost so future medical damages rest on an itemized foundation rather than an estimate.
 
-Vocational impact: A vocational evaluation establishes residual functional capacity, transferable skills, and labor market options consistent with post-injury medical restrictions. The analysis supports earning capacity opinion and accommodation planning.
+Care needs: Common categories include orthopedic and pain management follow-up, injections and implanted devices with replacement cycles, future surgery such as joint replacement or spinal fusion, physical therapy at maintenance frequency, medications, bracing and mobility aids, diagnostic imaging, mental health treatment, and, in more serious injury, home modification and help with household tasks or personal care.
 
-Economic exposure: Damages may include past and future lost earnings, loss of earning capacity, lost household services, lost fringe benefits, and present value of any needed life care plan.
+Cost exposure: Exposure ranges widely with injury severity. In moderate injury the plan may consist of periodic physician visits, medication, therapy, and a future surgery; in serious injury it includes equipment, attendant care, and home modification across the projected life expectancy. The plan identifies one-time, recurring, and cyclically replaced items so each can be valued appropriately.
+
+Life care impact: The planner reviews the records, interviews the evaluee, and confirms recommendations with the treating physicians before projecting frequency, duration, and cost for each item at local rates. The plan states its basis for every line, addresses the evaluee's life expectancy, and is written so that a medical cost projection or full life care plan can be presented depending on the scope counsel needs.
 
 ### Workers' Compensation
-Workers' compensation matters involve work-related injury or illness with vocational rehabilitation, return-to-work analysis, and earning capacity components governed by state-specific statutes.
+Workers' compensation matters involve work-related injury or illness within a statutory system that pays medical benefits under a fee schedule and, in many settlements, closes future medical liability in exchange for a lump sum. Life care planning in this setting supports settlement valuation, Medicare Set-Aside allocation, and disputes over the reasonableness and necessity of future treatment.
 
-Vocational impact: Vocational analysis in workers' compensation focuses on return-to-work planning, job analysis of the pre-injury position, identification of alternative work within medical restrictions, and when applicable retraining or vocational rehabilitation services.
+Care needs: Plans address the injury-related care the treating physician projects: physician follow-up, medications, injections, future surgery, therapy, durable medical equipment and replacement, diagnostic testing, and, in catastrophic work injury, attendant care and home modification. Because state fee schedules govern payment, the plan typically prices items under the applicable schedule and, where useful, at usual and customary rates for comparison.
 
-Economic exposure: Economic exposure varies by jurisdiction and commonly includes temporary total disability, permanent partial or total disability, vocational rehabilitation services, and in some cases lump-sum settlements calculated against earning capacity.
+Cost exposure: Exposure is defined by the projected cost of injury-related medical care over the claimant's life expectancy, priced under the governing fee schedule. Where the claimant is a Medicare beneficiary or reasonably expected to become one, the Medicare-covered portion must be allocated in a set-aside, and the difference between the plan and the set-aside is often the focus of settlement negotiation.
 
-### Long Term Disability
-Long-term disability (LTD) matters assess whether a claimant is capable of performing their own or any occupation under the applicable policy definition, drawing on medical records, functional capacity evaluations, and labor market analysis.
-
-Vocational impact: LTD vocational analysis applies the relevant policy definition (own occupation, any occupation, reasonable occupation) to the claimant's documented functional capacity and transferable skills, identifying whether suitable occupations exist within medical restrictions.
-
-Economic exposure: Exposure is defined by the policy - monthly benefit amount, offsets, cost-of-living adjustments, and benefit duration to the policy maximum age.
-
-### Wrongful Termination
-Wrongful termination cases quantify back pay, front pay, and mitigation efforts, often requiring a vocational evaluation of the claimant's post-termination job search, marketable skills, and comparable-occupation wage data.
-
-Vocational impact: Vocational analysis addresses the claimant's reasonable job search, the availability of comparable positions in the relevant labor market, and the time required to secure comparable or alternative employment.
-
-Economic exposure: Damages typically include back pay (from termination to trial), front pay (from trial to expected re-employment), lost benefits, and loss of earning capacity where applicable. Mitigation offsets apply.
-
-### Matrimonial
-Matrimonial vocational evaluations quantify earning capacity for support and maintenance determinations, often where one spouse has been out of the workforce or is imputed an earning capacity different from actual income.
-
-Vocational impact: A vocational evaluation reconstructs the spouse's earning capacity based on education, training, work history, and local labor market conditions, addressing any re-entry timeline and retraining needs.
-
-Economic exposure: Exposure is defined by jurisdictional support formulas applied to imputed or actual income. Vocational opinions can significantly affect temporary and permanent support determinations.
+Life care impact: The planner documents the injury-related diagnoses, obtains the treating physician's projection of future care, and prices each item under the state fee schedule with stated sources. The same clinical foundation supports a Medicare Set-Aside allocation when one is required, and the plan distinguishes injury-related care from treatment for unrelated conditions so the carrier's obligation is stated accurately.
 
 ### Motor Vehicle Accident
-Motor vehicle accident (MVA) cases cover a spectrum of injury severity, from soft tissue to catastrophic. Vocational, economic, and life care planning analyses scale to the functional consequences of the crash.
+Motor vehicle accident matters span the full range of injury severity, from soft tissue and orthopedic injury to traumatic brain injury, spinal cord injury, and polytrauma. The life care plan scales to the injury: a medical cost projection for a defined course of orthopedic treatment, or a full plan when the crash produces lasting functional loss that requires equipment, assistance, and coordinated long-term care.
 
-Vocational impact: Vocational analysis translates MVA-related injuries (orthopedic, TBI, SCI, chronic pain) into residual functional capacity and occupational options within the relevant labor market.
+Care needs: Typical categories include orthopedic and spine follow-up, pain management and injections, future surgery such as fusion or joint replacement, physical therapy, medications, bracing and mobility aids, imaging, and mental health treatment for post-traumatic stress and driving anxiety. Polytrauma cases add neurological rehabilitation, durable medical equipment, home modification, adapted transportation, and attendant care.
 
-Economic exposure: Damages commonly include lost earnings, lost earning capacity, lost household services, and present value of future care in moderate-to-catastrophic cases.
+Cost exposure: Exposure tracks the injury mix. Orthopedic and chronic pain cases are driven by future surgery, injections, and therapy; catastrophic cases are driven by attendant care and equipment across the projected life expectancy. Plans identify one-time, recurring, and replaced items and, where policy limits are at issue, present the plan in a form that supports both settlement evaluation and trial.
 
-Life care impact: Life care plans are indicated in catastrophic MVA cases and address ongoing orthopedic, neurological, and rehabilitative care, along with durable medical equipment and attendant care where needed.
+Life care impact: The planner reviews the trauma and follow-up records, confirms future recommendations with the treating physicians, and projects each item's frequency, duration, and local cost. In polytrauma the plan integrates recommendations from several specialists into one document with a stated basis for every line, and it addresses life expectancy where the injuries warrant it.
+
+### Birth Injury
+Birth injury matters involve harm to an infant during labor and delivery, including hypoxic-ischemic encephalopathy, brachial plexus injury, and intracranial hemorrhage. Because the injured child has a full life ahead, the life care plan is usually the single largest component of damages and must address needs from infancy through adulthood.
+
+Care needs: Pediatric plans address neurology and developmental pediatrics follow-up, physical, occupational, and speech therapy, durable medical equipment sized and replaced as the child grows, seizure management, feeding support, educational and behavioral services, respite and attendant care, and the transition to adult providers and residential options after age 21.
+
+Cost exposure: Costs are driven by attendant-care hours, equipment replacement cycles, therapy frequency by developmental stage, and the child's projected life expectancy. Plans commonly present alternative scenarios for home-based versus facility-based care so counsel and the economist can value each.
+
+Life care impact: The plan is built with the treating neurologist and developmental pediatrician and updated at developmental milestones. Life expectancy is analyzed from the child's functional profile rather than population tables alone, and the plan documents the basis for each frequency and duration recommendation.
+
+### Cerebral Palsy
+Cerebral palsy matters, whether arising from birth injury or pediatric medical negligence, require a plan that scales with the child's Gross Motor Function Classification level and evolves through developmental stages into adulthood.
+
+Care needs: Plans address orthopedic and neurology follow-up, spasticity management including botulinum toxin and baclofen pump care, orthotics and seating replaced with growth, therapies, communication devices, home accessibility, transportation, attendant care, and adult residential or supported-living options.
+
+Cost exposure: Attendant care and equipment dominate the cost profile. Frequency and replacement schedules are tied to the child's functional level and growth, and plans typically present home-based and facility-based scenarios.
+
+Life care impact: The life care planner works with the physiatrist, orthopedist, and therapy team to document current needs, then projects changes at each developmental transition. The plan explains the basis for every frequency and replacement cycle so it can withstand cross-examination.
 
 ## Professional Credentials
-
-### CRC - Certified Rehabilitation Counselor
-Issuer: Commission on Rehabilitation Counselor Certification
-
-The CRC is the recognized national certification for rehabilitation counselors. Scope of practice includes assessment, counseling, case management, job analysis, labor market survey, transferable skills analysis, and expert testimony related to earning capacity, employability, and vocational rehabilitation services.
 
 ### CLCP - Certified Life Care Planner
 Issuer: International Commission on Health Care Certification
 
-The CLCP is the recognized certification for life care planners. Scope includes development of comprehensive, individualized life care plans for individuals with catastrophic injuries or chronic conditions, with projected cost and frequency of all recommended care.
+The CLCP is the most widely held certification for life care planners. Scope includes the development of comprehensive, individualized life care plans for people with catastrophic injury or chronic illness, documenting every category of future care with its frequency, duration, and cost, and defending that plan through report, deposition, and trial testimony.
 
-### CVE - Certified Vocational Evaluator
-Issuer: Commission on Rehabilitation Counselor Certification (CRCC)
+### CNLCP - Certified Nurse Life Care Planner
+Issuer: American Association of Nurse Life Care Planners
 
-The CVE credential indicates specialized expertise in vocational evaluation, including standardized testing, work sample assessment, situational assessment, and interpretation of aptitudes, interests, and work behaviors for vocational recommendation.
+The CNLCP certifies registered nurses in life care planning grounded in the nursing process: assessment, nursing diagnosis, planning, implementation, and evaluation. Nurse life care planners bring hands-on clinical knowledge of medications, supplies, skilled care, and daily care routines to the documentation of future needs, frequencies, and costs.
 
-### ABVE/D - American Board of Vocational Experts Diplomate
-Issuer: American Board of Vocational Experts
+### MSCC - Medicare Set-Aside Certified Consultant
+Issuer: International Commission on Health Care Certification
 
-The ABVE Diplomate is an advanced forensic credential recognizing expertise in vocational evaluation and expert testimony for litigation. Scope covers earning capacity, employability, vocational rehabilitation, and expert witness practice.
+The MSCC certifies professionals in the preparation of Medicare Set-Aside allocations for workers' compensation and liability settlements. Scope includes identifying injury-related, Medicare-covered future care, pricing it under the applicable fee schedule, and documenting the allocation in a form that satisfies Medicare's review process and protects the parties' interests.
 
-### ABVE/F - American Board of Vocational Experts Fellow
-Issuer: American Board of Vocational Experts
+### CDMS - Certified Disability Management Specialist
+Issuer: Commission on Rehabilitation Counselor Certification
 
-The ABVE Fellow designation recognizes senior forensic vocational experts with documented advanced experience in expert testimony, complex earning capacity cases, and contributions to the profession.
+The CDMS certifies professionals in disability management: coordinating medical care, benefits, and return-to-work planning for injured workers within workers' compensation and disability systems. In life care planning the credential is relevant to workers' compensation plans, where the planner must understand fee schedules, claims administration, and how future care interacts with the benefit system.
 
-### LRC - Licensed Rehabilitation Counselor
-Issuer: State Licensing Boards
+### CRC - Certified Rehabilitation Counselor
+Issuer: Commission on Rehabilitation Counselor Certification
 
-LRC is a state-granted license authorizing independent practice as a rehabilitation counselor within the licensing state. Scope varies by jurisdiction and typically covers vocational counseling, case management, and rehabilitation services.
-
-### FVE - Fellow of Vocational Experts
-Issuer: American Rehabilitation Economics Association (AREA)
-
-The FVE designation recognizes senior practitioners in forensic vocational evaluation and expert practice.
-
-### IPEC - International Psychometric Evaluation Certification
-Issuer: American Board of Vocational Experts (ABVE)
-
-IPEC recognizes specialized training in psychometric assessment for vocational evaluation, including administration and interpretation of standardized instruments.
-
-### CEAS - Certified Ergonomic Assessment Specialist
-Issuer: The Back School
-
-CEAS certifies practitioners in ergonomic assessment and job site analysis for injury prevention, return-to-work, and litigation support.
+The CRC is the national certification for rehabilitation counselors. In life care planning it is one of the qualifying credentials for CLCP certification and supports the plan's coverage of rehabilitation services, assistive technology, community reintegration, supported living, and the day-program and vocational services that adults with disabilities use across the life span.
 
 ### M.D. - Doctor of Medicine
-Issuer: Accredited Medical Schools + State Boards
+Issuer: Accredited Medical Schools and State Medical Boards
 
-The M.D. degree and associated state licensure authorize the practice of medicine. In forensic contexts, physicians provide opinions on diagnosis, causation, standard of care, prognosis, and medical recommendations underlying life care plans.
+The M.D. degree with state licensure authorizes the practice of medicine. In life care planning, physicians supply the medical foundation of the plan: diagnosis, prognosis, life expectancy considerations, and the treatment, medication, surgical, and follow-up recommendations that the planner itemizes and prices. A physician life care planner can both make and document those recommendations.
+
+### R.N. - Registered Nurse
+Issuer: State Boards of Nursing
+
+Registered nurse licensure authorizes the practice of professional nursing. In life care planning, the RN is a qualifying clinical credential for both CLCP and CNLCP certification and grounds the plan in direct knowledge of skilled nursing care, medication administration, wound and skin care, supplies, and the daily routines that determine attendant care hours.
 
 ### Ph.D. - Doctor of Philosophy
 Issuer: Accredited Universities
 
-Ph.D.-level preparation in rehabilitation counseling, psychology, economics, or related fields supports doctoral-level forensic expertise including research design, advanced assessment, and testimony on specialized topics.
-
-### CPRW - Certified Professional Resume Writer
-Issuer: Professional Association of Resume Writers & Career Coaches
-
-The CPRW credential recognizes expertise in resume writing and career documentation, which in forensic settings supports placement analysis and mitigation evaluation in employment cases.
+Doctoral preparation in rehabilitation counseling, rehabilitation science, psychology, or a related field supports research fluency and advanced assessment in life care planning. Ph.D.-level planners are often called on to explain the literature behind frequency, duration, and life expectancy recommendations and to review the methodology of opposing plans.
 
 ## Methodologies
 

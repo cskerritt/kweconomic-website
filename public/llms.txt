@@ -25,18 +25,14 @@ Kincaid Wolstein Vocational and Rehabilitation Services is a professional servic
 
 ## Credentials Held by the Team
 
-- CRC - Certified Rehabilitation Counselor
 - CLCP - Certified Life Care Planner
-- CVE - Certified Vocational Evaluator
-- ABVE/D - American Board of Vocational Experts Diplomate
-- ABVE/F - American Board of Vocational Experts Fellow
-- LRC - Licensed Rehabilitation Counselor
-- FVE - Fellow of Vocational Experts
-- IPEC - International Psychometric Evaluation Certification
-- CEAS - Certified Ergonomic Assessment Specialist
+- CNLCP - Certified Nurse Life Care Planner
+- MSCC - Medicare Set-Aside Certified Consultant
+- CDMS - Certified Disability Management Specialist
+- CRC - Certified Rehabilitation Counselor
 - M.D. - Doctor of Medicine
+- R.N. - Registered Nurse
 - Ph.D. - Doctor of Philosophy
-- CPRW - Certified Professional Resume Writer
 
 ## Office Locations
 
@@ -54,4 +50,4 @@ Kincaid Wolstein Vocational and Rehabilitation Services is a professional servic
 
 ## Case Types Served
 
-Traumatic Brain Injury, Spinal Cord Injury, Amputation, Wrongful Death, Medical Malpractice, Burn Injury, Personal Injury, Workers' Compensation, Long Term Disability, Wrongful Termination, Matrimonial, Motor Vehicle Accident
+Traumatic Brain Injury, Spinal Cord Injury, Amputation, Wrongful Death, Medical Malpractice, Burn Injury, Personal Injury, Workers' Compensation, Motor Vehicle Accident, Birth Injury, Cerebral Palsy

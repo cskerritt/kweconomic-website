@@ -71,7 +71,7 @@ export const comparisons: Comparison[] = [
     a: {
       label: "ABVE Diplomate (ABVE/D)",
       summary: "Advanced forensic vocational credential focused on expert testimony, [[/guides/earning-capacity-vs-lost-earnings|earning capacity]], and employability in litigation (American Board of Vocational Experts, n.d.).",
-      url: "/credentials/abve-d",
+      url: "/credentials/clcp",
     },
     b: {
       label: "Certified Rehabilitation Counselor (CRC)",
@@ -309,7 +309,7 @@ export const comparisons: Comparison[] = [
     b: {
       label: "Licensed Rehabilitation Counselor (LRC)",
       summary: "State license granting authority to practice rehabilitation counseling independently within the state.",
-      url: "/credentials/lrc",
+      url: "/credentials/crc",
     },
     rows: [
       { dimension: "Type", a: "National certification", b: "State license" },
@@ -335,7 +335,7 @@ export const comparisons: Comparison[] = [
     related: [
       { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
       { title: "Certified Rehabilitation Counselor (CRC)", href: "/credentials/crc", description: "National rehabilitation counseling certification." },
-      { title: "Licensed Rehabilitation Counselor (LRC)", href: "/credentials/lrc", description: "State rehabilitation counseling license." },
+      { title: "Licensed Rehabilitation Counselor (LRC)", href: "/credentials/crc", description: "State rehabilitation counseling license." },
     ],
   },
   {
@@ -556,7 +556,7 @@ export const comparisons: Comparison[] = [
     b: {
       label: "Certified Vocational Evaluator (CVE)",
       summary: "Specialized vocational evaluation credential historically issued by the now-defunct CCWAVES, focused on standardized testing, work samples, and situational assessment (Commission on Rehabilitation Counselor Certification, n.d.).",
-      url: "/credentials/cve",
+      url: "/credentials/crc",
     },
     rows: [
       { dimension: "Issuer", a: "CRCC", b: "CCWAVES (now defunct)" },
