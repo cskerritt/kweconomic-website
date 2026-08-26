@@ -27,7 +27,7 @@ export const credentials: Credential[] = [
     requirements: [
       "Qualifying healthcare or rehabilitation credential (for example RN, OT, PT, CRC, or physician)",
       "Completion of a 120-hour post-graduate life care planning training program",
-      "Documented case experience under supervision",
+      "Qualifying professional experience per ICHCC eligibility criteria",
       "Passing score on the CLCP examination",
       "Continuing education and renewal every five years",
     ],

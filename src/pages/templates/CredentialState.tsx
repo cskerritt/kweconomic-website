@@ -14,6 +14,10 @@ import { graphSchema, credentialSchema, serviceSchema, faqPageSchema, breadcrumb
 import { usePageMeta } from "@/hooks/use-page-meta";
 import NotFound from "@/pages/NotFound";
 
+// Credential strings differ in punctuation across data files ("R.N." in
+// credentials/team vs "RN" in services). Compare on letters and digits only.
+const normalizeCredential = (s: string) => s.replace(/[^a-z0-9]/gi, "").toLowerCase();
+
 export default function CredentialState() {
   const { credSlug = "", stateSlug = "" } = useParams();
   const cred = getCredential(credSlug);
@@ -34,7 +38,7 @@ export default function CredentialState() {
   if (!cred || !state) return <NotFound />;
 
   const experts = activeTeam.filter(
-    (m) => m.statesServed.includes(state.abbreviation) && m.credentials.some((c) => c.toLowerCase() === cred.abbreviation.toLowerCase())
+    (m) => m.statesServed.includes(state.abbreviation) && m.credentials.some((c) => normalizeCredential(c) === normalizeCredential(cred.abbreviation))
   );
   const regulations = getRegulationsByState(state.slug);
   const courts = getCourtsByState(state.slug);
@@ -117,7 +121,7 @@ export default function CredentialState() {
             </Link>
           </li>
           {pillarServices()
-            .filter((s) => s.relevantCredentials.some((rc) => rc.toLowerCase() === cred.abbreviation.toLowerCase()))
+            .filter((s) => s.relevantCredentials.some((rc) => normalizeCredential(rc) === normalizeCredential(cred.abbreviation)))
             .map((s) => (
               <li key={s.slug}>
                 <Link

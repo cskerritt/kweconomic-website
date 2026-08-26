@@ -94,6 +94,17 @@ describe("CredentialState cross-links", () => {
   });
 });
 
+describe("CredentialState cross-links for punctuated abbreviations", () => {
+  // services.ts uses "RN"/"MD"; credentials.ts uses "R.N."/"M.D.". The
+  // service x state list must still populate for these credentials.
+  for (const slug of ["rn", "md"]) {
+    it(`/credentials/${slug}/new-jersey lists at least one service x state page`, () => {
+      const html = render(`/credentials/${slug}/new-jersey`, "/credentials/:credSlug/:stateSlug", CredentialState);
+      expect(html).toMatch(/href="\/services\/[a-z-]+\/new-jersey"/);
+    });
+  }
+});
+
 describe("JourneyStage cross-links", () => {
   const html = render(
     "/attorneys/considering/traumatic-brain-injury",
