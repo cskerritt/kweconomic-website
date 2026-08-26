@@ -1,0 +1,51 @@
+# KWVRS robots.txt
+# Updated 2026-06-16
+
+# Default - all bots allowed
+User-agent: *
+Allow: /
+Disallow: /client-forms/
+
+# AI ingestion / training bots - explicitly allowed (citation-friendly site)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Sitemap
+Sitemap: https://kwvrs.com/sitemap.xml
+Sitemap: https://kwvrs.com/image-sitemap.xml
+Sitemap: https://kwvrs.com/news-sitemap.xml
+
+# LLMs.txt for AI ingestion / answer-engine discovery
+Llms: https://kwvrs.com/llms.txt
+Llms-Full: https://kwvrs.com/llms-full.txt

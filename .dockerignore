@@ -1,0 +1,12 @@
+node_modules
+dist
+.DS_Store
+*.md
+.git
+.env
+.env.*
+data
+report
+.railway
+.claude
+**/node_modules
