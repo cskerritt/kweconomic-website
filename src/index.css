@@ -1,20 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  /* Palette tightened 2026-05-27: 4 hues -> 2 + 1 accent.
-     Token names retained for code-stability; teal + forest collapse onto
-     navy variants so existing class usage stays valid while the visual
-     surface unifies to navy primary + amber accent. */
+  /* KW Life Care Planning palette: navy primary + teal accent (primary
+     CTAs, links, icons); amber retained for StatBar and highlight underlines.
+     teal-light (#14a3a8) fails AA with white text - never a button background. */
   --color-navy: #14223d;
   --color-navy-light: #2a3a5c;
   --color-navy-dark: #0c1729;
-  --color-teal: #14223d;
-  --color-teal-light: #2a3a5c;
-  --color-teal-dark: #0c1729;
+  --color-teal: #0d7377;
+  --color-teal-light: #14a3a8;
+  --color-teal-dark: #095457;
   --color-amber: #b8731f;
   --color-amber-light: #d4922e;
   --color-amber-dark: #8a5612;
-  --color-forest: #14223d;
+  --color-forest: #0d7377;
   --color-neutral-50: #f9fafb;
   --color-neutral-100: #f3f4f6;
   --color-neutral-200: #e5e7eb;

@@ -208,7 +208,7 @@ export default function Header() {
             </a>
             <Link
               to="/schedule-consultation"
-              className="bg-amber-dark hover:bg-amber-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+              className="bg-teal hover:bg-teal-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
             >
               Schedule Consultation
             </Link>
@@ -255,7 +255,7 @@ export default function Header() {
         </a>
         <Link
           to="/contact"
-          className="flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-amber-dark text-white hover:bg-amber-dark transition-colors"
+          className="flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-teal text-white hover:bg-teal-dark transition-colors"
         >
           Get a Quote
         </Link>

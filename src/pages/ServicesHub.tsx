@@ -4,13 +4,15 @@ import ServiceCard from "@/components/ServiceCard";
 import ContactCTA from "@/components/ContactCTA";
 import Reveal from "@/components/Reveal";
 import { Picture } from "@/components/Picture";
+import CrossSell from "@/components/CrossSell";
+import { ORG_NAME, ORG_SHORT, SITE_URL } from "@/lib/brand";
 
 export default function ServicesHub() {
   usePageMeta({
-    title: "Expert Services | KWVRS - Vocational and Rehabilitation Experts",
+    title: `Life Care Planning Services | ${ORG_NAME}`,
     description:
-      "KWVRS offers expert services including vocational evaluation, life care planning, forensic economics, and expert witness testimony - serving all states.",
-    canonical: "https://kwvrs.com/services",
+      `${ORG_NAME} prepares life care plans, pediatric and catastrophic injury plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations - serving all states.`,
+    canonical: `${SITE_URL}/services`,
   });
 
   return (
@@ -21,16 +23,17 @@ export default function ServicesHub() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-enter text-teal-light text-sm font-semibold uppercase tracking-wider mb-4">
               What We Do
             </p>
             <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
-              Our Expert Services
+              Life Care Planning Services
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              KWVRS provides vocational, rehabilitation, and forensic expert services to
-              attorneys, insurers, and claimants in every U.S. jurisdiction. Each service is
-              delivered by credentialed professionals.
+              {ORG_SHORT} prepares independent life care plans, medical cost projections, and
+              plan rebuttals for attorneys, insurers, and claimants in every U.S. jurisdiction.
+              Each plan is developed by a certified life care planner and reviewed by a
+              board-certified physician.
             </p>
           </div>
         </div>
@@ -41,7 +44,7 @@ export default function ServicesHub() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Picture
             src="/images/legal-team-discussion.jpg"
-            alt="KWVRS legal team reviewing case strategy"
+            alt="Legal team reviewing a life care plan"
             width={1200}
             height={400}
             className="rounded-2xl shadow-xl w-full object-cover max-h-80"
@@ -55,11 +58,11 @@ export default function ServicesHub() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="font-serif text-3xl md:text-4xl font-bold text-navy mb-4">
-              All Expert Services
+              All Services
             </h2>
             <p className="text-neutral-600 max-w-2xl mx-auto">
-              From initial assessment through expert testimony, our team supports every stage of
-              litigation with objective, evidence-based analysis.
+              From records review through deposition and trial testimony, our planners support
+              every stage of litigation with objective, evidence-based analysis.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -84,6 +87,9 @@ export default function ServicesHub() {
           <ContactCTA />
         </div>
       </section>
+
+      {/* Sister practices */}
+      <CrossSell />
     </>
   );
 }

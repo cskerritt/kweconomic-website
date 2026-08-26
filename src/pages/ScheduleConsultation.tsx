@@ -5,17 +5,12 @@ import { isEmail, isPhone } from "@/lib/validation";
 import { Picture } from "@/components/Picture";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
+import { caseTypes } from "@/data/caseTypes";
+import { ORG_NAME, ORG_EMAIL, ORG_PHONE, ORG_PHONE_VA, SITE_URL } from "@/lib/brand";
 
-const caseTypes = [
-  "Personal Injury",
-  "Workers' Compensation",
-  "Medical Malpractice",
-  "Wrongful Death",
-  "Wrongful Termination",
-  "Matrimonial / Family Law",
-  "Long Term Disability",
-  "Other",
-];
+const PHONE_DISPLAY = "(201) 343-0700";
+const PHONE_VA_DISPLAY = "(804) 282-4199";
+const CASE_TYPE_OPTIONS = [...caseTypes.map((ct) => ct.name), "Other"];
 
 const statesAndTerritories = [
   "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut",
@@ -43,22 +38,22 @@ const whatToExpect = [
   {
     step: "3",
     heading: "Consultation Call",
-    body: "We will schedule a telephone or video consultation to discuss the case in more detail - the nature of the claims, the relevant records, the timeline, and which expert services are most appropriate. This call is typically 30-45 minutes.",
+    body: "We will schedule a telephone or video consultation to discuss the case in more detail - the injury, the relevant medical records, the timeline, and whether a full life care plan, a medical cost projection, or a plan rebuttal fits the matter. This call is typically 30-45 minutes.",
   },
   {
     step: "4",
     heading: "Engagement and Records",
-    body: "If we proceed, we will provide a retainer agreement and records request list. Once the agreement is signed and materials received, our expert will begin the evaluation.",
+    body: "If we proceed, we will confirm scope, timeline, and fee in writing and send a records request list. Once the engagement letter is signed and materials received, the planner will begin the evaluation.",
   },
 ];
 
 const infoToHaveReady = [
   "Nature of the matter (case type and jurisdiction)",
   "Date of injury, incident, or event at issue",
-  "Plaintiff's age, education, and general occupational background",
-  "Medical summary or diagnoses, if available",
+  "Injured person's age and current living situation",
+  "Diagnoses, treating providers, and a medical summary, if available",
   "Any deadlines - trial date, discovery cutoff, or expert disclosure date",
-  "Whether you need a plaintiff-side or defense-side evaluation",
+  "Whether you need a plaintiff-side or defense-side plan, or a rebuttal of an existing plan",
 ];
 
 export default function ScheduleConsultation() {
@@ -110,10 +105,10 @@ export default function ScheduleConsultation() {
   }
 
   usePageMeta({
-    title: "Schedule a Consultation | KWVRS",
+    title: `Schedule a Consultation | ${ORG_NAME}`,
     description:
-      "Contact Kincaid Wolstein Vocational and Rehabilitation Services to discuss your case and schedule a consultation with a vocational, life care planning, or forensic economics expert.",
-    canonical: "https://kwvrs.com/schedule-consultation",
+      `Contact ${ORG_NAME} to discuss your case and schedule a consultation with a certified life care planner. Response within one business day.`,
+    canonical: `${SITE_URL}/schedule-consultation`,
   });
 
   return (
@@ -124,7 +119,7 @@ export default function ScheduleConsultation() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-enter text-teal-light text-sm font-semibold uppercase tracking-wider mb-4">
               Get in Touch
             </p>
             <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
@@ -143,7 +138,7 @@ export default function ScheduleConsultation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Picture
             src="/images/mentor-trainee.jpg"
-            alt="Expert guiding a client through the consultation process"
+            alt="Life care planner guiding an attorney through the consultation process"
             width={1200}
             height={400}
             className="rounded-2xl shadow-xl w-full object-cover max-h-72"
@@ -206,7 +201,7 @@ export default function ScheduleConsultation() {
                 )}
                 {status === "error" && (
                   <div className="rounded-lg bg-red-50 border border-red-200 text-red-700 px-4 py-3 text-sm font-medium">
-                    Something went wrong. Please try again or contact us directly at info@kwvrs.com.
+                    Something went wrong. Please try again or contact us directly at {ORG_EMAIL}.
                   </div>
                 )}
                 {status === "invalid" && <p className="text-sm text-red-600">Please enter a valid email and phone number.</p>}
@@ -215,7 +210,7 @@ export default function ScheduleConsultation() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="first-name" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      First Name <span className="text-amber-dark">*</span>
+                      First Name <span className="text-teal">*</span>
                     </label>
                     <input
                       id="first-name"
@@ -229,7 +224,7 @@ export default function ScheduleConsultation() {
                   </div>
                   <div>
                     <label htmlFor="last-name" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Last Name <span className="text-amber-dark">*</span>
+                      Last Name <span className="text-teal">*</span>
                     </label>
                     <input
                       id="last-name"
@@ -246,7 +241,7 @@ export default function ScheduleConsultation() {
                 {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Email Address <span className="text-amber-dark">*</span>
+                    Email Address <span className="text-teal">*</span>
                   </label>
                   <input
                     id="email"
@@ -262,7 +257,7 @@ export default function ScheduleConsultation() {
                 {/* Phone */}
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Phone Number <span className="text-amber-dark">*</span>
+                    Phone Number <span className="text-teal">*</span>
                   </label>
                   <input
                     id="phone"
@@ -278,7 +273,7 @@ export default function ScheduleConsultation() {
                 {/* Firm */}
                 <div>
                   <label htmlFor="firm-name" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Firm / Organization Name <span className="text-amber-dark">*</span>
+                    Firm / Organization Name <span className="text-teal">*</span>
                   </label>
                   <input
                     id="firm-name"
@@ -294,7 +289,7 @@ export default function ScheduleConsultation() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="case-type" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Case Type <span className="text-amber-dark">*</span>
+                      Case Type <span className="text-teal">*</span>
                     </label>
                     <select
                       id="case-type"
@@ -304,14 +299,14 @@ export default function ScheduleConsultation() {
                       className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
                     >
                       <option value="" disabled>Select case type</option>
-                      {caseTypes.map((ct) => (
+                      {CASE_TYPE_OPTIONS.map((ct) => (
                         <option key={ct}>{ct}</option>
                       ))}
                     </select>
                   </div>
                   <div>
                     <label htmlFor="jurisdiction" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Jurisdiction / State <span className="text-amber-dark">*</span>
+                      Jurisdiction / State <span className="text-teal">*</span>
                     </label>
                     <select
                       id="jurisdiction"
@@ -331,7 +326,7 @@ export default function ScheduleConsultation() {
                 {/* Description */}
                 <div>
                   <label htmlFor="description" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Brief Description of the Matter <span className="text-amber-dark">*</span>
+                    Brief Description of the Matter <span className="text-teal">*</span>
                   </label>
                   <textarea
                     id="description"
@@ -339,7 +334,7 @@ export default function ScheduleConsultation() {
                     rows={4}
                     required
                     className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent resize-none"
-                    placeholder="Describe the nature of the case and the services you are looking for..."
+                    placeholder="Describe the injury, the records you have, and the plan or projection you need..."
                   />
                 </div>
 
@@ -395,7 +390,7 @@ export default function ScheduleConsultation() {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="w-full bg-amber-dark hover:bg-amber-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="w-full bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {status === "sending" ? "Submitting..." : "Submit Consultation Request"}
                 </button>
@@ -425,14 +420,14 @@ export default function ScheduleConsultation() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-teal shrink-0" />
-                  <a href="tel:+12013430700" className="hover:text-teal transition-colors font-medium">
-                    (201) 343-0700
+                  <a href={`tel:${ORG_PHONE}`} className="hover:text-teal transition-colors font-medium">
+                    {PHONE_DISPLAY}
                   </a>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Mail className="w-4 h-4 text-teal shrink-0" />
-                  <a href="mailto:info@kwvrs.com" className="hover:text-teal transition-colors">
-                    info@kwvrs.com
+                  <a href={`mailto:${ORG_EMAIL}`} className="hover:text-teal transition-colors">
+                    {ORG_EMAIL}
                   </a>
                 </li>
               </ul>
@@ -448,8 +443,8 @@ export default function ScheduleConsultation() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-teal shrink-0" />
-                  <a href="tel:+18042824199" className="hover:text-teal transition-colors font-medium">
-                    (804) 282-4199
+                  <a href={`tel:${ORG_PHONE_VA}`} className="hover:text-teal transition-colors font-medium">
+                    {PHONE_VA_DISPLAY}
                   </a>
                 </li>
               </ul>

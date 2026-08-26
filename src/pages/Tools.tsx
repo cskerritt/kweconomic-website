@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, HeartPulse, ExternalLink } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import ContactCTA from "@/components/ContactCTA";
+import CrossSell from "@/components/CrossSell";
 import { ORG_SHORT } from "@/lib/brand";
 
 /**
@@ -13,7 +14,7 @@ export default function Tools() {
   usePageMeta({
     title: `Attorney Tools | ${ORG_SHORT}`,
     description:
-      "Free life expectancy lookup for attorneys and life care planners from the CDC United States Life Tables, plus links to the Kincaid Wolstein economic damages calculators.",
+      "Free life expectancy lookup for attorneys and life care planners from the CDC United States Life Tables, plus links to our sister practices' economic damages calculators.",
     canonical: "/tools",
   });
 
@@ -21,7 +22,7 @@ export default function Tools() {
     <div className="min-h-screen bg-neutral-50">
       <section className="bg-navy text-white py-16 md:py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <p className="text-amber uppercase tracking-[0.18em] text-xs font-semibold mb-3">Attorney tools</p>
+          <p className="text-teal-light uppercase tracking-[0.18em] text-xs font-semibold mb-3">Attorney tools</p>
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Planning tools for counsel</h1>
           <p className="text-neutral-200 max-w-2xl text-lg">
             Free, planning-level tools for case evaluation - built by the same team that prepares
@@ -52,8 +53,7 @@ export default function Tools() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8 space-y-4">
           <p className="text-neutral-700 max-w-3xl">
             Looking for the economic damages estimator or the household services valuator? Those
-            calculators are hosted by our sister firm, Kincaid Wolstein Vocational and Rehabilitation
-            Services, at{" "}
+            calculators are hosted by our sister vocational and economics practice at{" "}
             <a
               href="https://kwvrs.com/tools"
               target="_blank"
@@ -72,6 +72,7 @@ export default function Tools() {
       </section>
 
       <ContactCTA />
+      <CrossSell />
     </div>
   );
 }
