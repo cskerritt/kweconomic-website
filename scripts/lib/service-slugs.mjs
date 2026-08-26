@@ -21,21 +21,22 @@ export function serviceBlocks(content) {
     .map((block) => block.split(/\n  \},?\n/)[0]);
 }
 
-/** { slug, name, pillar } for every entry, in file order. */
+/** { slug, name, shortName, pillar } for every entry, in file order. */
 export function serviceEntries(content) {
   return serviceBlocks(content).map((block) => {
     const slug = block.match(/^\s*slug:\s*"([^"]+)"/m)?.[1];
     const name = block.match(/^\s*name:\s*"([^"]+)"/m)?.[1];
+    const shortName = block.match(/^\s*shortName:\s*"([^"]+)"/m)?.[1] ?? name;
     if (!slug || !name) throw new Error(`service-slugs: block without slug/name:\n${block.slice(0, 200)}`);
-    return { slug, name, pillar: !/^\s*pillar:\s*false\b/m.test(block) };
+    return { slug, name, shortName, pillar: !/^\s*pillar:\s*false\b/m.test(block) };
   });
 }
 
-/** Pillar entries only ({ slug, name }). */
+/** Pillar entries only ({ slug, name, shortName }). */
 export function pillarServiceEntries(content) {
   return serviceEntries(content)
     .filter((s) => s.pillar)
-    .map(({ slug, name }) => ({ slug, name }));
+    .map(({ slug, name, shortName }) => ({ slug, name, shortName }));
 }
 
 /** Pillar slugs only, in file order. */

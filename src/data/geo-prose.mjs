@@ -11,7 +11,7 @@
 
 /** Employer-list entries that are health systems / hospitals. */
 export const HEALTH_SYSTEM_RE =
-  /health|hospital|medical|cancer center|kaiser permanente|mass general/i;
+  /health|hospital|medical|medicine|cancer center|kaiser permanente|mass general/i;
 
 /** Filter a metro's topEmployers list down to its medical centers. */
 export function careMedicalCenters(topEmployers) {
@@ -39,16 +39,31 @@ const listNames = (names) => {
   return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
 };
 
+/** Territories where specialist care may require off-island travel. The
+ * District of Columbia carries region "territory" in states.ts but is not an
+ * island; it takes the northeast sentence. */
+export const ISLAND_SLUGS = new Set([
+  "puerto-rico",
+  "us-virgin-islands",
+  "guam",
+  "american-samoa",
+  "northern-mariana-islands",
+]);
+
+/** "the District of Columbia" reads as a place name; every state name does as-is. */
+export const placeName = (stateName) =>
+  stateName === "District of Columbia" ? "the District of Columbia" : stateName;
+
 /** Regional cost-of-care framing. General, defensible, no figures. */
 const REGION_COST = {
   northeast: (s) =>
-    `Attendant-care and skilled-nursing rates in ${s} tend to run above national averages, so the plan prices those items at the rates ${s} providers actually charge rather than at a national figure.`,
+    `Attendant-care and skilled-nursing rates in ${s} tend to run above national averages, so the plan prices those items at the rates providers in ${s} actually charge rather than at a national figure.`,
   southeast: (s) =>
     `Cost of care in ${s} varies widely between its metropolitan and rural counties, so the plan prices attendant care, home health, and specialist follow-up where the evaluee actually lives rather than at a statewide average.`,
   midwest: (s) =>
     `Cost of care in ${s} differs between its metropolitan and rural counties, and rural evaluees often travel farther for specialist care, so the plan prices each item for the evaluee's own community.`,
   west: (s) =>
-    `Cost of care in ${s} ranges from some of the country's most expensive metropolitan markets to rural counties where provider availability drives the price, so the plan is priced for the evaluee's own community.`,
+    `Cost of care in ${s} varies sharply between its metropolitan areas and its rural counties, where provider availability drives the price of the same item of care, so the plan is priced for the evaluee's own community.`,
   territory: (s) =>
     `Provider availability in ${s} is narrower than on the mainland, and some specialist care must be priced for off-island travel, so the plan documents where each service can realistically be obtained.`,
 };
@@ -58,7 +73,7 @@ const isCompForum = (agency) =>
 
 /**
  * State narrative.
- * @param {{ orgName: string, stateName: string, region?: string, population?: number,
+ * @param {{ orgName: string, stateName: string, stateSlug?: string, region?: string, population?: number,
  *   trialCourtName?: string, supremeCourt?: string, federalDistrictCount?: number,
  *   careOversightAgency?: string }} input
  * @returns {{ directAnswer: string, careContext: string, legalContext: string }}
@@ -67,6 +82,7 @@ export function buildStateNarrative(input) {
   const {
     orgName,
     stateName,
+    stateSlug,
     region,
     population,
     trialCourtName,
@@ -75,20 +91,23 @@ export function buildStateNarrative(input) {
     careOversightAgency,
   } = input;
 
-  const regionCost = REGION_COST[region] ?? REGION_COST.southeast;
+  const place = placeName(stateName);
+  const isIsland = ISLAND_SLUGS.has(stateSlug ?? "");
+  const regionKey = region === "territory" && !isIsland ? "northeast" : region;
+  const regionCost = REGION_COST[regionKey] ?? REGION_COST.southeast;
   const directAnswer = [
-    `${orgName} prepares life care plans and future medical cost projections for matters venued in ${stateName}.`,
-    regionCost(stateName),
+    `${orgName} prepares life care plans and future medical cost projections for matters venued in ${place}.`,
+    regionCost(place),
     "Plaintiff and defense.",
   ].join(" ");
 
   const pop = fmtPopulation(population);
-  const level = region === "territory" ? "community" : "county";
+  const level = isIsland ? "community" : "county";
   const careParts = [];
   careParts.push(
     pop
-      ? `With about ${pop} residents, ${stateName} is priced at the ${level} level: attendant-care, home health, and skilled-nursing rates are surveyed from providers serving the evaluee's own community, and physician and therapy follow-up is priced where the evaluee can realistically obtain it.`
-      : `${stateName} is priced at the ${level} level: attendant-care, home health, and skilled-nursing rates are surveyed from providers serving the evaluee's own community, and physician and therapy follow-up is priced where the evaluee can realistically obtain it.`,
+      ? `With about ${pop} residents, ${place} is priced at the ${level} level: attendant-care, home health, and skilled-nursing rates are surveyed from providers serving the evaluee's own community, and physician and therapy follow-up is priced where the evaluee can realistically obtain it.`
+      : `${place} is priced at the ${level} level: attendant-care, home health, and skilled-nursing rates are surveyed from providers serving the evaluee's own community, and physician and therapy follow-up is priced where the evaluee can realistically obtain it.`,
   );
   careParts.push(
     `Where a needed specialty or rehabilitation facility is not available locally, the plan budgets travel to the nearest center that offers it and documents the provider behind every rate.`,
@@ -110,7 +129,7 @@ export function buildStateNarrative(input) {
   if (supremeCourt) legalParts.push(`Final state-court appeals run to the ${supremeCourt}.`);
   if (federalDistrictCount > 0) {
     legalParts.push(
-      `${stateName} is served by ${federalDistrictCount} federal district court${federalDistrictCount === 1 ? "" : "s"}.`,
+      `${place} is served by ${federalDistrictCount} federal district court${federalDistrictCount === 1 ? "" : "s"}.`,
     );
   }
   const legalContext = legalParts.join(" ");
@@ -173,76 +192,90 @@ export function buildCityNarrative(input) {
   return { directAnswer, blurb };
 }
 
+/** Service x State hero sentence (ServiceState.tsx + prerender). */
+export function serviceStateDirectAnswer(orgName, serviceShortName, stateName, stateNarrative) {
+  return `${serviceShortName} from ${orgName} for matters venued in ${stateName}. ${stateNarrative.careContext} Plaintiff and defense.`;
+}
+
+/** Service x City hero sentence (ServiceStateCity.tsx + prerender). */
+export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, cityName, cityNarrative) {
+  return `${serviceShortName} from ${orgName} for cases venued in ${cityName}, ${stateName}. ${cityNarrative.blurb}`;
+}
+
 // ---------------------------------------------------------------------------
 // Geo FAQ blocks. 3-4 Q&A pairs per template, LCP framing, citation-free.
 // ---------------------------------------------------------------------------
 
 export function stateGeographicFaqs(orgName, stateName) {
+  const place = placeName(stateName);
   return [
     {
-      question: `Does ${orgName} prepare life care plans for ${stateName} cases?`,
-      answer: `Yes. ${orgName} prepares life care plans, future medical cost projections, and plan rebuttals for attorneys handling matters venued in ${stateName}, for plaintiff and defense counsel alike. Plans support personal injury, medical malpractice, workers' compensation, and catastrophic injury claims, and every item is priced for the community where the evaluee lives.`,
+      question: `Does ${orgName} prepare life care plans for ${place} cases?`,
+      answer: `Yes. ${orgName} prepares life care plans, future medical cost projections, and plan rebuttals for attorneys handling matters venued in ${place}, for plaintiff and defense counsel alike. Plans support personal injury, medical malpractice, workers' compensation, and catastrophic injury claims, and every item is priced for the community where the evaluee lives.`,
     },
     {
-      question: `How is the cost of care priced for a ${stateName} life care plan?`,
-      answer: `Each item in the plan - attendant care, home health, therapies, equipment, medication, and physician follow-up - is priced from providers that serve the evaluee's own area of ${stateName}, not from a national average. The provider behind every rate is documented so the figure can be traced and defended at deposition.`,
+      question: `How is the cost of care priced for a ${place} life care plan?`,
+      answer: `Each item in the plan - attendant care, home health, therapies, equipment, medication, and physician follow-up - is priced from providers that serve the evaluee's own area of ${place}, not from a national average. The provider behind every rate is documented so the figure can be traced and defended at deposition.`,
     },
     {
-      question: `Which courts in ${stateName} hear the cases your plans support?`,
-      answer: `Personal injury and medical malpractice claims are heard in ${stateName}'s general-jurisdiction trial courts and, where jurisdiction allows, in the federal district courts serving the state. Workers' compensation claims proceed before the state's compensation forum. Attorneys are responsible for confirming the venue and governing rule for their specific case.`,
+      question: `Which courts in ${place} hear the cases your plans support?`,
+      answer: `Personal injury and medical malpractice claims are heard in ${place}'s general-jurisdiction trial courts and, where jurisdiction allows, in the federal district courts serving the state. Workers' compensation claims proceed before the state's compensation forum. Attorneys are responsible for confirming the venue and governing rule for their specific case.`,
     },
     {
-      question: `When is expert disclosure due in ${stateName}?`,
+      question: `When is expert disclosure due in ${place}?`,
       answer: `Disclosure timing is typically set by the case's scheduling order or case management order. Attorneys are responsible for confirming the specific deadlines for their case against primary sources. ${orgName} calibrates engagement scope and turnaround to the disclosure window.`,
     },
   ];
 }
 
 export function cityGeographicFaqs(orgName, stateName, cityName) {
+  const place = placeName(stateName);
   return [
     {
-      question: `Does ${orgName} prepare life care plans for ${cityName}, ${stateName} cases?`,
-      answer: `Yes. ${orgName} prepares life care plans and future medical cost projections for attorneys handling matters venued in ${cityName}, ${stateName}, for plaintiff and defense counsel alike. Each plan is priced for the ${cityName} area rather than from statewide or national averages.`,
+      question: `Does ${orgName} prepare life care plans for ${cityName}, ${place} cases?`,
+      answer: `Yes. ${orgName} prepares life care plans and future medical cost projections for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel alike. Each plan is priced for the ${cityName} area rather than from statewide or national averages.`,
     },
     {
       question: `How does a life care planner price attendant care in ${cityName}?`,
       answer: `Attendant-care and home health rates are surveyed from agencies and providers that actually serve ${cityName} evaluees, at the level of care the medical record supports. The hours, the rate, and the provider behind the rate are all documented in the plan so the cost of care can be traced and defended.`,
     },
     {
-      question: `Do you conduct in-home assessments in ${cityName}, ${stateName}?`,
+      question: `Do you conduct in-home assessments in ${cityName}, ${place}?`,
       answer: `Yes. When the plan needs a first-hand look at the home, the existing care arrangement, and accessibility needs, ${orgName} conducts in-home assessments for ${cityName} evaluees. Record-based plans and file reviews are available where an in-person visit is not required.`,
     },
   ];
 }
 
 export function serviceStateGeographicFaqs(orgName, serviceName, stateName) {
-  const svc = serviceName.toLowerCase();
+  const place = placeName(stateName);
+  const svc = serviceName;
   return [
     {
-      question: `Does ${orgName} provide ${svc} in ${stateName}?`,
-      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${stateName}, for plaintiff and defense counsel, with deliverables sized to the engagement scope and priced for the evaluee's own community.`,
+      question: `Does ${orgName} provide ${svc} in ${place}?`,
+      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${place}, for plaintiff and defense counsel, with deliverables sized to the engagement scope and priced for the evaluee's own community.`,
     },
     {
-      question: `What does a ${svc} engagement look like for a ${stateName} case?`,
+      question: `What does a ${svc} engagement look like for a ${place} case?`,
       answer: `A complete engagement typically includes review of the medical record, an evaluee interview and in-home assessment where appropriate, consultation with treating providers, local cost research for attendant care, home health, equipment, and follow-up care, a written plan or report, and deposition and trial testimony when required. Scope and turnaround are calibrated to the case posture and the governing disclosure framework.`,
     },
     {
-      question: `When is expert disclosure due in ${stateName}?`,
+      question: `When is expert disclosure due in ${place}?`,
       answer: `Disclosure timing is typically set by the scheduling order in the case. Attorneys are responsible for confirming the specific deadlines for their case against primary sources. ${orgName} calibrates engagement scope and turnaround to the disclosure window.`,
     },
   ];
 }
 
 export function serviceCityGeographicFaqs(orgName, serviceName, stateName, cityName) {
-  const svc = serviceName.toLowerCase();
+  const place = placeName(stateName);
+  const svc = serviceName;
   return [
     {
-      question: `Does ${orgName} provide ${svc} in ${cityName}, ${stateName}?`,
-      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${cityName}, ${stateName}, for plaintiff and defense counsel across the case mix common to ${cityName} matters.`,
+      question: `Does ${orgName} provide ${svc} in ${cityName}, ${place}?`,
+      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel across the case mix common to ${cityName} matters.`,
     },
     {
       question: `How is the cost of care in ${cityName} handled in the plan?`,
-      answer: `Attendant care, home health, therapies, equipment, medication, and physician follow-up are priced from providers serving the ${cityName} area, with ${stateName} statewide data used only where a local rate is unavailable. The provider behind every rate is documented so the cost of care can be traced and defended.`,
+      answer: `Attendant care, home health, therapies, equipment, medication, and physician follow-up are priced from providers serving the ${cityName} area, with ${place} statewide data used only where a local rate is unavailable. The provider behind every rate is documented so the cost of care can be traced and defended.`,
     },
     {
       question: `What deliverables are available for a ${cityName} case?`,

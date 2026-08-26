@@ -39,6 +39,16 @@ describe("LCP geo narratives", () => {
     }
   });
 
+  it("island wording is gated on real islands, not on region = territory", () => {
+    const dc = stateText("district-of-columbia");
+    expect(dc).not.toMatch(/island|mainland/i);
+    expect(dc).toContain("venued in the District of Columbia");
+    expect(dc).not.toMatch(/in District of Columbia|, District of Columbia is/);
+    expect(stateText("puerto-rico")).toMatch(/island/i);
+    expect(stateText("wyoming")).not.toMatch(/most expensive/i);
+    expect(stateText("california")).not.toMatch(/most expensive/i);
+  });
+
   it("city narrative is LCP-framed for every state's largest city", () => {
     for (const st of states) {
       const city = st.largestCity.toLowerCase().replace(/[^a-z0-9]+/g, "-");

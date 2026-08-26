@@ -16,7 +16,7 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
-import { getStateNarrative } from "@/data/narratives";
+import { getStateNarrative, serviceStateDirectAnswer } from "@/data/narratives";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import CareContextWidget from "@/components/CareContextWidget";
@@ -77,7 +77,7 @@ export default function ServiceState() {
   );
 
   const url = `${ORG_URL}/services/${service.slug}/${state.slug}`;
-  const directAnswer = `${service.shortName} from ${ORG_NAME} for matters venued in ${state.name}. ${narrative.careContext} Plaintiff and defense.`;
+  const directAnswer = serviceStateDirectAnswer(ORG_NAME, service.shortName, state.name, narrative);
 
   return (
     <div className="min-h-screen bg-neutral-50 overflow-x-clip">

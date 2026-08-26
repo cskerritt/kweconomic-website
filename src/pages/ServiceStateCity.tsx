@@ -15,7 +15,7 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
-import { getCityNarrative } from "@/data/narratives";
+import { getCityNarrative, serviceCityDirectAnswer } from "@/data/narratives";
 import { serviceCityGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ContactCTA from "@/components/ContactCTA";
@@ -49,7 +49,7 @@ export default function ServiceStateCity() {
       : null;
   const directAnswerForMeta =
     service && state && city && narrativeForMeta
-      ? `${service.shortName} from ${ORG_NAME} for cases venued in ${city.name}, ${state.name}. ${narrativeForMeta.blurb}`
+      ? serviceCityDirectAnswer(ORG_NAME, service.shortName, state.name, city.name, narrativeForMeta)
       : "";
 
   usePageMeta(
@@ -73,7 +73,7 @@ export default function ServiceStateCity() {
 
   const narrative = getCityNarrative(state, city.name, city.slug, city.county, { msaName: city.msaName });
   const faqs = serviceCityGeographicFaqs(service.name, state.name, city.name);
-  const directAnswer = `${service.shortName} from ${ORG_NAME} for cases venued in ${city.name}, ${state.name}. ${narrative.blurb}`;
+  const directAnswer = serviceCityDirectAnswer(ORG_NAME, service.shortName, state.name, city.name, narrative);
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
   const motion = serviceMotion(service.slug);
 

@@ -5,6 +5,7 @@
 // the hydrated React pages carry identical prose.
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import * as geoProse from "../../src/data/geo-prose.mjs";
 
 /** Split a `[{ stateSlug: "..." , ...}, ...]` data file into per-entry blocks. */
 function blocksBy(content, key) {
@@ -103,4 +104,52 @@ export function extractCityDataByState(srcData) {
     map[stateSlug] = extractCityRows(srcData, stateSlug);
   }
   return map;
+}
+
+/**
+ * The prerender-side data joins. Returns the narrative builders bound to the
+ * extracted maps so scripts/prerender.mjs and the parity test exercise the
+ * same path.
+ */
+export function createGeoNarrators(srcData, orgName) {
+  const stateFactsMap = extractStateFacts(srcData);
+  const stateCourtsMap = extractStateCourtsMap(srcData);
+  const stateRegsMap = extractStateRegsMap(srcData);
+  const metroMap = extractMetroMap(srcData);
+
+  /** Mirrors getStateNarrative() in src/data/narratives.ts. */
+  function buildStateNarrative(state) {
+    const facts = stateFactsMap[state.slug] ?? {};
+    const courts = stateCourtsMap[state.slug];
+    const regs = stateRegsMap[state.slug];
+    return geoProse.buildStateNarrative({
+      orgName,
+      stateName: state.name,
+      stateSlug: state.slug,
+      region: facts.region,
+      population: facts.population,
+      trialCourtName: courts?.trialCourtName,
+      supremeCourt: courts?.supremeCourt,
+      federalDistrictCount: courts?.federalDistrictCount ?? 0,
+      careOversightAgency: regs?.careOversightAgency,
+    });
+  }
+
+  /** Mirrors getCityNarrative() in src/data/narratives.ts. */
+  function buildCityNarrative(state, city) {
+    const metro = metroMap[`${state.slug}/${city.slug}`];
+    const courts = stateCourtsMap[state.slug];
+    return geoProse.buildCityNarrative({
+      orgName,
+      stateName: state.name,
+      cityName: city.name,
+      county: city.county,
+      msaName: city.msaName,
+      medicalCenters: geoProse.careMedicalCenters(metro?.topEmployers),
+      hasMetroData: metro !== undefined,
+      trialCourtName: courts?.trialCourtName,
+    });
+  }
+
+  return { buildStateNarrative, buildCityNarrative, stateRegsMap, metroMap };
 }

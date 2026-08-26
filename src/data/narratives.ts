@@ -22,6 +22,8 @@ import {
 } from "./geo-prose.mjs";
 import type { State } from "../types";
 
+export { serviceStateDirectAnswer, serviceCityDirectAnswer } from "./geo-prose.mjs";
+
 export type StateNarrative = StateNarrativeOutput;
 export type CityNarrative = CityNarrativeOutput;
 
@@ -31,6 +33,7 @@ export function getStateNarrative(state: State): StateNarrative {
   return buildStateNarrative({
     orgName: ORG_NAME,
     stateName: state.name,
+    stateSlug: state.slug,
     region: state.region,
     population: state.population,
     trialCourtName: courts?.trialCourts?.[0]?.name,

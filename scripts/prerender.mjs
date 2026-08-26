@@ -15,13 +15,7 @@ import { fileURLToPath } from "url";
 import { pillarServiceEntries } from "./lib/service-slugs.mjs";
 import { ORG_NAME } from "./lib/site.mjs";
 import * as geoProse from "../src/data/geo-prose.mjs";
-import {
-  extractCityDataByState,
-  extractMetroMap,
-  extractStateCourtsMap,
-  extractStateFacts,
-  extractStateRegsMap,
-} from "./lib/geo-inputs.mjs";
+import { createGeoNarrators, extractCityDataByState } from "./lib/geo-inputs.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -212,43 +206,7 @@ const disclosureRules = existsSync(disclosureRulesFile)
 // Never feed wages, unemployment, or employer lists into the prose.
 // ---------------------------------------------------------------------------
 
-const stateFactsMap = extractStateFacts(SRC_DATA);
-const stateCourtsMap = extractStateCourtsMap(SRC_DATA);
-const stateRegsMap = extractStateRegsMap(SRC_DATA);
-const metroMap = extractMetroMap(SRC_DATA);
-
-/** State narrative - same joins as getStateNarrative() in src/data/narratives.ts. */
-function buildStateNarrative(state) {
-  const facts = stateFactsMap[state.slug] ?? {};
-  const courts = stateCourtsMap[state.slug];
-  const regs = stateRegsMap[state.slug];
-  return geoProse.buildStateNarrative({
-    orgName: ORG_NAME,
-    stateName: state.name,
-    region: facts.region,
-    population: facts.population,
-    trialCourtName: courts?.trialCourtName,
-    supremeCourt: courts?.supremeCourt,
-    federalDistrictCount: courts?.federalDistrictCount ?? 0,
-    careOversightAgency: regs?.careOversightAgency,
-  });
-}
-
-/** City narrative - same joins as getCityNarrative() in src/data/narratives.ts. */
-function buildCityNarrative(state, city) {
-  const metro = metroMap[`${state.slug}/${city.slug}`];
-  const courts = stateCourtsMap[state.slug];
-  return geoProse.buildCityNarrative({
-    orgName: ORG_NAME,
-    stateName: state.name,
-    cityName: city.name,
-    county: city.county,
-    msaName: city.msaName,
-    medicalCenters: geoProse.careMedicalCenters(metro?.topEmployers),
-    hasMetroData: metro !== undefined,
-    trialCourtName: courts?.trialCourtName,
-  });
-}
+const { buildStateNarrative, buildCityNarrative } = createGeoNarrators(SRC_DATA, ORG_NAME);
 
 // Geo FAQ blocks - thin wrappers over the shared templates.
 const stateGeographicFaqs = (stateName) => geoProse.stateGeographicFaqs(ORG_NAME, stateName);
@@ -926,7 +884,7 @@ for (const svc of serviceData) {
     const narrative = buildStateNarrative(state);
     const faqs = serviceStateGeographicFaqs(svc.name, state.name);
     const url = `${BASE_URL}${path}`;
-    const directAnswer = `${svc.name} from ${ORG_NAME} for matters venued in ${state.name}. ${narrative.careContext} Plaintiff and defense.`;
+    const directAnswer = geoProse.serviceStateDirectAnswer(ORG_NAME, svc.shortName, state.name, narrative);
     const innerHtml =
       `<h1>${escapeHtml(svc.name)} in ${escapeHtml(state.name)}</h1>` +
       `<p>${escapeHtml(directAnswer)}</p>` +
@@ -954,7 +912,7 @@ for (const svc of serviceData) {
       const cityUrl = `${BASE_URL}${cityPath}`;
       const cityNarrative = buildCityNarrative(state, city);
       const cityFaqs = serviceCityGeographicFaqs(svc.name, state.name, city.name);
-      const cityDirect = `${svc.name} from ${ORG_NAME} for cases venued in ${city.name}, ${state.name}. ${cityNarrative.blurb}`;
+      const cityDirect = geoProse.serviceCityDirectAnswer(ORG_NAME, svc.shortName, state.name, city.name, cityNarrative);
       const cityInner =
         `<h1>${escapeHtml(svc.name)} in ${escapeHtml(city.name)}, ${escapeHtml(state.name)}</h1>` +
         `<p>${escapeHtml(cityDirect)}</p>` +

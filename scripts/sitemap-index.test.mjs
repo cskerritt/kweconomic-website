@@ -282,9 +282,10 @@ describe("scripts/lib/service-slugs.mjs object-boundary split", () => {
       "",
     ].join("\n");
     expect(serviceEntries(fixture)).toEqual([
-      { slug: "alpha", name: "Alpha", pillar: true },
-      { slug: "beta", name: "Beta", pillar: false },
-      { slug: "gamma", name: "Gamma", pillar: true },
+      // shortName falls back to name when the entry has none.
+      { slug: "alpha", name: "Alpha", shortName: "Alpha", pillar: true },
+      { slug: "beta", name: "Beta", shortName: "Beta", pillar: false },
+      { slug: "gamma", name: "Gamma", shortName: "Gamma", pillar: true },
     ]);
     expect(pillarServiceSlugs(fixture)).toEqual(["alpha", "gamma"]);
   });

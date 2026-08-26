@@ -12,13 +12,9 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { ORG_NAME } from "../../scripts/lib/site.mjs";
 import * as geoProse from "./geo-prose.mjs";
-import {
-  extractCityRows,
-  extractMetroMap,
-  extractStateCourtsMap,
-  extractStateFacts,
-  extractStateRegsMap,
-} from "../../scripts/lib/geo-inputs.mjs";
+import { createGeoNarrators, extractCityRows, extractStateFacts } from "../../scripts/lib/geo-inputs.mjs";
+import { pillarServiceEntries } from "../../scripts/lib/service-slugs.mjs";
+import { readFileSync } from "node:fs";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const srcData = join(root, "src", "data");
@@ -39,53 +35,28 @@ beforeAll(async () => {
     server: { middlewareMode: true, hmr: false, ws: false },
     appType: "custom",
   });
-  const [narratives, faqs, states, nj, tx] = await Promise.all([
+  const [narratives, faqs, states, nj, tx, services] = await Promise.all([
     server.ssrLoadModule("/src/data/narratives.ts"),
     server.ssrLoadModule("/src/data/geographicFaqs.ts"),
     server.ssrLoadModule("/src/data/states.ts"),
     server.ssrLoadModule("/src/data/cities/new-jersey.ts"),
     server.ssrLoadModule("/src/data/cities/texas.ts"),
+    server.ssrLoadModule("/src/data/services.ts"),
   ]);
-  ts = { narratives, faqs, states, cities: { "new-jersey": nj.newJerseyCities, texas: tx.texasCities } };
+  ts = { narratives, faqs, states, services, cities: { "new-jersey": nj.newJerseyCities, texas: tx.texasCities } };
 }, 60_000);
 afterAll(async () => {
   await server?.close();
 });
 
-// Prerender-side joins, copied verbatim from scripts/prerender.mjs.
+// The real prerender-side join path (scripts/prerender.mjs calls this factory).
+const { buildStateNarrative: prerenderState, buildCityNarrative: prerenderCity, stateRegsMap: regs, metroMap: metros } =
+  createGeoNarrators(srcData, ORG_NAME);
 const facts = extractStateFacts(srcData);
-const courts = extractStateCourtsMap(srcData);
-const regs = extractStateRegsMap(srcData);
-const metros = extractMetroMap(srcData);
-function prerenderState(state) {
-  const f = facts[state.slug] ?? {};
-  return geoProse.buildStateNarrative({
-    orgName: ORG_NAME,
-    stateName: state.name,
-    region: f.region,
-    population: f.population,
-    trialCourtName: courts[state.slug]?.trialCourtName,
-    supremeCourt: courts[state.slug]?.supremeCourt,
-    federalDistrictCount: courts[state.slug]?.federalDistrictCount ?? 0,
-    careOversightAgency: regs[state.slug]?.careOversightAgency,
-  });
-}
-function prerenderCity(state, city) {
-  const metro = metros[`${state.slug}/${city.slug}`];
-  return geoProse.buildCityNarrative({
-    orgName: ORG_NAME,
-    stateName: state.name,
-    cityName: city.name,
-    county: city.county,
-    msaName: city.msaName,
-    medicalCenters: geoProse.careMedicalCenters(metro?.topEmployers),
-    hasMetroData: metro !== undefined,
-    trialCourtName: courts[state.slug]?.trialCourtName,
-  });
-}
 
 describe("geo prose parity: prerender shells vs React runtime", () => {
   it("state narrative is identical for every state", () => {
+    expect(Object.keys(facts)).toHaveLength(ts.states.states.length);
     for (const state of ts.states.states) {
       const runtime = ts.narratives.getStateNarrative(state);
       expect(prerenderState(state), state.slug).toEqual(runtime);
@@ -132,6 +103,30 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
     expect(geoProse.serviceCityGeographicFaqs(ORG_NAME, svc, "Texas", "Houston")).toEqual(
       ts.faqs.serviceCityGeographicFaqs(svc, "Texas", "Houston"),
     );
+  });
+
+  it("service x state / city hero sentences match ServiceState.tsx and ServiceStateCity.tsx", () => {
+    // Prerender reads shortName by regex; the pages read it from the TS module.
+    const svcRows = pillarServiceEntries(readFileSync(join(srcData, "services.ts"), "utf-8"));
+    const tsPillars = ts.services.pillarServices();
+    expect(svcRows.map((s) => [s.slug, s.shortName])).toEqual(tsPillars.map((s) => [s.slug, s.shortName]));
+    const msa = svcRows.find((s) => s.slug === "medicare-set-aside");
+    const texas = ts.states.getStateBySlug("texas");
+    const houston = ts.cities.texas.find((c) => c.slug === "houston");
+    const stateSentence = geoProse.serviceStateDirectAnswer(ORG_NAME, msa.shortName, texas.name, prerenderState(texas));
+    expect(stateSentence).toBe(
+      ts.narratives.serviceStateDirectAnswer(ORG_NAME, "Medicare Set-Aside", texas.name, ts.narratives.getStateNarrative(texas)),
+    );
+    expect(stateSentence.startsWith("Medicare Set-Aside from KW Life Care Planning for matters venued in Texas.")).toBe(true);
+    const citySentence = geoProse.serviceCityDirectAnswer(ORG_NAME, msa.shortName, texas.name, houston.name, prerenderCity(texas, houston));
+    expect(citySentence).toBe(
+      ts.narratives.serviceCityDirectAnswer(
+        ORG_NAME, "Medicare Set-Aside", texas.name, houston.name,
+        ts.narratives.getCityNarrative(texas, houston.name, houston.slug, houston.county, { msaName: houston.msaName }),
+      ),
+    );
+    // FAQ templates keep proper nouns in the service name.
+    expect(JSON.stringify(ts.faqs.serviceStateGeographicFaqs("Medicare Set-Aside Allocation", "Texas"))).not.toMatch(/medicare set-aside/);
   });
 
   it("regulation extractor sees every state with both renamed fields", () => {
