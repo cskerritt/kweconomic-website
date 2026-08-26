@@ -8,6 +8,7 @@ import { graphSchema, organizationSchema, breadcrumbSchema, ORG_URL } from "@/li
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import Reveal from "@/components/Reveal";
 import { useTilt } from "@/hooks/use-pointer-fx";
+import { ORG_NAME } from "@/lib/brand";
 
 function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typeof whitePapers[number]) {
   const tiltRef = useTilt<HTMLAnchorElement>();
@@ -43,9 +44,9 @@ function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typ
 
 export default function WhitePapersHub() {
   usePageMeta({
-    title: "White Papers | Forensic Methodology | KWVRS",
+    title: `White Papers | Life Care Planning Methodology | ${ORG_NAME}`,
     description:
-      "In-depth white papers on the methodology behind defensible vocational, economic, and life care expert opinions. From Kincaid Wolstein Vocational and Rehabilitation Services.",
+      `In-depth white papers on the methodology behind defensible life care plans and medical cost projections. From ${ORG_NAME}.`,
     canonical: `${ORG_URL}/white-papers`,
   });
 
@@ -77,8 +78,8 @@ export default function WhitePapersHub() {
             <span className="kw-gradient-text">White papers</span> on defensible expert methodology
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-2xl">
-            Detailed, objective treatments of how KWVRS builds vocational, economic, and life care
-            opinions that can be examined and tested. Written for attorneys who want to understand the
+            Detailed, objective treatments of how {ORG_NAME} builds life care plans and cost
+            projections that can be examined and tested. Written for attorneys who want to understand the
             method, not just the conclusion.
           </p>
         </div>

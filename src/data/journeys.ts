@@ -640,7 +640,7 @@ export const journeys: JourneyStage[] = [
       {
         question: "Who coordinates between the retained experts?",
         answer:
-          "Retaining counsel coordinates, though KWVRS can set up inter-expert communication protocols when engaged for multiple services on the same case.",
+          "Retaining counsel coordinates, though the life care planner can set up inter-expert communication protocols when several experts are retained on the same case.",
       },
     ],
     sources: [

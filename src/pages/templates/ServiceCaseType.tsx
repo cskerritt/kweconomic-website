@@ -8,6 +8,7 @@ import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function ServiceCaseType() {
@@ -24,8 +25,8 @@ export default function ServiceCaseType() {
   usePageMeta(
     service && caseType
       ? {
-          title: `${title} | KWVRS`,
-          description: `${service.shortName} services tailored to ${caseType.name.toLowerCase()} cases. Methodology, deliverables, and KWVRS-experienced experts. Plaintiff and defense.`,
+          title: `${title} | ${ORG_NAME}`,
+          description: `${service.shortName} services tailored to ${caseType.name.toLowerCase()} cases. Methodology, deliverables, and experienced planners. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -69,9 +70,9 @@ export default function ServiceCaseType() {
         }),
         faqPageSchema(caseType.faqs.slice(0, 4), url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Services", url: "https://kwvrs.com/services" },
-          { name: service.name, url: `https://kwvrs.com/services/${service.slug}` },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Services", url: `${ORG_URL}/services` },
+          { name: service.name, url: `${ORG_URL}/services/${service.slug}` },
           { name: caseType.name, url },
         ]),
       ])} />

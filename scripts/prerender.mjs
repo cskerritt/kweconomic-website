@@ -1,5 +1,5 @@
 /**
- * KWVRS Pre-render Script
+ * KW Life Care Planning Pre-render Script
  *
  * Generates static HTML files for every route after vite build completes.
  * Each file contains correct meta tags, title, description, canonical URL,
@@ -9,11 +9,12 @@
  * Run: node scripts/prerender.mjs
  */
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
+import { readFileSync, writeFileSync, mkdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { pillarServiceEntries } from "./lib/service-slugs.mjs";
-import { ORG_NAME } from "./lib/site.mjs";
+import { ORG_NAME, ORG_SHORT, ORG_PHONE, ORG_PHONE_DISPLAY, SITE_URL } from "./lib/site.mjs";
+import { homepageFaqs } from "../src/data/home-faqs.mjs";
 import * as geoProse from "../src/data/geo-prose.mjs";
 import { createGeoNarrators, extractCityDataByState } from "./lib/geo-inputs.mjs";
 
@@ -21,8 +22,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const DIST = join(ROOT, "dist");
 const SRC_DATA = join(ROOT, "src", "data");
-const BASE_URL = "https://kwvrs.com";
-const COMPANY = "Kincaid Wolstein Vocational and Rehabilitation Services";
+// Brand identity comes from scripts/lib/site.mjs (mirror of src/lib/brand.ts).
+const BASE_URL = SITE_URL;
+const COMPANY = ORG_NAME;
+const DOMAIN = new URL(SITE_URL).host;
 // Raster logo for structured-data logo/image fields - Google's rich-results
 // guidelines prefer PNG/JPG over SVG. Mirrors ORG_LOGO in src/lib/schema.ts so
 // non-JS crawlers see the same logo the React-injected Organization schema emits.
@@ -161,41 +164,6 @@ for (const s of stateData) {
   stateNameMap[s.slug] = s.name;
 }
 
-// Disclosure rules: each entry has stateSlug, stateName, plainSummary, and
-// dateModified. Citation fields were removed by the citation-free policy
-// refactor; primary-source legal citations are intentionally not maintained
-// on the public site.
-function extractDisclosureRules(content) {
-  const stateSlugs = [...content.matchAll(/^\s+stateSlug:\s*"([^"]+)"/gm)].map(
-    (m) => m[1],
-  );
-  const stateNames = [...content.matchAll(/^\s+stateName:\s*"([^"]+)"/gm)].map(
-    (m) => m[1],
-  );
-  const dateModifieds = [
-    ...content.matchAll(/^\s+dateModified:\s*"([^"]+)"/gm),
-  ].map((m) => m[1]);
-  // plainSummary may span multiple lines (template-literal-like split). The
-  // values in disclosureRules.ts use double-quoted string concatenation; the
-  // first quoted chunk is sufficient for a meta-description fallback.
-  const plainSummaries = [
-    ...content.matchAll(/^\s+plainSummary:\s*\n?\s*"([^"]+)"/gm),
-  ].map((m) => m[1]);
-  return stateSlugs.map((stateSlug, i) => ({
-    stateSlug,
-    stateName: stateNames[i],
-    plainSummary: plainSummaries[i] || "",
-    dateModified: dateModifieds[i],
-  }));
-}
-
-// kwlcp.com has no expert-disclosure data (Task 4 removed it); Task 12 strips
-// the disclosure branches from this script entirely. Until then, no file = no rules.
-const disclosureRulesFile = join(SRC_DATA, "disclosureRules.ts");
-const disclosureRules = existsSync(disclosureRulesFile)
-  ? extractDisclosureRules(readFileSync(disclosureRulesFile, "utf-8"))
-  : [];
-
 // ---------------------------------------------------------------------------
 // 2b. Per-state and per-metro narrative inputs.
 //
@@ -286,19 +254,19 @@ function buildPage({ path, title, description, innerHtml, schemaType, extraJsonL
     jsonLd = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Service",
-      name: title.replace(" | KWVRS", ""),
+      name: title.replace(` | ${ORG_NAME}`, ""),
       provider: { "@type": "Organization", name: COMPANY, url: BASE_URL, logo: ORG_LOGO_IMAGE },
       url: url,
       description: description,
     });
   } else if (schemaType === "Article") {
     const articleAuthor = authorSlug
-      ? { "@type": "Person", "@id": `${BASE_URL}/team/${authorSlug}#person`, name: authorName ?? "KWVRS Editorial Team" }
+      ? { "@type": "Person", "@id": `${BASE_URL}/team/${authorSlug}#person`, name: authorName ?? `${ORG_NAME} Editorial Team` }
       : { "@type": "Organization", name: COMPANY };
     jsonLd = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Article",
-      headline: title.replace(" | KWVRS", ""),
+      headline: title.replace(` | ${ORG_NAME}`, ""),
       image: LOGO_URL,
       publisher: { "@type": "Organization", name: COMPANY, url: BASE_URL, logo: ORG_LOGO_IMAGE },
       author: articleAuthor,
@@ -395,214 +363,96 @@ const counts = {
 
 // --- Core pages ---
 
+// Every entry mirrors the usePageMeta() title/description of the React page
+// at the same path (scripts/prerender-meta.test.mjs pins them) so the static
+// shell and the hydrated page advertise the same primary signals.
+const HOME_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 const corePages = [
   {
     path: "/",
-    title: "Vocational, Economic & Life Care Expert Witness Services | KWVRS",
+    title: `Life Care Planning Expert Witness Services | ${ORG_NAME}`,
     description:
-      "Independent vocational evaluations, life care plans, and forensic economic analyses for plaintiff and defense attorneys nationwide. Response in 1 business day.",
+      "Independent, physician-led life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states. Response in 1 business day.",
     innerHtml:
-      `<h1>Defensible expert opinions for plaintiff and defense counsel, nationwide.</h1>` +
-      `<p>Kincaid Wolstein Vocational and Rehabilitation Services provides independent vocational evaluations, life care plans, and forensic economic analyses for plaintiff and defense counsel.</p>` +
-      `<p>Engagements accepted in all 50 states, the District of Columbia, and US territories. Headquarters in Hackensack, NJ with a Richmond, VA office. <a href="tel:+12013430700">(201) 343-0700</a>.</p>` +
-      // FAQ block - mirrors the React FAQ schema for non-JS crawlers and AI search.
-      `<section><h2>Common questions</h2>` +
-      `<details><summary>What is a vocational expert?</summary><p>A vocational expert is a qualified rehabilitation professional who evaluates an individual's ability to work, earn wages, and sustain employment given their education, training, experience, and medical restrictions. In litigation, vocational experts produce earning-capacity opinions and provide testimony on employability and labor-market access.</p></details>` +
-      `<details><summary>Does KWVRS work for plaintiff and defense?</summary><p>Yes. KWVRS accepts retentions from both plaintiff and defense counsel. The methodology is identical regardless of which side commissions the work.</p></details>` +
-      `<details><summary>How much does an expert engagement cost?</summary><p>Full retained-expert engagements are billed hourly across review, evaluation, report, and (if needed) testimony phases.</p></details>` +
-      `<details><summary>How long does an evaluation take?</summary><p>Full retained-expert reports typically take 30 to 90 days from records receipt depending on case complexity. Rush turnarounds are accommodated case-by-case.</p></details>` +
-      `<details><summary>Where does KWVRS provide services?</summary><p>KWVRS accepts engagements in all 50 states, the District of Columbia, and US territories.</p></details>` +
-      `<details><summary>What credentials should I look for?</summary><p>Common credentials are CRC, CVE, CLCP, ABVE/D, and FVE. KWVRS practitioners hold combinations of these plus Ph.D., M.D., and CPA-level credentials.</p></details>` +
-      `</section>` +
+      `<h1>Life Care Plans That Document the Future of Care</h1>` +
+      `<p>${ORG_NAME} produces independent, evidence-based life care plans and medical cost projections for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
+      `<p>Engagements accepted in all 50 states, the District of Columbia, and U.S. territories. Headquarters in Hackensack, NJ with a Richmond, VA office. <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>.</p>` +
+      // FAQ block - the same copy Home.tsx renders (shared src/data/home-faqs.mjs).
+      renderFaqHtml(HOME_FAQS, "Common questions") +
       `<nav><a href="/services">Services</a> <a href="/locations">Locations</a> <a href="/about">About</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebSite",
-    extraJsonLd: buildFaqJsonLd(
-      [
-        {
-          question: "What is a vocational expert?",
-          answer:
-            "A vocational expert is a qualified rehabilitation professional who evaluates an individual's ability to work, earn wages, and sustain employment given their education, training, experience, and medical restrictions. In litigation, vocational experts produce earning-capacity opinions and provide testimony on employability and labor-market access.",
-        },
-        {
-          question: "Does KWVRS work for plaintiff and defense?",
-          answer:
-            "Yes. KWVRS accepts retentions from both plaintiff and defense counsel. The methodology is identical regardless of which side commissions the work.",
-        },
-        {
-          question: "How much does an expert engagement cost?",
-          answer:
-            "Full retained-expert engagements are billed hourly across review, evaluation, report, and (if needed) testimony phases. Specific cost depends on case complexity, the disciplines involved, and the expert's docket.",
-        },
-        {
-          question: "How long does a vocational, economic, or life care evaluation take?",
-          answer:
-            "Full retained-expert reports typically take 30 to 90 days from records receipt depending on case complexity and the expert's docket. Rush turnarounds are accommodated case-by-case.",
-        },
-        {
-          question: "Where does KWVRS provide services?",
-          answer:
-            "KWVRS accepts engagements in all 50 states, the District of Columbia, and US territories. State-specific framing is available on every state and city page. Headquarters is in Hackensack, New Jersey, with a Richmond, Virginia office.",
-        },
-        {
-          question: "What credentials should I look for in a vocational expert?",
-          answer:
-            "Common credentials are CRC (Certified Rehabilitation Counselor), CVE (Certified Vocational Evaluator), CLCP (Certified Life Care Planner), ABVE/D (Diplomate of the American Board of Vocational Experts), and FVE (Forensic Vocational Examiner). KWVRS practitioners hold combinations of these plus Ph.D., M.D., and CPA-level credentials.",
-        },
-      ],
-      `${BASE_URL}/`,
-    ),
+    extraJsonLd: buildFaqJsonLd(HOME_FAQS, `${BASE_URL}/`),
   },
   {
     path: "/about",
-    title: "About KWVRS - Vocational & Rehabilitation Experts",
+    title: `About ${ORG_NAME} - Independent, Physician-Led Life Care Planning`,
     description:
-      "Learn about Kincaid Wolstein Vocational and Rehabilitation Services - our mission, approach, and commitment to objective, evidence-based vocational and rehabilitation consulting.",
+      `${ORG_NAME} prepares independent, physician-led life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states.`,
     innerHtml:
-      '<h1>About KWVRS</h1><p>Kincaid Wolstein Vocational and Rehabilitation Services is a nationwide consulting firm providing objective vocational evaluations, life care planning, forensic economics, and expert witness testimony.</p><nav><a href="/team">Our Team</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
+      `<h1>About ${ORG_NAME}</h1><p>${ORG_NAME} is a nationwide practice preparing independent, physician-led life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for plaintiff and defense counsel.</p><nav><a href="/team">Our Team</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "LocalBusiness",
   },
   {
     path: "/team",
-    title: "Our Team | KWVRS",
+    title: `Our Team | ${ORG_NAME}`,
     description:
-      "Meet the professionals at Kincaid Wolstein Vocational and Rehabilitation Services - credentialed vocational experts, life care planners, and forensic economists.",
+      "Meet the KW Life Care Planning team - a board-certified physician, doctoral-level Certified Life Care Planners, a Medicare Set-Aside Certified Consultant, and a registered nurse life care planner serving attorneys nationwide.",
     innerHtml:
-      '<h1>Our Team</h1><p>The KWVRS team brings together credentialed vocational experts, life care planners, and forensic economists serving attorneys nationwide.</p><nav><a href="/about">About</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
+      `<h1>Our Team</h1><p>The ${ORG_NAME} team brings together a board-certified physician, Certified Life Care Planners, a Medicare Set-Aside Certified Consultant, and a registered nurse life care planner serving attorneys nationwide.</p><nav><a href="/about">About</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebPage",
   },
   {
     path: "/contact",
-    title: "Contact Us | KWVRS",
+    title: `Contact Us | ${ORG_NAME}`,
     description:
-      "Contact Kincaid Wolstein Vocational and Rehabilitation Services for vocational expert evaluations, life care plans, and forensic economic analysis.",
+      `Contact ${ORG_NAME} to discuss a life care plan, medical cost projection, or plan rebuttal for your case. Offices in New Jersey and Virginia; response in 1 business day.`,
     innerHtml:
-      '<h1>Contact KWVRS</h1><p>Reach out to Kincaid Wolstein Vocational and Rehabilitation Services to discuss your case or schedule a consultation.</p><nav><a href="/services">Services</a> <a href="/locations">Locations</a> <a href="/about">About</a></nav>',
+      `<h1>Contact ${ORG_NAME}</h1><p>Reach out to discuss a life care plan, medical cost projection, or plan rebuttal for your case, or to schedule a consultation.</p><nav><a href="/services">Services</a> <a href="/locations">Locations</a> <a href="/about">About</a></nav>`,
     schemaType: "LocalBusiness",
   },
   {
-    path: "/intake",
-    title: "Retain KWVRS - Intake Forms | KWVRS",
-    description:
-      "Start a KWVRS engagement. Choose the digital intake form that matches your matter - personal injury or matrimonial - each mirroring its Professional Services Agreement.",
-    innerHtml:
-      '<h1>Retain KWVRS</h1><p>Choose the digital intake form that matches your matter. The unified retainer intake routes your case type to the matching Professional Services Agreement workflow.</p><nav><a href="/contact/intake">Retainer intake</a> <a href="/contact">Contact</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/forms",
-    title: "Forms | KWVRS",
-    description:
-      "Download intake and medical records forms for a Kincaid Wolstein Vocational and Rehabilitation Services evaluation, including the HIPAA authorization and patient health questionnaire.",
-    innerHtml:
-      '<h1>Forms</h1><p>Download intake and medical records forms to support a Kincaid Wolstein Vocational and Rehabilitation Services evaluation.</p><nav><a href="/contact">Contact</a> <a href="/services">Services</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/phq-form-english",
-    title: "Patient Health Questionnaire (English) | KWVRS",
-    description:
-      "Download the patient health questionnaire PDF for a Kincaid Wolstein Vocational and Rehabilitation Services evaluation and return it via secure upload.",
-    innerHtml:
-      '<h1>Patient Health Questionnaire (English)</h1><p>Download the PDF and return it via secure upload to support your evaluation.</p><nav><a href="/forms">All Forms</a> <a href="/contact">Contact</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/phq-form-spanish",
-    title: "Cuestionario de Salud del Paciente (Español) | KWVRS",
-    description:
-      "Descargue el PDF del cuestionario de salud del paciente para una evaluación de Kincaid Wolstein Vocational and Rehabilitation Services y devuélvalo por carga segura.",
-    innerHtml:
-      '<h1>Cuestionario de Salud del Paciente (Español)</h1><p>Descargue el PDF y devuélvalo por carga segura para respaldar su evaluación.</p><nav><a href="/forms">Formularios</a> <a href="/contact">Contacto</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/hipaa-english",
-    title: "HIPAA Authorization (English) | KWVRS",
-    description:
-      "Download the HIPAA authorization PDF to release medical records for a Kincaid Wolstein Vocational and Rehabilitation Services evaluation and return it via secure upload.",
-    innerHtml:
-      '<h1>HIPAA Authorization (English)</h1><p>Download the PDF and return it via secure upload to authorize the release of medical records.</p><nav><a href="/forms">All Forms</a> <a href="/contact">Contact</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/hipaa-spanish",
-    title: "Autorización HIPAA (Español) | KWVRS",
-    description:
-      "Descargue el PDF de la autorización HIPAA para divulgar registros médicos para una evaluación de Kincaid Wolstein Vocational and Rehabilitation Services y devuélvalo por carga segura.",
-    innerHtml:
-      '<h1>Autorización HIPAA (Español)</h1><p>Descargue el PDF y devuélvalo por carga segura para autorizar la divulgación de registros médicos.</p><nav><a href="/forms">Formularios</a> <a href="/contact">Contacto</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
     path: "/services",
-    title: "Expert Services | KWVRS",
+    title: `Life Care Planning Services | ${ORG_NAME}`,
     description:
-      "KWVRS provides vocational expert evaluations, life care planning, forensic economics, loss of household services analysis, matrimonial assessments, standard of care reviews, and expert witness testimony.",
+      `${ORG_NAME} prepares life care plans, pediatric and catastrophic injury plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations - serving all states.`,
     innerHtml:
-      '<h1>Expert Services</h1><p>Kincaid Wolstein Vocational and Rehabilitation Services offers a full range of forensic vocational and rehabilitation consulting services for litigation support.</p><nav><a href="/services/vocational-expert">Vocational Expert</a> <a href="/services/life-care-planning">Life Care Planning</a> <a href="/services/forensic-economics">Forensic Economics</a> <a href="/contact">Contact</a></nav>',
+      `<h1>Life Care Planning Services</h1><p>${ORG_NAME} prepares life care plans, pediatric and catastrophic injury plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for litigation support nationwide.</p><nav><a href="/services/life-care-planning">Life Care Planning</a> <a href="/services/medical-cost-projection">Medical Cost Projections</a> <a href="/services/life-care-plan-rebuttal">Plan Rebuttal</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "Service",
   },
   {
     path: "/locations",
-    title: "Locations | KWVRS - Serving All 50 States",
+    title: `Locations | ${ORG_NAME} - Serving All 50 States`,
     description:
-      "KWVRS provides vocational expert services, life care planning, and forensic economics in all 50 states, Washington D.C., and U.S. territories.",
+      `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, and U.S. territories. Find your state to learn more.`,
     innerHtml:
-      '<h1>Locations - Serving All 50 States</h1><p>Kincaid Wolstein Vocational and Rehabilitation Services provides expert services nationwide. Select a state to learn more about our services in your area.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>',
+      `<h1>Nationwide Coverage</h1><p>${ORG_NAME} accepts cases in all 50 states, the District of Columbia, and U.S. territories. Select a state to learn more about life care planning in your area.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>`,
     schemaType: "WebPage",
   },
   {
     path: "/tools",
-    title: "Attorney Tools | KWVRS",
+    title: `Attorney Tools | ${ORG_SHORT}`,
     description:
-      "Free planning tools for attorneys from KWVRS: run a preliminary economic loss estimate and get the full breakdown by email.",
+      "Free life expectancy lookup for attorneys and life care planners from the CDC United States Life Tables, plus links to our sister practices' economic damages calculators.",
     innerHtml:
-      '<h1>Attorney Tools</h1><p>Planning-level tools for case evaluation from Kincaid Wolstein Vocational and Rehabilitation Services, serving plaintiff and defense counsel nationwide.</p><nav><a href="/tools/economic-damages-estimator">Economic damages estimator</a> <a href="/tools/household-services">Household services valuator</a> <a href="/tools/life-expectancy">Life expectancy calculator</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/tools/economic-damages-estimator",
-    title: "Economic Damages Estimator | KWVRS",
-    description:
-      "Free preliminary economic loss estimator for attorneys: past and future lost earnings, future medical and attendant care in present value, with a planning range.",
-    innerHtml:
-      '<h1>Economic Damages Estimator</h1><p>Enter case basics - income, ages, injury period, and future care costs - to see a preliminary, planning-level economic loss range with past and future lost earnings and future medical costs in present value. Request the full line-item breakdown by email.</p><nav><a href="/tools">All tools</a> <a href="/services/forensic-economics">Forensic economics services</a> <a href="/contact">Contact</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/tools/household-services",
-    title: "Household Services Valuator | KWVRS",
-    description:
-      "Estimate the annual replacement value of a person's unpaid household services from public ATUS time-use data and BLS OEWS wages, with Word, Excel, and CSV exhibits.",
-    innerHtml:
-      '<h1>Household Services Valuator</h1><p>Estimate the annual replacement value of a person\'s unpaid household work from public American Time Use Survey time-use data and BLS Occupational Employment and Wage Statistics wages. Download a Word exhibit, an Excel workbook, or a CSV.</p><nav><a href="/tools">All tools</a> <a href="/tools/household-services/methodology">Methodology</a> <a href="/services/loss-of-household-services">Loss of household services</a> <a href="/contact">Contact</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
-    path: "/tools/household-services/methodology",
-    title: "Household Services Valuator - Methodology | KWVRS",
-    description:
-      "How the KW Household Services Valuator estimates the replacement value of unpaid household work from public ATUS time-use data and BLS OEWS wages.",
-    innerHtml:
-      '<h1>Household Services Valuator - Methodology</h1><p>The replacement-cost method values unpaid household work using American Time Use Survey time-use data and BLS Occupational Employment and Wage Statistics wages.</p><nav><a href="/tools/household-services">Back to the valuator</a> <a href="/tools">All tools</a> <a href="/contact">Contact</a></nav>',
+      `<h1>Attorney Tools</h1><p>A free life expectancy lookup from the CDC United States Life Tables for attorneys and life care planners, plus links to the economic damages calculators published by our sister practices.</p><nav><a href="/tools/life-expectancy">Life expectancy calculator</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebPage",
   },
   {
     path: "/tools/life-expectancy",
-    title: "Life Expectancy Calculator | KWVRS",
+    title: `Life Expectancy Calculator | ${ORG_NAME}`,
     description:
-      "Look up remaining life expectancy by age, sex, and population group using the CDC United States Life Tables, 2023.",
+      "Look up remaining life expectancy by age, sex, and population group using the CDC United States Life Tables, 2023. Population averages for education, not a prediction for any individual.",
     innerHtml:
-      '<h1>Life Expectancy Calculator</h1><p>Estimate remaining life expectancy from the CDC/NCHS United States Life Tables, 2023, by age, sex, and population group. Results are period-life-table population averages, not a prediction for any individual.</p><nav><a href="/tools">All tools</a> <a href="/services/forensic-economics">Forensic economics</a> <a href="/services/life-care-planning">Life care planning</a> <a href="/contact">Contact</a></nav>',
+      '<h1>Life Expectancy Calculator</h1><p>Estimate remaining life expectancy from the CDC/NCHS United States Life Tables, 2023, by age, sex, and population group. Results are period-life-table population averages, not a prediction for any individual.</p><nav><a href="/tools">All tools</a> <a href="/services/life-care-planning">Life care planning</a> <a href="/methods/life-expectancy-in-life-care-planning">Life expectancy in life care planning</a> <a href="/contact">Contact</a></nav>',
     schemaType: "WebPage",
   },
   {
     path: "/resources/faq",
-    title: "FAQ | KWVRS",
+    title: `Frequently Asked Questions | ${ORG_NAME}`,
     description:
-      "Frequently asked questions about vocational expert evaluations, life care planning, forensic economics, and expert witness testimony from KWVRS.",
+      `Answers to common questions about ${ORG_NAME}'s life care plans, medical cost projections, plan rebuttals, planner credentials, fees, and nationwide coverage.`,
     innerHtml:
-      '<h1>Frequently Asked Questions</h1><p>Find answers to common questions about vocational rehabilitation evaluations, life care planning, forensic economics, and working with KWVRS.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>',
+      `<h1>Frequently Asked Questions</h1><p>Find answers to common questions about life care plans, medical cost projections, plan rebuttals, planner credentials, fees, and working with ${ORG_NAME}.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>`,
     schemaType: "WebPage",
   },
 ];
@@ -617,56 +467,56 @@ for (const page of corePages) {
 const phase2Pages = [
   {
     path: "/knowledge",
-    title: "Knowledge Center | KWVRS",
+    title: `Knowledge Center | ${ORG_NAME}`,
     description:
-      "In-depth guides on vocational rehabilitation, life care planning, forensic economics, and expert witness testimony from Kincaid Wolstein Vocational and Rehabilitation Services.",
+      "In-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness testimony - written for attorneys and other legal professionals.",
     innerHtml:
-      '<h1>Knowledge Center</h1><p>Explore in-depth guides on vocational rehabilitation, life care planning, forensic economics, and expert witness testimony.</p><nav><a href="/services">Services</a> <a href="/insights">Insights</a> <a href="/contact">Contact</a></nav>',
+      '<h1>Knowledge Center</h1><p>Explore in-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness testimony.</p><nav><a href="/services">Services</a> <a href="/insights">Insights</a> <a href="/contact">Contact</a></nav>',
     schemaType: "WebPage",
   },
   {
     path: "/insights",
-    title: "Insights | KWVRS",
+    title: `Insights | ${ORG_NAME}`,
     description:
-      "Articles and analysis on vocational rehabilitation, forensic economics, life care planning, and litigation from the KWVRS team.",
+      `Articles on life care planning, medical cost projection, Medicare set-asides, and expert witness standards - from the practitioners at ${ORG_NAME}.`,
     innerHtml:
-      '<h1>Insights</h1><p>Articles and analysis on vocational rehabilitation, forensic economics, life care planning, and litigation topics.</p><nav><a href="/knowledge">Knowledge Center</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
+      '<h1>Insights</h1><p>Articles and analysis on life care planning, medical cost projection, Medicare set-asides, and litigation topics.</p><nav><a href="/knowledge">Knowledge Center</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
     schemaType: "WebPage",
   },
   {
     path: "/case-studies",
-    title: "Case Studies | KWVRS",
+    title: `Illustrative Life Care Planning Engagements | ${ORG_NAME}`,
     description:
-      "Case studies demonstrating how KWVRS vocational experts, life care planners, and forensic economists have supported litigation outcomes.",
+      `${ORG_NAME} prepares life care plans, medical cost projections, and Medicare set-aside allocations for plaintiff and defense counsel. Three anonymized, illustrative engagements show how a plan is built.`,
     innerHtml:
-      '<h1>Case Studies</h1><p>Examples of how Kincaid Wolstein Vocational and Rehabilitation Services has provided expert analysis in vocational, economic, and life care planning matters.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
+      `<h1>Illustrative Life Care Planning Engagements</h1><p>Anonymized, illustrative engagements showing how ${ORG_NAME} builds a life care plan, a medical cost projection, and a Medicare set-aside allocation.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebPage",
   },
   {
     path: "/schedule-consultation",
-    title: "Schedule a Consultation | KWVRS",
+    title: `Schedule a Consultation | ${ORG_NAME}`,
     description:
-      "Schedule a consultation with Kincaid Wolstein Vocational and Rehabilitation Services to discuss vocational evaluations, life care plans, or forensic economic analysis for your case.",
+      `Contact ${ORG_NAME} to discuss your case and schedule a consultation with a certified life care planner. Response within one business day.`,
     innerHtml:
-      '<h1>Schedule a Consultation</h1><p>Contact Kincaid Wolstein Vocational and Rehabilitation Services to discuss your case requirements and schedule an expert consultation.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
+      `<h1>Schedule a Consultation</h1><p>Contact ${ORG_NAME} to discuss your case requirements and schedule a consultation with a certified life care planner.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebPage",
   },
   {
     path: "/privacy",
-    title: "Privacy Policy | KWVRS",
+    title: `Privacy Policy | ${ORG_NAME}`,
     description:
-      "Privacy policy for the Kincaid Wolstein Vocational and Rehabilitation Services website.",
+      `Privacy Policy for ${DOMAIN} - how ${ORG_NAME} collects, uses, and protects information on this website.`,
     innerHtml:
-      '<h1>Privacy Policy</h1><p>This privacy policy describes how Kincaid Wolstein Vocational and Rehabilitation Services collects, uses, and protects information through our website.</p>',
+      `<h1>Privacy Policy</h1><p>This privacy policy describes how ${ORG_NAME} collects, uses, and protects information through our website.</p>`,
     schemaType: "WebPage",
   },
   {
     path: "/terms",
-    title: "Terms of Service | KWVRS",
+    title: `Terms of Service | ${ORG_NAME}`,
     description:
-      "Terms of service for the Kincaid Wolstein Vocational and Rehabilitation Services website.",
+      `Terms of Service for ${DOMAIN} - governing your use of the ${ORG_NAME} website.`,
     innerHtml:
-      '<h1>Terms of Service</h1><p>Terms governing the use of the Kincaid Wolstein Vocational and Rehabilitation Services website.</p>',
+      `<h1>Terms of Service</h1><p>Terms governing the use of the ${ORG_NAME} website.</p>`,
     schemaType: "WebPage",
   },
 ];
@@ -682,7 +532,7 @@ for (const page of phase2Pages) {
  */
 function renderBylineHtml(authorSlug, dateModified) {
   const member = authorSlug ? teamMap[authorSlug] : undefined;
-  const displayName = member?.name ?? "KWVRS Editorial Team";
+  const displayName = member?.name ?? `${ORG_NAME} Editorial Team`;
   // Filter credentials already in the name (e.g. team names often include
   // "Ph.D." or "M.D." inline) to avoid duplication like "Ph.D., Ph.D.".
   const filteredCreds = (member?.credentials ?? []).filter(
@@ -709,12 +559,12 @@ for (const guide of guideData) {
     path,
     buildPage({
       path,
-      title: `${guide.name} | KWVRS`,
-      description: `${guide.name} - an in-depth guide from Kincaid Wolstein Vocational and Rehabilitation Services covering key concepts, methodology, and practical considerations.`,
+      title: `${guide.name} | ${ORG_NAME}`,
+      description: `${guide.name} - an in-depth guide from ${ORG_NAME} covering key concepts, methodology, and practical considerations.`,
       innerHtml:
         `<h1>${escapeHtml(guide.name)}</h1>` +
         renderBylineHtml(author.authorSlug, dateMod) +
-        `<p>An in-depth guide from Kincaid Wolstein Vocational and Rehabilitation Services.</p>` +
+        `<p>An in-depth guide from ${ORG_NAME}.</p>` +
         `<nav><a href="/knowledge">Knowledge Center</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
       schemaType: "Article",
       authorSlug: author.authorSlug,
@@ -737,12 +587,12 @@ for (const post of postData) {
     path,
     buildPage({
       path,
-      title: `${post.name} | KWVRS`,
-      description: `${post.name} - analysis and insights from Kincaid Wolstein Vocational and Rehabilitation Services.`,
+      title: `${post.name} | ${ORG_NAME}`,
+      description: `${post.name} - analysis and insights from ${ORG_NAME}.`,
       innerHtml:
         `<h1>${escapeHtml(post.name)}</h1>` +
         renderBylineHtml(author.authorSlug, dateMod) +
-        `<p>Analysis and insights from Kincaid Wolstein Vocational and Rehabilitation Services.</p>` +
+        `<p>Analysis and insights from ${ORG_NAME}.</p>` +
         `<nav><a href="/insights">All Insights</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
       schemaType: "Article",
       authorSlug: author.authorSlug,
@@ -764,11 +614,11 @@ for (const guide of guideSlugData) {
     path,
     buildPage({
       path,
-      title: `${guide.name} | KWVRS`,
-      description: `${guide.name} - an in-depth guide from Kincaid Wolstein Vocational and Rehabilitation Services covering key concepts, methodology, and practical considerations.`,
+      title: `${guide.name} | ${ORG_NAME}`,
+      description: `${guide.name} - an in-depth guide from ${ORG_NAME} covering key concepts, methodology, and practical considerations.`,
       innerHtml:
         `<h1>${escapeHtml(guide.name)}</h1>` +
-        `<p>An in-depth guide from Kincaid Wolstein Vocational and Rehabilitation Services.</p>` +
+        `<p>An in-depth guide from ${ORG_NAME}.</p>` +
         `<nav><a href="/guides">All Guides</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
       schemaType: "Article",
     }),
@@ -784,11 +634,11 @@ for (const cmp of comparisonData) {
     path,
     buildPage({
       path,
-      title: `${cmp.name} | KWVRS`,
-      description: `${cmp.name} - side-by-side comparison from Kincaid Wolstein Vocational and Rehabilitation Services. Scope, methodology, credentials, and when to retain.`,
+      title: `${cmp.name} | ${ORG_NAME}`,
+      description: `${cmp.name} - side-by-side comparison from ${ORG_NAME}. Scope, methodology, credentials, and when to retain.`,
       innerHtml:
         `<h1>${escapeHtml(cmp.name)}</h1>` +
-        `<p>Side-by-side comparison from Kincaid Wolstein Vocational and Rehabilitation Services.</p>` +
+        `<p>Side-by-side comparison from ${ORG_NAME}.</p>` +
         `<nav><a href="/compare">All Comparisons</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
       schemaType: "Article",
     }),
@@ -804,9 +654,9 @@ for (const svc of serviceData) {
     path,
     buildPage({
       path,
-      title: `${svc.name} - Nationwide Expert Witness | KWVRS`,
-      description: `${svc.name} from Kincaid Wolstein Vocational and Rehabilitation Services. Independent, evidence-based analysis for plaintiff and defense attorneys nationwide.`,
-      innerHtml: `<h1>${escapeHtml(svc.name)}</h1><p>Kincaid Wolstein Vocational and Rehabilitation Services provides ${escapeHtml(svc.name.toLowerCase())} for litigation support nationwide.</p><nav><a href="/services">All Services</a> <a href="/locations">Locations</a> <a href="/contact">Contact</a></nav>`,
+      title: `${svc.name} - Nationwide Expert Witness | ${ORG_NAME}`,
+      description: `${svc.name} from ${ORG_NAME}. Independent, evidence-based analysis for plaintiff and defense attorneys nationwide.`,
+      innerHtml: `<h1>${escapeHtml(svc.name)}</h1><p>${ORG_NAME} provides ${escapeHtml(svc.name.toLowerCase())} for litigation support nationwide.</p><nav><a href="/services">All Services</a> <a href="/locations">Locations</a> <a href="/contact">Contact</a></nav>`,
       schemaType: "Service",
     })
   );
@@ -821,7 +671,7 @@ for (const state of stateData) {
   const faqs = stateGeographicFaqs(state.name);
   const url = `${BASE_URL}${path}`;
   const innerHtml =
-    `<h1>Life Care Planners in ${escapeHtml(state.name)}</h1>` +
+    `<h1>Life Care Planners in ${escapeHtml(geoProse.placeName(state.name))}</h1>` +
     `<p>${escapeHtml(narrative.directAnswer)}</p>` +
     `<p>${escapeHtml(narrative.careContext)}</p>` +
     `<p>${escapeHtml(narrative.legalContext)}</p>` +
@@ -831,7 +681,8 @@ for (const state of stateData) {
     path,
     buildPage({
       path,
-      title: `Life Care Planners in ${state.name} | ${ORG_NAME}`,
+      // Match StateHub.tsx (placeName: "the District of Columbia").
+      title: `Life Care Planners in ${geoProse.placeName(state.name)} | ${ORG_NAME}`,
       description: narrative.directAnswer.slice(0, 160),
       innerHtml,
       schemaType: "Service",
@@ -886,7 +737,7 @@ for (const svc of serviceData) {
     const url = `${BASE_URL}${path}`;
     const directAnswer = geoProse.serviceStateDirectAnswer(ORG_NAME, svc.shortName, state.name, narrative);
     const innerHtml =
-      `<h1>${escapeHtml(svc.name)} in ${escapeHtml(state.name)}</h1>` +
+      `<h1>${escapeHtml(svc.name)} in ${escapeHtml(geoProse.placeName(state.name))}</h1>` +
       `<p>${escapeHtml(directAnswer)}</p>` +
       `<p>${escapeHtml(narrative.legalContext)}</p>` +
       renderFaqHtml(faqs, `Frequently asked: ${svc.name} in ${state.name}`) +
@@ -895,7 +746,7 @@ for (const svc of serviceData) {
       path,
       buildPage({
         path,
-        title: `${svc.name} in ${state.name} | ${ORG_NAME}`,
+        title: `${svc.name} in ${geoProse.placeName(state.name)} | ${ORG_NAME}`,
         description: directAnswer.slice(0, 160),
         innerHtml,
         schemaType: "Service",
@@ -960,14 +811,15 @@ const memoriamSlugs = new Set(
     .filter(Boolean),
 );
 
+// Mirror the src/pages/hubs/*HubPage.tsx usePageMeta values.
 const newHubPages = [
-  { path: "/case-types", title: "Case Types | KWVRS", description: "Case types KWVRS experts support across litigation.", innerHtml: "<h1>Case Types</h1>", schemaType: "WebPage" },
-  { path: "/credentials", title: "Credentials | KWVRS", description: "Professional credentials held by KWVRS experts.", innerHtml: "<h1>Credentials</h1>", schemaType: "WebPage" },
-  { path: "/guides", title: "Guides | KWVRS", description: "In-depth guides on vocational, economic, and life care planning topics.", innerHtml: "<h1>Guides</h1>", schemaType: "WebPage" },
-  { path: "/compare", title: "Comparisons | KWVRS", description: "Side-by-side comparisons of expert disciplines, credentials, and methods.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
-  { path: "/methods", title: "Methods | KWVRS", description: "Methodologies KWVRS experts use in forensic analysis.", innerHtml: "<h1>Methods</h1>", schemaType: "WebPage" },
-  { path: "/jurisdictions", title: "Jurisdictions | KWVRS", description: "State and federal jurisdictions where KWVRS experts practice.", innerHtml: "<h1>Jurisdictions</h1>", schemaType: "WebPage" },
-  { path: "/attorneys", title: "Attorneys | KWVRS", description: "Stage-by-stage guidance for attorneys retaining expert witnesses.", innerHtml: "<h1>Attorneys</h1>", schemaType: "WebPage" },
+  { path: "/case-types", title: `Case Types | ${ORG_NAME}`, description: "Life care planning and medical cost projection across the most common civil case types: personal injury, birth injury, catastrophic injury, workers' compensation, wrongful death, and more.", innerHtml: "<h1>Case Types</h1>", schemaType: "WebPage" },
+  { path: "/credentials", title: `Expert Credentials | CLCP, CNLCP, MSCC, CRC | ${ORG_NAME}`, description: "Professional credentials held by our life care planners: CLCP, CNLCP, MSCC, CDMS, CRC, M.D., R.N., and Ph.D. Scope, requirements, admissibility.", innerHtml: "<h1>Credentials</h1>", schemaType: "WebPage" },
+  { path: "/guides", title: `Life Care Planning Guides | ${ORG_NAME}`, description: "In-depth practitioner guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice. Methodology, admissibility, and engagement guidance.", innerHtml: "<h1>Guides</h1>", schemaType: "WebPage" },
+  { path: "/compare", title: `Life Care Planning Comparisons | ${ORG_NAME}`, description: "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
+  { path: "/methods", title: `Life Care Planning Methodologies | Present Value, Cost Research | ${ORG_NAME}`, description: "Life care planning methodologies used by our planners: life expectancy, present value analysis, plan development, functional capacity evaluation, cost research, and Medicare set-aside allocation.", innerHtml: "<h1>Methods</h1>", schemaType: "WebPage" },
+  { path: "/jurisdictions", title: `Jurisdictions | ${ORG_NAME} Nationwide`, description: `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`, innerHtml: "<h1>Jurisdictions</h1>", schemaType: "WebPage" },
+  { path: "/attorneys", title: `Resources for Attorneys | ${ORG_NAME}`, description: "Stage-by-stage attorney resources for retaining, preparing, and using a life care planning expert. Considering, retaining, deposition, and trial.", innerHtml: "<h1>Resources for Attorneys</h1>", schemaType: "WebPage" },
 ];
 for (const p of newHubPages) { writePage(p.path, buildPage(p)); counts.core++; }
 
@@ -977,8 +829,8 @@ for (const c of caseTypeData) {
   writePage(`/case-types/${c.slug}`, buildPage({
     path: `/case-types/${c.slug}`,
     // Match CaseTypeHub.tsx (title + H1).
-    title: `${c.name} Expert Witness Services | KWVRS`,
-    description: `Vocational, life care planning, and forensic economic services for ${c.name.toLowerCase()} cases.`,
+    title: `${c.name} Expert Witness Services | ${ORG_NAME}`,
+    description: `Life care planning and medical cost projection for ${c.name.toLowerCase()} cases. Methodology, credentials, and experienced planners. Plaintiff and defense.`,
     innerHtml: `<h1>${escapeHtml(c.name)}</h1>`,
     schemaType: "Service",
   }));
@@ -987,8 +839,8 @@ for (const c of caseTypeData) {
     writePage(`/case-types/${c.slug}/${s.slug}`, buildPage({
       path: `/case-types/${c.slug}/${s.slug}`,
       // Match CaseTypeState.tsx (title + H1) so the prerendered + hydrated signals agree.
-      title: `${c.name} Expert Witness Services in ${s.name} | KWVRS`,
-      description: `Vocational, economic, and life-care expert services for ${c.name.toLowerCase()} cases venued in ${s.name}. Plaintiff and defense.`,
+      title: `${c.name} Expert Witness Services in ${s.name} | ${ORG_NAME}`,
+      description: `Life care planning and medical cost projection for ${c.name.toLowerCase()} cases venued in ${s.name}. Plaintiff and defense.`,
       innerHtml: `<h1>${escapeHtml(c.name)} Expert Services in ${escapeHtml(s.name)}</h1>`,
       schemaType: "LocalBusiness",
     }));
@@ -1002,9 +854,9 @@ for (const c of credentialData) {
   const abbr = credAbbrBySlug[c.slug] || c.name;
   writePage(`/credentials/${c.slug}`, buildPage({
     path: `/credentials/${c.slug}`,
-    // Match CredentialHub.tsx (title `${abbr} Credential | ${name} | KWVRS`, H1 `${name} (${abbr})`).
-    title: `${abbr} Credential | ${c.name} | KWVRS`,
-    description: `${c.name} - scope, requirements, and KWVRS experts holding this credential.`,
+    // Match CredentialHub.tsx (title `${abbr} Credential | ${name} | ${ORG_NAME}`, H1 `${name} (${abbr})`).
+    title: `${abbr} Credential | ${c.name} | ${ORG_NAME}`,
+    description: `${c.name} - scope, requirements, and our planners holding this credential.`,
     innerHtml: `<h1>${escapeHtml(c.name)} (${escapeHtml(abbr)})</h1>`,
     schemaType: "Article",
   }));
@@ -1013,8 +865,8 @@ for (const c of credentialData) {
     writePage(`/credentials/${c.slug}/${s.slug}`, buildPage({
       path: `/credentials/${c.slug}/${s.slug}`,
       // Match CredentialState.tsx (abbreviation-based title + H1).
-      title: `${abbr} Experts in ${s.name} | KWVRS`,
-      description: `${c.name} (${abbr}) credential scope, recognition, and experts available for ${s.name} matters. Vocational expert services for plaintiff and defense.`,
+      title: `${abbr} Experts in ${s.name} | ${ORG_NAME}`,
+      description: `${c.name} (${abbr}) credential scope, recognition, and life care planners available for ${s.name} matters. Plaintiff and defense.`,
       innerHtml: `<h1>${escapeHtml(abbr)} in ${escapeHtml(s.name)}</h1>`,
       schemaType: "LocalBusiness",
     }));
@@ -1026,7 +878,8 @@ for (const c of credentialData) {
 for (const m of methodData) {
   writePage(`/methods/${m.slug}`, buildPage({
     path: `/methods/${m.slug}`,
-    title: `${m.name} | KWVRS`,
+    // Match MethodologyExplainer.tsx.
+    title: `${m.name} | Methodology | ${ORG_NAME}`,
     description: `${m.name} methodology explained.`,
     innerHtml: `<h1>${escapeHtml(m.name)}</h1>`,
     schemaType: "Article",
@@ -1039,10 +892,10 @@ for (const t of teamData) {
   const memoriam = memoriamSlugs.has(t.slug);
   writePage(`/team/${t.slug}`, buildPage({
     path: `/team/${t.slug}`,
-    title: memoriam ? `${t.name} | In Memoriam | KWVRS` : `${t.name} | KWVRS`,
+    title: memoriam ? `${t.name} | In Memoriam | ${ORG_NAME}` : `${t.name} | ${ORG_NAME}`,
     description: memoriam
-      ? `${t.name} - remembered by the KWVRS team.`
-      : `${t.name} - KWVRS expert profile.`,
+      ? `${t.name} - remembered by the ${ORG_NAME} team.`
+      : `${t.name} - ${ORG_NAME} life care planning expert profile.`,
     innerHtml: `<h1>${escapeHtml(t.name)}</h1>`,
     schemaType: "WebPage",
   }));
@@ -1056,7 +909,7 @@ for (const s of serviceData) {
   for (const variant of ["cost", "process", "timeline"]) {
     writePage(`/services/${s.slug}/${variant}`, buildPage({
       path: `/services/${s.slug}/${variant}`,
-      title: `${s.name} ${variant.charAt(0).toUpperCase() + variant.slice(1)} | KWVRS`,
+      title: `${s.name} ${variant.charAt(0).toUpperCase() + variant.slice(1)} | ${ORG_NAME}`,
       description: `${s.name} ${variant} details.`,
       innerHtml: `<h1>${escapeHtml(s.name)} ${variant}</h1>`,
       schemaType: "Service",
@@ -1066,7 +919,8 @@ for (const s of serviceData) {
   for (const c of caseTypeData) {
     writePage(`/services/${s.slug}/case/${c.slug}`, buildPage({
       path: `/services/${s.slug}/case/${c.slug}`,
-      title: `${s.name} for ${c.name} | KWVRS`,
+      // Match ServiceCaseType.tsx.
+      title: `${s.name} for ${c.name} Cases | ${ORG_NAME}`,
       description: `${s.name} applied to ${c.name.toLowerCase()} cases.`,
       innerHtml: `<h1>${escapeHtml(s.name)} for ${escapeHtml(c.name)}</h1>`,
       schemaType: "Service",
@@ -1087,7 +941,7 @@ let journeyPages = 0;
 for (const stage of ["considering", "retaining", "preparing-deposition", "trial"]) {
   writePage(`/attorneys/${stage}`, buildPage({
     path: `/attorneys/${stage}`,
-    title: `${STAGE_LABELS[stage]}: Attorney Guides by Case Type | KWVRS`,
+    title: `${STAGE_LABELS[stage]}: Attorney Guides by Case Type | ${ORG_NAME}`,
     description: `${STAGE_LABELS[stage]} guides for attorneys, by case type: step-by-step actions, required documents, common pitfalls, and FAQs.`,
     innerHtml: `<h1>${escapeHtml(STAGE_LABELS[stage])}</h1>`,
     schemaType: "WebPage",
@@ -1096,67 +950,14 @@ for (const stage of ["considering", "retaining", "preparing-deposition", "trial"
   for (const c of caseTypeData) {
     writePage(`/attorneys/${stage}/${c.slug}`, buildPage({
       path: `/attorneys/${stage}/${c.slug}`,
-      title: `${stage.replace("-", " ")} - ${c.name} | KWVRS`,
+      // Match JourneyStage.tsx.
+      title: `${STAGE_LABELS[stage]} for ${c.name} Cases | ${ORG_NAME}`,
       description: `Attorney guidance for ${stage.replace("-", " ")} in ${c.name.toLowerCase()} cases.`,
       innerHtml: `<h1>${escapeHtml(c.name)}: ${stage}</h1>`,
       schemaType: "Article",
     }));
     journeyPages++;
   }
-}
-
-// ---------------------------------------------------------------------------
-// 4c. Expert Disclosure pillar + per-state pages.
-// Mirrors the React-rendered <ExpertDisclosurePillar> and <ExpertDisclosureState>
-// pages so crawlers see the rule citations, plain summaries, and breadcrumbs
-// before hydration. URL prefix is /services/expert-disclosure.
-// ---------------------------------------------------------------------------
-
-const EXPERT_DISCLOSURE_PILLAR = "/services/expert-disclosure";
-let disclosurePillarPages = 0;
-{
-  const ruleListItems = disclosureRules
-    .slice()
-    .sort((a, b) => a.stateName.localeCompare(b.stateName))
-    .map(
-      (r) =>
-        `<li><a href="${EXPERT_DISCLOSURE_PILLAR}/${r.stateSlug}">${escapeHtml(r.stateName)}</a></li>`,
-    )
-    .join("");
-  const innerHtml =
-    `<h1>Expert Disclosure</h1>` +
-    `<p>Pre-trial expert disclosure services for attorneys nationwide. KWVRS prepares vocational, economic, and life care expert disclosures sized to the governing framework across ${disclosureRules.length} US jurisdictions. Attorneys are responsible for confirming the governing rule against primary sources for their specific case.</p>` +
-    `<h2>Select your jurisdiction (${disclosureRules.length})</h2>` +
-    `<ul>${ruleListItems}</ul>`;
-  writePage(EXPERT_DISCLOSURE_PILLAR, buildPage({
-    path: EXPERT_DISCLOSURE_PILLAR,
-    title: "Expert Disclosure Services | All 50 States | KWVRS",
-    description:
-      "Pre-trial expert disclosure services for attorneys nationwide. State-by-state pages with practice notes for vocational, economic, and life care expert disclosures. Plaintiff and defense.",
-    innerHtml,
-    schemaType: "Service",
-  }));
-  disclosurePillarPages++;
-}
-
-let disclosureStatePages = 0;
-for (const rule of disclosureRules) {
-  const path = `${EXPERT_DISCLOSURE_PILLAR}/${rule.stateSlug}`;
-  const summaryFragment = rule.plainSummary
-    ? rule.plainSummary.slice(0, 140)
-    : `Pre-trial expert disclosure services for attorneys in ${rule.stateName}.`;
-  const description = `${rule.stateName} pre-trial expert disclosure services. ${summaryFragment}`;
-  const innerHtml =
-    `<h1>${escapeHtml(rule.stateName)} Pre-Trial Expert Disclosure</h1>` +
-    `<p>${escapeHtml(rule.plainSummary || `Pre-trial expert disclosure services for ${rule.stateName}.`)}</p>`;
-  writePage(path, buildPage({
-    path,
-    title: `${rule.stateName} Pre-Trial Expert Disclosure Services | KWVRS`,
-    description,
-    innerHtml,
-    schemaType: "Service",
-  }));
-  disclosureStatePages++;
 }
 
 // PSA retainer intake forms. The unified case-type-driven form at
@@ -1224,7 +1025,7 @@ for (const part of wpParts) {
     path,
     buildPage({
       path,
-      title: `${title} | White Paper | KWVRS`,
+      title: `${title} | White Paper | ${ORG_NAME}`,
       description: summary.slice(0, 160),
       innerHtml,
       schemaType: "Article",
@@ -1236,12 +1037,12 @@ writePage(
   "/white-papers",
   buildPage({
     path: "/white-papers",
-    title: "White Papers | Forensic Methodology | KWVRS",
+    title: `White Papers | Life Care Planning Methodology | ${ORG_NAME}`,
     description:
-      "In-depth white papers on the methodology behind defensible vocational, economic, and life care expert opinions from KWVRS.",
+      `In-depth white papers on the methodology behind defensible life care plans and medical cost projections. From ${ORG_NAME}.`,
     innerHtml:
       `<h1>White papers on defensible expert methodology</h1>` +
-      `<p>Detailed, objective treatments of how KWVRS builds vocational, economic, and life care opinions that can be examined and tested.</p>` +
+      `<p>Detailed, objective treatments of how ${ORG_NAME} builds life care plans and cost projections that can be examined and tested.</p>` +
       `<ul>${wpList
         .map((w) => `<li><a href="/white-papers/${w.slug}">${escapeHtml(w.title)}</a> - ${escapeHtml(w.subtitle)}</li>`)
         .join("")}</ul>` +
@@ -1271,13 +1072,11 @@ const total =
   serviceVariantPages +
   serviceCaseTypePages +
   journeyPages +
-  disclosurePillarPages +
-  disclosureStatePages +
   retainerIntakePages +
   whitePaperPages +
   whitePaperHubPages;
 
-console.log("Pre-rendering KWVRS pages...");
+console.log(`Pre-rendering ${ORG_NAME} pages...`);
 console.log(`  Core pages: ${counts.core}`);
 console.log(`  Service pillar pages: ${counts.servicePillar}`);
 console.log(`  Knowledge guides: ${counts.knowledge}`);
@@ -1293,8 +1092,6 @@ console.log(`  Credential x State pages: ${credentialStatePages}`);
 console.log(`  Service variant pages: ${serviceVariantPages}`);
 console.log(`  Service x Case-type pages: ${serviceCaseTypePages}`);
 console.log(`  Attorney journey pages: ${journeyPages}`);
-console.log(`  Expert Disclosure pillar pages: ${disclosurePillarPages}`);
-console.log(`  Disclosure x State pages: ${disclosureStatePages}`);
 console.log(`  PSA retainer intake pages: ${retainerIntakePages}`);
 console.log(`  White paper pages: ${whitePaperPages + whitePaperHubPages}`);
 console.log(`  Total: ${total} pages pre-rendered`);

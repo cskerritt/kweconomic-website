@@ -15,7 +15,28 @@ export const ORG_COUNTRY = "US";
 // rich-results guidelines prefer PNG/JPG over SVG for the logo/image fields.
 export const ORG_LOGO = `${SITE_URL}/images/logo.png`;
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/hero-office-meeting.jpg`;
-export const SAME_AS = ["https://kwvrs.com", "https://kweconomics.com"] as const;
+// Sister practices in the KW family. These are the ONLY places the vocational
+// domain is spelled: everything else (Footer, Tools, data hrefs, sameAs) reads
+// these constants. Scripts that need them load this module through vite.
+export const VOC_SITE_URL = "https://kwvrs.com";
+export const ECON_SITE_URL = "https://kweconomics.com";
+export const SAME_AS = [VOC_SITE_URL, ECON_SITE_URL] as const;
+
+/** Human-readable phone, e.g. "+1-201-343-0700" -> "(201) 343-0700". */
+export function formatPhone(e164: string): string {
+  const d = e164.replace(/\D/g, "").replace(/^1/, "");
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+}
+/** tel: href for an E.164-ish "+1-201-343-0700" string -> "tel:+12013430700". */
+export const telHref = (e164: string): string => `tel:${e164.replace(/-/g, "")}`;
+export const ORG_PHONE_DISPLAY = formatPhone(ORG_PHONE);
+export const ORG_PHONE_VA_DISPLAY = formatPhone(ORG_PHONE_VA);
+
+/**
+ * The retired vocational brand. Guard tests import this so no test file needs
+ * to spell the old name itself (src/brand-strings.test.mjs walks every file).
+ */
+export const LEGACY_BRAND_PATTERN = /KWVRS|Kincaid Wolstein/;
 export const KNOWS_ABOUT = [
   "Life Care Planning",
   "Pediatric Life Care Planning",

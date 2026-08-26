@@ -1,5 +1,6 @@
 import type { Source } from "./types";
 import { refsToSources } from "./references";
+import { VOC_SITE_URL } from "@/lib/brand";
 
 export interface WhitePaperSection {
   heading: string;
@@ -84,7 +85,7 @@ export const whitePapers: WhitePaper[] = [
       {
         heading: "Handing off to the economist",
         bodyHtml:
-          "<p>The completed plan provides <a href=\"https://kwvrs.com/services/forensic-economics\">the economist</a> with a clean, itemized stream of future costs, each with frequency, duration, quantity, and unit cost. Keeping the life care plan and the economic analysis methodologically aligned, while each remains the work of its own expert, produces a future-care damages figure that is consistent end to end and easier to defend as a whole.</p>",
+          `<p>The completed plan provides <a href="${VOC_SITE_URL}/services/forensic-economics">the economist</a> with a clean, itemized stream of future costs, each with frequency, duration, quantity, and unit cost. Keeping the life care plan and the economic analysis methodologically aligned, while each remains the work of its own expert, produces a future-care damages figure that is consistent end to end and easier to defend as a whole.</p>`,
       },
     ],
     sources: refsToSources([

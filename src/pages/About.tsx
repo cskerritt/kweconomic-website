@@ -139,7 +139,7 @@ export default function About() {
       </section>
 
       {/* Testimonials */}
-      <TestimonialSection indices={[1, 2, 3]} />
+      <TestimonialSection indices={[0, 1, 2]} />
 
       {/* CTA */}
       <section className="py-16 md:py-24">

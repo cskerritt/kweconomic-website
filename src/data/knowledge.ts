@@ -15,7 +15,7 @@ export interface KnowledgeGuide {
   sources?: Source[];
   /** ISO date the guide was last reviewed/updated. Defaults to current date when unset. */
   dateModified?: string;
-  /** Team member slug for the AuthorByline. Falls back to "KWVRS Editorial Team" when unset. */
+  /** Team member slug for the AuthorByline. Falls back to the "<ORG_NAME> Editorial Team" byline when unset. */
   authorSlug?: string;
 }
 

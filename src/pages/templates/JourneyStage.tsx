@@ -10,6 +10,7 @@ import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, howToSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function JourneyStage() {
@@ -23,7 +24,7 @@ export default function JourneyStage() {
   usePageMeta(
     j && caseType
       ? {
-          title: `${title} | KWVRS`,
+          title: `${title} | ${ORG_NAME}`,
           description: `Practical guide for attorneys: ${stageLabel.toLowerCase()} in ${caseType.name.toLowerCase()} cases. Step-by-step actions, required documents, common pitfalls, and FAQs.`,
           canonical: url,
         }
@@ -113,9 +114,9 @@ export default function JourneyStage() {
         howToSchema({ name: title, description: j.intro, steps: j.checklist }),
         faqPageSchema(j.faqs, url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Attorneys", url: "https://kwvrs.com/attorneys" },
-          { name: stageLabel, url: `https://kwvrs.com/attorneys/${stage}` },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Attorneys", url: `${ORG_URL}/attorneys` },
+          { name: stageLabel, url: `${ORG_URL}/attorneys/${stage}` },
           { name: caseType.name, url },
         ]),
       ])} />

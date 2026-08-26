@@ -194,12 +194,12 @@ export function buildCityNarrative(input) {
 
 /** Service x State hero sentence (ServiceState.tsx + prerender). */
 export function serviceStateDirectAnswer(orgName, serviceShortName, stateName, stateNarrative) {
-  return `${serviceShortName} from ${orgName} for matters venued in ${stateName}. ${stateNarrative.careContext} Plaintiff and defense.`;
+  return `${serviceShortName} from ${orgName} for matters venued in ${placeName(stateName)}. ${stateNarrative.careContext} Plaintiff and defense.`;
 }
 
 /** Service x City hero sentence (ServiceStateCity.tsx + prerender). */
 export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, cityName, cityNarrative) {
-  return `${serviceShortName} from ${orgName} for cases venued in ${cityName}, ${stateName}. ${cityNarrative.blurb}`;
+  return `${serviceShortName} from ${orgName} for cases venued in ${cityName}, ${placeName(stateName)}. ${cityNarrative.blurb}`;
 }
 
 // ---------------------------------------------------------------------------

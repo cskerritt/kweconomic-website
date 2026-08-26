@@ -5,6 +5,7 @@ import { states } from "@/data/states";
 import { practiceAreasFor } from "@/lib/practice-areas";
 import { initialsOf } from "@/lib/initials";
 import { truncateAtWord } from "@/lib/text";
+import { ORG_NAME } from "@/lib/brand";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { Picture } from "@/components/Picture";
 import Reveal from "@/components/Reveal";
@@ -37,11 +38,11 @@ export default function ExpertProfile() {
     m
       ? {
           title: m.memoriam
-            ? `${m.name} | In Memoriam | KWVRS`
-            : `${m.name}${credentialList} | KWVRS Expert`,
+            ? `${m.name} | In Memoriam | ${ORG_NAME}`
+            : `${m.name}${credentialList} | ${ORG_NAME}`,
           description: m.bio
             ? truncateAtWord(m.bio)
-            : `${m.name}${credentialList} - vocational, economic, or life-care expert at Kincaid Wolstein Vocational and Rehabilitation Services.`,
+            : `${m.name}${credentialList} - life care planning expert at ${ORG_NAME}.`,
           canonical: url,
         }
       : null,
@@ -161,7 +162,7 @@ export default function ExpertProfile() {
               <section id="practice" className="mb-10">
                 <h2 className="font-serif text-2xl font-bold text-navy mb-2">Areas of Practice</h2>
                 <p className="text-neutral-600 text-sm mb-4">
-                  {m.name.split(" ")[0]} works within these KWVRS service lines.
+                  {m.name.split(" ")[0]} works within these service lines.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {practiceAreas.map((svc) => (
@@ -253,7 +254,7 @@ export default function ExpertProfile() {
             <Reveal>
               <div className="rounded-xl border border-neutral-200 bg-neutral-50 px-6 py-8 text-center">
                 <p className="text-neutral-700 leading-relaxed max-w-xl mx-auto">
-                  The KWVRS team remembers {m.name.split(" ")[0]} with gratitude, as a
+                  The {ORG_NAME} team remembers {m.name.split(" ")[0]} with gratitude, as a
                   dedicated professional and a valued colleague and friend.
                 </p>
               </div>
@@ -292,8 +293,8 @@ export default function ExpertProfile() {
             sameAs: m.sameAs,
           })]),
           breadcrumbSchema([
-            { name: "Home", url: "https://kwvrs.com/" },
-            { name: "Team", url: "https://kwvrs.com/team" },
+            { name: "Home", url: `${ORG_URL}/` },
+            { name: "Team", url: `${ORG_URL}/team` },
             { name: m.name, url },
           ]),
         ])}

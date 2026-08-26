@@ -1,5 +1,5 @@
 /**
- * KWVRS llms.txt generator
+ * KW Life Care Planning llms.txt generator
  *
  * Regenerates public/llms.txt (concise) and public/llms-full.txt (comprehensive)
  * directly from the site's source-of-truth data files, so the AI-readable summary
@@ -17,16 +17,18 @@ import { createServer } from "vite";
 import { writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { SITE_URL, ORG_NAME, ORG_SHORT, ORG_PHONE_DISPLAY } from "./lib/site.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const PUBLIC = join(ROOT, "public");
 
-// Stable firm facts (kept consistent with src/lib/schema.ts).
-const COMPANY = "Kincaid Wolstein Vocational and Rehabilitation Services";
-const PHONE = "(201) 343-0700";
-const SITE = "https://kwvrs.com";
-const ECON_SITE = "https://kweconomics.com";
+// Stable firm facts (from scripts/lib/site.mjs, the mirror of src/lib/brand.ts).
+const COMPANY = ORG_NAME;
+const PHONE = ORG_PHONE_DISPLAY;
+const SITE = SITE_URL;
+// The economics sister-practice URL is read from src/lib/brand.ts inside main()
+// (the only module allowed to spell sister domains).
 const HQ = "Hackensack, New Jersey";
 const SECONDARY_OFFICE = "Virginia";
 
@@ -81,6 +83,7 @@ async function main() {
     { comparisons },
     { states },
     { faqs },
+    { ECON_SITE_URL: ECON_SITE },
   ] = await Promise.all([
     load("/src/data/services.ts"),
     load("/src/data/team.ts"),
@@ -91,6 +94,7 @@ async function main() {
     load("/src/data/comparisons.ts"),
     load("/src/data/states.ts"),
     load("/src/data/faqs.ts"),
+    load("/src/lib/brand.ts"),
   ]);
 
   await server.close();
@@ -113,12 +117,12 @@ async function main() {
   // llms.txt - concise, llmstxt.org-style summary
   // -----------------------------------------------------------------------
   const llms = [];
-  llms.push(`# ${COMPANY} (KWVRS)`);
+  llms.push(`# ${COMPANY} (${ORG_SHORT})`);
   llms.push("");
   llms.push("## About");
   llms.push("");
   llms.push(
-    `${COMPANY} is a professional services firm providing vocational expert, life care planning, forensic economic, and rehabilitation consulting services for legal proceedings. The firm provides objective, independent analysis for both plaintiff and defense attorneys, with credentialed experts who offer court-admissible opinions and expert witness testimony nationwide.`
+    `${COMPANY} is a life care planning practice preparing independent, physician-led life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for legal proceedings. The practice provides objective analysis for both plaintiff and defense attorneys, with certified life care planners who offer court-admissible opinions and expert witness testimony nationwide.`
   );
   llms.push("");
   llms.push("## Services");
@@ -153,7 +157,7 @@ async function main() {
   llms.push("");
   llms.push("## Related Site");
   llms.push("");
-  llms.push(`- ${ECON_SITE} - Forensic economics division`);
+  llms.push(`- ${ECON_SITE} - Forensic economics sister practice`);
   llms.push("");
   llms.push("## Case Types Served");
   llms.push("");
@@ -174,15 +178,15 @@ async function main() {
 
   h2("Organization Overview");
   p(
-    `${COMPANY} (KWVRS) is a professional services firm specializing in vocational rehabilitation consulting, life care planning, forensic economics, and expert witness services for the legal community. The firm provides independent, objective analysis for both plaintiff and defense attorneys across all jurisdictions in the United States.`
+    `${COMPANY} (${ORG_SHORT}) is a life care planning practice specializing in life care plans, medical cost projections, plan rebuttals, Medicare set-aside allocations, and expert witness services for the legal community. The practice provides independent, objective analysis for both plaintiff and defense attorneys across all jurisdictions in the United States.`
   );
   p(
-    `KWVRS operates from its New Jersey headquarters and a Virginia office, accepting cases in all 50 states, the District of Columbia, and U.S. territories. All evaluations are performed by credentialed specialists with advanced academic degrees and national certifications. Opinions are grounded in recognized methodology and authoritative data sources, and are prepared to meet the admissibility standards applied in state and federal courts and to withstand cross-examination.`
+    `${ORG_SHORT} operates from its New Jersey headquarters and a Virginia office, accepting cases in all 50 states, the District of Columbia, and U.S. territories. Every plan is developed and reviewed by a board-certified physician who is also a Certified Life Care Planner, supported by certified life care planners with advanced academic degrees and national certifications. Opinions are grounded in recognized methodology and authoritative data sources, and are prepared to meet the admissibility standards applied in state and federal courts and to withstand cross-examination.`
   );
   p(`Website: ${SITE}`);
   p(`Phone: ${PHONE}`);
   p(`Headquarters: ${HQ}`);
-  p(`Forensic economics division: ${ECON_SITE}`);
+  p(`Forensic economics sister practice: ${ECON_SITE}`);
 
   // Team, grouped by role. Memoriam members are excluded: this file is the
   // AI-facing "who can you hire" panel, and a deceased colleague must never
@@ -313,9 +317,9 @@ async function main() {
   li(`Forensic economics: ${ECON_SITE}`);
   full.push("");
 
-  h2("How to Engage KWVRS");
+  h2(`How to Engage ${ORG_SHORT}`);
   p(
-    `Attorneys, claims professionals, and insurers may contact KWVRS directly to discuss case-specific needs. Initial consultations are available to assess case suitability and expert qualifications. The firm accepts referrals from both plaintiff and defense counsel, and provides a written fee schedule and a cost estimate before any engagement begins.`
+    `Attorneys, claims professionals, and insurers may contact ${ORG_SHORT} directly to discuss case-specific needs. Initial consultations are available to assess case suitability and planner qualifications. The practice accepts referrals from both plaintiff and defense counsel, and provides a written fee schedule and a cost estimate before any engagement begins.`
   );
 
   // Editorial prose may carry inline-link markers ([[/route|anchor]]) that only

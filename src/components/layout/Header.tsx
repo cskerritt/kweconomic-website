@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import MobileNav from "./MobileNav";
-import { ORG_NAME, ORG_PHONE, ORG_SHORT } from "@/lib/brand";
+import { ORG_NAME, ORG_PHONE, ORG_PHONE_DISPLAY, ORG_SHORT, telHref } from "@/lib/brand";
 
 // Static list of the 10 LCP pillar slugs (Task 5 replaces this with pillarServices()).
 const serviceLinks = [
@@ -34,13 +34,8 @@ const resourceLinks = [
   { name: "FAQ", href: "/resources/faq" },
 ];
 
-/** Human-readable phone, e.g. "+1-201-343-0700" -> "(201) 343-0700". */
-function formatPhone(e164: string): string {
-  const d = e164.replace(/\D/g, "").replace(/^1/, "");
-  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
-}
-const PHONE_HREF = `tel:${ORG_PHONE.replace(/-/g, "")}`;
-const PHONE_DISPLAY = formatPhone(ORG_PHONE);
+const PHONE_HREF = telHref(ORG_PHONE);
+const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
 
 function Dropdown({
   label,

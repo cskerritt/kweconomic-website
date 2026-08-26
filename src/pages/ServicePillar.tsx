@@ -4,7 +4,7 @@ import { graphSchema, organizationSchema, serviceSchema, breadcrumbSchema, faqPa
 import { getServiceBySlug } from "@/data/services";
 import { caseTypes } from "@/data/caseTypes";
 import { states } from "@/data/states";
-import { ORG_NAME } from "@/lib/brand";
+import { ORG_NAME, ORG_SHORT } from "@/lib/brand";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ContactCTA from "@/components/ContactCTA";
@@ -44,10 +44,10 @@ export default function ServicePillar() {
 
   usePageMeta({
     title: service
-      ? `${service.name} - Nationwide Expert Witness | KWVRS`
-      : "Service | KWVRS",
+      ? `${service.name} - Nationwide Expert Witness | ${ORG_NAME}`
+      : `Service | ${ORG_NAME}`,
     description: service?.description ?? "",
-    canonical: `https://kwvrs.com/services/${serviceSlug ?? ""}`,
+    canonical: `${ORG_URL}/services/${serviceSlug ?? ""}`,
     // Non-pillar cross-sells are reachable but never indexed, prerendered, or
     // listed in the sitemap; the card below hands the visitor to the practice
     // that actually performs the work.
@@ -70,12 +70,12 @@ export default function ServicePillar() {
       answer: `Full retained-expert engagements are billed hourly across review, evaluation, report, and (if needed) testimony phases. Specific cost depends on case complexity and engagement scope.`,
     },
     {
-      question: `Does KWVRS work plaintiff and defense?`,
-      answer: `Yes. KWVRS provides independent, objective ${service.shortName.toLowerCase()} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; KWVRS provides neutral analysis grounded in accepted protocols.`,
+      question: `Does ${ORG_SHORT} work plaintiff and defense?`,
+      answer: `Yes. ${ORG_NAME} provides independent, objective ${service.shortName.toLowerCase()} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every plan is grounded in published standards of practice.`,
     },
     {
-      question: `Where does KWVRS provide ${service.shortName.toLowerCase()}?`,
-      answer: `KWVRS accepts ${service.shortName.toLowerCase()} engagements in all 50 states, the District of Columbia, and US territories. State-specific framing is available on the per-state pages linked below.`,
+      question: `Where does ${ORG_SHORT} provide ${service.shortName.toLowerCase()}?`,
+      answer: `${ORG_NAME} accepts ${service.shortName.toLowerCase()} engagements in all 50 states, the District of Columbia, and US territories. State-specific framing is available on the per-state pages linked below.`,
     },
     {
       question: `What is the typical turnaround for a full ${service.shortName.toLowerCase()} report?`,

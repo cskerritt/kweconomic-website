@@ -15,6 +15,7 @@ import {
   faqPageSchema,
   ORG_URL,
 } from "@/lib/schema";
+import { placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
 import { getStateNarrative, serviceStateDirectAnswer } from "@/data/narratives";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
@@ -40,7 +41,7 @@ export default function ServiceState() {
 
   usePageMeta({
     title: service && state
-      ? `${service.shortName} in ${state.name} | ${ORG_NAME}`
+      ? `${service.shortName} in ${placeName(state.name)} | ${ORG_NAME}`
       : `Service | ${ORG_NAME}`,
     description:
       service && state
@@ -124,7 +125,7 @@ export default function ServiceState() {
             </div>
             <div className="min-w-0">
               <h1 className="kw-enter kw-enter-1 font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4">
-                <span className="kw-gradient-text">{service.shortName}</span> in {state.name}
+                <span className="kw-gradient-text">{service.shortName}</span> in {placeName(state.name)}
               </h1>
               <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-3xl mb-3">
                 {directAnswer}
@@ -136,7 +137,7 @@ export default function ServiceState() {
                 <Link
                   ref={magnet}
                   to="/contact"
-                  className="kw-magnetic group inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-amber/20"
+                  className="kw-magnetic group inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-teal/20"
                 >
                   Request a Consultation <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>

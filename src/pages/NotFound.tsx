@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME, SITE_URL } from "@/lib/brand";
 
 export default function NotFound() {
   usePageMeta({
-    title: "Page Not Found | KWVRS",
+    title: `Page Not Found | ${ORG_NAME}`,
     description: "The page you are looking for could not be found.",
-    canonical: "https://kwvrs.com/404",
+    canonical: `${SITE_URL}/404`,
     robots: "noindex,follow",
   });
 
@@ -15,7 +16,7 @@ export default function NotFound() {
       <p className="text-neutral-600 text-lg mb-8">Page not found</p>
       <Link
         to="/"
-        className="bg-amber-dark text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-dark transition-colors"
+        className="bg-teal hover:bg-teal-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
       >
         Return Home
       </Link>

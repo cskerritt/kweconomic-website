@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { pillarServices } from "@/data/services";
+import { ORG_NAME } from "@/lib/brand";
 import {
   hasServiceCityPages,
   nearestCities,
@@ -56,7 +57,7 @@ export default function ServiceCityCrossLinks({
             Other Services in {city.name}
           </h2>
           <p className="text-neutral-600 mb-5">
-            KWVRS offers complementary expert services for {city.name} cases.
+            {ORG_NAME} offers complementary life care planning services for {city.name} cases.
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             {siblingServices.map((s) => (

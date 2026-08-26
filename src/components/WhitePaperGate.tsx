@@ -131,7 +131,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="kw-magnetic group w-full inline-flex items-center justify-center gap-2 bg-amber-dark hover:bg-amber disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+                className="kw-magnetic group w-full inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
               >
                 {status === "submitting" ? "Unlocking..." : (
                   <>

@@ -1,9 +1,8 @@
 import type { Faq } from "./types";
 import { refsToSources } from "./references";
-import { ORG_PHONE } from "@/lib/brand";
+import { ORG_PHONE_DISPLAY } from "@/lib/brand";
 
-/** "+1-201-343-0700" -> "(201) 343-0700" for prose. */
-const PHONE_DISPLAY = ORG_PHONE.replace(/^\+1-(\d{3})-(\d{3})-(\d{4})$/, "($1) $2-$3");
+const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
 
 // Single source of truth for the site FAQ. Imported by the FAQ page
 // (src/pages/FAQ.tsx) and by the llms.txt generator (scripts/generate-llms.mjs),

@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { insightPosts, insightCategories } from "@/data/insights";
 import Reveal from "@/components/Reveal";
+import { ORG_NAME, SITE_URL } from "@/lib/brand";
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-US", {
@@ -22,10 +23,10 @@ const categoryColors: Record<string, string> = {
 
 export default function InsightsHub() {
   usePageMeta({
-    title: "Insights | KWVRS",
+    title: `Insights | ${ORG_NAME}`,
     description:
-      "Articles on vocational rehabilitation, forensic economics, life care planning, and expert witness standards - from the practitioners at Kincaid Wolstein Vocational and Rehabilitation Services.",
-    canonical: "https://kwvrs.com/insights",
+      `Articles on life care planning, medical cost projection, Medicare set-asides, and expert witness standards - from the practitioners at ${ORG_NAME}.`,
+    canonical: `${SITE_URL}/insights`,
   });
 
   const [activeCategory, setActiveCategory] = useState("All");

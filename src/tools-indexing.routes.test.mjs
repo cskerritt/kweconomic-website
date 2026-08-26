@@ -2,11 +2,12 @@
 // Source-read guard tests (vitest env is "node", no jsdom/RTL - mirrors
 // App.routes.test.mjs). On kwlcp.com the ONLY interactive tool is the public,
 // indexed life-expectancy lookup; the economic-damages estimator and the
-// household-services valuator stay on kwvrs.com and are cross-linked from /tools.
+// household-services valuator stay on the sister vocational site and are cross-linked from /tools.
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
+import { VOC_SITE_URL } from "./lib/brand.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const read = (rel) => readFileSync(join(here, rel), "utf8");
@@ -64,7 +65,7 @@ describe("discoverability - sitemap + prerender include the tool route", () => {
   });
 });
 
-describe("Tools hub lists only the life expectancy calculator and cross-links kwvrs.com tools", () => {
+describe("Tools hub lists only the life expectancy calculator and cross-links the sister site's tools", () => {
   it("Tools.tsx links the life-expectancy tool and none of the retired ones", () => {
     expect(toolsSrc).toContain('to="/tools/life-expectancy"');
     for (const route of RETIRED_TOOL_ROUTES) {
@@ -72,7 +73,7 @@ describe("Tools hub lists only the life expectancy calculator and cross-links kw
     }
   });
 
-  it("Tools.tsx links https://kwvrs.com/tools for the economic calculators", () => {
-    expect(toolsSrc).toContain('href="https://kwvrs.com/tools"');
+  it("Tools.tsx links the sister site's /tools for the economic calculators", () => {
+    expect(toolsSrc).toContain(`href="${VOC_SITE_URL}/tools"`);
   });
 });

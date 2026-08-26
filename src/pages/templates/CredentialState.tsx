@@ -29,8 +29,8 @@ export default function CredentialState() {
   usePageMeta(
     cred && state
       ? {
-          title: `${cred.abbreviation} Experts in ${state.name} | KWVRS`,
-          description: `${cred.name} (${cred.abbreviation}) credential scope, recognition, and experts available for ${state.name} matters. Vocational expert services for plaintiff and defense.`,
+          title: `${cred.abbreviation} Experts in ${state.name} | ${ORG_NAME}`,
+          description: `${cred.name} (${cred.abbreviation}) credential scope, recognition, and life care planners available for ${state.name} matters. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -55,7 +55,7 @@ export default function CredentialState() {
       <h1 className="font-serif text-4xl text-navy mb-4">{cred.abbreviation} in {state.name}</h1>
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">
-        Licensing and practice information for {cred.name} in {state.name}, and KWVRS experts holding the credential who serve {state.name}.
+        Licensing and practice information for {cred.name} in {state.name}, and our planners holding the credential who serve {state.name}.
       </p>
 
       <section id="recognition" className="mb-6">
@@ -105,7 +105,7 @@ export default function CredentialState() {
         <section id="experts" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">{cred.abbreviation} experts for {state.name} matters</h2>
           <p className="text-neutral-700">
-            KWVRS provides {cred.abbreviation}-credentialed experts for {state.name} cases, including remote consultation and on-site evaluation where required. <Link to="/contact" className="text-teal hover:underline">Contact us</Link> to discuss availability for your matter.
+            {ORG_NAME} provides {cred.abbreviation}-credentialed life care planners for {state.name} cases, including remote consultation and on-site evaluation where required. <Link to="/contact" className="text-teal hover:underline">Contact us</Link> to discuss availability for your matter.
           </p>
         </section>
       )}
@@ -161,15 +161,15 @@ export default function CredentialState() {
         credentialSchema({ slug: cred.slug, name: cred.name, abbreviation: cred.abbreviation, issuer: cred.issuer, issuerUrl: cred.issuerUrl, scope: cred.scope }),
         serviceSchema({
           slug: `cred-${cred.slug}-${state.slug}`,
-          name: `${cred.abbreviation} Vocational Experts in ${state.name}`,
-          description: `KWVRS ${cred.abbreviation}-credentialed experts available for ${state.name} matters.`,
+          name: `${cred.abbreviation} Life Care Planners in ${state.name}`,
+          description: `${ORG_NAME} ${cred.abbreviation}-credentialed planners available for ${state.name} matters.`,
           areaServed: { "@type": "AdministrativeArea", name: state.name },
         }),
         faqPageSchema(cred.faqs.slice(0, 4), url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Credentials", url: "https://kwvrs.com/credentials" },
-          { name: cred.abbreviation, url: `https://kwvrs.com/credentials/${cred.slug}` },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Credentials", url: `${ORG_URL}/credentials` },
+          { name: cred.abbreviation, url: `${ORG_URL}/credentials/${cred.slug}` },
           { name: state.name, url },
         ]),
       ])} />

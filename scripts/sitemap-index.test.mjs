@@ -15,11 +15,11 @@ import {
 } from "../src/data/contentReadiness.ts";
 import { collectSitemapPageUrls, extractLocs } from "./lib/sitemap-urls.mjs";
 import { pillarServiceSlugs, serviceEntries } from "./lib/service-slugs.mjs";
+import { SITE_URL as BASE } from "./lib/site.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(here, "..");
 const PUBLIC = join(ROOT, "public");
-const BASE = "https://kwvrs.com";
 
 const SECTION_FILES = [
   "sitemap-core.xml",
@@ -79,9 +79,9 @@ describe("sitemap.xml is a sitemap index", () => {
 
   it("robots.txt still declares the index at the submitted path", () => {
     const robots = readFileSync(join(PUBLIC, "robots.txt"), "utf8");
-    expect(robots).toContain("Sitemap: https://kwvrs.com/sitemap.xml");
-    expect(robots).toContain("Sitemap: https://kwvrs.com/image-sitemap.xml");
-    expect(robots).toContain("Sitemap: https://kwvrs.com/news-sitemap.xml");
+    expect(robots).toContain(`Sitemap: ${BASE}/sitemap.xml`);
+    expect(robots).toContain(`Sitemap: ${BASE}/image-sitemap.xml`);
+    expect(robots).toContain(`Sitemap: ${BASE}/news-sitemap.xml`);
   });
 });
 
@@ -217,10 +217,10 @@ describe("lastmod is emitted only where derivable", () => {
 
   it("insight posts carry a date; generic geo pages carry none", () => {
     expect(coreXml).toMatch(
-      /<loc>https:\/\/kwvrs\.com\/insights\/[a-z-]+<\/loc><lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/,
+      new RegExp(`<loc>${BASE}/insights/[a-z-]+</loc><lastmod>\\d{4}-\\d{2}-\\d{2}</lastmod>`),
     );
-    expect(servicesXml).toMatch(
-      /<loc>https:\/\/kwvrs\.com\/services\/life-care-planning\/new-jersey<\/loc><changefreq>/,
+    expect(servicesXml).toContain(
+      `<loc>${BASE}/services/life-care-planning/new-jersey</loc><changefreq>`,
     );
   });
 });

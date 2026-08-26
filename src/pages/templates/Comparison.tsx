@@ -10,18 +10,19 @@ import PaginateNav from "@/components/PaginateNav";
 import RelatedContent from "@/components/RelatedContent";
 import NextSteps from "@/components/NextSteps";
 import SchemaOrg from "@/components/SchemaOrg";
-import { graphSchema, articleSchema, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
+import { graphSchema, articleSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function Comparison() {
   const { slug = "" } = useParams();
   const c = comparisons.find((x) => x.slug === slug);
-  const url = c ? `https://kwvrs.com/compare/${c.slug}` : "";
+  const url = c ? `${ORG_URL}/compare/${c.slug}` : "";
   usePageMeta(
     c
       ? {
-          title: `${c.title} | KWVRS`,
+          title: `${c.title} | ${ORG_NAME}`,
           description: truncateAtWord(c.overlap),
           canonical: url,
         }
@@ -109,8 +110,8 @@ export default function Comparison() {
         articleSchema({ title: c.title, description: c.overlap, url, dateModified: c.dateModified, authorSlug: c.authorSlug }),
         faqPageSchema(c.faqs, url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Compare", url: "https://kwvrs.com/compare" },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Compare", url: `${ORG_URL}/compare` },
           { name: c.title, url },
         ]),
       ])} />

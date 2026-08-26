@@ -14,6 +14,7 @@ import PaginateNav from "@/components/PaginateNav";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function CaseTypeHub() {
@@ -23,8 +24,8 @@ export default function CaseTypeHub() {
   usePageMeta(
     caseType
       ? {
-          title: `${caseType.name} Expert Witness Services | KWVRS`,
-          description: `Vocational, economic, and life-care expert services for ${caseType.name.toLowerCase()} cases. Methodology, credentials, and KWVRS-experienced experts. Plaintiff and defense.`,
+          title: `${caseType.name} Expert Witness Services | ${ORG_NAME}`,
+          description: `Life care planning and medical cost projection for ${caseType.name.toLowerCase()} cases. Methodology, credentials, and experienced planners. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -87,7 +88,7 @@ export default function CaseTypeHub() {
 
       {relevantExperts.length > 0 && (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">KWVRS experts</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Our life care planners</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {relevantExperts.map((m) => (
               <li key={m.slug}>
@@ -141,8 +142,8 @@ export default function CaseTypeHub() {
         articleSchema({ title: caseType.name, description: caseType.summary, url }),
         faqPageSchema(caseType.faqs, url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Case Types", url: "https://kwvrs.com/case-types" },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Case Types", url: `${ORG_URL}/case-types` },
           { name: caseType.name, url },
         ]),
       ])} />

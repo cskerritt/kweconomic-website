@@ -5,13 +5,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 
 export default function AttorneysHubPage() {
   const url = `${ORG_URL}/attorneys`;
   usePageMeta({
-    title: "Resources for Attorneys | KWVRS",
+    title: `Resources for Attorneys | ${ORG_NAME}`,
     description:
-      "Stage-by-stage attorney resources for retaining, preparing, and using KWVRS vocational, economic, and life-care experts. Considering, retaining, deposition, and trial.",
+      "Stage-by-stage attorney resources for retaining, preparing, and using a life care planning expert. Considering, retaining, deposition, and trial.",
     canonical: url,
   });
   return (
@@ -27,7 +28,7 @@ export default function AttorneysHubPage() {
             Resources for Attorneys
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            Stage-by-stage guides for retaining, preparing, and using KWVRS experts across each major case type.
+            Stage-by-stage guides for retaining, preparing, and using life care planning experts across each major case type.
           </p>
         </div>
       </div>
@@ -48,8 +49,8 @@ export default function AttorneysHubPage() {
       ))}
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Resources for Attorneys", description: "Stage-by-stage guides for retaining KWVRS experts.", url }),
-        breadcrumbSchema([{ name: "Home", url: "https://kwvrs.com/" }, { name: "Attorneys", url }]),
+        articleSchema({ title: "Resources for Attorneys", description: "Stage-by-stage guides for retaining life care planning experts.", url }),
+        breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Attorneys", url }]),
       ])} />
     </div>
   );

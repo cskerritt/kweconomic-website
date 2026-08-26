@@ -4,6 +4,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import LocationCard from "@/components/LocationCard";
 import ContactCTA from "@/components/ContactCTA";
 import Reveal from "@/components/Reveal";
+import { ORG_NAME, SITE_URL } from "@/lib/brand";
 
 const REGION_LABELS: Record<string, string> = {
   northeast: "Northeast",
@@ -17,10 +18,10 @@ const REGION_ORDER = ["northeast", "southeast", "midwest", "west", "territory"];
 
 export default function LocationsHub() {
   usePageMeta({
-    title: "Locations | KWVRS - Serving All 50 States",
+    title: `Locations | ${ORG_NAME} - Serving All 50 States`,
     description:
-      "KWVRS provides vocational expert services, life care planning, and forensic economics in all 50 states, DC, and U.S. territories. Find your state to learn more.",
-    canonical: "https://kwvrs.com/locations",
+      `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, and U.S. territories. Find your state to learn more.`,
+    canonical: `${SITE_URL}/locations`,
   });
 
   const stateOnly = states.filter((s) => s.type === "state");
@@ -46,8 +47,8 @@ export default function LocationsHub() {
               Nationwide Coverage
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              KWVRS accepts cases in all 50 states, the District of Columbia, and U.S. territories.
-              Our experts understand jurisdiction-specific rules, labor markets, and court standards
+              {ORG_NAME} accepts cases in all 50 states, the District of Columbia, and U.S. territories.
+              Our planners understand jurisdiction-specific rules, local costs of care, and court standards
               wherever your case is filed.
             </p>
           </div>

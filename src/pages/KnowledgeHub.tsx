@@ -3,13 +3,14 @@ import { BookOpen, ArrowRight } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { knowledgeGuides } from "@/data/knowledge";
 import Reveal from "@/components/Reveal";
+import { ORG_NAME, SITE_URL } from "@/lib/brand";
 
 export default function KnowledgeHub() {
   usePageMeta({
-    title: "Knowledge Center | KWVRS",
+    title: `Knowledge Center | ${ORG_NAME}`,
     description:
-      "In-depth guides on vocational rehabilitation, life care planning, forensic economics, and expert witness testimony - written for attorneys and other legal professionals.",
-    canonical: "https://kwvrs.com/knowledge",
+      "In-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness testimony - written for attorneys and other legal professionals.",
+    canonical: `${SITE_URL}/knowledge`,
   });
 
   return (
@@ -87,12 +88,12 @@ export default function KnowledgeHub() {
             <h3 className="font-serif text-2xl font-bold mb-2">Questions About Your Case?</h3>
             <p className="text-neutral-300 mb-6">
               The guides here provide general educational background. For analysis specific to your
-              matter, contact our team to discuss how KWVRS can assist.
+              matter, contact our team to discuss how {ORG_NAME} can assist.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/schedule-consultation"
-                className="inline-flex items-center justify-center gap-2 bg-amber-dark hover:bg-amber-dark text-white font-medium px-6 py-3 rounded-lg transition-colors"
+                className="inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark text-white font-medium px-6 py-3 rounded-lg transition-colors"
               >
                 Schedule a Consultation <ArrowRight className="w-4 h-4" />
               </Link>

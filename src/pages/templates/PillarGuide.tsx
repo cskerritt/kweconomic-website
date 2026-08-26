@@ -10,19 +10,20 @@ import RelatedContent from "@/components/RelatedContent";
 import NextSteps from "@/components/NextSteps";
 import PaginateNav from "@/components/PaginateNav";
 import SchemaOrg from "@/components/SchemaOrg";
-import { graphSchema, articleSchema, faqPageSchema, breadcrumbSchema } from "@/lib/schema";
+import { graphSchema, articleSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function PillarGuide() {
   const { slug = "" } = useParams();
   const guide = guides.find((g) => g.slug === slug);
 
-  const url = guide ? `https://kwvrs.com/guides/${guide.slug}` : "";
+  const url = guide ? `${ORG_URL}/guides/${guide.slug}` : "";
   usePageMeta(
     guide
       ? {
-          title: `${guide.title} | KWVRS`,
+          title: `${guide.title} | ${ORG_NAME}`,
           description: truncateAtWord(guide.tldr),
           canonical: url,
         }
@@ -76,8 +77,8 @@ export default function PillarGuide() {
         }),
         faqPageSchema(guide.faqs ?? [], url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Guides", url: "https://kwvrs.com/guides" },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Guides", url: `${ORG_URL}/guides` },
           { name: guide.title, url },
         ]),
       ])} />

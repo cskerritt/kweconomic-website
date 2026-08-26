@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import { getGuideBySlug } from "@/data/knowledge";
 import NextSteps from "@/components/NextSteps";
 import AuthorByline from "@/components/AuthorByline";
@@ -16,11 +17,11 @@ export default function KnowledgeArticle() {
   usePageMeta(
     guide
       ? {
-          title: `${guide.title} | KWVRS Knowledge Center`,
+          title: `${guide.title} | ${ORG_NAME}`,
           description: guide.description,
-          canonical: `https://kwvrs.com/knowledge/${guide.slug}`,
+          canonical: `${ORG_URL}/knowledge/${guide.slug}`,
         }
-      : { title: "Knowledge Center | KWVRS", description: "Educational resources from KWVRS", canonical: "https://kwvrs.com/knowledge" }
+      : { title: `Knowledge Center | ${ORG_NAME}`, description: `Educational resources from ${ORG_NAME}`, canonical: `${ORG_URL}/knowledge` }
   );
 
   if (!guide) {

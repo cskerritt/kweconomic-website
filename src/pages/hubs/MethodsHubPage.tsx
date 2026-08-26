@@ -4,13 +4,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 
 export default function MethodsHubPage() {
   const url = `${ORG_URL}/methods`;
   usePageMeta({
-    title: "Expert Methodologies | TSA, LMS, Worklife Expectancy | KWVRS",
+    title: `Life Care Planning Methodologies | Present Value, Cost Research | ${ORG_NAME}`,
     description:
-      "Vocational and forensic-economic methodologies used by KWVRS experts: transferable skills analysis, labor market survey, worklife expectancy, present value, and more.",
+      "Life care planning methodologies used by our planners: life expectancy, present value analysis, plan development, functional capacity evaluation, cost research, and Medicare set-aside allocation.",
     canonical: url,
   });
   return (
@@ -26,7 +27,7 @@ export default function MethodsHubPage() {
             Methods
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            Methodologies KWVRS experts use in vocational, life care planning, and forensic economic analysis.
+            Methodologies our life care planners use in plan development, cost research, and medical cost projection.
           </p>
         </div>
       </div>
@@ -42,8 +43,8 @@ export default function MethodsHubPage() {
       </ul>
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Methods", description: "KWVRS methodologies.", url }),
-        breadcrumbSchema([{ name: "Home", url: "https://kwvrs.com/" }, { name: "Methods", url }]),
+        articleSchema({ title: "Methods", description: `${ORG_NAME} methodologies.`, url }),
+        breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Methods", url }]),
       ])} />
     </div>
   );

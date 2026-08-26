@@ -11,6 +11,7 @@ import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, credentialSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function CredentialHub() {
@@ -20,7 +21,7 @@ export default function CredentialHub() {
   usePageMeta(
     cred
       ? {
-          title: `${cred.abbreviation} Credential | ${cred.name} | KWVRS`,
+          title: `${cred.abbreviation} Credential | ${cred.name} | ${ORG_NAME}`,
           description: truncateAtWord(cred.scope ?? cred.name),
           canonical: url,
         }
@@ -74,7 +75,7 @@ export default function CredentialHub() {
 
       {experts.length > 0 && (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">KWVRS experts holding {cred.abbreviation}</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Our planners holding {cred.abbreviation}</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {experts.map((m) => (
               <li key={m.slug}>
@@ -110,8 +111,8 @@ export default function CredentialHub() {
         }),
         faqPageSchema(cred.faqs, url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Credentials", url: "https://kwvrs.com/credentials" },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Credentials", url: `${ORG_URL}/credentials` },
           { name: cred.abbreviation, url },
         ]),
       ])} />

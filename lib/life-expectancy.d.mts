@@ -1,6 +1,6 @@
 // Type declarations for the life-expectancy engine (lib/life-expectancy.mjs).
 // Self-contained (no cross-module type import) to match the repo's d.mts
-// convention (see lib/damages-estimate.d.mts).
+// convention (see lib/life-tables-2023.d.mts).
 
 export type LifeTableGroup = "all" | "hispanic" | "aian" | "asian" | "black" | "white";
 export type LifeTableSex = "total" | "male" | "female";

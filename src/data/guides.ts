@@ -1,6 +1,7 @@
 import type { Faq, Source } from "./types";
 import type { RelatedItem } from "@/components/RelatedContent";
 import { refsToSources } from "./references";
+import { VOC_SITE_URL } from "@/lib/brand";
 
 export interface GuideSection {
   id: string;
@@ -209,7 +210,7 @@ export const guides: Guide[] = [
         id: "who-prepares",
         heading: "Who prepares the projection",
         bodyHtml:
-          "<p><a href=\"/credentials/clcp\">Certified Life Care Planners (CLCPs)</a> prepare <a href=\"/services/life-care-planning\">the itemized plan</a>. A <a href=\"https://kwvrs.com/services/forensic-economics\">forensic economist</a> then reduces the plan to present value using appropriate discount and growth rates.</p>",
+          `<p><a href="/credentials/clcp">Certified Life Care Planners (CLCPs)</a> prepare <a href="/services/life-care-planning">the itemized plan</a>. A <a href="${VOC_SITE_URL}/services/forensic-economics">forensic economist</a> then reduces the plan to present value using appropriate discount and growth rates.</p>`,
       },
       {
         id: "inputs",
@@ -267,7 +268,7 @@ export const guides: Guide[] = [
         id: "common-categories",
         heading: "Common expert categories in civil litigation",
         bodyHtml:
-          "<p>In an injury case with long-term care implications, several experts commonly address distinct questions that together establish damages. The <a href=\"/services/life-care-planning\">life care planner</a> projects future medical and non-medical needs and their cost. The treating physician or a physical medicine and rehabilitation specialist supplies the medical foundation for those needs. A standard of care expert addresses breach in medical malpractice matters. An occupational or physical therapist may quantify functional capacity or assess the home. A <a href=\"https://kwvrs.com/services/forensic-economics\">forensic economist</a> reduces the projected costs to present value. Where a settlement must account for Medicare, a <a href=\"/services/medicare-set-aside\">Medicare set-aside</a> allocator may be added.</p>",
+          `<p>In an injury case with long-term care implications, several experts commonly address distinct questions that together establish damages. The <a href="/services/life-care-planning">life care planner</a> projects future medical and non-medical needs and their cost. The treating physician or a physical medicine and rehabilitation specialist supplies the medical foundation for those needs. A standard of care expert addresses breach in medical malpractice matters. An occupational or physical therapist may quantify functional capacity or assess the home. A <a href="${VOC_SITE_URL}/services/forensic-economics">forensic economist</a> reduces the projected costs to present value. Where a settlement must account for Medicare, a <a href="/services/medicare-set-aside">Medicare set-aside</a> allocator may be added.</p>`,
       },
       {
         id: "timing",
@@ -347,7 +348,7 @@ export const guides: Guide[] = [
         id: "timing-and-updates",
         heading: "When the plan is prepared and how it changes",
         bodyHtml:
-          "<p>A plan is usually prepared once the medical picture is stable enough to project, which may be before maximum medical improvement when the treating team can describe the expected course. The planner gathers records, interviews the individual and family, consults treating or evaluating providers, and documents each recommendation with its source. Because a life care plan is a dynamic document, it is updated when the condition, the treatment plan, or the care setting changes, and the cost figures are refreshed so the <a href=\"/methods/present-value-analysis\">economic analysis</a> reflects current pricing. In litigation the plan is typically paired with a <a href=\"https://kwvrs.com/services/forensic-economics\">forensic economic</a> projection that carries the itemized costs across the <a href=\"/methods/life-expectancy-in-life-care-planning\">expected lifespan</a> and discounts them to present value.</p>",
+          `<p>A plan is usually prepared once the medical picture is stable enough to project, which may be before maximum medical improvement when the treating team can describe the expected course. The planner gathers records, interviews the individual and family, consults treating or evaluating providers, and documents each recommendation with its source. Because a life care plan is a dynamic document, it is updated when the condition, the treatment plan, or the care setting changes, and the cost figures are refreshed so the <a href="/methods/present-value-analysis">economic analysis</a> reflects current pricing. In litigation the plan is typically paired with a <a href="${VOC_SITE_URL}/services/forensic-economics">forensic economic</a> projection that carries the itemized costs across the <a href="/methods/life-expectancy-in-life-care-planning">expected lifespan</a> and discounts them to present value.</p>`,
       },
     ],
     faqs: [

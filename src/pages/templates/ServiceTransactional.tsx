@@ -5,6 +5,7 @@ import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, serviceSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 type Variant = "cost" | "process" | "timeline";
@@ -30,7 +31,7 @@ export default function ServiceTransactional({ variant }: { variant: Variant }) 
   usePageMeta(
     s && variantBlurb
       ? {
-          title: `${title} | KWVRS`,
+          title: `${title} | ${ORG_NAME}`,
           description: variantBlurb[variant],
           canonical: url,
         }
@@ -109,9 +110,9 @@ export default function ServiceTransactional({ variant }: { variant: Variant }) 
           description: `${s.name} ${LABEL[variant].toLowerCase()} details.`,
         }),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Services", url: "https://kwvrs.com/services" },
-          { name: s.name, url: `https://kwvrs.com/services/${s.slug}` },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Services", url: `${ORG_URL}/services` },
+          { name: s.name, url: `${ORG_URL}/services/${s.slug}` },
           { name: LABEL[variant], url },
         ]),
       ])} />

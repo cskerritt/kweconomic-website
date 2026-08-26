@@ -1,5 +1,5 @@
 /**
- * KWVRS sitemap generator
+ * KW Life Care Planning sitemap generator
  *
  * Writes a sitemap INDEX at public/sitemap.xml (the URL Search Console has on
  * file - an index at the same path keeps the existing submission valid) plus
@@ -10,7 +10,7 @@
  *                                     white-papers, attorney journey pages
  *   public/sitemap-services.xml     - /services subtree (pillars, variants,
  *                                     service x case, service x state, gated
- *                                     service x state x city, disclosure)
+ *                                     service x state x city)
  *   public/sitemap-locations.xml    - /locations subtree (hub, states, cities)
  *   public/sitemap-case-types.xml   - /case-types subtree
  *   public/sitemap-credentials.xml  - /credentials subtree
@@ -25,48 +25,28 @@
  * prerendered, linked, and indexable - they are just not advertised.
  *
  * lastmod policy: emitted only where a real date is derivable from source data
- * (disclosureRules.dateModified, insights dateModified/publishedDate).
+ * (insights dateModified/publishedDate).
  * Stamping the build date on every URL made lastmod meaningless, so
  * non-derivable entries omit it (allowed by the sitemaps.org spec).
  *
  * Run: node scripts/generate-sitemap.mjs
  */
 
-import { existsSync, readFileSync, writeFileSync, readdirSync } from "fs";
+import { readFileSync, writeFileSync, readdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "vite";
 import { pillarServiceSlugs } from "./lib/service-slugs.mjs";
+import { SITE_URL as BASE } from "./lib/site.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const SRC_DATA = join(ROOT, "src", "data");
 const PUBLIC = join(ROOT, "public");
-const BASE = "https://kwvrs.com";
 
 function extractSlugs(file) {
   const content = readFileSync(join(SRC_DATA, file), "utf-8");
   return [...content.matchAll(/slug:\s*"([^"]+)"/g)].map((m) => m[1]);
-}
-
-// Extract disclosureRules data: pair stateSlug with dateModified by position.
-// Each rule entry has exactly one stateSlug and one dateModified field.
-function extractDisclosureRules() {
-  // kwlcp.com has no expert-disclosure data (Task 4 removed it); Task 12 strips
-  // the disclosure branches from this script entirely. Until then, no file = no rules.
-  const file = join(SRC_DATA, "disclosureRules.ts");
-  if (!existsSync(file)) return [];
-  const content = readFileSync(file, "utf-8");
-  const stateSlugs = [...content.matchAll(/^\s+stateSlug:\s*"([^"]+)"/gm)].map(
-    (m) => m[1],
-  );
-  const dateModifieds = [
-    ...content.matchAll(/^\s+dateModified:\s*"([^"]+)"/gm),
-  ].map((m) => m[1]);
-  return stateSlugs.map((stateSlug, i) => ({
-    stateSlug,
-    dateModified: dateModifieds[i],
-  }));
 }
 
 // Extract slug -> lastmod for insight posts. Block-wise (not positional zip)
@@ -116,16 +96,15 @@ const methods = extractSlugs("methods.ts");
 const team = extractSlugs("team.ts");
 const guides = extractSlugs("guides.ts");
 const comparisons = extractSlugs("comparisons.ts");
-const disclosureRules = extractDisclosureRules();
 const insightDates = extractInsightDates();
 
+// Routes registered in src/App.tsx only. The retired vocational-site surfaces
+// (intake, forms, PHQ/HIPAA downloads, economic tools) have no route on
+// kwlcp.com and are neither advertised nor prerendered.
 const CORE = [
-  "/", "/about", "/team", "/contact", "/forms",
-  "/phq-form-english", "/phq-form-spanish", "/hipaa-english", "/hipaa-spanish",
+  "/", "/about", "/team", "/contact",
   "/services", "/locations",
-  "/intake",
-  "/resources/faq", "/tools", "/tools/economic-damages-estimator",
-  "/tools/household-services", "/tools/household-services/methodology", "/tools/life-expectancy",
+  "/resources/faq", "/tools", "/tools/life-expectancy",
   "/knowledge", "/insights", "/case-studies",
   "/schedule-consultation", "/privacy", "/terms",
   "/case-types", "/credentials", "/guides", "/compare", "/methods",
@@ -214,35 +193,10 @@ states.forEach((st) => {
   caseTypes.forEach((c) => urls.add(`/attorneys/${stage}/${c}`));
 });
 
-// Expert Disclosure pillar + per-state. 1 pillar URL plus 56 jurisdiction-specific pages.
-// Per-state entries carry their own lastmod from disclosureRules.dateModified.
-const PILLAR_PATH = "/services/expert-disclosure";
-urls.add(PILLAR_PATH);
-
 const lastmodOverrides = new Map();
-for (const rule of disclosureRules) {
-  const path = `${PILLAR_PATH}/${rule.stateSlug}`;
-  urls.add(path);
-  if (rule.dateModified) lastmodOverrides.set(path, rule.dateModified);
-}
-// The pillar aggregates the per-state rules; its lastmod is the newest rule date.
-const disclosureDates = disclosureRules
-  .map((r) => r.dateModified)
-  .filter(Boolean)
-  .sort();
-if (disclosureDates.length > 0) {
-  lastmodOverrides.set(PILLAR_PATH, disclosureDates[disclosureDates.length - 1]);
-}
 for (const [slug, date] of insightDates) {
   lastmodOverrides.set(`/insights/${slug}`, date);
 }
-
-// Set of disclosure-state paths used by priorityFor to assign higher priority.
-const disclosureStatePaths = new Set(
-  disclosureRules.map(
-    (r) => `${PILLAR_PATH}/${r.stateSlug}`,
-  ),
-);
 
 // PSA retainer intake forms: the unified /contact/intake form replaced the
 // separate Personal Injury + Matrimonial routes (spec 2026-07-16); those two
@@ -251,8 +205,6 @@ const disclosureStatePaths = new Set(
 const RETAINER_INTAKE_PATHS = new Set([]);
 
 function priorityFor(u) {
-  if (u === PILLAR_PATH) return "0.8";
-  if (disclosureStatePaths.has(u)) return "0.7";
   if (RETAINER_INTAKE_PATHS.has(u)) return "0.6";
   return null;
 }

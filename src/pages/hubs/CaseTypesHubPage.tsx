@@ -4,13 +4,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 
 export default function CaseTypesHubPage() {
   const url = `${ORG_URL}/case-types`;
   usePageMeta({
-    title: "Case Types | KWVRS Vocational, Economic, Life Care Experts",
+    title: `Case Types | ${ORG_NAME}`,
     description:
-      "Vocational, economic, and life-care expert services across the most common civil case types: personal injury, birth injury, catastrophic injury, workers' compensation, wrongful death, and more.",
+      "Life care planning and medical cost projection across the most common civil case types: personal injury, birth injury, catastrophic injury, workers' compensation, wrongful death, and more.",
     canonical: url,
   });
   return (
@@ -26,7 +27,7 @@ export default function CaseTypesHubPage() {
             Case Types
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            KWVRS provides vocational, life care planning, and forensic economic analysis across the most common case types in civil litigation.
+            {ORG_NAME} prepares life care plans and medical cost projections across the most common case types in civil litigation.
           </p>
         </div>
       </div>
@@ -42,9 +43,9 @@ export default function CaseTypesHubPage() {
       </ul>
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Case Types", description: "Directory of case types KWVRS experts support.", url }),
+        articleSchema({ title: "Case Types", description: "Directory of case types our life care planners support.", url }),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
+          { name: "Home", url: `${ORG_URL}/` },
           { name: "Case Types", url },
         ]),
       ])} />

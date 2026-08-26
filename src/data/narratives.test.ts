@@ -9,7 +9,7 @@ import {
 import { getServiceBySlug } from "./services";
 import { getStateBySlug, states } from "./states";
 import { stateRegulations } from "./regulations/state-regs";
-import { ORG_NAME } from "@/lib/brand";
+import { ORG_NAME, LEGACY_BRAND_PATTERN } from "@/lib/brand";
 
 // Adapted from the task brief: the runtime helpers take a State object (and
 // return a sectioned narrative) rather than slugs, so the test joins the
@@ -28,7 +28,7 @@ describe("LCP geo narratives", () => {
     expect(text).toMatch(CARE);
     expect(text).not.toMatch(BANNED);
     expect(text).toContain(ORG_NAME);
-    expect(text).not.toMatch(/KWVRS|Kincaid Wolstein/);
+    expect(text).not.toMatch(LEGACY_BRAND_PATTERN);
   });
 
   it("every state narrative is LCP-framed and names the state's trial forum", () => {
@@ -56,7 +56,7 @@ describe("LCP geo narratives", () => {
       const text = `${n.directAnswer} ${n.blurb}`;
       expect(text, `${st.slug}/${city}`).toMatch(CARE);
       expect(text, `${st.slug}/${city}`).not.toMatch(BANNED);
-      expect(text, `${st.slug}/${city}`).not.toMatch(/KWVRS|Kincaid Wolstein/);
+      expect(text, `${st.slug}/${city}`).not.toMatch(LEGACY_BRAND_PATTERN);
     }
   });
 
@@ -83,7 +83,8 @@ describe("LCP geo narratives", () => {
     for (const faqs of sets) {
       expect(faqs.length).toBeGreaterThanOrEqual(3);
       const json = JSON.stringify(faqs);
-      expect(json).not.toMatch(/vocational expert|earning capacity|labor market|KWVRS|Kincaid Wolstein/i);
+      expect(json).not.toMatch(/vocational expert|earning capacity|labor market/i);
+      expect(json).not.toMatch(LEGACY_BRAND_PATTERN);
       expect(json).toMatch(CARE);
       expect(json).toContain(ORG_NAME);
     }

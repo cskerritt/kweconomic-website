@@ -136,7 +136,7 @@ export default function ServiceStateCity() {
                 <Link
                   ref={magnet}
                   to="/contact"
-                  className="kw-magnetic group inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-amber/20"
+                  className="kw-magnetic group inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-teal/20"
                 >
                   Request a Consultation <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>

@@ -9,6 +9,7 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
+import { placeName } from "@/data/geo-prose.mjs";
 import FAQBlock from "@/components/FAQBlock";
 import { getStateNarrative } from "@/data/narratives";
 import { stateGeographicFaqs } from "@/data/geographicFaqs";
@@ -36,7 +37,7 @@ export default function StateHub() {
   usePageMeta(
     state
       ? {
-          title: `Life Care Planners in ${state.name} | ${ORG_NAME}`,
+          title: `Life Care Planners in ${placeName(state.name)} | ${ORG_NAME}`,
           description: `${ORG_NAME} prepares life care plans, future medical cost projections, plan rebuttals, and expert testimony throughout ${state.name}. Cost of care priced for ${state.name} communities; jurisdiction-aware reports for ${state.name} courts.`,
           canonical: `${ORG_URL}/locations/${state.slug}`,
         }
@@ -98,7 +99,7 @@ export default function StateHub() {
               {state.region !== "territory" ? state.region.charAt(0).toUpperCase() + state.region.slice(1) : "U.S. Territory"} &middot; {state.abbreviation}
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-4">
-              Life Care Planners in {state.name}
+              Life Care Planners in {placeName(state.name)}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed mb-3">
               {narrative.directAnswer}

@@ -8,7 +8,7 @@ import { validateRoute } from "./validation.server.mjs";
 import { verifyTurnstile, turnstileStartupState } from "./turnstile.server.mjs";
 import * as rawSubs from "./lib/raw-submissions.server.mjs";
 import { checkSpam } from "./lib/spam-heuristics.server.mjs";
-import { sendLeadEmail } from "./lib/lead-mailer.server.mjs";
+import { sendLeadEmail, DEFAULT_LEAD_RECIPIENTS } from "./lib/lead-mailer.server.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
@@ -558,7 +558,7 @@ if (!process.env.VITEST) {
     );
     console.log(
       process.env.RESEND_API_KEY
-        ? `lead email: configured (to ${process.env.LEAD_RECIPIENTS || "info@kwvrs.com"})`
+        ? `lead email: configured (to ${process.env.LEAD_RECIPIENTS || DEFAULT_LEAD_RECIPIENTS})`
         : "lead email DISABLED (RESEND_API_KEY unset) - leads land only in raw_submissions + data/submissions.jsonl",
     );
     console.log(rawSubs.enabled ? "durable capture: configured" : "durable capture disabled: PUBLIC_SUPABASE_* unset");

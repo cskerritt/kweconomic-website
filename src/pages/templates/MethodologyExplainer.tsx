@@ -11,6 +11,7 @@ import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, howToSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function MethodologyExplainer() {
@@ -20,7 +21,7 @@ export default function MethodologyExplainer() {
   usePageMeta(
     m
       ? {
-          title: `${m.name} | Methodology | KWVRS`,
+          title: `${m.name} | Methodology | ${ORG_NAME}`,
           description: truncateAtWord(m.summary),
           canonical: url,
         }
@@ -83,8 +84,8 @@ export default function MethodologyExplainer() {
         howToSchema({ name: m.name, description: m.summary, steps: m.steps }),
         faqPageSchema(m.faqs, url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Methods", url: "https://kwvrs.com/methods" },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Methods", url: `${ORG_URL}/methods` },
           { name: m.name, url },
         ]),
       ])} />

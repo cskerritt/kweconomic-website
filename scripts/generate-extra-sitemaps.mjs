@@ -1,5 +1,5 @@
 /**
- * KWVRS image + news sitemap generator
+ * KW Life Care Planning image + news sitemap generator
  *
  * Emits two supplementary sitemaps from source-of-truth data, so they cannot
  * drift from the live site:
@@ -11,7 +11,7 @@
  *
  * Note on the news sitemap: the Google News sitemap convention expects articles
  * published within the last 2 days, and Search Console may warn on older items.
- * The KWVRS insights posts are evergreen, so this sitemap primarily helps general
+ * The insights posts are evergreen, so this sitemap primarily helps general
  * and AI crawlers discover /insights/* URLs with typed publication metadata; it is
  * not intended to drive Google News inclusion. It is regenerated every build, so
  * if dated/timely posts are added they are advertised automatically.
@@ -26,21 +26,21 @@ import { createServer } from "vite";
 import { writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { SITE_URL as BASE, ORG_NAME } from "./lib/site.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 const PUBLIC = join(ROOT, "public");
-const BASE = "https://kwvrs.com";
-const PUBLICATION_NAME = "KWVRS Insights";
+const PUBLICATION_NAME = `${ORG_NAME} Insights`;
 
 // Office/stock photos and the core pages they appear on (ground truth from the
 // page components; an image sitemap should only list images present on the page).
 const PAGE_IMAGES = [
-  { path: "/", images: [{ src: "/images/hero-office-meeting.jpg", title: "KWVRS team consultation" }] },
-  { path: "/about", images: [{ src: "/images/mentor-trainee.jpg", title: "KWVRS vocational rehabilitation consulting" }] },
-  { path: "/contact", images: [{ src: "/images/legal-contract.jpg", title: "Retain KWVRS for expert services" }] },
-  { path: "/services", images: [{ src: "/images/legal-team-discussion.jpg", title: "KWVRS expert services" }] },
-  { path: "/schedule-consultation", images: [{ src: "/images/mentor-trainee.jpg", title: "Schedule a KWVRS consultation" }] },
+  { path: "/", images: [{ src: "/images/hero-office-meeting.jpg", title: `${ORG_NAME} team consultation` }] },
+  { path: "/about", images: [{ src: "/images/mentor-trainee.jpg", title: `${ORG_NAME} life care planning consultation` }] },
+  { path: "/contact", images: [{ src: "/images/legal-contract.jpg", title: `Retain ${ORG_NAME} for life care planning services` }] },
+  { path: "/services", images: [{ src: "/images/legal-team-discussion.jpg", title: `${ORG_NAME} life care planning services` }] },
+  { path: "/schedule-consultation", images: [{ src: "/images/mentor-trainee.jpg", title: `Schedule a ${ORG_NAME} consultation` }] },
 ];
 
 function xmlEscape(str) {

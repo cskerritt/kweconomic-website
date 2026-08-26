@@ -111,7 +111,7 @@ export default function App() {
         <Route path="/services" element={<ServicesHub />} />
         <Route path="/services/:serviceSlug" element={<ServicePillar />} />
 
-        {/* Retired kwvrs.com surfaces (intake, PSA agreements, payment, raffle,
+        {/* Retired vocational-site surfaces (intake, PSA agreements, payment, raffle,
             document libraries, expert-disclosure, economic tools) are NOT
             registered on kwlcp.com; server.js 404s or redirects them. */}
         <Route path="/services/:serviceSlug/:stateSlug" element={<ServiceState />} />

@@ -11,6 +11,7 @@ import { createServer } from "vite";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { ORG_NAME } from "../../scripts/lib/site.mjs";
+import { LEGACY_BRAND_PATTERN } from "../lib/brand.ts";
 import * as geoProse from "./geo-prose.mjs";
 import { createGeoNarrators, extractCityRows, extractStateFacts } from "../../scripts/lib/geo-inputs.mjs";
 import { pillarServiceEntries } from "../../scripts/lib/service-slugs.mjs";
@@ -20,7 +21,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const srcData = join(root, "src", "data");
 
 // Same list the runtime test uses; both sides must be free of it.
-const BANNED = /labor market|unemployment|median hourly wage|median household income|employers|earning capacity|transferable skills|vocational rehabilitation|KWVRS|Kincaid Wolstein/i;
+const BANNED = new RegExp(
+  `labor market|unemployment|median hourly wage|median household income|employers|earning capacity|transferable skills|vocational rehabilitation|${LEGACY_BRAND_PATTERN.source}`,
+  "i",
+);
 const CARE = /attendant care|home health|provider|cost of care/i;
 
 let server;

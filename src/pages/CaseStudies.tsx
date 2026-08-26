@@ -61,7 +61,7 @@ export default function CaseStudies() {
     title: `Illustrative Life Care Planning Engagements | ${ORG_NAME}`,
     description:
       `${ORG_NAME} prepares life care plans, medical cost projections, and Medicare set-aside allocations for plaintiff and defense counsel. Three anonymized, illustrative engagements show how a plan is built.`,
-    canonical: `${SITE_URL}/case-types`,
+    canonical: `${SITE_URL}/case-studies`,
   });
 
   return (

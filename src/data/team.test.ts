@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { team, activeTeam, retainableExperts, getMemoriam } from "./team";
+import { LEGACY_BRAND_PATTERN } from "@/lib/brand";
 
 describe("KW LCP team", () => {
   it("has the LCP roster", () => {
@@ -20,6 +21,6 @@ describe("KW LCP team", () => {
     expect(retainableExperts().some((m) => m.memoriam)).toBe(false);
   });
   it("no bio mentions the vocational brand", () => {
-    for (const m of team) expect(`${m.bio} ${m.fullBio ?? ""}`, m.slug).not.toMatch(/KWVRS|Kincaid Wolstein Vocational/);
+    for (const m of team) expect(`${m.bio} ${m.fullBio ?? ""}`, m.slug).not.toMatch(LEGACY_BRAND_PATTERN);
   });
 });

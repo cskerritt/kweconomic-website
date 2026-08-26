@@ -90,10 +90,10 @@ export function serviceSchema(args: {
 }
 
 /**
- * One LocalBusiness node per physical KWVRS office (Hackensack NJ + Richmond VA).
+ * One LocalBusiness node per physical office (Hackensack NJ + Richmond VA).
  * Use this on Home, Contact, About, and any page describing the firm.
  *
- * Do NOT use this on state/city pages where KWVRS has no physical presence.
+ * Do NOT use this on state/city pages where the firm has no physical presence.
  * For those, use {@link serviceSchema} with `areaServed` instead.
  */
 export function officeSchemas(): JsonLd[] {

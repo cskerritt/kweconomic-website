@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ORG_NAME, ORG_SHORT, SITE_URL, OFFICES, SAME_AS, KNOWS_ABOUT } from "./brand";
+import { ORG_NAME, ORG_SHORT, SITE_URL, OFFICES, SAME_AS, KNOWS_ABOUT, VOC_SITE_URL, ECON_SITE_URL } from "./brand";
 import { ORG_URL, ORG_LOGO, organizationSchema } from "./schema";
 
 describe("brand constants", () => {
@@ -12,7 +12,8 @@ describe("brand constants", () => {
   });
   it("keeps both offices and the family sameAs links", () => {
     expect(OFFICES.map((o) => o.addressRegion)).toEqual(["NJ", "VA"]);
-    expect(SAME_AS).toEqual(["https://kwvrs.com", "https://kweconomics.com"]);
+    expect(SAME_AS).toEqual([VOC_SITE_URL, ECON_SITE_URL]);
+    expect(SAME_AS).not.toContain(SITE_URL);
   });
   it("feeds the organization schema", () => {
     const org = organizationSchema() as Record<string, unknown>;

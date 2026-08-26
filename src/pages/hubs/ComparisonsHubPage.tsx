@@ -4,13 +4,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 
 export default function ComparisonsHubPage() {
   const url = `${ORG_URL}/compare`;
   usePageMeta({
-    title: "Expert Witness Comparisons | KWVRS",
+    title: `Life Care Planning Comparisons | ${ORG_NAME}`,
     description:
-      "Side-by-side comparisons of expert services, methodologies, and credentials. FCE vs IME, vocational expert vs SSA VE, and more.",
+      "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.",
     canonical: url,
   });
   return (
@@ -45,8 +46,8 @@ export default function ComparisonsHubPage() {
       )}
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Comparisons", description: "KWVRS expert discipline comparisons.", url }),
-        breadcrumbSchema([{ name: "Home", url: "https://kwvrs.com/" }, { name: "Compare", url }]),
+        articleSchema({ title: "Comparisons", description: "Life care planning discipline comparisons.", url }),
+        breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Compare", url }]),
       ])} />
     </div>
   );

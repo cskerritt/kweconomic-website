@@ -13,6 +13,7 @@ import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function CaseTypeState() {
@@ -25,8 +26,8 @@ export default function CaseTypeState() {
   usePageMeta(
     caseType && state
       ? {
-          title: `${caseType.name} Expert Witness Services in ${state.name} | KWVRS`,
-          description: `Vocational, economic, and life-care expert services for ${caseType.name.toLowerCase()} cases venued in ${state.name}. Plaintiff and defense.`,
+          title: `${caseType.name} Expert Witness Services in ${state.name} | ${ORG_NAME}`,
+          description: `Life care planning and medical cost projection for ${caseType.name.toLowerCase()} cases venued in ${state.name}. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -56,7 +57,7 @@ export default function CaseTypeState() {
       </h1>
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">
-        KWVRS provides {caseType.name.toLowerCase()} vocational, life care planning, and forensic economic analysis for attorneys handling cases in {state.name}.
+        {ORG_NAME} prepares life care plans and medical cost projections for attorneys handling {caseType.name.toLowerCase()} cases in {state.name}.
       </p>
 
       <section id="overview" className="mb-6">
@@ -75,7 +76,7 @@ export default function CaseTypeState() {
         <section id="jurisdictional-notes" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">{state.name} courts and expert standards</h2>
           <p className="text-neutral-700 mb-3">
-            {caseType.name} matters in {state.name} are litigated in the state's trial courts, with vocational, life care planning, and economic testimony evaluated under {state.name}'s expert evidence standard. KWVRS prepares reports and testimony that account for these requirements.
+            {caseType.name} matters in {state.name} are litigated in the state's trial courts, with life care planning and future medical cost testimony evaluated under {state.name}'s expert evidence standard. {ORG_NAME} prepares reports and testimony that account for these requirements.
           </p>
           {courts && (
             <div className="mb-3">
@@ -186,9 +187,9 @@ export default function CaseTypeState() {
         }),
         faqPageSchema(localizedFaqs, url),
         breadcrumbSchema([
-          { name: "Home", url: "https://kwvrs.com/" },
-          { name: "Case Types", url: "https://kwvrs.com/case-types" },
-          { name: caseType.name, url: `https://kwvrs.com/case-types/${caseType.slug}` },
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Case Types", url: `${ORG_URL}/case-types` },
+          { name: caseType.name, url: `${ORG_URL}/case-types/${caseType.slug}` },
           { name: state.name, url },
         ]),
       ])} />

@@ -1,5 +1,6 @@
 import { testimonials } from "@/data/testimonials";
 import TestimonialCard from "@/components/TestimonialCard";
+import { ORG_NAME } from "@/lib/brand";
 
 interface TestimonialSectionProps {
   /** Indices of testimonials to display. Defaults to [0, 1, 2]. */
@@ -17,8 +18,7 @@ export default function TestimonialSection({ indices = [0, 1, 2] }: TestimonialS
             What Attorneys Say
           </h2>
           <p className="text-neutral-600 max-w-2xl mx-auto">
-            Kincaid Wolstein Vocational and Rehabilitation Services works with plaintiff and defense
-            attorneys. Our experts deliver independent, objective analysis grounded in accepted
+            {ORG_NAME} works with plaintiff and defense attorneys. Our life care planners deliver independent, objective analysis grounded in accepted
             methodology.
           </p>
         </div>

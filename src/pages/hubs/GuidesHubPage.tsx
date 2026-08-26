@@ -4,13 +4,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 
 export default function GuidesHubPage() {
   const url = `${ORG_URL}/guides`;
   usePageMeta({
-    title: "Expert Witness Guides | KWVRS",
+    title: `Life Care Planning Guides | ${ORG_NAME}`,
     description:
-      "In-depth practitioner guides on vocational rehabilitation, life care planning, forensic economics, and expert witness practice. Methodology, admissibility, and engagement guidance.",
+      "In-depth practitioner guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice. Methodology, admissibility, and engagement guidance.",
     canonical: url,
   });
   return (
@@ -26,7 +27,7 @@ export default function GuidesHubPage() {
             Guides
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            In-depth guides on vocational rehabilitation, life care planning, forensic economics, and expert witness practice.
+            In-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice.
           </p>
         </div>
       </div>
@@ -46,8 +47,8 @@ export default function GuidesHubPage() {
       )}
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Guides", description: "In-depth guides from KWVRS.", url }),
-        breadcrumbSchema([{ name: "Home", url: "https://kwvrs.com/" }, { name: "Guides", url }]),
+        articleSchema({ title: "Guides", description: `In-depth guides from ${ORG_NAME}.`, url }),
+        breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Guides", url }]),
       ])} />
     </div>
   );

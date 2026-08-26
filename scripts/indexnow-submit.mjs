@@ -28,7 +28,7 @@ if (allUrls.length === 0) {
 // IndexNow requires the declared host + keyLocation to match every submitted URL,
 // and rejects a batch that mixes hosts. Derive the host from the sitemap so this
 // works on whatever domain the site is actually served from (e.g. the Railway
-// *.up.railway.app host before the kwvrs.com DNS cutover); INDEXNOW_HOST overrides.
+// *.up.railway.app host before the production DNS cutover); INDEXNOW_HOST overrides.
 const hostOf = (u) => {
   try {
     return new URL(u).host;

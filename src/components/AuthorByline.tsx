@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { team } from "@/data/team";
+import { ORG_NAME } from "@/lib/brand";
 
 export default function AuthorByline({ slug, dateModified }: { slug?: string; dateModified?: string }) {
   const member = slug ? team.find((m) => m.slug === slug) : undefined;
-  const displayName = member?.name ?? "KWVRS Editorial Team";
+  const displayName = member?.name ?? `${ORG_NAME} Editorial Team`;
   const linkTo = member ? `/team/${member.slug}` : "/team";
   // Show top 3 credentials inline for E-E-A-T signal (e.g. "Dan Wolstein, Ph.D., CRC, ABVE/D").
   // Filter credentials already present in the displayed name (the team data

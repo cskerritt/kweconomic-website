@@ -4,6 +4,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 
 const FEDERAL_CIRCUITS = [
   "First Circuit", "Second Circuit", "Third Circuit", "Fourth Circuit",
@@ -15,9 +16,9 @@ const FEDERAL_CIRCUITS = [
 export default function JurisdictionsHubPage() {
   const url = `${ORG_URL}/jurisdictions`;
   usePageMeta({
-    title: "Jurisdictions | KWVRS Nationwide Expert Services",
+    title: `Jurisdictions | ${ORG_NAME} Nationwide`,
     description:
-      "KWVRS provides vocational, economic, and life-care expert services in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.",
+      `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`,
     canonical: url,
   });
   return (
@@ -33,7 +34,7 @@ export default function JurisdictionsHubPage() {
             Jurisdictions
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            State and federal jurisdictions where KWVRS experts practice.
+            State and federal jurisdictions where our life care planners practice.
           </p>
         </div>
       </div>
@@ -59,8 +60,8 @@ export default function JurisdictionsHubPage() {
       </section>
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Jurisdictions", description: "Federal and state jurisdictions KWVRS serves.", url }),
-        breadcrumbSchema([{ name: "Home", url: "https://kwvrs.com/" }, { name: "Jurisdictions", url }]),
+        articleSchema({ title: "Jurisdictions", description: `Federal and state jurisdictions ${ORG_NAME} serves.`, url }),
+        breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Jurisdictions", url }]),
       ])} />
     </div>
   );

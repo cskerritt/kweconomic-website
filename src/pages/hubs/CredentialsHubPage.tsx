@@ -4,13 +4,14 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 
 export default function CredentialsHubPage() {
   const url = `${ORG_URL}/credentials`;
   usePageMeta({
-    title: "Expert Credentials | CRC, CLCP, CVE, ABVE | KWVRS",
+    title: `Expert Credentials | CLCP, CNLCP, MSCC, CRC | ${ORG_NAME}`,
     description:
-      "Professional credentials held by KWVRS vocational, economic, and life-care experts: CRC, CLCP, CVE, ABVE Diplomate and Fellow, and more. Scope, requirements, admissibility.",
+      "Professional credentials held by our life care planners: CLCP, CNLCP, MSCC, CDMS, CRC, M.D., R.N., and Ph.D. Scope, requirements, admissibility.",
     canonical: url,
   });
   return (
@@ -26,7 +27,7 @@ export default function CredentialsHubPage() {
             Credentials
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            Professional credentials held by KWVRS experts, with details on scope, requirements, and admissibility.
+            Professional credentials held by our life care planners, with details on scope, requirements, and admissibility.
           </p>
         </div>
       </div>
@@ -34,7 +35,7 @@ export default function CredentialsHubPage() {
         <p className="text-sm text-neutral-700 leading-relaxed">
           <strong className="text-navy">New to retaining an expert?</strong> These
           certifications signal that an expert is formally qualified to evaluate things
-          like earning capacity, future care needs, or economic loss - and to hold up
+          like future care needs, medical costs, or Medicare set-aside allocations - and to hold up
           to scrutiny on the stand. More letters after a name isn't automatically
           "better"; what matters is the <strong className="text-navy">right credential
           for your case type</strong>. Not sure which applies?{" "}
@@ -53,8 +54,8 @@ export default function CredentialsHubPage() {
       </ul>
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Credentials", description: "Professional credentials held by KWVRS experts.", url }),
-        breadcrumbSchema([{ name: "Home", url: "https://kwvrs.com/" }, { name: "Credentials", url }]),
+        articleSchema({ title: "Credentials", description: "Professional credentials held by our life care planners.", url }),
+        breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Credentials", url }]),
       ])} />
     </div>
   );

@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { ChevronRight, ArrowRight } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import { getPostBySlug, getRelatedPosts } from "@/data/insights";
 import NextSteps from "@/components/NextSteps";
 import AuthorByline from "@/components/AuthorByline";
@@ -32,11 +33,11 @@ export default function InsightPost() {
   usePageMeta(
     post
       ? {
-          title: `${post.title} | KWVRS Insights`,
+          title: `${post.title} | ${ORG_NAME}`,
           description: post.excerpt,
-          canonical: `https://kwvrs.com/insights/${post.slug}`,
+          canonical: `${ORG_URL}/insights/${post.slug}`,
         }
-      : { title: "Insights | KWVRS", description: "Insights and articles from KWVRS", canonical: "https://kwvrs.com/insights" }
+      : { title: `Insights | ${ORG_NAME}`, description: `Insights and articles from ${ORG_NAME}`, canonical: `${ORG_URL}/insights` }
   );
 
   if (!post) {

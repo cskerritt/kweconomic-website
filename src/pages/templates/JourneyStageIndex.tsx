@@ -4,6 +4,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 import { STAGE_LABELS } from "@/lib/attorney-stages";
 
@@ -30,7 +31,7 @@ export default function JourneyStageIndex() {
   usePageMeta(
     stageLabel
       ? {
-          title: `${stageLabel}: Attorney Guides by Case Type | KWVRS`,
+          title: `${stageLabel}: Attorney Guides by Case Type | ${ORG_NAME}`,
           description: `${stageLabel} guides for attorneys, by case type: step-by-step actions, required documents, common pitfalls, and FAQs.`,
           canonical: url,
         }

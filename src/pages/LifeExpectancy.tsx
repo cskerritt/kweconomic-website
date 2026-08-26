@@ -4,8 +4,9 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
 import ContactCTA from "@/components/ContactCTA";
-// Shared engine (lib/ ships in the production image; same pattern as the
-// economic-damages estimator - the CDC tables bundle client-side, no fetch).
+import { ORG_NAME } from "@/lib/brand";
+// Shared engine (lib/ ships in the production image; the CDC tables bundle
+// client-side, no fetch).
 import {
   computeLifeExpectancy,
   exactAge,
@@ -37,7 +38,7 @@ function ageText(age: number, capped: boolean): string {
 
 export default function LifeExpectancy() {
   usePageMeta({
-    title: "Life Expectancy Calculator | KWVRS",
+    title: `Life Expectancy Calculator | ${ORG_NAME}`,
     description:
       "Look up remaining life expectancy by age, sex, and population group using the CDC United States Life Tables, 2023. Population averages for education, not a prediction for any individual.",
     canonical: "/tools/life-expectancy",
@@ -298,8 +299,8 @@ export default function LifeExpectancy() {
                   </div>
                   <h3 className="font-serif text-lg font-bold text-navy mb-2">Working a case where this is a factor?</h3>
                   <p className="text-sm text-neutral-600 mb-4">
-                    Send your details and our team will follow up about how KWVRS can support the
-                    vocational, life care, or economic analysis.
+                    Send your details and our team will follow up about how {ORG_NAME} can support the
+                    life care plan or medical cost projection.
                   </p>
                   <form onSubmit={handleGateSubmit} className="space-y-3">
                     <input
@@ -322,7 +323,7 @@ export default function LifeExpectancy() {
                     <button
                       type="submit"
                       disabled={gateStatus === "submitting"}
-                      className="kw-magnetic w-full inline-flex items-center justify-center gap-2 bg-amber-dark hover:bg-amber disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+                      className="kw-magnetic w-full inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
                     >
                       {gateStatus === "submitting" ? "Sending..." : "Send my details"}
                     </button>

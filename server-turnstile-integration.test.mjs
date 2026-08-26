@@ -9,7 +9,7 @@ import { once } from "node:events";
 // Rather than re-import that module (which would either skip listening under
 // vitest or self-listen on an undiscoverable ephemeral port), this test stands up
 // a real ephemeral listener on port 0 wired to the exact verify-then-block logic
-// server.js runs at server.js:437-449, using the real verifyTurnstile module. We
+// server.js runs in its generic API handler, using the real verifyTurnstile module. We
 // stub the global fetch so the Cloudflare siteverify call is controlled and no
 // live network is touched; WORKFLOW_URL is left unset so no forward is attempted.
 //

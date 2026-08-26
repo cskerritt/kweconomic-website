@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Shield, Phone, Award, Users, MapPin } from "lucide-react";
 import { pillarServices } from "@/data/services";
 import { states } from "@/data/states";
+import { homepageFaqs } from "@/data/home-faqs.mjs";
 import { testimonials } from "@/data/testimonials";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, ORG_SHORT, ORG_PHONE, SITE_URL } from "@/lib/brand";
@@ -23,38 +24,7 @@ import {
 
 const PHONE_DISPLAY = "(201) 343-0700";
 
-const HOMEPAGE_FAQS = [
-  {
-    question: "What is a life care plan?",
-    answer:
-      "A life care plan is a dynamic document, based on published standards of practice, comprehensive assessment, data analysis, and research, that identifies the current and future medical, rehabilitative, and support needs of an individual with a catastrophic injury or chronic health condition and the cost of meeting those needs over the person's life expectancy.",
-  },
-  {
-    question: `Does ${ORG_SHORT} work for plaintiff and defense?`,
-    answer:
-      `Yes. ${ORG_NAME} accepts retentions from both plaintiff and defense counsel. The methodology is identical regardless of which side commissions the plan. That is the foundation of being treated as a credible, independent expert under any admissibility standard.`,
-  },
-  {
-    question: "Who prepares the plan?",
-    answer:
-      "Plans are developed and reviewed by a board-certified physician who is also a Certified Life Care Planner (CLCP), supported by certified life care planners. Every recommendation is tied to the medical record, treating-provider input, and published clinical practice guidelines.",
-  },
-  {
-    question: "How long does a life care plan take?",
-    answer:
-      "Most life care plans and medical cost projections are delivered 30 to 90 days after records are received, depending on the complexity of the injury, the volume of records, and whether an in-person or remote evaluation is required. Expedited timelines are considered case by case.",
-  },
-  {
-    question: "How much does a life care plan cost?",
-    answer:
-      "Engagements are billed hourly across records review, evaluation, plan development, and, if needed, deposition or trial testimony. The fee depends on the injury, the record volume, and the scope of the plan. We confirm scope and fee in writing before any work begins.",
-  },
-  {
-    question: `Where does ${ORG_SHORT} provide services?`,
-    answer:
-      `${ORG_NAME} accepts engagements in all 50 states, the District of Columbia, and U.S. territories, with state-specific cost research on every state and city page. Offices are in Hackensack, New Jersey, and Richmond, Virginia.`,
-  },
-];
+const HOMEPAGE_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 
 const HOW_WE_WORK = [
   { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. Plans are evidence-based and document the foundation for every recommendation." },

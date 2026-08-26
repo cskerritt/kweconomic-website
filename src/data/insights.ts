@@ -12,7 +12,7 @@ export interface InsightPost {
   publishedDate: string;
   /** Defaults to publishedDate for E-E-A-T signaling; override when content is materially updated. */
   dateModified?: string;
-  /** Team member slug for the AuthorByline. Falls back to "KWVRS Editorial Team" when unset. */
+  /** Team member slug for the AuthorByline. Falls back to the "<ORG_NAME> Editorial Team" byline when unset. */
   authorSlug?: string;
 }
 

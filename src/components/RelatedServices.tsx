@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { pillarServices } from "@/data/services";
+import { ORG_NAME } from "@/lib/brand";
 
 interface RelatedServicesProps {
   /** Case types relevant to the current page - used to find matching services */
@@ -26,7 +27,7 @@ export default function RelatedServices({ caseTypes, stateSlug }: RelatedService
     <section>
       <h2 className="font-serif text-2xl font-bold text-navy mb-4">Related Services</h2>
       <p className="text-neutral-600 text-sm mb-6">
-        Kincaid Wolstein Vocational and Rehabilitation Services provides the following services for
+        {ORG_NAME} provides the following services for
         cases in this area. Select a service to learn more.
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

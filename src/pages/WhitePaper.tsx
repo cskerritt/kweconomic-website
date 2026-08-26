@@ -1,5 +1,6 @@
 import { useParams, Navigate, Link } from "react-router-dom";
 import { truncateAtWord } from "@/lib/text";
+import { ORG_NAME } from "@/lib/brand";
 import { ArrowRight, Check, FileText } from "lucide-react";
 import { ICONS } from "@/lib/icons";
 import { getWhitePaperBySlug } from "@/data/whitePapers";
@@ -19,7 +20,7 @@ export default function WhitePaper() {
   usePageMeta(
     paper
       ? {
-          title: `${paper.title} | White Paper | KWVRS`,
+          title: `${paper.title} | White Paper | ${ORG_NAME}`,
           description: truncateAtWord(paper.summary),
           canonical: `${ORG_URL}/white-papers/${paper.slug}`,
         }

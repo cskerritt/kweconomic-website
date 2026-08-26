@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { PageMeta } from "@/types";
-import { DEFAULT_OG_IMAGE } from "@/lib/brand";
+import { DEFAULT_OG_IMAGE, SITE_URL } from "@/lib/brand";
 
 const DEFAULT_ROBOTS =
   "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1";
@@ -18,7 +18,7 @@ export function usePageMeta(meta: PageMeta | null) {
 
     // Normalize canonical - strip trailing slash except for root
     const canonical =
-      meta.canonical.endsWith("/") && meta.canonical !== "https://kwvrs.com/"
+      meta.canonical.endsWith("/") && meta.canonical !== `${SITE_URL}/`
         ? meta.canonical.slice(0, -1)
         : meta.canonical;
 

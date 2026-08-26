@@ -1,4 +1,5 @@
 import type { Service } from "@/types";
+import { VOC_SITE_URL } from "@/lib/brand";
 
 /**
  * KW Life Care Planning service taxonomy.
@@ -396,7 +397,7 @@ export const services: Service[] = [
     keywords: ["lcp present value", "future medical present value", "life care plan economist"],
     caseTypes: ["Personal Injury", "Wrongful Death", "Medical Malpractice"],
     relevantCredentials: ["PhD"],
-    externalUrl: "https://kwvrs.com/services/forensic-economics",
+    externalUrl: `${VOC_SITE_URL}/services/forensic-economics`,
     cost: {
       range: "Economic analysis is engaged through the firm's economics practice; a written estimate is provided once the life care plan scope is known and the matter's damages framework is confirmed.",
       drivers: [

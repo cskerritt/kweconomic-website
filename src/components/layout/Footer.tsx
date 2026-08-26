@@ -1,6 +1,18 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
-import { ORG_NAME, ORG_EMAIL, ORG_PHONE, ORG_PHONE_VA, ORG_CITY, ORG_STATE } from "@/lib/brand";
+import {
+  ORG_NAME,
+  ORG_EMAIL,
+  ORG_PHONE,
+  ORG_PHONE_VA,
+  ORG_PHONE_DISPLAY,
+  ORG_PHONE_VA_DISPLAY,
+  ORG_CITY,
+  ORG_STATE,
+  VOC_SITE_URL,
+  ECON_SITE_URL,
+  telHref,
+} from "@/lib/brand";
 
 // Static list of the 10 LCP pillar slugs (Task 5 replaces this with pillarServices()).
 const serviceLinks = [
@@ -15,13 +27,6 @@ const serviceLinks = [
   { name: "Elder & Long-Term Care Planning", href: "/services/elder-and-long-term-care-planning" },
   { name: "Expert Testimony", href: "/services/expert-witness-testimony" },
 ];
-
-/** Human-readable phone, e.g. "+1-201-343-0700" -> "(201) 343-0700". */
-function formatPhone(e164: string): string {
-  const d = e164.replace(/\D/g, "").replace(/^1/, "");
-  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
-}
-const telHref = (e164: string) => `tel:${e164.replace(/-/g, "")}`;
 
 // Top 8 + a "View all" link so the long-tail state hubs still get a crawl
 // path from the footer. Without this, only 8 of 56 state hubs receive
@@ -62,10 +67,12 @@ const companyLinks = [
   { name: "Terms", href: "/terms" },
 ];
 
-// Sister companies in the Kincaid Wolstein family (external, new tab).
+// Sister practices in the KW family (external, new tab). The visible label is
+// the host of the link so the domains are never spelled out here.
+const hostOf = (url: string) => new URL(url).host;
 const familyLinks = [
-  { name: "kwvrs.com", blurb: "Vocational & Economic Experts", href: "https://kwvrs.com" },
-  { name: "kweconomics.com", blurb: "Kincaid Wolstein Economics", href: "https://kweconomics.com" },
+  { name: hostOf(VOC_SITE_URL), blurb: "Vocational & Economic Experts", href: VOC_SITE_URL },
+  { name: hostOf(ECON_SITE_URL), blurb: "Forensic Economics", href: ECON_SITE_URL },
 ];
 
 export default function Footer() {
@@ -91,11 +98,11 @@ export default function Footer() {
               </div>
               <a href={telHref(ORG_PHONE)} className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
                 <Phone className="w-4 h-4 shrink-0" />
-                <span>{formatPhone(ORG_PHONE)}</span>
+                <span>{ORG_PHONE_DISPLAY}</span>
               </a>
               <a href={telHref(ORG_PHONE_VA)} className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
                 <Phone className="w-4 h-4 shrink-0" />
-                <span>{formatPhone(ORG_PHONE_VA)}</span>
+                <span>{ORG_PHONE_VA_DISPLAY}</span>
               </a>
               <a href={`mailto:${ORG_EMAIL}`} className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
                 <Mail className="w-4 h-4 shrink-0" />
@@ -165,9 +172,9 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Column 6: Kincaid Wolstein family (sister sites) */}
+          {/* Column 6: KW family (sister sites) */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Kincaid Wolstein Family</h3>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">KW Family of Practices</h3>
             <ul className="mt-4 space-y-3">
               {familyLinks.map((link) => (
                 <li key={link.href}>
