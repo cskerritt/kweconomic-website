@@ -1,50 +1,19 @@
-export const ORG_NAME = "Kincaid Wolstein Vocational and Rehabilitation Services";
-export const ORG_URL = "https://kwvrs.com";
-export const ORG_PHONE = "+1-201-343-0700";
-export const ORG_CITY = "Hackensack";
-export const ORG_STATE = "NJ";
-export const ORG_COUNTRY = "US";
-// Raster (PNG) logo for Organization/Article structured data - Google's
-// rich-results guidelines prefer PNG/JPG over SVG for the logo/image fields.
-// Generated from public/images/logo.svg -> public/images/logo.png (600x257,
-// white bg). The prior kwvrs-logo.png never existed, so the original schema
-// logo+image were 404s.
-export const ORG_LOGO = "https://kwvrs.com/images/logo.png";
-
+import {
+  ORG_NAME,
+  SITE_URL,
+  ORG_PHONE,
+  ORG_CITY,
+  ORG_STATE,
+  ORG_COUNTRY,
+  ORG_LOGO,
+  OFFICES,
+  SAME_AS,
+  KNOWS_ABOUT,
+} from "./brand";
+export { ORG_NAME, ORG_PHONE, ORG_CITY, ORG_STATE, ORG_COUNTRY, ORG_LOGO, OFFICES };
+export const ORG_URL = SITE_URL;
 export const ORG_ID = `${ORG_URL}/#org`;
 export const WEBSITE_ID = `${ORG_URL}/#website`;
-
-// Office NAP records. Used to emit one LocalBusiness per office under the
-// parent ProfessionalService Organization. Geo coords are MSA-centroid level
-// (not specific to building) - acceptable for LocalBusiness disambiguation.
-export const OFFICES = [
-  {
-    id: `${ORG_URL}/#office-nj`,
-    name: "Kincaid Wolstein Vocational and Rehabilitation Services - New Jersey",
-    streetAddress: "1 University Plaza, Suite 302",
-    addressLocality: "Hackensack",
-    addressRegion: "NJ",
-    postalCode: "07601",
-    addressCountry: "US",
-    telephone: "+1-201-343-0700",
-    latitude: 40.8859,
-    longitude: -74.0435,
-    hasMap: "https://www.google.com/maps/search/?api=1&query=1+University+Plaza+Hackensack+NJ+07601",
-  },
-  {
-    id: `${ORG_URL}/#office-va`,
-    name: "Kincaid Wolstein Vocational and Rehabilitation Services - Virginia",
-    streetAddress: "Richmond, Virginia",
-    addressLocality: "Richmond",
-    addressRegion: "VA",
-    postalCode: "23219",
-    addressCountry: "US",
-    telephone: "+1-804-282-4199",
-    latitude: 37.5407,
-    longitude: -77.4360,
-    hasMap: "https://www.google.com/maps/search/?api=1&query=Richmond+VA+23219",
-  },
-] as const;
 
 const DEFAULT_OPENING_HOURS = [
   {
@@ -61,6 +30,7 @@ export function organizationSchema(): JsonLd {
   return {
     "@type": "ProfessionalService",
     "@id": ORG_ID,
+    additionalType: "https://schema.org/MedicalBusiness",
     name: ORG_NAME,
     url: ORG_URL,
     telephone: ORG_PHONE,
@@ -80,13 +50,8 @@ export function organizationSchema(): JsonLd {
       areaServed: "US",
       availableLanguage: "en",
     },
-    sameAs: ["https://kweconomics.com"],
-    knowsAbout: [
-      "Vocational Expert Services",
-      "Life Care Planning",
-      "Forensic Economic Evaluations",
-      "Expert Witness Testimony",
-    ],
+    sameAs: [...SAME_AS],
+    knowsAbout: [...KNOWS_ABOUT],
   };
 }
 

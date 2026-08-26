@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   ORG_ID,
+  ORG_URL,
   organizationSchema,
   personSchema,
   graphSchema,
@@ -25,7 +26,7 @@ describe("schema builders", () => {
       imageUrl: "/team/daniel-wolstein.jpg",
       bio: "test bio",
     });
-    expect(p["@id"]).toBe("https://kwvrs.com/team/daniel-wolstein#person");
+    expect(p["@id"]).toBe(`${ORG_URL}/team/daniel-wolstein#person`);
     expect((p.worksFor as { "@id": string })["@id"]).toBe(ORG_ID);
     expect((p.hasCredential as unknown[]).length).toBe(2);
   });

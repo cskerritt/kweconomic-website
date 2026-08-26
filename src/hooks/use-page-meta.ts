@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import type { PageMeta } from "@/types";
+import { DEFAULT_OG_IMAGE } from "@/lib/brand";
 
-const DEFAULT_OG_IMAGE = "https://kwvrs.com/images/hero-office-meeting.jpg";
 const DEFAULT_ROBOTS =
   "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1";
 
