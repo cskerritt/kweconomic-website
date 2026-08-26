@@ -14,7 +14,8 @@ import Loading from "@/components/Loading";
 import { truncateAtWord } from "@/lib/text";
 import { nearestCities } from "@/lib/geo-links";
 import { getMetroLabor } from "@/data/labor/metro-labor";
-import { getLaborByState } from "@/data/labor/state-labor";
+import { careMedicalCenters } from "@/data/geo-prose.mjs";
+import { ORG_NAME } from "@/lib/brand";
 import { getCourtsByState } from "@/data/courts/state-courts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { getLocalContent } from "@/data/local-content";
@@ -22,7 +23,7 @@ import { getCityNarrative } from "@/data/narratives";
 import { cityGeographicFaqs } from "@/data/geographicFaqs";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
-import LaborDataWidget from "@/components/LaborDataWidget";
+import CareContextWidget from "@/components/CareContextWidget";
 import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
 import LocationCard from "@/components/LocationCard";
@@ -40,15 +41,15 @@ function buildCityIntro(city: City, state: State): string {
   const lead = `${city.name} is located in ${city.county}, ${state.name}.`;
   let role: string;
   if (city.isStateCapital) {
-    role = `As the capital of ${state.name}, ${city.name} is home to the state's principal courts and administrative agencies and is a frequent venue for litigation requiring vocational and economic expert analysis.`;
+    role = `As the capital of ${state.name}, ${city.name} is home to the state's principal courts and administrative agencies and is a frequent venue for catastrophic injury and medical malpractice litigation that turns on the cost of future care.`;
   } else if (city.name === state.largestCity) {
-    role = `As the largest city in ${state.name}, ${city.name} anchors one of the state's most active labor and litigation markets.`;
+    role = `As the largest city in ${state.name}, ${city.name} anchors one of the state's most active litigation markets and its deepest concentration of specialist and rehabilitation providers.`;
   } else if (city.msaName) {
-    role = `It falls within the ${city.msaName} metropolitan area, whose wage levels and occupational mix inform earning capacity and transferable skills analysis in local cases.`;
+    role = `It falls within the ${city.msaName} metropolitan area, whose provider rates for attendant care, home health, and specialist follow-up set the cost of care in local plans.`;
   } else {
-    role = `Counsel across ${city.county} retain KWVRS for objective vocational, life care planning, and forensic economic analysis.`;
+    role = `Counsel across ${city.county} retain ${ORG_NAME} for objective life care plans and future medical cost projections.`;
   }
-  const close = `KWVRS prepares court-admissible evaluations for ${city.name} attorneys and insurers, grounded in ${state.name}'s expert evidence standards and local labor market conditions.`;
+  const close = `${ORG_NAME} prepares court-admissible life care plans for ${city.name} attorneys and insurers, grounded in ${state.name}'s expert evidence standards and priced from providers serving the ${city.name} area.`;
   return `${lead} ${role} ${close}`;
 }
 
@@ -60,11 +61,12 @@ export default function CityPage() {
   const city = citySlug ? cities.find((c) => c.slug === citySlug) : undefined;
 
   const cityUrl = state && city ? `${ORG_URL}/locations/${state.slug}/${city.slug}` : "";
-  const narrativeForMeta = state && city ? getCityNarrative(state, city.name, city.slug, city.county) : null;
+  const narrativeForMeta =
+    state && city ? getCityNarrative(state, city.name, city.slug, city.county, { msaName: city.msaName }) : null;
   usePageMeta(
     state && city && narrativeForMeta
       ? {
-          title: `Vocational and Rehabilitation Experts in ${city.name}, ${state.abbreviation} | KWVRS`,
+          title: `Life Care Planners in ${city.name}, ${state.abbreviation} | ${ORG_NAME}`,
           description: truncateAtWord(narrativeForMeta.directAnswer),
           canonical: cityUrl,
         }
@@ -76,13 +78,11 @@ export default function CityPage() {
   if (!city) return <Navigate to={`/locations/${stateSlug}`} replace />;
 
   const metroLabor = getMetroLabor(stateSlug!, citySlug!);
-  const stateLabor = getLaborByState(stateSlug!);
-  const labor = metroLabor ?? stateLabor;
-  const laborAreaName = metroLabor ? city.name : `${state.name} (statewide)`;
+  const medicalCenters = careMedicalCenters(metroLabor?.topEmployers);
   const courts = getCourtsByState(stateSlug!);
   const regulations = getRegulationsByState(stateSlug!);
   const localContent = getLocalContent(stateSlug!, citySlug!);
-  const narrative = getCityNarrative(state, city.name, city.slug, city.county);
+  const narrative = getCityNarrative(state, city.name, city.slug, city.county, { msaName: city.msaName });
   const faqs = cityGeographicFaqs(state.name, city.name);
   const cityIntro = buildCityIntro(city, state);
 
@@ -98,7 +98,7 @@ export default function CityPage() {
           organizationSchema(),
           serviceSchema({
             slug: `city-${state.slug}-${city.slug}`,
-            name: `Vocational and Rehabilitation Expert Services in ${city.name}, ${state.abbreviation}`,
+            name: `Life Care Planning Services in ${city.name}, ${state.abbreviation}`,
             description: narrative.directAnswer,
             areaServed: { "@type": "City", name: `${city.name}, ${state.abbreviation}` },
           }),
@@ -178,23 +178,23 @@ export default function CityPage() {
               )}
             </section>
 
-            {/* Vocational Rehabilitation regulatory context (state-level) */}
+            {/* Where life care plans are litigated (state-level) */}
             {regulations && (
               <section className="bg-white rounded-xl border border-neutral-200 p-8">
                 <h2 className="font-serif text-2xl font-bold text-navy mb-4">
-                  Vocational Rehabilitation in {state.name}
+                  Where {state.name} Life Care Plans Are Litigated
                 </h2>
                 <p className="text-neutral-600 mb-5 text-sm">
-                  Vocational and life care opinions for {city.name} cases account for {state.name}'s regulatory framework and expert evidence standards.
+                  Life care plans for {city.name} cases are prepared for {state.name}'s civil and compensation forums and its expert evidence standards.
                 </p>
                 <div className="space-y-4 text-sm">
                   <div>
-                    <h3 className="font-semibold text-navy mb-1">State VR Agency</h3>
-                    <p className="text-neutral-700 leading-relaxed">{regulations.vocationalRehabAgency}</p>
+                    <h3 className="font-semibold text-navy mb-1">Venue Context</h3>
+                    <p className="text-neutral-700 leading-relaxed">{regulations.practiceContext}</p>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-navy mb-1">Credentialing &amp; Expert Qualification</h3>
-                    <p className="text-neutral-700 leading-relaxed">{regulations.licensingRequirements}</p>
+                    <h3 className="font-semibold text-navy mb-1">Compensation / Oversight Forum</h3>
+                    <p className="text-neutral-700 leading-relaxed">{regulations.careOversightAgency}</p>
                   </div>
                 </div>
               </section>
@@ -245,10 +245,14 @@ export default function CityPage() {
           {/* Sidebar (1/3) */}
           <aside className="mt-12 lg:mt-0 space-y-8">
 
-            {/* Labor data: metro-level where available, statewide fallback otherwise */}
-            {labor && (
-              <LaborDataWidget data={labor} areaName={laborAreaName} />
-            )}
+            {/* Care context: population, MSA, major medical centers (metro cities) */}
+            <CareContextWidget
+              areaName={city.name}
+              population={city.population}
+              msaName={city.msaName}
+              medicalCenters={medicalCenters}
+              oversightAgency={regulations?.careOversightAgency}
+            />
 
             {/* State court system */}
             {courts && (

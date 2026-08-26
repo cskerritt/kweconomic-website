@@ -12,6 +12,7 @@ import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, credentialSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 // Credential strings differ in punctuation across data files ("R.N." in
@@ -62,9 +63,9 @@ export default function CredentialState() {
         <p className="text-neutral-700 mb-3">{cred.scope}</p>
         {regulations && (
           <>
-            <p className="text-neutral-700 mb-3">{regulations.licensingRequirements}</p>
+            <p className="text-neutral-700 mb-3">{regulations.practiceContext}</p>
             <p className="text-neutral-700">
-              The {regulations.vocationalRehabAgency} administers public vocational rehabilitation in {state.name}. KWVRS {cred.abbreviation}-credentialed experts apply nationally recognized standards while accounting for {state.name}'s practice environment.
+              Outside the civil courts, the {regulations.careOversightAgency} is the forum where a plan is most often examined in {state.name}. {ORG_NAME} {cred.abbreviation}-credentialed experts apply nationally recognized standards while accounting for {state.name}'s practice environment.
             </p>
           </>
         )}

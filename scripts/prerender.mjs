@@ -9,10 +9,19 @@
  * Run: node scripts/prerender.mjs
  */
 
-import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { pillarServiceEntries } from "./lib/service-slugs.mjs";
+import { ORG_NAME } from "./lib/site.mjs";
+import * as geoProse from "../src/data/geo-prose.mjs";
+import {
+  extractCityDataByState,
+  extractMetroMap,
+  extractStateCourtsMap,
+  extractStateFacts,
+  extractStateRegsMap,
+} from "./lib/geo-inputs.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -149,30 +158,8 @@ const teamMap = (() => {
   return m;
 })();
 
-// Cities - one file per state
-const cityFiles = readdirSync(join(SRC_DATA, "cities")).filter(
-  (f) => f.endsWith(".ts") && f !== "index.ts"
-);
-
-const cityDataByState = {};
-for (const file of cityFiles) {
-  const content = readFileSync(join(SRC_DATA, "cities", file), "utf-8");
-  const stateSlug = file.replace(".ts", "");
-  const citySlugs = [...content.matchAll(/slug:\s*"([^"]+)"/g)].map(
-    (m) => m[1]
-  );
-  const cityNames = [...content.matchAll(/\bname:\s*"([^"]+)"/g)].map(
-    (m) => m[1]
-  );
-  const cityCounties = [...content.matchAll(/county:\s*"([^"]+)"/g)].map(
-    (m) => m[1]
-  );
-  cityDataByState[stateSlug] = citySlugs.map((slug, i) => ({
-    slug,
-    name: cityNames[i] || slug,
-    county: cityCounties[i],
-  }));
-}
+// Cities - one file per state (slug, name, county, msaName per entry).
+const cityDataByState = extractCityDataByState(SRC_DATA);
 
 // Build a lookup for state slug -> state name
 const stateNameMap = {};
@@ -216,300 +203,61 @@ const disclosureRules = existsSync(disclosureRulesFile)
   : [];
 
 // ---------------------------------------------------------------------------
-// 2b. Extract per-state and per-metro narrative inputs.
+// 2b. Per-state and per-metro narrative inputs.
 //
-// These mirror the React-side helpers in src/data/narratives.ts so the
-// static prerender HTML carries the same direct-answer + market-context
-// content. Without this, non-JS crawlers see only the bare H1 + 1 P stub.
+// The sentence templates live in src/data/geo-prose.mjs and are shared with
+// the React runtime (src/data/narratives.ts, src/data/geographicFaqs.ts), so
+// the static shells carry exactly the copy the hydrated page renders. Only the
+// data joins happen here; src/data/narratives.parity.test.mjs pins the two.
+// Never feed wages, unemployment, or employer lists into the prose.
 // ---------------------------------------------------------------------------
 
-/**
- * Parse a TS data file structured as `[{stateSlug: "...", ...}, ...]`.
- * Returns a map keyed by stateSlug with extracted scalar fields and the
- * first topIndustries[0].name when present.
- */
-function extractStateLaborMap() {
-  const content = readFileSync(join(SRC_DATA, "labor", "state-labor.ts"), "utf-8");
-  const map = {};
-  // Split into one block per entry. The blocks start at each `stateSlug:` line
-  // and end at the next one (or end-of-array).
-  const blocks = content.split(/(?=\n\s*\{\s*\n\s*stateSlug:\s*")/);
-  for (const block of blocks) {
-    const slug = block.match(/stateSlug:\s*"([^"]+)"/)?.[1];
-    if (!slug) continue;
-    const wage = block.match(/medianHourlyWage:\s*([\d.]+)/)?.[1];
-    const income = block.match(/medianHouseholdIncome:\s*(\d+)/)?.[1];
-    const unemployment = block.match(/unemploymentRate:\s*([\d.]+)/)?.[1];
-    // Match the first topIndustries entry's name within this block only.
-    const topIndustryMatch = block.match(
-      /topIndustries:\s*\[\s*\{\s*name:\s*"([^"]+)"/,
-    );
-    map[slug] = {
-      medianHourlyWage: wage ? parseFloat(wage) : undefined,
-      medianHouseholdIncome: income ? parseInt(income, 10) : undefined,
-      unemploymentRate: unemployment ? parseFloat(unemployment) : undefined,
-      topIndustry: topIndustryMatch?.[1],
-    };
-  }
-  return map;
-}
+const stateFactsMap = extractStateFacts(SRC_DATA);
+const stateCourtsMap = extractStateCourtsMap(SRC_DATA);
+const stateRegsMap = extractStateRegsMap(SRC_DATA);
+const metroMap = extractMetroMap(SRC_DATA);
 
-function extractStateCourtsMap() {
-  const content = readFileSync(join(SRC_DATA, "courts", "state-courts.ts"), "utf-8");
-  const map = {};
-  const blocks = content.split(/(?=\n\s*\{\s*\n\s*stateSlug:\s*")/);
-  for (const block of blocks) {
-    const slug = block.match(/stateSlug:\s*"([^"]+)"/)?.[1];
-    if (!slug) continue;
-    const supremeCourt = block.match(/supremeCourt:\s*"([^"]+)"/)?.[1];
-    // First trialCourts[].name within block
-    const trialMatch = block.match(
-      /trialCourts:\s*\[\s*\{\s*name:\s*"([^"]+)"/,
-    );
-    // Count of federalDistricts entries
-    const federalDistricts = (block.match(
-      /federalDistricts:\s*\[([\s\S]*?)\]/,
-    )?.[1] ?? "").match(/\bname:\s*"/g)?.length ?? 0;
-    map[slug] = {
-      supremeCourt,
-      trialCourtName: trialMatch?.[1],
-      federalDistrictCount: federalDistricts,
-    };
-  }
-  return map;
-}
-
-function extractStateRegsMap() {
-  const content = readFileSync(join(SRC_DATA, "regulations", "state-regs.ts"), "utf-8");
-  const map = {};
-  const blocks = content.split(/(?=\n\s*\{\s*\n\s*stateSlug:\s*")/);
-  for (const block of blocks) {
-    const slug = block.match(/stateSlug:\s*"([^"]+)"/)?.[1];
-    if (!slug) continue;
-    const agency = block.match(/vocationalRehabAgency:\s*"([^"]+)"/)?.[1];
-    map[slug] = { vocationalRehabAgency: agency };
-  }
-  return map;
-}
-
-function extractMetroLaborMap() {
-  const content = readFileSync(join(SRC_DATA, "labor", "metro-labor.ts"), "utf-8");
-  const map = {};
-  const blocks = content.split(/(?=\n\s*\{\s*\n\s*citySlug:\s*")/);
-  for (const block of blocks) {
-    const citySlug = block.match(/citySlug:\s*"([^"]+)"/)?.[1];
-    const stateSlug = block.match(/stateSlug:\s*"([^"]+)"/)?.[1];
-    if (!citySlug || !stateSlug) continue;
-    const wage = block.match(/medianHourlyWage:\s*([\d.]+)/)?.[1];
-    const unemployment = block.match(/unemploymentRate:\s*([\d.]+)/)?.[1];
-    // First topIndustries entry (legacy field used elsewhere).
-    const topIndustryMatch = block.match(
-      /topIndustries:\s*\[\s*\{\s*name:\s*"([^"]+)"/,
-    );
-    // Full topIndustries list (used by buildCityNarrative).
-    const industriesBlock = block.match(/topIndustries:\s*\[([\s\S]*?)\]/)?.[1] ?? "";
-    const topIndustries = [...industriesBlock.matchAll(/name:\s*"([^"]+)"/g)].map((m) => ({
-      name: m[1],
-    }));
-    // topEmployers string list.
-    const employersBlock = block.match(/topEmployers:\s*\[([\s\S]*?)\]/)?.[1] ?? "";
-    const topEmployers = [...employersBlock.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
-    map[`${stateSlug}/${citySlug}`] = {
-      medianHourlyWage: wage ? parseFloat(wage) : undefined,
-      unemploymentRate: unemployment ? parseFloat(unemployment) : undefined,
-      topIndustry: topIndustryMatch?.[1],
-      topIndustries,
-      topEmployers,
-    };
-  }
-  return map;
-}
-
-const stateLaborMap = extractStateLaborMap();
-const stateCourtsMap = extractStateCourtsMap();
-const stateRegsMap = extractStateRegsMap();
-const metroLaborMap = extractMetroLaborMap();
-
-const fmtMoney = (n) => (typeof n === "number" ? `$${n.toLocaleString("en-US")}` : "");
-const fmtRate = (n) => (typeof n === "number" ? `${n.toFixed(1)}%` : "");
-
-/**
- * State narrative - mirrors getStateNarrative() in src/data/narratives.ts.
- * Returns { directAnswer, marketContext, legalContext } as plain strings.
- */
+/** State narrative - same joins as getStateNarrative() in src/data/narratives.ts. */
 function buildStateNarrative(state) {
-  const labor = stateLaborMap[state.slug];
+  const facts = stateFactsMap[state.slug] ?? {};
   const courts = stateCourtsMap[state.slug];
   const regs = stateRegsMap[state.slug];
-
-  const topIndustry = labor?.topIndustry;
-  const medianHourly = fmtMoney(labor?.medianHourlyWage);
-  const medianHousehold = fmtMoney(labor?.medianHouseholdIncome);
-  const unemployment = fmtRate(labor?.unemploymentRate);
-
-  const trialCourtName = courts?.trialCourtName ?? "general-jurisdiction trial court";
-  const supremeCourt = courts?.supremeCourt;
-  const federalDistrictCount = courts?.federalDistrictCount ?? 0;
-  const agency = regs?.vocationalRehabAgency;
-
-  const directAnswer = [
-    `KWVRS provides vocational, economic, and life care expert services for matters venued in ${state.name}.`,
-    topIndustry
-      ? `${state.name}'s labor market is anchored by ${topIndustry.toLowerCase()}${
-          medianHourly ? ` with a ${medianHourly}/hr median wage` : ""
-        }.`
-      : `${state.name} matters span personal injury, motor vehicle, workers' compensation, wrongful-death, and matrimonial work.`,
-    "Plaintiff and defense.",
-  ].join(" ");
-
-  const marketParts = [];
-  if (medianHousehold) {
-    marketParts.push(
-      `${state.name} reports a ${medianHousehold} median household income${medianHourly ? ` and a ${medianHourly}/hr median wage` : ""}.`,
-    );
-  }
-  if (unemployment) marketParts.push(`Statewide unemployment runs near ${unemployment}.`);
-  if (topIndustry) marketParts.push(`Top sector: ${topIndustry}.`);
-  const marketContext =
-    marketParts.length > 0
-      ? marketParts.join(" ")
-      : `Earning capacity and economic-loss analyses in ${state.name} draw on state-level wage benchmarks and regional industry mix.`;
-
-  const legalParts = [];
-  if (trialCourtName) legalParts.push(`${state.name}'s ${trialCourtName} is the primary trial-level forum for civil matters.`);
-  if (supremeCourt) legalParts.push(`Final state-court appeals run to the ${supremeCourt}.`);
-  if (federalDistrictCount > 0) {
-    legalParts.push(
-      `${state.name} is served by ${federalDistrictCount} federal district court${federalDistrictCount === 1 ? "" : "s"}.`,
-    );
-  }
-  if (agency) legalParts.push(`The ${agency} administers vocational rehabilitation in the state.`);
-  const legalContext =
-    legalParts.length > 0
-      ? legalParts.join(" ")
-      : `${state.name} matters proceed under the state's civil procedure framework with case-specific scheduling.`;
-
-  return { directAnswer, marketContext, legalContext };
+  return geoProse.buildStateNarrative({
+    orgName: ORG_NAME,
+    stateName: state.name,
+    region: facts.region,
+    population: facts.population,
+    trialCourtName: courts?.trialCourtName,
+    supremeCourt: courts?.supremeCourt,
+    federalDistrictCount: courts?.federalDistrictCount ?? 0,
+    careOversightAgency: regs?.careOversightAgency,
+  });
 }
 
-/**
- * City narrative - mirrors getCityNarrative() in src/data/narratives.ts.
- */
+/** City narrative - same joins as getCityNarrative() in src/data/narratives.ts. */
 function buildCityNarrative(state, city) {
-  const metro = metroLaborMap[`${state.slug}/${city.slug}`];
-  const stateLabor = stateLaborMap[state.slug];
-  const wage = fmtMoney(metro?.medianHourlyWage);
-  const topIndustry = metro?.topIndustry;
-  const top3 = metro?.topIndustries?.slice(0, 3).map((i) => i.name).join(", ");
-  const topEmployer = metro?.topEmployers?.[0];
-  const unemployment = metro?.unemploymentRate;
-  const stateTopIndustry = stateLabor?.topIndustry;
-
-  // directAnswer carries the wage. blurb must NOT repeat it.
-  const directAnswer = [
-    `KWVRS provides vocational, economic, and life care expert services for cases venued in ${city.name}, ${state.name}.`,
-    topIndustry
-      ? `${city.name}'s economy is anchored by ${topIndustry.toLowerCase()}${wage ? ` with a ${wage}/hr median wage` : ""}.`
-      : stateTopIndustry
-        ? `${city.name} sits in a labor market shaped by ${state.name}'s ${stateTopIndustry.toLowerCase()} sector.`
-        : `${city.name} matters draw on regional labor market data tailored to ${state.name}.`,
-    "Plaintiff and defense.",
-  ].join(" ");
-
-  // Build a unique-per-city blurb. Avoid repeating the wage.
-  const blurbParts = [];
-  if (metro) {
-    if (top3) blurbParts.push(`Top sectors include ${top3}.`);
-    if (topEmployer) blurbParts.push(`Major employers such as ${topEmployer} anchor the local labor market.`);
-    if (typeof unemployment === "number") {
-      blurbParts.push(`Local unemployment runs at ${unemployment.toFixed(1)}%.`);
-    }
-  }
-  if (city.county) {
-    blurbParts.push(`${city.name} matters typically venue in ${city.county} court.`);
-  }
-  blurbParts.push(
-    metro
-      ? `Earning capacity and economic-loss analyses for ${city.name} cases incorporate metro-level wage and industry data.`
-      : `Analyses for ${city.name} cases incorporate ${state.name} state-level wage data with metro-level adjustments where applicable.`,
-  );
-  const blurb = blurbParts.join(" ");
-
-  return { directAnswer, blurb };
+  const metro = metroMap[`${state.slug}/${city.slug}`];
+  const courts = stateCourtsMap[state.slug];
+  return geoProse.buildCityNarrative({
+    orgName: ORG_NAME,
+    stateName: state.name,
+    cityName: city.name,
+    county: city.county,
+    msaName: city.msaName,
+    medicalCenters: geoProse.careMedicalCenters(metro?.topEmployers),
+    hasMetroData: metro !== undefined,
+    trialCourtName: courts?.trialCourtName,
+  });
 }
 
-// FAQ generators - mirror src/data/geographicFaqs.ts.
-function stateGeographicFaqs(stateName) {
-  return [
-    {
-      question: `Does KWVRS provide expert services for ${stateName} cases?`,
-      answer: `Yes. KWVRS provides vocational, economic, and life care expert services for attorneys handling matters venued in ${stateName}. We support plaintiff and defense counsel across personal injury, motor vehicle, workers' compensation, wrongful-death, matrimonial, and other case types. Attorneys are responsible for confirming the governing rule and timing for their specific case.`,
-    },
-    {
-      question: `What deliverables are available for ${stateName} matters?`,
-      answer: `KWVRS provides full retained-expert reports across the Vocational, Economic, and Life Care disciplines, sized to both trial-track and settlement matters. The appropriate deliverable depends on the case posture and the disclosure framework that applies to the specific matter.`,
-    },
-    {
-      question: `How is ${stateName}'s labor market handled in earning capacity analyses?`,
-      answer: `KWVRS incorporates state-level and metro-level labor market data for ${stateName}, including wage benchmarks, top industries, and regional adjustments where the case warrants. The methodology references accepted vocational and forensic economic protocols and supports both pre-trial settlement and trial-track use depending on the engagement scope.`,
-    },
-    {
-      question: `When is expert disclosure due in ${stateName}?`,
-      answer: `Disclosure timing is typically set by the case's scheduling order or case management order. Attorneys are responsible for confirming the specific deadlines for their case against primary sources. KWVRS calibrates engagement scope and turnaround to the disclosure window.`,
-    },
-  ];
-}
-
-function cityGeographicFaqs(stateName, cityName) {
-  return [
-    {
-      question: `Does KWVRS provide expert services for ${cityName}, ${stateName} cases?`,
-      answer: `Yes. KWVRS provides vocational, economic, and life care expert services for attorneys handling matters venued in ${cityName}, ${stateName}. We support plaintiff and defense counsel across the full civil case mix common to ${cityName} matters.`,
-    },
-    {
-      question: `What does a vocational expert engagement cost for a ${cityName} case?`,
-      answer: `Full retained-expert engagements are billed hourly across review, evaluation, report, and testimony phases. Specific cost depends on case complexity and engagement scope.`,
-    },
-    {
-      question: `Does KWVRS work both plaintiff and defense in ${cityName}?`,
-      answer: `Yes. KWVRS provides independent, objective analysis for plaintiff and defense counsel in ${cityName}, ${stateName} matters. The methodology is the same regardless of which side commissions the work; KWVRS provides neutral analysis grounded in accepted vocational, economic, and life care planning protocols.`,
-    },
-  ];
-}
-
-function serviceStateGeographicFaqs(serviceName, stateName) {
-  return [
-    {
-      question: `Does KWVRS provide ${serviceName.toLowerCase()} in ${stateName}?`,
-      answer: `Yes. KWVRS provides ${serviceName.toLowerCase()} for attorneys handling matters venued in ${stateName}. We support plaintiff and defense counsel with case-specific deliverables sized to the engagement scope.`,
-    },
-    {
-      question: `What does a ${serviceName.toLowerCase()} engagement look like for a ${stateName} case?`,
-      answer: `A complete engagement typically includes review of medical and vocational records, optional interview and testing where appropriate, written expert report, deposition preparation and testimony, and trial testimony when required. Scope and turnaround are calibrated to the case posture and the governing disclosure framework.`,
-    },
-    {
-      question: `When is expert disclosure due in ${stateName}?`,
-      answer: `Disclosure timing is typically set by the scheduling order in the case. Attorneys are responsible for confirming the specific deadlines for their case against primary sources. KWVRS calibrates engagement scope and turnaround to the disclosure window.`,
-    },
-  ];
-}
-
-function serviceCityGeographicFaqs(serviceName, stateName, cityName) {
-  return [
-    {
-      question: `Does KWVRS provide ${serviceName.toLowerCase()} in ${cityName}, ${stateName}?`,
-      answer: `Yes. KWVRS provides ${serviceName.toLowerCase()} for attorneys handling matters venued in ${cityName}, ${stateName}. We support plaintiff and defense counsel across the full case mix common to ${cityName} matters.`,
-    },
-    {
-      question: `How is the ${cityName} labor market handled in the analysis?`,
-      answer: `KWVRS incorporates metro-level labor market data for ${cityName}, including wage benchmarks and top-industry mix, alongside ${stateName} state-level data where appropriate. Earning capacity and economic-loss analyses use accepted vocational and forensic economic protocols.`,
-    },
-    {
-      question: `What deliverables are available for a ${cityName} case?`,
-      answer: `KWVRS provides full retained-expert reports across the Vocational, Economic, and Life Care disciplines, sized to both trial-track and settlement matters. The appropriate deliverable depends on case posture.`,
-    },
-  ];
-}
+// Geo FAQ blocks - thin wrappers over the shared templates.
+const stateGeographicFaqs = (stateName) => geoProse.stateGeographicFaqs(ORG_NAME, stateName);
+const cityGeographicFaqs = (stateName, cityName) =>
+  geoProse.cityGeographicFaqs(ORG_NAME, stateName, cityName);
+const serviceStateGeographicFaqs = (serviceName, stateName) =>
+  geoProse.serviceStateGeographicFaqs(ORG_NAME, serviceName, stateName);
+const serviceCityGeographicFaqs = (serviceName, stateName, cityName) =>
+  geoProse.serviceCityGeographicFaqs(ORG_NAME, serviceName, stateName, cityName);
 
 /** Render a list of FAQs as static HTML <details> blocks for the prerender body. */
 function renderFaqHtml(faqs, headingText) {
@@ -1115,9 +863,9 @@ for (const state of stateData) {
   const faqs = stateGeographicFaqs(state.name);
   const url = `${BASE_URL}${path}`;
   const innerHtml =
-    `<h1>Vocational and Rehabilitation Experts in ${escapeHtml(state.name)}</h1>` +
+    `<h1>Life Care Planners in ${escapeHtml(state.name)}</h1>` +
     `<p>${escapeHtml(narrative.directAnswer)}</p>` +
-    `<p>${escapeHtml(narrative.marketContext)}</p>` +
+    `<p>${escapeHtml(narrative.careContext)}</p>` +
     `<p>${escapeHtml(narrative.legalContext)}</p>` +
     renderFaqHtml(faqs, `Frequently asked: ${state.name} expert services`) +
     `<nav><a href="/services">Services</a> <a href="/locations">All Locations</a> <a href="/contact">Contact</a></nav>`;
@@ -1125,7 +873,7 @@ for (const state of stateData) {
     path,
     buildPage({
       path,
-      title: `Vocational & Rehabilitation Experts in ${state.name} | KWVRS`,
+      title: `Life Care Planners in ${state.name} | ${ORG_NAME}`,
       description: narrative.directAnswer.slice(0, 160),
       innerHtml,
       schemaType: "Service",
@@ -1146,7 +894,7 @@ for (const state of stateData) {
     const faqs = cityGeographicFaqs(state.name, city.name);
     const url = `${BASE_URL}${path}`;
     const innerHtml =
-      `<h1>Vocational and Rehabilitation Experts in ${escapeHtml(city.name)}, ${escapeHtml(state.name)}</h1>` +
+      `<h1>Life Care Planners in ${escapeHtml(city.name)}, ${escapeHtml(state.name)}</h1>` +
       `<p>${escapeHtml(narrative.directAnswer)}</p>` +
       `<p>${escapeHtml(narrative.blurb)}</p>` +
       renderFaqHtml(faqs, `Frequently asked: ${city.name} expert services`) +
@@ -1155,7 +903,7 @@ for (const state of stateData) {
       path,
       buildPage({
         path,
-        title: `Vocational & Rehabilitation Experts in ${city.name}, ${state.name} | KWVRS`,
+        title: `Life Care Planners in ${city.name}, ${state.name} | ${ORG_NAME}`,
         description: narrative.directAnswer.slice(0, 160),
         innerHtml,
         schemaType: "Service",
@@ -1178,7 +926,7 @@ for (const svc of serviceData) {
     const narrative = buildStateNarrative(state);
     const faqs = serviceStateGeographicFaqs(svc.name, state.name);
     const url = `${BASE_URL}${path}`;
-    const directAnswer = `KWVRS provides ${svc.name.toLowerCase()} for matters venued in ${state.name}. ${narrative.marketContext} Plaintiff and defense.`;
+    const directAnswer = `${svc.name} from ${ORG_NAME} for matters venued in ${state.name}. ${narrative.careContext} Plaintiff and defense.`;
     const innerHtml =
       `<h1>${escapeHtml(svc.name)} in ${escapeHtml(state.name)}</h1>` +
       `<p>${escapeHtml(directAnswer)}</p>` +
@@ -1189,7 +937,7 @@ for (const svc of serviceData) {
       path,
       buildPage({
         path,
-        title: `${svc.name} in ${state.name} | KWVRS`,
+        title: `${svc.name} in ${state.name} | ${ORG_NAME}`,
         description: directAnswer.slice(0, 160),
         innerHtml,
         schemaType: "Service",
@@ -1206,7 +954,7 @@ for (const svc of serviceData) {
       const cityUrl = `${BASE_URL}${cityPath}`;
       const cityNarrative = buildCityNarrative(state, city);
       const cityFaqs = serviceCityGeographicFaqs(svc.name, state.name, city.name);
-      const cityDirect = `${svc.name} from KWVRS for cases venued in ${city.name}, ${state.name}. ${cityNarrative.blurb}`;
+      const cityDirect = `${svc.name} from ${ORG_NAME} for cases venued in ${city.name}, ${state.name}. ${cityNarrative.blurb}`;
       const cityInner =
         `<h1>${escapeHtml(svc.name)} in ${escapeHtml(city.name)}, ${escapeHtml(state.name)}</h1>` +
         `<p>${escapeHtml(cityDirect)}</p>` +
@@ -1217,7 +965,7 @@ for (const svc of serviceData) {
         cityPath,
         buildPage({
           path: cityPath,
-          title: `${svc.name} in ${city.name}, ${state.name} | KWVRS`,
+          title: `${svc.name} in ${city.name}, ${state.name} | ${ORG_NAME}`,
           description: cityDirect.slice(0, 160),
           innerHtml: cityInner,
           schemaType: "Service",

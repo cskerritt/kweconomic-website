@@ -93,8 +93,8 @@ export default function CaseTypeState() {
           )}
           {regulations && (
             <div>
-              <h3 className="font-semibold text-navy mb-1">Credentialing and expert qualification</h3>
-              <p className="text-neutral-700">{regulations.licensingRequirements}</p>
+              <h3 className="font-semibold text-navy mb-1">Venue context</h3>
+              <p className="text-neutral-700">{regulations.practiceContext}</p>
             </div>
           )}
         </section>

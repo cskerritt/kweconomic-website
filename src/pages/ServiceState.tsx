@@ -3,7 +3,6 @@ import { getServiceBySlug, pillarServices } from "@/data/services";
 import { getStateBySlug } from "@/data/states";
 import { useStateCities } from "@/hooks/use-state-cities";
 import { SERVICE_CITY_TOP, serviceCityCities } from "@/lib/geo-links";
-import { getLaborByState } from "@/data/labor/state-labor";
 import { getCourtsByState } from "@/data/courts/state-courts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -16,10 +15,11 @@ import {
   faqPageSchema,
   ORG_URL,
 } from "@/lib/schema";
+import { ORG_NAME } from "@/lib/brand";
 import { getStateNarrative } from "@/data/narratives";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
-import LaborDataWidget from "@/components/LaborDataWidget";
+import CareContextWidget from "@/components/CareContextWidget";
 import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
 import LocationCard from "@/components/LocationCard";
@@ -40,13 +40,13 @@ export default function ServiceState() {
 
   usePageMeta({
     title: service && state
-      ? `${service.shortName} in ${state.name} | KWVRS`
-      : "Service | KWVRS",
+      ? `${service.shortName} in ${state.name} | ${ORG_NAME}`
+      : `Service | ${ORG_NAME}`,
     description:
       service && state
-        ? `KWVRS provides ${service.name.toLowerCase()} in ${state.name}. Qualified vocational and rehabilitation expert services for attorneys and insurers across ${state.name}.`
+        ? `${ORG_NAME} provides ${service.name.toLowerCase()} in ${state.name}. Certified life care planners pricing attendant care, home health, equipment, and future medical needs for attorneys and insurers across ${state.name}.`
         : "",
-    canonical: `https://kwvrs.com/services/${serviceSlug ?? ""}/${stateSlug ?? ""}`,
+    canonical: `${ORG_URL}/services/${serviceSlug ?? ""}/${stateSlug ?? ""}`,
   });
 
   const magnet = useMagnetic<HTMLAnchorElement>(0.25);
@@ -64,7 +64,6 @@ export default function ServiceState() {
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
   const motion = serviceMotion(service.slug);
 
-  const laborData = getLaborByState(state.slug);
   const courts = getCourtsByState(state.slug);
   const regulations = getRegulationsByState(state.slug);
   // Every city that has a /services/<service>/<state>/<city> page (the full
@@ -78,7 +77,7 @@ export default function ServiceState() {
   );
 
   const url = `${ORG_URL}/services/${service.slug}/${state.slug}`;
-  const directAnswer = `${service.shortName} services from KWVRS for matters venued in ${state.name}. ${narrative.marketContext} Plaintiff and defense.`;
+  const directAnswer = `${service.shortName} from ${ORG_NAME} for matters venued in ${state.name}. ${narrative.careContext} Plaintiff and defense.`;
 
   return (
     <div className="min-h-screen bg-neutral-50 overflow-x-clip">
@@ -170,9 +169,9 @@ export default function ServiceState() {
               </p>
               {regulations && (
                 <p className="text-neutral-700 leading-relaxed mb-4">
-                  In {state.name}, vocational and rehabilitation experts operate within the framework
-                  established by the <strong>{regulations.vocationalRehabAgency}</strong>.{" "}
-                  {regulations.licensingRequirements}
+                  {regulations.practiceContext} Outside the civil courts, the{" "}
+                  <strong>{regulations.careOversightAgency}</strong> is the forum where a plan's future
+                  medical component is most often examined.
                 </p>
               )}
             </Reveal>
@@ -233,7 +232,7 @@ export default function ServiceState() {
                   Related Services in {state.name}
                 </h2>
                 <p className="text-neutral-600 mb-5">
-                  KWVRS offers complementary services to support your {state.name} cases.
+                  {ORG_NAME} offers complementary services to support your {state.name} cases.
                 </p>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {relatedServices.map((s) => (
@@ -265,12 +264,14 @@ export default function ServiceState() {
           {/* Sidebar - 1/3 */}
           <aside className="mt-10 lg:mt-0 space-y-6">
 
-            {/* Labor Data Widget */}
-            {laborData && (
-              <Reveal variant="up">
-                <LaborDataWidget data={laborData} areaName={state.name} />
-              </Reveal>
-            )}
+            {/* Care context */}
+            <Reveal variant="up">
+              <CareContextWidget
+                areaName={state.name}
+                population={state.population}
+                oversightAgency={regulations?.careOversightAgency}
+              />
+            </Reveal>
 
             {/* Court Info Panel */}
             {courts && (

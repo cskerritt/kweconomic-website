@@ -123,9 +123,14 @@ export interface StateCourtSystem {
 
 export interface StateRegulation {
   stateSlug: string;
-  vocationalRehabAgency: string;
-  /** Citation-free framing of professional credentialing for vocational experts in the state. */
-  licensingRequirements: string;
+  /** Public agency that administers workers' compensation (or, for territories
+   * without a knowable compensation forum, the health department) - the body
+   * whose forum a life care plan is most often offered in outside civil court. */
+  careOversightAgency: string;
+  /** 1-2 citation-free sentences on where life care plans are litigated in the
+   * state: civil trial forum vs. compensation forum, med-mal venue notes. No
+   * statutes, rule numbers, or damage caps. */
+  practiceContext: string;
 }
 
 export interface PageMeta {

@@ -14,6 +14,7 @@ import {
   faqPageSchema,
   ORG_URL,
 } from "@/lib/schema";
+import { ORG_NAME } from "@/lib/brand";
 import { getCityNarrative } from "@/data/narratives";
 import { serviceCityGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
@@ -43,16 +44,18 @@ export default function ServiceStateCity() {
       ? `${ORG_URL}/services/${service.slug}/${state.slug}/${city.slug}`
       : "";
   const narrativeForMeta =
-    service && state && city ? getCityNarrative(state, city.name, city.slug, city.county) : null;
+    service && state && city
+      ? getCityNarrative(state, city.name, city.slug, city.county, { msaName: city.msaName })
+      : null;
   const directAnswerForMeta =
     service && state && city && narrativeForMeta
-      ? `${service.shortName} services from KWVRS for cases venued in ${city.name}, ${state.name}. ${narrativeForMeta.blurb}`
+      ? `${service.shortName} from ${ORG_NAME} for cases venued in ${city.name}, ${state.name}. ${narrativeForMeta.blurb}`
       : "";
 
   usePageMeta(
     service && state && city
       ? {
-          title: `${service.shortName} in ${city.name}, ${state.abbreviation} | KWVRS`,
+          title: `${service.shortName} in ${city.name}, ${state.abbreviation} | ${ORG_NAME}`,
           description: truncateAtWord(directAnswerForMeta),
           canonical: url,
         }
@@ -68,9 +71,9 @@ export default function ServiceStateCity() {
   if (loading) return <Loading />;
   if (!city) return <Navigate to={`/services/${service.slug}/${state.slug}`} replace />;
 
-  const narrative = getCityNarrative(state, city.name, city.slug, city.county);
+  const narrative = getCityNarrative(state, city.name, city.slug, city.county, { msaName: city.msaName });
   const faqs = serviceCityGeographicFaqs(service.name, state.name, city.name);
-  const directAnswer = `${service.shortName} services from KWVRS for cases venued in ${city.name}, ${state.name}. ${narrative.blurb}`;
+  const directAnswer = `${service.shortName} from ${ORG_NAME} for cases venued in ${city.name}, ${state.name}. ${narrative.blurb}`;
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
   const motion = serviceMotion(service.slug);
 
@@ -165,10 +168,11 @@ export default function ServiceStateCity() {
                 {service.description}
               </p>
               <p className="text-neutral-700 leading-relaxed">
-                KWVRS serves clients throughout {city.name} and the surrounding{" "}
-                {city.county ? `${city.county} County` : state.name} area. Our experts are familiar
-                with the local labor market, court system, and jurisdiction-specific requirements that
-                affect {service.name.toLowerCase()} engagements in {state.name}.
+                {ORG_NAME} serves counsel throughout {city.name} and the surrounding{" "}
+                {city.county ? city.county : state.name} area. Our planners price attendant care, home
+                health, equipment, and specialist follow-up from providers serving {city.name}, and are
+                familiar with the court system and disclosure requirements that affect{" "}
+                {service.name.toLowerCase()} engagements in {state.name}.
               </p>
             </Reveal>
 

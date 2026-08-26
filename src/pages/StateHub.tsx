@@ -8,6 +8,7 @@ import {
   faqPageSchema,
   ORG_URL,
 } from "@/lib/schema";
+import { ORG_NAME } from "@/lib/brand";
 import FAQBlock from "@/components/FAQBlock";
 import { getStateNarrative } from "@/data/narratives";
 import { stateGeographicFaqs } from "@/data/geographicFaqs";
@@ -16,7 +17,6 @@ import { pillarServices } from "@/data/services";
 import { caseTypes } from "@/data/caseTypes";
 import { credentials } from "@/data/credentials";
 import { useStateCities } from "@/hooks/use-state-cities";
-import { getLaborByState } from "@/data/labor/state-labor";
 import { getCourtsByState } from "@/data/courts/state-courts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { getLocalContent } from "@/data/local-content";
@@ -24,7 +24,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ServiceCard from "@/components/ServiceCard";
 import LocationCard from "@/components/LocationCard";
-import LaborDataWidget from "@/components/LaborDataWidget";
+import CareContextWidget from "@/components/CareContextWidget";
 import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
 import { Award, Users } from "lucide-react";
@@ -36,9 +36,9 @@ export default function StateHub() {
   usePageMeta(
     state
       ? {
-          title: `Vocational and Rehabilitation Experts in ${state.name} | KWVRS`,
-          description: `KWVRS provides vocational expert services, life care planning, forensic economics, and expert witness testimony throughout ${state.name}. Jurisdiction-specific expertise for ${state.name} courts and practitioners.`,
-          canonical: `https://kwvrs.com/locations/${state.slug}`,
+          title: `Life Care Planners in ${state.name} | ${ORG_NAME}`,
+          description: `${ORG_NAME} prepares life care plans, future medical cost projections, plan rebuttals, and expert testimony throughout ${state.name}. Cost of care priced for ${state.name} communities; jurisdiction-aware reports for ${state.name} courts.`,
+          canonical: `${ORG_URL}/locations/${state.slug}`,
         }
       : null,
   );
@@ -53,7 +53,6 @@ export default function StateHub() {
   // Planning lines only; testimony is a mode of every engagement, not a card.
   const coreServices = pillarServices().filter((s) => s.slug !== "expert-witness-testimony");
 
-  const laborData = getLaborByState(state.slug);
   const courts = getCourtsByState(state.slug);
   const regulations = getRegulationsByState(state.slug);
   const localContent = getLocalContent(state.slug);
@@ -69,7 +68,7 @@ export default function StateHub() {
           organizationSchema(),
           serviceSchema({
             slug: `state-${state.slug}`,
-            name: `Vocational and Rehabilitation Expert Services in ${state.name}`,
+            name: `Life Care Planning Services in ${state.name}`,
             description: narrative.directAnswer,
             areaServed: { "@type": "AdministrativeArea", name: state.name },
           }),
@@ -99,13 +98,13 @@ export default function StateHub() {
               {state.region !== "territory" ? state.region.charAt(0).toUpperCase() + state.region.slice(1) : "U.S. Territory"} &middot; {state.abbreviation}
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-4">
-              Vocational &amp; Rehabilitation Experts in {state.name}
+              Life Care Planners in {state.name}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed mb-3">
               {narrative.directAnswer}
             </p>
             <p className="text-base text-neutral-300 leading-relaxed">
-              {narrative.marketContext}
+              {narrative.careContext}
             </p>
           </div>
         </div>
@@ -125,7 +124,7 @@ export default function StateHub() {
                   Expert Services in {state.name}
                 </h2>
                 <p className="text-neutral-600">
-                  Our team provides comprehensive vocational and rehabilitation consulting services for {state.name} litigation. Each evaluation is tailored to jurisdiction-specific standards.
+                  Our certified life care planners prepare plans, cost projections, and rebuttals for {state.name} litigation. Each plan is priced for the evaluee's own community and written to the jurisdiction's expert evidence standards.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -150,7 +149,7 @@ export default function StateHub() {
                     Cities We Serve in {state.name}
                   </h2>
                   <p className="text-neutral-600">
-                    KWVRS accepts cases from attorneys across {state.name}. Select a city to explore local labor market data and jurisdiction-specific information.
+                    {ORG_NAME} accepts cases from attorneys across {state.name}. Select a city for local care-context and venue information.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -166,41 +165,41 @@ export default function StateHub() {
               </section>
             )}
 
-            {/* VR Regulations Section */}
+            {/* Venue / oversight section */}
             {regulations && (
               <section>
                 <div className="mb-6">
                   <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-2">
-                    Vocational Rehabilitation in {state.name}
+                    Where {state.name} Life Care Plans Are Litigated
                   </h2>
                   <p className="text-neutral-600">
-                    Understanding {state.name}'s regulatory framework is essential for credible vocational expert opinions. Our experts are familiar with state agency requirements, expert testimony standards, and relevant statutes.
+                    A life care plan is written for the forum that will examine it. Our planners are familiar with {state.name}'s civil and compensation forums, its expert evidence standards, and the disclosure practice that governs how plans are exchanged.
                   </p>
                 </div>
 
                 <div className="space-y-5">
-                  {/* VR Agency */}
+                  {/* Venue context */}
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0 mt-0.5">
                         <Users className="w-5 h-5 text-teal" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-navy mb-1">Vocational Rehabilitation Agency</h3>
-                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.vocationalRehabAgency}</p>
+                        <h3 className="font-semibold text-navy mb-1">Venue Context</h3>
+                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.practiceContext}</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Licensing Requirements */}
+                  {/* Compensation / oversight forum */}
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0 mt-0.5">
                         <Award className="w-5 h-5 text-teal" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-navy mb-1">Licensing &amp; Credentialing Requirements</h3>
-                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.licensingRequirements}</p>
+                        <h3 className="font-semibold text-navy mb-1">Compensation &amp; Oversight Forum</h3>
+                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.careOversightAgency}</p>
                       </div>
                     </div>
                   </div>
@@ -216,7 +215,7 @@ export default function StateHub() {
                   Case Types We Support in {state.name}
                 </h2>
                 <p className="text-neutral-600">
-                  Case-specific guidance on vocational, economic, and life care analysis for {state.name} matters.
+                  Case-specific guidance on life care planning and future medical cost analysis for {state.name} matters.
                 </p>
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-sm">
@@ -240,7 +239,7 @@ export default function StateHub() {
                   Expert Credentials in {state.name}
                 </h2>
                 <p className="text-neutral-600">
-                  How each credential is recognized in {state.name} courts and which KWVRS experts hold it.
+                  How each credential is recognized in {state.name} courts and which {ORG_NAME} experts hold it.
                 </p>
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-sm">
@@ -306,10 +305,12 @@ export default function StateHub() {
           {/* Sidebar (1/3) */}
           <aside className="lg:col-span-1 space-y-6">
 
-            {/* Labor Data Widget */}
-            {laborData && (
-              <LaborDataWidget data={laborData} areaName={state.name} />
-            )}
+            {/* Care context */}
+            <CareContextWidget
+              areaName={state.name}
+              population={state.population}
+              oversightAgency={regulations?.careOversightAgency}
+            />
 
             {/* Court Info Panel */}
             {courts && (
