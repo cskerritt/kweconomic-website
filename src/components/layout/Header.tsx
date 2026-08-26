@@ -9,7 +9,7 @@ const serviceLinks = [
   { name: "All Services", href: "/services" },
   { name: "Life Care Planning", href: "/services/life-care-planning" },
   { name: "Pediatric Life Care Planning", href: "/services/pediatric-life-care-planning" },
-  { name: "Catastrophic Injury Plans", href: "/services/catastrophic-injury-planning" },
+  { name: "Catastrophic Injury LCPs", href: "/services/catastrophic-injury-planning" },
   { name: "Medical Cost Projections", href: "/services/medical-cost-projection" },
   { name: "Workers' Comp Life Care Plans", href: "/services/workers-compensation-lcp" },
   { name: "Plan Updates", href: "/services/plan-update-and-review" },

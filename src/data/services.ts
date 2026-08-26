@@ -95,7 +95,7 @@ export const services: Service[] = [
   },
   {
     slug: "catastrophic-injury-planning",
-    name: "Catastrophic Injury Plans",
+    name: "Catastrophic Injury Life Care Plans",
     shortName: "Catastrophic Injury",
     pillar: true,
     description: "Life care plans for adults with traumatic brain injury, spinal cord injury, severe burns, amputations, and other catastrophic injuries. Plans coordinate medical, attendant care, equipment, home modification, and transportation needs over the life span.",
@@ -207,7 +207,7 @@ export const services: Service[] = [
   },
   {
     slug: "plan-update-and-review",
-    name: "Plan Updates and Reviews",
+    name: "Life Care Plan Updates",
     shortName: "Plan Update / Review",
     pillar: true,
     description: "Updates of prior life care plans to reflect current medical condition, costs, and life expectancy data. Includes re-pricing of existing plans, incorporation of new treatment recommendations, and refresh of a plan prepared for an earlier stage of the case.",
@@ -225,7 +225,7 @@ export const services: Service[] = [
         "Whether the original plan was prepared by KW Life Care Planning or by another planner",
         "Deposition and trial testimony on the updated plan",
       ],
-      billingStructure: "Plan updates are billed at an hourly rate for review of the original plan and new records, follow-up interview, cost research, preparation of the updated plan, and testimony. Updates of plans originally prepared by KW Life Care Planning are typically completed against a reduced retainer. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.",
+      billingStructure: "Plan updates are billed at an hourly rate for review of the original plan and new records, follow-up interview, cost research, preparation of the updated plan, and testimony. Updates of plans originally prepared by KW Life Care Planning may be scoped more narrowly, which is reflected in the estimate. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.",
     },
     process: [
       { step: "Engagement and update scope", description: "We confirm scope and conflicts, establish the retainer, and identify what has changed since the original plan: new records, new treatment, new life expectancy data, or the passage of time alone." },

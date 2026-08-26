@@ -1,13 +1,18 @@
 import {
+  Activity,
+  Baby,
   Briefcase,
   Calculator,
   FileSearch,
   FileText,
   Gavel,
+  HardHat,
   HeartPulse,
   Home,
+  RefreshCcw,
   Scale,
   ShieldCheck,
+  TrendingUp,
 } from "lucide-react";
 import type { ComponentType } from "react";
 
@@ -20,13 +25,18 @@ export type IconComponent = ComponentType<{ className?: string }>;
  * (~600 kB) into the bundle.
  */
 export const ICONS: Record<string, IconComponent | undefined> = {
+  Activity,
+  Baby,
   Briefcase,
   Calculator,
   FileSearch,
   FileText,
   Gavel,
+  HardHat,
   HeartPulse,
   Home,
+  RefreshCcw,
   Scale,
   ShieldCheck,
+  TrendingUp,
 };
