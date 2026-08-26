@@ -201,8 +201,9 @@ export default function Team() {
               The {ORG_NAME} Team
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              {ORG_NAME} is built on a team of Certified Life Care Planners with
-              medical, nursing, and rehabilitation-counseling backgrounds, supported
+              {ORG_NAME} is built on a team of Certified Life Care Planners and a
+              registered nurse life care planner with medical, nursing, and
+              rehabilitation-counseling backgrounds, supported
               by medical chronologists and plan administrators. Our life care planners
               are qualified to provide testimony in state and federal courts nationwide.
             </p>
@@ -222,7 +223,7 @@ export default function Team() {
 
           <TeamSection
             title="Life Care Planners"
-            description="Certified Life Care Planners who develop plans, project future care costs, and provide expert testimony."
+            description="Life care planners who develop plans, project future care costs, and provide expert testimony."
             members={planners}
             columns="lg:grid-cols-4"
           />

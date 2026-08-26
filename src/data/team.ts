@@ -17,7 +17,7 @@ export const team: TeamMember[] = [
     role: "leadership",
     memoriam: true,
     bio: "Dr. Charles Kincaid was the founding principal of the Kincaid Wolstein group and a Certified Life Care Planner. He held a doctor of philosophy degree in rehabilitation counseling and a master of science degree in criminal justice, and was licensed and certified as a Licensed Rehabilitation Counselor, Certified Rehabilitation Counselor, Assistive Technology Professional, Certified Vocational Evaluator, Certified Life Care Planner, and Fellow of the American Board of Vocational Experts.",
-    specialties: ["Life Care Planning", "Expert Testimony"],
+    specialties: ["Life Care Planning"],
     statesServed: [],
     imageUrl: "/team/charles-kincaid.jpg",
   },
@@ -42,7 +42,7 @@ export const team: TeamMember[] = [
     credentials: ["Ph.D.", "CRC", "CVE", "CLCP", "NCC"],
     role: "leadership",
     expertTier: "senior",
-    bio: "Dr. Bourgeois leads the life care planning practice. A Certified Life Care Planner with doctoral-level training in rehabilitation counseling, he develops comprehensive, evidence-based life care plans for individuals with catastrophic injuries and chronic conditions, reviews opposing plans, and testifies to his findings.",
+    bio: "Dr. Bourgeois leads the life care planning practice. A Certified Life Care Planner with doctoral-level training, he develops comprehensive, evidence-based life care plans for individuals with catastrophic injuries and chronic conditions.",
     specialties: ["Life Care Planning", "Catastrophic Injury", "Life Care Plan Review", "Expert Testimony"],
     statesServed: ["NJ", "NY"],
     imageUrl: "/team/paul-bourgeois.jpg",
@@ -66,7 +66,7 @@ export const team: TeamMember[] = [
     credentials: ["M.Ed.", "MBA", "CRC", "LRC", "IPEC", "CVE", "ABVE/F", "REAS", "CEAS I", "CLCP", "MSCC", "CPRW", "QRC"],
     role: "leadership",
     expertTier: "fellow",
-    bio: "Christopher Skerritt is a Medicare Set-Aside Certified Consultant (MSCC) and Certified Life Care Planner who leads the Medicare Set-Aside practice and the economic side of life care planning, projecting the present value of future medical costs and preparing the MSA allocations that settlements require.",
+    bio: "Christopher Skerritt is a Medicare Set-Aside Certified Consultant (MSCC) and Certified Life Care Planner who serves as the practice's Medicare Set-Aside Certified Consultant and leads the economic side of life care planning, projecting the present value of future medical costs and preparing the MSA allocations that settlements require.",
     specialties: ["Medicare Set-Aside", "Medical Cost Projection", "Life Care Planning", "Expert Testimony"],
     statesServed: ["NJ", "NY", "MA", "VA", "RI", "CT", "PA"],
     imageUrl: "/team/christopher-skerritt.jpg",
@@ -192,6 +192,3 @@ export function getTeamBySlug(slug: string): TeamMember | undefined {
 export function getMemoriam(): TeamMember[] {
   return team.filter((t) => t.memoriam);
 }
-
-/** @deprecated alias kept for existing callers; prefer getMemoriam. */
-export const getMemoriamTeam = getMemoriam;
