@@ -74,45 +74,9 @@ export const guides: Guide[] = [
     ],
     sources: refsToSources(["FRCP_26"]),
     related: [
-      { title: "How to Hire a Vocational Expert", href: "/guides/how-to-hire-vocational-expert" },
-    ],
-  },
-  {
-    slug: "economic-damages-self-employed-claimants",
-    title: "Economic Damages for Self-Employed Claimants",
-    tldr:
-      "Self-employment damages analysis reconstructs lost income from tax returns, 1099s, bank records, and business documents, adjusting for business expenses and the distinction between owner compensation and return on capital. Expect disputes about profit versus wage components.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "challenges",
-        heading: "Unique challenges",
-        bodyHtml:
-          "<p>Self-employed earnings are often variable and may be commingled with business profits. <a href=\"/services/forensic-economics\">The economist</a> separates <a href=\"/guides/earning-capacity-vs-lost-earnings\">owner compensation</a> (replaceable by hiring) from return on capital (not lost when the owner is injured if the business continues) (Tinari, 2016).</p>",
-      },
-      {
-        id: "documentation",
-        heading: "Documentation",
-        bodyHtml:
-          "<p>Tax returns (Schedule C, Schedule K-1, corporate returns), bank statements, 1099s, and business operations documents establish the earnings base (Internal Revenue Service, n.d.).</p>",
-      },
-      {
-        id: "methodology",
-        heading: "Methodology",
-        bodyHtml:
-          "<p>Economists apply before-and-after analysis, industry benchmarks, or replacement-cost analysis depending on the business structure and the injury's effect on operations.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "How are business expenses handled?",
-        answer:
-          "Expenses attributable to the injured owner's labor are reduced when that labor cannot be performed. Non-labor expenses generally continue and are not a damages component.",
-      },
-    ],
-    sources: refsToSources(["TINARI_2016", "IRS_SCHEDULE_C", "BLS_BDM"]),
-    related: [
-      { title: "Forensic Economics", href: "/services/forensic-economics" },
+      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
+      { title: "Federal vs. State Court Admissibility", href: "/guides/federal-vs-state-court-daubert" },
+      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
     ],
   },
   {
@@ -132,13 +96,13 @@ export const guides: Guide[] = [
         id: "who-provides",
         heading: "Who provides the opinion",
         bodyHtml:
-          "<p>A physician expert, typically board-certified in the relevant specialty (American Board of Medical Specialties, n.d.), provides the <a href=\"/services/life-care-planning\">standard of care opinion</a>. Expert qualifications are often specified by state statute.</p>",
+          "<p>A physician expert, typically board-certified in the relevant specialty (American Board of Medical Specialties, n.d.), provides the standard of care opinion. Expert qualifications are often specified by state law, and many states require the expert to practice in the same specialty as the defendant provider.</p>",
       },
       {
         id: "coordination",
         heading: "Coordination with damages experts",
         bodyHtml:
-          "<p>Standard of care and causation opinions set the framework for <a href=\"/services/life-care-planning\">vocational</a>, <a href=\"/services/life-care-planning\">life care planning</a>, and <a href=\"/services/forensic-economics\">economic damages experts</a>, who quantify the consequences of any established breach.</p>",
+          "<p>Standard of care and causation opinions set the framework for the damages experts who follow. Once a breach and its consequences are established, the <a href=\"/services/life-care-planning\">life care planner</a> projects the future care the injury will require, a <a href=\"/services/medical-cost-projection\">medical cost projection</a> may quantify a narrower set of needs, and an economist reduces those costs to present value. The life care planner does not opine on whether the standard of care was met; the plan takes the causation opinion as its starting point and documents the care that flows from the injury at issue.</p>",
       },
     ],
     faqs: [
@@ -150,179 +114,9 @@ export const guides: Guide[] = [
     ],
     sources: refsToSources(["MOFFETT_MOORE_2011", "ABMS"]),
     related: [
-      { title: "Standard of Care Service", href: "/services/life-care-planning" },
       { title: "Medical Malpractice Case Type", href: "/case-types/medical-malpractice" },
-    ],
-  },
-  {
-    slug: "ssa-disability-and-vocational-evidence",
-    title: "Social Security Disability and Vocational Evidence",
-    tldr:
-      "SSA disability adjudication uses a sequential evaluation process ending with vocational questions at steps 4 and 5. Vocational experts apply Dictionary of Occupational Titles (DOT) terminology and SSA-specific frameworks that differ from civil-litigation vocational analysis.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "sequential-evaluation",
-        heading: "The sequential evaluation",
-        bodyHtml:
-          "<p>SSA's five-step sequential evaluation asks: substantial gainful activity, severe impairment, listing equivalence, past relevant work, and other work (20 C.F.R. sec. 404.1520). Steps 4 and 5 rely on vocational evidence.</p>",
-      },
-      {
-        id: "vocational-role",
-        heading: "Role of the vocational expert",
-        bodyHtml:
-          "<p>SSA <a href=\"/services/life-care-planning\">vocational experts</a> answer hypothetical questions from the Administrative Law Judge (ALJ) regarding the claimant's ability to perform past relevant work or other work in the national economy given the residual functional capacity (SSR 00-4p).</p>",
-      },
-      {
-        id: "civil-litigation-contrast",
-        heading: "Contrast with civil-litigation vocational work",
-        bodyHtml:
-          "<p>Civil litigation applies open-ended methodology (transferable skills analysis (<a href=\"/methods/transferable-skills-analysis\">TSA</a>), labor market survey (LMS), <a href=\"/methods/labor-market-survey\">full labor market analysis</a>). SSA testimony is constrained by the regulatory framework, <a href=\"/methods/dictionary-of-occupational-titles\">DOT terminology</a>, and SSA rulings.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Can an SSA decision affect a civil case?",
-        answer:
-          "SSA decisions are evidentiary but not binding in civil litigation. Civil vocational experts perform independent analyses.",
-      },
-    ],
-    sources: refsToSources(["CFR_404_1520", "SSR_00_4P", "SSA_BLUEBOOK", "SSA_POMS"]),
-    related: [
-      { title: "CRC Credential", href: "/credentials/crc" },
-      { title: "Forensic VE vs SSA VE", href: "/compare/vocational-expert-vs-ssa-ve" },
-    ],
-  },
-  {
-    slug: "vocational-rehabilitation-services-explained",
-    title: "Vocational Rehabilitation Services Explained",
-    tldr:
-      "Vocational rehabilitation services help individuals with disabilities prepare for, obtain, maintain, or regain employment. State VR agencies provide services under the Rehabilitation Act. In litigation, vocational rehabilitation services can form part of a life care plan or workers' compensation remedy.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "public-system",
-        heading: "The public VR system",
-        bodyHtml:
-          "<p>Each state operates a VR agency under the federal Rehabilitation Act of 1973 (29 U.S.C. sec. 701), providing assessment, counseling, training, job placement, and supported employment services.</p>",
-      },
-      {
-        id: "private-services",
-        heading: "Private VR services",
-        bodyHtml:
-          "<p>Private rehabilitation providers deliver the same categories of services on a fee-for-service basis, typically through workers' compensation, long-term disability, or litigation funding.</p>",
-      },
-      {
-        id: "damages-context",
-        heading: "VR services in damages analysis",
-        bodyHtml:
-          "<p><a href=\"/services/life-care-planning\">Life care plans</a> may include vocational rehabilitation services as part of the recovery plan when they support functional improvement. <a href=\"/case-types/workers-compensation\">Workers' compensation</a> often mandates VR services statutorily.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Who pays for VR services in the public system?",
-        answer:
-          "State VR agencies fund services for eligible individuals; some services have financial participation requirements.",
-      },
-      {
-        question: "Can VR services substitute for a vocational evaluation?",
-        answer:
-          "No. VR services are service delivery; vocational evaluation is an assessment and opinion process.",
-      },
-    ],
-    sources: refsToSources(["REHAB_ACT_1973", "RSA_ED"]),
-    related: [
-      { title: "CRC Credential", href: "/credentials/crc" },
-      { title: "Workers' Compensation", href: "/case-types/workers-compensation" },
-    ],
-  },
-  {
-    slug: "loss-of-household-services",
-    title: "Loss of Household Services in Damages",
-    tldr:
-      "Loss of household services quantifies the unpaid work an injured person or decedent would have contributed to the household. It is valued using time-use survey data and local market wage rates for equivalent services such as childcare, home maintenance, meal preparation, and transportation.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "concept",
-        heading: "The concept",
-        bodyHtml:
-          "<p>Even when a person does not work outside the home, they produce economic value through unpaid labor. When injury or death reduces that labor, the economic loss is compensable in most jurisdictions.</p>",
-      },
-      {
-        id: "methodology",
-        heading: "Methodology",
-        bodyHtml:
-          "<p>The economist uses time-use data (BLS American Time Use Survey) to establish typical hours by task, then applies local market wage rates for equivalent services (U.S. Bureau of Labor Statistics, n.d.). The projection is <a href=\"/methods/present-value-analysis\">reduced to present value</a> across the <a href=\"/tools/life-expectancy\">remaining life expectancy</a> or <a href=\"/methods/worklife-expectancy\">worklife</a> as applicable.</p>",
-      },
-      {
-        id: "scope",
-        heading: "Scope of tasks",
-        bodyHtml:
-          "<p>Typical categories include childcare, home maintenance, yard work, meal preparation, household management, and transportation. The scope reflects the household composition and the specific services the claimant actually performed.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Is household services loss available in wrongful death cases?",
-        answer:
-          "In most jurisdictions, yes. It is often a substantial component of survivor damages.",
-      },
-      {
-        question: "How are wage rates selected?",
-        answer:
-          "Rates reflect local market costs for the equivalent service (e.g., childcare providers, landscapers, housekeepers), drawn from BLS OEWS (Occupational Employment and Wage Statistics) and similar sources.",
-      },
-    ],
-    sources: refsToSources(["BLS_ATUS", "BLS_OEWS"]),
-    related: [
-      { title: "Forensic Economics", href: "/services/forensic-economics" },
-      { title: "Wrongful Death", href: "/case-types/wrongful-death" },
-    ],
-  },
-  {
-    slug: "what-records-does-vocational-expert-need",
-    title: "What Records Does a Vocational Expert Need?",
-    tldr:
-      "A complete vocational evaluation typically requires medical records, educational records, employment history with wage documentation, any functional capacity evaluation, neuropsychological testing if applicable, and prior vocational testing or deposition transcripts when available.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "medical",
-        heading: "Medical records",
-        bodyHtml:
-          "<p>All relevant pre- and post-injury medical records, imaging, and specialty consultations. Restrictions issued by treating providers are particularly important.</p>",
-      },
-      {
-        id: "educational",
-        heading: "Educational records",
-        bodyHtml:
-          "<p>Transcripts, degrees, certifications, and continuing education, supporting the <a href=\"/methods/transferable-skills-analysis\">pre-injury skill profile</a>.</p>",
-      },
-      {
-        id: "employment",
-        heading: "Employment history",
-        bodyHtml:
-          "<p>Job titles, duties, dates of employment, wage history (W-2s, tax returns, pay stubs), and employer policies on fringe benefits. This establishes the pre-injury earnings base.</p>",
-      },
-      {
-        id: "testing",
-        heading: "Testing and prior evaluations",
-        bodyHtml:
-          "<p>Any <a href=\"/methods/functional-capacity-evaluation\">functional capacity evaluation</a>, neuropsychological evaluation, <a href=\"/services/life-care-planning\">prior vocational assessments</a>, and deposition transcripts from the claimant and treating providers.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Can a vocational evaluation proceed without complete records?",
-        answer:
-          "It can, with clear documentation of what was and was not reviewed (Commission on Rehabilitation Counselor Certification, 2023). Material gaps may limit the opinion's scope.",
-      },
-    ],
-    sources: refsToSources(["CRCC_ETHICS"]),
-    related: [
-      { title: "How to Hire a Vocational Expert", href: "/guides/how-to-hire-vocational-expert" },
+      { title: "Life Care Planning", href: "/services/life-care-planning" },
+      { title: "Birth Injury Case Type", href: "/case-types/birth-injury" },
     ],
   },
   {
@@ -348,7 +142,7 @@ export const guides: Guide[] = [
         id: "medicare-medicaid",
         heading: "Medicare, Medicaid, and liens",
         bodyHtml:
-          "<p>Federal and state programs have separate lien and reimbursement statutes (Medicare Secondary Payer Act, state Medicaid liens) (42 U.S.C. sec. 1395y(b)). These interact with, but are distinct from, <a href=\"/methods/collateral-source\">the collateral source rule</a>.</p>",
+          "<p>Federal and state programs have separate lien and reimbursement rules (the Medicare Secondary Payer framework, state Medicaid liens). These interact with, but are distinct from, the collateral source rule. For a life care plan the practical point is that the plan projects the cost of care regardless of who ultimately pays; whether public or private payments offset the award is a legal question for counsel. Where a settlement must protect Medicare's interests, a <a href=\"/services/medicare-set-aside\">Medicare set-aside allocation</a> is a separate analysis from the life care plan (see <a href=\"/guides/life-care-plan-vs-medicare-set-aside\">life care plan vs. Medicare set-aside</a>).</p>",
       },
     ],
     faqs: [
@@ -360,7 +154,8 @@ export const guides: Guide[] = [
     ],
     sources: refsToSources(["RESTATEMENT_TORTS_920A", "MSP_1395Y", "CMS_MSP"]),
     related: [
-      { title: "Collateral Source Analysis", href: "/methods/collateral-source" },
+      { title: "Life Care Plan vs. Medicare Set-Aside", href: "/guides/life-care-plan-vs-medicare-set-aside" },
+      { title: "Medicare Set-Aside Allocations", href: "/services/medicare-set-aside" },
     ],
   },
   {
@@ -374,7 +169,7 @@ export const guides: Guide[] = [
         id: "federal-framework",
         heading: "Federal-court framework",
         bodyHtml:
-          "<p>Federal courts apply a <a href=\"/guides/daubert-standard-vocational-experts\">reliability-based gatekeeping framework</a> (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Kumho Tire Co. v. Carmichael, 1999). The trial judge evaluates whether the expert's methodology is reliable and reliably applied to the case, considering factors such as testability, peer review and publication, known or potential rate of error, the existence of controlling standards, and general acceptance in the relevant field (Fed. R. Evid. 702). The factors are non-exclusive and the analysis is case specific.</p>",
+          "<p>Federal courts apply a <a href=\"/services/expert-witness-testimony\">reliability-based gatekeeping framework</a> (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Kumho Tire Co. v. Carmichael, 1999). The trial judge evaluates whether the expert's methodology is reliable and reliably applied to the case, considering factors such as testability, peer review and publication, known or potential rate of error, the existence of controlling standards, and general acceptance in the relevant field (Fed. R. Evid. 702). The factors are non-exclusive and the analysis is case specific.</p>",
       },
       {
         id: "state-frameworks",
@@ -398,145 +193,9 @@ export const guides: Guide[] = [
     ],
     sources: refsToSources(["DAUBERT", "KUMHO_TIRE", "FRYE", "FRE_702"]),
     related: [
-      { title: "Vocational Expert Methodology Standards", href: "/guides/daubert-standard-vocational-experts" },
-    ],
-  },
-  {
-    slug: "hedonic-damages-explained",
-    title: "Hedonic Damages, Explained",
-    tldr:
-      "Hedonic damages compensate loss of enjoyment of life, distinct from economic losses. Methodology typically draws on value-of-statistical-life literature, but admissibility of quantified hedonic damages varies substantially by jurisdiction. Many courts admit qualitative testimony but exclude dollar quantification.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "concept",
-        heading: "Concept",
-        bodyHtml:
-          "<p><a href=\"/methods/hedonic-damages\">Hedonic damages</a> address the non-pecuniary value of life experiences lost due to injury or death. They are distinct from <a href=\"/guides/future-medical-costs-in-personal-injury\">medical expenses</a>, <a href=\"/guides/earning-capacity-vs-lost-earnings\">lost earnings</a>, and pain and suffering.</p>",
-      },
-      {
-        id: "methodology",
-        heading: "Methodology",
-        bodyHtml:
-          "<p>Quantification draws on VSL literature from EPA, DOT, and peer-reviewed studies (U.S. Environmental Protection Agency, n.d.; Viscusi & Aldy, 2003). Adjustments for the specific case context are documented. Methodology remains controversial in some courts.</p>",
-      },
-      {
-        id: "admissibility",
-        heading: "Admissibility",
-        bodyHtml:
-          "<p>Admissibility varies: some courts permit quantified hedonic damages testimony, others admit only qualitative testimony on loss of enjoyment of life, and some exclude the concept entirely (Mercado v. Ahmed, 1992). Confirm jurisdictional rules before relying on this category.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Are hedonic damages part of pain and suffering?",
-        answer:
-          "They are distinct categories in most jurisdictions, though sometimes lumped together in jury instructions. Separation depends on jurisdictional practice.",
-      },
-    ],
-    sources: refsToSources(["EPA_VSL", "VISCUSI_ALDY_2003", "MERCADO_V_AHMED"]),
-    related: [
-      { title: "Hedonic Damages Methodology", href: "/methods/hedonic-damages" },
-    ],
-  },
-  {
-    slug: "earning-capacity-vs-lost-earnings",
-    title: "Earning Capacity vs. Lost Earnings: What's the Difference?",
-    tldr:
-      "Lost earnings are actual wages the claimant did not receive. Lost earning capacity is a vocational concept measuring the reduction in ability to earn, whether or not that capacity was fully realized before injury. Catastrophic cases often need both.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "defining-lost-earnings",
-        heading: "Lost earnings",
-        bodyHtml:
-          "<p>Lost earnings are the wages a claimant did not receive because of injury, typically measured from pay stubs, W-2s, tax returns, and employer records. Calculation is largely arithmetic once the records are complete.</p>",
-      },
-      {
-        id: "defining-earning-capacity",
-        heading: "Lost earning capacity",
-        bodyHtml:
-          "<p>Earning capacity is the claimant's vocational ability to earn, based on education, training, skills, and <a href=\"/methods/labor-market-survey\">the labor market</a> (U.S. Bureau of Labor Statistics, n.d.; National Center for O*NET Development, n.d.), applied to both pre- and post-injury profiles. Lost earning capacity is the reduction in that ability, regardless of whether the claimant was fully utilizing it before injury.</p>",
-      },
-      {
-        id: "when-each-applies",
-        heading: "When each concept applies",
-        bodyHtml:
-          "<p>Lost earnings are typically the baseline damages category in any lost-wage case. Lost earning capacity is added when the claimant's pre-injury employment was episodic, when they were underemployed, when future career growth was interrupted, or when catastrophic injury has reduced the range of occupations available.</p>",
-      },
-      {
-        id: "who-opines",
-        heading: "Who opines on each",
-        bodyHtml:
-          "<p><a href=\"/services/forensic-economics\">A forensic economist</a> typically computes lost earnings arithmetically. <a href=\"/services/life-care-planning\">A vocational expert</a> opines on earning capacity. In most contested cases both experts are retained so that the economist can apply the vocational expert's earning capacity opinion to <a href=\"/methods/present-value-analysis\">the economic projection</a>.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Does earning capacity apply when the claimant was underemployed before injury?",
-        answer:
-          "Yes. Earning capacity is grounded in vocational ability, not actual pre-injury earnings, though the pre-injury earnings history is relevant evidence.",
-      },
-      {
-        question: "Do courts accept earning capacity claims?",
-        answer:
-          "Most jurisdictions accept earning capacity as a distinct damages category when supported by a vocational expert and, typically, a forensic economist for present-value projection.",
-      },
-      {
-        question: "How is earning capacity measured?",
-        answer:
-          "Through transferable skills analysis, labor market data, applicable medical restrictions, and comparison of pre- and post-injury occupational options.",
-      },
-    ],
-    sources: refsToSources(["BLS_OEWS", "ONET"]),
-    related: [
-      { title: "Transferable Skills Analysis", href: "/methods/transferable-skills-analysis" },
-      { title: "The RAPEL Method", href: "/guides/rapel-method-explained" },
-      { title: "Forensic Economics Service", href: "/services/forensic-economics" },
-    ],
-  },
-  {
-    slug: "what-is-transferable-skills-analysis",
-    title: "What is Transferable Skills Analysis (TSA)?",
-    tldr:
-      "TSA identifies occupations a person could perform based on skills developed in past work, applied to current medical restrictions and labor market conditions. It is the core methodology underlying most vocational expert opinions.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "purpose",
-        heading: "Purpose",
-        bodyHtml:
-          "<p>TSA translates a person's work history and demonstrated skills into a universe of occupations they could theoretically perform, then filters that universe through <a href=\"/methods/functional-capacity-evaluation\">current medical restrictions, functional capacity</a>, and labor market viability.</p>",
-      },
-      {
-        id: "process",
-        heading: "Process",
-        bodyHtml:
-          "<p>The vocational expert documents the work history with Dictionary of Occupational Titles (DOT) and <a href=\"/methods/onet-analysis\">O*NET</a> codes, identifies skills and work fields, applies medical restrictions, searches for occupations within the retained skill set and tolerated physical and cognitive demands, and confirms <a href=\"/methods/labor-market-survey\">labor market viability</a> using BLS OEWS (Occupational Employment and Wage Statistics) and local data (U.S. Bureau of Labor Statistics, n.d.).</p>",
-      },
-      {
-        id: "dot-onet",
-        heading: "DOT and O*NET as data sources",
-        bodyHtml:
-          "<p><a href=\"/methods/dictionary-of-occupational-titles\">The DOT</a> provides detailed physical demand and Specific Vocational Preparation (SVP) information (U.S. Department of Labor, Employment and Training Administration, 1991); O*NET provides current task and skill information (National Center for O*NET Development, n.d.). Best practice is to cross-reference both when performing TSA.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Does a TSA guarantee placement in the identified jobs?",
-        answer:
-          "No. A TSA establishes theoretical transferability. Whether those occupations actually exist in a hireable form in the claimant's market is tested by a labor market survey.",
-      },
-      {
-        question: "Are computer-based TSA tools accepted in court?",
-        answer:
-          "Computer-based TSA tools (SkillTRAN, OASYS) are widely used. Courts accept them when the underlying methodology is transparent and the expert can explain the results.",
-      },
-    ],
-    sources: refsToSources(["DOT", "ONET", "BLS_OEWS"]),
-    related: [
-      { title: "Labor Market Survey", href: "/methods/labor-market-survey" },
-      { title: "DOT and O*NET", href: "/methods/dictionary-of-occupational-titles" },
+      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
+      { title: "Admissibility Frameworks Compared", href: "/insights/daubert-vs-frye-expert-testimony-standards" },
+      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
     ],
   },
   {
@@ -550,7 +209,7 @@ export const guides: Guide[] = [
         id: "who-prepares",
         heading: "Who prepares the projection",
         bodyHtml:
-          "<p><a href=\"/credentials/clcp\">Certified Life Care Planners (CLCPs)</a> prepare <a href=\"/services/life-care-planning\">the itemized plan</a>. <a href=\"/services/forensic-economics\">Forensic economists</a> reduce the plan to present value using appropriate discount and growth rates.</p>",
+          "<p><a href=\"/credentials/clcp\">Certified Life Care Planners (CLCPs)</a> prepare <a href=\"/services/life-care-planning\">the itemized plan</a>. A <a href=\"https://kwvrs.com/services/forensic-economics\">forensic economist</a> then reduces the plan to present value using appropriate discount and growth rates.</p>",
       },
       {
         id: "inputs",
@@ -588,101 +247,14 @@ export const guides: Guide[] = [
       { title: "Life Care Planning Service", href: "/services/life-care-planning" },
       { title: "Life Care Plan Development", href: "/methods/life-care-plan-development" },
       { title: "Present Value Analysis", href: "/methods/present-value-analysis" },
-    ],
-  },
-  {
-    slug: "how-long-does-vocational-evaluation-take",
-    title: "How Long Does a Vocational Evaluation Take?",
-    tldr:
-      "A complete vocational evaluation, from engagement to final report, typically runs 30-60 days depending on records volume, whether in-person evaluation is performed, and reviewer availability. Rush timelines can be accommodated when requested early.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "phases",
-        heading: "Phases that make up the timeline",
-        bodyHtml:
-          "<p>Engagement and records intake (1-2 weeks), records review (1-3 weeks), optional in-person interview and testing (1 day plus travel), report drafting and quality review (1-2 weeks), and final delivery. Timelines overlap where possible.</p>",
-      },
-      {
-        id: "drivers",
-        heading: "What extends the timeline",
-        bodyHtml:
-          "<p>Incomplete records, <a href=\"/methods/functional-capacity-evaluation\">pending FCE or neuropsychological testing</a>, scheduling of the in-person evaluation, and <a href=\"/services/life-care-planning\">coordination with multiple other experts</a> each add time.</p>",
-      },
-      {
-        id: "rush",
-        heading: "Rush engagements",
-        bodyHtml:
-          "<p>Rush timelines are possible when records are complete and prioritized, when in-person evaluation is not required, and when the expert's schedule permits. Request rush status at engagement.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Can we skip the in-person evaluation?",
-        answer:
-          "A records-only review is possible in some cases. The expert recommends in-person evaluation when direct observation, testing, or demeanor are material to the opinion.",
-      },
-      {
-        question: "What is the fastest possible turnaround?",
-        answer:
-          "Expedited turnaround can sometimes be accommodated when records are complete, no in-person evaluation is required, and the expert's schedule permits. Specific timelines are confirmed case by case.",
-      },
-    ],
-    sources: refsToSources(["IARP"]),
-    related: [
-      { title: "VE Cost and Engagement", href: "/guides/vocational-expert-cost-and-engagement" },
-      { title: "Vocational Expert Process", href: "/services/life-care-planning/process" },
-    ],
-  },
-  {
-    slug: "worklife-expectancy-explained",
-    title: "Worklife Expectancy: How Economists Project Remaining Work Years",
-    tldr:
-      "Worklife expectancy is the number of additional years a person of a given age, sex, education, and labor force status is expected to be economically active. Forensic economists use published tables (Skoog-Ciecka-Krueger and predecessors) as the foundation for future earnings projections.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "concept",
-        heading: "The concept",
-        bodyHtml:
-          "<p>Rather than assuming a fixed retirement age, <a href=\"/methods/worklife-expectancy\">worklife expectancy applies transition probabilities</a> between active and inactive labor force states (Skoog et al., 2011). The result is expected remaining active years based on observed population patterns.</p>",
-      },
-      {
-        id: "stratification",
-        heading: "How it is stratified",
-        bodyHtml:
-          "<p>Tables are stratified by age, sex, education, and current labor force status (U.S. Bureau of Labor Statistics, n.d.). The interaction of these factors produces different expected worklives for otherwise similar claimants.</p>",
-      },
-      {
-        id: "injury-adjustments",
-        heading: "Injury-specific adjustments",
-        bodyHtml:
-          "<p>Peer-reviewed literature supports adjustments for catastrophic injuries including spinal cord injury (<a href=\"/case-types/spinal-cord-injury\">SCI</a>) and moderate-to-severe traumatic brain injury (<a href=\"/case-types/traumatic-brain-injury\">TBI</a>), reflecting earlier labor-force withdrawal and reduced employment probability.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Does worklife assume the claimant will retire at 65?",
-        answer:
-          "No. Worklife tables reflect observed active-inactive transitions across the population, which often extend past or end before age 65 depending on stratification.",
-      },
-      {
-        question: "Are worklife projections adjustable for individual circumstances?",
-        answer:
-          "Yes, when the record supports an adjustment (e.g., documented plan to work past normal retirement, severity-specific published adjustments). Documentation is essential.",
-      },
-    ],
-    sources: refsToSources(["SKOOG_CIECKA_KRUEGER_2011", "BLS_CPS"]),
-    related: [
-      { title: "Worklife Expectancy (method page)", href: "/methods/worklife-expectancy" },
-      { title: "Present Value Analysis", href: "/methods/present-value-analysis" },
+      { title: "How a Life Care Plan Is Priced", href: "/guides/how-a-life-care-plan-is-priced" },
     ],
   },
   {
     slug: "when-do-you-need-expert-witness",
     title: "When Do You Need an Expert Witness in Your Case?",
     tldr:
-      "An expert witness is warranted when the case involves earning capacity, employability, life care planning, forensic economics, or medical standard of care. Courts admit expert testimony where specialized knowledge will help the trier of fact understand evidence or determine a fact in issue. Retain early so the expert can inform discovery and strategy.",
+      "An expert witness is warranted when the case involves future medical and non-medical care needs, the cost of that care, causation, or medical standard of care. Courts admit expert testimony where specialized knowledge will help the trier of fact understand evidence or determine a fact in issue. Retain early so the expert can inform discovery and strategy.",
     dateModified: "2026-04-20",
     sections: [
       {
@@ -695,7 +267,7 @@ export const guides: Guide[] = [
         id: "common-categories",
         heading: "Common expert categories in civil litigation",
         bodyHtml:
-          "<p><a href=\"/services/life-care-planning\">Vocational expert</a>, <a href=\"/services/life-care-planning\">life care planner</a>, <a href=\"/services/forensic-economics\">forensic economist</a>, treating physician, physical medicine and rehabilitation specialist, <a href=\"/services/life-care-planning\">standard of care expert</a>, occupational therapist or physical therapist, and vocational rehabilitation counselor each address distinct questions that together quantify damages.</p>",
+          "<p>In an injury case with long-term care implications, several experts commonly address distinct questions that together establish damages. The <a href=\"/services/life-care-planning\">life care planner</a> projects future medical and non-medical needs and their cost. The treating physician or a physical medicine and rehabilitation specialist supplies the medical foundation for those needs. A standard of care expert addresses breach in medical malpractice matters. An occupational or physical therapist may quantify functional capacity or assess the home. A <a href=\"https://kwvrs.com/services/forensic-economics\">forensic economist</a> reduces the projected costs to present value. Where a settlement must account for Medicare, a <a href=\"/services/medicare-set-aside\">Medicare set-aside</a> allocator may be added.</p>",
       },
       {
         id: "timing",
@@ -707,7 +279,7 @@ export const guides: Guide[] = [
         id: "signals",
         heading: "Signals that expert testimony is warranted",
         bodyHtml:
-          "<p>Consider expert retention <a href=\"/guides/earning-capacity-vs-lost-earnings\">when earning capacity is contested</a>, when a life care plan is disputed, when the case involves catastrophic injury with long-term care implications, when medical causation is at issue, when standard of care is disputed, or when the defense has retained opposing experts.</p>",
+          "<p>Consider expert retention when the case involves a <a href=\"/services/catastrophic-injury-planning\">catastrophic injury</a> with lifelong care implications, when the opposing party has served a life care plan that needs a <a href=\"/services/life-care-plan-rebuttal\">rebuttal</a>, when future medical costs are a significant component of damages, when medical causation is at issue, when standard of care is disputed, or when the defense has retained opposing experts.</p>",
       },
     ],
     faqs: [
@@ -719,7 +291,7 @@ export const guides: Guide[] = [
       {
         question: "How many experts does a typical case need?",
         answer:
-          "It varies. Many catastrophic injury cases use a vocational expert, life care planner, and forensic economist together. Smaller cases may need only one or two.",
+          "It varies. Many catastrophic injury cases use a life care planner, a physician who supplies the medical foundation, and a forensic economist together. Smaller cases may need only a medical cost projection and a physician.",
       },
       {
         question: "Can experts be designated and later withdrawn?",
@@ -729,267 +301,9 @@ export const guides: Guide[] = [
     ],
     sources: refsToSources(["FRE_702", "DAUBERT"]),
     related: [
-      { title: "How to Hire a Vocational Expert", href: "/guides/how-to-hire-vocational-expert" },
-      { title: "Vocational Expert Methodology Standards", href: "/guides/daubert-standard-vocational-experts" },
-    ],
-  },
-  {
-    slug: "vocational-expert-cost-and-engagement",
-    title: "Vocational Expert Cost and Engagement: What Attorneys Should Expect",
-    tldr:
-      "Vocational expert engagements are typically billed hourly across four phases: initial review, evaluation, report writing, and testimony. Total cost varies with case complexity, expert credentialing, and whether in-person evaluation and testimony are required. A written engagement letter should itemize hourly rates, retainer, and scope.",
-    dateModified: "2026-04-20",
-    sections: [
-      {
-        id: "engagement-structure",
-        heading: "Engagement structure",
-        bodyHtml:
-          "<p>Engagements follow a typical arc: <a href=\"/services/life-care-planning\">records review, optional in-person evaluation</a>, report writing, deposition, and trial testimony. Each phase is billed hourly. A retainer is customary, with additional billing as work progresses.</p>",
-      },
-      {
-        id: "cost-drivers",
-        heading: "What drives cost",
-        bodyHtml:
-          "<p>Cost drivers include case complexity (catastrophic cases require more records review and more nuanced opinion), volume of records, number of depositions to review, whether an in-person evaluation is needed, travel requirements for testimony, and the expert's seniority and credentialing.</p>",
-      },
-      {
-        id: "what-is-included",
-        heading: "What an engagement typically includes",
-        bodyHtml:
-          "<p>A complete engagement includes review of medical and vocational records, optional interview and testing, <a href=\"/guides/expert-witness-disclosure-rules\">written report meeting the governing jurisdictional disclosure framework</a>, deposition preparation and testimony, and trial testimony when required. Rebuttal reports are scoped separately when the defense discloses its expert report.</p>",
-      },
-      {
-        id: "budgeting",
-        heading: "Budgeting considerations",
-        bodyHtml:
-          "<p>Ask for a written scope and <a href=\"/services/life-care-planning/cost\">fee schedule</a> before engagement. Reasonable practice includes periodic invoicing, a cap on initial review hours, and clarity on rates for deposition and trial days, including travel and standby time.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Is there a rough range for vocational expert fees?",
-        answer:
-          "Fees vary widely based on seniority and credentialing. Ranges are discussed in the engagement letter, and invoices itemize time spent by phase.",
-      },
-      {
-        question: "Are life care planner fees structured the same way?",
-        answer:
-          "Similarly, yes. Life care planning engagements are hourly across records review, evaluation, plan preparation, and testimony phases.",
-      },
-      {
-        question: "Do experts take cases on contingency?",
-        answer:
-          "No. Expert opinions are not provided on contingency, which would create an ethical conflict (Commission on Rehabilitation Counselor Certification, 2023). Experts are paid for their time regardless of outcome.",
-      },
-    ],
-    sources: refsToSources(["CRCC_ETHICS", "IARP"]),
-    related: [
-      { title: "Vocational Expert Cost Page", href: "/services/life-care-planning/cost" },
-      { title: "How to Hire a Vocational Expert", href: "/guides/how-to-hire-vocational-expert" },
-    ],
-  },
-  {
-    slug: "daubert-standard-vocational-experts",
-    title: "Vocational Expert Methodology Standards: A Practitioner Guide",
-    tldr:
-      "Vocational expert testimony must satisfy the governing court's reliability framework: testimony grounded in sufficient facts or data, derived from accepted principles and methods, and reliably applied to the facts. Well-documented transferable skills analysis, labor market survey, and use of accepted references (DOT, O*NET, BLS) routinely meet these standards. Attorneys are responsible for confirming the governing framework against primary sources.",
-    dateModified: "2026-05-03",
-    sections: [
-      {
-        id: "what-the-framework-requires",
-        heading: "What the reliability framework requires",
-        bodyHtml:
-          "<p>Federal courts and many state courts require expert testimony to satisfy a reliability-based gatekeeping framework. The trial court evaluates whether the testimony is based on sufficient facts or data, is the product of reliable principles and methods, and whether the expert has reliably applied those principles to the case. Non-exclusive reliability factors include testability, peer review, known or potential error rate, controlling standards, and general acceptance in the relevant field (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Kumho Tire Co. v. Carmichael, 1999).</p>",
-      },
-      {
-        id: "applying-to-vocational-testimony",
-        heading: "How the framework applies to vocational testimony",
-        bodyHtml:
-          "<p>Vocational testimony is typically grounded in <a href=\"/methods/transferable-skills-analysis\">transferable skills analysis</a> (TSA), <a href=\"/methods/labor-market-survey\">labor market survey</a> (LMS), and interpretation of functional capacity. Reliability is established by citing accepted methodology widely used in the vocational rehabilitation profession, accepted references (DOT, <a href=\"/methods/onet-analysis\">O*NET</a>, BLS OEWS (Occupational Employment and Wage Statistics), SCODDOT (Selected Characteristics of Occupations Defined in the Revised Dictionary of Occupational Titles)), and documented reasoning that traces the opinion from the claimant's history and medical restrictions through to the final conclusion.</p><p>General acceptance is evidenced through credentialing bodies (CRCC, <a href=\"/credentials/clcp\">ABVE</a>) and the relevant professional standards.</p>",
-      },
-      {
-        id: "common-objections",
-        heading: "Common objections and how to address them",
-        bodyHtml:
-          "<p><strong>Reliance on DOT alone.</strong> The DOT has not been comprehensively updated since 1991 (U.S. Department of Labor, Employment and Training Administration, 1991). Best practice is to cross-reference with O*NET, explicitly acknowledge the DOT's limitations, and document the reasoning for relying on both.</p><p><strong>Anecdotal labor market survey.</strong> Surveys based on limited contacts or stale data invite exclusion. Courts accept surveys when documented with contact dates, employer names, and the search's geographic scope.</p><p><strong>Failure to consider the claimant's full vocational profile.</strong> Opinions that rely on incomplete records or omit relevant transferable skills can be excluded. Reviewing all medical and vocational records and documenting the basis for weighting them addresses this concern.</p>",
-      },
-      {
-        id: "what-attorneys-should-ask",
-        heading: "What attorneys should ask their vocational expert",
-        bodyHtml:
-          "<p>Expect your expert to articulate the methodology used (TSA, LMS, use of DOT and O*NET), the databases and published references relied upon, any objective testing performed, how restrictions were applied, and the reasoning supporting each conclusion. An expert who cannot walk an attorney through each step of the reasoning invites a methodology challenge.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Do state courts apply the same admissibility framework as federal courts?",
-        answer:
-          "Many states apply a similar reliability-based framework to federal courts; others apply a narrower general-acceptance framework or a distinctive hybrid. Always confirm the governing standard in the jurisdiction of the case against primary sources.",
-      },
-      {
-        question: "Do all courts scrutinize vocational experts the same way?",
-        answer:
-          "Federal courts routinely apply the reliability framework to vocational experts. State-court practice varies. Methodology that satisfies the more demanding federal framework is a reliable baseline regardless of jurisdiction.",
-      },
-      {
-        question: "What credentials are most persuasive for a vocational expert?",
-        answer:
-          "CRC is the most widely recognized vocational credential. ABVE Diplomate and Fellow designations add forensic-specific standing. CVE adds vocational-evaluation-specific expertise. Many experts hold multiple credentials.",
-      },
-    ],
-    sources: refsToSources(["DAUBERT", "KUMHO_TIRE", "DOT", "CRCC_ETHICS", "IARP"]),
-    related: [
-      { title: "Certified Rehabilitation Counselor (CRC)", href: "/credentials/crc", description: "Scope, requirements, admissibility" },
-      { title: "Transferable Skills Analysis", href: "/methods/transferable-skills-analysis", description: "Methodology and steps" },
-      { title: "Labor Market Survey", href: "/methods/labor-market-survey", description: "How to survey the relevant market" },
-    ],
-  },
-  {
-    slug: "how-to-hire-vocational-expert",
-    title: "How to Hire a Vocational Expert: A Practical Guide for Attorneys",
-    tldr:
-      "Selecting a vocational expert comes down to credentialing (CRC, CVE, ABVE/D or F), testifying experience in the relevant jurisdiction, case-type specialization, and clear methodology. Early retention matters. Expect a written engagement agreement, a scope that covers evaluation, report, and testimony, and defined deliverable timelines.",
-    dateModified: "2026-04-20",
-    sections: [
-      {
-        id: "when-to-retain",
-        heading: "When to retain",
-        bodyHtml:
-          "<p>Retain a vocational expert as early as practical once earning capacity, employability, or vocational rehabilitation is likely to be at issue. Early involvement allows input on the medical record, <a href=\"/methods/functional-capacity-evaluation\">functional capacity evaluation referrals</a>, and deposition strategy.</p>",
-      },
-      {
-        id: "credentials-to-look-for",
-        heading: "Credentials to look for",
-        bodyHtml:
-          "<p>Core credentials include the <a href=\"/credentials/crc\">CRC (Certified Rehabilitation Counselor)</a> (Commission on Rehabilitation Counselor Certification, n.d.), <a href=\"/credentials/crc\">CVE (Certified Vocational Evaluator)</a>, and <a href=\"/credentials/clcp\">ABVE Diplomate or Fellow designations</a> for advanced forensic work (American Board of Vocational Experts, n.d.). State licensure may be separately relevant depending on jurisdiction.</p>",
-      },
-      {
-        id: "scope-of-engagement",
-        heading: "Scope of engagement",
-        bodyHtml:
-          "<p>A complete engagement typically covers records review, a file review or in-person evaluation, a written report, deposition, and trial testimony if needed. Each phase has a distinct deliverable and time commitment; scope is documented in the engagement letter.</p>",
-      },
-      {
-        id: "what-to-provide-the-expert",
-        heading: "What to provide the expert",
-        bodyHtml:
-          "<p>Typical materials include medical records, FCE reports, prior employment records (job descriptions, wage statements, W-2s), educational records, deposition transcripts of the claimant and treating providers, and any vocational testing previously performed.</p>",
-      },
-      {
-        id: "red-flags",
-        heading: "Red flags to avoid",
-        bodyHtml:
-          "<p>Be cautious of experts who <a href=\"/guides/daubert-standard-vocational-experts\">cannot articulate methodology plainly</a>, rely solely on DOT without cross-referencing O*NET (U.S. Department of Labor, Employment and Training Administration, 1991; National Center for O*NET Development, n.d.), produce unsubstantiated labor market surveys, or have a history of methodology-based exclusions.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "How much does a vocational expert cost?",
-        answer:
-          "Fees vary by case complexity and expert seniority. Engagements typically include initial review, evaluation, report writing, and testimony, each billed hourly. Detailed ranges are available on request.",
-      },
-      {
-        question: "How long does an evaluation take?",
-        answer:
-          "Most evaluations, from engagement to report, run 30-60 days depending on records availability and whether in-person examination is required. Rush timelines can be accommodated when requested early.",
-      },
-      {
-        question: "Can a vocational expert testify remotely?",
-        answer:
-          "Yes. Remote deposition and trial testimony are widely accepted, subject to jurisdictional rules and opposing counsel agreement.",
-      },
-      {
-        question: "Should I use the same expert for evaluation and testimony?",
-        answer:
-          "Continuity is generally preferred so the testifying expert has complete familiarity with the record and the methodology applied.",
-      },
-    ],
-    sources: refsToSources(["CRCC", "ABVE", "DOT", "ONET", "IARP"]),
-    related: [
-      { title: "CRC Certification", href: "/credentials/crc" },
-      { title: "Vocational Expert Methodology Standards", href: "/guides/daubert-standard-vocational-experts" },
-      { title: "Vocational Expert Cost", href: "/services/life-care-planning/cost" },
-    ],
-  },
-  {
-    slug: "rapel-method-explained",
-    title: "The RAPEL Method: How Vocational Experts Organize an Earning Capacity Opinion",
-    tldr:
-      "RAPEL is an acronym used in forensic vocational evaluation to organize the analysis of a person's post-injury work life: Rehabilitation plan, Access to the labor market, Placeability, Earning capacity, and Labor force participation. It does not produce a number by itself. It is a framework that orders the questions an evaluator must answer and ties each answer to documented evidence, so the resulting opinion can be followed and tested by either side.",
-    dateModified: "2026-08-23",
-    sections: [
-      {
-        id: "what-rapel-stands-for",
-        heading: "What RAPEL stands for",
-        bodyHtml:
-          "<p>RAPEL is a structured approach to <a href=\"/guides/earning-capacity-vs-lost-earnings\">earning capacity</a> assessment described in the rehabilitation and life care planning literature (Weed &amp; Berens, 2018). Each letter is a question the vocational evaluation must answer in order:</p><ul><li><strong>R - Rehabilitation plan.</strong> What services, training, accommodations, or medical steps would realistically support a return to work, and what would they cost and take?</li><li><strong>A - Access to the labor market.</strong> Given the person's education, skills, work history, and documented restrictions, which occupations remain open, and which are now closed?</li><li><strong>P - Placeability.</strong> Of the occupations that remain open, how likely is the person to actually be hired, considering the local labor market and real-world barriers?</li><li><strong>E - Earning capacity.</strong> What wage range is reasonably available now and over the working life, compared with pre-injury capacity?</li><li><strong>L - Labor force participation.</strong> How consistently can the person be expected to work over time, full time, part time, or intermittently, and for how many remaining work years?</li></ul>",
-      },
-      {
-        id: "rehabilitation-plan",
-        heading: "R: Rehabilitation plan",
-        bodyHtml:
-          "<p>The rehabilitation plan component asks whether a realistic path back to work exists and what it requires. The evaluator considers medical recommendations, <a href=\"/methods/functional-capacity-evaluation\">functional capacity findings</a>, retraining or education options, assistive technology, and workplace accommodations. The plan is documented in terms of specific services, duration, and cost so that the same assumptions can be carried into the <a href=\"/services/forensic-economics\">economic analysis</a> and, where applicable, a <a href=\"/guides/what-is-life-care-plan\">life care plan</a>.</p>",
-      },
-      {
-        id: "access",
-        heading: "A: Access to the labor market",
-        bodyHtml:
-          "<p>Access is established through <a href=\"/guides/what-is-transferable-skills-analysis\">transferable skills analysis</a>: the evaluator identifies the worker traits and skills acquired through prior work and education, then compares them against occupational requirements using the Dictionary of Occupational Titles and O*NET (U.S. Department of Labor, 1991; National Center for O*NET Development, n.d.). Medical restrictions are applied to exclude occupations whose physical, cognitive, or environmental demands exceed the documented capacity. The result is a defined set of occupations the person can still perform, and a defined set that has been lost.</p>",
-      },
-      {
-        id: "placeability",
-        heading: "P: Placeability",
-        bodyHtml:
-          "<p>Placeability asks a different question than access. An occupation can be within a person's capacity yet be difficult to obtain because of local demand, hiring practices, licensing or certification requirements, the need for schedule flexibility, visible limitations, gaps in work history, or age. The evaluator may use a <a href=\"/methods/labor-market-survey\">labor market survey</a> and published employment data to test whether the remaining occupations are realistically attainable in the relevant geographic area. Placeability is an assessment of likelihood supported by evidence; it is not a job search and does not guarantee an outcome.</p>",
-      },
-      {
-        id: "earning-capacity",
-        heading: "E: Earning capacity",
-        bodyHtml:
-          "<p>Earning capacity compares what the person could reasonably earn before the injury with what remains available after it. Pre-injury capacity is grounded in actual earnings history and the occupations held or realistically attainable. Post-injury capacity is drawn from the wages of the occupations that survive the access and placeability analysis, using published wage data such as the Occupational Employment and Wage Statistics program (U.S. Bureau of Labor Statistics, n.d.). The opinion is typically expressed as a reasonable range rather than a single figure, and the difference between the two sides is the loss of earning capacity that the <a href=\"/services/forensic-economics\">forensic economist</a> then projects and discounts to present value.</p>",
-      },
-      {
-        id: "labor-force-participation",
-        heading: "L: Labor force participation",
-        bodyHtml:
-          "<p>The final component addresses how much of the remaining work life the person can be expected to spend working. It considers whether full-time, part-time, or intermittent participation is realistic given the condition, the expected course of treatment, and the demands of the surviving occupations. Published <a href=\"/guides/worklife-expectancy-explained\">worklife expectancy</a> tables provide the population baseline, with case-specific adjustments where the record supports them (Skoog, Ciecka, &amp; Krueger, 2011).</p>",
-      },
-      {
-        id: "why-it-matters",
-        heading: "Why the structure matters in litigation",
-        bodyHtml:
-          "<p>RAPEL does not favor a plaintiff or a defense position. Its value is that each conclusion is tied to a stated question, a stated method, and identifiable data, which lets the court and opposing counsel trace how the evaluator reached the opinion. Organizing the report this way also supports admissibility review, because the reliability inquiry under <a href=\"/guides/daubert-standard-vocational-experts\">Daubert and Rule 702</a> turns on whether the method is recognized and was applied consistently to the facts of the case. Professional standards for forensic vocational practice likewise call for opinions that are objective, documented, and reproducible (International Association of Rehabilitation Professionals, n.d.).</p>",
-      },
-      {
-        id: "common-misunderstandings",
-        heading: "Common misunderstandings",
-        bodyHtml:
-          "<p><strong>\"RAPEL produces the damages number.\"</strong> It does not. RAPEL organizes the vocational findings; the economic loss is calculated separately from those findings.</p><p><strong>\"Placeability means the expert found the person a job.\"</strong> Placeability is an evidence-based estimate of the likelihood of employment in identified occupations, not a placement service.</p><p><strong>\"A RAPEL report is only for plaintiffs.\"</strong> The same framework is used to evaluate or rebut an opposing opinion, and an evaluation may conclude that little or no capacity was lost.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Is RAPEL a formula or a test?",
-        answer:
-          "Neither. RAPEL is an organizing framework for a vocational evaluation. The evidence under each heading comes from records review, interview, testing where appropriate, transferable skills analysis, labor market data, and medical restrictions.",
-      },
-      {
-        question: "Does every vocational expert use RAPEL?",
-        answer:
-          "No. It is one widely recognized way to structure an earning capacity opinion. Other evaluators organize the same questions differently. What matters for admissibility is that the method is recognized, the data sources are identified, and the reasoning can be followed.",
-      },
-      {
-        question: "How does RAPEL connect to the forensic economist's work?",
-        answer:
-          "The vocational evaluator supplies the pre- and post-injury earning capacity, the rehabilitation plan costs, and the expected labor force participation. The forensic economist projects those inputs over the worklife and discounts them to present value.",
-      },
-    ],
-    sources: refsToSources(["WEED_BERENS", "IARP", "DOT", "ONET", "BLS_OEWS", "SKOOG_CIECKA_KRUEGER_2011"]),
-    related: [
-      { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings" },
-      { title: "Transferable Skills Analysis", href: "/guides/what-is-transferable-skills-analysis" },
-      { title: "Labor Market Survey (method page)", href: "/methods/labor-market-survey" },
-      { title: "Vocational Expert Services", href: "/services/life-care-planning" },
+      { title: "How a Life Care Plan Is Priced", href: "/guides/how-a-life-care-plan-is-priced" },
+      { title: "Life Care Plan vs. Future Cost Projection", href: "/compare/life-care-plan-vs-future-cost-projection" },
+      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
     ],
   },
   {
@@ -1033,7 +347,7 @@ export const guides: Guide[] = [
         id: "timing-and-updates",
         heading: "When the plan is prepared and how it changes",
         bodyHtml:
-          "<p>A plan is usually prepared once the medical picture is stable enough to project, which may be before maximum medical improvement when the treating team can describe the expected course. The planner gathers records, interviews the individual and family, consults treating or evaluating providers, and documents each recommendation with its source. Because a life care plan is a dynamic document, it is updated when the condition, the treatment plan, or the care setting changes, and the cost figures are refreshed so the <a href=\"/methods/present-value-analysis\">economic analysis</a> reflects current pricing. In litigation the plan is typically paired with a <a href=\"/services/forensic-economics\">forensic economic</a> projection that carries the itemized costs across the <a href=\"/guides/worklife-expectancy-explained\">expected lifespan</a> and discounts them to present value.</p>",
+          "<p>A plan is usually prepared once the medical picture is stable enough to project, which may be before maximum medical improvement when the treating team can describe the expected course. The planner gathers records, interviews the individual and family, consults treating or evaluating providers, and documents each recommendation with its source. Because a life care plan is a dynamic document, it is updated when the condition, the treatment plan, or the care setting changes, and the cost figures are refreshed so the <a href=\"/methods/present-value-analysis\">economic analysis</a> reflects current pricing. In litigation the plan is typically paired with a <a href=\"https://kwvrs.com/services/forensic-economics\">forensic economic</a> projection that carries the itemized costs across the <a href=\"/methods/life-expectancy-in-life-care-planning\">expected lifespan</a> and discounts them to present value.</p>",
       },
     ],
     faqs: [
@@ -1063,6 +377,474 @@ export const guides: Guide[] = [
       { title: "CLCP Certification", href: "/credentials/clcp" },
       { title: "Life Care Plan Development Methodology", href: "/methods/life-care-plan-development" },
       { title: "Spinal Cord Injury Cases", href: "/case-types/spinal-cord-injury" },
+    ],
+  },
+  {
+    slug: "how-a-life-care-plan-is-priced",
+    title: "How a Life Care Plan Is Priced",
+    tldr:
+      "A life care plan engagement is billed on the planner's time, typically against a retainer, and the fee is driven by the volume of records, the complexity of the injury, whether an in-person evaluation is required, and how many treating providers must be consulted. A scoped medical cost projection is the lower-cost alternative when the question is narrower than lifetime care.",
+    dateModified: "2026-08-26",
+    sections: [
+      {
+        id: "how-fees-are-structured",
+        heading: "How the fee is structured",
+        bodyHtml:
+          "<p>Life care planning is professional time. The planner bills hourly for records review, the evaluation, provider correspondence, cost research, and report writing, and separately for deposition and trial testimony. Most engagements open with a retainer that is applied against hourly work, with the balance billed as the plan progresses. Rate schedules and retainer amounts are set out in the engagement letter, and <a href=\"/services/life-care-planning/cost\">the current terms for a life care plan engagement</a> are available on request before any work begins.</p><p>The retainer is not a flat fee for the plan. It is a deposit against the time the work actually takes. A straightforward plan may finish within the retainer; a catastrophic pediatric case with a decade of records will not. Counsel should expect an estimate at intake and updated estimates as the record is opened, and should treat any planner who quotes a fixed price for an unread record with caution.</p>",
+      },
+      {
+        id: "what-drives-cost",
+        heading: "What drives the cost of a plan",
+        bodyHtml:
+          "<p>Four inputs account for most of the variation between one engagement and the next.</p><p><strong>Volume and condition of the records.</strong> Reading the record is the largest single block of time. A recent injury with a few hundred pages reviews quickly. A <a href=\"/case-types/birth-injury\">birth injury</a> case with neonatal, pediatric, therapy, and school records spanning years does not, and disorganized or duplicated productions add hours before analysis begins.</p><p><strong>Complexity of the injury.</strong> The number of body systems involved, the number of specialties treating the person, and the number of categories of need all scale the plan. A single-limb <a href=\"/case-types/amputation\">amputation</a> with a stable prosthetic plan is simpler than a high-level <a href=\"/case-types/spinal-cord-injury\">spinal cord injury</a> with respiratory, skin, bladder, bowel, and attendant care needs that interact.</p><p><strong>Whether an evaluation is required.</strong> An in-person evaluation, usually in the home, adds travel and a day of interview and observation, and it is the norm for a plaintiff-retained plan. A <a href=\"/compare/in-person-evaluation-vs-file-review\">records-only review</a> is appropriate for many rebuttal engagements and some updates.</p><p><strong>Provider consultation.</strong> Every item in the plan needs a medical foundation. Where the record already contains the treating team's recommendations, the planner confirms them. Where it does not, the planner must correspond with each provider, wait for responses, and sometimes arrange an evaluation, all of which adds time.</p>",
+      },
+      {
+        id: "what-inflates-cost",
+        heading: "What inflates the cost unnecessarily",
+        bodyHtml:
+          "<p>Some cost is avoidable. Incomplete productions that arrive in waves force the planner to re-read and re-index. Late retention compresses the schedule and pushes work into rush time. Unclear scope leads to a plan that covers needs the case does not put at issue. Missing provider contacts mean the planner spends hours locating the right clinician for a recommendation the attorney could have obtained at a deposition.</p><p>The remedy is a clean intake: a single organized production, a clear statement of the questions the plan must answer, the names and contact details of the treating providers, and retention early enough that the plan can inform discovery rather than react to it. A planner retained after the close of fact discovery is often pricing care for which no physician has yet been asked to state a need.</p>",
+      },
+      {
+        id: "what-you-receive",
+        heading: "What the fee buys",
+        bodyHtml:
+          "<p>The deliverable is a written plan that lists each recommended item with its medical foundation, frequency, duration, unit cost, and cost source, organized by category and summarized by year. Behind the report sits a work file: the records index, provider correspondence, cost quotes with dates and contacts, and the life tables relied on. That file is what allows the plan to be defended at deposition, re-priced at a <a href=\"/services/plan-update-and-review\">later update</a>, and handed to an economist for present-value calculation without re-derivation. The <a href=\"/methods/cost-research-methodology\">cost research methodology</a> page describes how each figure is documented.</p>",
+      },
+      {
+        id: "scoping-a-projection-instead",
+        heading: "When to scope a medical cost projection instead",
+        bodyHtml:
+          "<p>Not every case needs a lifetime plan. Where the injury is significant but the future care question is narrow, a <a href=\"/services/medical-cost-projection\">medical cost projection</a> answers it at a fraction of the cost. A projection is records-based, covers a defined set of medical needs such as a planned surgery and its follow-up, and typically carries a shorter horizon. It does not include non-medical categories such as attendant care or home modification, and it does not usually include an in-person evaluation.</p><p>The choice is about the question, not the budget. If the case turns on whether a person will need a knee revision and what it will cost, a projection is the right tool. If the case involves care across multiple categories for the rest of the person's life, the plan is the right tool and a projection will leave damages on the table or, for the defense, leave the plaintiff's plan unanswered. The <a href=\"/compare/life-care-plan-vs-future-cost-projection\">comparison of the two</a> sets out the differences in more detail, and the <a href=\"/services/life-care-planning/process\">engagement process</a> page describes how scope is set at intake.</p>",
+      },
+      {
+        id: "testimony-costs",
+        heading: "Testimony and update costs",
+        bodyHtml:
+          "<p>Deposition and trial testimony are billed separately from the plan, usually at a different hourly rate with a minimum for the appearance and preparation time. Travel is billed at cost. An update to an existing plan is priced on the change: if the condition, the treatment plan, or the living situation has changed materially, the update approaches a new plan; if only the costs need refreshing, it is a fraction of that. Counsel should ask at intake how updates and testimony are billed so the total cost of carrying the plan through trial is understood from the start.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can you give a fixed quote for a life care plan?",
+        answer:
+          "Not responsibly before the record is reviewed. An estimate is provided at intake based on the volume of records, the injury, and whether an evaluation is required, and it is updated once the records are opened. The engagement letter sets out the rates and retainer.",
+      },
+      {
+        question: "Does the plaintiff's or the defendant's side pay more?",
+        answer:
+          "The methodology and the rates are the same on both sides. A defense rebuttal is often less expensive because it may proceed on records alone, but a defense-retained full plan with an evaluation costs what a plaintiff-retained plan does.",
+      },
+      {
+        question: "Is the retainer refundable?",
+        answer:
+          "The retainer is applied against hourly work. Any unused balance at the close of the engagement is handled as set out in the engagement letter.",
+      },
+      {
+        question: "Does the plan fee include the economist?",
+        answer:
+          "No. The present-value calculation is a separate engagement with a forensic economist. The plan is prepared so the economist can use it directly, which keeps that second engagement efficient.",
+      },
+    ],
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS"]),
+    related: [
+      { title: "Life Care Planning", href: "/services/life-care-planning" },
+      { title: "Medical Cost Projection", href: "/services/medical-cost-projection" },
+      { title: "Life Care Plan vs. Future Cost Projection", href: "/compare/life-care-plan-vs-future-cost-projection" },
+      { title: "Cost Research Methodology", href: "/methods/cost-research-methodology" },
+    ],
+  },
+  {
+    slug: "life-care-plan-vs-medicare-set-aside",
+    title: "Life Care Plan vs. Medicare Set-Aside: Purpose, Audience, and Method",
+    tldr:
+      "A life care plan projects the full cost of injury-related future care for damages. A Medicare set-aside allocation reserves the portion of a settlement that Medicare would otherwise pay for that care. They start from the same record but differ in purpose, audience, scope, pricing, and horizon, and many catastrophic settlements need both.",
+    dateModified: "2026-08-26",
+    sections: [
+      {
+        id: "two-documents",
+        heading: "Two documents, two questions",
+        bodyHtml:
+          "<p>A <a href=\"/services/life-care-planning\">life care plan</a> answers the question: what will this person's injury-related care cost over the rest of their life? It is prepared for a trier of fact, a mediator, or an adjuster, and it supports a damages figure. A <a href=\"/services/medicare-set-aside\">Medicare set-aside allocation</a> answers a different question: of the money changing hands in a settlement that closes future medical care, how much should be reserved so that Medicare is not asked to pay for care the settlement was meant to cover? It is prepared for the settling parties and, when submitted, for Medicare's reviewer.</p><p>Because the questions differ, the documents differ, even when the same planner prepares both from the same record. Treating one as a substitute for the other is the most common error counsel make with them.</p>",
+      },
+      {
+        id: "audience",
+        heading: "Audience",
+        bodyHtml:
+          "<p>The plan is written to be understood by a jury and tested by an opposing expert. It explains the injury, describes the person's current function, sets out each need in plain terms, and shows the foundation for it. The allocation is written for a settlement file and a government review process. It is organized around Medicare coverage categories, cites the version of Medicare's guidance relied on, and is accompanied by the medical and payment records that support each line. The reader of an allocation is checking compliance; the reader of a plan is weighing evidence.</p>",
+      },
+      {
+        id: "scope",
+        heading: "What each includes and excludes",
+        bodyHtml:
+          "<p>The plan includes every injury-related need the treating team supports, medical and non-medical: physician follow-up, therapies, medications, supplies, equipment, home and vehicle modification, attendant care, case management, and where appropriate residential placement. It excludes care the person would have needed regardless of the injury.</p><p>The allocation includes only injury-related care that Medicare would cover. Most home modifications, vehicle modifications, non-skilled attendant care, case management, and many supplies fall outside it. Within covered categories, it includes only what the treating providers recommend. Prescription drugs are addressed as a separate component. An allocation is therefore always a subset of the plan, usually a substantially smaller one.</p>",
+      },
+      {
+        id: "pricing",
+        heading: "Pricing basis",
+        bodyHtml:
+          "<p>The plan prices each item at the cost of the care in the person's own market, using provider quotes, usual-and-customary data, and published schedules as appropriate, with the source recorded for each figure (see <a href=\"/methods/cost-research-methodology\">cost research methodology</a>). The allocation prices covered items on the basis Medicare's guidance expects, which in workers' compensation matters is generally the applicable state fee schedule or, where none applies, usual-and-customary charges for the jurisdiction. The same physician visit can carry two different prices in the two documents, and that is correct.</p>",
+      },
+      {
+        id: "horizon",
+        heading: "Horizon and life expectancy",
+        bodyHtml:
+          "<p>The plan carries items across the person's <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy</a>, starting from the published population tables and departing from them only on a physician's opinion. The allocation may instead use a rated age obtained from a life insurance underwriter, which can shorten the allocation period when the person's health profile supports it. A rated age is a pricing device for annuities and set-asides; it is not a medical opinion, and a plan prepared for litigation does not rely on it.</p>",
+      },
+      {
+        id: "when-both",
+        heading: "When both are needed",
+        bodyHtml:
+          "<p>Both documents are needed when a catastrophic <a href=\"/case-types/workers-compensation\">workers' compensation</a> or liability matter is settling, the injured person is a Medicare beneficiary or reasonably expects to become one, and the settlement releases future medical care. The plan establishes the full scope of need so the settlement is adequate; the allocation establishes the Medicare-protected portion so the settlement is compliant. Preparing both from one record review keeps them consistent, and a reconciliation showing which plan items fed the allocation and which fell outside it answers the questions a reviewer or an opposing party will ask. The <a href=\"/methods/msa-allocation-methodology\">allocation methodology</a> page describes the steps, and <a href=\"/compare/life-care-plan-vs-msa\">the comparison page</a> summarizes the differences in a table.</p>",
+      },
+      {
+        id: "common-errors",
+        heading: "Common errors",
+        bodyHtml:
+          "<p>Three errors recur. The first is using the plan total as the set-aside, which overstates the reserve and ignores Medicare's pricing basis. The second is preparing only an allocation in a case that will be tried, which leaves the non-covered categories, often the largest, unquantified. The third is building the two documents from different records or different providers, so that the allocation lists care the plan does not, or the plan omits care the allocation reserves for. Each is avoided by treating the allocation as a carve-out from the plan rather than as an independent exercise.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does Medicare have to approve the set-aside?",
+        answer:
+          "Submission for review is voluntary and available only when the settlement meets published thresholds. Parties may settle without review, but the allocation should still be reasonable and documented so Medicare's interests are demonstrably considered.",
+      },
+      {
+        question: "Can a life care plan be used in a settlement without an MSA?",
+        answer:
+          "Yes, when Medicare's interests are not implicated, for example where the person is not a beneficiary and has no reasonable expectation of enrollment, or where future medical care is not being released.",
+      },
+      {
+        question: "Who administers the set-aside after settlement?",
+        answer:
+          "The funds may be self-administered by the injured person or placed with a professional administrator. Professional administration is often recommended for larger allocations because it documents that the funds were spent on covered, injury-related care.",
+      },
+      {
+        question: "Is a rated age ever used in the life care plan?",
+        answer:
+          "Generally no. The plan's horizon rests on population life tables and physician opinion. The rated age belongs to the allocation and to structured settlement pricing.",
+      },
+    ],
+    sources: refsToSources(["CMS_WCMSA_GUIDE", "CMS_WCMSA", "CMS_MSP", "IARP_IALCP_STANDARDS", "NCHS_LIFE_TABLES"]),
+    related: [
+      { title: "Medicare Set-Aside Allocations", href: "/services/medicare-set-aside" },
+      { title: "MSA Allocation Methodology", href: "/methods/msa-allocation-methodology" },
+      { title: "Life Care Plan vs. MSA (comparison)", href: "/compare/life-care-plan-vs-msa" },
+      { title: "Workers' Compensation Life Care Plans", href: "/services/workers-compensation-lcp" },
+    ],
+  },
+  {
+    slug: "pediatric-life-care-plans-and-transition-to-adulthood",
+    title: "Pediatric Life Care Plans and the Transition to Adulthood",
+    tldr:
+      "A pediatric life care plan is staged by development rather than written as a single lifetime schedule. Equipment is replaced on growth cycles, education and therapy shift when school-based services end, and the transition around age 21 changes who provides care, where the person lives, and what it costs. A plan that ignores these transitions understates or misstates lifetime care.",
+    dateModified: "2026-08-26",
+    sections: [
+      {
+        id: "why-pediatric-differs",
+        heading: "Why a pediatric plan is different",
+        bodyHtml:
+          "<p>An adult with a stable catastrophic injury has needs that can be projected as a largely steady state with periodic replacements and re-evaluations. A child does not. The child grows, which changes equipment, medication dosing, and the physical demands of caregiving. The child develops, which changes what therapy is for and what independence is realistic. And the child ages out of the systems that provide much of early care, chiefly school-based services, at a fixed point. A <a href=\"/services/pediatric-life-care-planning\">pediatric life care plan</a> is built around those transitions.</p><p>The most common pediatric diagnoses in litigation are <a href=\"/case-types/cerebral-palsy\">cerebral palsy</a> and other <a href=\"/case-types/birth-injury\">birth-related neurological injuries</a>, pediatric <a href=\"/case-types/traumatic-brain-injury\">traumatic brain injury</a>, spinal cord injury, and severe burns. The staging described here applies to each, with the specifics driven by the diagnosis and the treating team.</p>",
+      },
+      {
+        id: "developmental-staging",
+        heading: "Developmental staging",
+        bodyHtml:
+          "<p>The plan is organized in stages, typically early childhood, school age, adolescence, and adulthood, with a further stage for older adulthood where expectancy supports it. Each item is assigned a start and stop point tied to a stage rather than a calendar year, so that when the plan is updated the structure survives. Early intervention therapies end when school begins; school-based therapy ends when school ends; adult outpatient therapy is frequently episodic rather than continuous. Specialist follow-up changes as pediatric providers hand off to adult specialists, and that hand-off is itself a period of increased visits and re-evaluation.</p><p>Staging also makes the plan easier to test. An opposing reviewer can ask whether a given item belongs in a given stage, and the planner can answer with the developmental basis. A single undifferentiated lifetime schedule invites the objection that a five-year-old's needs have been projected onto a forty-year-old.</p>",
+      },
+      {
+        id: "equipment-growth-cycles",
+        heading: "Equipment and growth cycles",
+        bodyHtml:
+          "<p>Pediatric durable equipment is replaced on growth, not on wear. Wheelchairs, seating systems, standers, gait trainers, bath and toileting equipment, and orthotics are outgrown on cycles that vary with age and the item, and the intervals are shorter in early childhood than in adolescence. The plan carries each item on its own growth-driven cycle until adult sizing, then shifts to the adult replacement interval. Orthotics may be replaced several times a year in a young child. A plan that applies a single adult replacement interval to a child understates equipment cost substantially in the early years. The <a href=\"/guides/home-modification-and-equipment-costing\">equipment costing guide</a> describes how replacement schedules are documented.</p>",
+      },
+      {
+        id: "education-and-therapy",
+        heading: "Education, therapy, and what the school provides",
+        bodyHtml:
+          "<p>During the school years, much therapy and some equipment are provided through the educational system under the child's education plan. The life care plan must decide how to treat those services. Services provided at school are directed at educational access, not medical need, and are frequently less frequent and less intensive than the treating team recommends. The planner documents what the school provides, what the treating team recommends, and projects the difference as a private need, together with the summer months and the periods when school services are unavailable. Educational consultation, advocacy, and tutoring may appear in the plan where the record supports them. When school services end, the full recommended therapy schedule becomes a private cost, and the plan shows that step change.</p>",
+      },
+      {
+        id: "age-21-transition",
+        heading: "The transition around age 21",
+        bodyHtml:
+          "<p>Between roughly ages 18 and 22 the plan changes character. School-based services end. Pediatric specialists hand off to adult medicine. The parents who have provided most of the care are aging, and the plan must state honestly whether family-provided care can continue and for how long. Guardianship or supported decision-making may be needed. Adult day programming, supported employment or vocational habilitation where appropriate, and community participation replace school as the structure of the day. Each of these has a cost, and several begin at the same time. The plan carries the transition as a distinct stage with its own items, and the attendant care projection moves from the family-supplemented childhood level to the full adult level described in the <a href=\"/guides/attendant-care-in-life-care-plans\">attendant care guide</a>.</p>",
+      },
+      {
+        id: "residential-options",
+        heading: "Residential options in adulthood",
+        bodyHtml:
+          "<p>The plan must address where the adult will live once family care is no longer realistic, and it should do so explicitly rather than assuming that parents will provide care indefinitely. The options are in-home care with attendants, a supported living arrangement with shared staffing, a group residence, or a skilled facility for those with medical complexity. Each has a different cost profile, and each has a different effect on the rest of the plan: a facility placement absorbs some items that in-home care lists separately, while in-home care requires home modification and full attendant staffing. The planner prices the option the treating team and the family consider appropriate and, where the record supports more than one path, presents the alternatives so the trier of fact can see the cost consequence of the choice.</p>",
+      },
+      {
+        id: "life-expectancy-in-pediatric-plans",
+        heading: "Life expectancy in pediatric plans",
+        bodyHtml:
+          "<p>Because the horizon is long, life expectancy drives the total more than in any adult plan, and it is frequently contested. The planner starts from the published population tables for the child's age and sex and departs from them only when a qualified physician has opined that the condition changes expectancy. Where the parties' physicians disagree, the plan is presented at each horizon. The <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy method</a> page describes the approach. The plan should also be scheduled for <a href=\"/services/plan-update-and-review\">periodic update</a>, since a plan prepared for a toddler will be stale by adolescence regardless of how carefully it was staged.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "How often should a pediatric life care plan be updated?",
+        answer:
+          "There is no fixed interval, but a plan prepared in early childhood should be revisited at each major transition and whenever the treatment plan or living situation changes. In litigation, an update before trial is common when significant time has passed since the evaluation.",
+      },
+      {
+        question: "Does the plan assume parents will provide care?",
+        answer:
+          "The plan documents what the family currently provides and states for how long that is realistic. It then projects paid care at the level the treating team supports, so the plan does not depend on unpaid family labor continuing indefinitely.",
+      },
+      {
+        question: "Are school-provided services deducted from the plan?",
+        answer:
+          "The plan records what the school provides and projects the difference between that and the treating team's recommendation as a private need during the school years. When school services end, the full schedule becomes a private cost.",
+      },
+      {
+        question: "Can a pediatric plan include vocational or day programming for adulthood?",
+        answer:
+          "Yes, where the record supports it. Adult day programming, supported employment, or habilitation services are common transition-stage items, priced in the person's own market.",
+      },
+    ],
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "NCHS_LIFE_TABLES", "AANLCP_SCOPE"]),
+    related: [
+      { title: "Pediatric Life Care Planning", href: "/services/pediatric-life-care-planning" },
+      { title: "Cerebral Palsy Cases", href: "/case-types/cerebral-palsy" },
+      { title: "Birth Injury Cases", href: "/case-types/birth-injury" },
+      { title: "Attendant Care in Life Care Plans", href: "/guides/attendant-care-in-life-care-plans" },
+    ],
+  },
+  {
+    slug: "how-to-rebut-a-life-care-plan",
+    title: "How to Rebut a Life Care Plan",
+    tldr:
+      "A life care plan rebuttal tests the opposing plan item by item against the record: whether each item has a medical foundation, whether items duplicate one another, whether frequency and duration are supported, whether the cost sources are documented and geographically appropriate, and whether the life expectancy basis is sound. The findings organize both the rebuttal report and the deposition of the opposing planner.",
+    dateModified: "2026-08-26",
+    sections: [
+      {
+        id: "what-a-rebuttal-is",
+        heading: "What a rebuttal is and is not",
+        bodyHtml:
+          "<p>A <a href=\"/services/life-care-plan-rebuttal\">life care plan rebuttal</a> is an independent review of an opposing plan by a qualified planner. It is not a list of deletions. A rebuttal that simply strikes items without a stated basis is as vulnerable as a plan that adds them without one. The reviewer applies the same <a href=\"/methods/life-care-plan-development\">standards of practice</a> the original planner was bound by, and where the record supports an item the rebuttal says so. Where the reviewer has access to the evaluee, an in-person evaluation strengthens the review; where not, the rebuttal proceeds on the record and says so plainly.</p><p>The output is usually a written report that addresses the opposing plan category by category, and often an alternative plan that shows what the record does support. The alternative plan gives the trier of fact a second number rather than only a critique of the first.</p>",
+      },
+      {
+        id: "foundation-review",
+        heading: "Foundation review",
+        bodyHtml:
+          "<p>The first test for every item is its medical foundation. The reviewer traces each recommendation to its source: a treating provider's record, an evaluating specialist's report, a provider's answer to the planner's questionnaire, or published clinical guidance for the diagnosis. Items with no identifiable source, items whose source is the planner's own judgment on a medical question outside the planner's license, and items recommended by a provider retained for litigation but never mentioned in treatment records are flagged. The reviewer also checks the date and context of each recommendation: a recommendation made once during acute care and never repeated may not support a lifetime item.</p>",
+      },
+      {
+        id: "duplication",
+        heading: "Duplication and overlap",
+        bodyHtml:
+          "<p>Plans that are built category by category can list the same service twice under different headings. Common examples are case management hours that overlap with attendant care supervision, therapy that appears both as an outpatient course and within a residential program's bundled rate, supplies that are included in a facility's per diem and also listed separately, and equipment maintenance listed alongside a replacement schedule that already assumes replacement rather than repair. The reviewer maps each item against the others and against any bundled rates to identify overlap.</p>",
+      },
+      {
+        id: "frequency-and-duration",
+        heading: "Frequency and duration support",
+        bodyHtml:
+          "<p>An item can have a sound foundation and still be overstated. The reviewer asks whether the stated frequency matches the recommendation and the clinical literature, whether the duration is lifetime when the provider described a course, and whether the item's start and stop points reflect the person's actual trajectory. Therapy carried at an acute-phase frequency for life, specialist visits at an annual frequency the specialist never recommended, and pediatric equipment replaced on an adult interval are recurring findings. For pediatric plans the reviewer also tests whether transitions are staged, as described in the <a href=\"/guides/pediatric-life-care-plans-and-transition-to-adulthood\">pediatric guide</a>.</p>",
+      },
+      {
+        id: "pricing-audit",
+        heading: "Pricing source audit",
+        bodyHtml:
+          "<p>Each unit cost is checked for its source, its date, and its geography. The reviewer asks whether the price reflects the market where the person lives, whether billed charges were used where the jurisdiction measures damages differently, whether a national average or a distant market was substituted for local research, and whether the plan explains any choice between divergent figures. Attendant care is examined most closely because it is usually the largest category: the level of care, the number of hours, the agency versus private-hire basis, and the rate source each affect the total, as set out in the <a href=\"/guides/attendant-care-in-life-care-plans\">attendant care guide</a>. Equipment and home modification are checked against the approach described in the <a href=\"/guides/home-modification-and-equipment-costing\">costing guide</a>. The reviewer re-prices significant items independently using the <a href=\"/methods/cost-research-methodology\">same documented method</a>.</p>",
+      },
+      {
+        id: "life-expectancy-basis",
+        heading: "Life expectancy basis",
+        bodyHtml:
+          "<p>The horizon multiplies everything. The reviewer identifies which life table the plan used and whether it is the current vintage, whether the planner departed from the population figure, and if so on whose opinion. A planner who shortened or lengthened expectancy without a physician's support has stepped outside the planner's role. Where the record contains competing physician opinions, the rebuttal presents the alternative horizon and its effect on the total. The <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy method</a> page sets out the standard.</p>",
+      },
+      {
+        id: "deposition-themes",
+        heading: "Deposition themes",
+        bodyHtml:
+          "<p>The rebuttal findings organize the deposition of the opposing planner. Productive lines of questioning follow the review: which document supports each contested item and when it was written; whether the planner asked the provider the question or inferred the answer; how each frequency was chosen; where each price came from, when it was obtained, and whether the planner spoke to the source; which life table was used and who authorized any departure from it; whether the planner examined the evaluee and, if so, what was observed that the record does not show; and whether the plan distinguishes injury-related needs from pre-existing conditions. The goal is a transcript in which each contested item either has a foundation or does not, so the trier of fact is not left weighing two totals in the abstract. Counsel should confirm the <a href=\"/guides/federal-vs-state-court-daubert\">governing admissibility framework</a> before deciding whether the findings support a motion or are better used at trial.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does a rebuttal require examining the plaintiff?",
+        answer:
+          "No, but it helps. Many rebuttals proceed on the record alone, particularly where the defense has no access to the evaluee. Where an examination is available, direct observation of current function and the home often reveals differences from the plan that the record does not.",
+      },
+      {
+        question: "Should the rebuttal include an alternative plan?",
+        answer:
+          "Usually. An alternative plan grounded in the same record gives the trier of fact a supported number rather than only a critique, and it demonstrates that the reviewer applied the standards rather than simply deleting items.",
+      },
+      {
+        question: "Can the rebuttal address the economist's calculation?",
+        answer:
+          "The life care planner addresses the care schedule and its costs. Discount rates and growth assumptions belong to the economist. A rebuttal planner will, however, flag where the economist's inputs do not match the plan, for example a different horizon or item schedule.",
+      },
+      {
+        question: "What if the opposing plan has no work file?",
+        answer:
+          "The absence of documented sources for costs and recommendations is itself a finding. The reviewer reports what could and could not be verified and re-prices significant items from documented sources.",
+      },
+    ],
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "NCHS_LIFE_TABLES", "FRE_702", "DAUBERT"]),
+    related: [
+      { title: "Life Care Plan Rebuttal", href: "/services/life-care-plan-rebuttal" },
+      { title: "Plaintiff Expert vs. Defense Expert", href: "/compare/plaintiff-expert-vs-defense-expert" },
+      { title: "In-Person Evaluation vs. File Review", href: "/compare/in-person-evaluation-vs-file-review" },
+      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
+    ],
+  },
+  {
+    slug: "attendant-care-in-life-care-plans",
+    title: "Attendant Care in Life Care Plans",
+    tldr:
+      "Attendant care is usually the largest category in a catastrophic life care plan. The planner specifies the level of care, the hours across the day and week, the basis for those hours, the agency or private-hire rate in the person's market, how family-provided care is treated, and respite for the caregivers. Each of those choices is tested in a rebuttal, so each is documented.",
+    dateModified: "2026-08-26",
+    sections: [
+      {
+        id: "why-attendant-care-matters",
+        heading: "Why attendant care dominates the plan",
+        bodyHtml:
+          "<p>A wheelchair is replaced every few years. Attendant care recurs every day. For a person with a high-level <a href=\"/case-types/spinal-cord-injury\">spinal cord injury</a>, a severe <a href=\"/case-types/traumatic-brain-injury\">brain injury</a>, or <a href=\"/case-types/cerebral-palsy\">cerebral palsy</a> with significant motor involvement, the cost of the people who provide daily assistance and supervision typically exceeds every other category combined. Small differences in hours or rate compound over decades, which is why attendant care receives the closest scrutiny from opposing experts and why the planner's documentation must be complete.</p>",
+      },
+      {
+        id: "levels-of-care",
+        heading: "Levels of care",
+        bodyHtml:
+          "<p>The plan states the level of care required, because the level determines who can provide it and what it costs. The common levels are companion or supervisory care for a person who is physically able but cannot be left alone safely because of cognitive or behavioral impairment; personal care or home health aide assistance for hands-on help with bathing, dressing, transfers, toileting, and feeding; licensed practical or vocational nursing for delegated skilled tasks such as medication administration, tube feeding, and routine catheter or wound care; and registered nursing for ventilator management, complex assessment, and unstable medical conditions. Many plans specify more than one level across the day, for example aide-level care for morning and evening routines and supervisory care in between. The level is a medical determination: the planner documents the treating provider's statement of what the person needs and matches the level to it.</p>",
+      },
+      {
+        id: "hours-methodology",
+        heading: "How hours are determined",
+        bodyHtml:
+          "<p>Hours are built from the person's day, not assumed. The planner documents the person's function from the record and, where possible, from direct observation in the home: what assistance is needed to get up, bathe, dress, eat, toilet, transfer, and get to bed; whether the person can be left alone and for how long; what happens overnight; and what changes on days with appointments or therapy. From that the planner constructs a schedule across the 24-hour day and the 7-day week, distinguishing active hands-on hours from supervisory presence and identifying whether overnight care is awake or asleep. The treating physician or therapist confirms the level and the general scope of hours. For a person who cannot be left alone, the plan will often show continuous coverage, and the planner should say so directly rather than presenting a partial schedule and leaving the gap unexplained.</p>",
+      },
+      {
+        id: "agency-vs-private-hire",
+        heading: "Agency versus private-hire rates",
+        bodyHtml:
+          "<p>The same hour of aide care costs more through a licensed agency than through a directly employed caregiver, because the agency rate carries recruitment, supervision, training, insurance, payroll taxes, and coverage for absences. The plan states which basis it uses and why. Agency rates are appropriate when the family cannot realistically act as an employer, when skilled care is needed, or when reliable coverage for absences matters. Private-hire rates are appropriate when the family can manage employment and the plan accounts for the employer's costs, including payroll taxes, workers' compensation coverage, and backup coverage, rather than quoting a bare hourly wage. Rates are researched in the person's own market from agencies and, where applicable, state rate schedules, and the source and date of each are recorded as described in the <a href=\"/methods/cost-research-methodology\">cost research methodology</a>.</p>",
+      },
+      {
+        id: "family-provided-care",
+        heading: "Family-provided care",
+        bodyHtml:
+          "<p>Most catastrophically injured people receive substantial care from family members, and the plan must address it honestly. The planner documents what the family currently provides and at what cost to the family members' own health, employment, and sleep. The plan then projects care at the level and hours the treating team supports, priced as paid care, because family members age, become ill, and cannot be assumed to provide skilled or continuous care indefinitely. Whether family-provided care is compensable, and at what rate, is a legal question that varies by jurisdiction; the plan gives counsel the hours and the market rate so the legal question can be answered, and it identifies separately any period during which the plan assumes family care will continue.</p>",
+      },
+      {
+        id: "respite",
+        heading: "Respite care",
+        bodyHtml:
+          "<p>Where the plan relies on family care for any period, it includes respite: paid coverage that gives the family caregivers scheduled relief. Respite is specified as hours or days per period at the appropriate level of care and priced at the applicable rate. Its purpose is to keep the family-care assumption realistic. A plan that projects a parent providing care for years without relief is projecting a schedule no one can sustain, and an opposing reviewer will say so.</p>",
+      },
+      {
+        id: "documentation-and-updates",
+        heading: "Documentation and updates",
+        bodyHtml:
+          "<p>The work file for attendant care contains the functional basis for the hours, the provider statements supporting the level, the observed daily schedule where an evaluation was performed, the rate quotes with agency names and dates, and the reasoning for the agency or private-hire choice. Because needs change with age and condition and rates change with the labor market, attendant care is re-examined at every <a href=\"/services/plan-update-and-review\">plan update</a>. In pediatric plans it is restated at each developmental stage, as described in the <a href=\"/guides/pediatric-life-care-plans-and-transition-to-adulthood\">pediatric guide</a>. The <a href=\"/guides/how-to-rebut-a-life-care-plan\">rebuttal guide</a> lists the questions an opposing reviewer will ask of each of these elements.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Who decides how many hours of attendant care a person needs?",
+        answer:
+          "The level of care is a medical determination documented by the treating provider. The hours are built by the planner from the person's documented function and daily routine, confirmed against the provider's statement of need.",
+      },
+      {
+        question: "Should the plan use the agency rate or the private-hire rate?",
+        answer:
+          "It depends on the level of care, the family's ability to act as an employer, and the need for reliable coverage. The plan states the basis chosen and why, and prices private-hire care with employer costs included rather than as a bare wage.",
+      },
+      {
+        question: "Does the plan include care the family provides for free?",
+        answer:
+          "The plan documents family-provided care and projects the same care at market rates for the period the treating team supports it, because family care cannot be assumed to continue indefinitely. Whether it is compensable is a legal question for counsel.",
+      },
+      {
+        question: "Is overnight care always awake care?",
+        answer:
+          "No. The plan distinguishes awake overnight care, needed when the person requires turning, suctioning, or supervision during the night, from asleep or on-call presence. The two are priced differently.",
+      },
+    ],
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "AANLCP_SCOPE"]),
+    related: [
+      { title: "Catastrophic Injury Planning", href: "/services/catastrophic-injury-planning" },
+      { title: "Spinal Cord Injury Cases", href: "/case-types/spinal-cord-injury" },
+      { title: "Home Modification and Equipment Costing", href: "/guides/home-modification-and-equipment-costing" },
+      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
+    ],
+  },
+  {
+    slug: "home-modification-and-equipment-costing",
+    title: "Home Modification and Equipment Costing in Life Care Plans",
+    tldr:
+      "Home modification and durable equipment are costed differently from recurring care. The planner assesses the home for accessibility, separates one-time items from recurring and periodically replaced ones, documents a replacement schedule for each piece of equipment, and prices from vendor quotes and recognized databases with the source recorded. The result is a schedule the economist can carry year by year.",
+    dateModified: "2026-08-26",
+    sections: [
+      {
+        id: "accessibility-assessment",
+        heading: "The accessibility assessment",
+        bodyHtml:
+          "<p>Home modification begins with the home. During the in-person evaluation the planner documents the entrance and any steps, door widths and thresholds, hallway and turning clearances, the bathroom layout and fixtures, the bedroom and its distance from the bathroom, kitchen access, flooring, and the parking and path to the vehicle. The planner records what the person can and cannot do in that environment now, what equipment is already in use, and where the caregivers are lifting, carrying, or improvising. Where the person is expected to move, the planner notes that and prices modifications for a typical accessible dwelling rather than for the current home. Where the home cannot practically be modified, the plan says so and addresses relocation or the differential cost of an accessible residence as the record supports.</p>",
+      },
+      {
+        id: "one-time-vs-recurring",
+        heading: "One-time, recurring, and periodically replaced items",
+        bodyHtml:
+          "<p>The plan distinguishes three kinds of cost. One-time items are incurred once: a ramp or lift at the entrance, widened doorways, a roll-in shower, an accessible kitchen, a ceiling track system, and the associated design and permitting. Recurring items are consumed continuously: incontinence supplies, catheters, wound care supplies, nutritional formula, and the maintenance contracts on lifts and power equipment. Periodically replaced items are bought, used, and replaced on an interval: wheelchairs and seating, hospital beds and mattresses, patient lifts, shower and commode chairs, communication devices, orthotics and prosthetics, and vehicle modifications. Each kind is carried differently in the schedule, and mixing them, for example listing a one-time ramp as an annual cost or a replaced wheelchair as a one-time purchase, is a common error a reviewer will find.</p>",
+      },
+      {
+        id: "replacement-schedules",
+        heading: "Replacement schedules",
+        bodyHtml:
+          "<p>Every periodically replaced item carries a stated replacement interval and the basis for it. Manufacturer guidance, funding-source replacement criteria, the treating therapist's recommendation, and the item's actual history in the record all inform the interval. Power wheelchairs, manual wheelchairs, cushions, and batteries each have their own cycle; a child's equipment is replaced on growth rather than wear, as described in the <a href=\"/guides/pediatric-life-care-plans-and-transition-to-adulthood\">pediatric guide</a>; a prosthesis has a socket cycle shorter than its component cycle. The schedule then places each replacement in the year it falls within the plan's <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy horizon</a>. Maintenance and repair between replacements are listed as a recurring item, and the plan avoids counting both a repair allowance that assumes the item is kept and a replacement schedule that assumes it is not.</p>",
+      },
+      {
+        id: "vendor-quotes-vs-databases",
+        heading: "Vendor quotes versus databases",
+        bodyHtml:
+          "<p>Equipment and modification are priced from two kinds of source. Vendor and contractor quotes are specific to the item, the configuration, and the market, and they are the preferred source for custom equipment such as seating systems, for vehicle modifications, and for construction work, where the price depends on the home. Recognized pricing databases and manufacturer list prices are appropriate for standardized items and as a check on quotes. The plan states for each item which source was used, records the vendor, contact, date, and any configuration assumptions, and explains any choice between divergent figures. For construction, the planner obtains a contractor's estimate based on the assessment or, where that is not possible, prices the modification from published cost data for the region and says so. The general approach is set out in the <a href=\"/methods/cost-research-methodology\">cost research methodology</a>.</p>",
+      },
+      {
+        id: "vehicle-modification",
+        heading: "Vehicle modification and transportation",
+        bodyHtml:
+          "<p>Transportation is costed as the modification, not the vehicle, unless the record supports a vehicle the person would not otherwise own. Lowered-floor conversions, ramps or lifts, hand controls, transfer seats, and securement systems are priced from mobility dealers, and the conversion is carried on a replacement interval tied to the vehicle's expected life. Where the person cannot drive and family transport is not realistic, the plan prices accessible transportation services instead of, or in addition to, vehicle modification, and it states which assumption it makes.</p>",
+      },
+      {
+        id: "common-errors",
+        heading: "Common errors and how a reviewer finds them",
+        bodyHtml:
+          "<p>The errors that recur in this category are pricing modifications for a home the person is unlikely to stay in without addressing the alternative; carrying a one-time modification as recurring; applying a single replacement interval to items with different cycles; listing maintenance and replacement so that both assume the same item; quoting list price for equipment that is routinely discounted, or a discounted price for custom equipment that is not; and omitting the design, permitting, and installation costs that accompany construction. Each is visible in a work file that records source, date, and basis, which is why the <a href=\"/guides/how-to-rebut-a-life-care-plan\">rebuttal reviewer</a> asks for that file first.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does the plan pay to modify a rented home?",
+        answer:
+          "The plan addresses the person's actual situation. Where the person rents, the plan may price portable equipment and modifications the landlord permits, the differential cost of an accessible unit, or relocation, as the record supports, and it states which assumption it makes.",
+      },
+      {
+        question: "How is a replacement interval chosen?",
+        answer:
+          "From manufacturer guidance, funding-source replacement criteria, the treating therapist's recommendation, and the item's actual history in the record. The plan states the interval and its basis for each item.",
+      },
+      {
+        question: "Should equipment be priced at list or at a discounted rate?",
+        answer:
+          "At the price the person will actually face in their market. For standardized items that is often below list; for custom-configured items a dealer quote is the reliable source. The plan records which was used.",
+      },
+      {
+        question: "Is a home modification a medical item?",
+        answer:
+          "It is a non-medical category supported by a clinical assessment, usually from an occupational or physical therapist or the planner acting within scope. It is included in a life care plan but generally falls outside a Medicare set-aside allocation.",
+      },
+    ],
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "AOTA_OTPF_2020"]),
+    related: [
+      { title: "Life Care Planning", href: "/services/life-care-planning" },
+      { title: "Cost Research Methodology", href: "/methods/cost-research-methodology" },
+      { title: "Attendant Care in Life Care Plans", href: "/guides/attendant-care-in-life-care-plans" },
+      { title: "Amputation Cases", href: "/case-types/amputation" },
     ],
   },
 ];

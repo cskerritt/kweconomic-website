@@ -520,45 +520,15 @@ Doctoral preparation in rehabilitation counseling, rehabilitation science, psych
 
 ## Methodologies
 
-### Transferable Skills Analysis
-Transferable skills analysis (TSA) is a vocational methodology that identifies occupations a person could perform based on skills developed in past work, applied to current medical and functional restrictions and labor market conditions.
+### Life Expectancy in Life Care Planning
+Life expectancy sets the horizon of a life care plan: how many years each recurring item is carried and how many replacement cycles each piece of equipment gets. The planner starts from published population life tables and applies any condition-specific adjustment only when a qualified physician supports it.
 
-When used: TSA is used in earning capacity analysis, return-to-work planning, employability opinions in LTD matters, and post-injury vocational evaluation.
-
-### Labor Market Survey
-A labor market survey (LMS) documents the availability of specific occupations in the claimant's relevant labor market, typically including wage ranges, employer names, and openings.
-
-When used: LMS is used to translate theoretical transferability into actual occupational availability in the claimant's geographic area.
-
-### Worklife Expectancy
-Worklife expectancy is the number of additional years a person of a given age, sex, education, and labor force status is expected to be economically active. Published tables are used to bound future earnings projections.
-
-When used: Worklife expectancy is used in virtually every forensic economic analysis of lost earnings or earning capacity, and in wrongful death matters to project the decedent's expected work years.
+When used: Every life care plan and medical cost projection states the horizon over which costs are projected. The question is contested most often in spinal cord injury, severe brain injury, and cerebral palsy cases, where the defense may argue for a shortened expectancy and the plaintiff for population norms.
 
 ### Present Value Analysis
 Present value analysis reduces a projected stream of future damages to a single lump sum equivalent in today's dollars, accounting for the time value of money and expected growth of the underlying cash flows.
 
-When used: Present value analysis is used to express future lost earnings, lost household services, and future medical/non-medical care in a single lump sum for trial or settlement purposes.
-
-### Hedonic Damages
-Hedonic damages refer to the economic value of loss of enjoyment of life, distinct from economic earnings loss. Methodology and admissibility vary by jurisdiction.
-
-When used: Hedonic damages analyses are offered in jurisdictions that permit them. Many jurisdictions permit generalized loss-of-enjoyment-of-life testimony but exclude dollar quantification.
-
-### Collateral Source Analysis
-Collateral source analysis addresses the effect of insurance, public benefits, or third-party payments on damages, depending on the jurisdiction's collateral source rule.
-
-When used: Collateral source analysis is used where jurisdictional rules permit or require offsets for insurance or benefit payments related to the injury.
-
-### Dictionary of Occupational Titles
-The Dictionary of Occupational Titles (DOT) is a U.S. Department of Labor reference that classifies over 12,000 occupations (U.S. Department of Labor, 1991) by title, code, physical demands, working conditions, and specific vocational preparation (SVP).
-
-When used: DOT remains a core reference in vocational evaluation, Social Security disability determinations, and transferable skills analysis.
-
-### O*NET Analysis
-O*NET OnLine is the U.S. Department of Labor's successor to the DOT (National Center for O*NET Development, n.d.), providing continuously updated information on occupational tasks, skills, knowledge, abilities, work activities, and labor market statistics.
-
-When used: O*NET is used alongside the DOT for current occupational information, particularly for newer occupations or when task-level detail is required.
+When used: Present value analysis is used to express the future medical and non-medical care in a life care plan or medical cost projection as a single lump sum for trial or settlement purposes. The life care planner produces the year-by-year cost stream; the economist discounts it.
 
 ### Life Care Plan Development
 Life care plan development is a structured process that translates treating-team recommendations, peer-reviewed literature, and geographically matched cost data into a comprehensive projection of future medical and non-medical care needs.
@@ -568,54 +538,35 @@ When used: Life care planning is used in catastrophic injury, medical malpractic
 ### Functional Capacity Evaluation
 A functional capacity evaluation (FCE) is a standardized assessment of a person's physical capacity to perform work-related activities, typically conducted by an occupational or physical therapist over one or two days.
 
-When used: FCEs are used to establish return-to-work capacity, permanent restrictions, and as a foundation for vocational opinion on employability.
+When used: In life care planning, an FCE documents what the evaluee can physically do and sustain. The planner uses it to support attendant care hours, the need for adaptive equipment and home modification, and restrictions relevant to workers' compensation plans. It is compared with an IME in FCE vs. IME.
+
+### Cost Research Methodology
+Cost research is the process by which each item in a life care plan receives a unit price that reflects what the care actually costs where the evaluee lives. It combines geographically matched pricing sources, direct provider and vendor quotes, and documentation sufficient for another planner to reproduce the figure.
+
+When used: Every life care plan and medical cost projection rests on cost research. It is scrutinized most closely on high-dollar items: attendant care, residential placement, surgical revisions, and durable equipment with short replacement cycles. It is also the first place a rebuttal reviewer looks.
+
+### Medicare Set-Aside Allocation Methodology
+A Medicare set-aside allocation estimates the portion of a settlement that should be reserved for future injury-related care that Medicare would otherwise cover. The allocation is narrower than a life care plan in scope, priced on a fee-schedule basis, and prepared with Medicare's review process in mind.
+
+When used: An allocation is prepared when a workers' compensation or liability settlement involves a Medicare beneficiary or a person with a reasonable expectation of enrollment and the settlement closes out future medical care. It is compared with a life care plan in life care plan vs. MSA.
 
 ## Guides
 
 - Expert Witness Disclosure: A Practitioner Overview: Pre-trial expert disclosure typically requires a written statement of the expert's identity, opinions, the bases for those opinions, qualifications, prior testimony, and compensation. Content and timing requirements vary by jurisdiction. Missing a disclosure requirement is a common basis for expert exclusion. Attorneys are responsible for confirming the governing framework against primary sources.
-- Economic Damages for Self-Employed Claimants: Self-employment damages analysis reconstructs lost income from tax returns, 1099s, bank records, and business documents, adjusting for business expenses and the distinction between owner compensation and return on capital. Expect disputes about profit versus wage components.
 - Standard of Care Analysis in Medical Litigation: Standard of care analysis establishes whether a healthcare provider's conduct met the accepted standard of practice for the specialty at the time and place of treatment. It is the threshold opinion in medical malpractice litigation and requires a qualified physician expert.
-- Social Security Disability and Vocational Evidence: SSA disability adjudication uses a sequential evaluation process ending with vocational questions at steps 4 and 5. Vocational experts apply Dictionary of Occupational Titles (DOT) terminology and SSA-specific frameworks that differ from civil-litigation vocational analysis.
-- Vocational Rehabilitation Services Explained: Vocational rehabilitation services help individuals with disabilities prepare for, obtain, maintain, or regain employment. State VR agencies provide services under the Rehabilitation Act. In litigation, vocational rehabilitation services can form part of a life care plan or workers' compensation remedy.
-- Loss of Household Services in Damages: Loss of household services quantifies the unpaid work an injured person or decedent would have contributed to the household. It is valued using time-use survey data and local market wage rates for equivalent services such as childcare, home maintenance, meal preparation, and transportation.
-- What Records Does a Vocational Expert Need?: A complete vocational evaluation typically requires medical records, educational records, employment history with wage documentation, any functional capacity evaluation, neuropsychological testing if applicable, and prior vocational testing or deposition transcripts when available.
 - The Collateral Source Rule, Explained: The collateral source rule governs whether insurance, Medicare, Medicaid, or other third-party payments offset a defendant's liability for damages. Some jurisdictions preserve the traditional rule (no offset); others have modified or abrogated it by statute.
 - Expert Testimony Admissibility: Federal vs. State Court: Federal courts apply a reliability-based gatekeeping framework that considers the methodology's testability, peer review, error rate, controlling standards, and general acceptance. State courts vary: some apply a similar reliability framework, others apply a narrower general-acceptance test, and several use distinctive hybrid frameworks. Experts should prepare testimony that satisfies the most demanding of the potentially applicable standards. Attorneys are responsible for confirming the governing framework against primary sources.
-- Hedonic Damages, Explained: Hedonic damages compensate loss of enjoyment of life, distinct from economic losses. Methodology typically draws on value-of-statistical-life literature, but admissibility of quantified hedonic damages varies substantially by jurisdiction. Many courts admit qualitative testimony but exclude dollar quantification.
-- Earning Capacity vs. Lost Earnings: What's the Difference?: Lost earnings are actual wages the claimant did not receive. Lost earning capacity is a vocational concept measuring the reduction in ability to earn, whether or not that capacity was fully realized before injury. Catastrophic cases often need both.
-- What is Transferable Skills Analysis (TSA)?: TSA identifies occupations a person could perform based on skills developed in past work, applied to current medical restrictions and labor market conditions. It is the core methodology underlying most vocational expert opinions.
 - Future Medical Costs in Personal Injury Cases: Future medical costs are typically projected in a life care plan prepared by a CLCP, then reduced to present value by a forensic economist. Methodology combines treating-team recommendations, peer-reviewed duration literature, and geographically matched cost data.
-- How Long Does a Vocational Evaluation Take?: A complete vocational evaluation, from engagement to final report, typically runs 30-60 days depending on records volume, whether in-person evaluation is performed, and reviewer availability. Rush timelines can be accommodated when requested early.
-- Worklife Expectancy: How Economists Project Remaining Work Years: Worklife expectancy is the number of additional years a person of a given age, sex, education, and labor force status is expected to be economically active. Forensic economists use published tables (Skoog-Ciecka-Krueger and predecessors) as the foundation for future earnings projections.
-- When Do You Need an Expert Witness in Your Case?: An expert witness is warranted when the case involves earning capacity, employability, life care planning, forensic economics, or medical standard of care. Courts admit expert testimony where specialized knowledge will help the trier of fact understand evidence or determine a fact in issue. Retain early so the expert can inform discovery and strategy.
-- Vocational Expert Cost and Engagement: What Attorneys Should Expect: Vocational expert engagements are typically billed hourly across four phases: initial review, evaluation, report writing, and testimony. Total cost varies with case complexity, expert credentialing, and whether in-person evaluation and testimony are required. A written engagement letter should itemize hourly rates, retainer, and scope.
-- Vocational Expert Methodology Standards: A Practitioner Guide: Vocational expert testimony must satisfy the governing court's reliability framework: testimony grounded in sufficient facts or data, derived from accepted principles and methods, and reliably applied to the facts. Well-documented transferable skills analysis, labor market survey, and use of accepted references (DOT, O*NET, BLS) routinely meet these standards. Attorneys are responsible for confirming the governing framework against primary sources.
-- How to Hire a Vocational Expert: A Practical Guide for Attorneys: Selecting a vocational expert comes down to credentialing (CRC, CVE, ABVE/D or F), testifying experience in the relevant jurisdiction, case-type specialization, and clear methodology. Early retention matters. Expect a written engagement agreement, a scope that covers evaluation, report, and testimony, and defined deliverable timelines.
-- The RAPEL Method: How Vocational Experts Organize an Earning Capacity Opinion: RAPEL is an acronym used in forensic vocational evaluation to organize the analysis of a person's post-injury work life: Rehabilitation plan, Access to the labor market, Placeability, Earning capacity, and Labor force participation. It does not produce a number by itself. It is a framework that orders the questions an evaluator must answer and ties each answer to documented evidence, so the resulting opinion can be followed and tested by either side.
+- When Do You Need an Expert Witness in Your Case?: An expert witness is warranted when the case involves future medical and non-medical care needs, the cost of that care, causation, or medical standard of care. Courts admit expert testimony where specialized knowledge will help the trier of fact understand evidence or determine a fact in issue. Retain early so the expert can inform discovery and strategy.
 - What is a Life Care Plan?: A life care plan is a dynamic document that projects the future medical and non-medical care needs of an individual with a catastrophic injury or chronic condition, with itemized frequencies and costs across the expected lifespan. Certified life care planners follow published standards (IALCP, IARP) and build plans from treating-team recommendations, peer-reviewed duration literature, and geographically matched cost data.
+- How a Life Care Plan Is Priced: A life care plan engagement is billed on the planner's time, typically against a retainer, and the fee is driven by the volume of records, the complexity of the injury, whether an in-person evaluation is required, and how many treating providers must be consulted. A scoped medical cost projection is the lower-cost alternative when the question is narrower than lifetime care.
+- Life Care Plan vs. Medicare Set-Aside: Purpose, Audience, and Method: A life care plan projects the full cost of injury-related future care for damages. A Medicare set-aside allocation reserves the portion of a settlement that Medicare would otherwise pay for that care. They start from the same record but differ in purpose, audience, scope, pricing, and horizon, and many catastrophic settlements need both.
+- Pediatric Life Care Plans and the Transition to Adulthood: A pediatric life care plan is staged by development rather than written as a single lifetime schedule. Equipment is replaced on growth cycles, education and therapy shift when school-based services end, and the transition around age 21 changes who provides care, where the person lives, and what it costs. A plan that ignores these transitions understates or misstates lifetime care.
+- How to Rebut a Life Care Plan: A life care plan rebuttal tests the opposing plan item by item against the record: whether each item has a medical foundation, whether items duplicate one another, whether frequency and duration are supported, whether the cost sources are documented and geographically appropriate, and whether the life expectancy basis is sound. The findings organize both the rebuttal report and the deposition of the opposing planner.
+- Attendant Care in Life Care Plans: Attendant care is usually the largest category in a catastrophic life care plan. The planner specifies the level of care, the hours across the day and week, the basis for those hours, the agency or private-hire rate in the person's market, how family-provided care is treated, and respite for the caregivers. Each of those choices is tested in a rebuttal, so each is documented.
+- Home Modification and Equipment Costing in Life Care Plans: Home modification and durable equipment are costed differently from recurring care. The planner assesses the home for accessibility, separates one-time items from recurring and periodically replaced ones, documents a replacement schedule for each piece of equipment, and prices from vendor quotes and recognized databases with the source recorded. The result is a schedule the economist can carry year by year.
 
 ## Comparisons
-
-### Forensic Vocational Expert vs. Social Security VE
-Forensic Vocational Expert compared with Social Security Vocational Expert.
-
-When Forensic Vocational Expert applies: Retain a forensic vocational expert for civil litigation, workers' compensation, long-term disability, or family court matters.
-
-When Social Security Vocational Expert applies: Engage a Social Security VE through the SSA ALJ process (HALLEX I-2-6-74) when claimants contest disability determinations.
-
-### ABVE Diplomate vs. CRC
-ABVE Diplomate (ABVE/D) compared with Certified Rehabilitation Counselor (CRC).
-
-When ABVE Diplomate (ABVE/D) applies: Look for ABVE/D when retaining for high-stakes or complex forensic vocational work.
-
-When Certified Rehabilitation Counselor (CRC) applies: Require CRC as the baseline credential for any vocational role, forensic or clinical.
-
-### Lump Sum vs. Present Value in Damages
-Lump Sum compared with Present Value.
-
-When Lump Sum applies: Rarely appropriate as the sole figure for future damages; can be a component of reporting.
-
-When Present Value applies: Standard practice for future damages projections at trial or settlement.
 
 ### Life Care Plan vs. Future Cost Projection
 Life Care Plan compared with Future Medical Cost Projection.
@@ -629,35 +580,14 @@ In-Person Evaluation compared with File Review.
 
 When In-Person Evaluation applies: Prefer in-person evaluation in catastrophic cases, where cognitive or behavioral factors matter, or where the defense has raised consistency concerns.
 
-When File Review applies: File review is appropriate when records are complete and direct observation adds limited value (International Association of Rehabilitation Professionals, n.d.).
-
-### Forensic Economist vs. Accountant
-Forensic Economist compared with Accountant.
-
-When Forensic Economist applies: Retain a forensic economist when personal damages (lost earnings, earning capacity, present value of future care) are at issue.
-
-When Accountant applies: Retain an accountant (often a forensic accountant) when business valuation, financial fraud analysis, or commercial damages are at issue.
+When File Review applies: File review is appropriate when the record is complete, when the engagement is a rebuttal of an opposing plan, or when direct access to the evaluee is not available (International Association of Rehabilitation Professionals, n.d.).
 
 ### Functional Capacity Evaluation (FCE) vs. Independent Medical Examination (IME)
 Functional Capacity Evaluation (FCE) compared with Independent Medical Examination (IME).
 
-When Functional Capacity Evaluation (FCE) applies: Use an FCE when physical work capacity must be quantified for return-to-work or vocational opinion purposes.
+When Functional Capacity Evaluation (FCE) applies: Use an FCE when physical capacity must be quantified to support items in a life care plan such as attendant care hours, home modifications, or the need for adaptive equipment, or to document restrictions in a workers' compensation matter.
 
 When Independent Medical Examination (IME) applies: Use an IME when diagnostic, causation, or prognosis questions need physician-level opinion, often on behalf of the defense.
-
-### CRC vs. LRC: National Certification vs. State License
-Certified Rehabilitation Counselor (CRC) compared with Licensed Rehabilitation Counselor (LRC).
-
-When Certified Rehabilitation Counselor (CRC) applies: Look for CRC certification as a minimum baseline for forensic vocational work in any jurisdiction.
-
-When Licensed Rehabilitation Counselor (LRC) applies: Confirm state licensure when the jurisdiction requires it for practice or testimony.
-
-### Work Capacity Evaluation vs. Functional Capacity Evaluation
-Work Capacity Evaluation compared with Functional Capacity Evaluation.
-
-When Work Capacity Evaluation applies: Use a work capacity evaluation when the target occupation is defined and the question is whether the individual can perform it.
-
-When Functional Capacity Evaluation applies: Use an FCE when general work capacity must be quantified across a range of possible occupations.
 
 ### Plaintiff Expert vs. Defense Expert: Is the Methodology Different?
 Plaintiff Expert compared with Defense Expert.
@@ -673,13 +603,6 @@ When Life Care Plan applies: Use a life care plan to quantify future care costs 
 
 When Medical Chronology applies: Use a medical chronology to summarize the record for internal review, deposition preparation, or to support other experts preparing opinions.
 
-### Forensic Vocational Expert vs. Rehabilitation Counselor
-Forensic Vocational Expert compared with Rehabilitation Counselor.
-
-When Forensic Vocational Expert applies: Retain a forensic vocational expert when earning capacity, employability, or vocational damages are at issue in litigation.
-
-When Rehabilitation Counselor applies: Engage a rehabilitation counselor when the goal is to help an individual return to work or access rehabilitation services outside of litigation.
-
 ### Certified Life Care Planner (CLCP) vs. Case Manager
 Certified Life Care Planner (CLCP) compared with Case Manager.
 
@@ -687,57 +610,60 @@ When Certified Life Care Planner (CLCP) applies: Retain a CLCP when projecting l
 
 When Case Manager applies: Engage a case manager when coordinating active medical care, provider access, or insurance authorizations during the active treatment period.
 
-### CRC vs. CVE: Certified Rehabilitation Counselor vs. Certified Vocational Evaluator
-Certified Rehabilitation Counselor (CRC) compared with Certified Vocational Evaluator (CVE).
+### CLCP vs. CNLCP: Which Life Care Planning Credential?
+Certified Life Care Planner (CLCP) compared with Certified Nurse Life Care Planner (CNLCP).
 
-When Certified Rehabilitation Counselor (CRC) applies: Retain a CRC when the case requires earning capacity opinion, labor market analysis, employability assessment, or expert testimony on vocational issues.
+When Certified Life Care Planner (CLCP) applies: Either credential is appropriate for a life care plan. A CLCP with a rehabilitation or therapy background may be a natural fit where equipment, mobility, and community reintegration dominate the plan.
 
-When Certified Vocational Evaluator (CVE) applies: Retain a CVE when in-depth standardized testing, work-sample evaluation, or situational assessment is needed to characterize aptitudes and work behaviors.
+When Certified Nurse Life Care Planner (CNLCP) applies: A CNLCP may be a natural fit where skilled nursing, medication management, wound or ventilator care, and complex medical oversight dominate, as in many high-level spinal cord injury or birth injury plans.
 
-### Vocational Expert vs. Career Counselor
-Vocational Expert compared with Career Counselor.
+### Life Care Plan vs. Medicare Set-Aside Allocation
+Life Care Plan compared with Medicare Set-Aside (MSA) Allocation.
 
-When Vocational Expert applies: Retain a vocational expert when earning capacity, employability, or labor market questions are contested in litigation.
+When Life Care Plan applies: Prepare a life care plan whenever future care is a significant component of damages in a personal injury, malpractice, or catastrophic injury matter, whether the case is headed to trial or settlement.
 
-When Career Counselor applies: Engage a career counselor when an individual needs help with career choice, job search, or professional transition outside of a litigation context.
+When Medicare Set-Aside (MSA) Allocation applies: Prepare an MSA allocation when a workers' compensation or liability settlement involves a Medicare beneficiary or someone with a reasonable expectation of enrollment and the settlement releases future medical care.
 
 ## Frequently Asked Questions
 
-### What is a vocational expert and what do they do?
-A vocational expert (VE) is a credentialed professional who evaluates an individual's ability to work, earn wages, and sustain employment given their education, training, experience, and any medical restrictions. In litigation, VEs provide opinions on employability, earning capacity, and labor market conditions. KWVRS vocational experts hold credentials such as CRC, CVE, and ABVE/D.
-
-### What types of cases does KWVRS accept?
-KWVRS accepts cases across a wide range of practice areas, including personal injury, workers' compensation, medical malpractice, wrongful death, wrongful termination, long-term disability, and matrimonial/family law. KWVRS accepts engagements from both plaintiff and defense counsel, and opinions are based solely on the evidence.
-
 ### What is a life care plan?
-A life care plan is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It details the cost of all recommended care across the claimant's remaining life expectancy and is typically used to calculate future damages in litigation. KWVRS's certified life care planners (CLCPs) prepare plans that comply with IARP and IALCP standards.
+A life care plan is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It itemizes each need with its frequency, duration, and cost across the person's remaining life expectancy and is typically used to establish future damages in litigation or to fund a settlement. KW Life Care Planning's certified life care planners prepare plans that follow the published standards of practice.
 
-### What is forensic economic analysis?
-Forensic economic analysis quantifies the economic damages resulting from injury or death. This includes lost earnings, lost earning capacity, lost household services, and fringe benefits - all calculated in present value. KWVRS's affiliated forensic economists at kweconomics.com provide these analyses for personal injury, wrongful death, and wrongful termination cases.
+### Who prepares a life care plan?
+Life care plans are prepared by credentialed planners with a clinical background. The two principal credentials are the Certified Life Care Planner (CLCP) and the Certified Nurse Life Care Planner (CNLCP), held by nurses, rehabilitation counselors, therapists, and physicians. Every plan rests on a medical foundation: the treating or evaluating physicians recommend the care, and the planner organizes, projects, and prices it. See CLCP vs. CNLCP for how the credentials differ.
 
-### How is an earning capacity evaluation different from a wage loss calculation?
-Wage loss is a forensic economic calculation - the difference between what someone earned pre-injury and what they now earn or are expected to earn. Earning capacity evaluation is a vocational determination - it establishes what an injured person is vocationally capable of earning, given their transferable skills, labor market conditions, and medical restrictions. Both are typically needed in catastrophic injury cases.
+### What types of cases does KW Life Care Planning accept?
+Plans and cost projections are prepared for personal injury, medical malpractice, birth injury, workers' compensation, and other matters involving traumatic brain injury, spinal cord injury, amputation, burns, and cerebral palsy. Engagements are accepted from both plaintiff and defense counsel and from carriers, and opinions are based solely on the record.
 
-### Are KWVRS experts qualified to testify in federal court?
-Yes. KWVRS experts hold nationally recognized certifications and have provided testimony in state and federal courts throughout the country. KWVRS reports are prepared to meet the admissibility standards applied in state and federal courts, and to withstand cross-examination on methodology, data sources, and professional standards.
+### What is the difference between a life care plan and a medical cost projection?
+A life care plan covers the full scope of injury-related needs, medical and non-medical, across the lifespan, and typically includes an interview and evaluation of the person. A medical cost projection is a narrower, records-based estimate of a defined set of future medical costs, often for a shorter horizon or a single treatment pathway. The comparison page explains when each is appropriate.
 
-### Does KWVRS work in all 50 states?
-Yes. KWVRS accepts cases in all 50 states, the District of Columbia, and U.S. territories. Our experts are familiar with jurisdiction-specific vocational rehabilitation agency frameworks, court rules regarding expert testimony, and local labor market conditions.
+### What is a Medicare set-aside, and is it the same as a life care plan?
+A Medicare set-aside allocation estimates the portion of a settlement to reserve for future injury-related care that Medicare would otherwise pay. It is narrower than a life care plan: it includes only Medicare-covered items and prices them on a fee-schedule basis under Medicare's review guidance. Many catastrophic workers' compensation settlements need both, and the same record review can support each. See life care plan vs. Medicare set-aside.
 
-### How long does it take to receive a vocational evaluation report?
-Report turnaround time depends on the complexity of the case, availability of medical records, and whether an in-person evaluation is required. In most cases, we can deliver an initial evaluation report within 30-45 days of receiving complete case materials. Rush timelines may be available - contact us to discuss your deadline.
+### How are the costs in a life care plan researched?
+Each item is priced for the geographic market where the person lives, using provider and vendor quotes, recognized usual-and-customary charge data, published fee schedules, and manufacturer pricing as appropriate. The source and date of every cost are recorded so the figure can be traced and re-priced at a later update. The cost research methodology page describes the process, and how a life care plan is priced explains what drives the fee for the engagement itself.
 
-### What credentials should I look for in a vocational expert?
-For litigation purposes, look for a Certified Rehabilitation Counselor (CRC), Certified Vocational Evaluator (CVE), or Diplomate of the American Board of Vocational Experts (ABVE/D). These credentials require a graduate degree, supervised experience, and passing a national examination. KWVRS's lead experts hold multiple credentials, including Ph.D.-level academic qualifications.
+### How is life expectancy handled?
+The plan horizon starts from the current published United States life tables for the person's age and sex. The planner departs from the population figure only when a qualified physician has opined that the condition changes it, and documents that basis. Where the parties dispute expectancy, the plan can be presented at each proposed horizon. See life expectancy in life care planning.
 
-### Can KWVRS provide a life care plan and vocational evaluation for the same case?
-Yes, and this can be an efficient approach for catastrophic injury matters. KWVRS's multidisciplinary team can coordinate a vocational evaluation, life care plan, and forensic economic analysis for the same case, ensuring consistency across opinions and reducing the burden on the retaining attorney.
+### Are life care plans admissible in state and federal court?
+Yes, when prepared by a qualified planner following accepted methodology and grounded in physician recommendations and documented cost research. KW Life Care Planning's planners have provided deposition and trial testimony in state and federal courts, and reports are prepared to meet the admissibility frameworks applied in each. Attorneys confirm the governing framework for the specific case.
 
-### What is the difference between a vocational expert and an occupational therapist?
-A vocational expert evaluates labor market factors - what jobs someone can perform, what those jobs pay, and whether the person is competitively employable. An occupational therapist (OT) evaluates functional capacity - what physical and cognitive tasks a person can actually perform. In complex injury cases, both are often needed: the OT establishes functional limits, and the vocational expert translates those limits into labor market consequences.
+### Can KW Life Care Planning review an opposing party's life care plan?
+Yes. A life care plan rebuttal tests each item in the opposing plan for medical foundation, duplication, supported frequency and duration, documented and geographically appropriate pricing, and the life expectancy basis. The review may be records-only or may include an evaluation of the person, depending on access and the needs of the case. How to rebut a life care plan outlines the approach.
 
-### How do I retain KWVRS for a case?
-Contact our office by phone at (201) 343-0700 or via the contact form on this website. A member of our intake team will follow up within one business day to discuss case details, required documentation, and expert availability. We accept cases from plaintiff counsel, defense counsel, insurance carriers, and self-represented claimants.
+### Does KW Life Care Planning work in all 50 states?
+Yes. Plans are prepared for matters in all 50 states, the District of Columbia, and U.S. territories. Cost research is performed in the person's own market, and the planners are familiar with jurisdiction-specific expert disclosure rules and admissibility frameworks.
+
+### How long does it take to receive a life care plan?
+Turnaround depends on the complexity of the injury, the completeness of the medical records, whether an in-person evaluation is required, and how quickly treating providers respond to requests for recommendations. Most plans are delivered within several weeks of receiving complete records and completing the evaluation; a records-based medical cost projection is typically faster. Shorter timelines may be available - contact us to discuss your deadline.
+
+### Should a life care plan be updated before trial?
+Often, yes. A life care plan is a dynamic document. When the person's condition, treatment plan, or living situation has changed, or when significant time has passed since the costs were researched, a plan update refreshes the medical foundation and re-prices each item so the plan reflects current care and current costs.
+
+### How do I retain KW Life Care Planning for a case?
+Contact our office by phone at (201) 343-0700 or via the contact form on this website. A member of our intake team will follow up within one business day to discuss the case, the records needed, and planner availability. We accept cases from plaintiff counsel, defense counsel, and insurance carriers.
 
 ## Geographic Coverage
 

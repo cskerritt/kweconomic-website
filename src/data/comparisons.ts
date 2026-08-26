@@ -26,121 +26,6 @@ export interface Comparison {
 
 export const comparisons: Comparison[] = [
   {
-    slug: "vocational-expert-vs-ssa-ve",
-    title: "Forensic Vocational Expert vs. Social Security VE",
-    dateModified: "2026-04-21",
-    a: {
-      label: "Forensic Vocational Expert",
-      summary: "Retained vocational expert providing opinion testimony in civil or family court litigation on [[/insights/what-is-earning-capacity-evaluation|earning capacity]], employability, and labor market issues.",
-      url: "/services/life-care-planning",
-    },
-    b: {
-      label: "Social Security Vocational Expert",
-      summary: "Vocational expert who testifies at [[/guides/ssa-disability-and-vocational-evidence|SSA disability hearings]], answering hypothetical questions from the Administrative Law Judge under specific SSA rules (20 C.F.R. sec. 404.1560).",
-    },
-    rows: [
-      { dimension: "Tribunal", a: "State or federal court", b: "SSA administrative hearing" },
-      { dimension: "Governing rules", a: "Federal/state rules of evidence", b: "SSA regulations and rulings (HALLEX, POMS)" },
-      { dimension: "Scope", a: "Case-specific, methodology-grounded opinion", b: "Hypothetical-question framework tied to residual functional capacity (RFC)" },
-      { dimension: "Typical credential", a: "CRC/CVE/ABVE", b: "CRC or comparable with SSA roster approval" },
-    ],
-    whenUseA:
-      "Retain a forensic vocational expert for civil litigation, workers' compensation, long-term disability, or family court matters.",
-    whenUseB:
-      "Engage a Social Security VE through the SSA ALJ process (HALLEX I-2-6-74) when claimants contest disability determinations.",
-    overlap:
-      "Many vocational experts perform both roles. The core methodology (Dictionary of Occupational Titles (DOT), O*NET, transferable skills analysis ([[/methods/transferable-skills-analysis|TSA]])) is similar; application to SSA's administrative framework differs from civil litigation.",
-    faqs: [
-      {
-        question: "Can findings from SSA proceedings be used in civil cases?",
-        answer:
-          "SSA determinations can be evidentiary but are not binding in civil litigation. Civil experts must perform an independent analysis.",
-      },
-    ],
-    sources: refsToSources(["CFR_404_1560", "SSA_HALLEX", "SSA_POMS", "CRCC"]),
-    related: [
-      { title: "What Is an Earning Capacity Evaluation?", href: "/insights/what-is-earning-capacity-evaluation", description: "How earning capacity is assessed and quantified." },
-      { title: "Transferable Skills Analysis", href: "/methods/transferable-skills-analysis", description: "Method for identifying occupations that fit residual skills." },
-      { title: "SSA Disability and Vocational Evidence", href: "/guides/ssa-disability-and-vocational-evidence", description: "Vocational evidence in Social Security disability matters." },
-    ],
-  },
-  {
-    slug: "abve-d-vs-crc",
-    title: "ABVE Diplomate vs. CRC",
-    dateModified: "2026-04-21",
-    a: {
-      label: "ABVE Diplomate (ABVE/D)",
-      summary: "Advanced forensic vocational credential focused on expert testimony, [[/guides/earning-capacity-vs-lost-earnings|earning capacity]], and employability in litigation (American Board of Vocational Experts, n.d.).",
-      url: "/credentials/clcp",
-    },
-    b: {
-      label: "Certified Rehabilitation Counselor (CRC)",
-      summary: "National certification in rehabilitation counseling covering assessment, counseling, case management, and vocational opinion (Commission on Rehabilitation Counselor Certification, n.d.).",
-      url: "/credentials/crc",
-    },
-    rows: [
-      { dimension: "Focus", a: "Forensic (litigation)", b: "Rehabilitation counseling (broad)" },
-      { dimension: "Issuer", a: "American Board of Vocational Experts", b: "CRCC" },
-      { dimension: "Prerequisite", a: "Often CRC or equivalent + forensic experience", b: "Master's degree and passing CRC exam" },
-      { dimension: "Typical holder", a: "Senior forensic vocational expert", b: "Rehabilitation counselor with or without forensic focus" },
-    ],
-    whenUseA:
-      "Look for ABVE/D when retaining for high-stakes or complex [[/services/life-care-planning|forensic vocational work]].",
-    whenUseB:
-      "Require CRC as the baseline credential for any vocational role, forensic or clinical.",
-    overlap:
-      "Most ABVE/D holders also hold CRC. The credentials are complementary rather than alternatives.",
-    faqs: [
-      {
-        question: "Is ABVE/D required for federal court testimony?",
-        answer:
-          "Not required; CRC is the more commonly expected baseline. ABVE/D adds forensic-specific credibility.",
-      },
-    ],
-    sources: refsToSources(["ABVE", "CRCC"]),
-    related: [
-      { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
-    ],
-  },
-  {
-    slug: "lump-sum-vs-present-value",
-    title: "Lump Sum vs. Present Value in Damages",
-    dateModified: "2026-04-21",
-    a: {
-      label: "Lump Sum",
-      summary: "Total undiscounted future damages stated as a single number.",
-    },
-    b: {
-      label: "Present Value",
-      summary: "Future damages discounted to today's dollars using appropriate discount and growth rates (Jones & Laughlin Steel Corp. v. Pfeifer, 1983; U.S. Department of the Treasury, n.d.).",
-      url: "/methods/present-value-analysis",
-    },
-    rows: [
-      { dimension: "Time handling", a: "Nominal future dollars", b: "Discounted to today" },
-      { dimension: "Comparability", a: "Not directly comparable across horizons", b: "Directly comparable to settlement offers" },
-      { dimension: "Typical use", a: "Rarely used for future damages alone", b: "Standard for future damages at trial or settlement" },
-    ],
-    whenUseA:
-      "Rarely appropriate as the sole figure for future damages; can be a component of reporting.",
-    whenUseB:
-      "Standard practice for future damages projections at trial or settlement.",
-    overlap:
-      "A [[/services/forensic-economics|forensic economic report]] typically reports both: the underlying nominal stream and the present-value figure.",
-    faqs: [
-      {
-        question: "Is the present value figure equivalent to settlement value?",
-        answer:
-          "Present value is the economist's lump-sum equivalent of future damages. Settlement values incorporate additional factors (liability risk, litigation cost).",
-      },
-    ],
-    sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD"]),
-    related: [
-      { title: "Forensic Economics", href: "/services/forensic-economics", description: "Present-value damages analysis for litigation." },
-      { title: "How Forensic Economists Calculate Damages", href: "/insights/how-forensic-economists-calculate-damages", description: "Methodology behind economic damages calculations." },
-    ],
-  },
-  {
     slug: "life-care-plan-vs-future-cost-projection",
     title: "Life Care Plan vs. Future Cost Projection",
     dateModified: "2026-04-21",
@@ -151,8 +36,8 @@ export const comparisons: Comparison[] = [
     },
     b: {
       label: "Future Medical Cost Projection",
-      summary: "Simpler projection of future medical costs that does not follow full life care planning methodology.",
-      url: "/guides/future-medical-costs-in-personal-injury",
+      summary: "A narrower, [[/services/medical-cost-projection|scoped projection of future medical costs]] for a defined set of needs, prepared without the full life care planning process.",
+      url: "/services/medical-cost-projection",
     },
     rows: [
       { dimension: "Methodology", a: "IALCP/IARP standards, treating-team grounded", b: "Variable; often summary of treating-physician testimony" },
@@ -177,6 +62,7 @@ export const comparisons: Comparison[] = [
     related: [
       { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
       { title: "Certified Life Care Planner (CLCP)", href: "/credentials/clcp", description: "Life care planner certification." },
+      { title: "Future Medical Costs in Personal Injury", href: "/guides/future-medical-costs-in-personal-injury", description: "How future care costs are projected and reduced to present value." },
     ],
   },
   {
@@ -185,25 +71,25 @@ export const comparisons: Comparison[] = [
     dateModified: "2026-04-21",
     a: {
       label: "In-Person Evaluation",
-      summary: "Expert meets with the claimant to interview, observe, and sometimes test, supplementing record review.",
+      summary: "The life care planner meets with the evaluee, typically in the home, to interview, observe function and the care environment, and confirm what the records describe.",
       url: "/services/life-care-planning",
     },
     b: {
       label: "File Review",
-      summary: "Expert performs [[/guides/what-records-does-vocational-expert-need|records-only review]], typically used when evaluation is impractical or when the record is sufficient.",
+      summary: "The planner works from the medical record, deposition testimony, and provider input alone, typically for a [[/services/life-care-plan-rebuttal|rebuttal]] or when access to the evaluee is not available.",
     },
     rows: [
-      { dimension: "Data source", a: "Records + direct observation + testing", b: "Records only" },
-      { dimension: "Depth", a: "Typically deeper; detects inconsistencies", b: "Limited to what records show" },
-      { dimension: "Cost and time", a: "Higher, requires scheduling and travel", b: "Lower, faster" },
-      { dimension: "Typical use", a: "Catastrophic or contested cases", b: "Damages analysis when in-person not required" },
+      { dimension: "Data source", a: "Records + interview + home and functional observation", b: "Records, depositions, and provider correspondence only" },
+      { dimension: "Depth", a: "Confirms current function, equipment in use, caregiver burden, home barriers", b: "Limited to what the record documents" },
+      { dimension: "Cost and time", a: "Higher; requires scheduling and travel", b: "Lower; faster" },
+      { dimension: "Typical use", a: "Plaintiff-retained plans, catastrophic and pediatric cases", b: "Defense rebuttal, records-only file review, plan updates when the evaluee is unavailable" },
     ],
     whenUseA:
       "Prefer in-person evaluation in catastrophic cases, where cognitive or behavioral factors matter, or where the defense has raised consistency concerns.",
     whenUseB:
-      "File review is appropriate when records are complete and direct observation adds limited value (International Association of Rehabilitation Professionals, n.d.).",
+      "File review is appropriate when the record is complete, when the engagement is a rebuttal of an opposing plan, or when direct access to the evaluee is not available (International Association of Rehabilitation Professionals, n.d.).",
     overlap:
-      "The underlying methodology (transferable skills analysis ([[/methods/transferable-skills-analysis|TSA]]), labor market survey ([[/methods/labor-market-survey|LMS]]), records review) is the same. In-person adds clinical observation and testing.",
+      "The underlying [[/methods/life-care-plan-development|methodology]] is the same: records review, treating-team input, published clinical guidance, and [[/methods/cost-research-methodology|documented cost research]]. The in-person evaluation adds direct observation of function, the home, and the care actually being provided, which is often where a records-only plan and the lived situation diverge.",
     faqs: [
       {
         question: "Will courts give less weight to a file-review opinion?",
@@ -213,49 +99,9 @@ export const comparisons: Comparison[] = [
     ],
     sources: refsToSources(["FRE_702", "DAUBERT", "IARP"]),
     related: [
-      { title: "Transferable Skills Analysis", href: "/methods/transferable-skills-analysis", description: "Method for identifying occupations that fit residual skills." },
-      { title: "Labor Market Survey", href: "/methods/labor-market-survey", description: "Surveying local labor markets for occupational availability." },
-      { title: "What Records a Vocational Expert Needs", href: "/guides/what-records-does-vocational-expert-need", description: "Records a vocational expert reviews." },
-    ],
-  },
-  {
-    slug: "forensic-economist-vs-accountant",
-    title: "Forensic Economist vs. Accountant",
-    dateModified: "2026-04-21",
-    a: {
-      label: "Forensic Economist",
-      summary: "A credentialed economist who quantifies damages ([[/guides/earning-capacity-vs-lost-earnings|lost earnings, earning capacity]], future care present value) for litigation.",
-      url: "/services/forensic-economics",
-    },
-    b: {
-      label: "Accountant",
-      summary: "A CPA or similar professional who handles financial reporting, tax, and audit; forensic accountants focus on financial investigations and business valuations.",
-    },
-    rows: [
-      { dimension: "Primary purpose", a: "Personal/household damages projections", b: "Financial reporting, tax, business valuation" },
-      { dimension: "Credential", a: "Ph.D. or Master's + NAFE/AAEFE membership", b: "CPA, CFE for forensic accountants" },
-      { dimension: "Typical output", a: "Present-value damages report", b: "Audit report, valuation report, tax opinion" },
-      { dimension: "Typical case use", a: "Personal injury, wrongful death, employment", b: "Commercial litigation, business disputes" },
-      { dimension: "Data sources", a: "BLS, Census, Treasury, worklife tables (Skoog et al., 2011; U.S. Bureau of Labor Statistics, n.d.; U.S. Census Bureau, n.d.)", b: "Company financials, industry comparables" },
-    ],
-    whenUseA:
-      "Retain a forensic economist when personal damages (lost earnings, earning capacity, [[/methods/present-value-analysis|present value of future care]]) are at issue.",
-    whenUseB:
-      "Retain an accountant (often a forensic accountant) when business valuation, financial fraud analysis, or commercial damages are at issue.",
-    overlap:
-      "Both analyze financial data. Forensic economists focus on individual damages; forensic accountants focus on entity-level analyses and financial investigations.",
-    faqs: [
-      {
-        question: "Can the same professional do both?",
-        answer:
-          "Some practitioners hold both credentials. Most cases benefit from subject-matter-specific experts, with a forensic economist for personal damages and a forensic accountant for business issues.",
-      },
-    ],
-    sources: refsToSources(["SKOOG_CIECKA_KRUEGER_2011", "BLS_OEWS", "CENSUS_ACS"]),
-    related: [
-      { title: "Present Value Analysis", href: "/methods/present-value-analysis", description: "Discounting future losses to present value." },
-      { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Worklife Expectancy", href: "/methods/worklife-expectancy", description: "Estimating remaining years of labor force participation." },
+      { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
+      { title: "Life Care Plan Rebuttal", href: "/services/life-care-plan-rebuttal", description: "Records-based review of an opposing life care plan." },
+      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan", description: "What a rebuttal reviewer tests in an opposing plan." },
     ],
   },
   {
@@ -279,11 +125,11 @@ export const comparisons: Comparison[] = [
       { dimension: "Typical use", a: "Establish work capacity restrictions", b: "Establish diagnosis, causation, prognosis" },
     ],
     whenUseA:
-      "Use an FCE when physical work capacity must be quantified for [[/services/life-care-planning|return-to-work]] or [[/insights/what-is-earning-capacity-evaluation|vocational opinion purposes]].",
+      "Use an FCE when physical capacity must be quantified to support items in a [[/services/life-care-planning|life care plan]] such as attendant care hours, home modifications, or the need for adaptive equipment, or to document restrictions in a [[/case-types/workers-compensation|workers' compensation]] matter.",
     whenUseB:
       "Use an IME when diagnostic, causation, or prognosis questions need physician-level opinion, often on behalf of the defense.",
     overlap:
-      "Both examine the claimant. They answer different questions: FCE quantifies physical capacity; IME addresses medical questions. In catastrophic cases, both are often performed. KWVRS conducts IMEs for New York and New Jersey matters only.",
+      "Both examine the claimant. They answer different questions: FCE quantifies physical capacity; IME addresses medical questions. In catastrophic cases, both are often performed, and the life care planner may rely on either as part of the medical foundation for the plan.",
     faqs: [
       {
         question: "Can an IME include functional testing?",
@@ -293,87 +139,9 @@ export const comparisons: Comparison[] = [
     ],
     sources: refsToSources(["GENOVESE_GALPER_2009", "AMA_GUIDES_IMPAIRMENT"]),
     related: [
-      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
-      { title: "What Is an Earning Capacity Evaluation?", href: "/insights/what-is-earning-capacity-evaluation", description: "How earning capacity is assessed and quantified." },
-    ],
-  },
-  {
-    slug: "crc-vs-lrc",
-    title: "CRC vs. LRC: National Certification vs. State License",
-    dateModified: "2026-04-21",
-    a: {
-      label: "Certified Rehabilitation Counselor (CRC)",
-      summary: "National certification from CRCC indicating master's-level training and passing the national CRC examination (Commission on Rehabilitation Counselor Certification, n.d.).",
-      url: "/credentials/crc",
-    },
-    b: {
-      label: "Licensed Rehabilitation Counselor (LRC)",
-      summary: "State license granting authority to practice rehabilitation counseling independently within the state.",
-      url: "/credentials/crc",
-    },
-    rows: [
-      { dimension: "Type", a: "National certification", b: "State license" },
-      { dimension: "Issuer", a: "CRCC (national)", b: "State licensing board" },
-      { dimension: "Geographic scope", a: "National portability", b: "Limited to licensing state" },
-      { dimension: "Reciprocity", a: "Recognized across states", b: "Varies by state; limited reciprocity in many states" },
-      { dimension: "Typical requirement", a: "Master's degree + CRC exam", b: "Master's + supervised hours + state exam" },
-    ],
-    whenUseA:
-      "Look for CRC certification as a minimum baseline for [[/services/life-care-planning|forensic vocational work in any jurisdiction]].",
-    whenUseB:
-      "Confirm state licensure when the jurisdiction requires it for practice or testimony.",
-    overlap:
-      "Most practicing rehabilitation counselors hold both, since licensure is required in many states to practice. Not every CRC is licensed; not every licensee is CRC-certified.",
-    faqs: [
-      {
-        question: "Is the CRC sufficient if I am not licensed in the state?",
-        answer:
-          "It depends on the jurisdiction. Some states require state licensure to offer opinion testimony in state court; others accept national certification for limited forensic purposes.",
-      },
-    ],
-    sources: refsToSources(["CRCC"]),
-    related: [
-      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
-      { title: "Certified Rehabilitation Counselor (CRC)", href: "/credentials/crc", description: "National rehabilitation counseling certification." },
-      { title: "Licensed Rehabilitation Counselor (LRC)", href: "/credentials/crc", description: "State rehabilitation counseling license." },
-    ],
-  },
-  {
-    slug: "work-capacity-evaluation-vs-fce",
-    title: "Work Capacity Evaluation vs. Functional Capacity Evaluation",
-    dateModified: "2026-04-21",
-    a: {
-      label: "Work Capacity Evaluation",
-      summary: "A job-specific assessment comparing an individual's abilities to the demands of a specific occupation or position.",
-    },
-    b: {
-      label: "Functional Capacity Evaluation",
-      summary: "A standardized assessment of the individual's general physical work capacities expressed in [[/methods/dictionary-of-occupational-titles|DOT terminology]] (U.S. Department of Labor, 1991).",
-      url: "/methods/functional-capacity-evaluation",
-    },
-    rows: [
-      { dimension: "Scope", a: "Job- or occupation-specific", b: "General work capacity" },
-      { dimension: "Output", a: "Can / cannot perform the target job", b: "Strength, tolerance, and demand profile" },
-      { dimension: "Typical use", a: "Return-to-work decisions", b: "Vocational opinion foundation, Americans with Disabilities Act (ADA) analyses, earning capacity (Americans with Disabilities Act of 1990)" },
-    ],
-    whenUseA:
-      "Use a work capacity evaluation when the target occupation is defined and the question is whether the individual can perform it.",
-    whenUseB:
-      "Use an FCE when general work capacity must be quantified across a range of possible occupations.",
-    overlap:
-      "Both involve physical testing. Work capacity evaluations often use FCE-style protocols customized to the target job's demands.",
-    faqs: [
-      {
-        question: "Which is more useful in litigation?",
-        answer:
-          "Depends on the question. FCE is generally more versatile for vocational and earning capacity opinions; work capacity evaluation is useful when a specific job is the issue.",
-      },
-    ],
-    sources: refsToSources(["DOT", "ADA_1990"]),
-    related: [
-      { title: "Dictionary of Occupational Titles", href: "/methods/dictionary-of-occupational-titles", description: "Occupational classification and physical-demand terminology." },
-      { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
+      { title: "Functional Capacity Evaluation", href: "/methods/functional-capacity-evaluation", description: "How an FCE is administered and reported." },
+      { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
+      { title: "Workers' Compensation Life Care Plans", href: "/services/workers-compensation-lcp", description: "Plans prepared for workers' compensation settlement and reserving." },
     ],
   },
   {
@@ -382,41 +150,41 @@ export const comparisons: Comparison[] = [
     dateModified: "2026-04-21",
     a: {
       label: "Plaintiff Expert",
-      summary: "A vocational, [[/services/life-care-planning|life care planning]], or [[/services/forensic-economics|economic expert]] retained by the plaintiff.",
+      summary: "A [[/services/life-care-planning|life care planner]] or other damages expert retained by the injured party.",
     },
     b: {
       label: "Defense Expert",
-      summary: "A vocational, life care planning, or economic expert retained by the defense.",
+      summary: "A life care planner or other damages expert retained by the defendant or carrier, often to prepare a [[/services/life-care-plan-rebuttal|rebuttal plan]].",
     },
     rows: [
       { dimension: "Methodology", a: "Same accepted methodology", b: "Same accepted methodology" },
-      { dimension: "Credentials", a: "CRC, CVE, ABVE, CLCP, Ph.D. as applicable", b: "Same" },
-      { dimension: "Standards", a: "CRCC/IARP/IALCP ethics + scope", b: "Same" },
-      { dimension: "Typical disagreement source", a: "Input assumptions, record weighting", b: "Same" },
+      { dimension: "Credentials", a: "CLCP, CNLCP, RN, MD, PhD as applicable", b: "Same" },
+      { dimension: "Standards", a: "IALCP Standards of Practice; AANLCP scope for nurse planners", b: "Same" },
+      { dimension: "Typical disagreement source", a: "Medical foundation, frequency and duration, unit cost source, life expectancy", b: "Same" },
     ],
     whenUseA:
       "Retain when representing an injured claimant or a plaintiff in litigation.",
     whenUseB:
       "Retain when representing a defendant or insurer.",
     overlap:
-      "The methodology, standards, and credentials are the same on both sides (Commission on Rehabilitation Counselor Certification, 2023). KWVRS accepts engagements from both plaintiff and defense and applies the same objective methodology regardless of retaining party (Fed. R. Evid. 702).",
+      "The methodology, standards, and credentials are the same on both sides (International Academy of Life Care Planners, 2022). KW Life Care Planning accepts engagements from both plaintiff and defense and applies the same methodology regardless of retaining party: every item traces to a medical foundation, a stated frequency and duration, and a documented cost source.",
     faqs: [
       {
         question: "Should I avoid an expert who has primarily worked for the other side?",
         answer:
-          "Not categorically. An expert with balanced experience on both sides is often more credible under cross-examination. KWVRS retains a balanced caseload by policy.",
+          "Not categorically. An expert with balanced experience on both sides is often more credible under cross-examination. KW Life Care Planning maintains a balanced plaintiff and defense caseload by policy.",
       },
       {
         question: "Do plaintiff and defense experts always disagree?",
         answer:
-          "No. Experts frequently agree on baseline facts and disagree on specific assumptions (worklife, discount rate, severity adjustments). Transparency on assumptions is the standard of practice.",
+          "No. Opposing life care planners frequently agree on the diagnosis and most categories of need and disagree on specific inputs: whether a given item has a physician recommendation, how often it is needed, which cost source applies, and what life expectancy governs. Transparency on those inputs is the standard of practice.",
       },
     ],
-    sources: refsToSources(["CRCC_ETHICS", "FRE_702", "IARP"]),
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "FRE_702", "IARP"]),
     related: [
       { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
-      { title: "Forensic Economics", href: "/services/forensic-economics", description: "Present-value damages analysis for litigation." },
-      { title: "Worklife Expectancy", href: "/methods/worklife-expectancy", description: "Estimating remaining years of labor force participation." },
+      { title: "Life Care Plan Rebuttal", href: "/services/life-care-plan-rebuttal", description: "Review and rebuttal of an opposing life care plan." },
+      { title: "Life Expectancy in Life Care Planning", href: "/methods/life-expectancy-in-life-care-planning", description: "How the plan horizon is set and presented." },
       { title: "Present Value Analysis", href: "/methods/present-value-analysis", description: "Discounting future losses to present value." },
     ],
   },
@@ -457,45 +225,6 @@ export const comparisons: Comparison[] = [
       { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
       { title: "Life Expectancy Lookup", href: "/tools/life-expectancy", description: "Look up life expectancy by age." },
       { title: "Certified Life Care Planner (CLCP)", href: "/credentials/clcp", description: "Life care planner certification." },
-    ],
-  },
-  {
-    slug: "vocational-expert-vs-rehabilitation-counselor",
-    title: "Forensic Vocational Expert vs. Rehabilitation Counselor",
-    dateModified: "2026-04-20",
-    a: {
-      label: "Forensic Vocational Expert",
-      summary: "A credentialed professional who provides opinion testimony on earning capacity, employability, and labor market issues for litigation.",
-      url: "/services/life-care-planning",
-    },
-    b: {
-      label: "Rehabilitation Counselor",
-      summary: "A CRC-credentialed professional who provides rehabilitation counseling, case management, and placement services to individuals with disabilities (Commission on Rehabilitation Counselor Certification, n.d.).",
-    },
-    rows: [
-      { dimension: "Primary purpose", a: "Forensic opinion for litigation", b: "Rehabilitation services for clients" },
-      { dimension: "Typical credential", a: "CRC + forensic experience (ABVE/D or F)", b: "CRC" },
-      { dimension: "Output", a: "Expert report, deposition, trial testimony", b: "Service plan, ongoing counseling" },
-      { dimension: "Independence", a: "Independent of either party's narrative", b: "Client-advocating" },
-    ],
-    whenUseA:
-      "Retain a forensic vocational expert when [[/guides/earning-capacity-vs-lost-earnings|earning capacity, employability, or vocational damages]] are at issue in litigation.",
-    whenUseB:
-      "Engage a rehabilitation counselor when the goal is to help an individual return to work or access rehabilitation services outside of litigation.",
-    overlap:
-      "Both hold [[/credentials/crc|CRC credentials]]. The distinction is forensic role and independence. Many experts transition between both roles across careers.",
-    faqs: [
-      {
-        question: "Can a rehabilitation counselor serve as a forensic expert?",
-        answer:
-          "A CRC with forensic training and experience can serve as a forensic expert (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Fed. R. Evid. 702). Not every CRC has forensic experience - ask about prior expert engagements, prior testimony, and admissibility history.",
-      },
-    ],
-    sources: refsToSources(["DAUBERT", "FRE_702", "CRCC", "ABVE"]),
-    related: [
-      { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Certified Rehabilitation Counselor (CRC)", href: "/credentials/crc", description: "National rehabilitation counseling certification." },
-      { title: "How to Hire a Vocational Expert", href: "/guides/how-to-hire-vocational-expert", description: "Considerations when retaining a vocational expert." },
     ],
   },
   {
@@ -545,88 +274,107 @@ export const comparisons: Comparison[] = [
     ],
   },
   {
-    slug: "crc-vs-cve",
-    title: "CRC vs. CVE: Certified Rehabilitation Counselor vs. Certified Vocational Evaluator",
-    dateModified: "2026-04-20",
+    slug: "clcp-vs-cnlcp",
+    title: "CLCP vs. CNLCP: Which Life Care Planning Credential?",
+    dateModified: "2026-08-26",
     a: {
-      label: "Certified Rehabilitation Counselor (CRC)",
-      summary: "Broad rehabilitation counseling credential issued by CRCC covering assessment, counseling, case management, and vocational opinion.",
-      url: "/credentials/crc",
+      label: "Certified Life Care Planner (CLCP)",
+      summary: "A multidisciplinary credential open to nurses, rehabilitation counselors, therapists, physicians, and other qualifying clinicians who complete approved training and pass the certification examination (International Commission on Health Care Certification, n.d.).",
+      url: "/credentials/clcp",
     },
     b: {
-      label: "Certified Vocational Evaluator (CVE)",
-      summary: "Specialized vocational evaluation credential historically issued by the now-defunct CCWAVES, focused on standardized testing, work samples, and situational assessment (Commission on Rehabilitation Counselor Certification, n.d.).",
-      url: "/credentials/crc",
+      label: "Certified Nurse Life Care Planner (CNLCP)",
+      summary: "A nursing-specific credential for registered nurses who practice life care planning through the nursing process, administered by the CNLCP Certification Board and affiliated with the American Association of Nurse Life Care Planners (American Association of Nurse Life Care Planners, n.d.).",
+      url: "/credentials/cnlcp",
     },
     rows: [
-      { dimension: "Issuer", a: "CRCC", b: "CCWAVES (now defunct)" },
-      { dimension: "Scope", a: "Counseling + vocational opinion + case management", b: "Vocational evaluation, emphasizing standardized testing" },
-      { dimension: "Typical use", a: "Forensic earning capacity, employability, expert testimony", b: "In-depth vocational assessment, often alongside CRC" },
-      { dimension: "Prerequisites", a: "Master's in rehabilitation counseling", b: "Master's in a relevant field + supervised eval experience" },
-      { dimension: "Renewal", a: "Every 5 years with CE", b: "Historically renewed per CCWAVES requirements" },
+      { dimension: "Eligible base license", a: "RN, CRC, OT, PT, MD, and other qualifying clinical credentials", b: "Registered nurse only" },
+      { dimension: "Issuing body", a: "ICHCC", b: "CNLCP Certification Board (affiliated with AANLCP)" },
+      { dimension: "Practice framework", a: "IALCP Standards of Practice", b: "Nursing process plus AANLCP scope and standards; IALCP standards are also widely followed" },
+      { dimension: "Methodology", a: "Same: records, treating-team foundation, frequency and duration, documented cost research", b: "Same" },
+      { dimension: "Typical strength", a: "Breadth of clinical backgrounds on a planning team", b: "Nursing assessment, medication and skilled-care detail" },
+      { dimension: "Litigation role", a: "Expert witness", b: "Expert witness" },
     ],
     whenUseA:
-      "Retain a CRC when the case requires [[/guides/earning-capacity-vs-lost-earnings|earning capacity opinion]], labor market analysis, employability assessment, or expert testimony on vocational issues.",
+      "Either credential is appropriate for a [[/services/life-care-planning|life care plan]]. A CLCP with a rehabilitation or therapy background may be a natural fit where equipment, mobility, and community reintegration dominate the plan.",
     whenUseB:
-      "Retain a CVE when in-depth [[/services/life-care-planning|standardized testing, work-sample evaluation, or situational assessment]] is needed to characterize aptitudes and work behaviors.",
+      "A CNLCP may be a natural fit where skilled nursing, medication management, wound or ventilator care, and complex medical oversight dominate, as in many [[/case-types/spinal-cord-injury|high-level spinal cord injury]] or [[/case-types/birth-injury|birth injury]] plans.",
     overlap:
-      "Many vocational experts hold both CRC and CVE credentials. The credentials are complementary: CRC provides the breadth of rehabilitation counseling, CVE adds depth in vocational evaluation methodology.",
+      "Both credentials require a clinical license, approved coursework, and an examination, and both planners follow the same core [[/methods/life-care-plan-development|methodology]]. Many planners hold both. Courts qualify experts on training and experience rather than on which of the two letters follows the name, so the better question is whether the planner's clinical background matches the evaluee's needs.",
     faqs: [
       {
-        question: "Is one credential required for forensic vocational testimony?",
+        question: "Is one credential more admissible than the other?",
         answer:
-          "Neither is categorically required. CRC is among the most widely recognized vocational credentials for forensic testimony; CVE is an accepted alternative or complement when testing is central to the opinion.",
+          "No. Admissibility turns on the planner's qualifications, methodology, and foundation, not on which certifying body issued the credential. Both are recognized in the field.",
       },
       {
-        question: "Can a single expert hold both?",
+        question: "Can a physician be a life care planner?",
         answer:
-          "Yes, and this is common among experienced forensic vocational experts.",
+          "Yes. Physicians are eligible for the CLCP, and a physician planner can supply parts of the medical foundation directly. KW Life Care Planning pairs physician review with nurse and rehabilitation planners on complex cases.",
+      },
+      {
+        question: "Does the credential change how the plan is priced?",
+        answer:
+          "No. Cost research follows the same standards regardless of credential: geographically matched sources, documented quotes, and a stated basis for each unit cost.",
       },
     ],
-    sources: refsToSources(["CRCC", "CVE_STATUS"]),
+    sources: refsToSources(["ICHCC_CLCP", "AANLCP_SCOPE", "IARP_IALCP_STANDARDS"]),
     related: [
-      { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
+      { title: "CLCP Certification", href: "/credentials/clcp", description: "Eligibility and scope of the Certified Life Care Planner credential." },
+      { title: "CNLCP Certification", href: "/credentials/cnlcp", description: "The nurse life care planner credential." },
+      { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
     ],
   },
   {
-    slug: "vocational-expert-vs-career-counselor",
-    title: "Vocational Expert vs. Career Counselor",
-    dateModified: "2026-04-20",
+    slug: "life-care-plan-vs-msa",
+    title: "Life Care Plan vs. Medicare Set-Aside Allocation",
+    dateModified: "2026-08-26",
     a: {
-      label: "Vocational Expert",
-      summary: "A credentialed forensic professional who opines on earning capacity, employability, and labor market availability for litigation.",
+      label: "Life Care Plan",
+      summary: "A comprehensive projection of all injury-related future medical and non-medical needs and their cost across the [[/methods/life-expectancy-in-life-care-planning|expected lifespan]], prepared for litigation, mediation, or settlement (International Academy of Life Care Planners, 2022).",
       url: "/services/life-care-planning",
     },
     b: {
-      label: "Career Counselor",
-      summary: "A professional who advises individuals on career choice, job search, and professional development.",
+      label: "Medicare Set-Aside (MSA) Allocation",
+      summary: "An estimate of the portion of a settlement to reserve for future injury-related care that Medicare would otherwise pay, prepared under [[/methods/msa-allocation-methodology|Medicare's review guidance]] (Centers for Medicare & Medicaid Services, 2026).",
+      url: "/services/medicare-set-aside",
     },
     rows: [
-      { dimension: "Primary purpose", a: "Forensic opinion for litigation", b: "Client-directed career guidance" },
-      { dimension: "Output", a: "Written report + expert testimony", b: "Career plan and coaching" },
-      { dimension: "Methodology basis", a: "transferable skills analysis (TSA), labor market survey (LMS), Dictionary of Occupational Titles (DOT)/O*NET, functional capacity evaluation (FCE) integration (U.S. Department of Labor, 1991; National Center for O*NET Development, n.d.)", b: "Interest inventories, goal setting, job search" },
-      { dimension: "Typical credential", a: "CRC, CVE, ABVE", b: "NCC, GCDF, career coach certifications" },
-      { dimension: "Audience", a: "Retaining attorney and court", b: "Individual client" },
+      { dimension: "Purpose", a: "Quantify the full cost of future care as damages", b: "Protect Medicare's interest when a settlement closes future medical" },
+      { dimension: "Audience", a: "Trier of fact, mediator, adjuster", b: "Settling parties, CMS reviewer, professional administrator" },
+      { dimension: "Scope", a: "All injury-related needs, medical and non-medical", b: "Medicare-covered, injury-related items only" },
+      { dimension: "Pricing basis", a: "Cost of care in the evaluee's market, documented per item", b: "Fee schedule or usual-and-customary per Medicare guidance" },
+      { dimension: "Horizon", a: "Population life expectancy unless a physician adjusts it", b: "Life expectancy or an underwriter's rated age" },
+      { dimension: "Typical size", a: "Larger", b: "Smaller; a subset of the plan" },
     ],
     whenUseA:
-      "Retain a vocational expert when [[/guides/earning-capacity-vs-lost-earnings|earning capacity, employability, or labor market questions]] are contested in litigation.",
+      "Prepare a life care plan whenever future care is a significant component of damages in a [[/case-types/personal-injury|personal injury]], malpractice, or catastrophic injury matter, whether the case is headed to trial or settlement.",
     whenUseB:
-      "Engage a career counselor when an individual needs help with career choice, job search, or professional transition outside of a litigation context.",
+      "Prepare an MSA allocation when a [[/case-types/workers-compensation|workers' compensation]] or liability settlement involves a Medicare beneficiary or someone with a reasonable expectation of enrollment and the settlement releases future medical care.",
     overlap:
-      "Both involve labor market knowledge and assessment. The distinction is audience and purpose: forensic opinion (vocational expert) versus personal career guidance (career counselor).",
+      "Both start from the same medical record and the same treating-team recommendations, and the same planner can prepare both. The allocation is best understood as a carve-out from the plan: the subset of items Medicare would cover, priced the way Medicare's guidance expects. Many catastrophic workers' compensation cases need both, and preparing them from a single record review keeps the two documents consistent.",
     faqs: [
       {
-        question: "Can a career counselor testify as a vocational expert?",
+        question: "Can the MSA simply be the life care plan total?",
         answer:
-          "Without forensic credentials and methodology (TSA, LMS, accepted references), a career counselor is unlikely to be qualified or persuasive as a forensic vocational expert (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Fed. R. Evid. 702).",
+          "No. The plan includes care Medicare does not cover and prices items at market cost rather than fee schedule. Using the plan total as the set-aside overstates the reserve and does not follow Medicare's guidance.",
+      },
+      {
+        question: "Does every settlement with a Medicare beneficiary need an MSA?",
+        answer:
+          "Medicare's interests must be considered whenever future medical care is released. Whether a formal allocation is prepared, and whether it is submitted for review, depends on the settlement amount, the beneficiary's status, and counsel's judgment.",
+      },
+      {
+        question: "Which comes first?",
+        answer:
+          "Usually the life care plan, because it establishes the complete inventory of future needs. The allocation is then derived from that inventory by removing non-covered and unrelated items and re-pricing what remains.",
       },
     ],
-    sources: refsToSources(["DAUBERT", "FRE_702", "DOT", "ONET", "CRCC"]),
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "CMS_WCMSA_GUIDE", "CMS_WCMSA"]),
     related: [
-      { title: "Transferable Skills Analysis", href: "/methods/transferable-skills-analysis", description: "Method for identifying occupations that fit residual skills." },
-      { title: "Labor Market Survey", href: "/methods/labor-market-survey", description: "Surveying local labor markets for occupational availability." },
-      { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
+      { title: "Medicare Set-Aside Allocations", href: "/services/medicare-set-aside", description: "MSA allocation service for settling parties." },
+      { title: "MSA Allocation Methodology", href: "/methods/msa-allocation-methodology", description: "How an allocation is built and priced." },
+      { title: "Life Care Plan vs. Medicare Set-Aside (guide)", href: "/guides/life-care-plan-vs-medicare-set-aside", description: "Longer treatment of purpose, audience, and when both are needed." },
     ],
   },
 ];

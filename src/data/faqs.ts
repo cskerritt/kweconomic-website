@@ -12,71 +12,76 @@ import { refsToSources } from "./references";
 // sources (refsToSources) are surfaced as a consolidated References block on the page.
 export const faqs: Faq[] = [
   {
-    question: "What is a vocational expert and what do they do?",
-    sources: refsToSources(["BLS_OOH", "ONET", "CRCC", "CVE_STATUS", "ABVE"]),
-    answer:
-      "A [[/services/life-care-planning|vocational expert (VE)]] is a credentialed professional who evaluates an individual's ability to work, earn wages, and sustain employment given their education, training, experience, and any medical restrictions. In litigation, VEs provide opinions on employability, [[/insights/what-is-earning-capacity-evaluation|earning capacity]], and [[/guides/what-is-transferable-skills-analysis|labor market conditions]]. KWVRS vocational experts hold [[/credentials|credentials such as CRC, CVE, and ABVE/D]].",
-  },
-  {
-    question: "What types of cases does KWVRS accept?",
-    answer:
-      "KWVRS accepts cases across a wide range of practice areas, including [[/insights/role-of-vocational-expert-personal-injury|personal injury]], workers' compensation, [[/services/life-care-planning|medical malpractice]], wrongful death, wrongful termination, [[/guides/ssa-disability-and-vocational-evidence|long-term disability]], and [[/services/life-care-planning|matrimonial/family law]]. KWVRS accepts engagements from both plaintiff and defense counsel, and opinions are based solely on the evidence.",
-  },
-  {
     question: "What is a life care plan?",
     sources: refsToSources(["IARP_IALCP_STANDARDS", "ICHCC_CLCP", "NCHS_LIFE_TABLES"]),
     answer:
-      "A [[/services/life-care-planning|life care plan]] is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It details the cost of all recommended care across the claimant's [[/tools/life-expectancy|remaining life expectancy]] and is typically used to calculate future damages in litigation. KWVRS's [[/knowledge/guide-to-life-care-planning|certified life care planners (CLCPs)]] prepare plans that comply with IARP and IALCP standards.",
+      "A [[/services/life-care-planning|life care plan]] is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It itemizes each need with its frequency, duration, and cost across the person's [[/tools/life-expectancy|remaining life expectancy]] and is typically used to establish future damages in litigation or to fund a settlement. KW Life Care Planning's [[/knowledge/guide-to-life-care-planning|certified life care planners]] prepare plans that follow the published standards of practice.",
   },
   {
-    question: "What is forensic economic analysis?",
-    sources: refsToSources(["TINARI_2016", "BLS_ATUS"]),
+    question: "Who prepares a life care plan?",
+    sources: refsToSources(["ICHCC_CLCP", "AANLCP_SCOPE"]),
     answer:
-      "[[/services/forensic-economics|Forensic economic analysis]] quantifies the economic damages resulting from injury or death. This includes lost earnings, [[/insights/what-is-earning-capacity-evaluation|lost earning capacity]], [[/services/life-care-planning|lost household services]], and fringe benefits - all calculated in [[/insights/how-forensic-economists-calculate-damages|present value]]. KWVRS's affiliated forensic economists at kweconomics.com provide these analyses for personal injury, wrongful death, and wrongful termination cases.",
+      "Life care plans are prepared by credentialed planners with a clinical background. The two principal credentials are the [[/credentials/clcp|Certified Life Care Planner (CLCP)]] and the [[/credentials/cnlcp|Certified Nurse Life Care Planner (CNLCP)]], held by nurses, rehabilitation counselors, therapists, and physicians. Every plan rests on a medical foundation: the treating or evaluating physicians recommend the care, and the planner organizes, projects, and prices it. See [[/compare/clcp-vs-cnlcp|CLCP vs. CNLCP]] for how the credentials differ.",
   },
   {
-    question: "How is an earning capacity evaluation different from a wage loss calculation?",
-    sources: refsToSources(["ONET", "BLS_OEWS", "TRUTHAN_KARMAN_2003"]),
+    question: "What types of cases does KW Life Care Planning accept?",
     answer:
-      "[[/guides/earning-capacity-vs-lost-earnings|Wage loss]] is a forensic economic calculation - the difference between what someone earned pre-injury and what they now earn or are expected to earn. [[/insights/what-is-earning-capacity-evaluation|Earning capacity evaluation]] is a vocational determination - it establishes what an injured person is vocationally capable of earning, given their [[/guides/what-is-transferable-skills-analysis|transferable skills]], labor market conditions, and medical restrictions. Both are typically needed in [[/insights/life-care-plan-components-and-methodology|catastrophic injury cases]].",
+      "Plans and cost projections are prepared for [[/case-types/personal-injury|personal injury]], [[/case-types/medical-malpractice|medical malpractice]], [[/case-types/birth-injury|birth injury]], [[/case-types/workers-compensation|workers' compensation]], and other matters involving [[/case-types/traumatic-brain-injury|traumatic brain injury]], [[/case-types/spinal-cord-injury|spinal cord injury]], [[/case-types/amputation|amputation]], [[/case-types/burn-injury|burns]], and [[/case-types/cerebral-palsy|cerebral palsy]]. Engagements are accepted from both plaintiff and defense counsel and from carriers, and opinions are based solely on the record.",
   },
   {
-    question: "Are KWVRS experts qualified to testify in federal court?",
+    question: "What is the difference between a life care plan and a medical cost projection?",
+    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS"]),
+    answer:
+      "A life care plan covers the full scope of injury-related needs, medical and non-medical, across the lifespan, and typically includes an interview and evaluation of the person. A [[/services/medical-cost-projection|medical cost projection]] is a narrower, records-based estimate of a defined set of future medical costs, often for a shorter horizon or a single treatment pathway. The [[/compare/life-care-plan-vs-future-cost-projection|comparison page]] explains when each is appropriate.",
+  },
+  {
+    question: "What is a Medicare set-aside, and is it the same as a life care plan?",
+    sources: refsToSources(["CMS_WCMSA_GUIDE", "CMS_MSP"]),
+    answer:
+      "A [[/services/medicare-set-aside|Medicare set-aside allocation]] estimates the portion of a settlement to reserve for future injury-related care that Medicare would otherwise pay. It is narrower than a life care plan: it includes only Medicare-covered items and prices them on a fee-schedule basis under Medicare's review guidance. Many catastrophic workers' compensation settlements need both, and the same record review can support each. See [[/guides/life-care-plan-vs-medicare-set-aside|life care plan vs. Medicare set-aside]].",
+  },
+  {
+    question: "How are the costs in a life care plan researched?",
+    sources: refsToSources(["CMS_PFS", "FAIR_HEALTH"]),
+    answer:
+      "Each item is priced for the geographic market where the person lives, using provider and vendor quotes, recognized usual-and-customary charge data, published fee schedules, and manufacturer pricing as appropriate. The source and date of every cost are recorded so the figure can be traced and re-priced at a later update. The [[/methods/cost-research-methodology|cost research methodology]] page describes the process, and [[/guides/how-a-life-care-plan-is-priced|how a life care plan is priced]] explains what drives the fee for the engagement itself.",
+  },
+  {
+    question: "How is life expectancy handled?",
+    sources: refsToSources(["NCHS_LIFE_TABLES", "CDC_LIFE_TABLES"]),
+    answer:
+      "The plan horizon starts from the current published United States life tables for the person's age and sex. The planner departs from the population figure only when a qualified physician has opined that the condition changes it, and documents that basis. Where the parties dispute expectancy, the plan can be presented at each proposed horizon. See [[/methods/life-expectancy-in-life-care-planning|life expectancy in life care planning]].",
+  },
+  {
+    question: "Are life care plans admissible in state and federal court?",
     sources: refsToSources(["DAUBERT", "FRE_702", "FRYE"]),
     answer:
-      "Yes. KWVRS experts hold nationally recognized certifications and have provided [[/services/expert-witness-testimony|testimony]] in state and federal courts throughout the country. KWVRS reports are prepared to meet the [[/guides/daubert-standard-vocational-experts|admissibility standards]] applied in state and federal courts, and to withstand cross-examination on [[/knowledge/expert-witness-testimony-guide|methodology, data sources, and professional standards]].",
+      "Yes, when prepared by a qualified planner following accepted methodology and grounded in physician recommendations and documented cost research. KW Life Care Planning's planners have provided [[/services/expert-witness-testimony|deposition and trial testimony]] in state and federal courts, and reports are prepared to meet the [[/guides/federal-vs-state-court-daubert|admissibility frameworks]] applied in each. Attorneys confirm the governing framework for the specific case.",
   },
   {
-    question: "Does KWVRS work in all 50 states?",
-    sources: refsToSources(["RSA_ED"]),
+    question: "Can KW Life Care Planning review an opposing party's life care plan?",
     answer:
-      "Yes. KWVRS accepts cases in [[/locations|all 50 states, the District of Columbia, and U.S. territories]]. Our experts are familiar with jurisdiction-specific [[/guides/vocational-rehabilitation-services-explained|vocational rehabilitation agency frameworks]], [[/guides/expert-witness-disclosure-rules|court rules regarding expert testimony]], and [[/services/life-care-planning|local labor market conditions]].",
+      "Yes. A [[/services/life-care-plan-rebuttal|life care plan rebuttal]] tests each item in the opposing plan for medical foundation, duplication, supported frequency and duration, documented and geographically appropriate pricing, and the life expectancy basis. The review may be records-only or may include an evaluation of the person, depending on access and the needs of the case. [[/guides/how-to-rebut-a-life-care-plan|How to rebut a life care plan]] outlines the approach.",
   },
   {
-    question: "How long does it take to receive a vocational evaluation report?",
+    question: "Does KW Life Care Planning work in all 50 states?",
     answer:
-      "[[/guides/how-long-does-vocational-evaluation-take|Report turnaround time]] depends on the complexity of the case, availability of medical records, and whether an in-person evaluation is required. In most cases, we can deliver an initial [[/services/life-care-planning|evaluation report]] within 30-45 days of receiving complete case materials. Rush timelines may be available - [[/contact|contact us]] to discuss your deadline.",
+      "Yes. Plans are prepared for matters in [[/locations|all 50 states, the District of Columbia, and U.S. territories]]. Cost research is performed in the person's own market, and the planners are familiar with jurisdiction-specific [[/guides/expert-witness-disclosure-rules|expert disclosure rules]] and admissibility frameworks.",
   },
   {
-    question: "What credentials should I look for in a vocational expert?",
-    sources: refsToSources(["CRCC", "CVE_STATUS", "ABVE"]),
+    question: "How long does it take to receive a life care plan?",
     answer:
-      "[[/guides/how-to-hire-vocational-expert|For litigation purposes]], look for a [[/credentials|Certified Rehabilitation Counselor (CRC)]], Certified Vocational Evaluator (CVE), or Diplomate of the American Board of Vocational Experts (ABVE/D). These credentials require a graduate degree, supervised experience, and passing a national examination. KWVRS's lead experts hold multiple credentials, including Ph.D.-level academic qualifications.",
+      "Turnaround depends on the complexity of the injury, the completeness of the medical records, whether an in-person evaluation is required, and how quickly treating providers respond to requests for recommendations. Most plans are delivered within several weeks of receiving complete records and completing the evaluation; a records-based [[/services/medical-cost-projection|medical cost projection]] is typically faster. Shorter timelines may be available - [[/contact|contact us]] to discuss your deadline.",
   },
   {
-    question: "Can KWVRS provide a life care plan and vocational evaluation for the same case?",
+    question: "Should a life care plan be updated before trial?",
+    sources: refsToSources(["IARP_IALCP_STANDARDS"]),
     answer:
-      "Yes, and this can be an efficient approach for catastrophic injury matters. KWVRS's [[/team|multidisciplinary team]] can coordinate a [[/services/life-care-planning|vocational evaluation]], [[/services/life-care-planning|life care plan]], and [[/services/forensic-economics|forensic economic analysis]] for the same case, ensuring consistency across opinions and reducing the burden on the retaining attorney.",
+      "Often, yes. A life care plan is a dynamic document. When the person's condition, treatment plan, or living situation has changed, or when significant time has passed since the costs were researched, a [[/services/plan-update-and-review|plan update]] refreshes the medical foundation and re-prices each item so the plan reflects current care and current costs.",
   },
   {
-    question: "What is the difference between a vocational expert and an occupational therapist?",
-    sources: refsToSources(["AOTA_OTPF_2020", "BLS_OOH"]),
+    question: "How do I retain KW Life Care Planning for a case?",
     answer:
-      "A [[/services/life-care-planning|vocational expert]] evaluates [[/guides/what-is-transferable-skills-analysis|labor market factors]] - what jobs someone can perform, what those jobs pay, and whether the person is [[/insights/what-is-earning-capacity-evaluation|competitively employable]]. An occupational therapist (OT) evaluates functional capacity - what physical and cognitive tasks a person can actually perform. In [[/insights/role-of-vocational-expert-personal-injury|complex injury cases]], both are often needed: the OT establishes functional limits, and the vocational expert translates those limits into labor market consequences.",
-  },
-  {
-    question: "How do I retain KWVRS for a case?",
-    answer:
-      "Contact our office by phone at (201) 343-0700 or via the [[/contact|contact form on this website]]. A member of our [[/schedule-consultation|intake team]] will follow up within one business day to discuss case details, required documentation, and [[/team|expert availability]]. We accept cases from plaintiff counsel, defense counsel, insurance carriers, and self-represented claimants.",
+      "Contact our office by phone at (201) 343-0700 or via the [[/contact|contact form on this website]]. A member of our [[/schedule-consultation|intake team]] will follow up within one business day to discuss the case, the records needed, and [[/team|planner availability]]. We accept cases from plaintiff counsel, defense counsel, and insurance carriers.",
   },
 ];

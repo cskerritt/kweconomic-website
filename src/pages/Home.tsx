@@ -65,11 +65,11 @@ const REGION_ORDER: { key: string; label: string }[] = [
 ];
 
 const KNOWLEDGE_RESOURCES = [
-  { label: "Expert Witness Disclosure Overview", href: "/guides/expert-witness-disclosure-rules" },
-  { label: "Economic Damages for Self-Employed Claimants", href: "/guides/economic-damages-self-employed-claimants" },
-  { label: "Earning Capacity vs Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings" },
-  { label: "Forensic VE vs SSA VE", href: "/compare/vocational-expert-vs-ssa-ve" },
-  { label: "ABVE Diplomate vs CRC", href: "/compare/abve-d-vs-crc" },
+  { label: "What Is a Life Care Plan?", href: "/guides/what-is-life-care-plan" },
+  { label: "How a Life Care Plan Is Priced", href: "/guides/how-a-life-care-plan-is-priced" },
+  { label: "Life Care Plan vs Medicare Set-Aside", href: "/guides/life-care-plan-vs-medicare-set-aside" },
+  { label: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
+  { label: "CLCP vs CNLCP", href: "/compare/clcp-vs-cnlcp" },
 ];
 
 export default function Home() {
@@ -83,10 +83,10 @@ export default function Home() {
   // Planning lines only; testimony is a mode of every engagement, not a card.
   const coreServices = pillarServices().filter((s) => s.slug !== "expert-witness-testimony");
 
-  // Anonymous retaining-attorney quote (owner-attested set). Index 2 = the
-  // expert-report quote - the settlement-outcome quote (index 0) was removed
-  // from the home page per Chris, 2026-07-20.
-  const heroQuote = testimonials[2];
+  // Anonymous retaining-attorney quote (owner-attested set). Index 0 = the
+  // expert-report quote; the settlement-outcome quotes are not in this site's
+  // testimonial set (per Chris, 2026-07-20).
+  const heroQuote = testimonials[0];
   const allStates = states.filter((s) => s.type === "state");
 
   return (

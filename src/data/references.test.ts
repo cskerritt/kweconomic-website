@@ -7,8 +7,8 @@ const TYPES = ["peer-reviewed", "gov", "case-law", "org"];
 describe("REFERENCES registry integrity", () => {
   const entries = Object.entries(REFERENCES);
 
-  it("covers the audit source set (~40+ entries)", () => {
-    expect(entries.length).toBeGreaterThanOrEqual(40);
+  it("covers the LCP source set (~30+ entries after the vocational prune)", () => {
+    expect(entries.length).toBeGreaterThanOrEqual(30);
   });
 
   it("every entry is well-formed and self-consistent", () => {
@@ -34,25 +34,31 @@ describe("REFERENCES registry integrity", () => {
     }
   });
 
-  it("has the 12 pre-verified canonical entries under tier 'verified'", () => {
+  it("keeps the surviving pre-verified canonical entries under tier 'verified'", () => {
     const verified = entries.filter(([, r]) => r.tier === "verified").map(([k]) => k);
     for (const id of [
-      "SKOOG_CIECKA_KRUEGER_2011",
       "NCHS_LIFE_TABLES",
       "WEED_BERENS",
-      "IARP_IALCP_STANDARDS",
-      "CVE_STATUS",
-      "SSA_HALLEX",
-      "TRUTHAN_KARMAN_2003",
       "KACZKOWSKI_V_BOLUBASZ",
-      "MERCADO_V_AHMED",
       "KING_ET_AL_1998",
-      "BEAULIEU_V_ELLIOTT",
-      "TINARI_2016",
     ]) {
       expect(verified, `${id} must be tier 'verified'`).toContain(id);
     }
-    expect(verified).toHaveLength(12);
+    expect(verified).toHaveLength(4);
+  });
+
+  it("carries the LCP standards and government sources added for kwlcp.com", () => {
+    for (const id of ["IARP_IALCP_STANDARDS", "AANLCP_SCOPE", "CMS_WCMSA_GUIDE", "CMS_WCMSA", "CDC_LIFE_TABLES", "NCHS_LIFE_TABLES", "ICHCC_CLCP"]) {
+      expect(REFERENCES[id], `${id} present`).toBeDefined();
+    }
+    // The IALCP standards PDF moved; the registry must point at the live host.
+    expect(REFERENCES.IARP_IALCP_STANDARDS.url).toMatch(/^https:\/\/jlcp\.scholasticahq\.com\//);
+  });
+
+  it("no longer carries vocational-only sources", () => {
+    for (const id of ["ONET", "DOT", "BLS_OEWS", "ABVE", "CVE_STATUS", "CRCC", "SSA_POMS", "TRUTHAN_KARMAN_2003", "SKOOG_CIECKA_KRUEGER_2011"]) {
+      expect(REFERENCES[id], `${id} should be pruned`).toBeUndefined();
+    }
   });
 });
 
@@ -66,11 +72,11 @@ describe("refsToSources", () => {
   });
 
   it("preserves order and length", () => {
-    const out = refsToSources(["BLS_OEWS", "ONET", "DOT"]);
+    const out = refsToSources(["CMS_WCMSA_GUIDE", "AANLCP_SCOPE", "CDC_LIFE_TABLES"]);
     expect(out.map((s) => s.url)).toEqual([
-      REFERENCES.BLS_OEWS.url,
-      REFERENCES.ONET.url,
-      REFERENCES.DOT.url,
+      REFERENCES.CMS_WCMSA_GUIDE.url,
+      REFERENCES.AANLCP_SCOPE.url,
+      REFERENCES.CDC_LIFE_TABLES.url,
     ]);
   });
 

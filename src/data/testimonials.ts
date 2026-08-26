@@ -1,5 +1,7 @@
-// Client testimonials sourced from kwvrs.com.
+// Client testimonials sourced from the parent firm's public site.
 // Attribution is limited on the public source (most are "Client Comment").
+// Only quotes that are compatible with a life-care-planning engagement are
+// kept; outcome-focused or insurance-specific quotes were dropped for this site.
 // Set isPlaceholder: true and use bracketed placeholder text to flag any
 // entries that still need replacement.
 
@@ -15,33 +17,13 @@ export interface Testimonial {
 
 export const testimonials: Testimonial[] = [
   {
-    id: "1",
-    quote:
-      "With your assistance as our expert, we were able to reach a favorable settlement in this case.",
-    author: "Retaining Attorney",
-    title: "Client Comment",
-    firm: "",
-    caseType: "Settlement",
-    isPlaceholder: false,
-  },
-  {
-    id: "3",
-    quote:
-      "The matter was settled on a minimally compromised basis, to the satisfaction of the insurance company.",
-    author: "Retaining Counsel",
-    title: "Client Comment",
-    firm: "",
-    caseType: "Insurance Matter",
-    isPlaceholder: false,
-  },
-  {
     id: "4",
     quote:
       "Thank you for your assistance in this matter. The expert report you provided was a very helpful tool in resolving this matter.",
     author: "Retaining Attorney",
     title: "Client Comment",
     firm: "",
-    caseType: "Expert Report",
+    caseType: "Life Care Plan Report",
     isPlaceholder: false,
   },
   {
