@@ -39,7 +39,7 @@
 
 ```bash
 cd "/Users/chrisskerritt/Documents/New project"
-rsync -a --exclude .git --exclude node_modules --exclude dist --exclude workflow --exclude report --exclude docs --exclude data --exclude .env \
+rsync -a --exclude .git --exclude node_modules --exclude dist --exclude workflow --exclude report --exclude docs --exclude /data --exclude .env \
   kwvrs-site/ kwlcp-website/
 cd kwlcp-website && ls
 ```
@@ -52,7 +52,7 @@ cd "/Users/chrisskerritt/Documents/New project/kwlcp-website"
 rm -rf public/engineering-guide public/profitabilitycalc public/client-forms public/samples public/cv public/documents \
        public/google*.html public/BingSiteAuth.xml .github/workflows/gsc-audit.yml
 rm -f CLAUDE.md
-grep -qx 'data/' .gitignore || printf 'data/\n' >> .gitignore
+grep -qx '/data/' .gitignore || printf '/data/\n' >> .gitignore
 ```
 
 - [ ] **Step 3: Install and verify baseline builds and tests pass**
