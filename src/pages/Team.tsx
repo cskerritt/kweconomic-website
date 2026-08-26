@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { activeTeam, getTeamByRole, getMemoriamTeam } from "@/data/team";
+import { activeTeam, getTeamByRole, getMemoriam } from "@/data/team";
+import { ORG_NAME, SITE_URL } from "@/lib/brand";
 import { initialsOf } from "@/lib/initials";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import ContactCTA from "@/components/ContactCTA";
@@ -159,18 +160,16 @@ function TeamSection({
 
 export default function Team() {
   usePageMeta({
-    title: "Our Team | KWVRS - Kincaid Wolstein Vocational and Rehabilitation Services",
+    title: `Our Team | ${ORG_NAME}`,
     description:
-      "Meet the KWVRS team - doctoral-level vocational evaluators, certified life care planners, forensic economists, and a board-certified physician serving all 50 states.",
-    canonical: "https://kwvrs.com/team",
+      "Meet the KW Life Care Planning team - a board-certified physician, doctoral-level Certified Life Care Planners, a Medicare Set-Aside Certified Consultant, and a registered nurse life care planner serving attorneys nationwide.",
+    canonical: `${SITE_URL}/team`,
   });
 
   const leadership = getTeamByRole("leadership");
-  const experts = getTeamByRole("expert");
-  const bizdev = getTeamByRole("business-development");
+  const planners = getTeamByRole("expert");
   const support = getTeamByRole("support");
-  const interns = getTeamByRole("intern");
-  const memoriam = getMemoriamTeam();
+  const memoriam = getMemoriam();
 
   return (
     <>
@@ -199,13 +198,13 @@ export default function Team() {
               Our People
             </p>
             <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
-              The KWVRS Team
+              The {ORG_NAME} Team
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              Kincaid Wolstein Vocational and Rehabilitation Services is built on a
-              team of credentialed professionals spanning vocational rehabilitation,
-              life care planning, forensic economics, and medicine. Our experts are qualified to provide testimony in state and
-              federal courts nationwide.
+              {ORG_NAME} is built on a team of Certified Life Care Planners with
+              medical, nursing, and rehabilitation-counseling backgrounds, supported
+              by medical chronologists and plan administrators. Our life care planners
+              are qualified to provide testimony in state and federal courts nationwide.
             </p>
           </div>
         </div>
@@ -215,41 +214,25 @@ export default function Team() {
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <TeamSection
-            title="Leadership"
-            description="The executive team guiding KWVRS operations, strategy, and service delivery."
+            title="Life Care Planning Leadership"
+            description="The physician, doctoral-level planners, and Medicare Set-Aside consultant who lead the practice and testify to their plans."
             members={leadership}
-            columns="lg:grid-cols-3"
-          />
-
-          <TeamSection
-            title="Expert Team"
-            description="Our credentialed vocational evaluators, life care planners, and specialists who conduct evaluations and provide expert testimony."
-            members={experts}
             columns="lg:grid-cols-4"
           />
 
           <TeamSection
-            title="Marketing & Business Development"
-            description="Expanding KWVRS's reach and building relationships with law firms nationwide."
-            members={bizdev}
+            title="Life Care Planners"
+            description="Certified Life Care Planners who develop plans, project future care costs, and provide expert testimony."
+            members={planners}
             columns="lg:grid-cols-4"
           />
 
           <TeamSection
-            title="Medical Chronology & Administration"
-            description="The team supporting case operations - medical chronologists, expert liaisons, life care plan administrators, and research staff."
+            title="Plan Administration & Medical Chronology"
+            description="The team behind every plan - medical chronologists who build the clinical record and administrators who coordinate each engagement from intake through delivery."
             members={support}
             columns="lg:grid-cols-5"
           />
-
-          {interns.length > 0 && (
-            <TeamSection
-              title="Interns"
-              description="Supporting team members gaining experience in vocational rehabilitation services."
-              members={interns}
-              columns="lg:grid-cols-5"
-            />
-          )}
 
           {memoriam.length > 0 && (
             <div className="mt-4 pt-12 border-t border-neutral-200">
