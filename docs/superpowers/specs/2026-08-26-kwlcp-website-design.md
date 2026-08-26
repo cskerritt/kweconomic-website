@@ -137,7 +137,7 @@ Node 22 for local work (`~/.local/node/node-v22.22.0-darwin-arm64/bin`). Local `
 
 - Prerender: `SERVICE_CITY_PRERENDER_TOP = 10`, sitemap `SERVICE_CITY_SITEMAP_TOP = 5` + metro-labor cities (unchanged gating logic).
 - Expected volume: 10 pillars × 56 states = 560 service-state; ~5,270 service-city prerendered / ~2,750 in sitemap; 802 city pages; 56 state hubs; 11×56 case-type-state; 8×56 credential-state; ~120 editorial/hub/core. ≈9k prerendered, ≈5k sitemap URLs across the 5-child sitemap index + image + news sitemaps.
-- `llms.txt` / `llms-full.txt` regenerated; IndexNow script retained; `.github/workflows/gsc-audit.yml` retained but disabled until a kwlcp.com GSC property exists.
+- `llms.txt` / `llms-full.txt` regenerated; IndexNow script retained; the kwvrs `gsc-audit` GitHub workflow is removed; re-add once a kwlcp.com GSC property exists.
 - Structured data: `ProfessionalService` org with `MedicalBusiness` as additional type, `Service`, `BreadcrumbList`, `FAQPage`, `Person` — via the existing `schema.ts` builders.
 
 ## 9. Testing
