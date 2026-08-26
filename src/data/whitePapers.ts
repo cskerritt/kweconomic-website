@@ -38,7 +38,7 @@ export const whitePapers: WhitePaper[] = [
       "How a forensic vocational evaluation establishes pre- and post-event earning capacity in a way that withstands scrutiny.",
     discipline: "Vocational",
     icon: "Briefcase",
-    serviceSlug: "vocational-expert",
+    serviceSlug: "life-care-planning",
     summary:
       "Earning capacity is a measure of what an individual is able to earn in the open labor market given education, training, work history, and any functional limitations. It is distinct from actual earnings at a point in time and from a government or insurer disability determination. This paper sets out a transparent, replicable methodology for assessing earning capacity before and after an injury or event, and explains how each step is documented so the resulting opinion can be examined and tested by opposing counsel.",
     keyTakeaways: [

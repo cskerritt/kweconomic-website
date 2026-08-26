@@ -1,5 +1,5 @@
 import { useParams, Navigate, Link } from "react-router-dom";
-import { getServiceBySlug, services } from "@/data/services";
+import { getServiceBySlug, pillarServices } from "@/data/services";
 import { getStateBySlug } from "@/data/states";
 import { useStateCities } from "@/hooks/use-state-cities";
 import { SERVICE_CITY_TOP, serviceCityCities } from "@/lib/geo-links";
@@ -30,7 +30,7 @@ import { useMagnetic } from "@/hooks/use-pointer-fx";
 import { ArrowRight, Briefcase } from "lucide-react";
 import { ICONS } from "@/lib/icons";
 
-const EXCLUDED_SERVICES = new Set(["standard-of-care", "expert-witness-testimony"]);
+const EXCLUDED_SERVICES = new Set(["expert-witness-testimony"]);
 
 export default function ServiceState() {
   const { serviceSlug, stateSlug } = useParams<{ serviceSlug: string; stateSlug: string }>();
@@ -56,6 +56,10 @@ export default function ServiceState() {
   if (!service || !state) {
     return <Navigate to="/services" replace />;
   }
+  // Non-pillar cross-sells have no geographic tier; send hand-typed URLs to the card.
+  if (!service.pillar) {
+    return <Navigate to={`/services/${service.slug}`} replace />;
+  }
 
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
   const motion = serviceMotion(service.slug);
@@ -69,7 +73,7 @@ export default function ServiceState() {
   const narrative = getStateNarrative(state);
   const faqs = serviceStateGeographicFaqs(service.name, state.name);
 
-  const relatedServices = services.filter(
+  const relatedServices = pillarServices().filter(
     (s) => s.slug !== service.slug && !EXCLUDED_SERVICES.has(s.slug)
   );
 

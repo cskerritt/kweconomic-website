@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { caseTypes, getCaseType } from "@/data/caseTypes";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import { credentials as allCredentials } from "@/data/credentials";
 import { activeTeam } from "@/data/team";
@@ -34,7 +34,7 @@ export default function CaseTypeHub() {
   const prev = idx > 0 ? { label: caseTypes[idx - 1].name, href: `/case-types/${caseTypes[idx - 1].slug}` } : undefined;
   const next = idx < caseTypes.length - 1 ? { label: caseTypes[idx + 1].name, href: `/case-types/${caseTypes[idx + 1].slug}` } : undefined;
 
-  const linkedServices = services.filter((s) => caseType.relevantServices.includes(s.slug));
+  const linkedServices = pillarServices().filter((s) => caseType.relevantServices.includes(s.slug));
   const linkedCredentials = allCredentials.filter((c) => caseType.relevantCredentials.includes(c.slug));
   const relevantExperts = activeTeam.filter((m) => m.specialties.some((sp) => sp.toLowerCase().includes(caseType.name.toLowerCase())));
 

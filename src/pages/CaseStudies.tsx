@@ -9,7 +9,7 @@ const caseTypes = [
     title: "Personal Injury",
     description:
       "In personal injury cases, KWVRS provides vocational evaluation, earning capacity analysis, life care planning, and forensic economics testimony. Our evaluators assess the full vocational impact of the injured person's injuries - what occupations they can no longer perform, what occupations remain available, and the wage differential between pre-injury and post-injury earning capacity - whether the analysis supports a claim or tests one.",
-    services: [
+    serviceLines: [
       "Vocational evaluation and earning capacity analysis",
       "Life care plan development for catastrophic injuries",
       "Lost earnings and household services calculations",
@@ -20,7 +20,7 @@ const caseTypes = [
     title: "Medical Malpractice",
     description:
       "Medical malpractice cases often involve complex, long-term damages. KWVRS works with plaintiff and defense counsel to evaluate the vocational and economic consequences of alleged malpractice - including life care planning for ongoing medical needs, assessment of lost earning capacity resulting from the alleged negligence, and forensic economics analysis to project and present-value those costs and losses.",
-    services: [
+    serviceLines: [
       "Life care planning for ongoing and future medical needs",
       "Vocational evaluation where the malpractice affected work capacity",
       "Forensic economics - present value of future care costs",
@@ -31,7 +31,7 @@ const caseTypes = [
     title: "Workers' Compensation",
     description:
       "Workers' compensation matters frequently require vocational evaluation to determine whether an injured worker can return to their prior job, perform modified duty, or transition to alternative occupations. KWVRS provides transferable skills analysis, labor market surveys, and earning capacity opinions that comply with the standards applicable in the relevant jurisdiction's workers' compensation system.",
-    services: [
+    serviceLines: [
       "Return-to-work assessment and transferable skills analysis",
       "Labor market surveys for alternative occupations",
       "Earning capacity evaluation post-injury",
@@ -42,7 +42,7 @@ const caseTypes = [
     title: "Wrongful Death",
     description:
       "Wrongful death damages analysis requires projecting the decedent's economic contributions to surviving family members over a projected working lifetime. KWVRS provides complete forensic economics analysis including lost earnings projections, household services valuation, personal consumption deductions, fringe benefits analysis, and present-value calculations - together with vocational background analysis establishing the decedent's pre-death earning trajectory.",
-    services: [
+    serviceLines: [
       "Lost earnings projections based on decedent's work history and prospects",
       "Household services valuation",
       "Personal consumption deduction analysis",
@@ -53,7 +53,7 @@ const caseTypes = [
     title: "Matrimonial",
     description:
       "In divorce and family law proceedings, KWVRS provides vocational evaluation of parties who are unemployed or allegedly underemployed, earning capacity opinions for income imputation purposes, and forensic economics analysis relevant to equitable distribution or support calculations. Evaluations address the party's educational background, work history, functional capacity, and current labor market conditions.",
-    services: [
+    serviceLines: [
       "Earning capacity evaluation for voluntary unemployment or underemployment",
       "Income imputation analysis for support proceedings",
       "Assessment of retraining needs and timeline to employment",
@@ -64,7 +64,7 @@ const caseTypes = [
     title: "Wrongful Termination",
     description:
       "Wrongful termination and employment discrimination cases require analysis of the terminated employee's lost earnings from the date of termination forward, as well as an assessment of their mitigation efforts and remaining earning capacity. KWVRS evaluates the employee's vocational assets, the labor market for their occupational profile, and the realistic trajectory of re-employment, providing a grounded economic damages analysis.",
-    services: [
+    serviceLines: [
       "Lost wages and benefits analysis from date of termination",
       "Mitigation analysis - what the employee could and did earn afterward",
       "Earning capacity evaluation given current labor market conditions",
@@ -188,7 +188,7 @@ export default function CaseStudies() {
                   Services Provided
                 </h3>
                 <ul className="space-y-1.5">
-                  {ct.services.map((svc) => (
+                  {ct.serviceLines.map((svc) => (
                     <li key={svc} className="flex items-start gap-2 text-sm text-neutral-700">
                       <span className="w-1.5 h-1.5 rounded-full bg-teal mt-2 shrink-0" />
                       {svc}

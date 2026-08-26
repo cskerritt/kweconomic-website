@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
@@ -17,7 +17,7 @@ const LABEL: Record<Variant, string> = {
 
 export default function ServiceTransactional({ variant }: { variant: Variant }) {
   const { serviceSlug = "" } = useParams();
-  const s = services.find((x) => x.slug === serviceSlug);
+  const s = pillarServices().find((x) => x.slug === serviceSlug);
   const url = s ? `${ORG_URL}/services/${s.slug}/${variant}` : "";
   const title = s ? `${s.name} ${LABEL[variant]}` : "";
   const variantBlurb: Record<Variant, string> | null = s

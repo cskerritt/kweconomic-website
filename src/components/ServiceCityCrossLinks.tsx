@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import {
   hasServiceCityPages,
   nearestCities,
@@ -33,11 +33,11 @@ export default function ServiceCityCrossLinks({
   if (!hasServiceCityPages(cities, city.slug)) return null;
 
   const motion = serviceMotion(service.slug);
-  const siblingServices = serviceCityServices(services).filter(
+  const siblingServices = serviceCityServices(pillarServices()).filter(
     (s) => s.slug !== service.slug,
   );
-  // Guard against a service with no city tier (expert-disclosure): the route
-  // still mounts ServiceStateCity for a hand-typed URL, and linking
+  // Guard against a service with no city tier (a non-pillar cross-sell): the
+  // route still mounts ServiceStateCity for a hand-typed URL, and linking
   // /services/<service>/<state>/<other-city> would target pages that are
   // neither prerendered nor in the sitemap.
   const otherCities = serviceHasCityPages(service.slug)

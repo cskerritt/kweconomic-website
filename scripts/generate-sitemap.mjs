@@ -36,6 +36,7 @@ import { existsSync, readFileSync, writeFileSync, readdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "vite";
+import { pillarServiceSlugs } from "./lib/service-slugs.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -104,7 +105,11 @@ async function loadContentReadiness() {
 }
 
 const states = extractSlugs("states.ts");
-const services = extractSlugs("services.ts");
+// Pillar services only: `pillar: false` entries (forensic economics cross-sell)
+// are never advertised. Object-boundary split lives in scripts/lib/service-slugs.mjs.
+const serviceSlugs = pillarServiceSlugs(
+  readFileSync(join(SRC_DATA, "services.ts"), "utf-8"),
+);
 const caseTypes = extractSlugs("caseTypes.ts");
 const credentials = extractSlugs("credentials.ts");
 const methods = extractSlugs("methods.ts");
@@ -146,11 +151,8 @@ if (SERVICE_CITY_PRERENDER_TOP !== SERVICE_CITY_TOP) {
 const urls = new Set();
 
 CORE.forEach((u) => urls.add(u));
-services.forEach((s) => {
+serviceSlugs.forEach((s) => {
   urls.add(`/services/${s}`);
-  // expert-disclosure does not expose cost/process/timeline variants; its child
-  // URLs are state-specific (handled below).
-  if (s === "expert-disclosure") return;
   urls.add(`/services/${s}/cost`);
   urls.add(`/services/${s}/process`);
   urls.add(`/services/${s}/timeline`);
@@ -158,8 +160,7 @@ services.forEach((s) => {
 caseTypes.forEach((c) => {
   urls.add(`/case-types/${c}`);
   states.forEach((st) => urls.add(`/case-types/${c}/${st}`));
-  services.forEach((s) => {
-    if (s === "expert-disclosure") return;
+  serviceSlugs.forEach((s) => {
     urls.add(`/services/${s}/case/${c}`);
   });
 });
@@ -195,9 +196,7 @@ for (const file of cityFiles) {
 states.forEach((st) => {
   urls.add(`/locations/${st}`);
   (citiesByState[st] || []).forEach((c) => urls.add(`/locations/${st}/${c}`));
-  services.forEach((s) => {
-    // expert-disclosure uses its own /services/expert-disclosure/:state route.
-    if (s === "expert-disclosure") return;
+  serviceSlugs.forEach((s) => {
     urls.add(`/services/${s}/${st}`);
     // Service x State x City: intentional local-SEO landing pages. Only the
     // contentReadiness sitemap-ready subset is advertised (crawl-budget

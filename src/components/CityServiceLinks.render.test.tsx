@@ -10,6 +10,19 @@ import { newJerseyCities } from "@/data/cities/new-jersey";
 // window (first 10 in file order); Toms River sits outside it.
 const state = getStateBySlug("new-jersey")!;
 
+const PILLARS = [
+      "life-care-planning",
+      "pediatric-life-care-planning",
+      "catastrophic-injury-planning",
+      "medical-cost-projection",
+      "workers-compensation-lcp",
+      "plan-update-and-review",
+      "life-care-plan-rebuttal",
+      "medicare-set-aside",
+      "elder-and-long-term-care-planning",
+      "expert-witness-testimony",
+];
+
 function render(citySlug: string): string {
   const city = newJerseyCities.find((c) => c.slug === citySlug)!;
   return renderToStaticMarkup(
@@ -24,40 +37,26 @@ function render(citySlug: string): string {
 describe("CityServiceLinks for a city with service-city pages", () => {
   const html = render("hackensack");
 
-  it("links all seven co-located service x city pages", () => {
-    for (const slug of [
-      "vocational-expert",
-      "life-care-planning",
-      "forensic-economics",
-      "loss-of-household-services",
-      "matrimonial",
-      "standard-of-care",
-      "expert-witness-testimony",
-    ]) {
+  it("links all ten co-located pillar service x city pages", () => {
+    for (const slug of PILLARS) {
       expect(html).toContain(`href="/services/${slug}/new-jersey/hackensack"`);
     }
   });
 
-  it("links expert disclosure at the state level (it has no city tier)", () => {
-    expect(html).toContain('href="/services/expert-disclosure/new-jersey"');
-    expect(html).not.toContain('href="/services/expert-disclosure/new-jersey/hackensack"');
+  it("never links the non-pillar forensic-economics cross-sell", () => {
+    expect(html).not.toContain("/services/forensic-economics");
   });
 });
 
 describe("CityServiceLinks for a city outside the service-city window", () => {
   const html = render("toms-river");
 
-  it("keeps the core state-level service links", () => {
-    for (const slug of [
-      "vocational-expert",
-      "life-care-planning",
-      "forensic-economics",
-      "loss-of-household-services",
-      "matrimonial",
-      "expert-disclosure",
-    ]) {
+  it("keeps the core state-level planning links (testimony is not a card)", () => {
+    for (const slug of PILLARS.filter((s) => s !== "expert-witness-testimony")) {
       expect(html).toContain(`href="/services/${slug}/new-jersey"`);
     }
+    expect(html).not.toContain('href="/services/expert-witness-testimony/new-jersey"');
+    expect(html).not.toContain("/services/forensic-economics");
   });
 
   it("links no city-level service pages (they do not exist for this city)", () => {

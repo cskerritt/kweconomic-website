@@ -1,18 +1,18 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { hasServiceCityPages, serviceCityServices } from "@/lib/geo-links";
 import type { City, State } from "@/types";
 
-const EXCLUDED_SERVICES = new Set(["standard-of-care", "expert-witness-testimony"]);
+// Outside the service-city window only the core planning lines are surfaced.
+const EXCLUDED_SERVICES = new Set(["expert-witness-testimony"]);
 
 /**
  * "Services in {city}" link block for /locations/:state/:city pages.
  *
  * Cities inside the service-city window link every co-located
- * /services/<service>/<state>/<city> page (plus the state-level expert
- * disclosure page, which has no city tier). Other cities keep the core
- * state-level service links.
+ * /services/<service>/<state>/<city> page. Other cities keep the core
+ * state-level service links. Pillar services only.
  */
 export default function CityServiceLinks({
   state,
@@ -26,19 +26,11 @@ export default function CityServiceLinks({
   const hasCityServicePages = hasServiceCityPages(cities, city.slug);
 
   const links = hasCityServicePages
-    ? [
-        ...serviceCityServices(services).map((service) => ({
-          service,
-          href: `/services/${service.slug}/${state.slug}/${city.slug}`,
-        })),
-        ...services
-          .filter((service) => service.slug === "expert-disclosure")
-          .map((service) => ({
-            service,
-            href: `/services/${service.slug}/${state.slug}`,
-          })),
-      ]
-    : services
+    ? serviceCityServices(pillarServices()).map((service) => ({
+        service,
+        href: `/services/${service.slug}/${state.slug}/${city.slug}`,
+      }))
+    : pillarServices()
         .filter((service) => !EXCLUDED_SERVICES.has(service.slug))
         .map((service) => ({
           service,

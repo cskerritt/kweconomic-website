@@ -32,7 +32,7 @@ export const comparisons: Comparison[] = [
     a: {
       label: "Forensic Vocational Expert",
       summary: "Retained vocational expert providing opinion testimony in civil or family court litigation on [[/insights/what-is-earning-capacity-evaluation|earning capacity]], employability, and labor market issues.",
-      url: "/services/vocational-expert",
+      url: "/services/life-care-planning",
     },
     b: {
       label: "Social Security Vocational Expert",
@@ -85,7 +85,7 @@ export const comparisons: Comparison[] = [
       { dimension: "Typical holder", a: "Senior forensic vocational expert", b: "Rehabilitation counselor with or without forensic focus" },
     ],
     whenUseA:
-      "Look for ABVE/D when retaining for high-stakes or complex [[/services/vocational-expert|forensic vocational work]].",
+      "Look for ABVE/D when retaining for high-stakes or complex [[/services/life-care-planning|forensic vocational work]].",
     whenUseB:
       "Require CRC as the baseline credential for any vocational role, forensic or clinical.",
     overlap:
@@ -100,7 +100,7 @@ export const comparisons: Comparison[] = [
     sources: refsToSources(["ABVE", "CRCC"]),
     related: [
       { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Vocational Expert Services", href: "/services/vocational-expert", description: "Independent vocational opinion on earning capacity and employability." },
+      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
     ],
   },
   {
@@ -186,7 +186,7 @@ export const comparisons: Comparison[] = [
     a: {
       label: "In-Person Evaluation",
       summary: "Expert meets with the claimant to interview, observe, and sometimes test, supplementing record review.",
-      url: "/services/vocational-expert",
+      url: "/services/life-care-planning",
     },
     b: {
       label: "File Review",
@@ -279,7 +279,7 @@ export const comparisons: Comparison[] = [
       { dimension: "Typical use", a: "Establish work capacity restrictions", b: "Establish diagnosis, causation, prognosis" },
     ],
     whenUseA:
-      "Use an FCE when physical work capacity must be quantified for [[/services/vocational-expert|return-to-work]] or [[/insights/what-is-earning-capacity-evaluation|vocational opinion purposes]].",
+      "Use an FCE when physical work capacity must be quantified for [[/services/life-care-planning|return-to-work]] or [[/insights/what-is-earning-capacity-evaluation|vocational opinion purposes]].",
     whenUseB:
       "Use an IME when diagnostic, causation, or prognosis questions need physician-level opinion, often on behalf of the defense.",
     overlap:
@@ -293,7 +293,7 @@ export const comparisons: Comparison[] = [
     ],
     sources: refsToSources(["GENOVESE_GALPER_2009", "AMA_GUIDES_IMPAIRMENT"]),
     related: [
-      { title: "Vocational Expert Services", href: "/services/vocational-expert", description: "Independent vocational opinion on earning capacity and employability." },
+      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
       { title: "What Is an Earning Capacity Evaluation?", href: "/insights/what-is-earning-capacity-evaluation", description: "How earning capacity is assessed and quantified." },
     ],
   },
@@ -319,7 +319,7 @@ export const comparisons: Comparison[] = [
       { dimension: "Typical requirement", a: "Master's degree + CRC exam", b: "Master's + supervised hours + state exam" },
     ],
     whenUseA:
-      "Look for CRC certification as a minimum baseline for [[/services/vocational-expert|forensic vocational work in any jurisdiction]].",
+      "Look for CRC certification as a minimum baseline for [[/services/life-care-planning|forensic vocational work in any jurisdiction]].",
     whenUseB:
       "Confirm state licensure when the jurisdiction requires it for practice or testimony.",
     overlap:
@@ -333,7 +333,7 @@ export const comparisons: Comparison[] = [
     ],
     sources: refsToSources(["CRCC"]),
     related: [
-      { title: "Vocational Expert Services", href: "/services/vocational-expert", description: "Independent vocational opinion on earning capacity and employability." },
+      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
       { title: "Certified Rehabilitation Counselor (CRC)", href: "/credentials/crc", description: "National rehabilitation counseling certification." },
       { title: "Licensed Rehabilitation Counselor (LRC)", href: "/credentials/lrc", description: "State rehabilitation counseling license." },
     ],
@@ -373,7 +373,7 @@ export const comparisons: Comparison[] = [
     related: [
       { title: "Dictionary of Occupational Titles", href: "/methods/dictionary-of-occupational-titles", description: "Occupational classification and physical-demand terminology." },
       { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Vocational Expert Services", href: "/services/vocational-expert", description: "Independent vocational opinion on earning capacity and employability." },
+      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
     ],
   },
   {
@@ -466,7 +466,7 @@ export const comparisons: Comparison[] = [
     a: {
       label: "Forensic Vocational Expert",
       summary: "A credentialed professional who provides opinion testimony on earning capacity, employability, and labor market issues for litigation.",
-      url: "/services/vocational-expert",
+      url: "/services/life-care-planning",
     },
     b: {
       label: "Rehabilitation Counselor",
@@ -568,7 +568,7 @@ export const comparisons: Comparison[] = [
     whenUseA:
       "Retain a CRC when the case requires [[/guides/earning-capacity-vs-lost-earnings|earning capacity opinion]], labor market analysis, employability assessment, or expert testimony on vocational issues.",
     whenUseB:
-      "Retain a CVE when in-depth [[/services/vocational-expert|standardized testing, work-sample evaluation, or situational assessment]] is needed to characterize aptitudes and work behaviors.",
+      "Retain a CVE when in-depth [[/services/life-care-planning|standardized testing, work-sample evaluation, or situational assessment]] is needed to characterize aptitudes and work behaviors.",
     overlap:
       "Many vocational experts hold both CRC and CVE credentials. The credentials are complementary: CRC provides the breadth of rehabilitation counseling, CVE adds depth in vocational evaluation methodology.",
     faqs: [
@@ -586,7 +586,7 @@ export const comparisons: Comparison[] = [
     sources: refsToSources(["CRCC", "CVE_STATUS"]),
     related: [
       { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings", description: "Distinguishing earning capacity from lost earnings." },
-      { title: "Vocational Expert Services", href: "/services/vocational-expert", description: "Independent vocational opinion on earning capacity and employability." },
+      { title: "Vocational Expert Services", href: "/services/life-care-planning", description: "Independent vocational opinion on earning capacity and employability." },
     ],
   },
   {
@@ -596,7 +596,7 @@ export const comparisons: Comparison[] = [
     a: {
       label: "Vocational Expert",
       summary: "A credentialed forensic professional who opines on earning capacity, employability, and labor market availability for litigation.",
-      url: "/services/vocational-expert",
+      url: "/services/life-care-planning",
     },
     b: {
       label: "Career Counselor",

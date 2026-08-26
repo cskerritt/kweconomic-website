@@ -1,4 +1,4 @@
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import ServiceCard from "@/components/ServiceCard";
 import ContactCTA from "@/components/ContactCTA";
@@ -63,7 +63,7 @@ export default function ServicesHub() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service, i) => (
+            {pillarServices().map((service, i) => (
               <Reveal key={service.slug} delay={i * 60}>
                 <ServiceCard
                   name={service.name}

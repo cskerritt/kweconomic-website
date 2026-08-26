@@ -33,13 +33,13 @@ export const guides: Guide[] = [
         id: "what-is-disclosure",
         heading: "What is pre-trial expert disclosure?",
         bodyHtml:
-          "<p><a href=\"/services/expert-disclosure\">Pre-trial expert disclosure</a> is the formal statement to the opposing party of the expert's expected testimony before trial. Depending on the jurisdiction, the disclosure may take the form of a written report, an interrogatory-style answer signed by the expert, or another format set by the governing framework. The point is to identify the expert, describe what the expert will say, and provide <a href=\"/guides/federal-vs-state-court-daubert\">the basis for the opinions</a> in time for the opposing party to prepare a response.</p>",
+          "<p><a href=\"/services/expert-witness-testimony\">Pre-trial expert disclosure</a> is the formal statement to the opposing party of the expert's expected testimony before trial. Depending on the jurisdiction, the disclosure may take the form of a written report, an interrogatory-style answer signed by the expert, or another format set by the governing framework. The point is to identify the expert, describe what the expert will say, and provide <a href=\"/guides/federal-vs-state-court-daubert\">the basis for the opinions</a> in time for the opposing party to prepare a response.</p>",
       },
       {
         id: "common-content",
         heading: "Common content elements",
         bodyHtml:
-          "<p>Most disclosure frameworks call for the expert's identity, the subject matter, the substance of opinions, the bases for those opinions, qualifications, and (in many jurisdictions) prior testimony and <a href=\"/services/vocational-expert/cost\">compensation</a> (Fed. R. Civ. P. 26(a)(2)). The exact inventory varies by jurisdiction, and trial-track engagements in federal court typically call for a more comprehensive written report than settlement-stage state-court disclosure.</p>",
+          "<p>Most disclosure frameworks call for the expert's identity, the subject matter, the substance of opinions, the bases for those opinions, qualifications, and (in many jurisdictions) prior testimony and <a href=\"/services/life-care-planning/cost\">compensation</a> (Fed. R. Civ. P. 26(a)(2)). The exact inventory varies by jurisdiction, and trial-track engagements in federal court typically call for a more comprehensive written report than settlement-stage state-court disclosure.</p>",
       },
       {
         id: "timing",
@@ -132,13 +132,13 @@ export const guides: Guide[] = [
         id: "who-provides",
         heading: "Who provides the opinion",
         bodyHtml:
-          "<p>A physician expert, typically board-certified in the relevant specialty (American Board of Medical Specialties, n.d.), provides the <a href=\"/services/standard-of-care\">standard of care opinion</a>. Expert qualifications are often specified by state statute.</p>",
+          "<p>A physician expert, typically board-certified in the relevant specialty (American Board of Medical Specialties, n.d.), provides the <a href=\"/services/life-care-planning\">standard of care opinion</a>. Expert qualifications are often specified by state statute.</p>",
       },
       {
         id: "coordination",
         heading: "Coordination with damages experts",
         bodyHtml:
-          "<p>Standard of care and causation opinions set the framework for <a href=\"/services/vocational-expert\">vocational</a>, <a href=\"/services/life-care-planning\">life care planning</a>, and <a href=\"/services/forensic-economics\">economic damages experts</a>, who quantify the consequences of any established breach.</p>",
+          "<p>Standard of care and causation opinions set the framework for <a href=\"/services/life-care-planning\">vocational</a>, <a href=\"/services/life-care-planning\">life care planning</a>, and <a href=\"/services/forensic-economics\">economic damages experts</a>, who quantify the consequences of any established breach.</p>",
       },
     ],
     faqs: [
@@ -150,7 +150,7 @@ export const guides: Guide[] = [
     ],
     sources: refsToSources(["MOFFETT_MOORE_2011", "ABMS"]),
     related: [
-      { title: "Standard of Care Service", href: "/services/standard-of-care" },
+      { title: "Standard of Care Service", href: "/services/life-care-planning" },
       { title: "Medical Malpractice Case Type", href: "/case-types/medical-malpractice" },
     ],
   },
@@ -171,7 +171,7 @@ export const guides: Guide[] = [
         id: "vocational-role",
         heading: "Role of the vocational expert",
         bodyHtml:
-          "<p>SSA <a href=\"/services/vocational-expert\">vocational experts</a> answer hypothetical questions from the Administrative Law Judge (ALJ) regarding the claimant's ability to perform past relevant work or other work in the national economy given the residual functional capacity (SSR 00-4p).</p>",
+          "<p>SSA <a href=\"/services/life-care-planning\">vocational experts</a> answer hypothetical questions from the Administrative Law Judge (ALJ) regarding the claimant's ability to perform past relevant work or other work in the national economy given the residual functional capacity (SSR 00-4p).</p>",
       },
       {
         id: "civil-litigation-contrast",
@@ -310,7 +310,7 @@ export const guides: Guide[] = [
         id: "testing",
         heading: "Testing and prior evaluations",
         bodyHtml:
-          "<p>Any <a href=\"/methods/functional-capacity-evaluation\">functional capacity evaluation</a>, neuropsychological evaluation, <a href=\"/services/vocational-expert\">prior vocational assessments</a>, and deposition transcripts from the claimant and treating providers.</p>",
+          "<p>Any <a href=\"/methods/functional-capacity-evaluation\">functional capacity evaluation</a>, neuropsychological evaluation, <a href=\"/services/life-care-planning\">prior vocational assessments</a>, and deposition transcripts from the claimant and treating providers.</p>",
       },
     ],
     faqs: [
@@ -468,7 +468,7 @@ export const guides: Guide[] = [
         id: "who-opines",
         heading: "Who opines on each",
         bodyHtml:
-          "<p><a href=\"/services/forensic-economics\">A forensic economist</a> typically computes lost earnings arithmetically. <a href=\"/services/vocational-expert\">A vocational expert</a> opines on earning capacity. In most contested cases both experts are retained so that the economist can apply the vocational expert's earning capacity opinion to <a href=\"/methods/present-value-analysis\">the economic projection</a>.</p>",
+          "<p><a href=\"/services/forensic-economics\">A forensic economist</a> typically computes lost earnings arithmetically. <a href=\"/services/life-care-planning\">A vocational expert</a> opines on earning capacity. In most contested cases both experts are retained so that the economist can apply the vocational expert's earning capacity opinion to <a href=\"/methods/present-value-analysis\">the economic projection</a>.</p>",
       },
     ],
     faqs: [
@@ -607,7 +607,7 @@ export const guides: Guide[] = [
         id: "drivers",
         heading: "What extends the timeline",
         bodyHtml:
-          "<p>Incomplete records, <a href=\"/methods/functional-capacity-evaluation\">pending FCE or neuropsychological testing</a>, scheduling of the in-person evaluation, and <a href=\"/services/vocational-expert\">coordination with multiple other experts</a> each add time.</p>",
+          "<p>Incomplete records, <a href=\"/methods/functional-capacity-evaluation\">pending FCE or neuropsychological testing</a>, scheduling of the in-person evaluation, and <a href=\"/services/life-care-planning\">coordination with multiple other experts</a> each add time.</p>",
       },
       {
         id: "rush",
@@ -631,7 +631,7 @@ export const guides: Guide[] = [
     sources: refsToSources(["IARP"]),
     related: [
       { title: "VE Cost and Engagement", href: "/guides/vocational-expert-cost-and-engagement" },
-      { title: "Vocational Expert Process", href: "/services/vocational-expert/process" },
+      { title: "Vocational Expert Process", href: "/services/life-care-planning/process" },
     ],
   },
   {
@@ -695,7 +695,7 @@ export const guides: Guide[] = [
         id: "common-categories",
         heading: "Common expert categories in civil litigation",
         bodyHtml:
-          "<p><a href=\"/services/vocational-expert\">Vocational expert</a>, <a href=\"/services/life-care-planning\">life care planner</a>, <a href=\"/services/forensic-economics\">forensic economist</a>, treating physician, physical medicine and rehabilitation specialist, <a href=\"/services/standard-of-care\">standard of care expert</a>, occupational therapist or physical therapist, and vocational rehabilitation counselor each address distinct questions that together quantify damages.</p>",
+          "<p><a href=\"/services/life-care-planning\">Vocational expert</a>, <a href=\"/services/life-care-planning\">life care planner</a>, <a href=\"/services/forensic-economics\">forensic economist</a>, treating physician, physical medicine and rehabilitation specialist, <a href=\"/services/life-care-planning\">standard of care expert</a>, occupational therapist or physical therapist, and vocational rehabilitation counselor each address distinct questions that together quantify damages.</p>",
       },
       {
         id: "timing",
@@ -744,7 +744,7 @@ export const guides: Guide[] = [
         id: "engagement-structure",
         heading: "Engagement structure",
         bodyHtml:
-          "<p>Engagements follow a typical arc: <a href=\"/services/vocational-expert\">records review, optional in-person evaluation</a>, report writing, deposition, and trial testimony. Each phase is billed hourly. A retainer is customary, with additional billing as work progresses.</p>",
+          "<p>Engagements follow a typical arc: <a href=\"/services/life-care-planning\">records review, optional in-person evaluation</a>, report writing, deposition, and trial testimony. Each phase is billed hourly. A retainer is customary, with additional billing as work progresses.</p>",
       },
       {
         id: "cost-drivers",
@@ -762,7 +762,7 @@ export const guides: Guide[] = [
         id: "budgeting",
         heading: "Budgeting considerations",
         bodyHtml:
-          "<p>Ask for a written scope and <a href=\"/services/vocational-expert/cost\">fee schedule</a> before engagement. Reasonable practice includes periodic invoicing, a cap on initial review hours, and clarity on rates for deposition and trial days, including travel and standby time.</p>",
+          "<p>Ask for a written scope and <a href=\"/services/life-care-planning/cost\">fee schedule</a> before engagement. Reasonable practice includes periodic invoicing, a cap on initial review hours, and clarity on rates for deposition and trial days, including travel and standby time.</p>",
       },
     ],
     faqs: [
@@ -784,7 +784,7 @@ export const guides: Guide[] = [
     ],
     sources: refsToSources(["CRCC_ETHICS", "IARP"]),
     related: [
-      { title: "Vocational Expert Cost Page", href: "/services/vocational-expert/cost" },
+      { title: "Vocational Expert Cost Page", href: "/services/life-care-planning/cost" },
       { title: "How to Hire a Vocational Expert", href: "/guides/how-to-hire-vocational-expert" },
     ],
   },
@@ -908,7 +908,7 @@ export const guides: Guide[] = [
     related: [
       { title: "CRC Certification", href: "/credentials/crc" },
       { title: "Vocational Expert Methodology Standards", href: "/guides/daubert-standard-vocational-experts" },
-      { title: "Vocational Expert Cost", href: "/services/vocational-expert/cost" },
+      { title: "Vocational Expert Cost", href: "/services/life-care-planning/cost" },
     ],
   },
   {
@@ -989,7 +989,7 @@ export const guides: Guide[] = [
       { title: "Earning Capacity vs. Lost Earnings", href: "/guides/earning-capacity-vs-lost-earnings" },
       { title: "Transferable Skills Analysis", href: "/guides/what-is-transferable-skills-analysis" },
       { title: "Labor Market Survey (method page)", href: "/methods/labor-market-survey" },
-      { title: "Vocational Expert Services", href: "/services/vocational-expert" },
+      { title: "Vocational Expert Services", href: "/services/life-care-planning" },
     ],
   },
   {

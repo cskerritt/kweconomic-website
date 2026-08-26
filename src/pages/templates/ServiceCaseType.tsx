@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { getCaseType } from "@/data/caseTypes";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FAQBlock from "@/components/FAQBlock";
@@ -12,7 +12,7 @@ import NotFound from "@/pages/NotFound";
 
 export default function ServiceCaseType() {
   const { serviceSlug = "", typeSlug = "" } = useParams();
-  const service = services.find((s) => s.slug === serviceSlug);
+  const service = pillarServices().find((s) => s.slug === serviceSlug);
   const caseType = getCaseType(typeSlug);
 
   const url =

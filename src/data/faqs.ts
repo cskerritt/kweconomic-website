@@ -15,12 +15,12 @@ export const faqs: Faq[] = [
     question: "What is a vocational expert and what do they do?",
     sources: refsToSources(["BLS_OOH", "ONET", "CRCC", "CVE_STATUS", "ABVE"]),
     answer:
-      "A [[/services/vocational-expert|vocational expert (VE)]] is a credentialed professional who evaluates an individual's ability to work, earn wages, and sustain employment given their education, training, experience, and any medical restrictions. In litigation, VEs provide opinions on employability, [[/insights/what-is-earning-capacity-evaluation|earning capacity]], and [[/guides/what-is-transferable-skills-analysis|labor market conditions]]. KWVRS vocational experts hold [[/credentials|credentials such as CRC, CVE, and ABVE/D]].",
+      "A [[/services/life-care-planning|vocational expert (VE)]] is a credentialed professional who evaluates an individual's ability to work, earn wages, and sustain employment given their education, training, experience, and any medical restrictions. In litigation, VEs provide opinions on employability, [[/insights/what-is-earning-capacity-evaluation|earning capacity]], and [[/guides/what-is-transferable-skills-analysis|labor market conditions]]. KWVRS vocational experts hold [[/credentials|credentials such as CRC, CVE, and ABVE/D]].",
   },
   {
     question: "What types of cases does KWVRS accept?",
     answer:
-      "KWVRS accepts cases across a wide range of practice areas, including [[/insights/role-of-vocational-expert-personal-injury|personal injury]], workers' compensation, [[/services/standard-of-care|medical malpractice]], wrongful death, wrongful termination, [[/guides/ssa-disability-and-vocational-evidence|long-term disability]], and [[/services/matrimonial|matrimonial/family law]]. KWVRS accepts engagements from both plaintiff and defense counsel, and opinions are based solely on the evidence.",
+      "KWVRS accepts cases across a wide range of practice areas, including [[/insights/role-of-vocational-expert-personal-injury|personal injury]], workers' compensation, [[/services/life-care-planning|medical malpractice]], wrongful death, wrongful termination, [[/guides/ssa-disability-and-vocational-evidence|long-term disability]], and [[/services/life-care-planning|matrimonial/family law]]. KWVRS accepts engagements from both plaintiff and defense counsel, and opinions are based solely on the evidence.",
   },
   {
     question: "What is a life care plan?",
@@ -32,7 +32,7 @@ export const faqs: Faq[] = [
     question: "What is forensic economic analysis?",
     sources: refsToSources(["TINARI_2016", "BLS_ATUS"]),
     answer:
-      "[[/services/forensic-economics|Forensic economic analysis]] quantifies the economic damages resulting from injury or death. This includes lost earnings, [[/insights/what-is-earning-capacity-evaluation|lost earning capacity]], [[/services/loss-of-household-services|lost household services]], and fringe benefits - all calculated in [[/insights/how-forensic-economists-calculate-damages|present value]]. KWVRS's affiliated forensic economists at kweconomics.com provide these analyses for personal injury, wrongful death, and wrongful termination cases.",
+      "[[/services/forensic-economics|Forensic economic analysis]] quantifies the economic damages resulting from injury or death. This includes lost earnings, [[/insights/what-is-earning-capacity-evaluation|lost earning capacity]], [[/services/life-care-planning|lost household services]], and fringe benefits - all calculated in [[/insights/how-forensic-economists-calculate-damages|present value]]. KWVRS's affiliated forensic economists at kweconomics.com provide these analyses for personal injury, wrongful death, and wrongful termination cases.",
   },
   {
     question: "How is an earning capacity evaluation different from a wage loss calculation?",
@@ -50,12 +50,12 @@ export const faqs: Faq[] = [
     question: "Does KWVRS work in all 50 states?",
     sources: refsToSources(["RSA_ED"]),
     answer:
-      "Yes. KWVRS accepts cases in [[/locations|all 50 states, the District of Columbia, and U.S. territories]]. Our experts are familiar with jurisdiction-specific [[/guides/vocational-rehabilitation-services-explained|vocational rehabilitation agency frameworks]], [[/guides/expert-witness-disclosure-rules|court rules regarding expert testimony]], and [[/services/vocational-expert|local labor market conditions]].",
+      "Yes. KWVRS accepts cases in [[/locations|all 50 states, the District of Columbia, and U.S. territories]]. Our experts are familiar with jurisdiction-specific [[/guides/vocational-rehabilitation-services-explained|vocational rehabilitation agency frameworks]], [[/guides/expert-witness-disclosure-rules|court rules regarding expert testimony]], and [[/services/life-care-planning|local labor market conditions]].",
   },
   {
     question: "How long does it take to receive a vocational evaluation report?",
     answer:
-      "[[/guides/how-long-does-vocational-evaluation-take|Report turnaround time]] depends on the complexity of the case, availability of medical records, and whether an in-person evaluation is required. In most cases, we can deliver an initial [[/services/vocational-expert|evaluation report]] within 30-45 days of receiving complete case materials. Rush timelines may be available - [[/contact|contact us]] to discuss your deadline.",
+      "[[/guides/how-long-does-vocational-evaluation-take|Report turnaround time]] depends on the complexity of the case, availability of medical records, and whether an in-person evaluation is required. In most cases, we can deliver an initial [[/services/life-care-planning|evaluation report]] within 30-45 days of receiving complete case materials. Rush timelines may be available - [[/contact|contact us]] to discuss your deadline.",
   },
   {
     question: "What credentials should I look for in a vocational expert?",
@@ -66,13 +66,13 @@ export const faqs: Faq[] = [
   {
     question: "Can KWVRS provide a life care plan and vocational evaluation for the same case?",
     answer:
-      "Yes, and this can be an efficient approach for catastrophic injury matters. KWVRS's [[/team|multidisciplinary team]] can coordinate a [[/services/vocational-expert|vocational evaluation]], [[/services/life-care-planning|life care plan]], and [[/services/forensic-economics|forensic economic analysis]] for the same case, ensuring consistency across opinions and reducing the burden on the retaining attorney.",
+      "Yes, and this can be an efficient approach for catastrophic injury matters. KWVRS's [[/team|multidisciplinary team]] can coordinate a [[/services/life-care-planning|vocational evaluation]], [[/services/life-care-planning|life care plan]], and [[/services/forensic-economics|forensic economic analysis]] for the same case, ensuring consistency across opinions and reducing the burden on the retaining attorney.",
   },
   {
     question: "What is the difference between a vocational expert and an occupational therapist?",
     sources: refsToSources(["AOTA_OTPF_2020", "BLS_OOH"]),
     answer:
-      "A [[/services/vocational-expert|vocational expert]] evaluates [[/guides/what-is-transferable-skills-analysis|labor market factors]] - what jobs someone can perform, what those jobs pay, and whether the person is [[/insights/what-is-earning-capacity-evaluation|competitively employable]]. An occupational therapist (OT) evaluates functional capacity - what physical and cognitive tasks a person can actually perform. In [[/insights/role-of-vocational-expert-personal-injury|complex injury cases]], both are often needed: the OT establishes functional limits, and the vocational expert translates those limits into labor market consequences.",
+      "A [[/services/life-care-planning|vocational expert]] evaluates [[/guides/what-is-transferable-skills-analysis|labor market factors]] - what jobs someone can perform, what those jobs pay, and whether the person is [[/insights/what-is-earning-capacity-evaluation|competitively employable]]. An occupational therapist (OT) evaluates functional capacity - what physical and cognitive tasks a person can actually perform. In [[/insights/role-of-vocational-expert-personal-injury|complex injury cases]], both are often needed: the OT establishes functional limits, and the vocational expert translates those limits into labor market consequences.",
   },
   {
     question: "How do I retain KWVRS for a case?",

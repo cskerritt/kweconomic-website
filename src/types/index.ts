@@ -45,12 +45,13 @@ export interface Service {
   slug: string;
   name: string;
   shortName: string;
+  pillar: boolean; // false = cross-sell only, excluded from geo/case/cost enumeration
   description: string;
   icon: string;
   keywords: string[];
   caseTypes: string[];
   relevantCredentials: string[];
-  externalUrl?: string;
+  externalUrl?: string; // non-pillar cross-sells link out here
   cost?: ServiceCost;
   process?: ServiceProcessStep[];
   timeline?: ServiceTimelinePhase[];

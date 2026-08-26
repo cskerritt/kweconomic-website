@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 
 interface RelatedServicesProps {
   /** Case types relevant to the current page - used to find matching services */
@@ -9,12 +9,13 @@ interface RelatedServicesProps {
   stateSlug: string;
 }
 
-const EXCLUDED = new Set(["standard-of-care", "expert-witness-testimony"]);
+// Testimony is a mode of every engagement, not a sibling "related" service.
+const EXCLUDED = new Set(["expert-witness-testimony"]);
 
 export default function RelatedServices({ caseTypes, stateSlug }: RelatedServicesProps) {
   // Find services that share at least one case type with the provided list
   const caseTypeSet = new Set(caseTypes);
-  const matched = services
+  const matched = pillarServices()
     .filter((s) => !EXCLUDED.has(s.slug))
     .filter((s) => s.caseTypes.some((ct) => caseTypeSet.has(ct)))
     .slice(0, 4);

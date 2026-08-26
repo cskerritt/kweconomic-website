@@ -1,3 +1,4 @@
+import { getServiceBySlug } from "@/data/services";
 import type { City, Service } from "@/types";
 
 /**
@@ -18,19 +19,18 @@ import type { City, Service } from "@/types";
 // here: it eagerly pulls metro-labor data into whatever imports it.
 export const SERVICE_CITY_TOP = 10;
 
-// Services excluded from the service x state x city cross-product.
-// expert-disclosure is state-level only (its /services/expert-disclosure/:state
-// pages come from disclosureRules.ts); mirrors the exclusions in the scripts.
-const SERVICE_CITY_EXCLUDED = new Set(["expert-disclosure"]);
+// Only pillar services take part in the service x state x city cross-product.
+// A `pillar: false` cross-sell (forensic economics) has no geographic tier at
+// all; mirrors scripts/lib/service-slugs.mjs, which the build scripts use.
 
 /** Services that have /services/<service>/<state>/<city> pages. */
 export function serviceCityServices(all: Service[]): Service[] {
-  return all.filter((s) => !SERVICE_CITY_EXCLUDED.has(s.slug));
+  return all.filter((s) => s.pillar);
 }
 
-/** True when the service has a city tier at all (expert-disclosure does not). */
+/** True when the service has a city tier at all (non-pillar cross-sells do not). */
 export function serviceHasCityPages(serviceSlug: string): boolean {
-  return !SERVICE_CITY_EXCLUDED.has(serviceSlug);
+  return getServiceBySlug(serviceSlug)?.pillar === true;
 }
 
 /**

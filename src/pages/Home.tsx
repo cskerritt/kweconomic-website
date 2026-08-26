@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Shield, Phone } from "lucide-react";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { states } from "@/data/states";
 import { testimonials } from "@/data/testimonials";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -80,9 +80,8 @@ export default function Home() {
     canonical: "https://kwvrs.com/",
   });
 
-  const coreServices = services.filter(
-    (s) => !["standard-of-care", "expert-witness-testimony"].includes(s.slug)
-  );
+  // Planning lines only; testimony is a mode of every engagement, not a card.
+  const coreServices = pillarServices().filter((s) => s.slug !== "expert-witness-testimony");
 
   // Anonymous retaining-attorney quote (owner-attested set). Index 2 = the
   // expert-report quote - the settlement-outcome quote (index 0) was removed

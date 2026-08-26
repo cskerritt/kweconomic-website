@@ -36,7 +36,7 @@ export const caseTypes: CaseType[] = [
       "Economic damages in TBI matters commonly include lost earnings, lost earning capacity, lost household services, lost fringe benefits, and the present value of future wage loss across the claimant's worklife expectancy. In catastrophic cases damages can extend into lost retirement contributions and reduced worklife expectancy.",
     lifeCareImpact:
       "Life care plans for TBI routinely address cognitive rehabilitation, neuropsychological follow-up, medications, assistive technology, case management, home modifications, attendant care, and in severe cases 24-hour supervised care. Plans are typically built in coordination with the treating physiatrist, neurologist, and neuropsychologist.",
-    relevantServices: ["vocational-expert", "life-care-planning", "forensic-economics", "standard-of-care"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["crc", "clcp", "cve", "abve-d", "md", "phd"],
     icdCodes: ["S06", "S06.2", "S06.3", "S06.9"],
     faqs: [
@@ -96,7 +96,7 @@ export const caseTypes: CaseType[] = [
       "Damages typically include past and future lost earnings, loss of earning capacity, lost household services, lost fringe benefits, and the present value of a comprehensive life care plan. Household services losses can be particularly significant in SCI cases.",
     lifeCareImpact:
       "Life care plans for SCI commonly address routine medical care, rehabilitation therapies, durable medical equipment (wheelchairs, transfer aids, pressure-relief surfaces), home modifications, vehicle modifications, attendant care or personal care attendants, bowel and bladder supplies, and periodic replacements of equipment over the lifespan.",
-    relevantServices: ["life-care-planning", "vocational-expert", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["clcp", "crc", "cve", "md", "phd"],
     icdCodes: ["S14", "S24", "S34"],
     faqs: [
@@ -150,7 +150,7 @@ export const caseTypes: CaseType[] = [
       "Damages commonly include past and future lost earnings, loss of earning capacity, lost household services, prosthetic costs with projected replacements, and the present value of the full life care plan.",
     lifeCareImpact:
       "Life care plans for amputation routinely include prosthetic devices and components with documented replacement intervals, socket replacements, gait training, occupational therapy, skin care supplies, residual limb care, and when appropriate osseointegration follow-up or advanced myoelectric technology.",
-    relevantServices: ["life-care-planning", "vocational-expert", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["clcp", "crc", "cve", "md"],
     icdCodes: ["S68", "S78", "S88", "S98"],
     faqs: [
@@ -197,7 +197,7 @@ export const caseTypes: CaseType[] = [
       "For a decedent, the vocational component reconstructs earning capacity at the time of death using education, training, work history, industry trajectories, and labor market data. In some jurisdictions, a claimant spouse's earning capacity is also evaluated where household services or income contributions are at issue.",
     economicExposure:
       "Damages typically include lost earnings and earning capacity across the decedent's worklife, lost fringe benefits, lost household services, and in some jurisdictions loss of personal consortium, care, guidance, and advice. Projections are reduced to present value using appropriate discount rates and net of personal consumption.",
-    relevantServices: ["forensic-economics", "vocational-expert"],
+    relevantServices: ["forensic-economics", "life-care-planning"],
     relevantCredentials: ["abve-d", "abve-f", "crc", "phd"],
     faqs: [
       {
@@ -245,7 +245,7 @@ export const caseTypes: CaseType[] = [
       "Damages typically include past and future lost earnings, loss of earning capacity, lost household services, and present value of a life care plan focused on incremental care attributable to the alleged breach rather than unrelated baseline care.",
     lifeCareImpact:
       "Medical malpractice life care plans generally isolate incremental future medical and non-medical needs attributable to the alleged breach, separating baseline care the claimant would have required absent the event.",
-    relevantServices: ["standard-of-care", "life-care-planning", "vocational-expert", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["md", "clcp", "crc", "abve-d"],
     faqs: [
       {
@@ -288,7 +288,7 @@ export const caseTypes: CaseType[] = [
       "Damages include lost earnings, lost earning capacity, lost household services, and present value of future reconstructive surgeries, skin care, compression garments, and psychological treatment.",
     lifeCareImpact:
       "Plans commonly include staged reconstructive surgery, compression garments with replacement intervals, specialized wound care supplies, scar management, physical and occupational therapy, and mental health services addressing PTSD and body image concerns.",
-    relevantServices: ["life-care-planning", "vocational-expert", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["clcp", "crc", "md"],
     icdCodes: ["T20", "T21", "T22", "T23", "T24", "T25"],
     faqs: [
@@ -324,7 +324,7 @@ export const caseTypes: CaseType[] = [
       "A vocational evaluation establishes residual functional capacity, transferable skills, and labor market options consistent with post-injury medical restrictions. The analysis supports earning capacity opinion and accommodation planning.",
     economicExposure:
       "Damages may include past and future lost earnings, loss of earning capacity, lost household services, lost fringe benefits, and present value of any needed life care plan.",
-    relevantServices: ["vocational-expert", "life-care-planning", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["crc", "cve", "abve-d", "clcp"],
     faqs: [
       {
@@ -359,7 +359,7 @@ export const caseTypes: CaseType[] = [
       "Vocational analysis in workers' compensation focuses on return-to-work planning, job analysis of the pre-injury position, identification of alternative work within medical restrictions, and when applicable retraining or vocational rehabilitation services.",
     economicExposure:
       "Economic exposure varies by jurisdiction and commonly includes temporary total disability, permanent partial or total disability, vocational rehabilitation services, and in some cases lump-sum settlements calculated against earning capacity.",
-    relevantServices: ["vocational-expert", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["crc", "cve", "lrc"],
     faqs: [
       {
@@ -394,7 +394,7 @@ export const caseTypes: CaseType[] = [
       "LTD vocational analysis applies the relevant policy definition (own occupation, any occupation, reasonable occupation) to the claimant's documented functional capacity and transferable skills, identifying whether suitable occupations exist within medical restrictions.",
     economicExposure:
       "Exposure is defined by the policy - monthly benefit amount, offsets, cost-of-living adjustments, and benefit duration to the policy maximum age.",
-    relevantServices: ["vocational-expert"],
+    relevantServices: ["life-care-planning"],
     relevantCredentials: ["crc", "cve", "abve-d"],
     faqs: [
       {
@@ -429,7 +429,7 @@ export const caseTypes: CaseType[] = [
       "Vocational analysis addresses the claimant's reasonable job search, the availability of comparable positions in the relevant labor market, and the time required to secure comparable or alternative employment.",
     economicExposure:
       "Damages typically include back pay (from termination to trial), front pay (from trial to expected re-employment), lost benefits, and loss of earning capacity where applicable. Mitigation offsets apply.",
-    relevantServices: ["vocational-expert", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["crc", "cve", "cprw"],
     faqs: [
       {
@@ -464,7 +464,7 @@ export const caseTypes: CaseType[] = [
       "A vocational evaluation reconstructs the spouse's earning capacity based on education, training, work history, and local labor market conditions, addressing any re-entry timeline and retraining needs.",
     economicExposure:
       "Exposure is defined by jurisdictional support formulas applied to imputed or actual income. Vocational opinions can significantly affect temporary and permanent support determinations.",
-    relevantServices: ["vocational-expert"],
+    relevantServices: ["life-care-planning"],
     relevantCredentials: ["crc", "cve", "abve-d"],
     faqs: [
       {
@@ -501,7 +501,7 @@ export const caseTypes: CaseType[] = [
       "Damages commonly include lost earnings, lost earning capacity, lost household services, and present value of future care in moderate-to-catastrophic cases.",
     lifeCareImpact:
       "Life care plans are indicated in catastrophic MVA cases and address ongoing orthopedic, neurological, and rehabilitative care, along with durable medical equipment and attendant care where needed.",
-    relevantServices: ["vocational-expert", "life-care-planning", "forensic-economics"],
+    relevantServices: ["life-care-planning", "forensic-economics"],
     relevantCredentials: ["crc", "clcp", "abve-d"],
     faqs: [
       {

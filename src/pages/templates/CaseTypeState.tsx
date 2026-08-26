@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { states } from "@/data/states";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import { activeTeam } from "@/data/team";
 import { getCourtsByState } from "@/data/courts/state-courts";
@@ -141,7 +141,7 @@ export default function CaseTypeState() {
               Vocational and rehabilitation experts in {state.name}
             </Link>
           </li>
-          {services
+          {pillarServices()
             .filter((s) => caseType.relevantServices.includes(s.slug))
             .map((s) => (
               <li key={s.slug}>

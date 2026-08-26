@@ -22,7 +22,7 @@ export const methods: Methodology[] = [
     summary:
       "Transferable skills analysis (TSA) is a vocational methodology that identifies occupations a person could perform based on skills developed in past work, applied to current medical and functional restrictions and labor market conditions.",
     whenUsed:
-      "TSA is used in [[/guides/earning-capacity-vs-lost-earnings|earning capacity analysis]], return-to-work planning, employability opinions in LTD matters, and [[/services/vocational-expert|post-injury vocational evaluation]].",
+      "TSA is used in [[/guides/earning-capacity-vs-lost-earnings|earning capacity analysis]], return-to-work planning, employability opinions in LTD matters, and [[/services/life-care-planning|post-injury vocational evaluation]].",
     steps: [
       "Document the individual's complete work history with DOT or O*NET job codes and SVP (specific vocational preparation) levels",
       "Identify skills, work fields, and Materials-Products-Subject Matter-Services (MPSMS) codes from prior occupations",
@@ -42,7 +42,7 @@ export const methods: Methodology[] = [
       "[[/guides/what-is-transferable-skills-analysis|TSA]] reflects theoretical transferability at a moment in time. It does not guarantee placement; job availability, hiring practices, and regional demand still apply. Older DOT data has known age-of-information limitations that practitioners address by cross-referencing with [[/methods/onet-analysis|O*NET]].",
     admissibilityHistory:
       "TSA is a widely used vocational methodology in federal and state courts when properly documented and sourced (20 C.F.R. sec. 404.1568; Truthan & Karman, 2003).",
-    relevantServices: ["vocational-expert"],
+    relevantServices: ["life-care-planning"],
     faqs: [
       {
         question: "Is DOT data still valid given its age?",
@@ -74,7 +74,7 @@ export const methods: Methodology[] = [
     summary:
       "A labor market survey (LMS) documents the availability of specific occupations in the claimant's relevant labor market, typically including wage ranges, employer names, and openings.",
     whenUsed:
-      "LMS is used to translate theoretical transferability into actual [[/services/vocational-expert|occupational availability]] in the claimant's geographic area.",
+      "LMS is used to translate theoretical transferability into actual [[/services/life-care-planning|occupational availability]] in the claimant's geographic area.",
     steps: [
       "Define the relevant labor market geographically (commute radius, metro area)",
       "Select target occupations from the [[/methods/transferable-skills-analysis|TSA results]]",
@@ -94,7 +94,7 @@ export const methods: Methodology[] = [
       "Survey results reflect market conditions at a point in time. Turnover, hiring freezes, and seasonal variation can affect later availability. Documentation of the survey date and geographic scope is therefore essential.",
     admissibilityHistory:
       "Well-documented LMS evidence has been widely accepted. Courts may exclude LMS that is anecdotal, stale, or not grounded in the relevant geographic labor market (Daubert v. Merrell Dow Pharmaceuticals, Inc., 509 U.S. 579 (1993)).",
-    relevantServices: ["vocational-expert"],
+    relevantServices: ["life-care-planning"],
     faqs: [
       {
         question: "How far does the 'relevant labor market' extend?",
@@ -160,7 +160,7 @@ export const methods: Methodology[] = [
     summary:
       "Present value analysis reduces a projected stream of future damages to a single lump sum equivalent in today's dollars, accounting for the time value of money and expected growth of the underlying cash flows.",
     whenUsed:
-      "Present value analysis is used to express future lost earnings, [[/services/loss-of-household-services|lost household services]], and future medical/non-medical care in a [[/compare/lump-sum-vs-present-value|single lump sum]] for trial or settlement purposes.",
+      "Present value analysis is used to express future lost earnings, [[/services/life-care-planning|lost household services]], and future medical/non-medical care in a [[/compare/lump-sum-vs-present-value|single lump sum]] for trial or settlement purposes.",
     steps: [
       "Project the nominal cash flow stream (wages, benefits, [[/services/life-care-planning|care costs]]) over the relevant horizon",
       "Select a discount rate (often Treasury-based) matched to the horizon",
@@ -274,7 +274,7 @@ export const methods: Methodology[] = [
     summary:
       "The Dictionary of Occupational Titles (DOT) is a U.S. Department of Labor reference that classifies over 12,000 occupations (U.S. Department of Labor, 1991) by title, code, physical demands, working conditions, and specific vocational preparation (SVP).",
     whenUsed:
-      "DOT remains a core reference in [[/services/vocational-expert|vocational evaluation]], [[/guides/ssa-disability-and-vocational-evidence|Social Security disability determinations]], and transferable skills analysis.",
+      "DOT remains a core reference in [[/services/life-care-planning|vocational evaluation]], [[/guides/ssa-disability-and-vocational-evidence|Social Security disability determinations]], and transferable skills analysis.",
     steps: [
       "Identify the DOT code for the occupation at issue",
       "Review the strength rating, physical demands, environmental conditions, and SVP",
@@ -289,7 +289,7 @@ export const methods: Methodology[] = [
       "The DOT has not been comprehensively updated since 1991. Best practice is to cross-reference with O*NET, particularly for newer occupations.",
     admissibilityHistory:
       "DOT-grounded opinions are widely accepted, with courts often expecting cross-referencing with O*NET where appropriate.",
-    relevantServices: ["vocational-expert"],
+    relevantServices: ["life-care-planning"],
     faqs: [
       {
         question: "Why is the DOT still used if it is not current?",
@@ -324,8 +324,8 @@ export const methods: Methodology[] = [
     limitations:
       "O*NET descriptors differ from DOT in granularity; cross-referencing is necessary when DOT-style physical demand detail is required.",
     admissibilityHistory:
-      "O*NET-based [[/services/vocational-expert|vocational analyses]] are widely accepted.",
-    relevantServices: ["vocational-expert"],
+      "O*NET-based [[/services/life-care-planning|vocational analyses]] are widely accepted.",
+    relevantServices: ["life-care-planning"],
     faqs: [
       {
         question: "How does O*NET differ from DOT in practical use?",
@@ -389,7 +389,7 @@ export const methods: Methodology[] = [
     summary:
       "A functional capacity evaluation (FCE) is a standardized assessment of a person's physical capacity to perform work-related activities, typically conducted by an occupational or physical therapist over one or two days.",
     whenUsed:
-      "FCEs are used to establish [[/compare/work-capacity-evaluation-vs-fce|return-to-work capacity]], permanent restrictions, and as a foundation for [[/services/vocational-expert|vocational opinion on employability]].",
+      "FCEs are used to establish [[/compare/work-capacity-evaluation-vs-fce|return-to-work capacity]], permanent restrictions, and as a foundation for [[/services/life-care-planning|vocational opinion on employability]].",
     steps: [
       "Obtain referral and medical records",
       "Perform intake interview, vital signs, pain and symptom baseline",
@@ -406,7 +406,7 @@ export const methods: Methodology[] = [
       "[[/compare/fce-vs-ime|FCE results]] depend on examinee effort and consistency; reliability measures are included to identify submaximal effort. Results reflect capacity on the day of testing.",
     admissibilityHistory:
       "Standardized FCEs are broadly accepted when administered by qualified evaluators using validated protocols (King et al., 1998).",
-    relevantServices: ["life-care-planning", "vocational-expert"],
+    relevantServices: ["life-care-planning"],
     faqs: [
       {
         question: "How long does an FCE take?",

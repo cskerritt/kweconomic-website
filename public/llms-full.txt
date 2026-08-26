@@ -146,36 +146,12 @@ States served: Colorado
 
 ## Services in Detail
 
-### Vocational Expert Services
-Comprehensive earning capacity evaluations and vocational assessments for litigation. Our vocational experts analyze an individual's ability to work, earn wages, and sustain employment given their education, training, experience, and medical restrictions.
-
-Common case types: Personal Injury, Workers' Compensation, Wrongful Termination, Discrimination, Long Term Disability
-
-Relevant credentials: CRC, CVE, ABVE/D, IPEC, FVE
-
-Engagement process:
-1. Engagement and conflict check: We confirm the assignment, check for conflicts, and establish the scope, retainer, and deadlines in a written engagement agreement.
-2. Records collection and review: We review medical, educational, vocational, and employment records, along with deposition transcripts and any prior expert reports relevant to vocational capacity.
-3. Vocational interview and assessment: When appropriate, we conduct a vocational interview and administer standardized testing to document work history, skills, education, and functional restrictions.
-4. Transferable skills and labor market analysis: We complete a transferable skills analysis and labor market survey using O*NET, the Dictionary of Occupational Titles, and Bureau of Labor Statistics data to identify suitable occupations and wage ranges.
-5. Earning capacity opinion and report: We compare pre- and post-injury vocational and earning capacity and document the methodology, data sources, and opinions in a written report that meets Daubert and Rule 26 requirements.
-6. Testimony: We provide deposition and trial testimony and prepare supplemental opinions as new records or rebuttal reports are produced.
-
-Typical timeline:
-- Engagement and records review: 1 to 3 weeks after records are received
-- Vocational interview and testing: Scheduled within the review period when required
-- Analysis and labor market research: 1 to 2 weeks
-- Draft report: 2 to 4 weeks after the evaluation, depending on scope
-- Deposition and trial testimony: As scheduled by counsel and the court
-
-Fees: Forensic vocational services are billed at an hourly rate for record review, evaluation, analysis, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
-
 ### Life Care Planning
-Individualized, evidence-based life care plans that project the future medical and non-medical needs of individuals with catastrophic injuries or chronic conditions. Each plan details the cost of care across a patient's remaining life expectancy.
+Individualized, evidence-based life care plans projecting the future medical, rehabilitation, and non-medical needs of individuals living with catastrophic injuries or chronic conditions. Each plan documents the items of care recommended across the patient's remaining life expectancy, with cost research grounded in geographic-specific provider data.
 
-Common case types: Personal Injury, Medical Malpractice, Traumatic Brain Injury, Workers' Compensation
+Common case types: Personal Injury, Medical Malpractice, Traumatic Brain Injury, Spinal Cord Injury, Workers' Compensation
 
-Relevant credentials: CLCP, CRC, RN
+Relevant credentials: CLCP, CNLCP, CRC, RN
 
 Engagement process:
 1. Engagement and records collection: We confirm scope and conflicts, establish the retainer, and gather medical records, imaging, and provider information.
@@ -194,112 +170,200 @@ Typical timeline:
 
 Fees: Life care planning is billed at an hourly rate for records review, clinical interview, provider collaboration, cost research, plan preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
 
-### Forensic Economic Evaluations
-Financial impact analysis quantifying economic damages including lost earnings, lost earning capacity, lost household services, and other economic losses. Our economists provide present-value calculations and expert testimony.
+### Pediatric Life Care Planning
+Life care plans for minors with birth-related injuries, congenital conditions, or pediatric trauma. Plans address developmental considerations, transitions to adulthood, and lifetime care needs from current age through projected life expectancy.
 
-Common case types: Personal Injury, Wrongful Death, Medical Malpractice, Wrongful Termination
+Common case types: Birth Injury, Cerebral Palsy, Medical Malpractice, Traumatic Brain Injury, Personal Injury
 
-Relevant credentials: Ph.D., CPA, CFE
-
-More information: https://kweconomics.com
+Relevant credentials: CLCP, CNLCP, RN, MD
 
 Engagement process:
-1. Engagement and data collection: We confirm scope and conflicts, establish the retainer, and collect earnings records, tax returns, and the vocational or life care foundation for the damages.
-2. Earnings and benefits analysis: We establish pre- and post-injury earnings, fringe benefits, and household services using wage data and the individual's documented history.
-3. Worklife and assumptions: We apply worklife expectancy, earnings growth, and discount rate assumptions drawn from government data and peer-reviewed sources.
-4. Present-value modeling: We calculate the present value of past and future losses and prepare sensitivity analysis across reasonable assumption ranges.
-5. Report: We document the methodology, data sources, and calculations in a written report that meets Daubert and Rule 26 requirements.
-6. Testimony: We provide deposition and trial testimony and prepare rebuttal analyses of opposing economic opinions.
+1. Engagement and records collection: We confirm scope and conflicts, establish the retainer, and gather neonatal, pediatric, therapy, educational, and early intervention records.
+2. Records review and developmental chronology: We build a chronology of the diagnosis, interventions to date, developmental milestones, and the child's current functional status.
+3. Caregiver interview and clinical assessment: We interview parents or guardians, observe the child when appropriate, and coordinate with treating pediatric specialists and therapists.
+4. Stage-based care projection: We project medical, therapy, equipment, educational support, attendant care, and housing needs by developmental stage, through adult transition and the remaining life expectancy.
+5. Cost research and plan preparation: We price each item using geographically specific pediatric and adult provider data, with replacement cycles that account for growth, and document the basis for every recommendation.
+6. Testimony: We provide deposition and trial testimony and update the plan as the child's condition, treatment, or records change.
 
 Typical timeline:
-- Engagement and data collection: 1 to 2 weeks
-- Analysis and modeling: 2 to 4 weeks after records are received
-- Draft report: 1 to 2 weeks after the analysis
-- Rebuttal or supplemental analysis: As opposing reports are produced
+- Engagement and records collection: 1 to 3 weeks
+- Records review and developmental chronology: 2 to 4 weeks, depending on record volume
+- Caregiver interview and provider collaboration: Scheduled within the review period
+- Cost research and draft plan: 4 to 6 weeks after the assessment
 - Deposition and trial testimony: As scheduled by counsel and the court
 
-Fees: Economic analysis is billed at an hourly rate for data review, modeling, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+Fees: Pediatric life care planning is billed at an hourly rate for records review, caregiver and provider interviews, developmental care projection, cost research, plan preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
 
-### Loss of Household Services
-Evaluation and quantification of lost household services - the unpaid domestic work an injured person can no longer perform. Assessments cover childcare, home maintenance, meal preparation, and other household production activities.
+### Catastrophic Injury Plans
+Life care plans for adults with traumatic brain injury, spinal cord injury, severe burns, amputations, and other catastrophic injuries. Plans coordinate medical, attendant care, equipment, home modification, and transportation needs over the life span.
 
-Common case types: Personal Injury, Wrongful Death, Motor Vehicle Accident
+Common case types: Traumatic Brain Injury, Spinal Cord Injury, Burn Injury, Amputation, Motor Vehicle Accident, Personal Injury
 
-Relevant credentials: CRC, CVE
+Relevant credentials: CLCP, CNLCP, CRC, RN
 
 Engagement process:
-1. Engagement and records review: We confirm scope and conflicts, establish the retainer, and review records describing the household and the injury's functional impact.
-2. Household activity interview: When appropriate, we interview the individual and family to document the pre-injury division of household labor and current limitations.
-3. Task and hour quantification: We quantify the household tasks affected and the hours typically devoted to each, using recognized household production frameworks.
-4. Replacement-cost valuation: We apply replacement-cost wage data for the relevant tasks and geographic area.
-5. Report: We document the methodology and findings in a written report, coordinating present-value calculation with a forensic economist when required.
-6. Testimony: We provide deposition and trial testimony as needed.
+1. Engagement and records collection: We confirm scope and conflicts, establish the retainer, and gather acute care, rehabilitation, outpatient, and equipment records.
+2. Records review and clinical chronology: We build a chronology from the injury through rehabilitation to current status, documenting the level of injury, complications, and functional outcomes.
+3. Clinical interview and home assessment: We interview the individual and caregivers, assess the home environment when appropriate, and coordinate with treating physicians, therapists, and equipment vendors.
+4. Lifetime care projection: We project attendant care, medical follow-up, therapies, equipment and prosthetics, home modification, transportation, and secondary-condition surveillance across the remaining life expectancy.
+5. Cost research and plan preparation: We price each item using geographically specific provider, agency, and vendor data and document the basis for every recommendation in a written plan.
+6. Testimony: We provide deposition and trial testimony and update the plan as the clinical picture or records change.
 
 Typical timeline:
-- Engagement and records review: 1 to 2 weeks
-- Interview and quantification: Scheduled within the review period
-- Valuation and draft report: 2 to 3 weeks after the interview
-- Economic coordination: As required for present-value calculation
+- Engagement and records collection: 1 to 3 weeks
+- Records review and chronology: 3 to 5 weeks, depending on record volume
+- Clinical interview and home assessment: Scheduled within the review period
+- Cost research and draft plan: 4 to 8 weeks after the assessment
 - Deposition and trial testimony: As scheduled by counsel and the court
 
-Fees: Household services analysis is billed at an hourly rate for review, interview, research, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+Fees: Catastrophic injury planning is billed at an hourly rate for records review, clinical interview, home assessment, provider collaboration, cost research, plan preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
 
-### Matrimonial & Family Law Services
-Vocational assessments for matrimonial and family law matters. We evaluate the employability and earning potential of spouses in divorce proceedings, providing objective analysis of vocational capacity for alimony and equitable distribution determinations.
+### Medical Cost Projections
+Future medical care cost projections for cases that do not require a full life care plan. Useful for settlement valuation, mediation, and matters where a focused future-medical analysis is appropriate.
 
-Common case types: Matrimonial, Family Law, Divorce
+Common case types: Personal Injury, Workers' Compensation, Medical Malpractice, Motor Vehicle Accident
 
-Relevant credentials: CRC, CVE, ABVE/D
+Relevant credentials: CLCP, CNLCP, RN, MD
 
 Engagement process:
-1. Engagement and conflict check: We confirm scope and conflicts, establish the retainer, and clarify whether the assignment covers one or both parties.
-2. Records review: We review education, employment, and financial records relevant to vocational capacity and earning potential.
-3. Vocational interview and testing: When appropriate, we conduct a vocational interview and administer standardized testing to document skills, education, and work history.
-4. Labor market and earning capacity analysis: We complete a labor market survey and earning capacity analysis for the relevant geographic area.
-5. Report: We document the methodology and opinions in a written report suitable for alimony and equitable distribution determinations.
-6. Testimony: We provide deposition and trial testimony as needed.
+1. Engagement and records collection: We confirm scope and conflicts, establish the retainer, and gather the medical records and treatment recommendations that define the projection.
+2. Records review and treatment summary: We identify each recommended treatment, its source in the record, and its expected frequency and duration.
+3. Provider confirmation: When the record is unclear, we confirm the treatment plan with the treating provider so every projected item has a documented clinical basis.
+4. Cost research and projection: We price each item using geographically specific cost data and project the totals over the defined period or the remaining life expectancy.
+5. Report and support: We deliver a written projection suitable for settlement, mediation, or litigation and provide testimony when required.
 
 Typical timeline:
-- Engagement and records review: 1 to 2 weeks
-- Vocational interview and testing: Scheduled within the review period
-- Analysis and draft report: 2 to 4 weeks after the evaluation
-- Deposition and trial testimony: As scheduled by counsel and the court
+- Engagement and records collection: 1 to 2 weeks
+- Records review and treatment summary: 1 to 3 weeks, depending on record volume
+- Cost research and draft projection: 1 to 3 weeks after the review
+- Testimony: As scheduled by counsel, if required
 
-Fees: Matrimonial vocational services are billed at an hourly rate for review, evaluation, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+Fees: Medical cost projections are billed at an hourly rate for records review, treatment plan confirmation, cost research, report preparation, and any testimony. Many projections are completed within a fixed initial retainer because the scope is defined at engagement. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
 
-### Standard of Care Reviews
-Medical-legal standard of care analysis and adherence reviews conducted by board-certified physicians. We evaluate whether the care provided met accepted medical standards, supporting medical malpractice and professional liability cases.
+### Workers' Compensation Life Care Plans
+Life care plans built for workers' compensation matters, including return-to-work and transferable skills considerations alongside future medical care, attendant care, and rehabilitation needs.
 
-Common case types: Medical Malpractice, Professional Liability
+Common case types: Workers' Compensation, Traumatic Brain Injury, Spinal Cord Injury, Amputation, Burn Injury
 
-Relevant credentials: M.D., Board Certified
+Relevant credentials: CLCP, CRC, CDMS, MSCC
 
 Engagement process:
-1. Engagement and conflict check: We confirm the clinical questions, check for conflicts, and establish the retainer and scope.
-2. Medical records review: A board-certified physician reviews the medical record, imaging, and relevant clinical documentation.
-3. Standard of care analysis: We evaluate whether the care provided met accepted clinical standards, supported by the medical literature.
-4. Opinion and report: We document the findings, the applicable standard, and the basis for each opinion in a written report that meets Daubert and Rule 26 requirements.
-5. Testimony: We provide deposition and trial testimony and prepare rebuttal opinions as opposing reports are produced.
+1. Engagement and records collection: We confirm scope and conflicts, establish the retainer, and gather the claim file, medical records, and any independent or agreed examination reports.
+2. Records review and chronology: We build a chronology of the work injury, treatment, work status, and current clinical picture, identifying which conditions are accepted as compensable.
+3. Clinical interview and provider collaboration: We interview the injured worker when appropriate and coordinate with treating providers to document ongoing restrictions and care needs.
+4. Future care and return-to-work projection: We project future medical, rehabilitation, equipment, and attendant care needs and address return-to-work and transferable skills considerations relevant to the claim.
+5. Cost research and plan preparation: We price each item using the applicable fee schedule or geographically specific provider data and document the basis for every recommendation in a written plan.
+6. Testimony and settlement support: We provide deposition and hearing testimony and coordinate with the Medicare set-aside allocation when the claim moves toward settlement.
 
 Typical timeline:
-- Engagement and records review: 1 to 2 weeks
-- Clinical analysis: 2 to 4 weeks, depending on record volume
-- Draft report: 1 to 2 weeks after the analysis
+- Engagement and records collection: 1 to 3 weeks
+- Records review and chronology: 2 to 4 weeks, depending on record volume
+- Clinical interview and provider collaboration: Scheduled within the review period
+- Cost research and draft plan: 3 to 5 weeks after the assessment
+- Deposition and hearing testimony: As scheduled by counsel and the tribunal
+
+Fees: Workers' compensation life care planning is billed at an hourly rate for records review, clinical interview, provider collaboration, fee-schedule and cost research, plan preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+
+### Plan Updates and Reviews
+Updates of prior life care plans to reflect current medical condition, costs, and life expectancy data. Includes re-pricing of existing plans, incorporation of new treatment recommendations, and refresh of a plan prepared for an earlier stage of the case.
+
+Common case types: Personal Injury, Medical Malpractice, Workers' Compensation, Traumatic Brain Injury, Spinal Cord Injury
+
+Relevant credentials: CLCP, CNLCP, RN
+
+Engagement process:
+1. Engagement and update scope: We confirm scope and conflicts, establish the retainer, and identify what has changed since the original plan: new records, new treatment, new life expectancy data, or the passage of time alone.
+2. Original plan and new records review: We review the original plan item by item against the new medical record and document which recommendations remain supported, which have changed, and which are new.
+3. Follow-up interview and provider collaboration: When the clinical picture has changed, we re-interview the individual and coordinate with treating providers to confirm current needs.
+4. Re-pricing and revision: We refresh every cost using current geographically specific data, revise frequencies and durations where the record supports it, and reconcile the updated plan to the original.
+5. Updated plan and testimony: We deliver the updated plan with a summary of changes and provide deposition and trial testimony as required.
+
+Typical timeline:
+- Engagement and update scope: 1 week
+- Original plan and new records review: 1 to 3 weeks, depending on new record volume
+- Re-pricing and revised draft: 2 to 4 weeks after the review
 - Deposition and trial testimony: As scheduled by counsel and the court
 
-Fees: Standard of care reviews are conducted by board-certified physicians and billed at an hourly rate for record review, analysis, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+Fees: Plan updates are billed at an hourly rate for review of the original plan and new records, follow-up interview, cost research, preparation of the updated plan, and testimony. Updates of plans originally prepared by KW Life Care Planning are typically completed against a reduced retainer. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+
+### Life Care Plan Rebuttal and Critique
+Independent review of an opposing party's life care plan for plaintiff or defense counsel. We examine each recommendation for foundation in the medical record, duplication, support for frequency and duration, pricing methodology, and life expectancy basis, and deliver a written critique with an optional alternative plan.
+
+Common case types: Personal Injury, Medical Malpractice, Traumatic Brain Injury, Spinal Cord Injury, Workers' Compensation, Birth Injury
+
+Relevant credentials: CLCP, CNLCP, CRC, MD
+
+Engagement process:
+1. Engagement and materials collection: We confirm scope and conflicts, establish the retainer, and gather the opposing plan, its cost tables and sources, the planner's file when produced, and the complete medical record.
+2. Foundation review: We trace each recommendation in the opposing plan to the medical record and treating provider recommendations, flagging items that lack documented clinical support.
+3. Duplication, frequency, and duration analysis: We identify overlapping or duplicated items and test whether the stated frequency and duration of each item are supported by the record and accepted planning practice.
+4. Pricing and life expectancy review: We examine the pricing sources, geographic basis, and replacement cycles used, and evaluate the life expectancy assumption that drives the plan's total.
+5. Written critique and alternative plan: We deliver a written critique organized by finding and, when requested, an alternative plan that reflects the care the record supports.
+6. Testimony: We provide deposition and trial testimony on the critique and any alternative plan.
+
+Typical timeline:
+- Engagement and materials collection: 1 to 2 weeks
+- Foundation, frequency, and pricing review: 2 to 4 weeks, depending on plan length and record volume
+- Written critique and optional alternative plan: 2 to 4 weeks after the review
+- Deposition and trial testimony: As scheduled by counsel and the court
+
+Fees: Rebuttal work is billed at an hourly rate for review of the opposing plan and the medical record, methodology and pricing analysis, preparation of the written critique or alternative plan, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+
+### Medicare Set-Aside Allocations
+Workers' compensation and liability Medicare set-aside allocation reports prepared by a certified Medicare set-aside consultant. Each allocation projects the future injury-related care that Medicare would otherwise cover and prices it using the accepted allocation methodology, in coordination with counsel regarding CMS review thresholds and submission strategy.
+
+Common case types: Workers' Compensation, Personal Injury, Motor Vehicle Accident, Medical Malpractice
+
+Relevant credentials: MSCC, CLCP, RN, CDMS
+
+Engagement process:
+1. Engagement and entitlement review: We confirm scope and conflicts, establish the retainer, and review the individual's Medicare status and reasonable expectation of entitlement with counsel.
+2. Records collection and review: We gather medical, pharmacy, and payment records and identify the injury-related conditions and treatments that Medicare would otherwise cover.
+3. Rated age and projection period: When appropriate, we coordinate a rated age and establish the projection period that governs the allocation.
+4. Allocation by accepted methodology: We project future injury-related medical and prescription costs using the accepted allocation methodology and the pricing basis appropriate to the claim.
+5. Report and submission support: We deliver the allocation report and, when requested, support submission and respond to review correspondence in coordination with counsel.
+
+Typical timeline:
+- Engagement and entitlement review: 1 week
+- Records collection and review: 2 to 4 weeks, depending on record volume
+- Allocation report: 1 to 3 weeks after the review
+- Submission support: As the review process requires, when requested
+
+Fees: Medicare set-aside allocations are billed at an hourly rate for Medicare entitlement review, records review, allocation preparation, rated-age coordination, and submission support. Many allocations are completed within a fixed initial retainer because the scope is defined at engagement. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+
+### Elder and Long-Term Care Planning
+Non-litigation life care plans for families, guardians, trustees, and special-needs trusts. Plans document current care needs, project future care levels and costs, and give families and fiduciaries a defensible basis for budgeting, placement, and trust administration decisions.
+
+Common case types: Personal Injury, Traumatic Brain Injury, Spinal Cord Injury, Cerebral Palsy
+
+Relevant credentials: CLCP, CNLCP, RN, CDMS
+
+Engagement process:
+1. Engagement and goals: We confirm scope, establish the retainer, and identify who the plan serves and what decisions it must support, whether family budgeting, guardianship, or trust administration.
+2. Records review and in-home assessment: We review the medical record and visit the individual at home when appropriate, documenting current function, safety, caregiver involvement, and the home environment.
+3. Care-level determination: We determine the level of care required now and project how it is likely to change, identifying the settings and services appropriate at each stage.
+4. Provider and facility cost research: We research in-home agencies, adult day programs, assisted living, and skilled nursing costs in the individual's geographic area and price equipment, home modification, and supplies.
+5. Written plan and annual update: We deliver a written plan organized by care category and time period and offer an annual update to reflect changes in condition, setting, and cost.
+
+Typical timeline:
+- Engagement and records collection: 1 to 2 weeks
+- In-home assessment: Scheduled within 2 to 3 weeks of engagement
+- Cost research and written plan: 3 to 5 weeks after the assessment
+- Annual update: Yearly, when engaged
+
+Fees: Elder and long-term care planning is billed at an hourly rate for records review, in-home assessment, care-level determination, provider and facility cost research, and plan preparation. A retainer is established at the outset and applied against time incurred. Annual updates are offered at a reduced scope. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
 
 ### Expert Witness Testimony
-Qualified expert witness testimony for depositions and trial. Our experts have provided testimony in state and federal courts across the country on vocational, economic, and life care planning matters.
+Qualified expert witness testimony for depositions and trial on life care planning, future medical costs, and standards of practice in the field. Experience in state and federal courts across jurisdictions, for plaintiff and defense counsel.
 
-Common case types: Personal Injury, Workers' Compensation, Medical Malpractice, Wrongful Death, Wrongful Termination, Matrimonial
+Common case types: Personal Injury, Medical Malpractice, Workers' Compensation, Wrongful Death, Traumatic Brain Injury, Birth Injury
 
-Relevant credentials: Ph.D., CRC, CLCP, CVE, ABVE/D
+Relevant credentials: CLCP, CNLCP, CRC, MD, PhD
 
 Engagement process:
-1. Engagement and file review: We confirm scope and conflicts, establish the retainer, and review the report, file, and any opposing expert opinions.
-2. Preparation with counsel: We prepare with retaining counsel, identify the key opinions and their bases, and anticipate cross-examination.
-3. Deposition: We provide deposition testimony on the methodology, data sources, and opinions in the report.
+1. Engagement and file review: We confirm scope and conflicts, establish the retainer, and review the life care plan, the file, and any opposing expert opinions.
+2. Preparation with counsel: We prepare with retaining counsel, identify the key opinions and their bases in the record, and anticipate cross-examination.
+3. Deposition: We provide deposition testimony on the methodology, data sources, and opinions in the plan.
 4. Trial preparation: We prepare exhibits and demonstratives and coordinate with counsel on the order and scope of direct examination.
 5. Trial testimony: We provide trial testimony and respond to rebuttal and cross-examination.
 
@@ -310,13 +374,6 @@ Typical timeline:
 - Trial testimony: As scheduled by the court
 
 Fees: Testimony is billed at an hourly rate for preparation and at the applicable rate for deposition and trial time. A retainer is established at the outset and applied against time incurred. The current rate schedule, including deposition and trial rates, is provided on request and confirmed in a written engagement agreement.
-
-### Expert Disclosure
-Pre-trial expert disclosure deliverables for state-specific compliance. Each US jurisdiction has its own civil procedure framework governing what must be disclosed, when, and in what form. KWVRS provides state-by-state expert disclosure services for attorneys in all 50 states plus DC and US territories. Attorneys are responsible for confirming the governing rule against primary sources for their specific case.
-
-Common case types: Personal Injury, Workers' Compensation, Wrongful Death, Wrongful Termination, Medical Malpractice, Matrimonial
-
-Relevant credentials: CRC, CVE, ABVE/D, CLCP, Ph.D.
 
 ## Case Types
 

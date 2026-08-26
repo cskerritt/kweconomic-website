@@ -64,7 +64,7 @@ describe("renderTextWithLinks - rejection of bad routes", () => {
   it("isAllowedRoute enforces the ^/[a-z0-9/-]*$ allow-list", () => {
     expect(isAllowedRoute("/methods/transferable-skills-analysis")).toBe(true);
     expect(isAllowedRoute("/")).toBe(true);
-    expect(isAllowedRoute("/services/vocational-expert/cost")).toBe(true);
+    expect(isAllowedRoute("/services/life-care-planning/cost")).toBe(true);
     expect(isAllowedRoute("/Bad")).toBe(false);
     expect(isAllowedRoute("/a.b")).toBe(false);
     expect(isAllowedRoute("javascript:alert(1)")).toBe(false);

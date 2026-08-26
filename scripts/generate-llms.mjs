@@ -72,7 +72,7 @@ async function main() {
   const load = (p) => server.ssrLoadModule(p);
 
   const [
-    { services },
+    { pillarServices },
     { team },
     { caseTypes },
     { credentials },
@@ -94,6 +94,10 @@ async function main() {
   ]);
 
   await server.close();
+
+  // Indexable service lines only; the forensic-economics cross-sell is a
+  // pointer to the economics practice, not a KW LCP service.
+  const serviceLines = pillarServices();
 
   // Map state abbreviation -> full name for expanding "statesServed".
   const stateNameByAbbr = {};
@@ -119,7 +123,7 @@ async function main() {
   llms.push("");
   llms.push("## Services");
   llms.push("");
-  for (const s of services) {
+  for (const s of serviceLines) {
     llms.push(`- ${s.name}: ${s.description}`);
   }
   llms.push("");
@@ -217,7 +221,7 @@ async function main() {
   }
 
   h2("Services in Detail");
-  for (const s of services) {
+  for (const s of serviceLines) {
     h3(s.name);
     p(s.description);
     if (s.caseTypes && s.caseTypes.length) {

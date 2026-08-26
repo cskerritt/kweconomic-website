@@ -5,6 +5,7 @@ import {
   serviceCityCities,
   hasServiceCityPages,
   nearestCities,
+  serviceHasCityPages,
 } from "./geo-links";
 import { services } from "@/data/services";
 import { newJerseyCities } from "@/data/cities/new-jersey";
@@ -30,17 +31,23 @@ function makeCity(slug: string, latitude: number, longitude: number): City {
 // guards).
 
 describe("serviceCityServices", () => {
-  it("returns exactly the services that have city pages (all except expert-disclosure)", () => {
+  it("returns exactly the pillar services (the forensic-economics cross-sell has no city tier)", () => {
     const slugs = serviceCityServices(services).map((s) => s.slug);
     expect(slugs).toEqual([
-      "vocational-expert",
       "life-care-planning",
-      "forensic-economics",
-      "loss-of-household-services",
-      "matrimonial",
-      "standard-of-care",
+      "pediatric-life-care-planning",
+      "catastrophic-injury-planning",
+      "medical-cost-projection",
+      "workers-compensation-lcp",
+      "plan-update-and-review",
+      "life-care-plan-rebuttal",
+      "medicare-set-aside",
+      "elder-and-long-term-care-planning",
       "expert-witness-testimony",
     ]);
+    expect(serviceHasCityPages("life-care-planning")).toBe(true);
+    expect(serviceHasCityPages("forensic-economics")).toBe(false);
+    expect(serviceHasCityPages("vocational-expert")).toBe(false);
   });
 });
 

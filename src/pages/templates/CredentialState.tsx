@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { credentials, getCredential } from "@/data/credentials";
 import { states } from "@/data/states";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { activeTeam } from "@/data/team";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { getCourtsByState } from "@/data/courts/state-courts";
@@ -116,7 +116,7 @@ export default function CredentialState() {
               Vocational and rehabilitation experts in {state.name}
             </Link>
           </li>
-          {services
+          {pillarServices()
             .filter((s) => s.relevantCredentials.some((rc) => rc.toLowerCase() === cred.abbreviation.toLowerCase()))
             .map((s) => (
               <li key={s.slug}>

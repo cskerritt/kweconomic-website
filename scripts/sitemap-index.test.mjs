@@ -14,6 +14,7 @@ import {
   sitemapReadyCitySlugs,
 } from "../src/data/contentReadiness.ts";
 import { collectSitemapPageUrls, extractLocs } from "./lib/sitemap-urls.mjs";
+import { pillarServiceSlugs, serviceEntries } from "./lib/service-slugs.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(here, "..");
@@ -44,7 +45,10 @@ const extractSlugs = (file) =>
     (m) => m[1],
   );
 const states = extractSlugs("states.ts");
-const genericServices = extractSlugs("services.ts").filter((s) => s !== "expert-disclosure");
+// Pillar services only - the same object-boundary reader the generator and
+// prerender use, so a `pillar: false` entry never leaks into expectations.
+const servicesSource = readFileSync(join(SRC_DATA, "services.ts"), "utf-8");
+const genericServices = pillarServiceSlugs(servicesSource);
 const caseTypes = extractSlugs("caseTypes.ts");
 const credentials = extractSlugs("credentials.ts");
 const citiesByState = Object.fromEntries(
@@ -156,9 +160,11 @@ describe("service x state x city sitemap gating (contentReadiness)", () => {
   });
 
   it("keeps the services section within the crawl-budget target", () => {
+    // 10 pillars x 56 states = 560, plus gated cities (~2,750) and the
+    // pillar/cost/process/timeline/case pages (~150).
     const total = childUrls["sitemap-services.xml"].length;
     expect(total).toBeGreaterThanOrEqual(1500);
-    expect(total).toBeLessThanOrEqual(2600);
+    expect(total).toBeLessThanOrEqual(3600);
   });
 
   it("prerender.mjs's SERVICE_CITY_TOP matches contentReadiness's prerender constant", () => {
@@ -214,8 +220,73 @@ describe("lastmod is emitted only where derivable", () => {
       /<loc>https:\/\/kwvrs\.com\/insights\/[a-z-]+<\/loc><lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/,
     );
     expect(servicesXml).toMatch(
-      /<loc>https:\/\/kwvrs\.com\/services\/vocational-expert\/new-jersey<\/loc><changefreq>/,
+      /<loc>https:\/\/kwvrs\.com\/services\/life-care-planning\/new-jersey<\/loc><changefreq>/,
     );
+  });
+});
+
+describe("non-pillar services stay out of the sitemap", () => {
+  const allUrls = SECTION_FILES.flatMap((f) => childUrls[f] || []);
+
+  it("never emits forensic-economics service URLs", () => {
+    const leaked = allUrls.filter((u) => u.includes("/services/forensic-economics"));
+    expect(leaked).toEqual([]);
+  });
+
+  it("lists every pillar service exactly once at its pillar path", () => {
+    for (const slug of genericServices) {
+      expect(childUrls["sitemap-services.xml"]).toContain(`${BASE}/services/${slug}`);
+    }
+  });
+});
+
+describe("scripts/lib/service-slugs.mjs object-boundary split", () => {
+  it("reads the real services.ts: 10 pillars, forensic-economics flagged non-pillar", () => {
+    const entries = serviceEntries(servicesSource);
+    expect(entries.map((e) => e.slug)).toContain("forensic-economics");
+    expect(entries.find((e) => e.slug === "forensic-economics")?.pillar).toBe(false);
+    expect(genericServices).toHaveLength(10);
+    expect(genericServices).not.toContain("forensic-economics");
+    expect(genericServices[0]).toBe("life-care-planning");
+  });
+
+  it("splits on top-level object boundaries, not nested cost/process objects", () => {
+    const fixture = [
+      'import type { Service } from "@/types";',
+      "",
+      "export const services: Service[] = [",
+      "  {",
+      '    slug: "alpha",',
+      '    name: "Alpha",',
+      "    pillar: true,",
+      "    cost: {",
+      '      range: "pillar: false appears in prose here and must not flip the flag",',
+      "      drivers: [],",
+      "    },",
+      "    process: [",
+      '      { step: "One", description: "slug: \"decoy\" inside a step" },',
+      "    ],",
+      "  },",
+      "  {",
+      '    slug: "beta",',
+      '    name: "Beta",',
+      "    pillar: false,",
+      '    externalUrl: "https://example.com",',
+      "  },",
+      "  {",
+      '    slug: "gamma",',
+      '    name: "Gamma",',
+      "    pillar: true,",
+      "  },",
+      "];",
+      "",
+    ].join("\n");
+    expect(serviceEntries(fixture)).toEqual([
+      { slug: "alpha", name: "Alpha", pillar: true },
+      { slug: "beta", name: "Beta", pillar: false },
+      { slug: "gamma", name: "Gamma", pillar: true },
+    ]);
+    expect(pillarServiceSlugs(fixture)).toEqual(["alpha", "gamma"]);
   });
 });
 

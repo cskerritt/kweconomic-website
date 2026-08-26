@@ -3,9 +3,9 @@ import { ArrowRight, Phone } from "lucide-react";
 import { useMagnetic } from "@/hooks/use-pointer-fx";
 
 const CORE_SERVICES = [
-  { label: "Vocational Expert", slug: "vocational-expert" },
-  { label: "Forensic Economics", slug: "forensic-economics" },
   { label: "Life Care Planning", slug: "life-care-planning" },
+  { label: "Catastrophic Injury Plans", slug: "catastrophic-injury-planning" },
+  { label: "Medical Cost Projections", slug: "medical-cost-projection" },
 ];
 
 interface NextStepsProps {

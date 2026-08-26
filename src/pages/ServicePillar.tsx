@@ -2,13 +2,16 @@ import { useParams, Navigate, Link } from "react-router-dom";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, serviceSchema, breadcrumbSchema, faqPageSchema, ORG_URL } from "@/lib/schema";
 import { getServiceBySlug } from "@/data/services";
+import { caseTypes } from "@/data/caseTypes";
 import { states } from "@/data/states";
+import { ORG_NAME } from "@/lib/brand";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ContactCTA from "@/components/ContactCTA";
 import LocationCard from "@/components/LocationCard";
 import FAQBlock from "@/components/FAQBlock";
 import { ArrowRight, ExternalLink } from "lucide-react";
+import type { Service } from "@/types";
 
 const REGIONS: { key: "northeast" | "southeast" | "midwest" | "west"; label: string }[] = [
   { key: "northeast", label: "Northeast" },
@@ -17,30 +20,15 @@ const REGIONS: { key: "northeast" | "southeast" | "midwest" | "west"; label: str
   { key: "west", label: "West" },
 ];
 
-const CASE_TYPE_SLUGS: Record<string, string> = {
-  "Personal Injury": "personal-injury",
-  "Workers' Compensation": "workers-compensation",
-  "Medical Malpractice": "medical-malpractice",
-  "Wrongful Death": "wrongful-death",
-  "Wrongful Termination": "wrongful-termination",
-  "Traumatic Brain Injury": "traumatic-brain-injury",
-  "Spinal Cord Injury": "spinal-cord-injury",
-  "Amputation": "amputation",
-  "Burn Injury": "burn-injury",
-  "Long Term Disability": "long-term-disability",
-  "Motor Vehicle Accident": "motor-vehicle-accident",
-  "Matrimonial": "matrimonial",
-};
+// Case-type chip targets are derived from the case-type data itself so the
+// pillar's "by Case Type" links can never point at a /case-types/<slug> or
+// /services/<svc>/case/<slug> page that is not prerendered.
+const CASE_TYPE_SLUGS: Record<string, string> = Object.fromEntries(
+  caseTypes.map((c) => [c.name, c.slug]),
+);
 
 /** Public /tools relevant to a given service pillar, surfaced in the sidebar. */
 const RELATED_TOOLS: Record<string, { to: string; label: string; blurb: string }[]> = {
-  "forensic-economics": [
-    {
-      to: "/tools/life-expectancy",
-      label: "Life expectancy calculator",
-      blurb: "Look up remaining life expectancy from the CDC United States Life Tables, 2023.",
-    },
-  ],
   "life-care-planning": [
     {
       to: "/tools/life-expectancy",
@@ -60,10 +48,18 @@ export default function ServicePillar() {
       : "Service | KWVRS",
     description: service?.description ?? "",
     canonical: `https://kwvrs.com/services/${serviceSlug ?? ""}`,
+    // Non-pillar cross-sells are reachable but never indexed, prerendered, or
+    // listed in the sitemap; the card below hands the visitor to the practice
+    // that actually performs the work.
+    noindex: service ? !service.pillar : false,
   });
 
   if (!service) {
     return <Navigate to="/services" replace />;
+  }
+
+  if (!service.pillar) {
+    return <NonPillarCard service={service} />;
   }
 
   const stateOnly = states.filter((s) => s.type === "state");
@@ -330,6 +326,62 @@ export default function ServicePillar() {
           </aside>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Short cross-sell card for a `pillar: false` service. No geographic
+ * directory, case-type grid, or engagement-detail links: those tiers do not
+ * exist for non-pillars (see pillarServices()).
+ */
+function NonPillarCard({ service }: { service: Service }) {
+  const external = service.externalUrl;
+  const host = external ? new URL(external).hostname.replace(/^www\./, "") : null;
+  return (
+    <div className="min-h-screen bg-neutral-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreadcrumbNav
+          items={[
+            { label: "Services", href: "/services" },
+            { label: service.name },
+          ]}
+        />
+      </div>
+      <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="bg-white rounded-xl border border-neutral-200 p-8">
+          <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3">
+            Offered through the firm&apos;s economics practice
+          </p>
+          <h1 className="font-serif text-3xl lg:text-4xl text-navy font-bold mb-4">
+            {service.name}
+          </h1>
+          <p className="text-lg text-neutral-600 mb-6">{service.description}</p>
+          <p className="text-neutral-600 mb-8">
+            {ORG_NAME} prepares the life care plan; the present-value analysis of its
+            costs is performed by the firm&apos;s forensic economists, who coordinate
+            with the planner so the plan and the valuation reconcile.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            {external && (
+              <a
+                href={external}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-medium px-6 py-3 rounded-lg transition-colors"
+              >
+                {service.shortName} at {host} <ExternalLink className="w-4 h-4" />
+              </a>
+            )}
+            <Link
+              to="/services/life-care-planning"
+              className="inline-flex items-center gap-2 border border-teal text-teal hover:bg-teal/10 font-medium px-6 py-3 rounded-lg transition-colors"
+            >
+              Life care planning <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

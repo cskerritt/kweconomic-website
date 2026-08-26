@@ -12,7 +12,7 @@ import FAQBlock from "@/components/FAQBlock";
 import { getStateNarrative } from "@/data/narratives";
 import { stateGeographicFaqs } from "@/data/geographicFaqs";
 import { getStateBySlug } from "@/data/states";
-import { services } from "@/data/services";
+import { pillarServices } from "@/data/services";
 import { caseTypes } from "@/data/caseTypes";
 import { credentials } from "@/data/credentials";
 import { useStateCities } from "@/hooks/use-state-cities";
@@ -50,9 +50,8 @@ export default function StateHub() {
     return <Navigate to="/locations" replace />;
   }
 
-  const coreServices = services.filter(
-    (s) => !["standard-of-care", "expert-witness-testimony"].includes(s.slug)
-  );
+  // Planning lines only; testimony is a mode of every engagement, not a card.
+  const coreServices = pillarServices().filter((s) => s.slug !== "expert-witness-testimony");
 
   const laborData = getLaborByState(state.slug);
   const courts = getCourtsByState(state.slug);

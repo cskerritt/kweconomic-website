@@ -43,7 +43,7 @@ Vocational rehabilitation evaluation draws on multiple disciplines, including oc
 
 In personal injury and workers' compensation cases, the evaluation focuses on whether the claimant can return to their pre-injury occupation and, if not, what alternative occupations they can perform given their restrictions. In wrongful termination and employment discrimination cases, the evaluator may be asked to assess what a terminated employee could have earned had the injury to their career not occurred, and what they are likely to earn going forward.
 
-[[/services/matrimonial|In matrimonial proceedings]] - particularly equitable distribution or spousal support disputes - a vocational evaluator may be asked to assess a non-working or underemployed spouse's [[/guides/earning-capacity-vs-lost-earnings|earning capacity]]: that is, what the person could earn if making full use of their vocational assets. This is a distinct inquiry from actual current earnings and requires careful attention to the spouse's education, work history, and current labor market conditions.`,
+[[/services/life-care-planning|In matrimonial proceedings]] - particularly equitable distribution or spousal support disputes - a vocational evaluator may be asked to assess a non-working or underemployed spouse's [[/guides/earning-capacity-vs-lost-earnings|earning capacity]]: that is, what the person could earn if making full use of their vocational assets. This is a distinct inquiry from actual current earnings and requires careful attention to the spouse's education, work history, and current labor market conditions.`,
       },
       {
         heading: "How a Vocational Evaluation Is Conducted",
@@ -59,7 +59,7 @@ Vocational testing may be administered to assess cognitive functioning, academic
 
 The Certified Vocational Evaluator (CVE) credential, historically issued through the Commission on Certification of Work Adjustment and Vocational Evaluation Specialists (an organization that has since ceased operations), focuses specifically on vocational assessment competencies. The Diplomate in Forensic Vocational Consulting, awarded by the American Board of Vocational Experts (ABVE), represents a higher-level credential specifically focused on forensic testimony (American Board of Vocational Experts, n.d.).
 
-When selecting a [[/services/vocational-expert|vocational expert]] for litigation purposes, counsel should look for practitioners who hold one or more of these credentials, who have substantial experience testifying in the relevant jurisdiction, and who demonstrate familiarity with the specific vocational and medical issues in the case. A well-credentialed expert who has not testified in a given state's courts or who lacks experience with the specific type of claim may be less effective than a somewhat less credentialed expert with deep relevant experience.`,
+When selecting a [[/services/life-care-planning|vocational expert]] for litigation purposes, counsel should look for practitioners who hold one or more of these credentials, who have substantial experience testifying in the relevant jurisdiction, and who demonstrate familiarity with the specific vocational and medical issues in the case. A well-credentialed expert who has not testified in a given state's courts or who lacks experience with the specific type of claim may be less effective than a somewhat less credentialed expert with deep relevant experience.`,
       },
       {
         heading: "Vocational Rehabilitation in Federal and State Systems",
@@ -157,7 +157,7 @@ Some jurisdictions have rules or preferences regarding present value methodology
       },
       {
         heading: "Household Services Valuation",
-        content: `[[/services/loss-of-household-services|Household services]] - the unpaid labor individuals perform in maintaining their home and caring for family members - are an economic contribution that has real value even though no paycheck is issued for it. When an injury prevents a person from performing household tasks they previously performed, the cost of replacing that labor is a compensable economic loss.
+        content: `[[/services/life-care-planning|Household services]] - the unpaid labor individuals perform in maintaining their home and caring for family members - are an economic contribution that has real value even though no paycheck is issued for it. When an injury prevents a person from performing household tasks they previously performed, the cost of replacing that labor is a compensable economic loss.
 
 Household services typically include meal preparation, house cleaning and maintenance, laundry, childcare, lawn care, and routine home repair. The forensic economist values these services using replacement cost methodology: what would it cost to hire others to perform the tasks the plaintiff can no longer perform? This requires data on both the time the plaintiff spent on household tasks and the wage rates of workers in the relevant occupations (U.S. Bureau of Labor Statistics, n.d.).
 

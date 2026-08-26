@@ -63,6 +63,7 @@ export default function ServiceStateCity() {
 
   // Redirect up the chain if any segment is unresolvable
   if (!service) return <Navigate to="/services" replace />;
+  if (!service.pillar) return <Navigate to={`/services/${service.slug}`} replace />;
   if (!state) return <Navigate to={`/services/${service.slug}`} replace />;
   if (loading) return <Loading />;
   if (!city) return <Navigate to={`/services/${service.slug}/${state.slug}`} replace />;

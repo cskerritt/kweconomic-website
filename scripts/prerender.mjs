@@ -12,6 +12,7 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { pillarServiceEntries } from "./lib/service-slugs.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -60,12 +61,11 @@ const stateData = extractPairs(
   /\bname:\s*"([^"]+)"/g
 );
 
-// Services
-const servicesContent = readFileSync(join(SRC_DATA, "services.ts"), "utf-8");
-const serviceData = extractPairs(
-  servicesContent,
-  /slug:\s*"([^"]+)"/g,
-  /\bname:\s*"([^"]+)"/g
+// Services - pillar entries only. `pillar: false` entries (the forensic
+// economics cross-sell) are client-rendered noindex cards and are never
+// prerendered; see scripts/lib/service-slugs.mjs for the object-boundary split.
+const serviceData = pillarServiceEntries(
+  readFileSync(join(SRC_DATA, "services.ts"), "utf-8"),
 );
 
 // Knowledge guides
@@ -650,7 +650,17 @@ function buildPage({ path, title, description, innerHtml, schemaType, extraJsonL
   return html;
 }
 
+// Non-pillar cross-sell routes are client-rendered noindex cards; emitting a
+// static shell for them would put an unadvertised, noindex page on disk and
+// invite the sitemap/prerender parity test to drift. Hard stop.
+const NON_PILLAR_SERVICE_PREFIXES = ["/services/forensic-economics"];
+
 function writePage(routePath, html) {
+  for (const prefix of NON_PILLAR_SERVICE_PREFIXES) {
+    if (routePath === prefix || routePath.startsWith(`${prefix}/`)) {
+      throw new Error(`prerender: refusing to emit non-pillar service route ${routePath}`);
+    }
+  }
   let filePath;
   if (routePath === "/") {
     filePath = join(DIST, "index.html");
@@ -1163,10 +1173,6 @@ for (const state of stateData) {
 const SERVICE_CITY_TOP = 10;
 let serviceStateCityPages = 0;
 for (const svc of serviceData) {
-  // expert-disclosure has its own pillar + per-state generation below; skip the
-  // generic Service x State cross-product so the rendered state pages keep the
-  // disclosure-specific content (rule citation, summary).
-  if (svc.slug === "expert-disclosure") continue;
   for (const state of stateData) {
     const path = `/services/${svc.slug}/${state.slug}`;
     const narrative = buildStateNarrative(state);
@@ -1341,9 +1347,6 @@ for (const t of teamData) {
 let serviceVariantPages = 0;
 let serviceCaseTypePages = 0;
 for (const s of serviceData) {
-  // expert-disclosure pillar is a state-driven directory; cost/process/timeline
-  // and per-case-type variants do not exist for it.
-  if (s.slug === "expert-disclosure") continue;
   for (const variant of ["cost", "process", "timeline"]) {
     writePage(`/services/${s.slug}/${variant}`, buildPage({
       path: `/services/${s.slug}/${variant}`,
