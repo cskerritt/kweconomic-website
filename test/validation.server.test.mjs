@@ -1,50 +1,47 @@
 import { describe, expect, it } from "vitest";
-import { validateRoute } from "../validation.server.mjs";
+import { isEmail, isPhone, validateRoute } from "../validation.server.mjs";
 
-const base = (over = {}) => ({
-  email: "sam@firm.com",
-  formType: "personal-injury-intake",
-  retainingSide: "plaintiff",
-  workProducts: ["Vocational Evaluation"],
-  ...over,
-});
+const TYPES = ["contact", "consultation", "whitepaper", "life-expectancy"];
 
-describe("validateRoute turnaround", () => {
-  it("rejects an out-of-set turnaround on an intake", () => {
-    expect(validateRoute("consultation", base({ turnaround: "asap" }))).toMatch(/turnaround must be Rush or Standard/);
+describe("isEmail / isPhone", () => {
+  it("requires a 2+ character TLD (truncated-TLD regression)", () => {
+    expect(isEmail("ann@firm.com")).toBe(true);
+    expect(isEmail("ann@firm.c")).toBe(false);
+    expect(isEmail("ann@firm")).toBe(false);
+    expect(isEmail("not an email")).toBe(false);
+    expect(isEmail(undefined)).toBe(false);
   });
-
-  it("accepts rush", () => {
-    expect(validateRoute("consultation", base({ turnaround: "rush" }))).toBeNull();
-  });
-
-  it("accepts standard", () => {
-    expect(validateRoute("consultation", base({ turnaround: "standard" }))).toBeNull();
-  });
-
-  it("accepts an absent turnaround", () => {
-    expect(validateRoute("consultation", base())).toBeNull();
+  it("counts digits only, needing at least 10", () => {
+    expect(isPhone("201-555-1212")).toBe(true);
+    expect(isPhone("(201) 555 1212")).toBe(true);
+    expect(isPhone("555-1212")).toBe(false);
+    expect(isPhone(2015551212)).toBe(false);
   });
 });
 
-describe("validateEstimator (via validateRoute type=estimator)", () => {
-  const base = { email: "a@b.co", annualIncome: 75000 };
-  it("accepts a sane decimal-rate payload", () => {
-    expect(validateRoute("estimator", { ...base, annualFringeRate: 0.25, growthRate: 0.028, currentAge: 40, retirementAge: 67 })).toBeNull();
+describe("validateRoute", () => {
+  it("rejects a bad email on every type", () => {
+    for (const type of TYPES) {
+      expect(validateRoute(type, { email: "nope", phone: "201-555-1212", slug: "x" }), type).toMatch(/valid email/);
+    }
   });
-  it("rejects a missing/absurd income", () => {
-    expect(validateRoute("estimator", { email: "a@b.co" })).toMatch(/annual income/);
-    expect(validateRoute("estimator", { email: "a@b.co", annualIncome: 2e9 })).toMatch(/annual income/);
+  it("contact requires a phone", () => {
+    expect(validateRoute("contact", { email: "a@b.co" })).toMatch(/valid phone/);
+    expect(validateRoute("contact", { email: "a@b.co", phone: "123" })).toMatch(/valid phone/);
+    expect(validateRoute("contact", { email: "a@b.co", phone: "201-555-1212" })).toBeNull();
   });
-  it("rejects rates outside the 0..1 decimal scale (percent posted raw)", () => {
-    expect(validateRoute("estimator", { ...base, growthRate: 25 })).toMatch(/growthRate/);
-    expect(validateRoute("estimator", { ...base, pastWageMultiplier: -0.1 })).toMatch(/pastWageMultiplier/);
+  it("consultation accepts a missing phone but rejects a bad one", () => {
+    expect(validateRoute("consultation", { email: "a@b.co" })).toBeNull();
+    expect(validateRoute("consultation", { email: "a@b.co", phone: "" })).toBeNull();
+    expect(validateRoute("consultation", { email: "a@b.co", phone: "123" })).toMatch(/valid phone/);
+    expect(validateRoute("consultation", { email: "a@b.co", phone: "201-555-1212" })).toBeNull();
   });
-  it("rejects impossible ages and periods", () => {
-    expect(validateRoute("estimator", { ...base, currentAge: 300 })).toMatch(/currentAge/);
-    expect(validateRoute("estimator", { ...base, worklifeLossYears: 200 })).toMatch(/worklifeLossYears/);
+  it("whitepaper requires a slug", () => {
+    expect(validateRoute("whitepaper", { email: "a@b.co" })).toMatch(/slug/);
+    expect(validateRoute("whitepaper", { email: "a@b.co", slug: 5 })).toMatch(/slug/);
+    expect(validateRoute("whitepaper", { email: "a@b.co", slug: "tbi-guide" })).toBeNull();
   });
-  it("still requires a valid email first", () => {
-    expect(validateRoute("estimator", { email: "nope", annualIncome: 1 })).toMatch(/valid email/);
+  it("life-expectancy only needs the email", () => {
+    expect(validateRoute("life-expectancy", { email: "a@b.co" })).toBeNull();
   });
 });

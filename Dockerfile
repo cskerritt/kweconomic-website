@@ -16,18 +16,18 @@ COPY . .
 
 # Build-time public vars. Vite inlines import.meta.env.VITE_* during the build,
 # so they must be present for `npm run build`. The Turnstile SITE key is public
-# (it ships in client JS; only TURNSTILE_SECRET_KEY is secret), so we bake the
-# real key in as the default rather than "". Relying on Railway to forward a
-# service variable as a --build-arg proved unreliable (Docker layer caching left
-# `npm run build` cached with an empty key, so the widget was tree-shaken out).
-# Railway can still override this via a matching service-variable build-arg.
-ARG VITE_TURNSTILE_SITE_KEY="0x4AAAAAADmmzXH9KTZuCEUg"
+# (it ships in client JS; only TURNSTILE_SECRET_KEY is secret). Empty default:
+# the KW LCP site has its own Turnstile widget, so set the real key as a Railway
+# service variable (forwarded as a --build-arg) BEFORE the first deploy, or the
+# widget is omitted from the bundle. Beware Docker layer caching: a build cached
+# with an empty key keeps the widget tree-shaken out until a no-cache rebuild.
+ARG VITE_TURNSTILE_SITE_KEY=""
 ENV VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
 
 # Public GA4 measurement id (like the Turnstile SITE key, it ships in client JS).
 # Empty default keeps analytics DORMANT; set this build-arg (Railway service var)
-# to a real G-XXXX id to activate site-wide analytics. Vite inlines it at build.
-ARG VITE_GA_MEASUREMENT_ID="G-C1QFJ39WL2"
+# to the KW LCP property's G-XXXX id to activate site-wide analytics.
+ARG VITE_GA_MEASUREMENT_ID=""
 ENV VITE_GA_MEASUREMENT_ID=$VITE_GA_MEASUREMENT_ID
 
 RUN npm run build

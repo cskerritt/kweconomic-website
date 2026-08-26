@@ -13,9 +13,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "indexnow": "node scripts/indexnow-submit.mjs",
-    "damages:calc": "node scripts/economic-damages-calculator.mjs --demo",
-    "damages:calc:from": "node scripts/economic-damages-calculator.mjs --input"
+    "indexnow": "node scripts/indexnow-submit.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",

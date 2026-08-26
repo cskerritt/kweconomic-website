@@ -11,21 +11,6 @@ dist/
 # Anchored to the repo root so it does not also ignore src/data/.
 /data/
 
-# Historical-import engine (workflow/import/): PHI-adjacent Asana/Insightly
-# snapshots, resume journals, and human-review CSVs. No snapshot may ever be
-# committed - see docs/superpowers/plans/2026-07-08-clio-import-engine.md.
-/workflow/import/data/
-/workflow/import/journal/
-/workflow/import/review/
-# plan.mjs writes plan.jsonl under data/ (covered above); this belt-and-
-# suspenders entry catches a stray plan.jsonl at the old top-level path too.
-/workflow/import/plan.jsonl
-
-# One-off workflow/tools/*.mjs CLIs (e.g. provision-field-sets.mjs) journal
-# their applied writes here, same convention as workflow/import/journal/
-# above - operational run state, never committed.
-/workflow/tools/journal/
-
 # stray SDD report artifacts
 .superpowers-*.md
 .claude/worktrees/
