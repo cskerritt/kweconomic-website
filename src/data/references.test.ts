@@ -51,8 +51,12 @@ describe("REFERENCES registry integrity", () => {
     for (const id of ["IARP_IALCP_STANDARDS", "AANLCP_SCOPE", "CMS_WCMSA_GUIDE", "CMS_WCMSA", "CDC_LIFE_TABLES", "NCHS_LIFE_TABLES", "ICHCC_CLCP"]) {
       expect(REFERENCES[id], `${id} present`).toBeDefined();
     }
-    // The IALCP standards PDF moved; the registry must point at the live host.
-    expect(REFERENCES.IARP_IALCP_STANDARDS.url).toMatch(/^https:\/\/jlcp\.scholasticahq\.com\//);
+    // The linked IALCP standards document is the open-access 2002 founding
+    // edition (Reavis) on the Journal of Life Care Planning host; the APA must
+    // describe that document, not a later edition.
+    expect(REFERENCES.IARP_IALCP_STANDARDS.url).toMatch(/^https:\/\/(jlcp\.scholasticahq\.com|doi\.org)\//);
+    expect(REFERENCES.IARP_IALCP_STANDARDS.apa).toMatch(/^Reavis, S\. L\. \(2002\)/);
+    expect(REFERENCES.IARP_IALCP_STANDARDS.apa).not.toMatch(/4th ed|2022/);
   });
 
   it("no longer carries vocational-only sources", () => {

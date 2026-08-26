@@ -23,7 +23,7 @@ export const testimonials: Testimonial[] = [
     author: "Retaining Attorney",
     title: "Client Comment",
     firm: "",
-    caseType: "Life Care Plan Report",
+    caseType: "Expert Report",
     isPlaceholder: false,
   },
   {

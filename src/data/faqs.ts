@@ -1,5 +1,9 @@
 import type { Faq } from "./types";
 import { refsToSources } from "./references";
+import { ORG_PHONE } from "@/lib/brand";
+
+/** "+1-201-343-0700" -> "(201) 343-0700" for prose. */
+const PHONE_DISPLAY = ORG_PHONE.replace(/^\+1-(\d{3})-(\d{3})-(\d{4})$/, "($1) $2-$3");
 
 // Single source of truth for the site FAQ. Imported by the FAQ page
 // (src/pages/FAQ.tsx) and by the llms.txt generator (scripts/generate-llms.mjs),
@@ -82,6 +86,6 @@ export const faqs: Faq[] = [
   {
     question: "How do I retain KW Life Care Planning for a case?",
     answer:
-      "Contact our office by phone at (201) 343-0700 or via the [[/contact|contact form on this website]]. A member of our [[/schedule-consultation|intake team]] will follow up within one business day to discuss the case, the records needed, and [[/team|planner availability]]. We accept cases from plaintiff counsel, defense counsel, and insurance carriers.",
+      `Contact our office by phone at ${PHONE_DISPLAY} or via the [[/contact|contact form on this website]]. A member of our [[/schedule-consultation|intake team]] will follow up within one business day to discuss the case, the records needed, and [[/team|planner availability]]. We accept cases from plaintiff counsel, defense counsel, and insurance carriers.`,
   },
 ];

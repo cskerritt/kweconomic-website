@@ -31,7 +31,7 @@ export const comparisons: Comparison[] = [
     dateModified: "2026-04-21",
     a: {
       label: "Life Care Plan",
-      summary: "Comprehensive itemized care plan following [[/methods/life-care-plan-development|IALCP/IARP standards]] with frequencies, durations, and costs across the lifespan (International Academy of Life Care Planners, 2022).",
+      summary: "Comprehensive itemized care plan following [[/methods/life-care-plan-development|IALCP/IARP standards]] with frequencies, durations, and costs across the lifespan (Reavis, 2002).",
       url: "/services/life-care-planning",
     },
     b: {
@@ -167,7 +167,7 @@ export const comparisons: Comparison[] = [
     whenUseB:
       "Retain when representing a defendant or insurer.",
     overlap:
-      "The methodology, standards, and credentials are the same on both sides (International Academy of Life Care Planners, 2022). KW Life Care Planning accepts engagements from both plaintiff and defense and applies the same methodology regardless of retaining party: every item traces to a medical foundation, a stated frequency and duration, and a documented cost source.",
+      "The methodology, standards, and credentials are the same on both sides (Reavis, 2002). KW Life Care Planning accepts engagements from both plaintiff and defense and applies the same methodology regardless of retaining party: every item traces to a medical foundation, a stated frequency and duration, and a documented cost source.",
     faqs: [
       {
         question: "Should I avoid an expert who has primarily worked for the other side?",
@@ -208,7 +208,7 @@ export const comparisons: Comparison[] = [
       { dimension: "Typical use", a: "Damages quantification", b: "Case understanding, deposition prep, expert support" },
     ],
     whenUseA:
-      "Use a life care plan to quantify future care costs for trial, settlement, or mediation in catastrophic injury or chronic disease cases (International Academy of Life Care Planners, 2022).",
+      "Use a life care plan to quantify future care costs for trial, settlement, or mediation in catastrophic injury or chronic disease cases (Reavis, 2002).",
     whenUseB:
       "Use a medical chronology to summarize the record for internal review, deposition preparation, or to support other experts preparing opinions.",
     overlap:
@@ -331,7 +331,7 @@ export const comparisons: Comparison[] = [
     dateModified: "2026-08-26",
     a: {
       label: "Life Care Plan",
-      summary: "A comprehensive projection of all injury-related future medical and non-medical needs and their cost across the [[/methods/life-expectancy-in-life-care-planning|expected lifespan]], prepared for litigation, mediation, or settlement (International Academy of Life Care Planners, 2022).",
+      summary: "A comprehensive projection of all injury-related future medical and non-medical needs and their cost across the [[/methods/life-expectancy-in-life-care-planning|expected lifespan]], prepared for litigation, mediation, or settlement (Reavis, 2002).",
       url: "/services/life-care-planning",
     },
     b: {

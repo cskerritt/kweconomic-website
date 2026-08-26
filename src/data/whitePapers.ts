@@ -54,7 +54,7 @@ export const whitePapers: WhitePaper[] = [
       {
         heading: "What a life care plan is for",
         bodyHtml:
-          "<p>A <a href=\"/guides/what-is-life-care-plan\">life care plan</a> translates a person's future care needs into a structured, costed projection that a jury can understand and an economist can value (Weed &amp; Berens, 2018; International Academy of Life Care Planners, 2022). It addresses the medical and non-medical needs that flow from the injury or condition over the relevant horizon, including physician and therapy services, medications, equipment, supplies, attendant care, and home or transportation modifications where supported.</p><p>The plan does not decide the medicine. It organizes and projects care that the medical record and treating or evaluating providers support, and it makes the basis for each item explicit.</p>",
+          "<p>A <a href=\"/guides/what-is-life-care-plan\">life care plan</a> translates a person's future care needs into a structured, costed projection that a jury can understand and an economist can value (Weed &amp; Berens, 2018; Reavis, 2002). It addresses the medical and non-medical needs that flow from the injury or condition over the relevant horizon, including physician and therapy services, medications, equipment, supplies, attendant care, and home or transportation modifications where supported.</p><p>The plan does not decide the medicine. It organizes and projects care that the medical record and treating or evaluating providers support, and it makes the basis for each item explicit.</p>",
       },
       {
         heading: "Grounding the plan in the medical record",

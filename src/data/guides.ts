@@ -329,7 +329,7 @@ export const guides: Guide[] = [
         id: "who-writes-them",
         heading: "Who writes life care plans",
         bodyHtml:
-          "<p>Life care plans are typically <a href=\"/services/life-care-planning\">prepared by Certified Life Care Planners</a> (<a href=\"/credentials/clcp\">CLCPs</a>) with qualifying clinical backgrounds (RN, OT, PT, CRC, physician). The CLCP credential is issued by ICHCC (International Commission on Health Care Certification, n.d.); practice standards are published by IALCP and IARP (International Academy of Life Care Planners, 2022).</p>",
+          "<p>Life care plans are typically <a href=\"/services/life-care-planning\">prepared by Certified Life Care Planners</a> (<a href=\"/credentials/clcp\">CLCPs</a>) with qualifying clinical backgrounds (RN, OT, PT, CRC, physician). The CLCP credential is issued by ICHCC (International Commission on Health Care Certification, n.d.); practice standards are published by IALCP and IARP (Reavis, 2002).</p>",
       },
       {
         id: "methodology",
@@ -495,6 +495,12 @@ export const guides: Guide[] = [
         heading: "When both are needed",
         bodyHtml:
           "<p>Both documents are needed when a catastrophic <a href=\"/case-types/workers-compensation\">workers' compensation</a> or liability matter is settling, the injured person is a Medicare beneficiary or reasonably expects to become one, and the settlement releases future medical care. The plan establishes the full scope of need so the settlement is adequate; the allocation establishes the Medicare-protected portion so the settlement is compliant. Preparing both from one record review keeps them consistent, and a reconciliation showing which plan items fed the allocation and which fell outside it answers the questions a reviewer or an opposing party will ask. The <a href=\"/methods/msa-allocation-methodology\">allocation methodology</a> page describes the steps, and <a href=\"/compare/life-care-plan-vs-msa\">the comparison page</a> summarizes the differences in a table.</p>",
+      },
+      {
+        id: "who-prepares",
+        heading: "Who prepares the allocation and how it is coordinated",
+        bodyHtml:
+          "<p>An allocation is prepared by a planner or allocator with training in Medicare's review guidance, often the same certified life care planner who prepared the plan. Coordination with counsel happens at three points. Before the work begins, counsel confirms the injured person's Medicare status, the settlement structure, and whether submission for review is intended, because each changes what the allocation must contain. During preparation, the planner flags items whose coverage status is unclear so counsel can decide how to treat them rather than discovering the question at review. At delivery, the planner supplies the allocation, the supporting records, and a reconciliation to the life care plan, and remains available to respond to reviewer questions or to revise the allocation if the settlement terms change.</p>",
       },
       {
         id: "common-errors",
@@ -790,7 +796,7 @@ export const guides: Guide[] = [
         id: "one-time-vs-recurring",
         heading: "One-time, recurring, and periodically replaced items",
         bodyHtml:
-          "<p>The plan distinguishes three kinds of cost. One-time items are incurred once: a ramp or lift at the entrance, widened doorways, a roll-in shower, an accessible kitchen, a ceiling track system, and the associated design and permitting. Recurring items are consumed continuously: incontinence supplies, catheters, wound care supplies, nutritional formula, and the maintenance contracts on lifts and power equipment. Periodically replaced items are bought, used, and replaced on an interval: wheelchairs and seating, hospital beds and mattresses, patient lifts, shower and commode chairs, communication devices, orthotics and prosthetics, and vehicle modifications. Each kind is carried differently in the schedule, and mixing them, for example listing a one-time ramp as an annual cost or a replaced wheelchair as a one-time purchase, is a common error a reviewer will find.</p>",
+          "<p>The plan distinguishes three kinds of cost. One-time items are incurred once: a ramp or lift at the entrance, widened doorways, a roll-in shower, an accessible kitchen, a ceiling track system, and the associated design and permitting. Recurring items are consumed continuously: incontinence supplies, catheters, wound care supplies, nutritional formula, and the maintenance contracts on lifts and power equipment. Periodically replaced items are bought, used, and replaced on an interval: wheelchairs and seating, hospital beds and mattresses, patient lifts, shower and commode chairs, communication devices, orthotics and prosthetics, and vehicle modifications. Each kind is carried differently in the schedule, and mixing them, for example listing a one-time ramp as an annual cost or a replaced wheelchair as a one-time purchase, is a common error a reviewer will find.</p><p>Supplies illustrate how the recurring category is built. For a person with a neurogenic bladder managed by intermittent catheterization, the plan states the catheter type the treating provider prescribes, the number of catheterizations per day, and the resulting monthly quantity, then prices that quantity from a supplier in the person's market. Gloves, lubricant, and skin-care products are listed alongside on the same basis. The same approach applies to incontinence products, tracheostomy and suction supplies, and enteral formula: quantity per day from the provider's order, price per unit from a documented source, carried monthly for the plan horizon and re-priced at each update.</p>",
       },
       {
         id: "replacement-schedules",

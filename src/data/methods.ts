@@ -132,7 +132,7 @@ export const methods: Methodology[] = [
     limitations:
       "Life care plans reflect the best projection at a point in time. Costs, providers, and medical recommendations can change, which is why plans are typically updated periodically.",
     admissibilityHistory:
-      "[[/services/life-care-planning|Life care planning]] methodology following IALCP / IARP standards (International Academy of Life Care Planners, 2022) is widely accepted when grounded in physician recommendations and documented cost data.",
+      "[[/services/life-care-planning|Life care planning]] methodology following IALCP / IARP standards (Reavis, 2002) is widely accepted when grounded in physician recommendations and documented cost data.",
     relevantServices: ["life-care-planning"],
     faqs: [
       {
@@ -219,7 +219,7 @@ export const methods: Methodology[] = [
     limitations:
       "Prices vary by payer, setting, and provider, and a quote is a snapshot. A plan that mixes charge data with paid-amount data without explanation, or that prices care in the wrong market, is vulnerable. Costs are refreshed at each plan update, which is why the [[/guides/how-a-life-care-plan-is-priced|plan states the research date]] for each item.",
     admissibilityHistory:
-      "Documented, geographically matched cost research following the [[/methods/life-care-plan-development|IALCP standards]] is widely accepted (International Academy of Life Care Planners, 2022). Challenges succeed when the source of a price cannot be identified or when the planner cannot explain why one figure was chosen over another.",
+      "Documented, geographically matched cost research following the [[/methods/life-care-plan-development|IALCP standards]] is widely accepted (Reavis, 2002). Challenges succeed when the source of a price cannot be identified or when the planner cannot explain why one figure was chosen over another.",
     relevantServices: ["life-care-planning", "medical-cost-projection", "catastrophic-injury-planning"],
     faqs: [
       {

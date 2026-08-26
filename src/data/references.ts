@@ -77,8 +77,8 @@ export const REFERENCES: Record<string, Reference> = {
     "IARP_IALCP_STANDARDS",
     "live-verified",
     "org",
-    "International Academy of Life Care Planners. (2022). Standards of practice for life care planners (4th ed.). Journal of Life Care Planning, 20(3), 5-25.",
-    "https://jlcp.scholasticahq.com/article/151342-standards-of-practice/attachment/317466.pdf",
+    "Reavis, S. L. (2002). Standards of practice. Journal of Life Care Planning, 1(1), 49-57. International Academy of Life Care Planners / International Association of Rehabilitation Professionals.",
+    "https://doi.org/10.70385/001c.151342",
   ),
   KACZKOWSKI_V_BOLUBASZ: R(
     "KACZKOWSKI_V_BOLUBASZ",
@@ -282,6 +282,12 @@ export const REFERENCES: Record<string, Reference> = {
     "FAIR Health. (n.d.). FAIR Health. Retrieved July 19, 2026.",
     "https://www.fairhealth.org/",
   ),
+  // ---------------------------------------------------------------------------
+  // NOTE on IARP_IALCP_STANDARDS: the current (4th, 2022) edition is sold by
+  // IARP (rehabpro.org/page/IALCP-standards-purchase) and rehabpro.org returns
+  // 403 to non-browser fetches, so no current-edition URL could be verified.
+  // The registry therefore cites the open-access founding edition (Reavis,
+  // 2002) that the linked PDF actually is. Do not describe it as the 4th ed.
   // ---------------------------------------------------------------------------
   // LCP-SITE ADDITIONS (2026-08-26) - each URL fetched with curl and confirmed
   // HTTP 200 on the date recorded before entry.

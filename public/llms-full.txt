@@ -599,7 +599,7 @@ When Defense Expert applies: Retain when representing a defendant or insurer.
 ### Life Care Plan vs. Medical Chronology
 Life Care Plan compared with Medical Chronology.
 
-When Life Care Plan applies: Use a life care plan to quantify future care costs for trial, settlement, or mediation in catastrophic injury or chronic disease cases (International Academy of Life Care Planners, 2022).
+When Life Care Plan applies: Use a life care plan to quantify future care costs for trial, settlement, or mediation in catastrophic injury or chronic disease cases (Reavis, 2002).
 
 When Medical Chronology applies: Use a medical chronology to summarize the record for internal review, deposition preparation, or to support other experts preparing opinions.
 
