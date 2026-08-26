@@ -19,7 +19,6 @@ function formatDate(dateStr: string) {
 }
 
 const categoryColors: Record<string, string> = {
-  Vocational: "bg-teal/10 text-teal",
   Legal: "bg-navy/10 text-navy",
   "Life Care Planning": "bg-forest/10 text-forest",
   Economics: "bg-amber/10 text-amber-dark",
@@ -181,8 +180,8 @@ export default function InsightPost() {
                       Knowledge Center <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                     <p className="text-xs text-neutral-500 mt-1">
-                      In-depth guides on vocational rehabilitation, life care planning, and
-                      forensic economics.
+                      In-depth guides on life care planning, medical cost projection, and
+                      the standards that govern future-care testimony.
                     </p>
                   </div>
                 </div>

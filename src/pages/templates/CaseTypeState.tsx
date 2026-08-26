@@ -139,7 +139,7 @@ export default function CaseTypeState() {
               to={`/locations/${state.slug}`}
               className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
             >
-              Vocational and rehabilitation experts in {state.name}
+              Life care planners in {state.name}
             </Link>
           </li>
           {pillarServices()
@@ -182,7 +182,7 @@ export default function CaseTypeState() {
         serviceSchema({
           slug: `${caseType.slug}/${state.slug}`,
           name: `${caseType.name} Expert Services in ${state.name}`,
-          description: `Vocational, life care planning, and forensic economic services for ${caseType.name.toLowerCase()} cases in ${state.name}.`,
+          description: `Life care planning and medical cost projection services for ${caseType.name.toLowerCase()} matters in ${state.name}.`,
           areaServed: { "@type": "AdministrativeArea", name: state.name },
         }),
         faqPageSchema(localizedFaqs, url),

@@ -118,7 +118,7 @@ export default function CredentialState() {
               to={`/locations/${state.slug}`}
               className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
             >
-              Vocational and rehabilitation experts in {state.name}
+              Life care planners in {state.name}
             </Link>
           </li>
           {pillarServices()

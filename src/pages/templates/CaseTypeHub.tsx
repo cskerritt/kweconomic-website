@@ -116,7 +116,7 @@ export default function CaseTypeHub() {
       <section id="attorney-guides" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">Attorney guides for {caseType.name.toLowerCase()} cases</h2>
         <p className="text-neutral-700 mb-3">
-          Stage-by-stage guidance on working with vocational, economic, and life care experts in {caseType.name.toLowerCase()} litigation.
+          Stage-by-stage guidance on working with a life care planner in {caseType.name.toLowerCase()} litigation.
         </p>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {ATTORNEY_STAGES.map((stage) => (

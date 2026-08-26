@@ -212,8 +212,9 @@ describe("lastmod is emitted only where derivable", () => {
   const coreXml = readFileSync(join(PUBLIC, "sitemap-core.xml"), "utf8");
 
   // The per-state expert-disclosure pages (and their dateModified lastmod) were
-  // removed with src/data/disclosureRules.ts (Task 4); Task 12 strips the
-  // remaining disclosure branches from generate-sitemap.mjs.
+  // removed with src/data/disclosureRules.ts (Task 4); generate-sitemap.mjs no
+  // longer has a disclosure branch (see prerender-meta.test.mjs "retired
+  // vocational-site routes").
 
   it("insight posts carry a date; generic geo pages carry none", () => {
     expect(coreXml).toMatch(
@@ -231,6 +232,15 @@ describe("non-pillar services stay out of the sitemap", () => {
   it("never emits forensic-economics service URLs", () => {
     const leaked = allUrls.filter((u) => u.includes("/services/forensic-economics"));
     expect(leaked).toEqual([]);
+  });
+
+  it("emits every pillar service x state and no forensic-economics URLs", () => {
+    const urls = childUrls["sitemap-services.xml"];
+    expect(genericServices).toHaveLength(10);
+    for (const s of genericServices) {
+      for (const st of states) expect(urls).toContain(`${BASE}/services/${s}/${st}`);
+    }
+    expect(urls.some((u) => u.includes("/services/forensic-economics"))).toBe(false);
   });
 
   it("lists every pillar service exactly once at its pillar path", () => {

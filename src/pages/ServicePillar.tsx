@@ -70,7 +70,7 @@ export default function ServicePillar() {
       answer: `Full retained-expert engagements are billed hourly across review, evaluation, report, and (if needed) testimony phases. Specific cost depends on case complexity and engagement scope.`,
     },
     {
-      question: `Does ${ORG_SHORT} work plaintiff and defense?`,
+      question: `Does ${ORG_SHORT} work for both plaintiff and defense?`,
       answer: `Yes. ${ORG_NAME} provides independent, objective ${service.shortName.toLowerCase()} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every plan is grounded in published standards of practice.`,
     },
     {

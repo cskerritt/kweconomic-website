@@ -15,7 +15,6 @@ function formatDate(dateStr: string) {
 }
 
 const categoryColors: Record<string, string> = {
-  Vocational: "bg-teal/10 text-teal",
   Legal: "bg-navy/10 text-navy",
   "Life Care Planning": "bg-forest/10 text-forest",
   Economics: "bg-amber/10 text-amber-dark",
@@ -51,9 +50,9 @@ export default function InsightsHub() {
               Insights
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              Practical articles on vocational rehabilitation, forensic economics, life care
-              planning, and the legal standards that govern expert testimony - written for
-              attorneys and legal professionals navigating damages issues.
+              Practical articles on life care planning, medical cost projection, and the
+              legal standards that govern future-care testimony - written for attorneys and
+              legal professionals navigating catastrophic-injury damages.
             </p>
           </div>
         </div>

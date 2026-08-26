@@ -28,9 +28,9 @@ export default function KnowledgeHub() {
               Knowledge Center
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              Authoritative guides on vocational rehabilitation, life care planning, forensic
-              economics, and expert witness practice - written to help attorneys and legal
-              professionals understand the methodologies behind damages analysis.
+              Authoritative guides on life care planning, medical cost projection, and expert
+              witness practice - written to help attorneys and legal professionals understand
+              the methodologies behind future-care damages.
             </p>
           </div>
         </div>

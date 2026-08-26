@@ -14,7 +14,7 @@ import { STAGE_LABELS } from "@/lib/attorney-stages";
 // 404'd before this page existed.
 const STAGE_INTROS: Record<string, string> = {
   considering:
-    "Deciding whether a vocational, economic, or life care expert adds value to the case. Pick your case type for the evaluation criteria, timing considerations, and questions to ask before retaining.",
+    "Deciding whether a life care planner adds value to the case. Pick your case type for the evaluation criteria, timing considerations, and questions to ask before retaining.",
   retaining:
     "Engaging the expert: scope, documents to send, and scheduling. Pick your case type for a step-by-step retention checklist.",
   "preparing-deposition":
