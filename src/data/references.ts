@@ -143,8 +143,8 @@ export const REFERENCES: Record<string, Reference> = {
     "ICHCC_CLCP",
     "anchor",
     "org",
-    "International Commission on Health Care Certification. (n.d.). The Certified Life Care Planner (CLCP) certification. Retrieved July 19, 2026.",
-    "https://www.ichcc.org/the-clcp",
+    "International Commission on Health Care Certification. (n.d.). Certified Life Care Planner (CLCP). Retrieved August 26, 2026.",
+    "https://www.ichcc.org/certified-life-care-planner-clcp.html",
   ),
   IARP: R(
     "IARP",
@@ -201,7 +201,7 @@ export const REFERENCES: Record<string, Reference> = {
     "live-verified",
     "gov",
     "U.S. Department of the Treasury. (n.d.). Daily Treasury par yield curve rates.",
-    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/",
+    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
   ),
   CMS_PFS: R(
     "CMS_PFS",
@@ -215,7 +215,7 @@ export const REFERENCES: Record<string, Reference> = {
     "live-verified",
     "gov",
     "Centers for Medicare & Medicaid Services. (n.d.). Medicare secondary payer. U.S. Department of Health and Human Services.",
-    "https://www.cms.gov/medicare/coordination-benefits-recovery-overview",
+    "https://www.cms.gov/medicare/coordination-benefits-recovery/overview",
   ),
   AHRQ_GUIDELINES: R(
     "AHRQ_GUIDELINES",

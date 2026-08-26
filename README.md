@@ -106,7 +106,7 @@ Service x State x City pages are prerendered for the top slice of each state's c
 | `testimonials.ts` | Testimonials sourced from the parent firm's site |
 | `types.ts` | Shared TS types |
 
-Brand identity lives in `src/lib/brand.ts`; `scripts/lib/site.mjs` is its Node mirror for build scripts and `scripts/site-brand-parity.test.mjs` pins the two. `src/brand-strings.test.mjs` and `src/pages/off-brand-copy.test.mjs` fail the build if vocational-brand names or vocational-expert phrasing leak into rendered copy.
+Brand identity lives in `src/lib/brand.ts`; `scripts/lib/site.mjs` is its Node mirror for build scripts and `scripts/site-brand-parity.test.mjs` pins the two. `src/brand-strings.test.mjs` and `src/pages/off-brand-copy.test.mjs` fail the build if vocational-brand names or vocational-expert phrasing leak into rendered copy; the latter also walks `src/data/*.ts` (allowances: `team.ts` bios, `credentials.ts`, one workers' compensation hand-off line in `services.ts`, and at most one "sister practice" hand-off per journey stage in `journeys.ts`). `src/data/sources-urls.test.ts` keeps every source URL well-formed `https://`, and `src/components/layout/nav.pillars.test.mjs` pins the header/footer service links to `pillarServices()` order.
 
 ## Facts to confirm
 
@@ -122,7 +122,9 @@ Site-level (spec section 11):
 
 Editorial and credentialing:
 
-- [ ] CNLCP certifying-board name: site text needs a decision between AANLCP and the CNLCP Certification Board.
+- [x] CNLCP certifying body: verified 2026-08-26 as the CNLCP Certification Board (cnlcp.org; HEAD returns 405, GET 200). `credentials.ts` names the Board as issuer; AANLCP is cited only for the nurse life care planning scope and standards of practice.
+- [ ] Physician review of every plan: the site now says "physician-informed" (plans are developed by certified life care planners with a board-certified physician life care planner on the team). If every plan is in fact developed or reviewed by Dr. Jesse Wolstein, restore the stronger "Physician-Led" wording in `Home.tsx`, `About.tsx`, `home-faqs.mjs`, and `scripts/prerender.mjs` (keep `prerender-meta.test.mjs` green).
+- [ ] Jesse Wolstein "10 years of clinical experience" (`team.ts`) is a number that will go stale; confirm it or change to "over a decade".
 - [ ] IALCP Standards of Practice: no verifiable current-edition URL found; the site cites Reavis (2002), *Journal of Life Care Planning*. Replace with the current edition if the team has it.
 - [ ] American Samoa and CNMI oversight agency is rendered as a generic "Department of Health"; confirm the actual agency names.
 - [ ] `practiceContext` medical-malpractice wording deserves a counsel skim before launch.

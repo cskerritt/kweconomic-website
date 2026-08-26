@@ -1,10 +1,9 @@
 # KW Life Care Planning (kwlcp.com) robots.txt
-# Updated 2026-06-16
+# Updated 2026-08-26
 
 # Default - all bots allowed
 User-agent: *
 Allow: /
-Disallow: /client-forms/
 
 # AI ingestion / training bots - explicitly allowed (citation-friendly site)
 User-agent: GPTBot

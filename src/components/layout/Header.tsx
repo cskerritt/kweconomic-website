@@ -4,7 +4,8 @@ import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import MobileNav from "./MobileNav";
 import { ORG_NAME, ORG_PHONE, ORG_PHONE_DISPLAY, ORG_SHORT, telHref } from "@/lib/brand";
 
-// Static list of the 10 LCP pillar slugs (Task 5 replaces this with pillarServices()).
+// Static list of the 10 LCP pillar service links. Kept static for render speed;
+// src/components/layout/nav.pillars.test.mjs pins the hrefs to pillarServices() order.
 const serviceLinks = [
   { name: "All Services", href: "/services" },
   { name: "Life Care Planning", href: "/services/life-care-planning" },

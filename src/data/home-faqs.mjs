@@ -18,7 +18,7 @@ export function homepageFaqs(orgName, orgShort) {
     {
       question: "Who prepares the plan?",
       answer:
-        "Plans are developed and reviewed by a board-certified physician who is also a Certified Life Care Planner (CLCP), supported by certified life care planners. Every recommendation is tied to the medical record, treating-provider input, and published clinical practice guidelines.",
+        "Plans are developed by certified life care planners with a board-certified physician life care planner on the team. Every recommendation is tied to the medical record, treating-provider input, and published clinical practice guidelines.",
     },
     {
       question: "How long does a life care plan take?",

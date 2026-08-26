@@ -14,7 +14,8 @@ import {
   telHref,
 } from "@/lib/brand";
 
-// Static list of the 10 LCP pillar slugs (Task 5 replaces this with pillarServices()).
+// Static list of the 10 LCP pillar service links. Kept static for render speed;
+// src/components/layout/nav.pillars.test.mjs pins the hrefs to pillarServices() order.
 const serviceLinks = [
   { name: "Life Care Planning", href: "/services/life-care-planning" },
   { name: "Pediatric Life Care Planning", href: "/services/pediatric-life-care-planning" },

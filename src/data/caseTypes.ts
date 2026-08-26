@@ -158,7 +158,7 @@ export const caseTypes: CaseType[] = [
     sources: [
       { title: "Amputee Coalition", url: "https://www.amputee-coalition.org/", type: "org" },
       { title: "American Academy of Orthotists & Prosthetists", url: "https://www.oandp.org/", type: "org" },
-      { title: "VA Amputation System of Care", url: "https://www.va.gov/rehab/amputation.asp", type: "gov" },
+      { title: "VA Amputation System of Care", url: "https://www.prosthetics.va.gov/asoc/index.asp", type: "gov" },
     ],
   },
   {
@@ -240,7 +240,7 @@ export const caseTypes: CaseType[] = [
     ],
     sources: [
       { title: "Agency for Healthcare Research and Quality", url: "https://www.ahrq.gov/", type: "gov" },
-      { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/physician-fee-schedule", type: "gov" },
+      { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/payment/fee-schedules/physician", type: "gov" },
     ],
   },
   {
@@ -322,7 +322,7 @@ export const caseTypes: CaseType[] = [
       },
     ],
     sources: [
-      { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/physician-fee-schedule", type: "gov" },
+      { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/payment/fee-schedules/physician", type: "gov" },
       { title: "National Center for Health Statistics - Life Expectancy", url: "https://www.cdc.gov/nchs/", type: "gov" },
     ],
   },
@@ -364,7 +364,7 @@ export const caseTypes: CaseType[] = [
     ],
     sources: [
       { title: "U.S. DOL Office of Workers' Compensation Programs", url: "https://www.dol.gov/agencies/owcp", type: "gov" },
-      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-compensation-medicare-set-aside-arrangements", type: "gov" },
+      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-comp-set-aside-arrangements", type: "gov" },
     ],
   },
   {

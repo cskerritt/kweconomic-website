@@ -372,7 +372,7 @@ const corePages = [
     path: "/",
     title: `Life Care Planning Expert Witness Services | ${ORG_NAME}`,
     description:
-      "Independent, physician-led life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states. Response in 1 business day.",
+      "Independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states. Response in 1 business day.",
     innerHtml:
       `<h1>Life Care Plans That Document the Future of Care</h1>` +
       `<p>${ORG_NAME} produces independent, evidence-based life care plans and medical cost projections for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
@@ -385,11 +385,11 @@ const corePages = [
   },
   {
     path: "/about",
-    title: `About ${ORG_NAME} - Independent, Physician-Led Life Care Planning`,
+    title: `About ${ORG_NAME} - Independent, Physician-Informed Life Care Planning`,
     description:
-      `${ORG_NAME} prepares independent, physician-led life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states.`,
+      `${ORG_NAME} prepares independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states.`,
     innerHtml:
-      `<h1>About ${ORG_NAME}</h1><p>${ORG_NAME} is a nationwide practice preparing independent, physician-led life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for plaintiff and defense counsel.</p><nav><a href="/team">Our Team</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
+      `<h1>About ${ORG_NAME}</h1><p>${ORG_NAME} is a nationwide practice preparing independent, physician-informed life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for plaintiff and defense counsel.</p><nav><a href="/team">Our Team</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "LocalBusiness",
   },
   {

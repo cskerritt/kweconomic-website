@@ -122,7 +122,7 @@ async function main() {
   llms.push("## About");
   llms.push("");
   llms.push(
-    `${COMPANY} is a life care planning practice preparing independent, physician-led life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for legal proceedings. The practice provides objective analysis for both plaintiff and defense attorneys, with certified life care planners who offer court-admissible opinions and expert witness testimony nationwide.`
+    `${COMPANY} is a life care planning practice preparing independent, physician-informed life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for legal proceedings. The practice provides objective analysis for both plaintiff and defense attorneys, with certified life care planners who offer court-admissible opinions and expert witness testimony nationwide.`
   );
   llms.push("");
   llms.push("## Services");

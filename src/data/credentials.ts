@@ -58,7 +58,7 @@ export const credentials: Credential[] = [
       },
     ],
     sources: [
-      { title: "ICHCC - CLCP Certification", url: "https://www.ichcc.org/the-clcp", type: "org" },
+      { title: "ICHCC - Certified Life Care Planner (CLCP)", url: "https://www.ichcc.org/certified-life-care-planner-clcp.html", type: "org" },
       { title: "IARP Life Care Planning Section", url: "https://rehabpro.org/sections/lcp", type: "org" },
     ],
   },
@@ -66,8 +66,8 @@ export const credentials: Credential[] = [
     slug: "cnlcp",
     name: "Certified Nurse Life Care Planner",
     abbreviation: "CNLCP",
-    issuer: "American Association of Nurse Life Care Planners",
-    issuerUrl: "https://www.aanlcp.org/",
+    issuer: "CNLCP Certification Board",
+    issuerUrl: "https://www.cnlcp.org/",
     scope:
       "The CNLCP certifies registered nurses in life care planning grounded in the nursing process: assessment, nursing diagnosis, planning, implementation, and evaluation. Nurse life care planners bring hands-on clinical knowledge of medications, supplies, skilled care, and daily care routines to the documentation of future needs, frequencies, and costs.",
     requirements: [
@@ -99,7 +99,8 @@ export const credentials: Credential[] = [
       },
     ],
     sources: [
-      { title: "AANLCP - Certification", url: "https://www.aanlcp.org/", type: "org" },
+      { title: "CNLCP Certification Board", url: "https://www.cnlcp.org/", type: "org" },
+      { title: "AANLCP - Nurse Life Care Planning Standards of Practice", url: "https://www.aanlcp.org/nurse-life-care-planning-standards-of-practice/", type: "org" },
     ],
   },
   {
@@ -138,8 +139,8 @@ export const credentials: Credential[] = [
       },
     ],
     sources: [
-      { title: "ICHCC - MSCC Certification", url: "https://www.ichcc.org/", type: "org" },
-      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-compensation-medicare-set-aside-arrangements", type: "gov" },
+      { title: "ICHCC - Medicare Set-Aside Certified Consultant (MSCC)", url: "https://www.ichcc.org/medicare-set-aside-certified-consultant-mscc.html", type: "org" },
+      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-comp-set-aside-arrangements", type: "gov" },
     ],
   },
   {
@@ -219,7 +220,7 @@ export const credentials: Credential[] = [
     ],
     sources: [
       { title: "CRCC - Certification Overview", url: "https://crccertification.com/crc-certification/", type: "org" },
-      { title: "CRCC Code of Professional Ethics", url: "https://crccertification.com/code-of-ethics-3/", type: "org" },
+      { title: "CRCC Code of Professional Ethics", url: "https://www.crccertification.com/code-of-ethics/", type: "org" },
     ],
   },
   {
@@ -325,7 +326,7 @@ export const credentials: Credential[] = [
           "In rebuttal work, in cases where life expectancy or long-term outcome literature is contested, and in matters involving cognitive or psychological disability where assessment interpretation is central to the plan.",
       },
     ],
-    sources: [{ title: "U.S. Department of Education - Accreditation", url: "https://www.ed.gov/about/offices/list/ope/accred", type: "gov" }],
+    sources: [{ title: "U.S. Department of Education - Accreditation", url: "https://www.ed.gov/accreditation", type: "gov" }],
   },
 ];
 

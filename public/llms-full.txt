@@ -177,7 +177,7 @@ Typical timeline:
 Fees: Medical cost projections are billed at an hourly rate for records review, treatment plan confirmation, cost research, report preparation, and any testimony. Many projections are completed within a fixed initial retainer because the scope is defined at engagement. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
 
 ### Workers' Compensation Life Care Plans
-Life care plans built for workers' compensation matters, including return-to-work and transferable skills considerations alongside future medical care, attendant care, and rehabilitation needs.
+Life care plans built for workers' compensation matters, covering future medical care, attendant care, and rehabilitation needs, coordinated with the vocational specialist where return-to-work is contested.
 
 Common case types: Workers' Compensation, Traumatic Brain Injury, Spinal Cord Injury, Amputation, Burn Injury
 
@@ -187,7 +187,7 @@ Engagement process:
 1. Engagement and records collection: We confirm scope and conflicts, establish the retainer, and gather the claim file, medical records, and any independent or agreed examination reports.
 2. Records review and chronology: We build a chronology of the work injury, treatment, work status, and current clinical picture, identifying which conditions are accepted as compensable.
 3. Clinical interview and provider collaboration: We interview the injured worker when appropriate and coordinate with treating providers to document ongoing restrictions and care needs.
-4. Future care and return-to-work projection: We project future medical, rehabilitation, equipment, and attendant care needs and address return-to-work and transferable skills considerations relevant to the claim.
+4. Future care and return-to-work projection: We project future medical, rehabilitation, equipment, and attendant care needs and note where return-to-work is contested so the plan can be reconciled with any separate vocational opinion.
 5. Cost research and plan preparation: We price each item using the applicable fee schedule or geographically specific provider data and document the basis for every recommendation in a written plan.
 6. Testimony and settlement support: We provide deposition and hearing testimony and coordinate with the Medicare set-aside allocation when the claim moves toward settlement.
 
@@ -420,7 +420,7 @@ Issuer: International Commission on Health Care Certification
 The CLCP is the most widely held certification for life care planners. Scope includes the development of comprehensive, individualized life care plans for people with catastrophic injury or chronic illness, documenting every category of future care with its frequency, duration, and cost, and defending that plan through report, deposition, and trial testimony.
 
 ### CNLCP - Certified Nurse Life Care Planner
-Issuer: American Association of Nurse Life Care Planners
+Issuer: CNLCP Certification Board
 
 The CNLCP certifies registered nurses in life care planning grounded in the nursing process: assessment, nursing diagnosis, planning, implementation, and evaluation. Nurse life care planners bring hands-on clinical knowledge of medications, supplies, skilled care, and daily care routines to the documentation of future needs, frequencies, and costs.
 

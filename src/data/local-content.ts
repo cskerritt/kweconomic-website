@@ -11,7 +11,7 @@ export interface LocalContent {
 
 // Hand-written local essays for the markets the firm knows first-hand. Court
 // and venue facts are kept; every cost sentence is framed around the price and
-// availability of care, never wages or labor markets.
+// availability of care, never wages or employment data.
 export const localContentEntries: LocalContent[] = [
   {
     stateSlug: "new-york",

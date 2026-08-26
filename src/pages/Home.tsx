@@ -5,7 +5,7 @@ import { states } from "@/data/states";
 import { homepageFaqs } from "@/data/home-faqs.mjs";
 import { testimonials } from "@/data/testimonials";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { ORG_NAME, ORG_SHORT, ORG_PHONE, SITE_URL } from "@/lib/brand";
+import { ORG_NAME, ORG_SHORT, ORG_PHONE, ORG_PHONE_DISPLAY, SITE_URL, telHref } from "@/lib/brand";
 import ServiceCard from "@/components/ServiceCard";
 import Reveal from "@/components/Reveal";
 import ContactCTA from "@/components/ContactCTA";
@@ -22,13 +22,11 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 
-const PHONE_DISPLAY = "(201) 343-0700";
-
 const HOMEPAGE_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 
 const HOW_WE_WORK = [
   { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. Plans are evidence-based and document the foundation for every recommendation." },
-  { icon: Award, title: "Physician-Led Planning", text: "Plans are developed and reviewed by a board-certified physician who is also a Certified Life Care Planner (CLCP)." },
+  { icon: Award, title: "Physician-Informed Planning", text: "Plans are developed by certified life care planners with a board-certified physician life care planner on the team." },
   { icon: Users, title: "Clinical Foundation", text: "Direct emergency medicine clinical experience grounds every recommendation in the plan." },
   { icon: MapPin, title: "Nationwide Practice", text: "Engagements in all 50 states, the District of Columbia, and U.S. territories with state-specific cost research." },
 ];
@@ -57,7 +55,7 @@ export default function Home() {
   usePageMeta({
     title: `Life Care Planning Expert Witness Services | ${ORG_NAME}`,
     description:
-      "Independent, physician-led life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states. Response in 1 business day.",
+      "Independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states. Response in 1 business day.",
     canonical: `${SITE_URL}/`,
   });
 
@@ -115,11 +113,11 @@ export default function Home() {
               </div>
 
               <a
-                href={`tel:${ORG_PHONE}`}
+                href={telHref(ORG_PHONE)}
                 className="kw-enter kw-enter-4 inline-flex items-center gap-2 text-neutral-300 hover:text-white text-sm font-medium"
               >
                 <Phone className="w-4 h-4" />
-                Or call {PHONE_DISPLAY}
+                Or call {ORG_PHONE_DISPLAY}
               </a>
 
               {/* Compact pull-quote for mobile/tablet (full card shows at lg+ in the right column) */}

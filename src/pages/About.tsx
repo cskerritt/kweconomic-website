@@ -16,9 +16,9 @@ const VALUES = [
 
 export default function About() {
   usePageMeta({
-    title: `About ${ORG_NAME} - Independent, Physician-Led Life Care Planning`,
+    title: `About ${ORG_NAME} - Independent, Physician-Informed Life Care Planning`,
     description:
-      `${ORG_NAME} prepares independent, physician-led life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states.`,
+      `${ORG_NAME} prepares independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states.`,
     canonical: `${SITE_URL}/about`,
   });
 
@@ -64,9 +64,9 @@ export default function About() {
                   planning practice.
                 </p>
                 <p>
-                  Plans are developed and reviewed by a board-certified physician who is also a
-                  Certified Life Care Planner (CLCP), supported by certified life care planners
-                  with doctoral-level rehabilitation training. Every recommendation is traced to
+                  Plans are developed by certified life care planners with a board-certified
+                  physician life care planner on the team, supported by planners with
+                  doctoral-level rehabilitation training. Every recommendation is traced to
                   the medical record, treating-provider input, and published clinical practice
                   guidelines, and every cost is sourced to the geographic market where care will
                   be delivered.
@@ -95,7 +95,7 @@ export default function About() {
               <div className="bg-navy-dark text-white rounded-xl p-8">
                 <h3 className="font-serif text-xl font-bold mb-3">Our Mission</h3>
                 <p className="text-neutral-300 leading-relaxed">
-                  Independent, physician-led life care planning that gives courts and parties a
+                  Independent, physician-informed life care planning that gives courts and parties a
                   documented, defensible picture of what an injured person will need and what it
                   will cost.
                 </p>
@@ -125,9 +125,8 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Planners</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto mb-8">
-            The practice is led by a board-certified physician and Certified Life Care Planner
-            and staffed by doctoral-level rehabilitation professionals who hold the CLCP
-            credential. Read the credentials and background of each planner.
+            The team includes a board-certified physician who is a Certified Life Care Planner
+            and doctoral-level rehabilitation professionals who hold the CLCP credential. Read the credentials and background of each planner.
           </p>
           <Link
             to="/team"
