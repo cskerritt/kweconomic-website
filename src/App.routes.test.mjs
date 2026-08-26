@@ -1,123 +1,114 @@
 // src/App.routes.test.mjs
 // Source-read guard tests (no jsdom/RTL in this repo - vitest.config.ts's
-// environment is "node" - mirrors intakeForms.parity.test.mjs's own pattern).
+// environment is "node"). Pins the KW LCP route set (spec §5): the LCP-only
+// site keeps the content/SEO routes and drops every intake, PSA, payment,
+// raffle, document-library, and economic-tool surface from kwvrs.com.
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const here = dirname(fileURLToPath(import.meta.url));
-const appSrc = readFileSync(join(here, "App.tsx"), "utf8");
-const chooserSrc = readFileSync(join(here, "components/IntakeChooser.tsx"), "utf8");
+const appSource = readFileSync(join(here, "App.tsx"), "utf8");
 const homeSrc = readFileSync(join(here, "pages/Home.tsx"), "utf8");
+const contactSrc = readFileSync(join(here, "pages/Contact.tsx"), "utf8");
 const serverSrc = readFileSync(join(here, "../server.js"), "utf8");
-const validationSrc = readFileSync(join(here, "../validation.server.mjs"), "utf8");
 
-describe("unified intake routing (spec 2026-07-16 §3)", () => {
-  it("App.tsx registers /contact/intake and no longer registers the two retired routes", () => {
-    expect(appSrc).toContain('<Route path="/contact/intake" element={<RetainerIntake slug="unified" />} />');
-    expect(appSrc).not.toContain('path="/contact/marital-intake"');
-    expect(appSrc).not.toContain('path="/contact/personal-injury-intake"');
+const registeredPaths = [...appSource.matchAll(/path="([^"]+)"/g)].map((m) => m[1]);
+
+describe("KW LCP route set (spec §5)", () => {
+  it("registers every kept static route", () => {
+    for (const p of [
+      "/", "/about", "/team", "/contact", "/schedule-consultation", "/services", "/locations",
+      "/case-types", "/credentials", "/guides", "/compare", "/methods", "/attorneys", "/jurisdictions",
+      "/knowledge", "/insights", "/white-papers", "/case-studies", "/resources/faq",
+      "/tools", "/tools/life-expectancy", "/privacy", "/terms", "*",
+    ]) {
+      expect(registeredPaths, `missing route ${p}`).toContain(p);
+    }
   });
 
-  it("server.js 301s both retired routes to /contact/intake", () => {
-    expect(serverSrc).toMatch(/\["\/contact\/personal-injury-intake",\s*"\/contact\/intake"\]/);
-    expect(serverSrc).toMatch(/\["\/contact\/marital-intake",\s*"\/contact\/intake"\]/);
+  it("registers every kept param route", () => {
+    for (const p of [
+      "/team/:slug", "/services/:serviceSlug", "/services/:serviceSlug/:stateSlug",
+      "/services/:serviceSlug/:stateSlug/:citySlug", "/services/:serviceSlug/case/:typeSlug",
+      "/services/:serviceSlug/cost", "/services/:serviceSlug/process", "/services/:serviceSlug/timeline",
+      "/locations/:stateSlug", "/locations/:stateSlug/:citySlug", "/case-types/:slug",
+      "/case-types/:typeSlug/:stateSlug", "/credentials/:slug", "/credentials/:credSlug/:stateSlug",
+      "/guides/:slug", "/compare/:slug", "/methods/:slug", "/attorneys/:stage",
+      "/attorneys/:stage/:caseTypeSlug", "/knowledge/:slug", "/insights/:slug", "/white-papers/:slug",
+    ]) {
+      expect(registeredPaths, `missing route ${p}`).toContain(p);
+    }
   });
 
-  it("IntakeChooser no longer links to the retired routes", () => {
-    expect(chooserSrc).not.toContain("/contact/personal-injury-intake");
-    expect(chooserSrc).not.toContain("/contact/marital-intake");
-    expect(chooserSrc).toContain("/contact/intake");
+  it("does not register retired non-LCP routes", () => {
+    for (const p of [
+      "/payment", "/raffle", "/contact/intake", "/contact/nonmetro-intake", "/contact/consulting-intake",
+      "/nm", "/intake", "/agreements/", "/services/expert-disclosure", "/tools/household-services",
+      "/tools/economic-damages-estimator", "/samples", "/cv", "/forms", "/phq-form-", "/hipaa-", "/review",
+    ]) {
+      expect(appSource, `retired route ${p} still registered`).not.toContain(`path="${p}`);
+    }
   });
 
-  it("Home.tsx's case-type quick links no longer link to the retired routes", () => {
-    expect(homeSrc).not.toContain("/contact/personal-injury-intake");
-    expect(homeSrc).not.toContain("/contact/marital-intake");
-    expect(homeSrc).toContain("/contact/intake");
+  it("does not lazy-import any deleted page", () => {
+    for (const page of [
+      "RetainerIntake", "Intake", "Agreement", "Payment", "Raffle", "SampleReports", "ExpertCVs", "Forms",
+      "PatientFormPage", "ExpertDisclosurePillar", "ExpertDisclosureState", "DamagesEstimator",
+      "HouseholdServicesValuator", "HouseholdServicesMethodology", "Review",
+    ]) {
+      expect(appSource, `still imports @/pages/${page}`).not.toContain(`import("@/pages/${page}")`);
+    }
   });
 
-  it("validation.server.mjs treats unified-intake as a granular (strict-validated) intake", () => {
-    expect(validationSrc).toMatch(/"unified-intake"/);
-  });
-});
-
-describe("/payment Zelle page (link-only, noindex)", () => {
-  const paymentSrc = readFileSync(join(here, "pages/Payment.tsx"), "utf8");
-
-  it("App.tsx registers /payment", () => {
-    expect(appSrc).toContain('<Route path="/payment" element={<Payment />} />');
-  });
-
-  it("server.js serves /payment as a client-only route (200 + X-Robots-Tag noindex)", () => {
-    expect(serverSrc).toMatch(/pathname === "\/payment"/);
-  });
-
-  it("Payment.tsx sets noindex meta and links the same Zelle URL the QR encodes", () => {
-    expect(paymentSrc).toContain("noindex: true");
-    expect(paymentSrc).toContain(
-      "https://enroll.zellepay.com/qr-codes/?data=eyJuYW1lIjoiS0lOQ0FJRCBXT0xTVEVJTiBWT0NBVElPTkFMICYiLCJ0b2tlbiI6Imt3dnJzMjAyNiIsImFjdGlvbiI6InBheW1lbnQifQ=="
+  it("registers /attorneys/:stage ahead of the stage/caseType route", () => {
+    expect(appSource.indexOf('path="/attorneys/:stage"')).toBeLessThan(
+      appSource.indexOf('path="/attorneys/:stage/:caseTypeSlug"'),
     );
   });
+});
 
-  it("stays out of the sitemap", async () => {
-    // sitemap.xml is a sitemap INDEX; scan the page URLs across its children.
-    const { collectSitemapPageUrls } = await import("../scripts/lib/sitemap-urls.mjs");
-    const urls = collectSitemapPageUrls(join(here, "../public/sitemap.xml"));
-    expect(urls.filter((u) => u.includes("kwvrs.com/payment"))).toEqual([]);
+describe("retired-surface CTAs point at /schedule-consultation or /contact", () => {
+  it("Home.tsx no longer links the retainer intake or renders WhichExpert", () => {
+    expect(homeSrc).not.toContain("/contact/intake");
+    expect(homeSrc).not.toContain("WhichExpert");
+  });
+
+  it("Contact.tsx no longer renders IntakeChooser, the forms library, or imports lib/intake-schema", () => {
+    expect(contactSrc).not.toContain("IntakeChooser");
+    expect(contactSrc).not.toContain("@/data/forms");
+    expect(contactSrc).not.toContain("intake-schema");
+    expect(contactSrc).toContain("/schedule-consultation");
+  });
+
+  it("server.js has no client-only intake/payment/raffle surfaces", () => {
+    expect(serverSrc).not.toContain('"/payment"');
+    expect(serverSrc).not.toContain('"/raffle"');
+    expect(serverSrc).not.toContain("/contact/intake");
   });
 });
 
-describe("/attorneys/:stage index pages (journey breadcrumb targets)", () => {
-  const stageIndexSrc = readFileSync(join(here, "pages/templates/JourneyStageIndex.tsx"), "utf8");
-  const prerenderSrc = readFileSync(join(here, "../scripts/prerender.mjs"), "utf8");
-  const sitemapGenSrc = readFileSync(join(here, "../scripts/generate-sitemap.mjs"), "utf8");
-
-  it("App.tsx registers /attorneys/:stage ahead of the stage/caseType route", () => {
-    expect(appSrc).toContain('<Route path="/attorneys/:stage" element={<JourneyStageIndex />} />');
-    expect(appSrc.indexOf('path="/attorneys/:stage"')).toBeLessThan(
-      appSrc.indexOf('path="/attorneys/:stage/:caseTypeSlug"')
-    );
-  });
-
-  it("JourneyStageIndex 404s unknown stages and links every case type", () => {
-    expect(stageIndexSrc).toContain("return <NotFound />");
-    expect(stageIndexSrc).toContain("caseTypes.map");
-  });
-
-  it("prerender.mjs writes the 4 stage index pages", () => {
-    expect(prerenderSrc).toMatch(/writePage\(`\/attorneys\/\$\{stage\}`/);
-  });
-
-  it("generate-sitemap.mjs includes the stage index URLs", () => {
-    expect(sitemapGenSrc).toMatch(/urls\.add\(`\/attorneys\/\$\{stage\}`\)/);
-  });
-});
-
-describe("orphan-page fixes (2026-07-22 link audit)", () => {
+describe("orphan-page guards carried over from the 2026-07-22 link audit", () => {
   const pillarSrc = readFileSync(join(here, "pages/ServicePillar.tsx"), "utf8");
   const footerSrc = readFileSync(join(here, "components/layout/Footer.tsx"), "utf8");
-  const prerenderSrc = readFileSync(join(here, "../scripts/prerender.mjs"), "utf8");
-  const sitemapGenSrc = readFileSync(join(here, "../scripts/generate-sitemap.mjs"), "utf8");
+  const stageIndexSrc = readFileSync(join(here, "pages/templates/JourneyStageIndex.tsx"), "utf8");
 
   it("ServicePillar links its case-type deep dives and cost/process/timeline variants", () => {
     expect(pillarSrc).toContain("/services/${service.slug}/case/${slug}");
     expect(pillarSrc).toContain("/services/${service.slug}/${variant}");
   });
 
-  it("Footer links /case-studies and /intake so they are no longer orphans", () => {
+  it("Footer links /case-studies (no /intake, /forms, Staff Login, or Training)", () => {
     expect(footerSrc).toContain('href: "/case-studies"');
-    expect(footerSrc).toContain('href: "/intake"');
+    expect(footerSrc).not.toContain('href: "/intake"');
+    expect(footerSrc).not.toContain('href: "/forms"');
+    expect(footerSrc).not.toContain("Staff Login");
+    expect(footerSrc).not.toContain('href="/training"');
   });
 
-  it("prerender.mjs no longer emits the retired intake routes (they 301)", () => {
-    expect(prerenderSrc).not.toContain('"/contact/marital-intake"');
-    expect(prerenderSrc).not.toContain('"/contact/personal-injury-intake"');
-    expect(prerenderSrc).not.toContain('href="/contact/personal-injury-intake"');
-  });
-
-  it("generate-sitemap.mjs no longer lists the retired intake routes", () => {
-    expect(sitemapGenSrc).not.toContain('"/contact/marital-intake"');
-    expect(sitemapGenSrc).not.toContain('"/contact/personal-injury-intake"');
+  it("JourneyStageIndex 404s unknown stages and links every case type", () => {
+    expect(stageIndexSrc).toContain("return <NotFound />");
+    expect(stageIndexSrc).toContain("caseTypes.map");
   });
 });

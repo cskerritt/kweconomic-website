@@ -4,7 +4,6 @@ import ServiceCard from "@/components/ServiceCard";
 import ContactCTA from "@/components/ContactCTA";
 import Reveal from "@/components/Reveal";
 import { Picture } from "@/components/Picture";
-import WhichExpert from "@/components/WhichExpert";
 
 export default function ServicesHub() {
   usePageMeta({
@@ -78,9 +77,6 @@ export default function ServicesHub() {
           </div>
         </div>
       </section>
-
-      {/* Which expert do I need? - newcomer guidance + cost/process transparency */}
-      <WhichExpert />
 
       {/* CTA */}
       <section className="py-16 md:py-24">

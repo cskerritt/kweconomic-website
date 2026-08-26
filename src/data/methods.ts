@@ -79,7 +79,7 @@ export const methods: Methodology[] = [
       "Define the relevant labor market geographically (commute radius, metro area)",
       "Select target occupations from the [[/methods/transferable-skills-analysis|TSA results]]",
       "Contact local employers, review job postings, and compile representative openings",
-      "Document [[/tools/economic-damages-estimator|wage ranges]], hiring requirements, and essential job functions",
+      "Document wage ranges, hiring requirements, and essential job functions",
       "Compare employer requirements with the claimant's documented restrictions and skills",
       "Produce a report with employer contacts, date of inquiry, and results",
     ],

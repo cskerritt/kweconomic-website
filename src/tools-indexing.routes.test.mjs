@@ -1,9 +1,8 @@
 // src/tools-indexing.routes.test.mjs
 // Source-read guard tests (vitest env is "node", no jsdom/RTL - mirrors
-// App.routes.test.mjs). Pins the two indexing changes:
-//   Track A: /tools/household-services (+ methodology) are now PUBLIC (dropped
-//            from CLIENT_ONLY_ROUTES + noindex, added to sitemap + prerender).
-//   Track B: /tools/life-expectancy is a NEW public, indexed tool.
+// App.routes.test.mjs). On kwlcp.com the ONLY interactive tool is the public,
+// indexed life-expectancy lookup; the economic-damages estimator and the
+// household-services valuator stay on kwvrs.com and are cross-linked from /tools.
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -16,59 +15,64 @@ const appSrc = read("App.tsx");
 const serverSrc = read("../server.js");
 const toolsSrc = read("pages/Tools.tsx");
 const leSrc = read("pages/LifeExpectancy.tsx");
-const hsvSrc = read("pages/HouseholdServicesValuator.tsx");
-const hsvMethSrc = read("pages/HouseholdServicesMethodology.tsx");
 const sitemapSrc = read("../scripts/generate-sitemap.mjs");
 const prerenderSrc = read("../scripts/prerender.mjs");
 
-const NEW_ROUTES = [
-  "/tools/life-expectancy",
+const TOOL_ROUTES = ["/tools/life-expectancy"];
+const RETIRED_TOOL_ROUTES = [
+  "/tools/economic-damages-estimator",
   "/tools/household-services",
   "/tools/household-services/methodology",
 ];
 
-describe("Track B - /tools/life-expectancy is a registered SPA route", () => {
+describe("/tools/life-expectancy is the one registered tool route", () => {
   it("App.tsx lazy-imports LifeExpectancy and registers the route", () => {
     expect(appSrc).toContain('const LifeExpectancy = lazy(() => import("@/pages/LifeExpectancy"));');
     expect(appSrc).toContain('<Route path="/tools/life-expectancy" element={<LifeExpectancy />} />');
   });
+
+  it("App.tsx registers no other /tools/* route", () => {
+    const toolPaths = [...appSrc.matchAll(/path="(\/tools[^"]*)"/g)].map((m) => m[1]);
+    expect(toolPaths.sort()).toEqual(["/tools", ...TOOL_ROUTES].sort());
+  });
 });
 
-describe("indexability - none of the three tool routes are client-only/noindex", () => {
-  it("server.js CLIENT_ONLY_ROUTES no longer lists household-services and never listed life-expectancy", () => {
-    expect(serverSrc).not.toContain('"/tools/household-services"');
-    expect(serverSrc).not.toContain('"/tools/household-services/methodology"');
-    expect(serverSrc).not.toContain('"/tools/life-expectancy"');
+describe("indexability - the tool route is not client-only/noindex", () => {
+  it("server.js never lists the tool routes as client-only", () => {
+    for (const route of [...TOOL_ROUTES, ...RETIRED_TOOL_ROUTES]) {
+      expect(serverSrc).not.toContain(`"${route}"`);
+    }
   });
 
   it("LifeExpectancy.tsx sets the relative canonical and does not pass noindex", () => {
     expect(leSrc).toContain('canonical: "/tools/life-expectancy"');
     expect(leSrc).not.toMatch(/noindex/);
   });
-
-  it("the household pages no longer pass noindex", () => {
-    expect(hsvSrc).not.toContain("noindex: true");
-    expect(hsvMethSrc).not.toContain("noindex: true");
-  });
 });
 
-describe("discoverability - sitemap + prerender include all three tool routes", () => {
-  it("generate-sitemap.mjs CORE lists all three", () => {
-    for (const route of NEW_ROUTES) {
+describe("discoverability - sitemap + prerender include the tool route", () => {
+  it("generate-sitemap.mjs CORE lists it", () => {
+    for (const route of TOOL_ROUTES) {
       expect(sitemapSrc, `sitemap CORE missing ${route}`).toContain(`"${route}"`);
     }
   });
 
-  it("prerender.mjs corePages has an entry for each of the three", () => {
-    for (const route of NEW_ROUTES) {
+  it("prerender.mjs corePages has an entry for it", () => {
+    for (const route of TOOL_ROUTES) {
       expect(prerenderSrc, `prerender corePages missing ${route}`).toContain(`path: "${route}"`);
     }
   });
 });
 
-describe("Tools hub lists the life expectancy calculator in a 3-up grid", () => {
-  it("Tools.tsx links the new tool and widens the grid to 3 columns", () => {
+describe("Tools hub lists only the life expectancy calculator and cross-links kwvrs.com tools", () => {
+  it("Tools.tsx links the life-expectancy tool and none of the retired ones", () => {
     expect(toolsSrc).toContain('to="/tools/life-expectancy"');
-    expect(toolsSrc).toContain("md:grid-cols-3");
+    for (const route of RETIRED_TOOL_ROUTES) {
+      expect(toolsSrc, `Tools.tsx still links ${route}`).not.toContain(`to="${route}"`);
+    }
+  });
+
+  it("Tools.tsx links https://kwvrs.com/tools for the economic calculators", () => {
+    expect(toolsSrc).toContain('href="https://kwvrs.com/tools"');
   });
 });

@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
-import { Phone, Zap } from "lucide-react";
+import { Phone } from "lucide-react";
 
 interface MobileNavProps {
   serviceLinks: { name: string; href: string }[];
   resourceLinks: { name: string; href: string }[];
+  phoneHref: string;
+  phoneDisplay: string;
   onClose: () => void;
 }
 
-export default function MobileNav({ serviceLinks, resourceLinks, onClose }: MobileNavProps) {
+export default function MobileNav({ serviceLinks, resourceLinks, phoneHref, phoneDisplay, onClose }: MobileNavProps) {
   return (
     <nav
       id="mobile-nav"
@@ -37,8 +39,7 @@ export default function MobileNav({ serviceLinks, resourceLinks, onClose }: Mobi
         </div>
         <Link to="/contact" onClick={onClose} className="block py-2 text-sm text-neutral-300 hover:text-white">Contact</Link>
         <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
-          <a href="tel:+12013430700" className="flex items-center gap-2 text-sm text-neutral-300"><Phone className="w-4 h-4" />(201) 343-0700</a>
-          <Link to="/contact?priority=rush#contact-form" onClick={onClose} className="inline-flex items-center justify-center gap-1.5 border border-amber text-amber text-sm font-medium px-4 py-2 rounded-lg text-center"><Zap className="w-4 h-4" />Rush / Priority Matter</Link>
+          <a href={phoneHref} className="flex items-center gap-2 text-sm text-neutral-300"><Phone className="w-4 h-4" />{phoneDisplay}</a>
           <Link to="/schedule-consultation" onClick={onClose} className="bg-amber-dark text-white text-sm font-medium px-4 py-2 rounded-lg text-center">Schedule Consultation</Link>
         </div>
       </div>

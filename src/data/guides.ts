@@ -100,7 +100,7 @@ export const guides: Guide[] = [
         id: "methodology",
         heading: "Methodology",
         bodyHtml:
-          "<p>Economists apply <a href=\"/tools/economic-damages-estimator\">before-and-after analysis</a>, industry benchmarks, or replacement-cost analysis depending on the business structure and the injury's effect on operations.</p>",
+          "<p>Economists apply before-and-after analysis, industry benchmarks, or replacement-cost analysis depending on the business structure and the injury's effect on operations.</p>",
       },
     ],
     faqs: [
@@ -254,7 +254,7 @@ export const guides: Guide[] = [
         id: "methodology",
         heading: "Methodology",
         bodyHtml:
-          "<p>The economist uses <a href=\"/tools/household-services\">time-use data</a> (BLS American Time Use Survey) to establish typical hours by task, then applies <a href=\"/tools/household-services/methodology\">local market wage rates</a> for equivalent services (U.S. Bureau of Labor Statistics, n.d.). The projection is <a href=\"/methods/present-value-analysis\">reduced to present value</a> across the <a href=\"/tools/life-expectancy\">remaining life expectancy</a> or <a href=\"/methods/worklife-expectancy\">worklife</a> as applicable.</p>",
+          "<p>The economist uses time-use data (BLS American Time Use Survey) to establish typical hours by task, then applies local market wage rates for equivalent services (U.S. Bureau of Labor Statistics, n.d.). The projection is <a href=\"/methods/present-value-analysis\">reduced to present value</a> across the <a href=\"/tools/life-expectancy\">remaining life expectancy</a> or <a href=\"/methods/worklife-expectancy\">worklife</a> as applicable.</p>",
       },
       {
         id: "scope",
@@ -304,7 +304,7 @@ export const guides: Guide[] = [
         id: "employment",
         heading: "Employment history",
         bodyHtml:
-          "<p>Job titles, duties, dates of employment, <a href=\"/tools/economic-damages-estimator\">wage history (W-2s, tax returns, pay stubs)</a>, and employer policies on fringe benefits. This establishes the pre-injury earnings base.</p>",
+          "<p>Job titles, duties, dates of employment, wage history (W-2s, tax returns, pay stubs), and employer policies on fringe benefits. This establishes the pre-injury earnings base.</p>",
       },
       {
         id: "testing",

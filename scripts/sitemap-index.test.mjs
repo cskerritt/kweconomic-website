@@ -205,11 +205,9 @@ describe("lastmod is emitted only where derivable", () => {
   const servicesXml = readFileSync(join(PUBLIC, "sitemap-services.xml"), "utf8");
   const coreXml = readFileSync(join(PUBLIC, "sitemap-core.xml"), "utf8");
 
-  it("disclosure state pages carry their dateModified", () => {
-    expect(servicesXml).toMatch(
-      /<loc>https:\/\/kwvrs\.com\/services\/expert-disclosure\/new-jersey<\/loc><lastmod>\d{4}-\d{2}-\d{2}<\/lastmod>/,
-    );
-  });
+  // The per-state expert-disclosure pages (and their dateModified lastmod) were
+  // removed with src/data/disclosureRules.ts (Task 4); Task 12 strips the
+  // remaining disclosure branches from generate-sitemap.mjs.
 
   it("insight posts carry a date; generic geo pages carry none", () => {
     expect(coreXml).toMatch(

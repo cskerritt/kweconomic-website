@@ -1,18 +1,19 @@
 import { Link } from "react-router-dom";
-import { Calculator, ArrowRight, House, HeartPulse } from "lucide-react";
+import { ArrowRight, HeartPulse, ExternalLink } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import ContactCTA from "@/components/ContactCTA";
+import { ORG_SHORT } from "@/lib/brand";
 
 /**
- * /tools hub - attorney-facing interactive tools. All three tools (economic
- * damages estimator, household-services valuator, and life expectancy
- * calculator) are public: prerendered and listed in the sitemap.
+ * /tools hub - the one attorney-facing interactive tool on kwlcp.com: the
+ * public, indexed life expectancy lookup. The economic-damages estimator and
+ * household-services valuator live on kwvrs.com and are cross-linked below.
  */
 export default function Tools() {
   usePageMeta({
-    title: "Attorney Tools | KWVRS",
+    title: `Attorney Tools | ${ORG_SHORT}`,
     description:
-      "Free planning tools for attorneys from KWVRS: run a preliminary economic loss estimate and get the full breakdown by email.",
+      "Free life expectancy lookup for attorneys and life care planners from the CDC United States Life Tables, plus links to the Kincaid Wolstein economic damages calculators.",
     canonical: "/tools",
   });
 
@@ -24,47 +25,13 @@ export default function Tools() {
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4">Planning tools for counsel</h1>
           <p className="text-neutral-200 max-w-2xl text-lg">
             Free, planning-level tools for case evaluation - built by the same team that prepares
-            court-ready vocational, life care, and economic analyses for plaintiff and defense counsel.
+            court-ready life care plans and medical cost projections for plaintiff and defense counsel.
           </p>
         </div>
       </section>
 
       <section className="py-14">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 grid gap-6 md:grid-cols-3">
-          <Link
-            to="/tools/economic-damages-estimator"
-            className="kw-lift group rounded-2xl border border-neutral-200 bg-white p-7 shadow-sm hover:shadow-lg hover:border-teal/40 transition-all"
-          >
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-teal/10 text-teal mb-4">
-              <Calculator className="w-6 h-6" />
-            </div>
-            <h2 className="font-serif text-2xl font-bold text-navy mb-2">Economic damages estimator</h2>
-            <p className="text-neutral-600 mb-4">
-              Enter case basics - income, ages, injury period, future care - and see a preliminary
-              economic loss range instantly. Get the full line-item breakdown by email.
-            </p>
-            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal">
-              Run an estimate <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </span>
-          </Link>
-
-          <Link
-            to="/tools/household-services"
-            className="kw-lift group rounded-2xl border border-neutral-200 bg-white p-7 shadow-sm hover:shadow-lg hover:border-teal/40 transition-all"
-          >
-            <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-teal/10 text-teal mb-4">
-              <House className="w-6 h-6" />
-            </div>
-            <h2 className="font-serif text-2xl font-bold text-navy mb-2">Household services valuator</h2>
-            <p className="text-neutral-600 mb-4">
-              Estimate the annual replacement value of a person's unpaid household work from public ATUS
-              time-use data and BLS OEWS wages. Download a Word exhibit, an Excel workbook, or a CSV.
-            </p>
-            <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-teal">
-              Value household services <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-            </span>
-          </Link>
-
           <Link
             to="/tools/life-expectancy"
             className="kw-lift group rounded-2xl border border-neutral-200 bg-white p-7 shadow-sm hover:shadow-lg hover:border-teal/40 transition-all"
@@ -82,9 +49,23 @@ export default function Tools() {
             </span>
           </Link>
         </div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 mt-8 space-y-4">
+          <p className="text-neutral-700 max-w-3xl">
+            Looking for the economic damages estimator or the household services valuator? Those
+            calculators are hosted by our sister firm, Kincaid Wolstein Vocational and Rehabilitation
+            Services, at{" "}
+            <a
+              href="https://kwvrs.com/tools"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-teal font-medium hover:underline"
+            >
+              kwvrs.com/tools <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            .
+          </p>
           <p className="text-xs text-neutral-500 max-w-3xl">
-            These tools produce planning-level estimates only. They are not expert opinions, reports,
+            This tool produces planning-level estimates only. It is not an expert opinion, report,
             or testimony, and assumptions vary by case facts and jurisdiction.
           </p>
         </div>

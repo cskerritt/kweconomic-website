@@ -34,13 +34,6 @@ const CASE_TYPE_SLUGS: Record<string, string> = {
 
 /** Public /tools relevant to a given service pillar, surfaced in the sidebar. */
 const RELATED_TOOLS: Record<string, { to: string; label: string; blurb: string }[]> = {
-  "loss-of-household-services": [
-    {
-      to: "/tools/household-services",
-      label: "Household services valuator",
-      blurb: "Estimate the annual replacement value of unpaid household work from public ATUS and OEWS data.",
-    },
-  ],
   "forensic-economics": [
     {
       to: "/tools/life-expectancy",

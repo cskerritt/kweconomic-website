@@ -54,7 +54,7 @@ export const whitePapers: WhitePaper[] = [
       {
         heading: "What earning capacity measures",
         bodyHtml:
-          "<p><a href=\"/guides/earning-capacity-vs-lost-earnings\">Earning capacity</a> is a forward-looking estimate of what a person is able to earn in the competitive labor market. It is grounded in the individual's education, training, prior work, demonstrated abilities, and any medically supported functional limitations, read against the jobs that actually exist in the relevant economy. Because it measures ability rather than a single observed wage, earning capacity can differ from a person's earnings history, and it is a separate concept from the disability categories used by government programs or insurers (Social Security Administration, 2024).</p><p>In litigation, earning capacity matters because damages turn on the difference between what a person could have earned absent the event and what they can earn after it. A vocational evaluation supplies the foundation for that comparison so a <a href=\"/services/forensic-economics\">forensic economist</a> can reduce the resulting stream of losses to <a href=\"/tools/economic-damages-estimator\">present value</a>.</p>",
+          "<p><a href=\"/guides/earning-capacity-vs-lost-earnings\">Earning capacity</a> is a forward-looking estimate of what a person is able to earn in the competitive labor market. It is grounded in the individual's education, training, prior work, demonstrated abilities, and any medically supported functional limitations, read against the jobs that actually exist in the relevant economy. Because it measures ability rather than a single observed wage, earning capacity can differ from a person's earnings history, and it is a separate concept from the disability categories used by government programs or insurers (Social Security Administration, 2024).</p><p>In litigation, earning capacity matters because damages turn on the difference between what a person could have earned absent the event and what they can earn after it. A vocational evaluation supplies the foundation for that comparison so a <a href=\"/services/forensic-economics\">forensic economist</a> can reduce the resulting stream of losses to present value.</p>",
       },
       {
         heading: "Establishing the pre-event baseline",
@@ -213,7 +213,7 @@ export const whitePapers: WhitePaper[] = [
       {
         heading: "Handing off to the economist",
         bodyHtml:
-          "<p>The completed plan provides <a href=\"/services/forensic-economics\">the economist</a> with a clean, itemized stream of future costs, each with frequency, duration, quantity, and unit cost. Keeping the life care plan and the economic analysis methodologically aligned, while each remains the work of its own expert, produces a <a href=\"/tools/economic-damages-estimator\">future-care damages figure</a> that is consistent end to end and easier to defend as a whole.</p>",
+          "<p>The completed plan provides <a href=\"/services/forensic-economics\">the economist</a> with a clean, itemized stream of future costs, each with frequency, duration, quantity, and unit cost. Keeping the life care plan and the economic analysis methodologically aligned, while each remains the work of its own expert, produces a future-care damages figure that is consistent end to end and easier to defend as a whole.</p>",
       },
     ],
     sources: refsToSources([

@@ -10,7 +10,6 @@ import ContactCTA from "@/components/ContactCTA";
 import SchemaOrg from "@/components/SchemaOrg";
 import TestimonialSection from "@/components/TestimonialSection";
 import FAQBlock from "@/components/FAQBlock";
-import WhichExpert from "@/components/WhichExpert";
 import {
   graphSchema,
   organizationSchema,
@@ -54,7 +53,7 @@ const HOMEPAGE_FAQS = [
 ];
 
 const CASE_TYPE_ENTRIES = [
-  { label: "Retain KWVRS", href: "/contact/intake", blurb: "Personal injury, matrimonial, disability, and economic loss matters" },
+  { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Catastrophic injury, medical malpractice, workers' compensation, and pediatric matters" },
   { label: "General Inquiry", href: "/contact", blurb: "Anything else - we respond in 1 business day" },
 ];
 
@@ -241,9 +240,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Which expert do I need? - newcomer guidance + cost/process transparency */}
-      <WhichExpert />
 
       {/* Services Grid */}
       <section className="py-16 md:py-20 bg-white">

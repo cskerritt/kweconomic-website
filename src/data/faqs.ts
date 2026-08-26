@@ -26,7 +26,7 @@ export const faqs: Faq[] = [
     question: "What is a life care plan?",
     sources: refsToSources(["IARP_IALCP_STANDARDS", "ICHCC_CLCP", "NCHS_LIFE_TABLES"]),
     answer:
-      "A [[/services/life-care-planning|life care plan]] is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It details the cost of all recommended care across the claimant's [[/tools/life-expectancy|remaining life expectancy]] and is typically used to calculate [[/tools/economic-damages-estimator|future damages]] in litigation. KWVRS's [[/knowledge/guide-to-life-care-planning|certified life care planners (CLCPs)]] prepare plans that comply with IARP and IALCP standards.",
+      "A [[/services/life-care-planning|life care plan]] is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It details the cost of all recommended care across the claimant's [[/tools/life-expectancy|remaining life expectancy]] and is typically used to calculate future damages in litigation. KWVRS's [[/knowledge/guide-to-life-care-planning|certified life care planners (CLCPs)]] prepare plans that comply with IARP and IALCP standards.",
   },
   {
     question: "What is forensic economic analysis?",
@@ -77,6 +77,6 @@ export const faqs: Faq[] = [
   {
     question: "How do I retain KWVRS for a case?",
     answer:
-      "Contact our office by phone at (201) 343-0700 or via the [[/contact|contact form on this website]]. A member of our [[/contact/intake|intake team]] will follow up within one business day to discuss case details, required documentation, and [[/team|expert availability]]. We accept cases from plaintiff counsel, defense counsel, insurance carriers, and self-represented claimants.",
+      "Contact our office by phone at (201) 343-0700 or via the [[/contact|contact form on this website]]. A member of our [[/schedule-consultation|intake team]] will follow up within one business day to discuss case details, required documentation, and [[/team|expert availability]]. We accept cases from plaintiff counsel, defense counsel, insurance carriers, and self-represented claimants.",
   },
 ];

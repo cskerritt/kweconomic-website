@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { Phone, Mail, MapPin, Clock, FileText } from "lucide-react";
+import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { isEmail, isPhone } from "@/lib/validation";
-import { HOW_HEARD } from "../../lib/intake-schema.mjs";
 import SchemaOrg from "@/components/SchemaOrg";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
 import { Picture } from "@/components/Picture";
-import IntakeChooser from "@/components/IntakeChooser";
-import { PATIENT_FORMS } from "@/data/forms";
 import {
   graphSchema,
   organizationSchema,
@@ -17,6 +14,25 @@ import {
   breadcrumbSchema,
   ORG_URL,
 } from "@/lib/schema";
+
+// "How did you hear about us?" options (inlined from the retired kwvrs intake schema).
+const HOW_HEARD = [
+  { value: "google", label: "Google search" },
+  { value: "other-search", label: "Other search engine (Bing, DuckDuckGo...)" },
+  { value: "ai-assistant", label: "AI assistant (ChatGPT, Claude, Gemini...)" },
+  { value: "attorney-referral", label: "Referral from another attorney" },
+  { value: "colleague-referral", label: "Referral from a colleague or paralegal" },
+  { value: "past-client", label: "Worked with us before" },
+  { value: "expert-directory", label: "Expert witness directory (SEAK, JurisPro...)" },
+  { value: "bar-cle", label: "Bar association / CLE program" },
+  { value: "conference", label: "Conference or seminar" },
+  { value: "prior-testimony", label: "Saw prior testimony or a court opinion" },
+  { value: "publication", label: "Legal publication or article" },
+  { value: "linkedin", label: "LinkedIn" },
+  { value: "social", label: "Other social media" },
+  { value: "email-newsletter", label: "Email or newsletter" },
+  { value: "other", label: "Other" },
+] as const;
 
 export default function Contact() {
   const [searchParams] = useSearchParams();
@@ -137,47 +153,22 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Retainer / order intake shortcuts */}
+      {/* Retain / consultation shortcut (intake forms + PSAs stay on kwvrs.com) */}
       <section className="py-12 md:py-16 bg-white border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-2xl font-bold text-navy mb-2">
-            Retain KWVRS
+            Ready to retain a life care planner?
           </h2>
-          <p className="text-neutral-700 mb-6">
-            For each Professional Services Agreement, we have a dedicated digital intake form that mirrors the PDF. Pick the one that matches your matter.
+          <p className="text-neutral-700 mb-6 max-w-3xl">
+            Book a no-cost consultation to discuss the injury, the records you have, and your
+            deadlines. We will confirm scope, timeline, and fee before any work begins.
           </p>
-          <IntakeChooser />
-        </div>
-      </section>
-
-      {/* Supporting forms - downloadable PDFs */}
-      <section className="py-12 md:py-16 bg-neutral-50 border-b border-neutral-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-serif text-2xl font-bold text-navy mb-2">
-            Medical Records and Intake Forms
-          </h2>
-          <p className="text-neutral-700 mb-6">
-            Personal history questionnaire and HIPAA authorization, in English and Spanish. Download
-            the PDF, complete and sign it, and return it via the secure upload link we provide -
-            see all on the{" "}
-            <a href="/forms" className="text-teal font-medium hover:underline">forms page</a>.
-          </p>
-          <ul className="grid sm:grid-cols-2 gap-4">
-            {PATIENT_FORMS.map((form) => (
-              <li key={form.id}>
-                <a
-                  href={form.slug}
-                  className="flex items-start gap-3 rounded-lg border border-neutral-200 bg-white p-4 hover:border-teal"
-                >
-                  <FileText className="w-5 h-5 text-teal shrink-0 mt-0.5" />
-                  <span>
-                    <span className="block font-semibold text-navy">{form.title}</span>
-                    <span className="block text-sm text-neutral-600">{form.description}</span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <Link
+            to="/schedule-consultation"
+            className="inline-flex items-center gap-2 bg-amber-dark hover:bg-amber text-white font-medium px-5 py-3 rounded-lg transition-colors"
+          >
+            Schedule a consultation
+          </Link>
         </div>
       </section>
 

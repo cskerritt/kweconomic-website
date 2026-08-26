@@ -9,7 +9,7 @@
  * Run: node scripts/prerender.mjs
  */
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from "fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync, readdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -208,11 +208,12 @@ function extractDisclosureRules(content) {
   }));
 }
 
-const disclosureRulesContent = readFileSync(
-  join(SRC_DATA, "disclosureRules.ts"),
-  "utf-8",
-);
-const disclosureRules = extractDisclosureRules(disclosureRulesContent);
+// kwlcp.com has no expert-disclosure data (Task 4 removed it); Task 12 strips
+// the disclosure branches from this script entirely. Until then, no file = no rules.
+const disclosureRulesFile = join(SRC_DATA, "disclosureRules.ts");
+const disclosureRules = existsSync(disclosureRulesFile)
+  ? extractDisclosureRules(readFileSync(disclosureRulesFile, "utf-8"))
+  : [];
 
 // ---------------------------------------------------------------------------
 // 2b. Extract per-state and per-metro narrative inputs.

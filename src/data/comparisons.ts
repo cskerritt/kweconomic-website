@@ -109,7 +109,7 @@ export const comparisons: Comparison[] = [
     dateModified: "2026-04-21",
     a: {
       label: "Lump Sum",
-      summary: "Total undiscounted [[/tools/economic-damages-estimator|future damages]] stated as a single number.",
+      summary: "Total undiscounted future damages stated as a single number.",
     },
     b: {
       label: "Present Value",
@@ -136,7 +136,6 @@ export const comparisons: Comparison[] = [
     ],
     sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD"]),
     related: [
-      { title: "Economic Damages Estimator", href: "/tools/economic-damages-estimator", description: "Estimate economic damages online." },
       { title: "Forensic Economics", href: "/services/forensic-economics", description: "Present-value damages analysis for litigation." },
       { title: "How Forensic Economists Calculate Damages", href: "/insights/how-forensic-economists-calculate-damages", description: "Methodology behind economic damages calculations." },
     ],

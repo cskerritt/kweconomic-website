@@ -1,16 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, Phone, Zap } from "lucide-react";
+import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import MobileNav from "./MobileNav";
+import { ORG_NAME, ORG_PHONE, ORG_SHORT } from "@/lib/brand";
 
+// Static list of the 10 LCP pillar slugs (Task 5 replaces this with pillarServices()).
 const serviceLinks = [
   { name: "All Services", href: "/services" },
-  { name: "Vocational Expert", href: "/services/vocational-expert" },
   { name: "Life Care Planning", href: "/services/life-care-planning" },
-  { name: "Forensic Economics", href: "/services/forensic-economics" },
-  { name: "Household Services", href: "/services/loss-of-household-services" },
-  { name: "Matrimonial", href: "/services/matrimonial" },
-  { name: "Standard of Care", href: "/services/standard-of-care" },
+  { name: "Pediatric Life Care Planning", href: "/services/pediatric-life-care-planning" },
+  { name: "Catastrophic Injury Plans", href: "/services/catastrophic-injury-planning" },
+  { name: "Medical Cost Projections", href: "/services/medical-cost-projection" },
+  { name: "Workers' Comp Life Care Plans", href: "/services/workers-compensation-lcp" },
+  { name: "Plan Updates", href: "/services/plan-update-and-review" },
+  { name: "Plan Rebuttal & Critique", href: "/services/life-care-plan-rebuttal" },
+  { name: "Medicare Set-Asides", href: "/services/medicare-set-aside" },
+  { name: "Elder & Long-Term Care Planning", href: "/services/elder-and-long-term-care-planning" },
   { name: "Expert Testimony", href: "/services/expert-witness-testimony" },
 ];
 
@@ -24,10 +29,18 @@ const resourceLinks = [
   { name: "Methods", href: "/methods" },
   { name: "Comparisons", href: "/compare" },
   { name: "Attorney Resources", href: "/attorneys" },
-  { name: "Attorney Tools", href: "/tools" },
+  { name: "Life Expectancy Tool", href: "/tools/life-expectancy" },
   { name: "Jurisdictions", href: "/jurisdictions" },
   { name: "FAQ", href: "/resources/faq" },
 ];
+
+/** Human-readable phone, e.g. "+1-201-343-0700" -> "(201) 343-0700". */
+function formatPhone(e164: string): string {
+  const d = e164.replace(/\D/g, "").replace(/^1/, "");
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+}
+const PHONE_HREF = `tel:${ORG_PHONE.replace(/-/g, "")}`;
+const PHONE_DISPLAY = formatPhone(ORG_PHONE);
 
 function Dropdown({
   label,
@@ -165,7 +178,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center">
-            <img src="/images/logo.svg" alt="Kincaid Wolstein Vocational and Rehabilitation Services" className="h-10 brightness-0 invert" />
+            <img src="/images/logo.svg" alt={ORG_NAME} className="h-10 brightness-0 invert" />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-6">
@@ -187,19 +200,12 @@ export default function Header() {
 
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="tel:+12013430700"
+              href={PHONE_HREF}
               className="hidden xl:flex items-center gap-2 text-sm text-neutral-300 hover:text-white"
             >
               <Phone className="w-4 h-4" />
-              (201) 343-0700
+              {PHONE_DISPLAY}
             </a>
-            <Link
-              to="/contact?priority=rush#contact-form"
-              className="inline-flex items-center gap-1.5 border border-amber text-amber hover:bg-amber hover:text-navy text-sm font-medium px-3 py-2 rounded-lg transition-colors whitespace-nowrap"
-            >
-              <Zap className="w-4 h-4" />
-              Rush / Priority
-            </Link>
             <Link
               to="/schedule-consultation"
               className="bg-amber-dark hover:bg-amber-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
@@ -210,8 +216,8 @@ export default function Header() {
 
           <div className="lg:hidden flex items-center gap-1">
             <a
-              href="tel:+12013430700"
-              aria-label="Call KWVRS at (201) 343-0700"
+              href={PHONE_HREF}
+              aria-label={`Call ${ORG_SHORT} at ${PHONE_DISPLAY}`}
               className="inline-flex items-center justify-center w-10 h-10 rounded-md hover:bg-white/10 transition-colors"
             >
               <Phone className="w-5 h-5" />
@@ -232,6 +238,8 @@ export default function Header() {
         <MobileNav
           serviceLinks={serviceLinks}
           resourceLinks={resourceLinks}
+          phoneHref={PHONE_HREF}
+          phoneDisplay={PHONE_DISPLAY}
           onClose={() => setMobileOpen(false)}
         />
       )}
@@ -239,7 +247,7 @@ export default function Header() {
       {/* Mobile sticky bottom CTA - persistent phone + quote button on small screens */}
       <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-2 border-t border-navy-dark bg-navy text-white shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
         <a
-          href="tel:+12013430700"
+          href={PHONE_HREF}
           className="flex items-center justify-center gap-2 py-3 text-sm font-medium hover:bg-navy-light transition-colors"
         >
           <Phone className="w-4 h-4" />

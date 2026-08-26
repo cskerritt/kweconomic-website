@@ -32,7 +32,7 @@
  * Run: node scripts/generate-sitemap.mjs
  */
 
-import { readFileSync, writeFileSync, readdirSync } from "fs";
+import { existsSync, readFileSync, writeFileSync, readdirSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "vite";
@@ -51,7 +51,11 @@ function extractSlugs(file) {
 // Extract disclosureRules data: pair stateSlug with dateModified by position.
 // Each rule entry has exactly one stateSlug and one dateModified field.
 function extractDisclosureRules() {
-  const content = readFileSync(join(SRC_DATA, "disclosureRules.ts"), "utf-8");
+  // kwlcp.com has no expert-disclosure data (Task 4 removed it); Task 12 strips
+  // the disclosure branches from this script entirely. Until then, no file = no rules.
+  const file = join(SRC_DATA, "disclosureRules.ts");
+  if (!existsSync(file)) return [];
+  const content = readFileSync(file, "utf-8");
   const stateSlugs = [...content.matchAll(/^\s+stateSlug:\s*"([^"]+)"/gm)].map(
     (m) => m[1],
   );
