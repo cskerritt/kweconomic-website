@@ -52,8 +52,6 @@ const FIXED_ROUTES = {
   "/contact": "Contact.tsx",
   "/services": "ServicesHub.tsx",
   "/locations": "LocationsHub.tsx",
-  "/tools": "Tools.tsx",
-  "/tools/life-expectancy": "LifeExpectancy.tsx",
   "/resources/faq": "FAQ.tsx",
   "/knowledge": "KnowledgeHub.tsx",
   "/insights": "InsightsHub.tsx",
@@ -78,10 +76,12 @@ describe("prerender shells mirror the React page meta", () => {
     });
   }
 
-  it("every prerendered title carries the LCP brand, never the vocational one", () => {
+  it("every prerendered title carries the site brand", () => {
+    const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const brand = new RegExp([...new Set([ORG_NAME, ORG_SHORT])].map(escape).join("|"));
     for (const path of Object.keys(FIXED_ROUTES)) {
       const { title, description } = prerenderMeta(path);
-      expect(`${title} ${description}`, path).toMatch(/KW Life Care Planning|KW LCP/);
+      expect(`${title} ${description}`, path).toMatch(brand);
     }
   });
 
@@ -94,6 +94,8 @@ describe("prerender shells mirror the React page meta", () => {
 
 describe("retired vocational-site routes are neither prerendered nor advertised", () => {
   const RETIRED = [
+    "/tools",
+    "/tools/life-expectancy",
     "/intake",
     "/forms",
     "/phq-form-english",

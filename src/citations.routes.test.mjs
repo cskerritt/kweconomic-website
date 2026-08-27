@@ -1,6 +1,6 @@
 // src/citations.routes.test.mjs
 // Route-existence guard for the editorial citation/link layer (vitest env is
-// "node" - reads source files as text, mirroring tools-indexing.routes.test.mjs).
+// "node" - reads source files as text, mirroring App.routes.test.mjs).
 //
 // Collects every INTERNAL route referenced by:
 //   - [[/route|anchor]] inline-link markers,

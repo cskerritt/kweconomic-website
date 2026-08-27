@@ -429,24 +429,6 @@ const corePages = [
     schemaType: "WebPage",
   },
   {
-    path: "/tools",
-    title: `Attorney Tools | ${ORG_SHORT}`,
-    description:
-      "Free life expectancy lookup for attorneys and life care planners from the CDC United States Life Tables, plus links to our sister practices' economic damages calculators.",
-    innerHtml:
-      `<h1>Attorney Tools</h1><p>A free life expectancy lookup from the CDC United States Life Tables for attorneys and life care planners, plus links to the economic damages calculators published by our sister practices.</p><nav><a href="/tools/life-expectancy">Life expectancy calculator</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
-    schemaType: "WebPage",
-  },
-  {
-    path: "/tools/life-expectancy",
-    title: `Life Expectancy Calculator | ${ORG_NAME}`,
-    description:
-      "Look up remaining life expectancy by age, sex, and population group using the CDC United States Life Tables, 2023. Population averages for education, not a prediction for any individual.",
-    innerHtml:
-      '<h1>Life Expectancy Calculator</h1><p>Estimate remaining life expectancy from the CDC/NCHS United States Life Tables, 2023, by age, sex, and population group. Results are period-life-table population averages, not a prediction for any individual.</p><nav><a href="/tools">All tools</a> <a href="/services/life-care-planning">Life care planning</a> <a href="/methods/life-expectancy-in-life-care-planning">Life expectancy in life care planning</a> <a href="/contact">Contact</a></nav>',
-    schemaType: "WebPage",
-  },
-  {
     path: "/resources/faq",
     title: `Frequently Asked Questions | ${ORG_NAME}`,
     description:

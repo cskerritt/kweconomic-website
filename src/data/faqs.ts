@@ -18,7 +18,7 @@ export const faqs: Faq[] = [
     question: "What is a life care plan?",
     sources: refsToSources(["IARP_IALCP_STANDARDS", "ICHCC_CLCP", "NCHS_LIFE_TABLES"]),
     answer:
-      "A [[/services/life-care-planning|life care plan]] is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It itemizes each need with its frequency, duration, and cost across the person's [[/tools/life-expectancy|remaining life expectancy]] and is typically used to establish future damages in litigation or to fund a settlement. KW Life Care Planning's [[/knowledge/guide-to-life-care-planning|certified life care planners]] prepare plans that follow the published standards of practice.",
+      "A [[/services/life-care-planning|life care plan]] is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It itemizes each need with its frequency, duration, and cost across the person's [[/methods/life-expectancy-in-life-care-planning|remaining life expectancy]] and is typically used to establish future damages in litigation or to fund a settlement. KW Life Care Planning's [[/knowledge/guide-to-life-care-planning|certified life care planners]] prepare plans that follow the published standards of practice.",
   },
   {
     question: "Who prepares a life care plan?",

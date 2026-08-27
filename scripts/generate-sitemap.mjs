@@ -104,7 +104,7 @@ const insightDates = extractInsightDates();
 const CORE = [
   "/", "/about", "/team", "/contact",
   "/services", "/locations",
-  "/resources/faq", "/tools", "/tools/life-expectancy",
+  "/resources/faq",
   "/knowledge", "/insights", "/case-studies",
   "/schedule-consultation", "/privacy", "/terms",
   "/case-types", "/credentials", "/guides", "/compare", "/methods",

@@ -22,7 +22,7 @@ describe("KW LCP route set (spec §5)", () => {
       "/", "/about", "/team", "/contact", "/schedule-consultation", "/services", "/locations",
       "/case-types", "/credentials", "/guides", "/compare", "/methods", "/attorneys", "/jurisdictions",
       "/knowledge", "/insights", "/white-papers", "/case-studies", "/resources/faq",
-      "/tools", "/tools/life-expectancy", "/privacy", "/terms", "*",
+      "/privacy", "/terms", "*",
     ]) {
       expect(registeredPaths, `missing route ${p}`).toContain(p);
     }
@@ -66,6 +66,11 @@ describe("KW LCP route set (spec §5)", () => {
     expect(appSource.indexOf('path="/attorneys/:stage"')).toBeLessThan(
       appSource.indexOf('path="/attorneys/:stage/:caseTypeSlug"'),
     );
+  });
+
+  it("has no tools routes", () => {
+    expect(appSource).not.toMatch(/\/tools/);
+    expect(appSource).not.toMatch(/LifeExpectancy/);
   });
 });
 

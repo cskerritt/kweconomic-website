@@ -203,14 +203,6 @@ export const API_ROUTES = {
     requiredMessage: "name, email, and slug are required",
     turnstile: true,
   },
-  // Lead funnel: /tools/life-expectancy calculator. Soft CTA - the lookup runs
-  // client-side; the POST just captures the attorney lead.
-  "/api/life-expectancy": {
-    type: "life-expectancy",
-    required: ["name", "email", "firm"],
-    requiredMessage: "name, email, and firm are required",
-    turnstile: true,
-  },
 };
 
 // CORS headers for API responses

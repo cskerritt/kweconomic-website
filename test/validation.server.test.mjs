@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { isEmail, isPhone, validateRoute } from "../validation.server.mjs";
 
-const TYPES = ["contact", "consultation", "whitepaper", "life-expectancy"];
+const TYPES = ["contact", "consultation", "whitepaper"];
 
 describe("isEmail / isPhone", () => {
   it("requires a 2+ character TLD (truncated-TLD regression)", () => {
@@ -40,8 +40,5 @@ describe("validateRoute", () => {
     expect(validateRoute("whitepaper", { email: "a@b.co" })).toMatch(/slug/);
     expect(validateRoute("whitepaper", { email: "a@b.co", slug: 5 })).toMatch(/slug/);
     expect(validateRoute("whitepaper", { email: "a@b.co", slug: "tbi-guide" })).toBeNull();
-  });
-  it("life-expectancy only needs the email", () => {
-    expect(validateRoute("life-expectancy", { email: "a@b.co" })).toBeNull();
   });
 });

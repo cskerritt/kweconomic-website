@@ -116,6 +116,11 @@ describe("POST /api/contact end-to-end (no external services)", () => {
     }
   });
 
+  it("does not expose a life-expectancy API", async () => {
+    const res = await post(base, "/api/life-expectancy", { age: 40 });
+    expect(res.status).toBe(404);
+  });
+
   it("canonicalizes a trailing slash with a 301", async () => {
     const res = await fetch(`${base}/about/`, { redirect: "manual" });
     expect(res.status).toBe(301);

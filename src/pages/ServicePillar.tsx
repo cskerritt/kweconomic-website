@@ -27,17 +27,6 @@ const CASE_TYPE_SLUGS: Record<string, string> = Object.fromEntries(
   caseTypes.map((c) => [c.name, c.slug]),
 );
 
-/** Public /tools relevant to a given service pillar, surfaced in the sidebar. */
-const RELATED_TOOLS: Record<string, { to: string; label: string; blurb: string }[]> = {
-  "life-care-planning": [
-    {
-      to: "/tools/life-expectancy",
-      label: "Life expectancy calculator",
-      blurb: "Look up remaining life expectancy from the CDC United States Life Tables, 2023.",
-    },
-  ],
-};
-
 export default function ServicePillar() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>();
   const service = serviceSlug ? getServiceBySlug(serviceSlug) : undefined;
@@ -264,28 +253,6 @@ export default function ServicePillar() {
                 ))}
               </div>
             </div>
-
-            {/* Related tool - only for services with a matching public /tools page */}
-            {RELATED_TOOLS[service.slug] && (
-              <div className="bg-white rounded-xl border border-neutral-200 p-6">
-                <h3 className="font-serif text-lg font-bold text-navy mb-4">
-                  Related tool
-                </h3>
-                <ul className="space-y-4">
-                  {RELATED_TOOLS[service.slug].map((tool) => (
-                    <li key={tool.to}>
-                      <Link
-                        to={tool.to}
-                        className="inline-flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
-                      >
-                        {tool.label} <ArrowRight className="w-4 h-4" />
-                      </Link>
-                      <p className="text-sm text-neutral-600 mt-1">{tool.blurb}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
 
             {/* Engagement details: cost / process / timeline variant pages
                 (prerendered + in the sitemap; previously had no inbound links). */}

@@ -7,8 +7,6 @@ import Footer from "@/components/layout/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 
 const Home = lazy(() => import("@/pages/Home"));
-const Tools = lazy(() => import("@/pages/Tools"));
-const LifeExpectancy = lazy(() => import("@/pages/LifeExpectancy"));
 const About = lazy(() => import("@/pages/About"));
 const Team = lazy(() => import("@/pages/Team"));
 const Contact = lazy(() => import("@/pages/Contact"));
@@ -119,8 +117,6 @@ export default function App() {
         <Route path="/locations" element={<LocationsHub />} />
         <Route path="/locations/:stateSlug" element={<StateHub />} />
         <Route path="/locations/:stateSlug/:citySlug" element={<CityPage />} />
-        <Route path="/tools" element={<Tools />} />
-        <Route path="/tools/life-expectancy" element={<LifeExpectancy />} />
         <Route path="/resources/faq" element={<FAQ />} />
         <Route path="/knowledge" element={<KnowledgeHub />} />
         <Route path="/knowledge/:slug" element={<KnowledgeArticle />} />

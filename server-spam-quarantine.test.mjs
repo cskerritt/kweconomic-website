@@ -142,20 +142,19 @@ describe("server anti-spam quarantine branch", () => {
     expect(sendLeadEmail.mock.calls[0][0]).toBe("contact");
   });
 
-  it("emails a clean life-expectancy lead (normal path unaffected)", async () => {
-    const { status } = await post("/api/life-expectancy", {
+  it("emails a clean consultation lead (normal path unaffected)", async () => {
+    const { status } = await post("/api/consultation", {
       name: "Jane Attorney",
       email: "jane@firm.com",
-      firm: "Firm LLP",
     });
     await settle();
 
     expect(status).toBe(200);
     const inserted = rawSubs.insertRawSubmission.mock.calls[0][0];
-    expect(inserted.type).toBe("life-expectancy");
+    expect(inserted.type).toBe("consultation");
     expect(inserted.payload._spam).toBeUndefined();
     expect(sendLeadEmail).toHaveBeenCalledTimes(1);
-    expect(sendLeadEmail.mock.calls[0][0]).toBe("life-expectancy");
+    expect(sendLeadEmail.mock.calls[0][0]).toBe("consultation");
   });
 
   it("quarantines a filled-honeypot whitepaper lead: no email", async () => {

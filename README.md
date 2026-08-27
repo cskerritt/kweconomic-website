@@ -22,7 +22,7 @@ Other scripts: `generate:sitemaps`, `generate:llms`, `images:webp` (needs `cwebp
 
 ## Production
 
-`node server.js` serves `dist/` (prerendered shells + assets), the API routes (`/api/contact`, `/api/consultation`, `/api/whitepaper`, `/api/life-expectancy`), and `/healthz`. No framework; `http` module only.
+`node server.js` serves `dist/` (prerendered shells + assets), the API routes (`/api/contact`, `/api/consultation`, `/api/whitepaper`), and `/healthz`. No framework; `http` module only.
 
 | Var | Required | Purpose |
 |---|---|---|

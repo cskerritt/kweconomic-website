@@ -194,7 +194,7 @@ export const comparisons: Comparison[] = [
     dateModified: "2026-04-20",
     a: {
       label: "Life Care Plan",
-      summary: "Forward-looking projection of future medical and non-medical care costs across the claimant's [[/tools/life-expectancy|expected lifespan]] (Arias et al., 2025).",
+      summary: "Forward-looking projection of future medical and non-medical care costs across the claimant's [[/methods/life-expectancy-in-life-care-planning|expected lifespan]] (Arias et al., 2025).",
       url: "/methods/life-care-plan-development",
     },
     b: {
@@ -223,7 +223,7 @@ export const comparisons: Comparison[] = [
     sources: refsToSources(["NCHS_LIFE_TABLES", "IARP_IALCP_STANDARDS"]),
     related: [
       { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
-      { title: "Life Expectancy Lookup", href: "/tools/life-expectancy", description: "Look up life expectancy by age." },
+      { title: "Life Expectancy in Life Care Planning", href: "/methods/life-expectancy-in-life-care-planning", description: "How the plan horizon is set and presented." },
       { title: "Certified Life Care Planner (CLCP)", href: "/credentials/clcp", description: "Life care planner certification." },
     ],
   },
@@ -270,7 +270,7 @@ export const comparisons: Comparison[] = [
     related: [
       { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
       { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
-      { title: "Life Expectancy Lookup", href: "/tools/life-expectancy", description: "Look up life expectancy by age." },
+      { title: "Life Expectancy in Life Care Planning", href: "/methods/life-expectancy-in-life-care-planning", description: "How the plan horizon is set and presented." },
     ],
   },
   {

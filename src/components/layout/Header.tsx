@@ -30,7 +30,6 @@ const resourceLinks = [
   { name: "Methods", href: "/methods" },
   { name: "Comparisons", href: "/compare" },
   { name: "Attorney Resources", href: "/attorneys" },
-  { name: "Life Expectancy Tool", href: "/tools/life-expectancy" },
   { name: "Jurisdictions", href: "/jurisdictions" },
   { name: "FAQ", href: "/resources/faq" },
 ];
