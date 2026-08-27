@@ -1,11 +1,11 @@
-// Single source of truth for KW Life Care Planning (kwlcp.com) brand identity.
+// Single source of truth for KW Economics (kweconomics.com) brand identity.
 // Everything that renders the org name, domain, contact details, or office NAP
 // should import from here so a rebrand is a one-file change.
-export const ORG_NAME = "KW Life Care Planning";
-export const ORG_SHORT = "KW LCP";
-export const ORG_LEGAL = "Kincaid Wolstein Vocational and Rehabilitation Services";
-export const SITE_URL = "https://kwlcp.com";
-export const ORG_EMAIL = "info@kwvrs.com"; // facts-to-confirm: kwlcp.com mailbox
+export const ORG_NAME = "KW Economics";
+export const ORG_SHORT = "KW Economics";
+export const ORG_LEGAL = "Kincaid Wolstein Economics";
+export const SITE_URL = "https://kweconomics.com";
+export const ORG_EMAIL = "info@kwvrs.com"; // facts-to-confirm: kweconomics.com mailbox
 export const ORG_PHONE = "+1-201-343-0700";
 export const ORG_PHONE_VA = "+1-804-282-4199";
 export const ORG_CITY = "Hackensack";
@@ -15,12 +15,13 @@ export const ORG_COUNTRY = "US";
 // rich-results guidelines prefer PNG/JPG over SVG for the logo/image fields.
 export const ORG_LOGO = `${SITE_URL}/images/logo.png`;
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/hero-office-meeting.jpg`;
-// Sister practices in the KW family. These are the ONLY places the vocational
-// domain is spelled: everything else (Footer, Tools, data hrefs, sameAs) reads
-// these constants. Scripts that need them load this module through vite.
+// Sister practices in the KW family. These are the ONLY places their domains
+// are spelled: everything else (Footer, CrossSell, data hrefs, sameAs) reads
+// these constants. Scripts that need them load this module through vite or
+// read the Node-side mirror in scripts/lib/site.mjs.
 export const VOC_SITE_URL = "https://kwvrs.com";
-export const ECON_SITE_URL = "https://kweconomics.com";
-export const SAME_AS = [VOC_SITE_URL, ECON_SITE_URL] as const;
+export const LCP_SITE_URL = "https://kwlcp.com";
+export const SAME_AS = [VOC_SITE_URL, LCP_SITE_URL] as const;
 
 /** Human-readable phone, e.g. "+1-201-343-0700" -> "(201) 343-0700". */
 export function formatPhone(e164: string): string {
@@ -33,18 +34,23 @@ export const ORG_PHONE_DISPLAY = formatPhone(ORG_PHONE);
 export const ORG_PHONE_VA_DISPLAY = formatPhone(ORG_PHONE_VA);
 
 /**
- * The retired vocational brand. Guard tests import this so no test file needs
- * to spell the old name itself (src/brand-strings.test.mjs walks every file).
+ * Sister-brand forms that must not leak into this site's copy. Guard tests
+ * import this so no test file needs to spell the sister names itself
+ * (src/brand-strings.test.mjs walks every file). "Life care plan" as the
+ * subject of a cost projection is fine; the capitalized brand form is not.
  */
-export const LEGACY_BRAND_PATTERN = /KWVRS|Kincaid Wolstein/;
+export const LEGACY_BRAND_PATTERN = /KWVRS|kwvrs\.com|KW LCP|kwlcp|Kincaid Wolstein Vocational|Life Care Planning/;
 export const KNOWS_ABOUT = [
-  "Life Care Planning",
-  "Pediatric Life Care Planning",
-  "Catastrophic Injury Cost Projection",
-  "Medical Cost Projection",
-  "Future Medical Care",
-  "Medicare Set-Aside Allocation",
-  "Life Care Plan Rebuttal",
+  "Forensic Economics",
+  "Economic Damages",
+  "Lost Earnings Analysis",
+  "Earning Capacity",
+  "Wrongful Death Economic Loss",
+  "Household Services Valuation",
+  "Present Value Analysis",
+  "Business Valuation",
+  "Lost Profits",
+  "Forensic Accounting",
   "Expert Witness Testimony",
 ] as const;
 

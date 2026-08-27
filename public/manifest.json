@@ -1,10 +1,10 @@
 {
-  "name": "KW Life Care Planning",
-  "short_name": "KW LCP",
+  "name": "KW Economics",
+  "short_name": "KW Economics",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0d7377",
+  "theme_color": "#14223d",
   "icons": [
     {
       "src": "/favicon.svg",

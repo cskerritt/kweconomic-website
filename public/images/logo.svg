@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 257" width="600" height="257" role="img" aria-label="KW Life Care Planning">
-  <title>KW Life Care Planning</title>
-  <text x="0" y="158" font-family="'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif" font-weight="700" font-size="186" letter-spacing="-8" fill="#14223d">KW</text>
-  <rect x="6" y="180" width="500" height="6" rx="3" fill="#0d7377"/>
-  <text x="6" y="240" font-family="Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="52" letter-spacing="0.5" fill="#0d7377">Life Care Planning</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 257" width="600" height="257" role="img" aria-label="KW Economics">
+  <title>KW Economics</title>
+  <text x="0" y="150" font-family="'Source Serif 4', 'Source Serif Pro', Georgia, 'Times New Roman', serif" font-weight="700" font-size="186" letter-spacing="-8" fill="#14223d">KW</text>
+  <rect x="6" y="172" width="392" height="6" rx="3" fill="#b8731f"/>
+  <text x="6" y="246" font-family="Inter, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif" font-weight="600" font-size="72" letter-spacing="2" fill="#b8731f">Economics</text>
 </svg>

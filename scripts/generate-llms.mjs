@@ -83,7 +83,7 @@ async function main() {
     { comparisons },
     { states },
     { faqs },
-    { ECON_SITE_URL: ECON_SITE },
+    { LCP_SITE_URL: LCP_SITE },
   ] = await Promise.all([
     load("/src/data/services.ts"),
     load("/src/data/team.ts"),
@@ -157,7 +157,7 @@ async function main() {
   llms.push("");
   llms.push("## Related Site");
   llms.push("");
-  llms.push(`- ${ECON_SITE} - Forensic economics sister practice`);
+  llms.push(`- ${LCP_SITE} - Life care planning sister practice`);
   llms.push("");
   llms.push("## Case Types Served");
   llms.push("");
@@ -186,7 +186,7 @@ async function main() {
   p(`Website: ${SITE}`);
   p(`Phone: ${PHONE}`);
   p(`Headquarters: ${HQ}`);
-  p(`Forensic economics sister practice: ${ECON_SITE}`);
+  p(`Life care planning sister practice: ${LCP_SITE}`);
 
   // Team, grouped by role. Memoriam members are excluded: this file is the
   // AI-facing "who can you hire" panel, and a deceased colleague must never
@@ -314,7 +314,7 @@ async function main() {
   h2("Contact Information");
   li(`Phone: ${PHONE}`);
   li(`Website: ${SITE}`);
-  li(`Forensic economics: ${ECON_SITE}`);
+  li(`Life care planning: ${LCP_SITE}`);
   full.push("");
 
   h2(`How to Engage ${ORG_SHORT}`);

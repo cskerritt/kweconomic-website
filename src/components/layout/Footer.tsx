@@ -10,7 +10,7 @@ import {
   ORG_CITY,
   ORG_STATE,
   VOC_SITE_URL,
-  ECON_SITE_URL,
+  LCP_SITE_URL,
   telHref,
 } from "@/lib/brand";
 
@@ -72,8 +72,8 @@ const companyLinks = [
 // the host of the link so the domains are never spelled out here.
 const hostOf = (url: string) => new URL(url).host;
 const familyLinks = [
-  { name: hostOf(VOC_SITE_URL), blurb: "Vocational & Economic Experts", href: VOC_SITE_URL },
-  { name: hostOf(ECON_SITE_URL), blurb: "Forensic Economics", href: ECON_SITE_URL },
+  { name: hostOf(VOC_SITE_URL), blurb: "Vocational Experts", href: VOC_SITE_URL },
+  { name: hostOf(LCP_SITE_URL), blurb: "Life Care Plans", href: LCP_SITE_URL },
 ];
 
 export default function Footer() {

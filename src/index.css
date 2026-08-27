@@ -1,19 +1,21 @@
 @import "tailwindcss";
 
 @theme {
-  /* KW Life Care Planning palette: navy primary + teal accent (primary
-     CTAs, links, icons); amber retained for StatBar and highlight underlines.
-     teal-light (#14a3a8) fails AA with white text - never a button background. */
+  /* KW Economics palette: the kwvrs.com look - navy primary (ink, hero, nav)
+     with gold as the single accent (primary CTAs, links, icons, underlines).
+     The teal and forest tokens survive because components reference them;
+     they all point at the gold so every accent renders gold. amber-light
+     (#d4922e) fails AA with white text - never a button background. */
   --color-navy: #14223d;
   --color-navy-light: #2a3a5c;
   --color-navy-dark: #0c1729;
-  --color-teal: #0d7377;
-  --color-teal-light: #14a3a8;
-  --color-teal-dark: #095457;
   --color-amber: #b8731f;
   --color-amber-light: #d4922e;
   --color-amber-dark: #8a5612;
-  --color-forest: #0d7377;
+  --color-teal: #b8731f;
+  --color-teal-light: #d4922e;
+  --color-teal-dark: #8a5612;
+  --color-forest: #14223d;
   --color-neutral-50: #f9fafb;
   --color-neutral-100: #f3f4f6;
   --color-neutral-200: #e5e7eb;

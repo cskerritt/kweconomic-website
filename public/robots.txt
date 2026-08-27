@@ -1,5 +1,5 @@
-# KW Life Care Planning (kwlcp.com) robots.txt
-# Updated 2026-08-26
+# KW Economics (kweconomics.com) robots.txt
+# Updated 2026-08-27
 
 # Default - all bots allowed
 User-agent: *
@@ -41,10 +41,10 @@ User-agent: Bingbot
 Allow: /
 
 # Sitemap
-Sitemap: https://kwlcp.com/sitemap.xml
-Sitemap: https://kwlcp.com/image-sitemap.xml
-Sitemap: https://kwlcp.com/news-sitemap.xml
+Sitemap: https://kweconomics.com/sitemap.xml
+Sitemap: https://kweconomics.com/image-sitemap.xml
+Sitemap: https://kweconomics.com/news-sitemap.xml
 
 # LLMs.txt for AI ingestion / answer-engine discovery
-Llms: https://kwlcp.com/llms.txt
-Llms-Full: https://kwlcp.com/llms-full.txt
+Llms: https://kweconomics.com/llms.txt
+Llms-Full: https://kweconomics.com/llms-full.txt

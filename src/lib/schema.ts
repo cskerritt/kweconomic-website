@@ -30,7 +30,6 @@ export function organizationSchema(): JsonLd {
   return {
     "@type": "ProfessionalService",
     "@id": ORG_ID,
-    additionalType: "https://schema.org/MedicalBusiness",
     name: ORG_NAME,
     url: ORG_URL,
     telephone: ORG_PHONE,
