@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const ALLOW = new Set([
   "src/lib/brand.ts",
+  "src/lib/brand.test.ts", // spells the sister forms on purpose to pin LEGACY_BRAND_PATTERN
   "src/components/CrossSell.tsx",
   "src/pages/Tools.tsx",
   "src/brand-strings.test.mjs",

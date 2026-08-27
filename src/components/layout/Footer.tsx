@@ -72,7 +72,7 @@ const companyLinks = [
 // the host of the link so the domains are never spelled out here.
 const hostOf = (url: string) => new URL(url).host;
 const familyLinks = [
-  { name: hostOf(VOC_SITE_URL), blurb: "Vocational Experts", href: VOC_SITE_URL },
+  { name: hostOf(VOC_SITE_URL), blurb: "Vocational Practice", href: VOC_SITE_URL },
   { name: hostOf(LCP_SITE_URL), blurb: "Life Care Plans", href: LCP_SITE_URL },
 ];
 

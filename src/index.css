@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  /* KW Economics palette: the kwvrs.com look - navy primary (ink, hero, nav)
-     with gold as the single accent (primary CTAs, links, icons, underlines).
+  /* KW Economics palette: navy primary (ink, hero, nav) with gold as the
+     single accent (primary CTAs, links, icons, underlines) - the house look
+     shared across the KW family of sites.
      The teal and forest tokens survive because components reference them;
      they all point at the gold so every accent renders gold. amber-light
      (#d4922e) fails AA with white text - never a button background. */
