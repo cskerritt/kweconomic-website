@@ -1,3 +1,4 @@
+import { placeName } from "@/data/geo-prose.mjs";
 import { useParams, Link } from "react-router-dom";
 import { credentials, getCredential, type Credential } from "@/data/credentials";
 import { states } from "@/data/states";
@@ -47,8 +48,8 @@ export default function CredentialState() {
   usePageMeta(
     cred && state
       ? {
-          title: `${cred.abbreviation} Credential in ${state.name} | ${ORG_NAME}`,
-          description: `${cred.name} (${cred.abbreviation}): what the credential covers, how it is recognized in ${state.name}, and the forensic economists available for ${state.name} damages matters. Plaintiff and defense.`,
+          title: `${cred.abbreviation} Credential in ${placeName(state.name)} | ${ORG_NAME}`,
+          description: `${cred.name} (${cred.abbreviation}): what the credential covers, how it is recognized in ${placeName(state.name)}, and the forensic economists available for ${state.name} damages matters. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -74,17 +75,17 @@ export default function CredentialState() {
         { name: cred.abbreviation, url: `/credentials/${cred.slug}` },
         { name: state.name, url: `/credentials/${cred.slug}/${state.slug}` },
       ]} />
-      <h1 className="font-serif text-4xl text-navy mb-4">{cred.abbreviation} in {state.name}</h1>
+      <h1 className="font-serif text-4xl text-navy mb-4">{cred.abbreviation} in {placeName(state.name)}</h1>
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">
-        {cred.abbreviation} in {state.name}: what the credential establishes about a damages expert, how {state.name} courts treat it, and how to retain a forensic economist for {state.name} matters.
+        {cred.abbreviation} in {placeName(state.name)}: what the credential establishes about a damages expert, how {state.name} courts treat it, and how to retain a forensic economist for {state.name} matters.
       </p>
 
       <section id="recognition" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Recognition and qualification in {state.name}</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">Recognition and qualification in {placeName(state.name)}</h2>
         <p className="text-neutral-700 mb-3">{cred.scope}</p>
         <p className="text-neutral-700 mb-3">
-          <strong className="text-navy">State recognition:</strong> {recognition}. Qualification to testify on economic damages in {state.name} is decided case by case on education, method, and experience. There is no state license for forensic economists to check, so counsel verify the credential with its issuer and review the economist's testimony record directly.
+          <strong className="text-navy">State recognition:</strong> {recognition}. Qualification to testify on economic damages in {placeName(state.name)} is decided case by case on education, method, and experience. There is no state license for forensic economists to check, so counsel verify the credential with its issuer and review the economist's testimony record directly.
         </p>
         {regulations && (
           <>
@@ -100,7 +101,7 @@ export default function CredentialState() {
         <section id="courts" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">{state.name} courts and venues</h2>
           <p className="text-neutral-700 mb-2">
-            Economic damages experts testify in {state.name}'s courts, where qualification is decided case by case on education, method, and experience rather than on any single credential.
+            Economic damages experts testify in {placeName(state.name)}'s courts, where qualification is decided case by case on education, method, and experience rather than on any single credential.
           </p>
           <ul className="list-disc ml-5 text-neutral-700 space-y-1">
             {courts.trialCourts.slice(0, 3).map((c) => (
@@ -109,14 +110,14 @@ export default function CredentialState() {
           </ul>
           <p className="text-sm text-neutral-600 mt-2">
             Highest court: {courts.supremeCourt}.
-            {courts.federalDistricts.length > 0 && ` Federal venues: ${courts.federalDistricts.map((d) => d.abbreviation).join(", ")}.`}
+            {courts.federalDistricts.length > 0 && ` Federal venues: ${courts.federalDistricts.map((d) => d.abbreviation).join(", ").replace(/\.$/, "")}.`}
           </p>
         </section>
       )}
 
       {experts.length > 0 ? (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">Our economists with this credential who serve {state.name}</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Our economists with this credential who serve {placeName(state.name)}</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {experts.map((m) => (
               <li key={m.slug}>
@@ -143,7 +144,7 @@ export default function CredentialState() {
               to={`/locations/${state.slug}`}
               className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
             >
-              Forensic economists in {state.name}
+              Forensic economists in {placeName(state.name)}
             </Link>
           </li>
           {pillarServices()
@@ -154,7 +155,7 @@ export default function CredentialState() {
                   to={`/services/${s.slug}/${state.slug}`}
                   className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
                 >
-                  {s.shortName} in {state.name}
+                  {s.shortName} in {placeName(state.name)}
                 </Link>
               </li>
             ))}
@@ -162,7 +163,7 @@ export default function CredentialState() {
       </section>
 
       <section id="other-credentials" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Other credentials in {state.name}</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">Other credentials in {placeName(state.name)}</h2>
         <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
           {credentials
             .filter((c) => c.slug !== cred.slug)
@@ -172,7 +173,7 @@ export default function CredentialState() {
                   to={`/credentials/${c.slug}/${state.slug}`}
                   className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
                 >
-                  {c.abbreviation} in {state.name}
+                  {c.abbreviation} in {placeName(state.name)}
                 </Link>
               </li>
             ))}

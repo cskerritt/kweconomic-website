@@ -78,7 +78,7 @@ From `npm run build` at this commit (8,613 prerendered `index.html` shells):
 | White paper (hub + 2) | 3 |
 | **Total** | **8,613** |
 
-Sitemap index `public/sitemap.xml` (5 children + image + news), `<loc>` counts:
+Sitemap index `public/sitemap.xml` (5 children + image sitemap; news sitemap advertised via robots.txt), `<loc>` counts:
 
 | File | URLs |
 |---|---|

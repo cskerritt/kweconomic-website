@@ -4,7 +4,7 @@
 // do not load the TS module (generate-sitemap.mjs, prerender.mjs) and by
 // sitemap-index.test.mjs. Mirrors `pillarServices()` in src/data/services.ts:
 // only `pillar: true` entries are enumerated for routes, sitemaps, and
-// prerender. A `pillar: false` entry (forensic economics) is a cross-sell card
+// prerender. The `pillar: false` entries (vocational-evaluation, life-care-planning) are cross-sell cards
 // and must never be advertised or prerendered.
 //
 // The file is split on top-level object boundaries: every service entry is a

@@ -1,3 +1,4 @@
+import { placeName } from "@/data/geo-prose.mjs";
 import { useParams, Link } from "react-router-dom";
 import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -26,8 +27,8 @@ export default function CaseTypeState() {
   usePageMeta(
     caseType && state
       ? {
-          title: `${caseType.name} Economic Damages Expert in ${state.name} | ${ORG_NAME}`,
-          description: `Economic damages analysis for ${caseType.name.toLowerCase()} cases venued in ${state.name}: what the loss claim consists of, where the damages concentrate, and how the number is built. Plaintiff and defense.`,
+          title: `${caseType.name} Economic Damages Expert in ${placeName(state.name)} | ${ORG_NAME}`,
+          description: `Economic damages analysis for ${caseType.name.toLowerCase()} cases venued in ${placeName(state.name)}: what the loss claim consists of, where the damages concentrate, and how the number is built. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -40,8 +41,8 @@ export default function CaseTypeState() {
   const regulations = getRegulationsByState(state.slug);
 
   const localizedFaqs = caseType.faqs.slice(0, 4).map((f) => ({
-    question: f.question.replace(/in your state|nationwide/gi, `in ${state.name}`),
-    answer: f.answer.replace(/in your state|nationwide/gi, `in ${state.name}`),
+    question: f.question.replace(/in your state|nationwide/gi, `in ${placeName(state.name)}`),
+    answer: f.answer.replace(/in your state|nationwide/gi, `in ${placeName(state.name)}`),
   }));
 
   return (
@@ -53,11 +54,11 @@ export default function CaseTypeState() {
         { name: state.name, url: `/case-types/${caseType.slug}/${state.slug}` },
       ]} />
       <h1 className="font-serif text-4xl text-navy mb-4">
-        {caseType.name} Expert Services in {state.name}
+        {caseType.name} Expert Services in {placeName(state.name)}
       </h1>
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">
-        {ORG_NAME} prepares economic damages analyses for attorneys handling {caseType.name.toLowerCase()} cases in {state.name}.
+        {ORG_NAME} prepares economic damages analyses for attorneys handling {caseType.name.toLowerCase()} cases in {placeName(state.name)}.
       </p>
 
       <section id="overview" className="mb-6">
@@ -80,7 +81,7 @@ export default function CaseTypeState() {
         <section id="jurisdictional-notes" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">{state.name} courts and expert standards</h2>
           <p className="text-neutral-700 mb-3">
-            {caseType.name} matters in {state.name} are litigated in the state's trial courts, with economic damages testimony evaluated under {state.name}'s expert evidence standard. {ORG_NAME} prepares reports and testimony that account for these requirements.
+            {caseType.name} matters in {placeName(state.name)} are litigated in the state's trial courts, with economic damages testimony evaluated under {placeName(state.name)}'s expert evidence standard. {ORG_NAME} prepares reports and testimony that account for these requirements.
           </p>
           {courts && (
             <div className="mb-3">
@@ -92,7 +93,7 @@ export default function CaseTypeState() {
               </ul>
               <p className="text-sm text-neutral-600 mt-2">
                 Highest court: {courts.supremeCourt}.
-                {courts.federalDistricts.length > 0 && ` Federal venues: ${courts.federalDistricts.map((d) => d.abbreviation).join(", ")}.`}
+                {courts.federalDistricts.length > 0 && ` Federal venues: ${courts.federalDistricts.map((d) => d.abbreviation).join(", ").replace(/\.$/, "")}.`}
               </p>
             </div>
           )}
@@ -107,7 +108,7 @@ export default function CaseTypeState() {
 
       {expertsInState.length > 0 && (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">Experts serving {state.name}</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Experts serving {placeName(state.name)}</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {expertsInState.slice(0, 6).map((m) => (
               <li key={m.slug}>
@@ -143,7 +144,7 @@ export default function CaseTypeState() {
               to={`/locations/${state.slug}`}
               className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
             >
-              Forensic economists in {state.name}
+              Forensic economists in {placeName(state.name)}
             </Link>
           </li>
           {pillarServices()
@@ -154,7 +155,7 @@ export default function CaseTypeState() {
                   to={`/services/${s.slug}/${state.slug}`}
                   className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
                 >
-                  {s.shortName} in {state.name}
+                  {s.shortName} in {placeName(state.name)}
                 </Link>
               </li>
             ))}
@@ -162,7 +163,7 @@ export default function CaseTypeState() {
       </section>
 
       <section id="other-case-types" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Other case types in {state.name}</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">Other case types in {placeName(state.name)}</h2>
         <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
           {caseTypes
             .filter((ct) => ct.slug !== caseType.slug)
@@ -185,8 +186,8 @@ export default function CaseTypeState() {
       <SchemaOrg data={graphSchema([
         serviceSchema({
           slug: `${caseType.slug}/${state.slug}`,
-          name: `${caseType.name} Expert Services in ${state.name}`,
-          description: `Economic damages analysis for ${caseType.name.toLowerCase()} matters in ${state.name}.`,
+          name: `${caseType.name} Expert Services in ${placeName(state.name)}`,
+          description: `Economic damages analysis for ${caseType.name.toLowerCase()} matters in ${placeName(state.name)}.`,
           areaServed: { "@type": "AdministrativeArea", name: state.name },
         }),
         faqPageSchema(localizedFaqs, url),

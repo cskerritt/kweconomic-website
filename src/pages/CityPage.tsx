@@ -14,7 +14,7 @@ import Loading from "@/components/Loading";
 import { truncateAtWord } from "@/lib/text";
 import { nearestCities } from "@/lib/geo-links";
 import { getMetroLabor } from "@/data/labor/metro-labor";
-import { majorEmployers } from "@/data/geo-prose.mjs";
+import { majorEmployers, cityAttr } from "@/data/geo-prose.mjs";
 import { caseTypes } from "@/data/caseTypes";
 import { ORG_NAME } from "@/lib/brand";
 import { getCourtsByState } from "@/data/courts/state-courts";
@@ -50,7 +50,7 @@ function buildCityIntro(city: City, state: State): string {
   } else {
     role = `Counsel across ${city.county} retain ${ORG_NAME} for objective lost earnings, wrongful death, household services, and business damages analyses.`;
   }
-  const close = `${ORG_NAME} prepares court-admissible economic damages reports for ${city.name} attorneys and insurers, grounded in ${state.name}'s expert evidence standards and damages rules and measured against wage data for the ${city.name} area.`;
+  const close = `${ORG_NAME} prepares court-admissible economic damages reports for ${city.name} attorneys and insurers, grounded in ${state.name}'s expert evidence standards and damages rules and measured against wage data for the ${cityAttr(city.name)} area.`;
   return `${lead} ${role} ${close}`;
 }
 
