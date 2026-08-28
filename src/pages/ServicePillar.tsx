@@ -38,6 +38,15 @@ const NON_PILLAR_RELATED: Record<string, { href: string; label: string }> = {
   "life-care-planning": { href: "/services/life-care-plan-cost-projection", label: "Life care plan costing" },
 };
 
+// Noun phrase for the work a pillar performs ("lost earnings analysis").
+// Short names that already end in a work noun (Divorce Financial Analysis,
+// Business Valuation, Life Care Plan Costing) are used as-is so the FAQ
+// template never prints "analysis analysis".
+function workPhrase(shortName: string): string {
+  const lower = shortName.toLowerCase();
+  return /(analysis|valuation|costing)$/.test(lower) ? lower : `${lower} analysis`;
+}
+
 export default function ServicePillar() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>();
   const service = serviceSlug ? getServiceBySlug(serviceSlug) : undefined;
@@ -71,7 +80,7 @@ export default function ServicePillar() {
     },
     {
       question: `Does ${ORG_SHORT} work for both plaintiff and defense?`,
-      answer: `Yes. ${ORG_NAME} provides independent, objective ${service.shortName.toLowerCase()} analysis for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every report is built from the records in the case and published data, with each assumption stated.`,
+      answer: `Yes. ${ORG_NAME} provides independent, objective ${workPhrase(service.shortName)} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every report is built from the records in the case and published data, with each assumption stated.`,
     },
     {
       question: `Where does ${ORG_SHORT} provide ${service.shortName.toLowerCase()}?`,
