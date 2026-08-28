@@ -320,6 +320,107 @@ export const REFERENCES: Record<string, Reference> = {
     "National Center for Health Statistics. (n.d.). Life tables. Centers for Disease Control and Prevention. Retrieved August 26, 2026.",
     "https://www.cdc.gov/nchs/products/life_tables.htm",
   ),
+  // ---------------------------------------------------------------------------
+  // KW ECONOMICS ADDITIONS (2026-08-27) - forensic economics, accounting, and
+  // valuation anchors used by src/data/caseTypes.ts. BLS program pages and the
+  // Census ACS are tier (b) anchors; each was still confirmed HTTP 200 on the
+  // date recorded (BLS and CDC return 403 to non-browser fetches, so those were
+  // confirmed in a headless browser session; the rest with curl). Professional
+  // bodies and standards pages are tier (c), fetched and title-checked the
+  // same day. nafe.net canonicalizes to the bare host; the URLs below are the
+  // final (non-redirecting) forms.
+  // ---------------------------------------------------------------------------
+  BLS_CPS: R(
+    "BLS_CPS",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). Current Population Survey (CPS). U.S. Department of Labor.",
+    "https://www.bls.gov/cps/",
+  ),
+  BLS_OES: R(
+    "BLS_OES",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). Occupational Employment and Wage Statistics (OEWS). U.S. Department of Labor.",
+    "https://www.bls.gov/oes/",
+  ),
+  BLS_ECEC: R(
+    "BLS_ECEC",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). Employer Costs for Employee Compensation (ECEC). U.S. Department of Labor.",
+    "https://www.bls.gov/ecec/",
+  ),
+  BLS_ATUS: R(
+    "BLS_ATUS",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). American Time Use Survey (ATUS). U.S. Department of Labor.",
+    "https://www.bls.gov/tus/",
+  ),
+  BLS_CEX: R(
+    "BLS_CEX",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). Consumer Expenditure Surveys (CE). U.S. Department of Labor.",
+    "https://www.bls.gov/cex/",
+  ),
+  CENSUS_ACS: R(
+    "CENSUS_ACS",
+    "anchor",
+    "gov",
+    "U.S. Census Bureau. (n.d.). American Community Survey (ACS). U.S. Department of Commerce.",
+    "https://www.census.gov/programs-surveys/acs",
+  ),
+  NAFE: R(
+    "NAFE",
+    "live-verified",
+    "org",
+    "National Association of Forensic Economics. (n.d.). National Association of Forensic Economics. Retrieved August 27, 2026.",
+    "https://nafe.net/",
+  ),
+  NAFE_ETHICS: R(
+    "NAFE_ETHICS",
+    "live-verified",
+    "org",
+    "National Association of Forensic Economics. (n.d.). NAFE's ethics statement. Retrieved August 27, 2026.",
+    "https://nafe.net/ethics/",
+  ),
+  NAFE_JFE: R(
+    "NAFE_JFE",
+    "live-verified",
+    "org",
+    "National Association of Forensic Economics. (n.d.). Journal of Forensic Economics. Retrieved August 27, 2026.",
+    "https://nafe.net/journal-of-forensic-economics/",
+  ),
+  AAEFE: R(
+    "AAEFE",
+    "live-verified",
+    "org",
+    "American Academy of Economic and Financial Experts. (n.d.). American Academy of Economic and Financial Experts. Retrieved August 27, 2026.",
+    "https://aaefe.org/",
+  ),
+  AICPA_SSVS1: R(
+    "AICPA_SSVS1",
+    "live-verified",
+    "org",
+    "American Institute of Certified Public Accountants. (n.d.). Statement on Standards for Valuation Services (VS Section 100). AICPA & CIMA. Retrieved August 27, 2026.",
+    "https://www.aicpa-cima.com/resources/download/statement-on-standards-for-valuation-services-vs-section-100",
+  ),
+  NACVA_STANDARDS: R(
+    "NACVA_STANDARDS",
+    "live-verified",
+    "org",
+    "National Association of Certified Valuators and Analysts. (n.d.). NACVA professional standards and ethics. Retrieved August 27, 2026.",
+    "https://www.nacva.com/standards",
+  ),
+  ACFE: R(
+    "ACFE",
+    "live-verified",
+    "org",
+    "Association of Certified Fraud Examiners. (n.d.). Association of Certified Fraud Examiners. Retrieved August 27, 2026.",
+    "https://www.acfe.com/",
+  ),
 };
 
 /**

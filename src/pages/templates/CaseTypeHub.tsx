@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { pillarServices } from "@/data/services";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
-import { credentials as allCredentials } from "@/data/credentials";
+import { credentials as allCredentials, type Credential } from "@/data/credentials";
 import { activeTeam } from "@/data/team";
 import { states } from "@/data/states";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -17,6 +17,17 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
+// Case types name credentials the way services.ts does (label set such as
+// "Forensic Economist", "NAFE", "PhD"); credentials.ts keys them by slug and a
+// punctuated abbreviation ("Ph.D.", "MBA / M.A. / Ph.D."). Match on either.
+const normalizeCredential = (s: string) => s.replace(/[^a-z0-9]/gi, "").toLowerCase();
+const credentialMatches = (cred: Credential, wanted: string[]) =>
+  wanted.some(
+    (w) =>
+      w === cred.slug ||
+      cred.abbreviation.split("/").some((part) => normalizeCredential(part) === normalizeCredential(w)),
+  );
+
 export default function CaseTypeHub() {
   const { slug = "" } = useParams();
   const caseType = getCaseType(slug);
@@ -24,8 +35,8 @@ export default function CaseTypeHub() {
   usePageMeta(
     caseType
       ? {
-          title: `${caseType.name} Expert Witness Services | ${ORG_NAME}`,
-          description: `Life care planning and medical cost projection for ${caseType.name.toLowerCase()} cases. Methodology, credentials, and experienced planners. Plaintiff and defense.`,
+          title: `${caseType.name} Economic Damages Expert | ${ORG_NAME}`,
+          description: `Economic damages analysis for ${caseType.name.toLowerCase()} cases: what the loss claim consists of, where the damages concentrate, and how the number is built. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -36,7 +47,7 @@ export default function CaseTypeHub() {
   const next = idx < caseTypes.length - 1 ? { label: caseTypes[idx + 1].name, href: `/case-types/${caseTypes[idx + 1].slug}` } : undefined;
 
   const linkedServices = pillarServices().filter((s) => caseType.relevantServices.includes(s.slug));
-  const linkedCredentials = allCredentials.filter((c) => caseType.relevantCredentials.includes(c.slug));
+  const linkedCredentials = allCredentials.filter((c) => credentialMatches(c, caseType.relevantCredentials));
   const relevantExperts = activeTeam.filter((m) => m.specialties.some((sp) => sp.toLowerCase().includes(caseType.name.toLowerCase())));
 
   const related = linkedServices.slice(0, 3).map((s) => ({
@@ -56,20 +67,18 @@ export default function CaseTypeHub() {
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">{caseType.summary}</p>
 
-      <section id="care-needs" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Care needs</h2>
-        <p className="text-neutral-700">{caseType.careNeeds}</p>
+      <section id="loss-components" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">What the economic claim consists of</h2>
+        <p className="text-neutral-700">{caseType.lossComponents}</p>
       </section>
-      <section id="cost-exposure" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Cost exposure</h2>
-        <p className="text-neutral-700">{caseType.costExposure}</p>
+      <section id="damages-exposure" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Where the damages concentrate</h2>
+        <p className="text-neutral-700">{caseType.damagesExposure}</p>
       </section>
-      {caseType.lifeCareImpact && (
-        <section id="life-care" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">Life care planning considerations</h2>
-          <p className="text-neutral-700">{caseType.lifeCareImpact}</p>
-        </section>
-      )}
+      <section id="analysis" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">How the analysis is built</h2>
+        <p className="text-neutral-700">{caseType.economicImpact}</p>
+      </section>
 
       {linkedCredentials.length > 0 && (
         <section id="credentials" className="mb-6">
@@ -88,7 +97,7 @@ export default function CaseTypeHub() {
 
       {relevantExperts.length > 0 && (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">Our life care planners</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Our economists</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {relevantExperts.map((m) => (
               <li key={m.slug}>
@@ -116,7 +125,7 @@ export default function CaseTypeHub() {
       <section id="attorney-guides" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">Attorney guides for {caseType.name.toLowerCase()} cases</h2>
         <p className="text-neutral-700 mb-3">
-          Stage-by-stage guidance on working with a life care planner in {caseType.name.toLowerCase()} litigation.
+          Stage-by-stage guidance on working with a forensic economist in {caseType.name.toLowerCase()} litigation.
         </p>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {ATTORNEY_STAGES.map((stage) => (

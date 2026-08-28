@@ -26,7 +26,7 @@ export default function ServiceCaseType() {
     service && caseType
       ? {
           title: `${title} | ${ORG_NAME}`,
-          description: `${service.shortName} services tailored to ${caseType.name.toLowerCase()} cases. Methodology, deliverables, and experienced planners. Plaintiff and defense.`,
+          description: `${service.shortName} services tailored to ${caseType.name.toLowerCase()} cases. Methodology, deliverables, and testimony support. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -50,7 +50,7 @@ export default function ServiceCaseType() {
 
       <section id="application" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">How {service.name} applies to {caseType.name}</h2>
-        <p className="text-neutral-700">{caseType.careNeeds || service.description}</p>
+        <p className="text-neutral-700">{caseType.lossComponents || service.description}</p>
       </section>
       <section id="deliverables" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">Typical deliverables</h2>

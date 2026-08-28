@@ -258,9 +258,9 @@ async function main() {
   for (const c of caseTypes) {
     h3(c.name);
     p(c.summary);
-    if (c.careNeeds) p(`Care needs: ${c.careNeeds}`);
-    if (c.costExposure) p(`Cost exposure: ${c.costExposure}`);
-    if (c.lifeCareImpact) p(`Life care impact: ${c.lifeCareImpact}`);
+    if (c.lossComponents) p(`What the economic claim consists of: ${c.lossComponents}`);
+    if (c.damagesExposure) p(`Where the damages concentrate: ${c.damagesExposure}`);
+    if (c.economicImpact) p(`How the analysis is built: ${c.economicImpact}`);
   }
 
   h2("Professional Credentials");

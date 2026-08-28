@@ -73,7 +73,8 @@ describe("CaseTypeState cross-links", () => {
 
   it("links the state hub and the relevant service x state pages", () => {
     expect(html).toContain('href="/locations/new-jersey"');
-    expect(html).toContain('href="/services/life-care-planning/new-jersey"');
+    expect(html).toContain('href="/services/lost-earnings-and-earning-capacity/new-jersey"');
+    expect(html).toContain('href="/services/life-care-plan-cost-projection/new-jersey"');
   });
 });
 

@@ -26,8 +26,8 @@ export default function CaseTypeState() {
   usePageMeta(
     caseType && state
       ? {
-          title: `${caseType.name} Expert Witness Services in ${state.name} | ${ORG_NAME}`,
-          description: `Life care planning and medical cost projection for ${caseType.name.toLowerCase()} cases venued in ${state.name}. Plaintiff and defense.`,
+          title: `${caseType.name} Economic Damages Expert in ${state.name} | ${ORG_NAME}`,
+          description: `Economic damages analysis for ${caseType.name.toLowerCase()} cases venued in ${state.name}: lost earnings, household services, and present value. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -57,26 +57,30 @@ export default function CaseTypeState() {
       </h1>
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">
-        {ORG_NAME} prepares life care plans and medical cost projections for attorneys handling {caseType.name.toLowerCase()} cases in {state.name}.
+        {ORG_NAME} prepares economic damages analyses for attorneys handling {caseType.name.toLowerCase()} cases in {state.name}.
       </p>
 
       <section id="overview" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">Overview</h2>
         <p className="text-neutral-700">{caseType.summary}</p>
       </section>
-      <section id="care-needs" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Care needs and cost exposure</h2>
-        <p className="text-neutral-700 mb-3">{caseType.careNeeds}</p>
-        <p className="text-neutral-700">{caseType.costExposure}</p>
-        {caseType.lifeCareImpact && (
-          <p className="text-neutral-700 mt-3">{caseType.lifeCareImpact}</p>
-        )}
+      <section id="loss-components" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">What the economic claim consists of</h2>
+        <p className="text-neutral-700">{caseType.lossComponents}</p>
+      </section>
+      <section id="damages-exposure" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Where the damages concentrate</h2>
+        <p className="text-neutral-700">{caseType.damagesExposure}</p>
+      </section>
+      <section id="analysis" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">How the analysis is built</h2>
+        <p className="text-neutral-700">{caseType.economicImpact}</p>
       </section>
       {(courts || regulations) && (
         <section id="jurisdictional-notes" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">{state.name} courts and expert standards</h2>
           <p className="text-neutral-700 mb-3">
-            {caseType.name} matters in {state.name} are litigated in the state's trial courts, with life care planning and future medical cost testimony evaluated under {state.name}'s expert evidence standard. {ORG_NAME} prepares reports and testimony that account for these requirements.
+            {caseType.name} matters in {state.name} are litigated in the state's trial courts, with economic damages testimony evaluated under {state.name}'s expert evidence standard. {ORG_NAME} prepares reports and testimony that account for these requirements.
           </p>
           {courts && (
             <div className="mb-3">
@@ -139,7 +143,7 @@ export default function CaseTypeState() {
               to={`/locations/${state.slug}`}
               className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
             >
-              Life care planners in {state.name}
+              Forensic economists in {state.name}
             </Link>
           </li>
           {pillarServices()
@@ -182,7 +186,7 @@ export default function CaseTypeState() {
         serviceSchema({
           slug: `${caseType.slug}/${state.slug}`,
           name: `${caseType.name} Expert Services in ${state.name}`,
-          description: `Life care planning and medical cost projection services for ${caseType.name.toLowerCase()} matters in ${state.name}.`,
+          description: `Economic damages analysis for ${caseType.name.toLowerCase()} matters in ${state.name}.`,
           areaServed: { "@type": "AdministrativeArea", name: state.name },
         }),
         faqPageSchema(localizedFaqs, url),

@@ -11,7 +11,7 @@ export default function CaseTypesHubPage() {
   usePageMeta({
     title: `Case Types | ${ORG_NAME}`,
     description:
-      "Life care planning and medical cost projection across the most common civil case types: personal injury, birth injury, catastrophic injury, workers' compensation, wrongful death, and more.",
+      "Economic damages analysis across the most common civil and commercial case types: personal injury, wrongful death, employment, commercial disputes, divorce, fraud, and more.",
     canonical: url,
   });
   return (
@@ -27,7 +27,7 @@ export default function CaseTypesHubPage() {
             Case Types
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            {ORG_NAME} prepares life care plans and medical cost projections across the most common case types in civil litigation.
+            {ORG_NAME} prepares economic damages analyses across the most common case types in civil and commercial litigation.
           </p>
         </div>
       </div>
@@ -43,7 +43,7 @@ export default function CaseTypesHubPage() {
       </ul>
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Case Types", description: "Directory of case types our life care planners support.", url }),
+        articleSchema({ title: "Case Types", description: "Directory of case types our forensic economists support.", url }),
         breadcrumbSchema([
           { name: "Home", url: `${ORG_URL}/` },
           { name: "Case Types", url },

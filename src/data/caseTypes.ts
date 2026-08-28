@@ -1,448 +1,602 @@
 import type { Faq, Source } from "./types";
+import { refsToSources } from "./references";
 
+/**
+ * KW Economics case types.
+ *
+ * Fourteen matters in which counsel retain a forensic economist. Each entry
+ * is written from the economist's standpoint: what the economic loss claim
+ * consists of (`lossComponents`), which components usually dominate and why
+ * (`damagesExposure`), and how the economist builds the number
+ * (`economicImpact`). Injury and death matters describe the earnings,
+ * benefits, household services, and present value questions, not the medical
+ * or vocational ones; the life care plan and the work-capacity opinions are
+ * inputs prepared by other professionals.
+ *
+ * Copy rules: citation-free prose (no statute or rule cites), hyphens only,
+ * no dollar figures, no invented statistics, and no claim that a named person
+ * holds a membership or credential. `relevantServices` lists pillar slugs
+ * from services.ts; `relevantCredentials` uses the same label set as
+ * services.ts (matched against credential slugs or abbreviations by the
+ * templates). `sources` come from the registry in references.ts only.
+ *
+ * Build scripts (scripts/prerender.mjs, scripts/generate-sitemap.mjs) read
+ * this file as text and pair `slug:` with `name:` in file order, so keep each
+ * entry's `slug` and `name` as its first two fields.
+ */
 export type CaseTypeCategory =
   | "personal-injury"
   | "workers-comp"
   | "med-mal"
   | "wrongful-death"
-  | "birth-injury";
+  | "employment"
+  | "commercial"
+  | "family";
 
 export interface CaseType {
   slug: string;
   name: string;
   category: CaseTypeCategory;
   summary: string;
-  careNeeds: string;
-  costExposure: string;
-  lifeCareImpact?: string;
+  /** What the economic claim is made of and which records drive it. */
+  lossComponents: string;
+  /** Which components usually dominate the number and why. */
+  damagesExposure: string;
+  /** How the economist builds the figure: base, projection, offsets, present value. */
+  economicImpact: string;
   relevantServices: string[];
   relevantCredentials: string[];
-  icdCodes?: string[];
   faqs: Faq[];
   sources: Source[];
 }
 
 export const caseTypes: CaseType[] = [
   {
-    slug: "traumatic-brain-injury",
-    name: "Traumatic Brain Injury",
+    slug: "personal-injury",
+    name: "Personal Injury",
     category: "personal-injury",
     summary:
-      "Traumatic brain injury (TBI) matters involve a blow, jolt, or penetrating injury to the head that disrupts brain function. From a life care planning standpoint, TBI is distinctive because cognitive, behavioral, and emotional sequelae drive care needs as much as physical limitations do, and because the need for supervision and case management often persists long after acute rehabilitation ends. The life care plan documents every category of future care the injury makes necessary and the basis for each recommendation.",
-    careNeeds:
-      "TBI plans typically address physiatry and neurology follow-up, neuropsychological re-evaluation at defined intervals, cognitive rehabilitation, speech-language and occupational therapy, medications for seizures, headache, mood, and sleep, assistive technology for memory and organization, case management, home safety modifications, transportation, and attendant care or supervision. In moderate-to-severe injury the plan addresses 24-hour supervision, behavioral support, and residential or supported-living options when family caregiving is not sustainable.",
-    costExposure:
-      "Cost is driven first by the hours and level of supervision or attendant care the injury requires, then by the frequency and duration of therapies, medication, and physician follow-up across the projected life expectancy. Plans commonly present home-based and facility-based scenarios so that counsel and the economist can value each, and they identify which items are one-time, recurring, or replaced on a cycle.",
-    lifeCareImpact:
-      "The planner builds the plan from the treating physiatrist, neurologist, and neuropsychologist's recommendations, then documents frequency, duration, and cost for each item using local provider rates. Life expectancy is addressed from the evaluee's functional profile, with the sources stated so the plan can be examined and defended. Where severity is contested, the plan states the clinical basis for the level of care projected.",
-    relevantServices: ["life-care-planning", "catastrophic-injury-planning", "medical-cost-projection", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "md", "rn", "phd"],
-    icdCodes: ["S06", "S06.2", "S06.3", "S06.9"],
+      "Personal injury matters range from orthopedic injuries with a defined recovery to permanent impairments that end a career. The economic claim is built from the injured person's earnings history, the work the injury has taken away or reduced, the fringe benefits that came with that work, the household work the person can no longer do, and the cost of the future care the treating providers or a life care plan have identified. The economist's job is to state each of those components, tie it to the record, and reduce the future stream to a present value the court can use.",
+    lossComponents:
+      "The claim typically consists of past lost earnings from the date of injury to the date of analysis, future lost earnings or reduced earning capacity across the person's expected worklife, lost fringe benefits such as employer retirement contributions and health insurance, the replacement cost of household services the person can no longer perform, and the present value of future medical and care costs when a life care plan or treating recommendations exist. The records that drive the number are tax returns, W-2s and pay stubs, personnel and union files, benefit plan documents, and the medical or work-capacity opinions that define what the person can do after the injury.",
+    damagesExposure:
+      "Which component dominates depends on the person's age, occupation, and residual capacity. For a young worker who can no longer perform a skilled trade, future earnings loss over a long worklife usually outweighs everything else. For a person who returns to work at reduced hours or lower pay, the loss is the gap between the but-for path and the post-injury path, and the size of that gap is the contested question. Where a life care plan exists, its present value is often the largest single figure in the report, and household services losses can be substantial when the injured person did most of the home's unpaid work.",
+    economicImpact:
+      "The economist establishes the but-for earnings base from the earnings history and, for a person early in a career, from occupational earnings data for the path they were on. That base is projected over a statistically expected worklife with wage growth, then compared with a post-injury path drawn from actual post-injury earnings or from the work-capacity opinions in the record. Fringe benefits are valued from plan documents or published employer cost data, household services from time-use data and local replacement rates, and future care from the life care plan priced item by item with medical cost growth. Every future stream is discounted to present value with the rate assumption stated, and contested assumptions are shown as sensitivity ranges so counsel and the fact finder can see what moves the number.",
+    relevantServices: ["personal-injury-economic-damages", "lost-earnings-and-earning-capacity", "household-services-valuation", "life-care-plan-cost-projection", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
     faqs: [
       {
-        question: "When should a life care planner be retained in a TBI case?",
+        question: "When does a personal injury case need an economist?",
         answer:
-          "Once the injury has stabilized enough for the treating team to describe long-term needs, typically after acute rehabilitation and an initial neuropsychological evaluation. Retaining before those data exist produces a plan that has to be substantially revised.",
+          "When the injury has removed the person from work for more than a short period, changed what they can earn, created ongoing care costs, or ended their ability to do household work. If the only claim is a few weeks of documented lost pay, counsel can often present it from the pay records alone. Once the loss runs into the future, the projection, growth, and present value questions call for an economic analysis.",
       },
       {
-        question: "Does a mild TBI warrant a life care plan?",
+        question: "What records should be gathered before the economist is retained?",
         answer:
-          "Sometimes. Persistent post-concussive symptoms can require ongoing therapy, medication, and periodic specialist follow-up. The planner documents what the treating providers actually recommend rather than assuming a level of care from the diagnosis alone.",
+          "Several years of tax returns, W-2s or 1099s, recent pay stubs, the employer's personnel file and benefit summaries, union or pension records, and the medical opinions or work-capacity findings that describe what the person can do now. For self-employed claimants, business tax returns and financial statements replace the wage records.",
       },
       {
-        question: "How is supervision quantified in a TBI life care plan?",
+        question: "How is reduced earning capacity different from lost earnings?",
         answer:
-          "Supervision and attendant care are expressed in hours per day by level of service, based on functional assessment and the treating team's recommendations. The plan states who provides the care, at what rate, and whether family-provided care is valued at market rates in the jurisdiction.",
+          "Lost earnings measure what the person has actually not been paid. Earning capacity measures what the person could reasonably have earned along the path they were on compared with what they can earn now, even if they are working. The economist models both paths and reports the difference, stating the basis for each path.",
       },
       {
-        question: "How does the life care planner coordinate with the neuropsychologist?",
+        question: "Does the economist prepare the life care plan?",
         answer:
-          "The neuropsychological evaluation identifies the cognitive and behavioral deficits; the planner translates those findings into specific services, frequencies, and durations, and confirms the recommendations with the treating providers before costing them.",
+          "No. The life care plan is prepared by a medical or rehabilitation professional and lists the future care items, their frequency, and their unit cost. The economist takes that document as an input, applies medical cost growth over the plan horizon, and reduces the stream to present value. The economist does not opine on what care is needed.",
       },
       {
-        question: "Does a TBI affect the life expectancy used in the plan?",
+        question: "How does the analysis handle a person who returned to work?",
         answer:
-          "It can, particularly in severe injury. The planner presents the basis for the life expectancy used, and where the evidence supports a range, shows the cost of the plan at each end of the range so counsel can decide how to present it.",
+          "The post-injury earnings become the mitigation path. The economist compares them with the but-for projection year by year, accounts for any lost benefits or reduced advancement, and reports the remaining gap. A return to work reduces the claim; it does not eliminate it if the new path pays less or is less secure.",
       },
     ],
-    sources: [
-      { title: "CDC: Traumatic Brain Injury and Concussion", url: "https://www.cdc.gov/traumaticbraininjury/", type: "gov" },
-      { title: "NIH/NINDS: Traumatic Brain Injury Information Page", url: "https://www.ninds.nih.gov/health-information/disorders/traumatic-brain-injury-tbi", type: "gov" },
-    ],
-  },
-  {
-    slug: "spinal-cord-injury",
-    name: "Spinal Cord Injury",
-    category: "personal-injury",
-    summary:
-      "Spinal cord injury (SCI) matters address the lifelong care consequences of partial or complete loss of motor and sensory function below the level of injury. Neurological level and completeness determine the scope of the plan, from equipment and supplies to attendant care and the medical surveillance needed to prevent secondary complications.",
-    careNeeds:
-      "SCI plans address physiatry follow-up, urology and bowel programs with supplies, skin integrity and pressure-injury prevention, respiratory care in high cervical injury, spasticity management, physical and occupational therapy, manual and power wheelchairs with seating and replacement cycles, transfer and lift equipment, hospital beds and pressure-relief surfaces, home accessibility modifications, adapted vehicles, and personal care attendants at hours determined by functional level.",
-    costExposure:
-      "Attendant care and durable medical equipment replacement dominate SCI plan cost, followed by recurring supplies and the periodic hospitalizations associated with urinary tract infection, pressure injury, and other secondary conditions. Cost rises steeply with higher neurological levels, and plans generally show the difference between home-based care with attendants and facility-based care.",
-    lifeCareImpact:
-      "The planner documents the evaluee's neurological level and functional status, obtains recommendations from the physiatrist and rehabilitation team, and projects each item's frequency, duration, and replacement cycle with the basis stated. Life expectancy is addressed with attention to level, completeness, and age at injury, and the plan is written so each line can be traced to a clinical recommendation and a local cost source.",
-    relevantServices: ["catastrophic-injury-planning", "life-care-planning", "medical-cost-projection", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
-    icdCodes: ["S14", "S24", "S34"],
-    faqs: [
-      {
-        question: "How does neurological level shape the SCI life care plan?",
-        answer:
-          "Higher cervical injuries generally require ventilatory support, extensive attendant care, and power mobility; lower thoracic and lumbar injuries may permit independence in transfers and self-care with manual mobility. The plan states the level and completeness and ties each recommendation to them.",
-      },
-      {
-        question: "What equipment is included and how often is it replaced?",
-        answer:
-          "Wheelchairs, cushions, transfer equipment, shower and commode chairs, beds, pressure-relief mattresses, standing frames, and vehicle adaptations are typical. Replacement intervals follow manufacturer guidance and clinical practice and are stated in the plan for each item.",
-      },
-      {
-        question: "Are home modifications part of the plan?",
-        answer:
-          "Yes. Ramps, doorway widening, accessible bathrooms, roll-in showers, lowered work surfaces, and lift systems are projected, usually with input from an occupational therapist or accessibility consultant, and one-time costs are separated from recurring costs.",
-      },
-      {
-        question: "How are attendant care hours determined?",
-        answer:
-          "By functional assessment and the treating team's recommendations, expressed in hours per day by level of service. The plan documents the rate source and addresses whether family-provided care is valued.",
-      },
-      {
-        question: "Does the plan account for complications common after SCI?",
-        answer:
-          "It should. Urinary tract infections, pressure injuries, autonomic dysreflexia, and respiratory complications are addressed through preventive care, supplies, and a documented allowance for periodic hospitalization where the treating physician supports it.",
-      },
-    ],
-    sources: [
-      { title: "National Spinal Cord Injury Statistical Center", url: "https://www.nscisc.uab.edu/", type: "gov" },
-      { title: "ASIA Impairment Scale", url: "https://asia-spinalinjury.org/", type: "org" },
-      { title: "Christopher & Dana Reeve Foundation - Paralysis Resource Guide", url: "https://www.christopherreeve.org/", type: "org" },
-    ],
-  },
-  {
-    slug: "amputation",
-    name: "Amputation",
-    category: "personal-injury",
-    summary:
-      "Amputation matters involve the loss of all or part of a limb, with care needs driven by level of amputation, upper versus lower extremity, residual limb health, and prosthetic candidacy. Prosthetic technology and its replacement schedule are usually the central life care planning question, alongside the therapy, skin care, and follow-up that keep a prosthesis usable.",
-    careNeeds:
-      "Amputation plans address prosthetist and physiatrist follow-up, prosthetic devices and components with documented service lives, socket replacement as the residual limb changes, liners, sleeves, and supplies, gait and prosthetic training, physical and occupational therapy, residual limb and skin care, pain management including phantom limb pain, mobility aids for non-prosthetic use, and psychological support. Bilateral and upper-extremity amputations often add attendant care and home modification.",
-    costExposure:
-      "Prosthetic acquisition and replacement drive cost, and the choice between mechanical, microprocessor, or myoelectric technology changes both the purchase price and the replacement cycle. Recurring supplies, therapy after each new device, and long-term joint and spine care from altered gait add to the profile across the projected life expectancy.",
-    lifeCareImpact:
-      "The planner documents the evaluee's amputation level, prosthetic history, and functional level, then works with the treating prosthetist and physiatrist to project the device type, components, and replacement schedule. Each item carries a stated basis and a local cost, and the plan distinguishes what is medically indicated now from what may become appropriate as technology or the evaluee's function changes.",
-    relevantServices: ["life-care-planning", "catastrophic-injury-planning", "medical-cost-projection", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
-    icdCodes: ["S68", "S78", "S88", "S98"],
-    faqs: [
-      {
-        question: "How is prosthetic replacement projected?",
-        answer:
-          "Prosthetic components have manufacturer and clinical service-life expectations. The plan projects replacement at those intervals across the remaining life expectancy, with socket replacement more frequent in the early years as the residual limb matures, and costs drawn from prosthetic providers in the evaluee's area.",
-      },
-      {
-        question: "Are advanced prosthetics such as microprocessor knees or myoelectric hands included?",
-        answer:
-          "When the treating prosthetist and physiatrist support them for the evaluee's functional level. Advanced devices carry higher acquisition costs and, for electronic components, shorter service lives, which the plan reflects.",
-      },
-      {
-        question: "What ongoing medical care does an amputation plan include?",
-        answer:
-          "Prosthetist visits for adjustment and repair, physiatry follow-up, dermatology or wound care for residual limb skin problems, pain management, and orthopedic care for the contralateral limb and spine as gait changes take their toll over time.",
-      },
-      {
-        question: "Does an amputation plan include attendant care or home modification?",
-        answer:
-          "For single lower-extremity amputations often not; for bilateral, upper-extremity, or high-level amputations, attendant care hours, bathroom and kitchen modifications, and adapted vehicles are frequently indicated and are documented against the evaluee's functional status.",
-      },
-    ],
-    sources: [
-      { title: "Amputee Coalition", url: "https://www.amputee-coalition.org/", type: "org" },
-      { title: "American Academy of Orthotists & Prosthetists", url: "https://www.oandp.org/", type: "org" },
-      { title: "VA Amputation System of Care", url: "https://www.prosthetics.va.gov/asoc/index.asp", type: "gov" },
-    ],
+    sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ATUS", "CDC_LIFE_TABLES", "TREASURY_YIELD"]),
   },
   {
     slug: "wrongful-death",
     name: "Wrongful Death",
     category: "wrongful-death",
     summary:
-      "Wrongful death matters involve the death of an injured person, sometimes after a period of survival during which substantial care was delivered. Life care planning contributes in two ways: by documenting and valuing the care actually provided between injury and death, and, where a surviving dependent had care needs the decedent was meeting, by projecting the replacement cost of that care.",
-    careNeeds:
-      "In survival claims the planner reconstructs the care delivered from injury to death, including hospitalization, skilled nursing, home health, equipment, medications, and family-provided attendant care, and confirms that each item was medically appropriate. Where the decedent was the caregiver for a disabled spouse, child, or parent, the plan documents that dependent's ongoing needs and the paid services now required to replace the care the decedent provided.",
-    costExposure:
-      "Exposure in the survival component is the documented cost of care between injury and death, including care provided by family at market rates where the jurisdiction allows. Replacement-care exposure depends on the dependent's condition and projected life expectancy, and can be large where the decedent provided daily hands-on care to a person with a disability.",
-    lifeCareImpact:
-      "The life care planner audits the medical and billing record to establish what care was delivered and at what cost, and separates care attributable to the injury from unrelated treatment. For dependent replacement care, the planner evaluates the survivor's needs with the treating providers and projects services, frequencies, and costs in the same format as any other life care plan so the economist can reduce them to present value.",
-    relevantServices: ["medical-cost-projection", "life-care-planning", "elder-and-long-term-care-planning", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "rn", "md"],
+      "In a wrongful death matter the economic claim measures what the decedent would have contributed to the household over the rest of an expected life, not what the decedent would have earned in isolation. The analysis projects earnings and fringe benefits, deducts the share the decedent would have consumed personally, adds the value of household services and, where recoverable, other forms of support, and reduces the total to present value for the survivors or the estate as the governing framework requires.",
+    lossComponents:
+      "The components are the decedent's lost earnings and fringe benefits over a projected worklife, a personal consumption deduction that removes the portion of income the decedent would have spent on themselves, the replacement value of household services the decedent provided, lost financial support to dependents measured over each dependent's period of dependency, and in some frameworks the accumulation the decedent would have left to the estate. The records that drive the analysis are the decedent's tax returns, wage and benefit records, the household's composition and expenditures, and documentation of the services and care the decedent provided at home.",
+    damagesExposure:
+      "For a working-age decedent with dependents, net lost earnings and benefits are usually the largest component, and the personal consumption deduction is the assumption most likely to be contested because it scales the whole earnings figure. Household services can approach or exceed the earnings loss when the decedent was a full-time homemaker or a caregiver for a child or disabled family member. The length of the projection matters: life and worklife expectancy, the retirement age assumed, and whether support continues past a child's majority all change the total materially.",
+    economicImpact:
+      "The economist builds the earnings base from the decedent's history and, where a career was interrupted early, from occupational data for the path the decedent was on, then projects it over a worklife expectancy with wage growth. Personal consumption is derived from household expenditure data adjusted to the household's size and income, and household services from time-use data and replacement wage rates for the tasks performed. Support to each survivor is measured over that survivor's expected period of dependency, and the future streams are discounted to present value with the rate stated. Because states differ on which components are recoverable and by whom, the report is organized to the framework counsel identifies and presents each component separately so it can be included or excluded as the law requires.",
+    relevantServices: ["wrongful-death-economic-loss", "household-services-valuation", "lost-earnings-and-earning-capacity", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
     faqs: [
       {
-        question: "What does a life care planner do in a wrongful death case?",
+        question: "How is the personal consumption deduction determined?",
         answer:
-          "Two things, depending on the facts: document and value the care delivered between injury and death, and, where the decedent was caring for a dependent with a disability, project the cost of replacing that care through the dependent's life expectancy.",
+          "From published household expenditure data, adjusted for the number of people in the household and the household's income level. The deduction represents the share of income the decedent would have spent on personal needs rather than on the family. The economist states the percentage used and its source, and shows how the total changes if a different percentage is applied.",
       },
       {
-        question: "Is family-provided care between injury and death compensable?",
+        question: "Does the analysis value a homemaker's contribution?",
         answer:
-          "Many jurisdictions allow recovery of the reasonable value of care family members provided. The planner documents the hours and level of care and applies local market rates so counsel can present the value under the governing law.",
+          "Yes. The economist measures the hours of household work the decedent performed, using the household's own account and time-use data for a person of similar circumstances, and values those hours at the cost of replacing them with paid services. This component stands on its own and does not depend on the decedent having earned wages.",
       },
       {
-        question: "How is replacement care for a surviving dependent projected?",
+        question: "How long is support projected for each survivor?",
         answer:
-          "The planner evaluates the dependent's current needs with their treating providers, identifies which of those needs the decedent was meeting, and projects paid services at local rates through the dependent's projected life expectancy, noting any public benefits the jurisdiction treats as collateral.",
+          "Over the period each survivor would reasonably have depended on the decedent: for a spouse, typically through the decedent's expected life or worklife; for a child, through the age of majority or the completion of education, as the record and the governing framework support. The report presents the periods separately so counsel can address them individually.",
       },
       {
-        question: "Does the life care planner opine on cause of death?",
+        question: "What if the decedent was self-employed or worked irregularly?",
         answer:
-          "No. Causation is a physician question. The planner documents care needs and costs consistent with the medical record and the physicians' opinions.",
+          "The economist reconstructs the earnings base from business tax returns, financial statements, invoices, and bank records, and separates the decedent's labor from the return on capital in the business. Where the history is short, occupational earnings data for comparable work supplements the record. The report states the reconstruction method so it can be examined.",
+      },
+      {
+        question: "Can the report be structured for both the estate and the survivors?",
+        answer:
+          "Yes. When the governing framework separates the estate's claim from the survivors' claims, the report presents the components applicable to each so the same underlying figures support both without double counting.",
       },
     ],
-    sources: [
-      { title: "National Center for Health Statistics - Life Expectancy", url: "https://www.cdc.gov/nchs/", type: "gov" },
-      { title: "CMS - Home Health Services", url: "https://www.medicare.gov/coverage/home-health-services", type: "gov" },
-    ],
+    sources: refsToSources(["CDC_LIFE_TABLES", "BLS_CPS", "BLS_CEX", "BLS_ATUS", "CENSUS_ACS", "TREASURY_YIELD"]),
   },
   {
     slug: "medical-malpractice",
     name: "Medical Malpractice",
     category: "med-mal",
     summary:
-      "Medical malpractice matters involve injury attributed to a departure from the accepted standard of care. The life care plan in these cases must isolate the incremental care the alleged breach made necessary from the baseline care the patient would have required anyway, which makes the causation opinions of the treating and retained physicians the foundation of the plan.",
-    careNeeds:
-      "Care categories depend on the injury: delayed-diagnosis cases may involve oncology follow-up, surgery, and palliative care; surgical and anesthesia injury may involve neurological rehabilitation, wound care, ostomy supplies, or chronic pain management; medication and hospital-acquired injury may involve dialysis, organ transplant follow-up, or long-term nursing. The plan is organized by the same categories as any life care plan, with each item flagged as incremental or baseline.",
-    costExposure:
-      "Exposure is the cost of the incremental care across the evaluee's projected life expectancy. Because baseline care is excluded, the plan's value is highly sensitive to the physician's causation and apportionment opinions and to how the pre-existing condition would have progressed absent the breach. Plans often present both the full care profile and the incremental profile so the distinction is transparent.",
-    lifeCareImpact:
-      "The planner obtains causation and apportionment opinions from the physicians, builds the but-for baseline of expected care, and then documents the additional services, frequencies, and durations attributable to the injury. Every item carries its clinical source and local cost, and the plan states its methodology so it can be tested against the opposing expert's apportionment.",
-    relevantServices: ["life-care-planning", "medical-cost-projection", "life-care-plan-rebuttal", "expert-witness-testimony"],
-    relevantCredentials: ["md", "clcp", "cnlcp", "rn"],
+      "Medical malpractice matters present the economic loss questions of a personal injury or wrongful death case with one added layer: the loss must be measured against the outcome the patient would have had with proper care, not against perfect health. The economist works from the medical causation opinions in the record to define the but-for path and then measures the earnings, benefits, household services, and care costs the injury has added to it.",
+    lossComponents:
+      "The claim consists of lost earnings and earning capacity attributable to the injury, lost fringe benefits, the replacement cost of household services the patient can no longer perform, the present value of the incremental future care documented in a life care plan or the treating recommendations, and, where the patient has died, the survivor and estate components of a wrongful death analysis. The records that drive the analysis are the earnings and benefit history, the medical opinions that separate the injury from the underlying condition, and the care plan that distinguishes incremental care from the care the underlying condition would have required.",
+    damagesExposure:
+      "Because the underlying condition often affected work capacity or life expectancy on its own, the apportionment between the injury and the pre-existing condition is usually the most contested assumption and the one that most changes the total. In cases of permanent disability the incremental care costs and the earnings loss are both large and run across a long horizon, and the life expectancy used for each stream is a second point of contention. In delayed-diagnosis cases the loss may be measured as the difference between two outcome paths, each with its own earnings and care profile.",
+    economicImpact:
+      "The economist starts by stating the but-for path the medical record and causation opinions support: what the patient would have earned, for how long, and what care the underlying condition would have required regardless. The injured path is then built from the actual post-injury earnings, the work-capacity opinions, and the incremental care plan. Each component is measured as the difference between the two paths, projected over the applicable life or worklife expectancy with growth, and discounted to present value. Where physicians disagree on life expectancy or apportionment, the report presents the loss under each scenario so the fact finder can attach the number to the finding it makes.",
+    relevantServices: ["personal-injury-economic-damages", "wrongful-death-economic-loss", "life-care-plan-cost-projection", "lost-earnings-and-earning-capacity", "household-services-valuation"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
     faqs: [
       {
-        question: "How does the plan separate incremental care from baseline care?",
+        question: "How does the economist handle a pre-existing condition?",
         answer:
-          "The planner documents what care the patient would have needed for the underlying condition absent the breach, based on physician opinion and the medical record, then lists separately the care made necessary by the injury. Items that fall in both are identified so counsel can address apportionment.",
+          "The economist does not decide what the condition would have done; the medical opinions do. The report takes those opinions as its baseline, builds the but-for path from them, and measures only the loss the injury added. When the opinions differ, the report shows the result under each.",
       },
       {
-        question: "Who provides the causation opinion the plan relies on?",
+        question: "What is different about a medical malpractice wrongful death analysis?",
         answer:
-          "Treating physicians and any retained standard-of-care and causation experts. The life care planner does not opine on causation; the plan states which physician recommendations support each care item.",
+          "The structure is the same as any wrongful death analysis, with earnings, consumption, household services, and support to dependents. The difference is that the decedent's life and worklife expectancy may already have been shortened by the condition being treated, and the analysis must use the expectancy the medical evidence supports rather than population averages alone.",
       },
       {
-        question: "Can the same planner prepare a rebuttal to the opposing life care plan?",
+        question: "Are the costs of the negligent treatment itself part of the economic claim?",
         answer:
-          "Yes. Rebuttal review examines the opposing plan's clinical foundation, frequencies, durations, cost sources, and treatment of baseline care, and identifies where it departs from the record or from accepted life care planning methodology.",
+          "Past medical expenses are usually documented from billing records and presented by counsel. The economist's work concerns the future: the incremental care the injury requires, priced from the life care plan or treating recommendations, and grown and discounted over the horizon the medical evidence supports.",
       },
       {
-        question: "How are pre-existing conditions handled?",
+        question: "How early should the economist be retained?",
         answer:
-          "They define the baseline. The plan projects how the pre-existing condition would have progressed and what care it would have required, then limits the claimed items to the additional care caused by the injury.",
+          "Once causation and prognosis opinions are available and the disclosure schedule is known. The economist can begin the earnings and household analysis from the financial records while the care plan is being finalized, and then integrate the plan when it is ready.",
       },
     ],
-    sources: [
-      { title: "Agency for Healthcare Research and Quality", url: "https://www.ahrq.gov/", type: "gov" },
-      { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/payment/fee-schedules/physician", type: "gov" },
-    ],
-  },
-  {
-    slug: "burn-injury",
-    name: "Burn Injury",
-    category: "personal-injury",
-    summary:
-      "Burn injury matters involve thermal, chemical, electrical, or radiation burns whose care needs are driven by total body surface area, depth, location, inhalation injury, and complications such as contracture, hypertrophic scarring, and heat intolerance. Because reconstruction is staged over years and skin care is lifelong, the life care plan must project both a surgical sequence and a daily maintenance regimen.",
-    careNeeds:
-      "Burn plans address burn surgeon and plastic surgeon follow-up, staged reconstructive and contracture-release surgery, laser and scar management, compression garments replaced on a documented cycle, moisturizers, sun protection, and wound supplies, physical and occupational therapy for range of motion, splinting, pain management, pulmonary follow-up after inhalation injury, and mental health treatment for post-traumatic stress, depression, and body image concerns. Severe burns of the hands or face may add adaptive equipment and attendant care.",
-    costExposure:
-      "Cost concentrates in the surgical years immediately after injury and then settles into recurring garment, supply, therapy, and mental health costs across the projected life expectancy. Pediatric burns add reconstruction as the child grows. The plan identifies which surgeries the treating surgeon has scheduled, which are anticipated, and the maintenance items that continue for life.",
-    lifeCareImpact:
-      "The planner obtains the reconstructive sequence from the treating burn surgeon, documents garment and supply regimens with replacement frequencies, and confirms therapy and mental health recommendations with the treating team. Each item carries a stated basis and local cost, and the plan separates one-time surgical costs from lifelong maintenance so the economist can treat each correctly.",
-    relevantServices: ["life-care-planning", "catastrophic-injury-planning", "medical-cost-projection", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
-    icdCodes: ["T20", "T21", "T22", "T23", "T24", "T25"],
-    faqs: [
-      {
-        question: "How are compression garments projected in the plan?",
-        answer:
-          "Garments are worn most of the day during the scar maturation period and replaced several times a year as they lose elasticity. The plan states the wear period recommended by the treating surgeon or therapist and the replacement frequency, then applies local pricing.",
-      },
-      {
-        question: "Are future reconstructive surgeries included?",
-        answer:
-          "Yes, where the treating surgeon anticipates them. The plan lists each anticipated procedure, its timing, and the associated hospitalization, therapy, and garment costs, distinguishing scheduled procedures from those that depend on how scars mature.",
-      },
-      {
-        question: "Is mental health care part of a burn life care plan?",
-        answer:
-          "Usually. Post-traumatic stress, depression, and body image concerns are common after significant burns, and the plan projects individual therapy, medication management, and periodic psychiatric follow-up where the treating providers recommend them.",
-      },
-      {
-        question: "How do pediatric burns differ in the plan?",
-        answer:
-          "Growing skin over scar tissue produces contractures that require repeated release surgery through adolescence, and garments and splints are resized with growth. Pediatric plans project these cycles and the therapy that follows each procedure.",
-      },
-    ],
-    sources: [
-      { title: "American Burn Association", url: "https://ameriburn.org/", type: "org" },
-      { title: "Phoenix Society for Burn Survivors", url: "https://www.phoenix-society.org/", type: "org" },
-    ],
-  },
-  {
-    slug: "personal-injury",
-    name: "Personal Injury",
-    category: "personal-injury",
-    summary:
-      "Personal injury matters cover a broad range of physical and psychological harm arising from negligence, from orthopedic injury and chronic pain to complex regional pain syndrome and psychological trauma. Whenever an injury requires ongoing treatment, equipment, or assistance, a life care plan documents those future needs and their cost so future medical damages rest on an itemized foundation rather than an estimate.",
-    careNeeds:
-      "Common categories include orthopedic and pain management follow-up, injections and implanted devices with replacement cycles, future surgery such as joint replacement or spinal fusion, physical therapy at maintenance frequency, medications, bracing and mobility aids, diagnostic imaging, mental health treatment, and, in more serious injury, home modification and help with household tasks or personal care.",
-    costExposure:
-      "Exposure ranges widely with injury severity. In moderate injury the plan may consist of periodic physician visits, medication, therapy, and a future surgery; in serious injury it includes equipment, attendant care, and home modification across the projected life expectancy. The plan identifies one-time, recurring, and cyclically replaced items so each can be valued appropriately.",
-    lifeCareImpact:
-      "The planner reviews the records, interviews the evaluee, and confirms recommendations with the treating physicians before projecting frequency, duration, and cost for each item at local rates. The plan states its basis for every line, addresses the evaluee's life expectancy, and is written so that a medical cost projection or full life care plan can be presented depending on the scope counsel needs.",
-    relevantServices: ["life-care-planning", "medical-cost-projection", "plan-update-and-review", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "rn", "md"],
-    faqs: [
-      {
-        question: "When does a personal injury case need a life care plan rather than a medical cost projection?",
-        answer:
-          "A medical cost projection suits injuries with a defined, mostly medical course of future treatment. A full life care plan is indicated when the injury affects daily function and requires equipment, home modification, assistance, or coordinated care across multiple disciplines over a long horizon.",
-      },
-      {
-        question: "What records does the planner need?",
-        answer:
-          "Complete treatment records, imaging reports, therapy notes, pharmacy records, any functional capacity or independent medical evaluation, and contact with the treating physicians to confirm future recommendations.",
-      },
-      {
-        question: "Does the plan include care the evaluee is not currently receiving?",
-        answer:
-          "Yes, where a treating or examining physician recommends it. The plan documents the recommendation and its source; it does not project care that no provider supports.",
-      },
-      {
-        question: "Can a plan be updated if the evaluee's condition changes before trial?",
-        answer:
-          "Yes. Plans are updated to reflect new surgery, changed recommendations, or a change in function, and the update documents what changed and why so the current plan is consistent with prior testimony.",
-      },
-    ],
-    sources: [
-      { title: "CMS Physician Fee Schedule", url: "https://www.cms.gov/medicare/payment/fee-schedules/physician", type: "gov" },
-      { title: "National Center for Health Statistics - Life Expectancy", url: "https://www.cdc.gov/nchs/", type: "gov" },
-    ],
-  },
-  {
-    slug: "workers-compensation",
-    name: "Workers' Compensation",
-    category: "workers-comp",
-    summary:
-      "Workers' compensation matters involve work-related injury or illness within a statutory system that pays medical benefits under a fee schedule and, in many settlements, closes future medical liability in exchange for a lump sum. Life care planning in this setting supports settlement valuation, Medicare Set-Aside allocation, and disputes over the reasonableness and necessity of future treatment.",
-    careNeeds:
-      "Plans address the injury-related care the treating physician projects: physician follow-up, medications, injections, future surgery, therapy, durable medical equipment and replacement, diagnostic testing, and, in catastrophic work injury, attendant care and home modification. Because state fee schedules govern payment, the plan typically prices items under the applicable schedule and, where useful, at usual and customary rates for comparison.",
-    costExposure:
-      "Exposure is defined by the projected cost of injury-related medical care over the claimant's life expectancy, priced under the governing fee schedule. Where the claimant is a Medicare beneficiary or reasonably expected to become one, the Medicare-covered portion must be allocated in a set-aside, and the difference between the plan and the set-aside is often the focus of settlement negotiation.",
-    lifeCareImpact:
-      "The planner documents the injury-related diagnoses, obtains the treating physician's projection of future care, and prices each item under the state fee schedule with stated sources. The same clinical foundation supports a Medicare Set-Aside allocation when one is required, and the plan distinguishes injury-related care from treatment for unrelated conditions so the carrier's obligation is stated accurately.",
-    relevantServices: ["workers-compensation-lcp", "medicare-set-aside", "medical-cost-projection", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "mscc", "cdms", "crc", "rn"],
-    faqs: [
-      {
-        question: "How does a workers' compensation life care plan differ from a civil life care plan?",
-        answer:
-          "The clinical methodology is the same, but pricing follows the state fee schedule, the scope is limited to injury-related care the carrier is responsible for, and the plan is often prepared with settlement and Medicare Set-Aside requirements in mind.",
-      },
-      {
-        question: "When is a Medicare Set-Aside needed?",
-        answer:
-          "When a settlement closes future medical benefits and the claimant is a Medicare beneficiary or has a reasonable expectation of enrollment. The allocation projects Medicare-covered, injury-related care and is prepared from the same records and physician projections as the life care plan.",
-      },
-      {
-        question: "Can the plan be used to dispute a utilization review denial?",
-        answer:
-          "The plan documents the treating physician's recommendations and their clinical basis, which counsel can use in disputes over the reasonableness and necessity of future treatment under the state's procedures.",
-      },
-      {
-        question: "Does the plan price care at fee schedule or market rates?",
-        answer:
-          "Under the applicable fee schedule for the carrier's obligation, with market rates shown where the claimant may need to purchase care outside the system after settlement.",
-      },
-    ],
-    sources: [
-      { title: "U.S. DOL Office of Workers' Compensation Programs", url: "https://www.dol.gov/agencies/owcp", type: "gov" },
-      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-comp-set-aside-arrangements", type: "gov" },
-    ],
+    sources: refsToSources(["BLS_CPS", "CDC_LIFE_TABLES", "BLS_ATUS", "TREASURY_YIELD", "NAFE_ETHICS"]),
   },
   {
     slug: "motor-vehicle-accident",
     name: "Motor Vehicle Accident",
     category: "personal-injury",
     summary:
-      "Motor vehicle accident matters span the full range of injury severity, from soft tissue and orthopedic injury to traumatic brain injury, spinal cord injury, and polytrauma. The life care plan scales to the injury: a medical cost projection for a defined course of orthopedic treatment, or a full plan when the crash produces lasting functional loss that requires equipment, assistance, and coordinated long-term care.",
-    careNeeds:
-      "Typical categories include orthopedic and spine follow-up, pain management and injections, future surgery such as fusion or joint replacement, physical therapy, medications, bracing and mobility aids, imaging, and mental health treatment for post-traumatic stress and driving anxiety. Polytrauma cases add neurological rehabilitation, durable medical equipment, home modification, adapted transportation, and attendant care.",
-    costExposure:
-      "Exposure tracks the injury mix. Orthopedic and chronic pain cases are driven by future surgery, injections, and therapy; catastrophic cases are driven by attendant care and equipment across the projected life expectancy. Plans identify one-time, recurring, and replaced items and, where policy limits are at issue, present the plan in a form that supports both settlement evaluation and trial.",
-    lifeCareImpact:
-      "The planner reviews the trauma and follow-up records, confirms future recommendations with the treating physicians, and projects each item's frequency, duration, and local cost. In polytrauma the plan integrates recommendations from several specialists into one document with a stated basis for every line, and it addresses life expectancy where the injuries warrant it.",
-    relevantServices: ["life-care-planning", "medical-cost-projection", "catastrophic-injury-planning", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "rn", "md"],
+      "Motor vehicle accident matters produce the full range of economic loss, from a few months of lost pay after an orthopedic injury to lifetime earnings and care losses after a catastrophic crash. The economist scales the analysis to the injury: a short past-loss calculation from pay records, or a full projection of lost earnings, benefits, household services, and future care costs to present value when the injury is permanent.",
+    lossComponents:
+      "The claim is made up of past lost earnings while the person was out of work, future lost earnings or reduced earning capacity where the injury limits the work the person can return to, lost fringe benefits, the replacement cost of household services during recovery and afterward, and the present value of future care costs when a life care plan or treating recommendations exist. For a fatal crash the analysis becomes a wrongful death loss to the survivors. The drivers are the earnings and benefit history, the employer's records on the period out of work and any accommodation, and the medical and work-capacity opinions in the record.",
+    damagesExposure:
+      "In moderate injury the exposure is concentrated in the period out of work and any future surgery or treatment, and the numbers can usually be built directly from the records. Once an injury prevents a return to the prior occupation, the future earnings gap across the remaining worklife becomes the dominant figure, and in catastrophic injury the present value of attendant care and equipment in the life care plan can exceed the earnings loss. Policy limits often frame the practical range, so counsel commonly ask for a report that presents each component separately for settlement evaluation and for trial.",
+    economicImpact:
+      "The economist documents the earnings history, the date the person left work, and any return to work at full or reduced capacity, and builds the but-for and post-injury paths from those facts. Future earnings are projected over a worklife expectancy with wage growth, fringe benefits are valued from plan documents or published employer cost data, household services from time-use data and local replacement rates, and future care from the life care plan with medical cost growth. Each stream is discounted to present value with the rate assumption stated. Where the return-to-work date or the post-injury capacity is disputed, the report presents the alternative scenarios so the number tracks whatever the fact finder concludes.",
+    relevantServices: ["personal-injury-economic-damages", "lost-earnings-and-earning-capacity", "wrongful-death-economic-loss", "household-services-valuation", "life-care-plan-cost-projection"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
     faqs: [
       {
-        question: "Does every motor vehicle case need a life care plan?",
+        question: "Is an economist needed if the injured person has returned to work?",
         answer:
-          "No. Where future treatment is defined and mostly medical, a medical cost projection is usually sufficient. A full life care plan is indicated when the injury produces lasting functional loss that requires equipment, modification, or assistance.",
+          "It depends on what the return looks like. A full return to the same job at the same pay usually leaves only a past loss that counsel can present from the pay records. A return at reduced hours, lower pay, or to a job with fewer benefits or less advancement leaves a future gap that an economist should measure over the remaining worklife.",
       },
       {
-        question: "How are motor vehicle plans different from other life care plans?",
+        question: "How are lost fringe benefits calculated?",
         answer:
-          "The methodology is identical; the injury mix differs. Motor vehicle plans frequently combine orthopedic, spine, neurological, and pain management care, so the planner coordinates recommendations across several treating specialists.",
+          "From the employer's benefit plan documents where available: retirement contributions, health insurance premiums, and paid leave. Where the documents are not available, published data on employer costs for employee compensation supply a benefit rate for the industry and occupation. The report states which approach was used.",
       },
       {
-        question: "How early in the case should the planner be involved?",
+        question: "What if the injured person was a student or early in a career?",
         answer:
-          "After the treating physicians can describe the expected long-term course, often once surgical decisions have been made. In catastrophic injury, earlier involvement helps document the acute care and rehabilitation phase accurately.",
+          "The earnings base is projected from the educational path and occupational data for the work the person was preparing for, rather than from a short earnings history. The report states the occupation and education level assumed and the source of the earnings data.",
       },
       {
-        question: "Can the plan address treatment the evaluee cannot currently afford?",
+        question: "Does the analysis address household services during recovery?",
         answer:
-          "Yes. The plan projects care that treating or examining physicians recommend regardless of whether the evaluee has been able to obtain it, and documents the recommendation and its source.",
+          "Yes. Household work the person could not perform during recovery is valued at the cost of replacing it, and any permanent limitation on household work is projected over the person's expected life. The hours come from the household's account and time-use data for similar people.",
       },
     ],
-    sources: [
-      { title: "NHTSA - Traffic Safety Facts", url: "https://www.nhtsa.gov/research-data/fatality-analysis-reporting-system-fars", type: "gov" },
-      { title: "CDC - Motor Vehicle Safety", url: "https://www.cdc.gov/motorvehiclesafety/", type: "gov" },
-    ],
+    sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ATUS", "TREASURY_YIELD"]),
   },
   {
-    slug: "birth-injury",
-    name: "Birth Injury",
-    category: "birth-injury",
-    summary: "Birth injury matters involve harm to an infant during labor and delivery, including hypoxic-ischemic encephalopathy, brachial plexus injury, and intracranial hemorrhage. Because the injured child has a full life ahead, the life care plan is usually the single largest component of damages and must address needs from infancy through adulthood.",
-    careNeeds: "Pediatric plans address neurology and developmental pediatrics follow-up, physical, occupational, and speech therapy, durable medical equipment sized and replaced as the child grows, seizure management, feeding support, educational and behavioral services, respite and attendant care, and the transition to adult providers and residential options after age 21.",
-    costExposure: "Costs are driven by attendant-care hours, equipment replacement cycles, therapy frequency by developmental stage, and the child's projected life expectancy. Plans commonly present alternative scenarios for home-based versus facility-based care so counsel and the economist can value each.",
-    lifeCareImpact: "The plan is built with the treating neurologist and developmental pediatrician and updated at developmental milestones. Life expectancy is analyzed from the child's functional profile rather than population tables alone, and the plan documents the basis for each frequency and duration recommendation.",
-    relevantServices: ["pediatric-life-care-planning", "life-care-planning", "medical-cost-projection", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
-    icdCodes: ["P10", "P11", "P14", "P91.6"],
+    slug: "traumatic-brain-injury",
+    name: "Traumatic Brain Injury",
+    category: "personal-injury",
+    summary:
+      "Traumatic brain injury matters carry some of the largest economic claims in personal injury litigation because cognitive and behavioral effects can end a career even when physical function returns. The economist's task is to measure the earnings, benefits, and household contributions the injury has taken away and to reduce the care costs in the life care plan to present value, with every assumption stated so it can be tested.",
+    lossComponents:
+      "The claim consists of lost earnings and earning capacity, often a total loss when the person cannot return to competitive work or a partial loss when they can work only with supports or at a lower level; lost fringe benefits; the replacement cost of household services, including the supervision and management of daily affairs that family members now provide; and the present value of the care plan, which in serious injury includes attendant care, therapy, medication, and case management over a lifetime. The drivers are the earnings history, the neuropsychological and work-capacity opinions in the record, and a life care plan that specifies each item's frequency and duration.",
+    damagesExposure:
+      "Two components usually dominate: future lost earnings across a long worklife for a young person, and the present value of attendant care and supervision when the plan calls for daily hours of paid help. Because the level of supervision and the person's residual work capacity are both matters of expert opinion, the report's total is highly sensitive to those inputs, and the life expectancy used for the care stream is a second source of dispute. Mild injury with persistent symptoms presents a narrower claim built on reduced hours, lost advancement, and periodic treatment.",
+    economicImpact:
+      "The economist establishes the but-for earnings path from the person's history and, for a young person, from occupational data for the path they were on, and projects it over a worklife expectancy with wage growth. The post-injury path is drawn from actual earnings and the work-capacity opinions in the record, and the difference is the earnings loss. Household services and family supervision are valued from time-use data and local rates for the level of service involved, and the life care plan is priced item by item with medical cost growth over the horizon the medical evidence supports. All future streams are discounted to present value, and the report shows the total under alternative supervision and work-capacity scenarios so the fact finder can match the number to its findings.",
+    relevantServices: ["lost-earnings-and-earning-capacity", "life-care-plan-cost-projection", "household-services-valuation", "personal-injury-economic-damages"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
     faqs: [
-      { question: "When should a life care planner be retained in a birth injury case?", answer: "Early enough to attend or review the initial neurodevelopmental evaluations, typically once liability review confirms the case will proceed. Early retention lets the planner document baseline function before growth changes the picture." },
-      { question: "How is a child's life expectancy handled in the plan?", answer: "The planner documents the child's functional status, feeding method, mobility, and seizure control, and presents the life expectancy analysis with its sources so counsel can decide how to present it. Where the medical literature supports a range, the plan shows the cost impact of each end of that range." },
-      { question: "Does the plan cover care after the child turns 21?", answer: "Yes. Pediatric plans project the transition to adult providers, vocational or day-program services, and long-term residential or in-home care through the projected life expectancy." },
+      {
+        question: "Can an economist measure the loss when the person is still working?",
+        answer:
+          "Yes. Many people with brain injury return to work but at reduced hours, in a lower position, or with supports that will not last. The economist compares the but-for path with the actual post-injury path and measures the gap, including lost advancement and benefits, over the remaining worklife.",
+      },
+      {
+        question: "How is family-provided supervision valued?",
+        answer:
+          "By the hours of supervision or assistance the record supports and the local market rate for the level of service a paid provider would charge, from companion care to skilled attendant care. The economist states the hours, the rate, and the source so the value can be examined.",
+      },
+      {
+        question: "What does the economist need from the life care plan?",
+        answer:
+          "Each item's description, frequency, duration, start and end ages, and current unit cost. The economist applies the appropriate cost growth to each category and discounts the stream to present value. Items with a range of frequencies are shown at each end of the range.",
+      },
+      {
+        question: "How does life expectancy enter the analysis?",
+        answer:
+          "It sets the horizon for the care stream and for household services. The economist uses the life expectancy the medical evidence supports and, where physicians disagree, presents the present value under each so the finding drives the number.",
+      },
+      {
+        question: "Is the earnings loss measured differently for a child or student?",
+        answer:
+          "The earnings base is projected from the educational path the child was on and occupational earnings data for that path, since there is no work history. The report states the education level assumed and shows how the result changes if a different level is used.",
+      },
     ],
-    sources: [],
+    sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_ECEC", "BLS_ATUS", "CDC_LIFE_TABLES"]),
   },
   {
-    slug: "cerebral-palsy",
-    name: "Cerebral Palsy",
-    category: "birth-injury",
-    summary: "Cerebral palsy matters, whether arising from birth injury or pediatric medical negligence, require a plan that scales with the child's Gross Motor Function Classification level and evolves through developmental stages into adulthood.",
-    careNeeds: "Plans address orthopedic and neurology follow-up, spasticity management including botulinum toxin and baclofen pump care, orthotics and seating replaced with growth, therapies, communication devices, home accessibility, transportation, attendant care, and adult residential or supported-living options.",
-    costExposure: "Attendant care and equipment dominate the cost profile. Frequency and replacement schedules are tied to the child's functional level and growth, and plans typically present home-based and facility-based scenarios.",
-    lifeCareImpact: "The life care planner works with the physiatrist, orthopedist, and therapy team to document current needs, then projects changes at each developmental transition. The plan explains the basis for every frequency and replacement cycle so it can withstand cross-examination.",
-    relevantServices: ["pediatric-life-care-planning", "catastrophic-injury-planning", "life-care-planning", "expert-witness-testimony"],
-    relevantCredentials: ["clcp", "cnlcp", "md", "rn"],
-    icdCodes: ["G80", "G80.0", "G80.1", "G80.9"],
+    slug: "spinal-cord-injury",
+    name: "Spinal Cord Injury",
+    category: "personal-injury",
+    summary:
+      "Spinal cord injury matters involve permanent loss of function that typically ends the person's prior occupation and creates lifetime care and equipment costs. The economic claim brings together lost earnings and benefits, the household work the person can no longer do, and the present value of the life care plan, and the economist's role is to build each component from the record and reduce it to a number the court can rely on.",
+    lossComponents:
+      "The claim consists of lost earnings and earning capacity, measured as a total loss when the person cannot return to work or as the gap between the prior path and a sedentary or part-time alternative when they can; lost fringe benefits; the replacement value of household services across the person's life; and the present value of the life care plan, which for spinal cord injury is dominated by attendant care, wheelchair and equipment replacement cycles, supplies, home and vehicle modifications, and periodic hospitalization for complications. The drivers are the earnings and benefit history, the work-capacity opinions in the record, and a life care plan with frequencies and replacement intervals stated for each item.",
+    damagesExposure:
+      "The present value of attendant care over a lifetime is usually the largest figure, followed by future lost earnings for a person injured early in a working life. Equipment costs recur on replacement cycles and are sensitive to the cost growth rate applied, and home and vehicle modifications add one-time and recurring items. Because the level of injury determines attendant care hours and the person's capacity for alternative work, the report's total moves with those inputs, and the life expectancy the medical evidence supports sets the horizon for every stream.",
+    economicImpact:
+      "The economist builds the but-for earnings path from the person's history and occupational data, projects it over a worklife expectancy with wage growth, and compares it with the post-injury path the work-capacity opinions support, which may be no earnings, reduced earnings, or earnings after retraining. Fringe benefits are valued from plan documents or employer cost data, household services from time-use data and local replacement rates, and the life care plan item by item with the cost growth rate appropriate to each category and the replacement intervals the plan specifies. Every future stream is discounted to present value with the rate stated, and the report presents home-based and facility-based care scenarios when the plan offers both.",
+    relevantServices: ["lost-earnings-and-earning-capacity", "life-care-plan-cost-projection", "household-services-valuation", "personal-injury-economic-damages"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
     faqs: [
-      { question: "How does functional classification affect the plan?", answer: "Higher classification levels generally mean more attendant care, more complex equipment, and more frequent medical follow-up. The plan states the child's current level and the clinical basis for projecting future needs." },
-      { question: "Are educational services included in a cerebral palsy life care plan?", answer: "The plan documents educational supports the child needs and distinguishes services provided by public programs from those the family must fund privately, so counsel can address collateral-source questions in the jurisdiction." },
-      { question: "How often should a pediatric plan be updated?", answer: "At major developmental transitions or at least every few years while the child is growing, and again before the transition to adult services." },
+      {
+        question: "How are equipment replacement cycles handled in the present value calculation?",
+        answer:
+          "Each item is scheduled at the interval the life care plan specifies, priced at current cost, grown at the applicable rate to each replacement date, and discounted back to present value. The report lists the schedule so counsel can see how many replacements the horizon contains.",
+      },
+      {
+        question: "Does the analysis account for the person working after retraining?",
+        answer:
+          "Yes, where the record supports it. The post-injury path can include earnings from sedentary or remote work after retraining, with a delay for the training period and a wage level from occupational data. The remaining gap between that path and the but-for path is the loss.",
+      },
+      {
+        question: "How is attendant care valued when family members provide it?",
+        answer:
+          "At the local market rate for the level of care involved, for the hours the plan and the record support. The economist states the rate source and shows the value of family-provided care separately from paid care so counsel can present it under the governing framework.",
+      },
+      {
+        question: "What cost growth rate applies to the life care plan?",
+        answer:
+          "Medical goods and services have historically grown at a different rate from general prices, and the economist applies category-specific growth drawn from published price indexes, stated in the report, rather than a single rate for the whole plan.",
+      },
     ],
-    sources: [],
+    sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_ECEC", "BLS_ATUS", "BLS_CPI_MEDICAL", "CDC_LIFE_TABLES"]),
+  },
+  {
+    slug: "workers-compensation",
+    name: "Workers' Compensation",
+    category: "workers-comp",
+    summary:
+      "Workers' compensation matters call for economic analysis at several points: valuing the future indemnity and medical benefits at issue in a settlement, measuring the economic loss in a third-party action arising from the same injury, and quantifying the wage loss that determines the benefit itself where loss of earning capacity is the measure. The economist brings the same earnings, benefits, and present value methods to each, structured to the question the compensation system actually asks.",
+    lossComponents:
+      "Depending on the setting, the claim consists of the present value of future indemnity payments under the schedule that applies, the wage loss or reduced earning capacity that benefits are meant to replace, the lost fringe benefits and household services that the compensation system does not pay but a third-party claim may, and the present value of future medical treatment where a settlement closes future medical liability. The drivers are the pre-injury wage records, the carrier's payment history, the post-injury earnings if any, the work-capacity opinions in the record, and the treatment projection when future medical is being valued.",
+    damagesExposure:
+      "In a settlement, the present value of a long stream of indemnity payments is the central figure, and the discount rate and the claimant's life or worklife expectancy control it. In a third-party action the exposure resembles any personal injury claim, with the added task of identifying the benefits already paid so the lien and offset questions counsel raises can be answered from the same numbers. Where the benefit turns on earning capacity, the gap between pre-injury wages and what the person can now earn is the contested figure, and the post-injury wage level is the assumption that moves it.",
+    economicImpact:
+      "The economist assembles the pre-injury wage base from the employer's records and tax documents, establishes the post-injury earnings path from actual earnings or the work-capacity opinions in the record, and measures the loss over the applicable worklife with wage growth. Future indemnity streams are valued with the mortality and discount assumptions stated, future medical is grown and discounted by category when a treatment projection is available, and the report separates the amounts the compensation system pays from the components a third-party claim adds. Because the compensation system and the civil claim measure loss differently, the report presents each on its own terms and reconciles the two so the same facts support both.",
+    relevantServices: ["lost-earnings-and-earning-capacity", "personal-injury-economic-damages", "household-services-valuation", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
+    faqs: [
+      {
+        question: "What can an economist add to a workers' compensation settlement?",
+        answer:
+          "A present value of the future indemnity and medical benefits at issue, with the assumptions stated, so both sides negotiate from a documented number rather than a rule of thumb. The economist can also show how the value changes with different discount rates and life expectancy assumptions.",
+      },
+      {
+        question: "How does the economist treat benefits already paid in a third-party case?",
+        answer:
+          "The report identifies the indemnity and medical payments made by the carrier so counsel can address lien, offset, and collateral source questions under the governing framework. The economist reports the gross loss and the paid amounts separately rather than netting them, unless counsel asks for a net presentation.",
+      },
+      {
+        question: "Can the analysis measure loss of earning capacity for the benefit determination?",
+        answer:
+          "Yes, where the jurisdiction measures the benefit that way. The economist compares the pre-injury wage with the earnings the person can achieve given the work-capacity opinions in the record, and expresses the reduction as a percentage or dollar amount as the system requires.",
+      },
+      {
+        question: "Does the economist prepare the medical treatment projection?",
+        answer:
+          "No. The treatment projection comes from the treating providers or a medical cost projection prepared by others. The economist takes the items, frequencies, and costs from that document, applies cost growth, and calculates present value.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_ECEC", "TREASURY_YIELD", "NAFE"]),
+  },
+  {
+    slug: "employment-discrimination",
+    name: "Employment Discrimination",
+    category: "employment",
+    summary:
+      "Employment discrimination matters measure the economic gap between where the employee's compensation would have been absent the adverse action and where it actually is, from the date of the action through a reasonable point in the future. The economist builds the back pay and front pay figures from the compensation records, accounts for what the employee has earned or could reasonably have earned in mitigation, and reduces the future component to present value.",
+    lossComponents:
+      "The claim consists of back pay from the date of the adverse action to the date of trial or analysis, including base pay, overtime, bonuses, commissions, and raises the employee would have received; lost fringe benefits such as retirement contributions, health insurance, stock awards, and paid leave; front pay from the date of analysis until the employee reaches or would reasonably reach comparable employment; and, in failure-to-promote and pay-disparity claims, the difference between the compensation actually received and the compensation of the position or pay level denied. The drivers are the employer's payroll and personnel records, comparator compensation data, the employee's post-termination earnings, and evidence of the job search.",
+    damagesExposure:
+      "Back pay is usually the most documented component and the least contested; the disputes concentrate on front pay duration and mitigation. How long it will take the employee to reach comparable compensation, whether the replacement job counts as comparable, and whether the job search was reasonable each change the total substantially. Lost equity, bonus, and pension accruals can exceed base pay losses for senior employees, and the pay-disparity component in an unequal pay claim depends on which comparators are used and over what period.",
+    economicImpact:
+      "The economist reconstructs the but-for compensation path from the employee's history and the employer's pay practices, including scheduled raises, bonus patterns, and benefit accruals, and compares it with actual post-action earnings year by year. Mitigation earnings are drawn from the employee's records and, where the search is ongoing, from occupational wage data and unemployment duration data for the local market. Front pay is projected over the period the record supports for reaching comparable employment, and both back pay and front pay are stated with the components separated so the fact finder can adjust any one of them. Future amounts are discounted to present value, and where pre-judgment interest is available the report supplies the schedule counsel needs to compute it.",
+    relevantServices: ["employment-and-wage-loss-damages", "lost-earnings-and-earning-capacity", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "MBA", "PhD"],
+    faqs: [
+      {
+        question: "How is the mitigation offset determined?",
+        answer:
+          "From the employee's actual earnings after the adverse action, documented by pay records and tax returns. Where the employee has not found work, the economist looks at the local wage data for comparable positions and the typical duration of unemployment for similar workers, and states the assumption used. The report shows the loss with and without the offset so counsel can address whether the search was reasonable.",
+      },
+      {
+        question: "How long should front pay run?",
+        answer:
+          "Until the employee reaches, or would reasonably be expected to reach, compensation comparable to the but-for path. That period depends on the employee's occupation, age, the local market, and the evidence about the search. The economist presents the loss at several durations rather than asserting one.",
+      },
+      {
+        question: "Does the analysis include lost stock options or pension accruals?",
+        answer:
+          "Yes, where the records support them. Equity awards are valued from the plan terms and the vesting schedule the employee would have followed, and pension losses from the plan formula applied to the but-for and actual service and pay. These components are shown separately because they can be large and turn on plan-specific facts.",
+      },
+      {
+        question: "Can the economist analyze a pay disparity claim?",
+        answer:
+          "Yes. The economist compares the employee's compensation with that of the comparators counsel identifies over the relevant period, documents the differences by pay element, and computes the shortfall with interest where applicable. The choice of comparators is counsel's; the economist states the effect of using each set.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_ECEC", "TREASURY_YIELD", "NAFE_ETHICS"]),
+  },
+  {
+    slug: "wrongful-termination",
+    name: "Wrongful Termination",
+    category: "employment",
+    summary:
+      "Wrongful termination matters ask what the employee lost when the employment ended and how much of that loss has been or should be replaced by other work. The economist measures the gap between the compensation the employee would have received had the employment continued and the compensation actually earned since, projects that gap over a reasonable period, and reduces the future portion to present value.",
+    lossComponents:
+      "The claim consists of back pay from the termination date to the date of analysis, front pay for the period needed to reach comparable employment, lost fringe benefits including retirement contributions, health coverage, and equity or bonus plans, and in some matters the loss of pension or deferred compensation that vesting would have delivered. The mitigation side of the ledger consists of actual replacement earnings and, where the employee is not working, the earnings a reasonable search would have produced. The drivers are the employment agreement, payroll and personnel records, benefit plan documents, tax returns, and the record of the job search and any replacement work.",
+    damagesExposure:
+      "The most contested component is usually the front pay period, because the employee's age, occupation, and local market determine how quickly comparable work is reasonably available. For long-tenured employees, the loss of accrued pension benefits and retiree health coverage can rival the pay loss, and for employees with equity compensation the unvested awards forfeited at termination can be the largest single item. Where the employee found comparable work quickly, the claim may reduce to a documented back pay figure with small benefit differences.",
+    economicImpact:
+      "The economist builds the but-for compensation path from the employee's pay history and the employer's pay and promotion practices, including the benefit accruals that would have continued, and compares it with the replacement earnings actually received. Where the employee has not found work, the report states a reasonable job-search duration and a replacement wage level drawn from local occupational data, and presents the loss under alternative durations. Pension and deferred compensation losses are calculated from the plan terms, equity losses from the award schedule, and the future components are discounted to present value with the rate stated. The report separates back pay, front pay, and benefits so each can be examined on its own record.",
+    relevantServices: ["employment-and-wage-loss-damages", "lost-earnings-and-earning-capacity", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "MBA", "PhD"],
+    faqs: [
+      {
+        question: "Is an economist necessary when the employee has already found a new job?",
+        answer:
+          "If the new job pays comparably with comparable benefits, the loss may be limited to the gap period and counsel can often present it from the records. If the new job pays less, offers fewer benefits, or lacks the advancement the prior job carried, an economist measures the ongoing difference over the period the record supports.",
+      },
+      {
+        question: "How does the analysis handle bonuses and commissions?",
+        answer:
+          "From the employee's own history and the employer's plan terms: the pattern of past awards, the plan's formula, and the performance of comparable employees where available. The economist states the basis for the projected amounts rather than assuming a maximum or minimum.",
+      },
+      {
+        question: "What about pension losses for a long-tenured employee?",
+        answer:
+          "The economist applies the plan's benefit formula to the service and pay the employee would have accrued through the but-for retirement date and compares it with the benefit actually vested, then values the difference over the employee's expected retirement period. Plan documents and benefit statements are required.",
+      },
+      {
+        question: "Are lost health benefits valued at the employer's cost or the employee's replacement cost?",
+        answer:
+          "The report can present either or both. The employer's contribution reflects what the compensation package was worth; the employee's cost to replace coverage reflects what the loss actually costs the household. The economist states which is used and why.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_ECEC", "TREASURY_YIELD"]),
+  },
+  {
+    slug: "commercial-contract-dispute",
+    name: "Commercial Contract Dispute",
+    category: "commercial",
+    summary:
+      "Commercial contract disputes turn on the profits a business lost, or the costs it incurred, because the other party did not perform. The economist reconstructs what the business would have earned had the contract been performed, compares it with what the business actually earned or could have earned by mitigating, and presents the difference with the causation, timing, and discount assumptions stated.",
+    lossComponents:
+      "The claim typically consists of lost profits on the contract itself, measured as the revenue that would have been earned less the costs that would have been incurred to earn it; lost profits on related business that depended on the contract, where the record supports the connection; reliance costs incurred in preparation for performance; and in some matters the diminished value of the business when the breach reduced its ongoing earnings capacity. The drivers are the contract and its performance history, historical financial statements and tax returns, budgets and projections prepared before the dispute, customer and pricing records, and the cost structure that determines what portion of lost revenue would have been profit.",
+    damagesExposure:
+      "The size of the claim depends on the contract's remaining term, the profit margin the business would have realized, and how much of the lost volume was or could have been replaced. Incremental cost treatment is the usual battleground: whether a given cost would have been avoided when the revenue disappeared changes the margin and therefore the loss. For a new venture or a contract without a performance history, the reasonableness of the projected revenue is the central dispute, and the period over which lost profits are claimed is scrutinized against the contract's terms and the market.",
+    economicImpact:
+      "The economist establishes the but-for revenue from the contract terms, the pre-dispute projections, and the business's own history, then identifies the incremental costs that would have been incurred to earn that revenue so that only the lost margin is claimed. Actual results after the breach are analyzed to separate the effect of the breach from market conditions and other causes, and mitigation revenue is credited. Past lost profits are brought forward and future lost profits are discounted to present value at a rate that reflects the risk of the earnings stream, with the rate stated and its effect shown. The report is organized so each element of the claim ties to a document and can be tested independently.",
+    relevantServices: ["lost-profits-and-commercial-damages", "business-valuation", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "MBA", "NAFE", "AAEFE", "PhD"],
+    faqs: [
+      {
+        question: "What financial records does the economist need?",
+        answer:
+          "Several years of financial statements and tax returns, the general ledger or detail sufficient to separate fixed and variable costs, budgets and forecasts prepared before the dispute, the contract and any amendments, and sales, pricing, and customer records for the affected line of business. Industry data supplements the company's own records when the history is short.",
+      },
+      {
+        question: "How is the discount rate chosen for future lost profits?",
+        answer:
+          "It reflects the risk that the projected profits would not have materialized. A stream from a long-term contract with a creditworthy counterparty carries less risk than a projection for a new product, and the rate is chosen accordingly from market data and stated in the report along with the effect of alternative rates.",
+      },
+      {
+        question: "Can lost profits be measured for a business with no track record?",
+        answer:
+          "It is harder, and the report says so. The economist builds the projection from the business plan, comparable businesses, the market's size and growth, and any actual performance before the breach, and presents the result with the uncertainty made explicit rather than hidden in a single number.",
+      },
+      {
+        question: "What is the difference between lost profits and lost business value?",
+        answer:
+          "Lost profits measure the earnings lost over a period while the business continues. Lost business value measures the reduction in what the business is worth when the breach permanently impaired it or ended it. The report uses one or the other, or both for different periods, and explains why so the claim does not count the same loss twice.",
+      },
+    ],
+    sources: refsToSources(["TREASURY_YIELD", "NAFE_JFE", "AAEFE", "FRE_702", "FRCP_26"]),
+  },
+  {
+    slug: "partnership-and-shareholder-dispute",
+    name: "Partnership and Shareholder Dispute",
+    category: "commercial",
+    summary:
+      "Partnership and shareholder disputes turn on what an ownership interest is worth and whether the business's earnings have been fairly shared. The economist values the interest under the standard of value that applies to the claim, analyzes the distributions, compensation, and related-party dealings in the financial records, and states the conclusions with the methods and assumptions laid out so they can be examined.",
+    lossComponents:
+      "Depending on the claim, the analysis consists of the fair value or fair market value of the ownership interest as of the relevant date, the difference between what the departing owner received and what the interest was worth, distributions or profits diverted through excess compensation, related-party transactions, or unrecorded revenue, and lost profits to the business or to the owner when the conduct at issue reduced earnings. The drivers are the operating agreement or shareholder agreement and its buyout terms, historical financial statements and tax returns, the general ledger, compensation and distribution records, and documentation of transactions with related entities.",
+    damagesExposure:
+      "The valuation date and the standard of value control the result: a fair value standard may exclude the minority and marketability discounts that a fair market value standard applies, and the gap between the two can be substantial for a minority interest in a closely held company. Normalizing adjustments to owner compensation and related-party dealings often decide whether the business shows earnings to value at all. Where the claim includes diverted profits, the amount depends on how far back the records permit reconstruction and on whether the business's actual results can be separated from market conditions.",
+    economicImpact:
+      "The economist reviews the agreements to identify the valuation date, the standard of value, and any buyout formula, then normalizes the financial statements for owner compensation, related-party transactions, and non-recurring items. The interest is valued using the income, market, and asset approaches as the facts support, with the weighting and any discounts or premiums explained. Where profits were diverted, the report traces the transactions through the ledger and bank records and quantifies the amounts by year. The result is presented as a value or a damages figure tied to the agreements and the records, with the effect of the principal assumptions shown.",
+    relevantServices: ["business-valuation", "lost-profits-and-commercial-damages", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
+    faqs: [
+      {
+        question: "Which standard of value applies to a shareholder dispute?",
+        answer:
+          "It depends on the claim and the governing framework counsel identifies. Buyout and oppression claims often use a fair value standard, while agreements may specify fair market value or a formula. The economist values the interest under the standard counsel identifies and can show the result under alternatives.",
+      },
+      {
+        question: "How are owner compensation and perquisites handled?",
+        answer:
+          "The economist compares the compensation paid with market compensation for the role and treats the excess, along with personal expenses run through the business, as normalizing adjustments to earnings. The same analysis quantifies diverted profits when that is part of the claim.",
+      },
+      {
+        question: "Can the economist find money taken out of the business?",
+        answer:
+          "The financial records are reconstructed to trace distributions, related-party payments, and unusual transactions, and the amounts are summarized by year and recipient. Where records are incomplete, the report states what could and could not be determined.",
+      },
+      {
+        question: "Does the report address the buyout formula in the agreement?",
+        answer:
+          "Yes. Where the agreement specifies a formula, the economist applies it to the financial records as of the relevant date and, if counsel asks, compares the formula result with the value under the applicable standard so the difference is quantified.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD", "FRE_702"]),
+  },
+  {
+    slug: "divorce-and-marital-dissolution",
+    name: "Divorce and Marital Dissolution",
+    category: "family",
+    summary:
+      "Divorce and marital dissolution matters involve two economic questions: what the marital assets, including any business interest, are worth, and what each spouse's income is or can reasonably be for support purposes. The economist values the business, traces separate and marital property through the financial records, and determines income from the records rather than the tax return alone, with the methods stated so the conclusions can be examined.",
+    lossComponents:
+      "The analysis consists of a valuation of any closely held business or professional practice as of the date the governing framework requires, the determination of each spouse's income for support, including cash flow available from a business beyond reported compensation, the tracing of separate property contributions and marital funds through accounts and transactions, and, where relevant, the present value of pensions, deferred compensation, and other assets that pay out over time. The drivers are business and personal tax returns, financial statements and general ledgers, bank and brokerage statements, compensation and benefit records, and account histories long enough to trace the funds at issue.",
+    damagesExposure:
+      "The business valuation is usually the largest and most contested figure, and the choice of valuation date, the treatment of personal goodwill, and the normalization of owner compensation move it materially. Income determination for a self-employed spouse can differ substantially from the reported figure once personal expenses paid by the business and retained cash flow are considered. Tracing outcomes depend on the completeness of the account records and on how the governing framework treats commingled funds.",
+    economicImpact:
+      "The economist normalizes the business's financial statements for owner compensation, personal expenses, and non-recurring items, then values the business using the income, market, and asset approaches as the facts support, addressing personal and enterprise goodwill where the framework requires the distinction. Income for support is determined from the same records, adding the cash flow available to the owner beyond reported salary. Separate property is traced through account statements from the date of the contribution to the current holding, with each step documented. Deferred assets are reduced to present value with the mortality and discount assumptions stated. The report presents the valuation, the income determination, and the tracing as separate sections so each can be examined and used on its own.",
+    relevantServices: ["divorce-and-marital-financial-analysis", "business-valuation", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "MBA", "NAFE"],
+    faqs: [
+      {
+        question: "How is a self-employed spouse's income determined?",
+        answer:
+          "From the business's books and bank records rather than the tax return alone. The economist identifies compensation, distributions, personal expenses paid by the business, and cash flow retained in the business, and states the income available for support with each element shown.",
+      },
+      {
+        question: "What is the difference between personal and enterprise goodwill?",
+        answer:
+          "Enterprise goodwill is value that stays with the business regardless of who owns it; personal goodwill is value tied to the individual owner's reputation and relationships. Some frameworks treat only enterprise goodwill as marital property. The economist quantifies each where the distinction matters and explains the basis for the split.",
+      },
+      {
+        question: "Can separate property be traced through years of commingling?",
+        answer:
+          "Often, if the account statements are available. The economist follows the separate contribution through each account and transaction and documents the path. Where the records run out, the report states the point at which tracing could not continue rather than assuming a result.",
+      },
+      {
+        question: "Can the economist serve as a joint or court-appointed expert?",
+        answer:
+          "Yes. The methods and reporting are the same whether the engagement is for one spouse, both, or the court, and the report is written so that either side can examine the assumptions.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_CPS", "BLS_OES", "CENSUS_ACS"]),
+  },
+  {
+    slug: "fraud-and-embezzlement",
+    name: "Fraud and Embezzlement",
+    category: "commercial",
+    summary:
+      "Fraud and embezzlement matters require the economist to establish how much was taken, over what period, by what mechanism, and where it went, and then to quantify the loss to the business or the victim in a form that supports a civil claim or a restitution figure. The analysis is built from the transaction record and states what was found, what could not be determined, and the basis for every amount.",
+    lossComponents:
+      "The claim consists of the amounts diverted, reconstructed transaction by transaction from bank records, the general ledger, payroll, vendor files, and supporting documents; the consequential losses the diversion caused, such as lost profits when funds were unavailable to the business, penalties and interest, or the cost of borrowing to replace the funds; the cost of investigating and remediating the scheme; and, where the assets were converted into property or other holdings, the current value of what the funds bought. The drivers are the completeness of the bank and accounting records, the accounting system's audit trail, and third-party records that confirm or contradict the internal books.",
+    damagesExposure:
+      "The direct loss is usually the amount traced through the records, and its size depends on how long the scheme ran and how far back the records permit reconstruction. Consequential losses can exceed the direct loss when the diversion starved a business of working capital or caused a default. Where the funds were used to acquire assets, tracing to those assets can support recovery from the assets themselves, which changes the practical exposure. The analysis states the amounts by year and by method so that partial findings and limitations are visible.",
+    economicImpact:
+      "The economist maps the scheme's mechanism from the records, identifies each transaction that fits it, and confirms the amounts against bank statements, cancelled checks, and third-party documents rather than the internal books alone. The diverted funds are traced forward to the accounts and assets they reached, and the consequential losses are quantified from the business's financial records with the causal link explained. The report separates the amounts established from records, the amounts estimated from patterns where records are missing, and the amounts that could not be determined, so the claim rests on a documented figure and the fact finder can see the limits of the evidence.",
+    relevantServices: ["fraud-and-asset-tracing", "lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "MBA"],
+    faqs: [
+      {
+        question: "What records are needed to quantify an embezzlement?",
+        answer:
+          "Bank statements with check images and deposit detail for every account involved, the general ledger and sub-ledgers, payroll records, vendor master files and invoices, expense reports, and access logs for the accounting system. Third-party records, such as vendor confirmations and bank records obtained by subpoena, are often decisive.",
+      },
+      {
+        question: "How is the loss quantified when records are incomplete?",
+        answer:
+          "The economist quantifies what the records support directly and, where a consistent pattern exists, estimates the missing periods with the method and its limitations stated. The report separates documented amounts from estimated amounts so counsel can decide how to present each.",
+      },
+      {
+        question: "Can the analysis follow the money into assets?",
+        answer:
+          "Yes. Tracing follows the diverted funds through the accounts they passed through to real estate, vehicles, investments, or other holdings, and documents each step. The report identifies the assets and the portion of their value attributable to the diverted funds.",
+      },
+      {
+        question: "Does the economist offer an opinion on intent?",
+        answer:
+          "No. The economist establishes what happened to the money, how, and in what amounts. Whether the conduct was fraudulent is a question for the fact finder on the whole record.",
+      },
+    ],
+    sources: refsToSources(["ACFE", "FRCP_26", "FRE_702", "DAUBERT"]),
+  },
+  {
+    slug: "product-liability",
+    name: "Product Liability",
+    category: "personal-injury",
+    summary:
+      "Product liability matters present the same economic loss questions as other injury and death claims, with the added feature that the injured person is often a consumer or worker whose exposure to the product bears no relation to their occupation, so the earnings analysis must be built from that person's own path. The economist measures lost earnings and benefits, household services, and the present value of future care, or the survivors' loss when the injury was fatal, from the record.",
+    lossComponents:
+      "The claim consists of lost earnings and earning capacity from the date of injury across the person's expected worklife, lost fringe benefits, the replacement value of household services, and the present value of future care costs documented in a life care plan or treating recommendations. In a fatal injury the components become the survivors' loss of support, household services, and the estate's claim where the framework provides one. In mass tort settings the analysis may also require a consistent methodology applied across many claimants with different ages, occupations, and injuries. The drivers are the earnings and benefit history, the medical and work-capacity opinions, and the care plan.",
+    damagesExposure:
+      "The exposure tracks the injury: burns, amputations, and neurological injuries produce large future earnings and care losses; less severe injuries produce a bounded past loss and limited future treatment. Because product cases often involve children, homemakers, and retirees, the household services and care components frequently outweigh the earnings loss, and the analysis must be built from those components rather than from wage records that do not exist. For fatal injuries the exposure follows the wrongful death structure with the personal consumption deduction as the key assumption.",
+    economicImpact:
+      "The economist establishes the but-for path from the person's earnings history or, for a child, student, or homemaker, from the educational path and occupational earnings data or from the household work the person performed, and projects it over the applicable worklife or life expectancy with growth. The post-injury path is drawn from actual earnings and the work-capacity opinions, and future care from the life care plan with category-specific cost growth. Household services are valued from time-use data and local replacement rates. All future streams are discounted to present value with the rate stated, and where the matter involves multiple claimants the report applies a documented common methodology so results are consistent and each claimant's figure can be traced to their own record.",
+    relevantServices: ["personal-injury-economic-damages", "wrongful-death-economic-loss", "lost-earnings-and-earning-capacity", "household-services-valuation", "life-care-plan-cost-projection"],
+    relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "PhD"],
+    faqs: [
+      {
+        question: "How is the loss measured for a child injured by a product?",
+        answer:
+          "The earnings path is projected from the educational attainment the record supports and occupational earnings data for that level, starting at the age the child would have entered the workforce. Household services and future care are projected over life expectancy. The report states the education assumption and shows how the result changes under alternatives.",
+      },
+      {
+        question: "Can the economist support a consistent damages model across many claimants?",
+        answer:
+          "Yes. The economist documents one methodology for earnings, benefits, household services, and care, then applies it to each claimant's own records so the figures are consistent in method and individual in result. This supports both settlement allocation and trial.",
+      },
+      {
+        question: "How are household services valued for a retiree or homemaker?",
+        answer:
+          "From the hours of household work the person performed, drawn from the household's account and time-use data for similar people, valued at the cost of replacing those hours with paid services and projected over the person's expected life or the period the injury limits them.",
+      },
+      {
+        question: "What does the economist need from the treating providers?",
+        answer:
+          "Opinions on work capacity and on the future care the injury requires, either as a life care plan or as treatment recommendations with frequency and duration. The economist prices and discounts those inputs; the economist does not decide what care is needed.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ATUS", "CDC_LIFE_TABLES", "TREASURY_YIELD"]),
   },
 ];
 

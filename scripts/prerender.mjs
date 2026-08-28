@@ -795,7 +795,7 @@ const memoriamSlugs = new Set(
 
 // Mirror the src/pages/hubs/*HubPage.tsx usePageMeta values.
 const newHubPages = [
-  { path: "/case-types", title: `Case Types | ${ORG_NAME}`, description: "Life care planning and medical cost projection across the most common civil case types: personal injury, birth injury, catastrophic injury, workers' compensation, wrongful death, and more.", innerHtml: "<h1>Case Types</h1>", schemaType: "WebPage" },
+  { path: "/case-types", title: `Case Types | ${ORG_NAME}`, description: "Economic damages analysis across the most common civil and commercial case types: personal injury, wrongful death, employment, commercial disputes, divorce, fraud, and more.", innerHtml: "<h1>Case Types</h1>", schemaType: "WebPage" },
   { path: "/credentials", title: `Expert Credentials | CLCP, CNLCP, MSCC, CRC | ${ORG_NAME}`, description: "Professional credentials held by our life care planners: CLCP, CNLCP, MSCC, CDMS, CRC, M.D., R.N., and Ph.D. Scope, requirements, admissibility.", innerHtml: "<h1>Credentials</h1>", schemaType: "WebPage" },
   { path: "/guides", title: `Life Care Planning Guides | ${ORG_NAME}`, description: "In-depth practitioner guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice. Methodology, admissibility, and engagement guidance.", innerHtml: "<h1>Guides</h1>", schemaType: "WebPage" },
   { path: "/compare", title: `Life Care Planning Comparisons | ${ORG_NAME}`, description: "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
@@ -811,8 +811,8 @@ for (const c of caseTypeData) {
   writePage(`/case-types/${c.slug}`, buildPage({
     path: `/case-types/${c.slug}`,
     // Match CaseTypeHub.tsx (title + H1).
-    title: `${c.name} Expert Witness Services | ${ORG_NAME}`,
-    description: `Life care planning and medical cost projection for ${c.name.toLowerCase()} cases. Methodology, credentials, and experienced planners. Plaintiff and defense.`,
+    title: `${c.name} Economic Damages Expert | ${ORG_NAME}`,
+    description: `Economic damages analysis for ${c.name.toLowerCase()} cases: what the loss claim consists of, where the damages concentrate, and how the number is built. Plaintiff and defense.`,
     innerHtml: `<h1>${escapeHtml(c.name)}</h1>`,
     schemaType: "Service",
   }));
@@ -821,8 +821,8 @@ for (const c of caseTypeData) {
     writePage(`/case-types/${c.slug}/${s.slug}`, buildPage({
       path: `/case-types/${c.slug}/${s.slug}`,
       // Match CaseTypeState.tsx (title + H1) so the prerendered + hydrated signals agree.
-      title: `${c.name} Expert Witness Services in ${s.name} | ${ORG_NAME}`,
-      description: `Life care planning and medical cost projection for ${c.name.toLowerCase()} cases venued in ${s.name}. Plaintiff and defense.`,
+      title: `${c.name} Economic Damages Expert in ${s.name} | ${ORG_NAME}`,
+      description: `Economic damages analysis for ${c.name.toLowerCase()} cases venued in ${s.name}: lost earnings, household services, and present value. Plaintiff and defense.`,
       innerHtml: `<h1>${escapeHtml(c.name)} Expert Services in ${escapeHtml(s.name)}</h1>`,
       schemaType: "LocalBusiness",
     }));
