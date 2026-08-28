@@ -38,13 +38,30 @@ const NON_PILLAR_RELATED: Record<string, { href: string; label: string }> = {
   "life-care-planning": { href: "/services/life-care-plan-cost-projection", label: "Life care plan costing" },
 };
 
-// Noun phrase for the work a pillar performs ("lost earnings analysis").
-// Short names that already end in a work noun (Divorce Financial Analysis,
-// Business Valuation, Life Care Plan Costing) are used as-is so the FAQ
+// Service.shortName is a heading label ("Fraud & Tracing"). The three helpers
+// below turn it into prose for the templated FAQ sentences and the "by Case
+// Type" intro; headings keep the short name as written.
+
+// Attributive prose form: lowercase, ampersand spelled out ("fraud and
+// tracing engagements", "a full wrongful death report").
+function proseName(shortName: string): string {
+  return shortName.toLowerCase().replace(/\s*&\s*/g, " and ");
+}
+
+// Noun phrase for the work a pillar performs ("wrongful death analysis").
+// Most short names are loss subjects rather than work, so they take
+// " analysis"; the ones that already end in a work noun (Divorce Financial
+// Analysis, Business Valuation, Life Care Plan Costing) are used as-is so the
 // template never prints "analysis analysis".
 function workPhrase(shortName: string): string {
-  const lower = shortName.toLowerCase();
-  return /(analysis|valuation|costing)$/.test(lower) ? lower : `${lower} analysis`;
+  const name = proseName(shortName);
+  return /(analysis|valuation|costing)$/.test(name) ? name : `${name} analysis`;
+}
+
+// "a lost earnings", "an employment damages". Mirrors the private
+// indefiniteArticle() in src/data/geo-prose.mjs.
+function withArticle(phrase: string): string {
+  return `${/^[aeiou]/i.test(phrase) ? "an" : "a"} ${phrase}`;
 }
 
 export default function ServicePillar() {
@@ -73,21 +90,23 @@ export default function ServicePillar() {
 
   const stateOnly = states.filter((s) => s.type === "state");
   const serviceUrl = `${ORG_URL}/services/${service.slug}`;
+  const work = workPhrase(service.shortName);
+  const name = proseName(service.shortName);
   const pillarFaqs = [
     {
-      question: `What does a ${service.shortName.toLowerCase()} engagement cost?`,
+      question: `What does ${withArticle(name)} engagement cost?`,
       answer: `Full retained-expert engagements are billed hourly across review, evaluation, report, and (if needed) testimony phases. Specific cost depends on case complexity and engagement scope.`,
     },
     {
       question: `Does ${ORG_SHORT} work for both plaintiff and defense?`,
-      answer: `Yes. ${ORG_NAME} provides independent, objective ${workPhrase(service.shortName)} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every report is built from the records in the case and published data, with each assumption stated.`,
+      answer: `Yes. ${ORG_NAME} provides independent, objective ${work} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every report is built from the records in the case and published data, with each assumption stated.`,
     },
     {
-      question: `Where does ${ORG_SHORT} provide ${service.shortName.toLowerCase()}?`,
-      answer: `${ORG_NAME} accepts ${service.shortName.toLowerCase()} engagements in all 50 states, the District of Columbia, and US territories. State-specific framing is available on the per-state pages linked below.`,
+      question: `Where does ${ORG_SHORT} provide ${work}?`,
+      answer: `${ORG_NAME} accepts ${name} engagements in all 50 states, the District of Columbia, and US territories. State-specific framing is available on the per-state pages linked below.`,
     },
     {
-      question: `What is the typical turnaround for a full ${service.shortName.toLowerCase()} report?`,
+      question: `What is the typical turnaround for a full ${name} report?`,
       answer: `Most reports are delivered within several weeks after the records are complete, depending on the number of loss components and scenarios to be analyzed. Rush turnarounds are accommodated case by case.`,
     },
   ];
@@ -185,7 +204,7 @@ export default function ServicePillar() {
                 {service.shortName} by Case Type
               </h2>
               <p className="text-neutral-700 mb-4">
-                How {service.shortName.toLowerCase()} applies to the specific demands of each case
+                How {work} applies to the specific demands of each case
                 type: methodology, deliverables, and what counsel should expect.
               </p>
               <div className="grid gap-2 sm:grid-cols-2">
