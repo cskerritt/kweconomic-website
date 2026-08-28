@@ -8,7 +8,7 @@ import { Picture } from "@/components/Picture";
 import { organizationSchema } from "@/lib/schema";
 
 const VALUES = [
-  { title: "Objectivity", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data, not the retaining party." },
+  { title: "Objectivity", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data." },
   { title: "Rigor", text: "Government wage and price series, published worklife tables, market yield data, and accepted valuation methods behind every figure." },
   { title: "Responsiveness", text: "Scope, timeline, and fee confirmed in writing before work begins; clear communication through delivery and testimony." },
   { title: "Integrity", text: `${ORG_SHORT} measures the loss. It does not advocate for a number.` },
@@ -77,7 +77,7 @@ export default function About() {
                 </p>
                 <p>
                   {ORG_SHORT} accepts plaintiff and defense engagements equally. Opinions follow the
-                  evidence, not the retaining party.
+                  evidence.
                 </p>
                 <p>
                   With offices in Hackensack, NJ and Richmond, VA, {ORG_SHORT} accepts engagements

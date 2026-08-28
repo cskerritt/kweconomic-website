@@ -25,7 +25,7 @@ import {
 const HOMEPAGE_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 
 const HOW_WE_WORK = [
-  { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data, not the retaining party." },
+  { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data." },
   { icon: FileCheck, title: "Transparent Assumptions", text: "Every report states its earnings base, growth rate, worklife horizon, discount rate, and data sources so the other side can recompute the figure." },
   { icon: Scale, title: "Established Methods", text: "Present value, worklife expectancy, and valuation methods drawn from the forensic economics literature and applied the same way in every venue." },
   { icon: MapPin, title: "Nationwide Practice", text: "Engagements in all 50 states, the District of Columbia, and U.S. territories, with state and metro wage, cost of living, and damages-rule context." },
