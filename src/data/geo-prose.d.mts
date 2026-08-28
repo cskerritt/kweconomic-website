@@ -44,9 +44,17 @@ export interface CityNarrativeOutput {
 }
 export function buildCityNarrative(input: CityNarrativeInput): CityNarrativeOutput;
 
+/** The two names a service x geo template needs: the full name (proper noun in
+ * the engagement question) and the short name (rendered as the work phrase). */
+export interface ServiceNames {
+  name: string;
+  shortName: string;
+}
+
+/** Takes the raw Service.shortName; renders "<org> provides <work phrase> for matters venued in <place>." */
 export function serviceStateDirectAnswer(orgName: string, serviceShortName: string, stateName: string, n: StateNarrativeOutput): string;
 export function serviceCityDirectAnswer(orgName: string, serviceShortName: string, stateName: string, cityName: string, n: CityNarrativeOutput): string;
 export function stateGeographicFaqs(orgName: string, stateName: string): Faq[];
 export function cityGeographicFaqs(orgName: string, stateName: string, cityName: string): Faq[];
-export function serviceStateGeographicFaqs(orgName: string, serviceName: string, stateName: string): Faq[];
-export function serviceCityGeographicFaqs(orgName: string, serviceName: string, stateName: string, cityName: string): Faq[];
+export function serviceStateGeographicFaqs(orgName: string, service: ServiceNames, stateName: string): Faq[];
+export function serviceCityGeographicFaqs(orgName: string, service: ServiceNames, stateName: string, cityName: string): Faq[];

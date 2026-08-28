@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { proseName, workPhrase, withArticle } from "./service-prose";
+import { capFirst, proseName, workPhrase, withArticle } from "./service-prose.mjs";
 import { pillarServices } from "@/data/services";
 
 describe("proseName", () => {
@@ -33,6 +33,13 @@ describe("withArticle", () => {
     expect(withArticle("lost earnings")).toBe("a lost earnings");
     expect(withArticle("employment damages")).toBe("an employment damages");
     expect(withArticle("Employment Damages")).toBe("an Employment Damages");
+  });
+});
+
+describe("capFirst", () => {
+  it("capitalizes only the first character", () => {
+    expect(capFirst("wrongful death analysis")).toBe("Wrongful death analysis");
+    expect(capFirst("")).toBe("");
   });
 });
 

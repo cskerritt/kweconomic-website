@@ -16,7 +16,8 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
-import { proseName } from "@/lib/service-prose";
+import { placeName } from "@/data/geo-prose.mjs";
+import { proseName } from "@/lib/service-prose.mjs";
 import { getCityNarrative, serviceCityDirectAnswer } from "@/data/narratives";
 import { serviceCityGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
@@ -74,7 +75,9 @@ export default function ServiceStateCity() {
   if (!city) return <Navigate to={`/services/${service.slug}/${state.slug}`} replace />;
 
   const narrative = getCityNarrative(state, city.name, city.slug, city.county, { msaName: city.msaName });
-  const faqs = serviceCityGeographicFaqs(service.name, state.name, city.name);
+  const faqs = serviceCityGeographicFaqs(service, state.name, city.name);
+  // "the District of Columbia" after "in"; states as-is.
+  const place = placeName(state.name);
   const directAnswer = serviceCityDirectAnswer(ORG_NAME, service.shortName, state.name, city.name, narrative);
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
   const motion = serviceMotion(service.slug);
@@ -146,7 +149,7 @@ export default function ServiceStateCity() {
                   to={`/services/${service.slug}/${state.slug}`}
                   className="inline-flex items-center gap-2 border border-white/30 hover:bg-white/10 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
                 >
-                  {service.shortName} in {state.name}
+                  {service.shortName} in {place}
                 </Link>
               </div>
             </div>
@@ -174,7 +177,7 @@ export default function ServiceStateCity() {
                 {city.county ? city.county : state.name} area. Our economists measure earnings, fringe
                 benefits, and household services against wage data for the {city.name} area and the
                 plaintiff's own records, and are familiar with the court system and disclosure
-                requirements that affect {service.name.toLowerCase()} engagements in {state.name}.
+                requirements that affect {proseName(service.shortName)} engagements in {place}.
               </p>
             </Reveal>
 
@@ -234,7 +237,7 @@ export default function ServiceStateCity() {
                 to={`/services/${service.slug}/${state.slug}`}
                 className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
               >
-                <ArrowRight className="w-4 h-4" /> {service.shortName} in {state.name}
+                <ArrowRight className="w-4 h-4" /> {service.shortName} in {place}
               </Link>
               <Link
                 to={`/locations/${state.slug}/${city.slug}`}

@@ -9,12 +9,18 @@ import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
+// Service.shortName is a heading label ("Fraud & Tracing"); the meta
+// description and the intro sentence render the work the pillar performs
+// through the shared helper ("fraud and tracing analysis"). The title and
+// the H2 keep the full service name as a proper noun.
+import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import NotFound from "@/pages/NotFound";
 
 export default function ServiceCaseType() {
   const { serviceSlug = "", typeSlug = "" } = useParams();
   const service = pillarServices().find((s) => s.slug === serviceSlug);
   const caseType = getCaseType(typeSlug);
+  const work = service ? workPhrase(service.shortName) : "";
 
   const url =
     service && caseType
@@ -26,7 +32,7 @@ export default function ServiceCaseType() {
     service && caseType
       ? {
           title: `${title} | ${ORG_NAME}`,
-          description: `${service.shortName} services tailored to ${caseType.name.toLowerCase()} cases. Methodology, deliverables, and testimony support. Plaintiff and defense.`,
+          description: `${ORG_NAME} provides ${work} tailored to ${caseType.name.toLowerCase()} cases. Methodology, deliverables, and testimony support. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -45,7 +51,7 @@ export default function ServiceCaseType() {
       <h1 className="font-serif text-4xl text-navy mb-4">{title}</h1>
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">
-        {service.shortName} applied to {caseType.name.toLowerCase()} litigation: methodology, deliverables, and case-specific considerations.
+        {capFirst(work)} applied to {caseType.name.toLowerCase()} litigation: methodology, deliverables, and case-specific considerations.
       </p>
 
       <section id="application" className="mb-6">

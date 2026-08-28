@@ -38,7 +38,7 @@ export default function StateHub() {
     state
       ? {
           title: `Forensic Economists in ${placeName(state.name)} | ${ORG_NAME}`,
-          description: `${ORG_NAME} prepares lost earnings, wrongful death, household services, employment, and business damages analyses and expert testimony throughout ${state.name}. Projections anchored to ${state.name} wage data; reports written for ${state.name} courts.`,
+          description: `${ORG_NAME} prepares lost earnings, wrongful death, household services, employment, and business damages analyses and expert testimony throughout ${placeName(state.name)}. Projections anchored to ${state.name} wage data; reports written for ${state.name} courts.`,
           canonical: `${ORG_URL}/locations/${state.slug}`,
         }
       : null,
@@ -61,6 +61,9 @@ export default function StateHub() {
   const narrative = getStateNarrative(state);
   const faqs = stateGeographicFaqs(state.name);
   const stateUrl = `${ORG_URL}/locations/${state.slug}`;
+  // "the District of Columbia" after in/across and as a possessive; states
+  // as-is. Attributive slots ("District of Columbia courts") keep state.name.
+  const place = placeName(state.name);
 
 
   return (
@@ -70,7 +73,7 @@ export default function StateHub() {
           organizationSchema(),
           serviceSchema({
             slug: `state-${state.slug}`,
-            name: `Economic Damages Services in ${state.name}`,
+            name: `Economic Damages Services in ${place}`,
             description: narrative.directAnswer,
             areaServed: { "@type": "AdministrativeArea", name: state.name },
           }),
@@ -100,7 +103,7 @@ export default function StateHub() {
               {state.region !== "territory" ? state.region.charAt(0).toUpperCase() + state.region.slice(1) : "U.S. Territory"} &middot; {state.abbreviation}
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-4">
-              Forensic Economists in {placeName(state.name)}
+              Forensic Economists in {place}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed mb-3">
               {narrative.directAnswer}
@@ -123,7 +126,7 @@ export default function StateHub() {
             <section>
               <div className="mb-6">
                 <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-2">
-                  Expert Services in {state.name}
+                  Expert Services in {place}
                 </h2>
                 <p className="text-neutral-600">
                   Our forensic economists prepare lost earnings, wrongful death, household services, employment, and business damages analyses and rebuttals for {state.name} litigation. Each projection is anchored to the plaintiff's own records and to {state.name} wage data, and written to the jurisdiction's expert evidence standards.
@@ -148,10 +151,10 @@ export default function StateHub() {
               <section>
                 <div className="mb-6">
                   <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-2">
-                    Cities We Serve in {state.name}
+                    Cities We Serve in {place}
                   </h2>
                   <p className="text-neutral-600">
-                    {ORG_NAME} accepts cases from attorneys across {state.name}. Select a city for local wage-market and venue context.
+                    {ORG_NAME} accepts cases from attorneys across {place}. Select a city for local wage-market and venue context.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -175,7 +178,7 @@ export default function StateHub() {
                     Where {state.name} Damages Claims Are Litigated
                   </h2>
                   <p className="text-neutral-600">
-                    An economic damages report is written for the forum that will examine it and around the damages rules that forum applies. Our economists are familiar with {state.name}'s civil and compensation forums, its expert evidence standards, and the disclosure practice that governs how reports are exchanged.
+                    An economic damages report is written for the forum that will examine it and around the damages rules that forum applies. Our economists are familiar with {place}'s civil and compensation forums, its expert evidence standards, and the disclosure practice that governs how reports are exchanged.
                   </p>
                 </div>
 
@@ -214,7 +217,7 @@ export default function StateHub() {
             <section>
               <div className="mb-6">
                 <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-2">
-                  Case Types We Support in {state.name}
+                  Case Types We Support in {place}
                 </h2>
                 <p className="text-neutral-600">
                   Case-specific guidance on what the economic loss claim consists of and how the analysis is built for {state.name} matters.
@@ -238,7 +241,7 @@ export default function StateHub() {
             <section>
               <div className="mb-6">
                 <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-2">
-                  Expert Credentials in {state.name}
+                  Expert Credentials in {place}
                 </h2>
                 <p className="text-neutral-600">
                   How each credential is recognized in {state.name} courts and how it bears on economic damages testimony there.

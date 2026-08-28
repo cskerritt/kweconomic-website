@@ -3,7 +3,8 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter } from "react-router-dom";
 import ServiceCityCrossLinks from "./ServiceCityCrossLinks";
-import { getServiceBySlug } from "@/data/services";
+import { getServiceBySlug, pillarServices } from "@/data/services";
+import { workPhrase } from "@/lib/service-prose.mjs";
 import { getStateBySlug } from "@/data/states";
 import { newJerseyCities } from "@/data/cities/new-jersey";
 
@@ -65,6 +66,45 @@ describe("ServiceCityCrossLinks on a service-city page", () => {
 
   it("does not link cities outside the service-city window", () => {
     expect(html).not.toContain("/services/lost-earnings-and-earning-capacity/new-jersey/toms-river");
+  });
+
+  it("names the work the pillar performs in the nearby-cities sentence, not the service name", () => {
+    expect(html).toContain("We also provide lost earnings analysis in these New Jersey communities.");
+    expect(html).not.toContain("lost earnings and earning capacity analysis in these");
+  });
+});
+
+describe("ServiceCityCrossLinks sentence prose for every pillar", () => {
+  const city = newJerseyCities.find((c) => c.slug === "hackensack")!;
+  for (const pillar of pillarServices()) {
+    it(`${pillar.slug}: spells the work out as prose (headings keep the short name)`, () => {
+      const html = renderToStaticMarkup(
+        createElement(
+          MemoryRouter,
+          null,
+          createElement(ServiceCityCrossLinks, { service: pillar, state, city, cities: newJerseyCities }),
+        ),
+      );
+      expect(html).toContain(`We also provide ${workPhrase(pillar.shortName)} in these New Jersey communities.`);
+      expect(html).not.toMatch(/We also provide [^.]*&amp;/);
+      // The lowercased full name is a seam only where it differs from the
+      // work phrase (for Business Valuation the two coincide).
+      if (pillar.name.toLowerCase() !== workPhrase(pillar.shortName)) {
+        expect(html).not.toContain(`We also provide ${pillar.name.toLowerCase()}`);
+      }
+    });
+  }
+  it("prints the fraud pillar's sentence word for word", () => {
+    const fraud = getServiceBySlug("fraud-and-asset-tracing")!;
+    const html = renderToStaticMarkup(
+      createElement(
+        MemoryRouter,
+        null,
+        createElement(ServiceCityCrossLinks, { service: fraud, state, city, cities: newJerseyCities }),
+      ),
+    );
+    expect(html).toContain("Fraud &amp; Tracing in Nearby New Jersey Cities");
+    expect(html).toContain("We also provide fraud and tracing analysis in these New Jersey communities.");
   });
 });
 

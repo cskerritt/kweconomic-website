@@ -2,6 +2,9 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { pillarServices } from "@/data/services";
 import { ORG_NAME } from "@/lib/brand";
+// The "we also provide" sentence names the work, not the heading label
+// ("wrongful death analysis", "fraud and tracing analysis").
+import { workPhrase } from "@/lib/service-prose.mjs";
 import {
   hasServiceCityPages,
   nearestCities,
@@ -82,7 +85,7 @@ export default function ServiceCityCrossLinks({
             {service.shortName} in Nearby {state.name} Cities
           </h2>
           <p className="text-neutral-600 mb-5">
-            We also provide {service.name.toLowerCase()} in these {state.name} communities.
+            We also provide {workPhrase(service.shortName)} in these {state.name} communities.
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             {otherCities.map((c) => (

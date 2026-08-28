@@ -8,7 +8,7 @@ import { ORG_NAME, ORG_SHORT } from "@/lib/brand";
 // Service.shortName is a heading label ("Fraud & Tracing"); the templated FAQ
 // sentences and the "by Case Type" intro render it as prose through the shared
 // helpers. Headings keep the short name as written.
-import { proseName, workPhrase, withArticle } from "@/lib/service-prose";
+import { proseName, workPhrase, withArticle } from "@/lib/service-prose.mjs";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ContactCTA from "@/components/ContactCTA";

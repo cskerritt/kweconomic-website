@@ -11,7 +11,10 @@
 
 import { ORG_NAME } from "@/lib/brand";
 import * as prose from "./geo-prose.mjs";
+import type { ServiceNames } from "./geo-prose.mjs";
 import type { Faq } from "./types";
+
+export type { ServiceNames };
 
 export function stateGeographicFaqs(stateName: string): Faq[] {
   return prose.stateGeographicFaqs(ORG_NAME, stateName);
@@ -21,10 +24,11 @@ export function cityGeographicFaqs(stateName: string, cityName: string): Faq[] {
   return prose.cityGeographicFaqs(ORG_NAME, stateName, cityName);
 }
 
-export function serviceStateGeographicFaqs(serviceName: string, stateName: string): Faq[] {
-  return prose.serviceStateGeographicFaqs(ORG_NAME, serviceName, stateName);
+/** `service` is any object carrying the full and short names (a Service works). */
+export function serviceStateGeographicFaqs(service: ServiceNames, stateName: string): Faq[] {
+  return prose.serviceStateGeographicFaqs(ORG_NAME, service, stateName);
 }
 
-export function serviceCityGeographicFaqs(serviceName: string, stateName: string, cityName: string): Faq[] {
-  return prose.serviceCityGeographicFaqs(ORG_NAME, serviceName, stateName, cityName);
+export function serviceCityGeographicFaqs(service: ServiceNames, stateName: string, cityName: string): Faq[] {
+  return prose.serviceCityGeographicFaqs(ORG_NAME, service, stateName, cityName);
 }

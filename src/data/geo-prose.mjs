@@ -11,6 +11,13 @@
 // figures, or dollar amounts. Population and MSA name are allowed; employer
 // names are allowed as context only. Citation-free: no statutes, rule
 // numbers, damage caps, or case law. Hyphens only (no em/en dashes).
+//
+// Service.shortName is a heading label ("Fraud & Tracing"); the service x
+// state / city templates render it through the shared prose helpers
+// (workPhrase: "fraud and tracing analysis") so that neither the hero
+// sentence nor the geo FAQ ever prints a loss subject as the thing supplied.
+
+import { capFirst, workPhrase } from "../lib/service-prose.mjs";
 
 /** The first five employer names for a metro, in data order. Context for the
  * local earnings picture on a metro page; never a statement about a party. */
@@ -72,8 +79,6 @@ export const cityAttr = (cityName) => cityName.replace(/^The /, "");
  * place and city slots are worded so that no indefinite article precedes a
  * proper name ("a Alabama case" is never rendered). */
 const indefiniteArticle = (phrase) => (/^[aeiou]/i.test(phrase) ? "an" : "a");
-
-const capFirst = (text) => `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
 
 /** Regional wage and cost-of-living framing. General, defensible, no figures:
  * each sentence says how the local market enters the analysis, not what the
@@ -223,14 +228,18 @@ export function buildCityNarrative(input) {
   return { directAnswer, blurb };
 }
 
-/** Service x State hero sentence (ServiceState.tsx + prerender). */
+/** Service x State hero sentence (ServiceState.tsx + prerender). Takes the
+ * raw Service.shortName and renders the work the pillar performs
+ * ("KW Economics provides wrongful death analysis for matters venued in
+ * Texas."), never the short name as the thing supplied. */
 export function serviceStateDirectAnswer(orgName, serviceShortName, stateName, stateNarrative) {
-  return `${serviceShortName} from ${orgName} for matters venued in ${placeName(stateName)}. ${stateNarrative.economicContext} Plaintiff and defense.`;
+  return `${orgName} provides ${workPhrase(serviceShortName)} for matters venued in ${placeName(stateName)}. ${stateNarrative.economicContext} Plaintiff and defense.`;
 }
 
-/** Service x City hero sentence (ServiceStateCity.tsx + prerender). */
+/** Service x City hero sentence (ServiceStateCity.tsx + prerender). Same
+ * work-phrase rule as the state sentence. */
 export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, cityName, cityNarrative) {
-  return `${serviceShortName} from ${orgName} for cases venued in ${cityName}, ${placeName(stateName)}. ${cityNarrative.blurb}`;
+  return `${orgName} provides ${workPhrase(serviceShortName)} for cases venued in ${cityName}, ${placeName(stateName)}. ${cityNarrative.blurb}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -279,14 +288,25 @@ export function cityGeographicFaqs(orgName, stateName, cityName) {
   ];
 }
 
-export function serviceStateGeographicFaqs(orgName, serviceName, stateName) {
+/**
+ * Service x State FAQ. `service` carries both names: the full name is the
+ * proper noun in the engagement question ("a Wrongful Death Economic Loss
+ * engagement"); the short name becomes the work phrase in the coverage
+ * question ("provide wrongful death analysis"), so a loss subject is never
+ * printed as the thing supplied.
+ * @param {string} orgName
+ * @param {{ name: string, shortName: string }} service
+ * @param {string} stateName
+ */
+export function serviceStateGeographicFaqs(orgName, service, stateName) {
   const place = placeName(stateName);
   const attr = placeAttr(stateName);
-  const svc = serviceName;
+  const svc = service.name;
+  const work = workPhrase(service.shortName);
   return [
     {
-      question: `Does ${orgName} provide ${svc} in ${place}?`,
-      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${place}, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the records that drive the claim and from data for the ${attr} market rather than from national averages.`,
+      question: `Does ${orgName} provide ${work} in ${place}?`,
+      answer: `Yes. ${orgName} provides ${work} for attorneys handling matters venued in ${place}, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the records that drive the claim and from data for the ${attr} market rather than from national averages.`,
     },
     {
       question: `What does ${indefiniteArticle(svc)} ${svc} engagement look like for a case venued in ${place}?`,
@@ -299,14 +319,21 @@ export function serviceStateGeographicFaqs(orgName, serviceName, stateName) {
   ];
 }
 
-export function serviceCityGeographicFaqs(orgName, serviceName, stateName, cityName) {
+/**
+ * Service x City FAQ. Same service-name rule as the state FAQ.
+ * @param {string} orgName
+ * @param {{ name: string, shortName: string }} service
+ * @param {string} stateName
+ * @param {string} cityName
+ */
+export function serviceCityGeographicFaqs(orgName, service, stateName, cityName) {
   const place = placeName(stateName);
   const cityA = cityAttr(cityName);
-  const svc = serviceName;
+  const work = workPhrase(service.shortName);
   return [
     {
-      question: `Does ${orgName} provide ${svc} in ${cityName}, ${place}?`,
-      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel across the case mix common to ${cityA} matters.`,
+      question: `Does ${orgName} provide ${work} in ${cityName}, ${place}?`,
+      answer: `Yes. ${orgName} provides ${work} for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel across the case mix common to ${cityA} matters.`,
     },
     {
       question: `How are ${cityA} wage levels and cost of living handled in the analysis?`,

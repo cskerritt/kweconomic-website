@@ -6,7 +6,7 @@ import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, serviceSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
-import { proseName } from "@/lib/service-prose";
+import { proseName } from "@/lib/service-prose.mjs";
 import NotFound from "@/pages/NotFound";
 
 type Variant = "cost" | "process" | "timeline";

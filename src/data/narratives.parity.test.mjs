@@ -100,7 +100,9 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
   });
 
   it("FAQ blocks are identical on all four geo templates", () => {
-    const svc = "Household Services Valuation";
+    // The service x geo templates take the { name, shortName } pair; the
+    // prerender passes a pillarServiceEntries() row, the pages a Service.
+    const svc = { name: "Household Services Valuation", shortName: "Household Services" };
     expect(geoProse.stateGeographicFaqs(ORG_NAME, "Texas")).toEqual(ts.faqs.stateGeographicFaqs("Texas"));
     expect(geoProse.cityGeographicFaqs(ORG_NAME, "Texas", "Houston")).toEqual(
       ts.faqs.cityGeographicFaqs("Texas", "Houston"),
@@ -126,7 +128,7 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
     expect(stateSentence).toBe(
       ts.narratives.serviceStateDirectAnswer(ORG_NAME, "Household Services", texas.name, ts.narratives.getStateNarrative(texas)),
     );
-    expect(stateSentence.startsWith("Household Services from KW Economics for matters venued in Texas.")).toBe(true);
+    expect(stateSentence.startsWith("KW Economics provides household services analysis for matters venued in Texas.")).toBe(true);
     const citySentence = geoProse.serviceCityDirectAnswer(ORG_NAME, hsv.shortName, texas.name, houston.name, prerenderCity(texas, houston));
     expect(citySentence).toBe(
       ts.narratives.serviceCityDirectAnswer(
@@ -134,8 +136,15 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
         ts.narratives.getCityNarrative(texas, houston.name, houston.slug, houston.county, { msaName: houston.msaName }),
       ),
     );
-    // FAQ templates keep proper nouns in the service name (never lowercased).
-    expect(JSON.stringify(ts.faqs.serviceStateGeographicFaqs("Household Services Valuation", "Texas"))).not.toMatch(/household services valuation/);
+    // The engagement question keeps the full name as a proper noun; the
+    // coverage question renders the short name as the work phrase, so a
+    // loss subject is never printed as the thing supplied.
+    const faqJson = JSON.stringify(ts.faqs.serviceStateGeographicFaqs(hsv, "Texas"));
+    expect(faqJson).toContain("a Household Services Valuation engagement");
+    expect(faqJson).toContain("Does KW Economics provide household services analysis in Texas?");
+    expect(faqJson).not.toMatch(/provides? Household Services/);
+    expect(faqJson).not.toMatch(/household services valuation/);
+    expect(JSON.stringify(geoProse.serviceStateGeographicFaqs(ORG_NAME, hsv, "Texas"))).toBe(faqJson);
   });
 
   it("regulation extractor sees every state with both renamed fields", () => {

@@ -3,7 +3,7 @@ import { createElement } from "react";
 import ServiceTransactional from "./ServiceTransactional";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { pillarServices } from "@/data/services";
-import { proseName } from "@/lib/service-prose";
+import { proseName } from "@/lib/service-prose.mjs";
 import { renderRoute, DOUBLED_WORD, MIS_ARTICLE, excerpt } from "@/test-utils/markup";
 
 // The cost / process / timeline pages publish a one-sentence meta description

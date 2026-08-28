@@ -11,6 +11,7 @@ import { getServiceBySlug, pillarServices } from "./services";
 import { getStateBySlug, states } from "./states";
 import { stateRegulations } from "./regulations/state-regs";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
+import { workPhrase } from "@/lib/service-prose.mjs";
 
 // Adapted from the task brief: the runtime helpers take a State object (and
 // return a sectioned narrative) rather than slugs, so the test joins the
@@ -49,7 +50,59 @@ describe("economics geo narratives", () => {
     expect(text).not.toMatch(FIGURES);
     expect(text).toContain(ORG_NAME);
     expect(text).not.toMatch(LEGACY_BRAND_PATTERN);
-    expect(text.startsWith("Lost Earnings from KW Economics for matters venued in New Jersey.")).toBe(true);
+    expect(text.startsWith("KW Economics provides lost earnings analysis for matters venued in New Jersey.")).toBe(true);
+  });
+
+  it("service x geo templates render the work the pillar performs, never a loss subject as the thing supplied", () => {
+    const tx = getStateBySlug("texas")!;
+    const n = getStateNarrative(tx);
+    const c = getCityNarrative(tx, "Houston", "houston", "Harris County");
+    for (const s of pillarServices()) {
+      const work = workPhrase(s.shortName);
+      const stateHero = serviceStateDirectAnswer(ORG_NAME, s.shortName, tx.name, n);
+      const cityHero = serviceCityDirectAnswer(ORG_NAME, s.shortName, tx.name, "Houston", c);
+      expect(stateHero.startsWith(`${ORG_NAME} provides ${work} for matters venued in Texas.`), s.slug).toBe(true);
+      expect(cityHero.startsWith(`${ORG_NAME} provides ${work} for cases venued in Houston, Texas.`), s.slug).toBe(true);
+      const stateFaqs = serviceStateGeographicFaqs(s, tx.name);
+      const cityFaqs = serviceCityGeographicFaqs(s, tx.name, "Houston");
+      expect(stateFaqs[0].question, s.slug).toBe(`Does ${ORG_NAME} provide ${work} in Texas?`);
+      expect(stateFaqs[0].answer.startsWith(`Yes. ${ORG_NAME} provides ${work} for attorneys handling matters venued in Texas,`), s.slug).toBe(true);
+      expect(cityFaqs[0].question, s.slug).toBe(`Does ${ORG_NAME} provide ${work} in Houston, Texas?`);
+      expect(cityFaqs[0].answer.startsWith(`Yes. ${ORG_NAME} provides ${work} for attorneys handling matters venued in Houston, Texas,`), s.slug).toBe(true);
+      // The engagement question keeps the full name as a proper noun.
+      expect(stateFaqs[1].question, s.slug).toContain(`${s.name} engagement look like`);
+      for (const text of [stateHero, cityHero, JSON.stringify(stateFaqs), JSON.stringify(cityFaqs)]) {
+        expect(text, s.slug).not.toContain("&");
+        expect(text, s.slug).not.toContain(`provide ${s.name}`);
+        expect(text, s.slug).not.toContain(`provides ${s.name}`);
+        expect(text, s.slug).not.toContain(`provide ${s.shortName}`);
+        expect(text, s.slug).not.toContain(`provides ${s.shortName}`);
+        expect(text, s.slug).not.toContain(`${s.shortName} from ${ORG_NAME}`);
+        expect(text, s.slug).not.toMatch(/\b([a-z]{3,}) \1\b/i);
+      }
+    }
+    // The pillars the seam was reported on, pinned word for word.
+    const wd = getServiceBySlug("wrongful-death-economic-loss")!;
+    const fraud = getServiceBySlug("fraud-and-asset-tracing")!;
+    expect(serviceStateDirectAnswer(ORG_NAME, wd.shortName, tx.name, n)).toContain(
+      "KW Economics provides wrongful death analysis for matters venued in Texas.",
+    );
+    expect(serviceStateDirectAnswer(ORG_NAME, fraud.shortName, tx.name, n)).toContain(
+      "KW Economics provides fraud and tracing analysis for matters venued in Texas.",
+    );
+    expect(serviceCityDirectAnswer(ORG_NAME, fraud.shortName, tx.name, "Austin", c)).toContain(
+      "KW Economics provides fraud and tracing analysis for cases venued in Austin, Texas.",
+    );
+    expect(serviceStateGeographicFaqs(wd, tx.name)[0]).toEqual({
+      question: "Does KW Economics provide wrongful death analysis in Texas?",
+      answer:
+        "Yes. KW Economics provides wrongful death analysis for attorneys handling matters venued in Texas, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the records that drive the claim and from data for the Texas market rather than from national averages.",
+    });
+    expect(serviceCityGeographicFaqs(wd, tx.name, "Houston")[0]).toEqual({
+      question: "Does KW Economics provide wrongful death analysis in Houston, Texas?",
+      answer:
+        "Yes. KW Economics provides wrongful death analysis for attorneys handling matters venued in Houston, Texas, for plaintiff and defense counsel across the case mix common to Houston matters.",
+    });
   });
 
   it("every state narrative is economics-framed and names the state's trial forum", () => {
@@ -79,8 +132,8 @@ describe("economics geo narratives", () => {
     const sets = {
       state: stateGeographicFaqs(dc.name),
       city: cityGeographicFaqs(dc.name, "Washington"),
-      serviceState: serviceStateGeographicFaqs(svc.name, dc.name),
-      serviceCity: serviceCityGeographicFaqs(svc.name, dc.name, "Washington"),
+      serviceState: serviceStateGeographicFaqs(svc, dc.name),
+      serviceCity: serviceCityGeographicFaqs(svc, dc.name, "Washington"),
     };
     for (const [label, faqs] of Object.entries(sets)) {
       const json = JSON.stringify(faqs);
@@ -123,8 +176,8 @@ describe("economics geo narratives", () => {
         ...pillars.flatMap((s) => [
           serviceStateDirectAnswer(ORG_NAME, s.shortName, st.name, n),
           serviceCityDirectAnswer(ORG_NAME, s.shortName, st.name, city, c),
-          JSON.stringify(serviceStateGeographicFaqs(s.name, st.name)),
-          JSON.stringify(serviceCityGeographicFaqs(s.name, st.name, city)),
+          JSON.stringify(serviceStateGeographicFaqs(s, st.name)),
+          JSON.stringify(serviceCityGeographicFaqs(s, st.name, city)),
         ]),
       ];
       for (const text of texts) {
@@ -139,14 +192,17 @@ describe("economics geo narratives", () => {
     expect(bronx).toContain("wage data for the Bronx area");
     expect(bronx).toContain("account for Bronx wage levels");
     expect(bronx).toContain("Do you testify in The Bronx, New York?");
-    expect(JSON.stringify(serviceCityGeographicFaqs("Business Valuation", "New York", "The Bronx"))).toContain(
+    const bv = { name: "Business Valuation", shortName: "Business Valuation" };
+    expect(JSON.stringify(serviceCityGeographicFaqs(bv, "New York", "The Bronx"))).toContain(
       "What deliverables are available for a case venued in The Bronx?",
     );
     expect(JSON.stringify(stateGeographicFaqs("Alabama"))).toContain("for a wrongful death claim in Alabama?");
-    expect(JSON.stringify(serviceStateGeographicFaqs("Employment and Wage Loss Damages", "Alabama"))).toContain(
-      "What does an Employment and Wage Loss Damages engagement look like for a case venued in Alabama?",
-    );
-    expect(JSON.stringify(serviceStateGeographicFaqs("Business Valuation", "Ohio"))).toContain(
+    expect(
+      JSON.stringify(
+        serviceStateGeographicFaqs({ name: "Employment and Wage Loss Damages", shortName: "Employment Damages" }, "Alabama"),
+      ),
+    ).toContain("What does an Employment and Wage Loss Damages engagement look like for a case venued in Alabama?");
+    expect(JSON.stringify(serviceStateGeographicFaqs(bv, "Ohio"))).toContain(
       "What does a Business Valuation engagement look like for a case venued in Ohio?",
     );
   });
@@ -163,7 +219,7 @@ describe("economics geo narratives", () => {
       expect(text, `${st.slug}/${city}`).not.toMatch(LEGACY_BRAND_PATTERN);
     }
     const faqs = serviceCityGeographicFaqs(
-      getServiceBySlug("lost-earnings-and-earning-capacity")!.name,
+      getServiceBySlug("lost-earnings-and-earning-capacity")!,
       states[0].name,
       "Sample City",
     );
@@ -197,8 +253,8 @@ describe("economics geo narratives", () => {
     const sets = [
       stateGeographicFaqs(nj.name),
       cityGeographicFaqs(nj.name, "Sample City"),
-      serviceStateGeographicFaqs(svc.name, nj.name),
-      serviceCityGeographicFaqs(svc.name, nj.name, "Sample City"),
+      serviceStateGeographicFaqs(svc, nj.name),
+      serviceCityGeographicFaqs(svc, nj.name, "Sample City"),
     ];
     for (const faqs of sets) {
       expect(faqs.length).toBeGreaterThanOrEqual(3);

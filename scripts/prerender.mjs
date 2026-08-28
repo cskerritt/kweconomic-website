@@ -181,10 +181,13 @@ const { buildStateNarrative, buildCityNarrative } = createGeoNarrators(SRC_DATA,
 const stateGeographicFaqs = (stateName) => geoProse.stateGeographicFaqs(ORG_NAME, stateName);
 const cityGeographicFaqs = (stateName, cityName) =>
   geoProse.cityGeographicFaqs(ORG_NAME, stateName, cityName);
-const serviceStateGeographicFaqs = (serviceName, stateName) =>
-  geoProse.serviceStateGeographicFaqs(ORG_NAME, serviceName, stateName);
-const serviceCityGeographicFaqs = (serviceName, stateName, cityName) =>
-  geoProse.serviceCityGeographicFaqs(ORG_NAME, serviceName, stateName, cityName);
+// `service` is a { name, shortName } row from pillarServiceEntries(); the
+// template renders the short name as the work phrase and keeps the full name
+// as the proper noun, exactly as the React pages do.
+const serviceStateGeographicFaqs = (service, stateName) =>
+  geoProse.serviceStateGeographicFaqs(ORG_NAME, service, stateName);
+const serviceCityGeographicFaqs = (service, stateName, cityName) =>
+  geoProse.serviceCityGeographicFaqs(ORG_NAME, service, stateName, cityName);
 
 /** Render a list of FAQs as static HTML <details> blocks for the prerender body. */
 function renderFaqHtml(faqs, headingText) {
@@ -716,7 +719,7 @@ for (const svc of serviceData) {
   for (const state of stateData) {
     const path = `/services/${svc.slug}/${state.slug}`;
     const narrative = buildStateNarrative(state);
-    const faqs = serviceStateGeographicFaqs(svc.name, state.name);
+    const faqs = serviceStateGeographicFaqs(svc, state.name);
     const url = `${BASE_URL}${path}`;
     const directAnswer = geoProse.serviceStateDirectAnswer(ORG_NAME, svc.shortName, state.name, narrative);
     const innerHtml =
@@ -745,7 +748,7 @@ for (const svc of serviceData) {
       const cityPath = `/services/${svc.slug}/${state.slug}/${city.slug}`;
       const cityUrl = `${BASE_URL}${cityPath}`;
       const cityNarrative = buildCityNarrative(state, city);
-      const cityFaqs = serviceCityGeographicFaqs(svc.name, state.name, city.name);
+      const cityFaqs = serviceCityGeographicFaqs(svc, state.name, city.name);
       const cityDirect = geoProse.serviceCityDirectAnswer(ORG_NAME, svc.shortName, state.name, city.name, cityNarrative);
       const cityInner =
         `<h1>${escapeHtml(svc.name)} in ${escapeHtml(city.name)}, ${escapeHtml(state.name)}</h1>` +

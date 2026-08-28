@@ -15,9 +15,13 @@ import {
   faqPageSchema,
   ORG_URL,
 } from "@/lib/schema";
-import { placeName } from "@/data/geo-prose.mjs";
+import { placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
-import { proseName } from "@/lib/service-prose";
+// Service.shortName is a heading label; every sentence that names the work
+// goes through the shared helpers (workPhrase: "wrongful death analysis").
+// Slots after in/across/throughout take placeName ("the District of
+// Columbia"); attributive slots ("Texas wage data") take placeAttr.
+import { proseName, workPhrase } from "@/lib/service-prose.mjs";
 import { getStateNarrative, serviceStateDirectAnswer } from "@/data/narratives";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
 import { getCaseType } from "@/data/caseTypes";
@@ -50,7 +54,7 @@ export default function ServiceState() {
       : `Service | ${ORG_NAME}`,
     description:
       service && state
-        ? `${ORG_NAME} provides ${service.name.toLowerCase()} in ${state.name}. Forensic economists measuring lost earnings, household services, and business damages against ${state.name} wage data and the state's damages rules, for plaintiff and defense counsel across ${state.name}.`
+        ? `${ORG_NAME} provides ${workPhrase(service.shortName)} for matters venued in ${placeName(state.name)}. Forensic economists measuring lost earnings, household services, and business damages against ${placeAttr(state.name)} wage data and the jurisdiction's damages rules, for plaintiff and defense counsel across ${placeName(state.name)}.`
         : "",
     canonical: `${ORG_URL}/services/${serviceSlug ?? ""}/${stateSlug ?? ""}`,
   });
@@ -76,7 +80,9 @@ export default function ServiceState() {
   // service-city window, kept in sync with the sitemap via geo-links).
   const cities = serviceCityCities(stateCities);
   const narrative = getStateNarrative(state);
-  const faqs = serviceStateGeographicFaqs(service.name, state.name);
+  const faqs = serviceStateGeographicFaqs(service, state.name);
+  // "the District of Columbia" after in/across/throughout; states as-is.
+  const place = placeName(state.name);
 
   const relatedServices = pillarServices().filter(
     (s) => s.slug !== service.slug && !EXCLUDED_SERVICES.has(s.slug)
@@ -92,7 +98,7 @@ export default function ServiceState() {
           organizationSchema(),
           serviceSchema({
             slug: `${service.slug}-${state.slug}`,
-            name: `${service.name} in ${state.name}`,
+            name: `${service.name} in ${place}`,
             description: directAnswer,
             areaServed: { "@type": "AdministrativeArea", name: state.name },
           }),
@@ -130,7 +136,7 @@ export default function ServiceState() {
             </div>
             <div className="min-w-0">
               <h1 className="kw-enter kw-enter-1 font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4">
-                <span className="kw-gradient-text">{service.shortName}</span> in {placeName(state.name)}
+                <span className="kw-gradient-text">{service.shortName}</span> in {place}
               </h1>
               <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-3xl mb-3">
                 {directAnswer}
@@ -168,7 +174,7 @@ export default function ServiceState() {
             {/* Service description + state-specific regulation context */}
             <Reveal as="section" variant={motion.reveal} className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8">
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">
-                {service.shortName} in {state.name}
+                {service.shortName} in {place}
               </h2>
               <p className="text-neutral-700 leading-relaxed mb-4">
                 {service.description}
@@ -202,10 +208,10 @@ export default function ServiceState() {
             {cities.length > 0 && (
               <Reveal as="section" variant={motion.reveal}>
                 <h2 className="font-serif text-2xl font-bold text-navy mb-2">
-                  {service.shortName} Across {state.name}
+                  {service.shortName} Across {place}
                 </h2>
                 <p className="text-neutral-600 mb-5">
-                  Our experts serve clients throughout {state.name}, including the following communities.
+                  Our experts serve clients throughout {place}, including the following communities.
                 </p>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {cities.map((city) => (
@@ -234,7 +240,7 @@ export default function ServiceState() {
             {relatedServices.length > 0 && (
               <Reveal as="section" variant={motion.reveal}>
                 <h2 className="font-serif text-2xl font-bold text-navy mb-2">
-                  Related Services in {state.name}
+                  Related Services in {place}
                 </h2>
                 <p className="text-neutral-600 mb-5">
                   {ORG_NAME} offers complementary services to support your {state.name} cases.
@@ -258,11 +264,11 @@ export default function ServiceState() {
 
             {/* Contact CTA */}
             <Reveal variant={motion.reveal}>
-              <FAQBlock faqs={faqs} title={`Frequently asked: ${service.shortName} in ${state.name}`} />
+              <FAQBlock faqs={faqs} title={`Frequently asked: ${service.shortName} in ${place}`} />
             </Reveal>
 
             <Reveal variant={motion.reveal}>
-              <ContactCTA context={`${service.shortName} in ${state.name}`} />
+              <ContactCTA context={`${service.shortName} in ${place}`} />
             </Reveal>
           </main>
 
@@ -291,7 +297,7 @@ export default function ServiceState() {
                 Expert Credentials
               </h3>
               <p className="text-sm text-neutral-600 mb-3">
-                Qualifications and standards that bear on {proseName(service.shortName)} testimony in {placeName(state.name)}:
+                Qualifications and standards that bear on {proseName(service.shortName)} testimony in {place}:
               </p>
               <div className="flex flex-wrap gap-2">
                 {service.relevantCredentials.map((cred) => (
