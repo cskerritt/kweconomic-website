@@ -92,6 +92,44 @@ describe("prerender shells mirror the React page meta", () => {
   });
 });
 
+// Templated routes (case-type hub, case-type x state). The shells and the React
+// templates interpolate different variable names (`c.name` vs `caseType.name`),
+// so every data expression collapses to a `${}` slot and only the brand tokens
+// resolve before the two sides are compared.
+const slotify = (literal) =>
+  literal.slice(1, -1).replace(/\$\{([^}]*)\}/g, (_, expr) => (expr in TOKENS ? TOKENS[expr] : "${}"));
+
+/** prerender.mjs: `path: \`/x/${c.slug}\`, [// comment] title: ..., description: ...` */
+function prerenderTemplateMeta(pathLiteral) {
+  const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const re = new RegExp(`path: ${escape(pathLiteral)},(?:\\s*//[^\\n]*)*\\s*title: ${STR},\\s*description:\\s*${STR}`);
+  const m = prerenderSrc.match(re);
+  if (!m) throw new Error(`prerender.mjs has no templated entry for ${pathLiteral}`);
+  return { title: slotify(m[1]), description: slotify(m[2]) };
+}
+
+/** React template: the first `title: ..., description: ...` pair inside usePageMeta(...). */
+function templateMeta(file) {
+  const src = read(`src/pages/templates/${file}`);
+  const re = new RegExp(`usePageMeta\\([^]*?title: ${STR},\\s*description:\\s*${STR}`);
+  const m = src.match(re);
+  if (!m) throw new Error(`${file} has no usePageMeta title/description`);
+  return { title: slotify(m[1]), description: slotify(m[2]) };
+}
+
+const TEMPLATED_ROUTES = {
+  "`/case-types/${c.slug}`": "CaseTypeHub.tsx",
+  "`/case-types/${c.slug}/${s.slug}`": "CaseTypeState.tsx",
+};
+
+describe("prerender shells mirror the templated case-type page meta", () => {
+  for (const [pathLiteral, file] of Object.entries(TEMPLATED_ROUTES)) {
+    it(`${pathLiteral} title + description match ${file}`, () => {
+      expect(prerenderTemplateMeta(pathLiteral)).toEqual(templateMeta(file));
+    });
+  }
+});
+
 describe("retired vocational-site routes are neither prerendered nor advertised", () => {
   const RETIRED = [
     "/tools",

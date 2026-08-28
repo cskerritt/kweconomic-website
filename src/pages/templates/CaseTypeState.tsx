@@ -27,7 +27,7 @@ export default function CaseTypeState() {
     caseType && state
       ? {
           title: `${caseType.name} Economic Damages Expert in ${state.name} | ${ORG_NAME}`,
-          description: `Economic damages analysis for ${caseType.name.toLowerCase()} cases venued in ${state.name}: lost earnings, household services, and present value. Plaintiff and defense.`,
+          description: `Economic damages analysis for ${caseType.name.toLowerCase()} cases venued in ${state.name}: what the loss claim consists of, where the damages concentrate, and how the number is built. Plaintiff and defense.`,
           canonical: url,
         }
       : null,

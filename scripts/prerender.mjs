@@ -822,7 +822,7 @@ for (const c of caseTypeData) {
       path: `/case-types/${c.slug}/${s.slug}`,
       // Match CaseTypeState.tsx (title + H1) so the prerendered + hydrated signals agree.
       title: `${c.name} Economic Damages Expert in ${s.name} | ${ORG_NAME}`,
-      description: `Economic damages analysis for ${c.name.toLowerCase()} cases venued in ${s.name}: lost earnings, household services, and present value. Plaintiff and defense.`,
+      description: `Economic damages analysis for ${c.name.toLowerCase()} cases venued in ${s.name}: what the loss claim consists of, where the damages concentrate, and how the number is built. Plaintiff and defense.`,
       innerHtml: `<h1>${escapeHtml(c.name)} Expert Services in ${escapeHtml(s.name)}</h1>`,
       schemaType: "LocalBusiness",
     }));
