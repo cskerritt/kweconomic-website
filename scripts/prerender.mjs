@@ -815,7 +815,7 @@ const newHubPages = [
   { path: "/compare", title: `Life Care Planning Comparisons | ${ORG_NAME}`, description: "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
   { path: "/methods", title: `Life Care Planning Methodologies | Present Value, Cost Research | ${ORG_NAME}`, description: "Life care planning methodologies used by our planners: life expectancy, present value analysis, plan development, functional capacity evaluation, cost research, and Medicare set-aside allocation.", innerHtml: "<h1>Methods</h1>", schemaType: "WebPage" },
   { path: "/jurisdictions", title: `Jurisdictions | ${ORG_NAME} Nationwide`, description: `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`, innerHtml: "<h1>Jurisdictions</h1>", schemaType: "WebPage" },
-  { path: "/attorneys", title: `Resources for Attorneys | ${ORG_NAME}`, description: "Stage-by-stage attorney resources for retaining, preparing, and using a life care planning expert. Considering, retaining, deposition, and trial.", innerHtml: "<h1>Resources for Attorneys</h1>", schemaType: "WebPage" },
+  { path: "/attorneys", title: `Resources for Attorneys | ${ORG_NAME}`, description: "Stage-by-stage attorney resources for retaining, preparing, and using a forensic economist. Considering, retaining, deposition, and trial.", innerHtml: "<h1>Resources for Attorneys</h1><p>Stage-by-stage guides for retaining, preparing, and using a forensic economist across each major case type: what the loss claim consists of, which records drive it, and how the number is defended.</p>", schemaType: "WebPage" },
 ];
 for (const p of newHubPages) { writePage(p.path, buildPage(p)); counts.core++; }
 
@@ -950,8 +950,8 @@ for (const stage of ["considering", "retaining", "preparing-deposition", "trial"
       path: `/attorneys/${stage}/${c.slug}`,
       // Match JourneyStage.tsx.
       title: `${STAGE_LABELS[stage]} for ${c.name} Cases | ${ORG_NAME}`,
-      description: `Attorney guidance for ${stage.replace("-", " ")} in ${c.name.toLowerCase()} cases.`,
-      innerHtml: `<h1>${escapeHtml(c.name)}: ${stage}</h1>`,
+      description: `Practical guide for attorneys: ${STAGE_LABELS[stage].toLowerCase()} in ${c.name.toLowerCase()} cases. Step-by-step actions, required documents, common pitfalls, and FAQs.`,
+      innerHtml: `<h1>${escapeHtml(STAGE_LABELS[stage])} for ${escapeHtml(c.name)} Cases</h1><p>How a forensic economist supports counsel at this stage of a ${escapeHtml(c.name.toLowerCase())} matter: what the loss claim consists of, which records drive it, and how the number is defended.</p>`,
       schemaType: "Article",
     }));
     journeyPages++;

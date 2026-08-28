@@ -9,18 +9,18 @@ import NotFound from "@/pages/NotFound";
 import { STAGE_LABELS } from "@/lib/attorney-stages";
 
 // Per-stage index page (/attorneys/:stage). Fills the level between the
-// /attorneys hub and the 48 stage x case-type journey guides - the journey
+// /attorneys hub and the 56 stage x case-type journey guides - the journey
 // pages' breadcrumbs (visible + schema.org) link to /attorneys/:stage, which
 // 404'd before this page existed.
 const STAGE_INTROS: Record<string, string> = {
   considering:
-    "Deciding whether a life care planner adds value to the case. Pick your case type for the evaluation criteria, timing considerations, and questions to ask before retaining.",
+    "Deciding whether the loss justifies a forensic economist. Pick your case type for the threshold questions, the records to gather first, and the questions to ask before retaining.",
   retaining:
-    "Engaging the expert: scope, documents to send, and scheduling. Pick your case type for a step-by-step retention checklist.",
+    "Engaging the economist: scope, conflict check, the records request, and how the report fits with the opinions other experts supply. Pick your case type for a step-by-step retention checklist.",
   "preparing-deposition":
-    "Getting the expert and the record ready for deposition. Pick your case type for preparation steps, document checklists, and common pitfalls.",
+    "Getting the economist and the report ready for deposition. Pick your case type for the assumptions that will be tested, the documents to assemble, and the common attacks.",
   trial:
-    "Presenting expert testimony at trial. Pick your case type for direct-examination structure, exhibit preparation, and cross-examination considerations.",
+    "Presenting economic damages at trial. Pick your case type for demonstratives, the present value explanation for jurors, and rebuttal of the opposing economist.",
 };
 
 export default function JourneyStageIndex() {
