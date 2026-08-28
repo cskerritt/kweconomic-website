@@ -1,5 +1,5 @@
 /**
- * KW Life Care Planning llms.txt generator
+ * KW Economics llms.txt generator
  *
  * Regenerates public/llms.txt (concise) and public/llms-full.txt (comprehensive)
  * directly from the site's source-of-truth data files, so the AI-readable summary
@@ -9,6 +9,13 @@
  * Loading strategy: a bare Vite server (configFile: false, only the "@" alias)
  * lets us ssrLoadModule the data .ts files with full fidelity. The data files use
  * type-only imports, so esbuild strips the types and returns plain data objects.
+ *
+ * Copy rules (spec): economist's standpoint, citation-free prose, hyphens only,
+ * no invented statistics or client names, and no claim that the firm or a named
+ * person holds an association membership. The sister practices are described by
+ * role only - their brand names and domains are spelled solely in
+ * src/lib/brand.ts and src/components/CrossSell.tsx (src/brand-strings.test.mjs
+ * walks public/llms.txt for the domains).
  *
  * Run: node scripts/generate-llms.mjs
  */
@@ -27,10 +34,11 @@ const PUBLIC = join(ROOT, "public");
 const COMPANY = ORG_NAME;
 const PHONE = ORG_PHONE_DISPLAY;
 const SITE = SITE_URL;
-// The economics sister-practice URL is read from src/lib/brand.ts inside main()
-// (the only module allowed to spell sister domains).
 const HQ = "Hackensack, New Jersey";
-const SECONDARY_OFFICE = "Virginia";
+const SECONDARY_OFFICE = "Richmond, Virginia";
+// ORG_NAME and ORG_SHORT are the same string for this brand; only print the
+// parenthetical short form when it differs.
+const TITLE = ORG_SHORT && ORG_SHORT !== COMPANY ? `${COMPANY} (${ORG_SHORT})` : COMPANY;
 
 const REGION_LABELS = {
   northeast: "Northeast",
@@ -41,8 +49,8 @@ const REGION_LABELS = {
 };
 
 const ROLE_LABELS = {
-  leadership: "Leadership Team",
-  expert: "Expert Panel",
+  leadership: "Leadership",
+  expert: "Economists",
 };
 
 function joinList(arr) {
@@ -83,7 +91,6 @@ async function main() {
     { comparisons },
     { states },
     { faqs },
-    { LCP_SITE_URL: LCP_SITE },
   ] = await Promise.all([
     load("/src/data/services.ts"),
     load("/src/data/team.ts"),
@@ -94,36 +101,47 @@ async function main() {
     load("/src/data/comparisons.ts"),
     load("/src/data/states.ts"),
     load("/src/data/faqs.ts"),
-    load("/src/lib/brand.ts"),
   ]);
 
   await server.close();
 
-  // Indexable service lines only; the forensic-economics cross-sell is a
-  // pointer to the economics practice, not a KW LCP service.
+  // Indexable service lines only (the eleven pillars). The two `pillar: false`
+  // entries are hand-offs to the sister practices, not services of this site.
   const serviceLines = pillarServices();
 
-  // Map state abbreviation -> full name for expanding "statesServed".
+  // Map state abbreviation -> full name for expanding "statesServed", and case
+  // type slug -> name for the per-service "common case types" line.
   const stateNameByAbbr = {};
   for (const s of states) stateNameByAbbr[s.abbreviation] = s.name;
   const expandStates = (abbrs) =>
     (abbrs || []).map((a) => stateNameByAbbr[a] || a).join(", ");
+  const caseTypeNameBySlug = {};
+  for (const c of caseTypes) caseTypeNameBySlug[c.slug] = c.name;
+  const expandCaseTypes = (slugs) =>
+    (slugs || []).map((s) => caseTypeNameBySlug[s] || s).join(", ");
 
   const territories = states
     .filter((s) => s.type === "territory")
     .map((s) => s.name);
 
+  // Shared prose. Written once so llms.txt and llms-full.txt never disagree
+  // about what the practice is.
+  const ABOUT =
+    `${COMPANY} is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.`;
+  const CREDENTIALS_NOTE =
+    "Reference pages on how a forensic economist is qualified to testify on damages: graduate training in economics, finance, and business, the professional standards of the national forensic economics associations, and a record of reports and testimony. No state licenses forensic economists. These pages describe the qualification and how courts weigh it; they do not list the roster.";
+  const SISTER_NOTE =
+    `${COMPANY} is part of the Kincaid Wolstein family of expert practices. Vocational evaluation (employability and post-injury work capacity) and life care plan authorship are performed by sister practices in the same group; this site links to them from its services pages and does not offer those services itself. When a matter needs both, the economist builds the loss on the sister practice's opinion so the reports reconcile.`;
+
   // -----------------------------------------------------------------------
   // llms.txt - concise, llmstxt.org-style summary
   // -----------------------------------------------------------------------
   const llms = [];
-  llms.push(`# ${COMPANY} (${ORG_SHORT})`);
+  llms.push(`# ${TITLE}`);
   llms.push("");
   llms.push("## About");
   llms.push("");
-  llms.push(
-    `${COMPANY} is a life care planning practice preparing independent, physician-informed life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for legal proceedings. The practice provides objective analysis for both plaintiff and defense attorneys, with certified life care planners who offer court-admissible opinions and expert witness testimony nationwide.`
-  );
+  llms.push(ABOUT);
   llms.push("");
   llms.push("## Services");
   llms.push("");
@@ -131,18 +149,28 @@ async function main() {
     llms.push(`- ${s.name}: ${s.description}`);
   }
   llms.push("");
+  llms.push("## Case Types");
+  llms.push("");
+  llms.push(joinList(caseTypes.map((c) => c.name)));
+  llms.push("");
   llms.push("## Geographic Coverage");
   llms.push("");
   llms.push("- All 50 U.S. states");
   llms.push("- District of Columbia");
-  llms.push(
-    `- U.S. territories including ${joinList(territories)}`
-  );
+  llms.push(`- U.S. territories including ${joinList(territories)}`);
   llms.push("");
-  llms.push("## Credentials Held by the Team");
+  llms.push("## Credentials and Standards");
+  llms.push("");
+  llms.push(CREDENTIALS_NOTE);
   llms.push("");
   for (const c of credentials) {
     llms.push(`- ${c.abbreviation} - ${c.name}`);
+  }
+  llms.push("");
+  llms.push("## Team");
+  llms.push("");
+  for (const m of team.filter((t) => !t.memoriam)) {
+    llms.push(`- ${m.name} - ${m.title}`);
   }
   llms.push("");
   llms.push("## Office Locations");
@@ -155,13 +183,21 @@ async function main() {
   llms.push(`- Phone: ${PHONE}`);
   llms.push(`- Website: ${SITE}`);
   llms.push("");
-  llms.push("## Related Site");
+  llms.push("## Key Pages");
   llms.push("");
-  llms.push(`- ${LCP_SITE} - Life care planning sister practice`);
+  llms.push(`- Services: ${SITE}/services`);
+  llms.push(`- Case types: ${SITE}/case-types`);
+  llms.push(`- Guides for attorneys: ${SITE}/guides`);
+  llms.push(`- Methods: ${SITE}/methods`);
+  llms.push(`- Comparisons: ${SITE}/compare`);
+  llms.push(`- Frequently asked questions: ${SITE}/resources/faq`);
+  llms.push(`- White papers: ${SITE}/white-papers`);
+  llms.push(`- Locations: ${SITE}/locations`);
+  llms.push(`- Full reference: ${SITE}/llms-full.txt`);
   llms.push("");
-  llms.push("## Case Types Served");
+  llms.push("## Related Practices");
   llms.push("");
-  llms.push(joinList(caseTypes.map((c) => c.name)));
+  llms.push(SISTER_NOTE);
   llms.push("");
 
   // -----------------------------------------------------------------------
@@ -177,16 +213,15 @@ async function main() {
   h1(`${COMPANY} - Full Reference`);
 
   h2("Organization Overview");
+  p(ABOUT);
   p(
-    `${COMPANY} (${ORG_SHORT}) is a life care planning practice specializing in life care plans, medical cost projections, plan rebuttals, Medicare set-aside allocations, and expert witness services for the legal community. The practice provides independent, objective analysis for both plaintiff and defense attorneys across all jurisdictions in the United States.`
+    `${COMPANY} operates from its New Jersey headquarters and a Virginia office and accepts engagements in all 50 states, the District of Columbia, and U.S. territories. Each analysis follows the sequence forensic economists use in injury, death, employment, and commercial matters: the earnings or profit base is established from the records in the case, projected with stated growth and duration assumptions drawn from published data, reduced by the offsets the facts support, and discounted to present value at a documented rate. Reports are written for attorneys, adjusters, mediators, and jurors, list the records relied on, and present the loss under alternative scenarios where the record supports more than one reading of the facts, so the calculation can be examined and reproduced by the other side.`
   );
-  p(
-    `${ORG_SHORT} operates from its New Jersey headquarters and a Virginia office, accepting cases in all 50 states, the District of Columbia, and U.S. territories. Every plan is developed and reviewed by a board-certified physician who is also a Certified Life Care Planner, supported by certified life care planners with advanced academic degrees and national certifications. Opinions are grounded in recognized methodology and authoritative data sources, and are prepared to meet the admissibility standards applied in state and federal courts and to withstand cross-examination.`
-  );
+  p(SISTER_NOTE);
   p(`Website: ${SITE}`);
   p(`Phone: ${PHONE}`);
   p(`Headquarters: ${HQ}`);
-  p(`Life care planning sister practice: ${LCP_SITE}`);
+  p(`Office: ${SECONDARY_OFFICE}`);
 
   // Team, grouped by role. Memoriam members are excluded: this file is the
   // AI-facing "who can you hire" panel, and a deceased colleague must never
@@ -202,9 +237,9 @@ async function main() {
       } else {
         full.push("");
       }
-      p(m.bio);
+      p(m.fullBio || m.bio);
       if (m.specialties && m.specialties.length) {
-        p(`Specialties: ${joinList(m.specialties)}`);
+        p(`Practice areas: ${joinList(m.specialties)}`);
       }
       if (m.statesServed && m.statesServed.length) {
         p(`States served: ${expandStates(m.statesServed)}`);
@@ -212,16 +247,19 @@ async function main() {
     }
   }
 
-  // Additional team (everyone not leadership/expert), as a compact roster.
+  // Everyone else on the active roster (associates, liaison, staff).
   const others = team.filter(
-    (m) => m.role !== "leadership" && m.role !== "expert"
+    (m) => m.role !== "leadership" && m.role !== "expert" && !m.memoriam
   );
   if (others.length) {
-    h2("Additional Team and Staff");
+    h2("Economics Team and Staff");
     for (const m of others) {
-      li(`${m.name} - ${m.title}`);
+      h3(`${m.name} - ${m.title}`);
+      p(m.fullBio || m.bio);
+      if (m.statesServed && m.statesServed.length) {
+        p(`States served: ${expandStates(m.statesServed)}`);
+      }
     }
-    full.push("");
   }
 
   h2("Services in Detail");
@@ -229,13 +267,7 @@ async function main() {
     h3(s.name);
     p(s.description);
     if (s.caseTypes && s.caseTypes.length) {
-      p(`Common case types: ${joinList(s.caseTypes)}`);
-    }
-    if (s.relevantCredentials && s.relevantCredentials.length) {
-      p(`Relevant credentials: ${joinList(s.relevantCredentials)}`);
-    }
-    if (s.externalUrl) {
-      p(`More information: ${s.externalUrl}`);
+      p(`Common case types: ${expandCaseTypes(s.caseTypes)}`);
     }
     if (s.process && s.process.length) {
       full.push("Engagement process:");
@@ -263,10 +295,11 @@ async function main() {
     if (c.economicImpact) p(`How the analysis is built: ${c.economicImpact}`);
   }
 
-  h2("Professional Credentials");
+  h2("Credentials and Standards");
+  p(CREDENTIALS_NOTE);
   for (const c of credentials) {
     h3(`${c.abbreviation} - ${c.name}`);
-    if (c.issuer) p(`Issuer: ${c.issuer}`);
+    if (c.issuer) p(`Body: ${c.issuer}`);
     p(c.scope);
   }
 
@@ -308,18 +341,17 @@ async function main() {
 
   h2("Office Locations");
   li(`Headquarters: ${HQ}`);
-  li(`Secondary office: ${SECONDARY_OFFICE}`);
+  li(`Office: ${SECONDARY_OFFICE}`);
   full.push("");
 
   h2("Contact Information");
   li(`Phone: ${PHONE}`);
   li(`Website: ${SITE}`);
-  li(`Life care planning: ${LCP_SITE}`);
   full.push("");
 
-  h2(`How to Engage ${ORG_SHORT}`);
+  h2(`How to Engage ${COMPANY}`);
   p(
-    `Attorneys, claims professionals, and insurers may contact ${ORG_SHORT} directly to discuss case-specific needs. Initial consultations are available to assess case suitability and planner qualifications. The practice accepts referrals from both plaintiff and defense counsel, and provides a written fee schedule and a cost estimate before any engagement begins.`
+    `Attorneys, claims professionals, and insurers may contact ${COMPANY} directly to discuss case-specific needs. Initial consultations are available to assess whether an economic analysis is warranted, which loss components apply, and which records the analysis will need. The practice accepts retentions from both plaintiff and defense counsel and confirms scope and fee in writing before any work begins.`
   );
 
   // Editorial prose may carry inline-link markers ([[/route|anchor]]) that only

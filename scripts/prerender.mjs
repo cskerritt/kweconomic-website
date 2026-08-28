@@ -1,5 +1,5 @@
 /**
- * KW Life Care Planning Pre-render Script
+ * KW Economics Pre-render Script
  *
  * Generates static HTML files for every route after vite build completes.
  * Each file contains correct meta tags, title, description, canonical URL,
@@ -67,9 +67,10 @@ const stateData = extractPairs(
   /\bname:\s*"([^"]+)"/g
 );
 
-// Services - pillar entries only. `pillar: false` entries (the forensic
-// economics cross-sell) are client-rendered noindex cards and are never
-// prerendered; see scripts/lib/service-slugs.mjs for the object-boundary split.
+// Services - pillar entries only. `pillar: false` entries (the vocational and
+// life care plan cross-sells that hand off to the sister practices) are
+// client-rendered noindex cards and are never prerendered; see
+// scripts/lib/service-slugs.mjs for the object-boundary split.
 const serviceData = pillarServiceEntries(
   readFileSync(join(SRC_DATA, "services.ts"), "utf-8"),
 );
@@ -137,9 +138,11 @@ function extractAuthorMap(content) {
 const insightAuthorMap = extractAuthorMap(insightsContent);
 const guideAuthorMap = extractAuthorMap(knowledgeContent);
 
-// Build a simple team map (slug -> { name, credentials[] }) for AuthorByline
-// inline rendering. credentials are extracted as the array entries between
-// `credentials: [` and the first closing `]`.
+// Build a simple team map (slug -> { name, credentials[], bio }) for AuthorByline
+// inline rendering and the /team/:slug shell description. credentials are
+// extracted as the array entries between `credentials: [` and the first closing
+// `]`; bio is the single-line `bio:` string (the same field ExpertProfile.tsx
+// truncates for its meta description).
 const teamContent = readFileSync(join(SRC_DATA, "team.ts"), "utf-8");
 const teamMap = (() => {
   const m = {};
@@ -150,7 +153,8 @@ const teamMap = (() => {
     const name = block.match(/name:\s*"([^"]+)"/)?.[1];
     const credsBlock = block.match(/credentials:\s*\[([\s\S]*?)\]/)?.[1] ?? "";
     const credentials = [...credsBlock.matchAll(/"([^"]+)"/g)].map((x) => x[1]);
-    m[slug] = { name, credentials };
+    const bio = block.match(/\bbio:\s*"([^"]+)"/)?.[1];
+    m[slug] = { name, credentials, bio };
   }
   return m;
 })();
@@ -331,7 +335,7 @@ function buildPage({ path, title, description, innerHtml, schemaType, extraJsonL
 // Non-pillar cross-sell routes are client-rendered noindex cards; emitting a
 // static shell for them would put an unadvertised, noindex page on disk and
 // invite the sitemap/prerender parity test to drift. Hard stop.
-const NON_PILLAR_SERVICE_PREFIXES = ["/services/forensic-economics"];
+const NON_PILLAR_SERVICE_PREFIXES = ["/services/vocational-evaluation", "/services/life-care-planning"];
 
 function writePage(routePath, html) {
   for (const prefix of NON_PILLAR_SERVICE_PREFIXES) {
@@ -895,9 +899,11 @@ for (const t of teamData) {
   writePage(`/team/${t.slug}`, buildPage({
     path: `/team/${t.slug}`,
     title: memoriam ? `${t.name} | In Memoriam | ${ORG_NAME}` : `${t.name} | ${ORG_NAME}`,
+    // Match ExpertProfile.tsx: the description is the bio cut at a word
+    // boundary (truncateAtWord, same helper as the credential hubs above).
     description: memoriam
       ? `${t.name} - remembered by the ${ORG_NAME} team.`
-      : `${t.name} - ${ORG_NAME} life care planning expert profile.`,
+      : truncateAtWord(teamMap[t.slug]?.bio || `${t.name} - ${ORG_NAME} forensic economics team profile.`),
     innerHtml: `<h1>${escapeHtml(t.name)}</h1>`,
     schemaType: "WebPage",
   }));

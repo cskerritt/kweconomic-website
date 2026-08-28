@@ -1,9 +1,9 @@
 // scripts/sitemap-index.test.mjs
 //
 // Pins the COMMITTED sitemap artifacts (public/sitemap.xml + children) to the
-// generator's contract (mirrors Raffle.test.mjs: `npm run build` regenerates
-// them, so these tests catch drift between the committed files, the
-// contentReadiness gate, and the prerender route list).
+// generator's contract (`npm run build` regenerates them, so these tests catch
+// drift between the committed files, the contentReadiness gate, and the
+// prerender route list).
 import { describe, expect, it } from "vitest";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -20,6 +20,27 @@ import { SITE_URL as BASE } from "./lib/site.mjs";
 const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(here, "..");
 const PUBLIC = join(ROOT, "public");
+
+// The eleven indexable service lines, in services.ts order (spec 4.1). The two
+// cross-sell entries (vocational-evaluation, life-care-planning) are
+// `pillar: false` and must never reach a sitemap.
+const PILLARS = [
+  "lost-earnings-and-earning-capacity",
+  "wrongful-death-economic-loss",
+  "personal-injury-economic-damages",
+  "household-services-valuation",
+  "life-care-plan-cost-projection",
+  "employment-and-wage-loss-damages",
+  "business-valuation",
+  "lost-profits-and-commercial-damages",
+  "fraud-and-asset-tracing",
+  "divorce-and-marital-financial-analysis",
+  "expert-rebuttal-and-report-review",
+];
+const CROSS_SELLS = ["vocational-evaluation", "life-care-planning"];
+// Matches a cross-sell service path exactly or any descendant, without
+// touching the pillar `life-care-plan-cost-projection` (shared prefix).
+const CROSS_SELL_PATH = new RegExp(`/services/(${CROSS_SELLS.join("|")})(/|$)`);
 
 const SECTION_FILES = [
   "sitemap-core.xml",
@@ -160,11 +181,14 @@ describe("service x state x city sitemap gating (contentReadiness)", () => {
   });
 
   it("keeps the services section within the crawl-budget target", () => {
-    // 10 pillars x 56 states = 560, plus gated cities (~2,750) and the
-    // pillar/cost/process/timeline/case pages (~150).
+    // 11 pillars x 56 states = 616, plus the gated city combos (11 x ~275 =
+    // ~3,025), the /services hub, and the pillar/cost/process/timeline/case
+    // pages (11 + 33 + 154 = 198): ~3,840. The ceiling is pinned just above
+    // that so a widened gate (or a leaked cross-sell) fails the build; the
+    // twin sites pin theirs the same way (kwvrs 2,600; kwlcp 3,600).
     const total = childUrls["sitemap-services.xml"].length;
     expect(total).toBeGreaterThanOrEqual(1500);
-    expect(total).toBeLessThanOrEqual(3600);
+    expect(total).toBeLessThanOrEqual(4000);
   });
 
   it("prerender.mjs's SERVICE_CITY_TOP matches contentReadiness's prerender constant", () => {
@@ -189,6 +213,7 @@ describe("ungated sections stay complete", () => {
   });
 
   it("case-types child lists the hub, every case type, and every case type x state", () => {
+    expect(caseTypes).toHaveLength(14);
     const expected = [
       "/case-types",
       ...caseTypes.map((c) => `/case-types/${c}`),
@@ -198,6 +223,7 @@ describe("ungated sections stay complete", () => {
   });
 
   it("credentials child lists the hub, every credential, and every credential x state", () => {
+    expect(credentials).toHaveLength(4);
     const expected = [
       "/credentials",
       ...credentials.map((c) => `/credentials/${c}`),
@@ -211,17 +237,12 @@ describe("lastmod is emitted only where derivable", () => {
   const servicesXml = readFileSync(join(PUBLIC, "sitemap-services.xml"), "utf8");
   const coreXml = readFileSync(join(PUBLIC, "sitemap-core.xml"), "utf8");
 
-  // The per-state expert-disclosure pages (and their dateModified lastmod) were
-  // removed with src/data/disclosureRules.ts (Task 4); generate-sitemap.mjs no
-  // longer has a disclosure branch (see prerender-meta.test.mjs "retired
-  // vocational-site routes").
-
   it("insight posts carry a date; generic geo pages carry none", () => {
     expect(coreXml).toMatch(
       new RegExp(`<loc>${BASE}/insights/[a-z-]+</loc><lastmod>\\d{4}-\\d{2}-\\d{2}</lastmod>`),
     );
     expect(servicesXml).toContain(
-      `<loc>${BASE}/services/life-care-planning/new-jersey</loc><changefreq>`,
+      `<loc>${BASE}/services/lost-earnings-and-earning-capacity/new-jersey</loc><changefreq>`,
     );
   });
 });
@@ -229,35 +250,41 @@ describe("lastmod is emitted only where derivable", () => {
 describe("non-pillar services stay out of the sitemap", () => {
   const allUrls = SECTION_FILES.flatMap((f) => childUrls[f] || []);
 
-  it("never emits forensic-economics service URLs", () => {
-    const leaked = allUrls.filter((u) => u.includes("/services/forensic-economics"));
+  it("never emits a cross-sell service URL in any child", () => {
+    const leaked = allUrls.filter((u) => CROSS_SELL_PATH.test(u));
     expect(leaked).toEqual([]);
   });
 
-  it("emits every pillar service x state and no forensic-economics URLs", () => {
+  it("emits every pillar service x state and no cross-sell service URLs", () => {
     const urls = childUrls["sitemap-services.xml"];
-    expect(genericServices).toHaveLength(10);
-    for (const s of genericServices) {
+    expect(genericServices).toEqual(PILLARS);
+    for (const s of PILLARS) {
       for (const st of states) expect(urls).toContain(`${BASE}/services/${s}/${st}`);
     }
-    expect(urls.some((u) => u.includes("/services/forensic-economics"))).toBe(false);
+    expect(urls.some((u) => CROSS_SELL_PATH.test(u))).toBe(false);
   });
 
   it("lists every pillar service exactly once at its pillar path", () => {
-    for (const slug of genericServices) {
-      expect(childUrls["sitemap-services.xml"]).toContain(`${BASE}/services/${slug}`);
+    for (const slug of PILLARS) {
+      expect(childUrls["sitemap-services.xml"].filter((u) => u === `${BASE}/services/${slug}`)).toHaveLength(1);
     }
+  });
+
+  it("the pillar whose slug shares the life-care-plan prefix is still advertised", () => {
+    expect(childUrls["sitemap-services.xml"]).toContain(`${BASE}/services/life-care-plan-cost-projection`);
   });
 });
 
 describe("scripts/lib/service-slugs.mjs object-boundary split", () => {
-  it("reads the real services.ts: 10 pillars, forensic-economics flagged non-pillar", () => {
+  it("reads the real services.ts: 11 pillars in canonical order, both cross-sells flagged non-pillar", () => {
     const entries = serviceEntries(servicesSource);
-    expect(entries.map((e) => e.slug)).toContain("forensic-economics");
-    expect(entries.find((e) => e.slug === "forensic-economics")?.pillar).toBe(false);
-    expect(genericServices).toHaveLength(10);
-    expect(genericServices).not.toContain("forensic-economics");
-    expect(genericServices[0]).toBe("life-care-planning");
+    expect(entries).toHaveLength(13);
+    for (const slug of CROSS_SELLS) {
+      expect(entries.map((e) => e.slug)).toContain(slug);
+      expect(entries.find((e) => e.slug === slug)?.pillar).toBe(false);
+    }
+    expect(genericServices).toEqual(PILLARS);
+    expect(genericServices[0]).toBe("lost-earnings-and-earning-capacity");
   });
 
   it("splits on top-level object boundaries, not nested cost/process objects", () => {

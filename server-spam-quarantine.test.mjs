@@ -86,7 +86,7 @@ describe("server anti-spam quarantine branch", () => {
       name: "Real Looking Name",
       email: "lead@firm.com",
       phone: CONTACT_PHONE,
-      message: "I would like to discuss a life care plan.",
+      message: "I would like to discuss an economic damages analysis.",
       company_website: "http://spam.example",
     });
     await settle();
@@ -130,7 +130,7 @@ describe("server anti-spam quarantine branch", () => {
       name: "John Smith",
       email: "j.o.h.n.smith@gmail.com", // 1 signal (email-dot-salad); below threshold
       phone: CONTACT_PHONE,
-      message: "Requesting a life care plan for an upcoming matter.",
+      message: "Requesting a lost earnings analysis for an upcoming matter.",
     });
     await settle();
 

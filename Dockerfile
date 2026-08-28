@@ -17,7 +17,7 @@ COPY . .
 # Build-time public vars. Vite inlines import.meta.env.VITE_* during the build,
 # so they must be present for `npm run build`. The Turnstile SITE key is public
 # (it ships in client JS; only TURNSTILE_SECRET_KEY is secret). Empty default:
-# the KW LCP site has its own Turnstile widget, so set the real key as a Railway
+# the KW Economics site has its own Turnstile widget, so set the real key as a Railway
 # service variable (forwarded as a --build-arg) BEFORE the first deploy, or the
 # widget is omitted from the bundle. Beware Docker layer caching: a build cached
 # with an empty key keeps the widget tree-shaken out until a no-cache rebuild.
@@ -26,7 +26,7 @@ ENV VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
 
 # Public GA4 measurement id (like the Turnstile SITE key, it ships in client JS).
 # Empty default keeps analytics DORMANT; set this build-arg (Railway service var)
-# to the KW LCP property's G-XXXX id to activate site-wide analytics.
+# to the KW Economics property's G-XXXX id to activate site-wide analytics.
 ARG VITE_GA_MEASUREMENT_ID=""
 ENV VITE_GA_MEASUREMENT_ID=$VITE_GA_MEASUREMENT_ID
 

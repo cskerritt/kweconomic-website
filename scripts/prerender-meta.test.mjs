@@ -155,3 +155,24 @@ describe("retired vocational-site routes are neither prerendered nor advertised"
     for (const r of RETIRED) expect(sitemapSrc, r).not.toContain(`"${r}"`);
   });
 });
+
+// The static shells carry the only copy a non-JS crawler ever sees for ~8.5k
+// routes, so no inherited life-care-planning or vocational claim may survive
+// in prerender.mjs's shell text (titles, descriptions, innerHtml, comments).
+// "life care plan" as the subject of a cost projection is allowed; the
+// planner, the certification, and the physician-review claim are not.
+describe("prerender shell text is economics-framed", () => {
+  const BANNED = /life care planner|CLCP|CNLCP|physician|KW LCP|kwlcp|Life Care Planning|KWVRS|Kincaid Wolstein Vocational|vocational expert/i;
+  it("scripts/prerender.mjs matches no sister-practice phrasing", () => {
+    const hits = prerenderSrc
+      .split("\n")
+      .map((line, i) => (BANNED.test(line) ? `${i + 1}: ${line.trim().slice(0, 140)}` : null))
+      .filter(Boolean);
+    expect(hits).toEqual([]);
+  });
+  it("refuses to emit shells for both cross-sell service routes", () => {
+    expect(prerenderSrc).toContain('"/services/vocational-evaluation"');
+    expect(prerenderSrc).toContain('"/services/life-care-planning"');
+    expect(prerenderSrc).not.toContain('"/services/forensic-economics"');
+  });
+});

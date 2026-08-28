@@ -9,6 +9,7 @@ import { verifyTurnstile, turnstileStartupState } from "./turnstile.server.mjs";
 import * as rawSubs from "./lib/raw-submissions.server.mjs";
 import { checkSpam } from "./lib/spam-heuristics.server.mjs";
 import { sendLeadEmail, DEFAULT_LEAD_RECIPIENTS } from "./lib/lead-mailer.server.mjs";
+import { ORG_NAME, SITE_URL } from "./lib/brand.server.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
@@ -304,9 +305,14 @@ function acceptsGzip(req) {
   return ae.includes("gzip");
 }
 
-// When CANONICAL_HOST is set (e.g. "kweconomics.com"), 301 every other hostname -
-// www.kweconomics.com, the *.up.railway.app default domain - to it, preserving the
-// path. Unset (local dev, Docker tests) this is a no-op.
+// Production sets CANONICAL_HOST to the apex host of SITE_URL ("kweconomics.com",
+// lib/brand.server.mjs): every other hostname - www.kweconomics.com, the
+// *.up.railway.app default domain - then 301s to it, preserving the path. The
+// value is read from the environment rather than hard-coded on purpose: unset or
+// empty (local dev, the Docker smoke, and the Railway staging URL before the DNS
+// cutover) it is a no-op, so a fresh deploy can never bounce every request to a
+// domain that does not point at it yet. Set it at cutover (README, Production).
+const PRODUCTION_CANONICAL_HOST = new URL(SITE_URL).host;
 const CANONICAL_HOST = process.env.CANONICAL_HOST || "";
 
 // The HTTP request handler, exported so tests can drive it over a real ephemeral
@@ -541,7 +547,12 @@ const server = createServer(requestHandler);
 // unaffected.
 if (!process.env.VITEST) {
   server.listen(PORT, () => {
-    console.log(`KW LCP server running on port ${PORT}`);
+    console.log(`${ORG_NAME} server running on port ${PORT}`);
+    console.log(
+      CANONICAL_HOST
+        ? `canonical host: ${CANONICAL_HOST} (other hostnames 301 to it)`
+        : `canonical host redirect OFF (CANONICAL_HOST unset; set CANONICAL_HOST=${PRODUCTION_CANONICAL_HOST} at cutover)`,
+    );
     console.log(
       turnstileStartupState({
         siteKey: process.env.VITE_TURNSTILE_SITE_KEY,

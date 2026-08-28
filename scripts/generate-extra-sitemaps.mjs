@@ -1,5 +1,5 @@
 /**
- * KW Life Care Planning image + news sitemap generator
+ * KW Economics image + news sitemap generator
  *
  * Emits two supplementary sitemaps from source-of-truth data, so they cannot
  * drift from the live site:
@@ -37,9 +37,9 @@ const PUBLICATION_NAME = `${ORG_NAME} Insights`;
 // page components; an image sitemap should only list images present on the page).
 const PAGE_IMAGES = [
   { path: "/", images: [{ src: "/images/hero-office-meeting.jpg", title: `${ORG_NAME} team consultation` }] },
-  { path: "/about", images: [{ src: "/images/mentor-trainee.jpg", title: `${ORG_NAME} life care planning consultation` }] },
-  { path: "/contact", images: [{ src: "/images/legal-contract.jpg", title: `Retain ${ORG_NAME} for life care planning services` }] },
-  { path: "/services", images: [{ src: "/images/legal-team-discussion.jpg", title: `${ORG_NAME} life care planning services` }] },
+  { path: "/about", images: [{ src: "/images/mentor-trainee.jpg", title: `${ORG_NAME} forensic economics consultation` }] },
+  { path: "/contact", images: [{ src: "/images/legal-contract.jpg", title: `Retain ${ORG_NAME} for economic damages analysis` }] },
+  { path: "/services", images: [{ src: "/images/legal-team-discussion.jpg", title: `${ORG_NAME} forensic economics and damages services` }] },
   { path: "/schedule-consultation", images: [{ src: "/images/mentor-trainee.jpg", title: `Schedule a ${ORG_NAME} consultation` }] },
 ];
 

@@ -1,8 +1,8 @@
-# KW Life Care Planning (kwlcp.com)
+# KW Economics (kweconomics.com)
 
-Marketing site for **KW Life Care Planning** ("KW LCP"), the life care planning practice of Kincaid Wolstein Vocational and Rehabilitation Services. Life-care-planning only: 10 pillar services (life care planning, pediatric, catastrophic injury, medical cost projection, plan review/rebuttal, MSA allocation, etc.) across 56 states/territories and ~800 metros, pre-rendered to static HTML and served by a dependency-free Node server with a contact/lead API.
+Marketing and lead-capture site for **KW Economics**, the forensic economics, forensic accounting, and business valuation practice of the Kincaid Wolstein family of expert practices (legal line: Kincaid Wolstein Economics). Economics only: 11 pillar services (lost earnings and earning capacity, wrongful death economic loss, personal injury economic damages, household services, life care plan cost projection, employment and wage-loss damages, business valuation, lost profits, fraud and asset tracing, divorce and marital financial analysis, expert rebuttal), 14 case types, and 4 credential pages across 56 states and territories and 802 metros, pre-rendered to static head-only HTML shells and served by a dependency-free Node server with a contact/lead API. Copy is written from the economist's standpoint (what the loss claim consists of, which records drive it, how the number is built), citation-free, hyphens only, with sources routed through `src/data/references.ts`.
 
-Sister practices are linked, never duplicated: vocational work hands off to kwvrs.com and economics to kweconomics.com (`src/lib/brand.ts` is the only place those URLs are spelled; `src/components/CrossSell.tsx` is the one page component allowed to describe that work).
+Sister practices are linked, never duplicated: vocational work hands off to kwvrs.com and life care plan authorship to kwlcp.com. `src/lib/brand.ts` is the only place those URLs are spelled (`scripts/lib/site.mjs` and `lib/brand.server.mjs` mirror the brand constants for the build scripts and the runtime image), and `src/components/CrossSell.tsx` is the one component allowed to describe that work. The two `pillar: false` entries in `services.ts` resolve as short noindex cards that link out and are excluded from every enumeration, sitemap, and prerender.
 
 ## Local development
 
@@ -11,26 +11,26 @@ export PATH=~/.local/node/node-v22.22.0-darwin-arm64/bin:$PATH   # Node 22 (Node
 npm ci
 npm run dev        # Vite dev server with HMR
 npm run build      # sitemaps -> llms.txt -> extra sitemaps -> tsc -> vite build -> prerender (writes dist/)
-npm test           # vitest (unit + guard tests; some sitemap checks need dist/ from a prior build)
+npm test           # vitest (unit + guard tests; the sitemap-to-dist coverage check needs dist/ from a prior build)
 npm run lint       # eslint .
 npm run preview    # serve the vite build without the prerendered shells
 ```
 
-Full gate before pushing: `npx tsc -b && npx eslint . && npx vitest run && npm run build`.
+Full gate before pushing: `npx tsc -b && npx eslint . && npx vitest run && npm run build`, then the Docker smoke below.
 
 Other scripts: `generate:sitemaps`, `generate:llms`, `images:webp` (needs `cwebp`), `indexnow` (submits sitemap URLs; set `INDEXNOW_KEY`, optional `INDEXNOW_HOST`).
 
 ## Production
 
-`node server.js` serves `dist/` (prerendered shells + assets), the API routes (`/api/contact`, `/api/consultation`, `/api/whitepaper`), and `/healthz`. No framework; `http` module only.
+`node server.js` serves `dist/` (prerendered shells + assets), the three API routes (`/api/contact`, `/api/consultation`, `/api/whitepaper`), and `/healthz`. No framework; `http` module only. Lead delivery is `lib/lead-mailer.server.mjs` (Resend): the team notice is `[KW Economics] New <type> inquiry - <name>`, and consultation requests also get a visitor acknowledgement signed KW Economics.
 
 | Var | Required | Purpose |
 |---|---|---|
 | `PORT` | Railway | Listen port, default `3000` |
-| `CANONICAL_HOST` | yes | `kwlcp.com`; other hosts 301 to it |
-| `LEAD_RECIPIENTS` | yes | Comma list for lead notifications; default `info@kwvrs.com` until a kwlcp.com mailbox exists |
-| `LEAD_FROM` | yes | Resend sender, `Name <addr>` form; default `KW Life Care Planning <info@kwvrs.com>` (`lib/lead-mailer.server.mjs`). kwlcp.com must be a verified Resend domain before this moves |
-| `RESEND_API_KEY` | prod | Lead email delivery; unset = emails are logged, not sent |
+| `CANONICAL_HOST` | yes, at DNS cutover | `kweconomics.com`; every other hostname (www, the `*.up.railway.app` domain) 301s to it. Read from the environment on purpose: unset or empty means no redirect, so a staging deploy is reachable on its Railway URL before DNS points at it. The startup log prints whether the redirect is on |
+| `LEAD_RECIPIENTS` | yes | Comma list for lead notifications; default `info@kwvrs.com` until a kweconomics.com mailbox exists |
+| `LEAD_FROM` | yes | Resend sender, `Name <addr>` form; default `KW Economics <info@kwvrs.com>` (`lib/lead-mailer.server.mjs`). kweconomics.com must be a verified Resend domain before this moves |
+| `RESEND_API_KEY` | prod | Lead email delivery; unset = leads are logged and stored, not emailed |
 | `VITE_TURNSTILE_SITE_KEY` | prod (build arg) | Cloudflare Turnstile widget; baked in at `vite build` |
 | `TURNSTILE_SECRET_KEY` | prod | Server-side Turnstile verification |
 | `TURNSTILE_REQUIRE_TOKEN` | optional | `"true"` rejects submissions with no token (default: soft-fail, quarantined) |
@@ -38,111 +38,113 @@ Other scripts: `generate:sitemaps`, `generate:llms`, `images:webp` (needs `cwebp
 | `PUBLIC_SUPABASE_URL` / `PUBLIC_SUPABASE_SERVICE_ROLE_KEY` | optional | Durable raw-submission capture (`lib/raw-submissions.server.mjs`); unset = JSONL only |
 | `RATE_LIMIT_MAX` | optional | Contact-API requests per minute per IP, default `10` |
 
-Build args `VITE_TURNSTILE_SITE_KEY` and `VITE_GA_MEASUREMENT_ID` default to empty; the kwvrs keys are not carried over.
+Build args `VITE_TURNSTILE_SITE_KEY` and `VITE_GA_MEASUREMENT_ID` default to empty; no keys are carried over from either sister site.
 
 ## Deployment
 
-Railway, Dockerfile builder (`railway.json`): multi-stage `node:22-alpine` image runs the full `npm run build` then copies `dist/` (which already contains `public/`), `server.js`, `validation.server.mjs`, `turnstile.server.mjs`, and `lib/` into the runtime stage. Healthcheck `GET /healthz` returns JSON with the mail/turnstile/durable-capture readiness flags. Standing rule: `docker build && docker run` locally before pushing to `main`.
+Railway, Dockerfile builder (`railway.json`): multi-stage `node:22-alpine` image runs the full `npm run build` then copies `dist/` (which already contains `public/`), `server.js`, `validation.server.mjs`, `turnstile.server.mjs`, and `lib/` into the runtime stage (never `scripts/` or `src/`, which is why the runtime brand literals live in `lib/brand.server.mjs`). Healthcheck `GET /healthz` returns JSON with the mail/turnstile/durable-capture readiness flags. Standing rule: `docker build && docker run` locally before pushing to `main`:
+
+```bash
+docker build -t kweconomics .
+docker run --rm -d -p 3200:3000 -e CANONICAL_HOST= -e LEAD_RECIPIENTS=test@example.com --name kweconomics kweconomics
+curl -s localhost:3200/healthz
+curl -s -o /dev/null -w "%{http_code}\n" localhost:3200/services/lost-earnings-and-earning-capacity/new-jersey/hackensack
+docker stop kweconomics
+```
+
+Railway service creation and the DNS cutover are separate follow-ups on Chris's word (spec sections 10 and 11). There is no redirect map from the old kweconomics.com routes by design.
 
 ## Page inventory
 
-From `npm run build` at this commit (8,036 prerendered `index.html` shells):
+From `npm run build` at this commit (8,613 prerendered `index.html` shells):
 
 | Family | Pages |
 |---|---|
-| Core pages | 59 |
-| Service pillar pages | 10 |
+| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 48 |
+| Service pillar pages | 11 |
 | Knowledge guides | 2 |
 | Insight posts | 2 |
 | Guide pages | 13 |
 | Comparison pages | 8 |
 | State pages | 56 |
 | City pages | 802 |
-| Service x State | 560 |
-| Service x State x City | 5,270 |
-| Case-type x State | 616 |
-| Credential x State | 448 |
-| Service variant (cost/process/timeline) | 30 |
-| Service x Case-type | 110 |
-| Attorney journey | 48 |
-| White paper | 2 |
-| **Total** | **8,036** |
+| Service x State | 616 |
+| Service x State x City | 5,797 |
+| Case-type x State | 784 |
+| Credential x State | 224 |
+| Service variant (cost/process/timeline) | 33 |
+| Service x Case-type | 154 |
+| Attorney journey (4 stage indexes + 4 x 14) | 60 |
+| White paper (hub + 2) | 3 |
+| **Total** | **8,613** |
 
 Sitemap index `public/sitemap.xml` (5 children + image + news), `<loc>` counts:
 
 | File | URLs |
 |---|---|
-| `sitemap-core.xml` | 111 |
-| `sitemap-services.xml` | 3,461 (crawl-budget ceiling 3,600; city combos gated by `src/data/contentReadiness.ts`) |
+| `sitemap-core.xml` | 114 |
+| `sitemap-services.xml` | 3,840 (hub 1 + 11 pillars + 33 variants + 154 service x case + 616 service x state + 3,025 gated city combos; the test ceiling is 4,000, see build notes) |
 | `sitemap-locations.xml` | 859 |
-| `sitemap-case-types.xml` | 628 |
-| `sitemap-credentials.xml` | 457 |
-| `image-sitemap.xml` | 18 |
+| `sitemap-case-types.xml` | 799 |
+| `sitemap-credentials.xml` | 229 |
+| `image-sitemap.xml` | 8 |
 | `news-sitemap.xml` | 2 |
 
-Service x State x City pages are prerendered for the top slice of each state's cities (5,270) but only the content-ready subset is advertised in the sitemap; `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404.
+Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 5,797 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`); `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404. `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.
 
 ## Content model (`src/data`)
 
 | File | Holds |
 |---|---|
-| `services.ts` | 11 service entries; 10 `pillar: true` get routes and sitemap entries; `forensic-economics` is `pillar: false` and renders only as a cross-sell card pointing at the sister site |
-| `caseTypes.ts` | 11 case types with relevant services, FAQs, sources |
-| `credentials.ts` | 8 credentials (CLCP, CNLCP, CRC, ...) with featured `expertSlugs` |
-| `states.ts` | 56 states/territories: slug, courts, regs pointers |
-| `cities/*.ts` | One file per state (56) listing that state's metros; `cities/index.ts` aggregates |
+| `services.ts` | 13 service entries; 11 `pillar: true` get routes, sitemap entries, and shells; `vocational-evaluation` and `life-care-planning` are `pillar: false` cross-sells with an `externalUrl` to the sister practice. Every entry carries `cost`, `process` (4+ steps), `timeline` (3+ phases), `keywords` |
+| `caseTypes.ts` | 14 case types with `lossComponents`, `damagesExposure`, `economicImpact`, related pillars, FAQs, sources |
+| `credentials.ts` | 4 credentials (`forensic-economist`, `nafe-member`, `aaefe-member`, `graduate-economics-degree`); membership pages carry `expertSlugs: []` and describe the association, never the roster |
+| `team.ts` | 2 members: Christopher Skerritt (leadership, senior expert tier) and Zachary Sperling (support); background credentials listed as background |
+| `states.ts` | 56 states, DC, and territories: slug, region, courts and regulation pointers |
+| `cities/*.ts` | One file per state (56) listing that state's metros (802 total); `cities/index.ts` aggregates |
 | `contentReadiness.ts` | Prerender vs. sitemap gating constants for service x state x city |
-| `local-content.ts` | Hand-written local essays for first-hand markets (Hackensack, Richmond, ...) |
-| `geo-prose.mjs` | Templated state/city prose shared by React pages and `scripts/prerender.mjs` |
-| `geographicFaqs.ts` | Per-geography FAQ variants |
-| `narratives.ts` | Service x case-type narrative blocks |
-| `methods.ts` | Methodology descriptions cited from service pages |
-| `references.ts` | Citation registry (standards of practice, journals, statutes) |
+| `local-content.ts` | 10 hand-written local essays for first-hand markets: the New York, Virginia, and Massachusetts state pages plus New York City, Brooklyn, Newark, Hackensack, Jersey City, Los Angeles, and Houston |
+| `geo-prose.mjs` | Templated state/city prose (wage levels, cost of living, local labor markets, venue) shared by the React pages and `scripts/prerender.mjs`; `geo-prose.d.mts` types it |
+| `geographicFaqs.ts`, `narratives.ts` | Thin React wrappers over `geo-prose.mjs`; `narratives.parity.test.mjs` pins the two sides |
+| `methods.ts` | 8 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets) |
+| `guides.ts` | 13 attorney guides |
+| `comparisons.ts` | 8 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner) |
+| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 2 insight posts, 2 email-gated white papers |
+| `journeys.ts` | 56 attorney journey stages (considering, retaining, preparing-deposition, trial x 14 case types) |
+| `faqs.ts`, `home-faqs.mjs` | 15-question site FAQ and the 6-question homepage FAQ (shared with the prerender and the FAQPage JSON-LD) |
+| `testimonials.ts` | 4 economics-referencing testimonials |
+| `references.ts` | 30-entry citation registry (NAFE ethics statement, Journal of Forensic Economics, BLS series, worklife tables, Treasury yields, AICPA SSVS No. 1, NACVA, federal rules); the only path for sources |
 | `regulations/state-regs.ts`, `courts/state-courts.ts` | Per-state expert-testimony rules and court systems |
-| `labor/*.ts` | State/metro labor data retained for care-rate context |
-| `insights.ts`, `knowledge.ts`, `guides.ts`, `comparisons.ts`, `whitePapers.ts`, `journeys.ts` | Editorial content and attorney journey stages |
-| `faqs.ts`, `home-faqs.mjs` | Site FAQ and homepage FAQ (shared with prerender) |
-| `team.ts` | KW LCP roster, titles, specialties (see facts to confirm) |
-| `testimonials.ts` | Testimonials sourced from the parent firm's site |
+| `labor/*.ts` | State and metro labor context (never rendered as rates or wage figures in prose) |
 | `types.ts` | Shared TS types |
 
-Brand identity lives in `src/lib/brand.ts`; `scripts/lib/site.mjs` is its Node mirror for build scripts and `scripts/site-brand-parity.test.mjs` pins the two. `src/brand-strings.test.mjs` and `src/pages/off-brand-copy.test.mjs` fail the build if vocational-brand names or vocational-expert phrasing leak into rendered copy; the latter also walks `src/data/*.ts` (allowances: `team.ts` bios, `credentials.ts`, one workers' compensation hand-off line in `services.ts`, and at most one "sister practice" hand-off per journey stage in `journeys.ts`). `src/data/sources-urls.test.ts` keeps every source URL well-formed `https://`, and `src/components/layout/nav.pillars.test.mjs` pins the header/footer service links to `pillarServices()` order.
+Brand identity lives in `src/lib/brand.ts`; `scripts/lib/site.mjs` (build scripts) and `lib/brand.server.mjs` (runtime image) mirror it and `scripts/site-brand-parity.test.mjs` pins all three. Guards: `src/brand-strings.test.mjs` fails on any sister-brand form (`LEGACY_BRAND_PATTERN`) outside `brand.ts` / `CrossSell.tsx` and on either sister domain in scripts, server, or public text; `src/pages/off-brand-copy.test.mjs` fails on vocational or life-care-planning vocabulary in page, component, or data copy outside the carve-outs (`team.ts`, the `life-care-plan-cost-projection` service, the two sister-discipline comparisons); `src/pages/credential-claims.render.test.tsx` fails on any firm-level or named-person membership claim; `scripts/prerender-meta.test.mjs` pins every static shell's title/description to the React page and fails on sister-practice phrasing in the shell text; `src/data/sources-urls.test.ts` keeps every source URL well-formed `https://`; `src/components/layout/nav.pillars.test.mjs` pins the header/footer service links to `pillarServices()` order.
 
 ## Facts to confirm
 
-Site-level (spec section 11):
+Spec section 12, tracked here until Chris confirms each:
 
-- [ ] kwlcp.com mailbox: `ORG_EMAIL` and `LEAD_FROM` / `LEAD_RECIPIENTS` default to `info@kwvrs.com` until one exists.
-- [ ] Resend-verified sender for kwlcp.com (required before `LEAD_FROM` moves off the kwvrs address).
-- [ ] Whether KW LCP actually markets Medicare Set-Aside allocation and elder-care planning under this brand.
-- [ ] Final wordmark artwork: `public/images/logo.svg` is live text with a font fallback, not final art.
-- [ ] Twitter/LinkedIn handles for the new brand (`sameAs` currently lists only the sister sites).
-- [ ] GA4 measurement ID and Turnstile site/secret keys for the new domain.
-- [ ] `favicon.ico` not regenerated; still the kwvrs amber bar.
+- [ ] kweconomics.com mailbox and Resend-verified sender: `ORG_EMAIL`, `LEAD_FROM`, and `LEAD_RECIPIENTS` all default to `info@kwvrs.com`; move them once the mailbox exists and the domain is verified in Resend.
+- [ ] NAFE/AAEFE membership status for Chris and Zach: the membership pages (`credentials.ts`, `expertSlugs: []`) describe the associations and name no member; `llms.txt` says the same. Add slugs to `expertSlugs` only once membership is confirmed.
+- [ ] Zach's title and states served: `team.ts` carries "Economics Associate / Expert Liaison" and NJ, NY from the kwvrs.com roster.
+- [ ] Whether the firm markets business valuation and forensic accounting (fraud/tracing, divorce) under this brand and who signs those reports (valuation credentials): `business-valuation`, `lost-profits-and-commercial-damages`, `fraud-and-asset-tracing`, and `divorce-and-marital-financial-analysis` are live pillars with no named signer.
+- [ ] Office NAP unchanged: `OFFICES` in `brand.ts` carries the Hackensack, NJ and Richmond, VA records from kwlcp.
+- [ ] GA4 + Turnstile keys: `VITE_GA_MEASUREMENT_ID`, `VITE_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` are empty; new keys, none carried from a sister site.
+- [ ] Final wordmark: `public/images/logo.svg` / `logo.png` is a text lockup, not final art; favicons are navy and gold.
+- [ ] Social handles: `sameAs` lists only the sister sites.
 
-Editorial and credentialing:
+## Build notes and decisions (Task 11)
 
-- [x] CNLCP certifying body: verified 2026-08-26 as the CNLCP Certification Board (cnlcp.org; HEAD returns 405, GET 200). `credentials.ts` names the Board as issuer; AANLCP is cited only for the nurse life care planning scope and standards of practice.
-- [ ] Physician review of every plan: the site now says "physician-informed" (plans are developed by certified life care planners with a board-certified physician life care planner on the team). If every plan is in fact developed or reviewed by Dr. Jesse Wolstein, restore the stronger "Physician-Led" wording in `Home.tsx`, `About.tsx`, `home-faqs.mjs`, and `scripts/prerender.mjs` (keep `prerender-meta.test.mjs` green).
-- [ ] Jesse Wolstein "10 years of clinical experience" (`team.ts`) is a number that will go stale; confirm it or change to "over a decade".
-- [ ] IALCP Standards of Practice: no verifiable current-edition URL found; the site cites Reavis (2002), *Journal of Life Care Planning*. Replace with the current edition if the team has it.
-- [ ] American Samoa and CNMI oversight agency is rendered as a generic "Department of Health"; confirm the actual agency names.
-- [ ] `practiceContext` medical-malpractice wording deserves a counsel skim before launch.
-- [ ] Footer credential line reads "CLCP · CRC"; confirm that is the credential set the firm wants foregrounded.
-
-Team (from the Task 8 roster build):
-
-- [ ] Brief-mandated titles: Paul Bourgeois "Chief of Life Care Planning"; Matthew Putts "Senior Life Care Planner" (was Chief of Vocational Services); Christopher Skerritt "Chief of Economic Services & Medicare Set-Aside Consultant".
-- [ ] Jesse Wolstein specialties were mapped from the harvest ("Medical Foundation Review", "Life Expectancy Analysis") to service keys "Catastrophic Injury", "Medical Cost Projection", "Life Care Plan Review" so practice areas render; confirm he practices each.
-- [ ] Paul Bourgeois specialties "Life Care Plan Review" and "Expert Testimony" are not stated in either source (bio no longer claims them).
-- [ ] Christopher Skerritt `statesServed` is the kwvrs-era 7-state list (NJ, NY, MA, VA, RI, CT, PA); confirm for the MSA practice footprint. Dan Wolstein's is the same list.
-- [ ] `Team.tsx` hero: "qualified to provide testimony in state and federal courts nationwide" is a kwvrs-era claim carried forward.
-- [ ] `src/data/credentials.ts` `expertSlugs` is a featured list, not exhaustive: `crc` omits Christopher (who holds CRC); `phd` omits Dan and Matt (both Ph.D.). Decide whether to complete them or keep as curated.
+- `CANONICAL_HOST` stays environment-driven (`process.env.CANONICAL_HOST || ""`), the same as both sister sites, with `kweconomics.com` documented as the production value and echoed in the startup log. A hard-coded default would 301 the Railway staging URL to a domain that does not point at it yet, and would break the local Docker smoke (which passes `-e CANONICAL_HOST=`) and the server tests.
+- The `sitemap-services.xml` crawl-budget ceiling in `scripts/sitemap-index.test.mjs` is 4,000 (kwlcp pinned 3,600 for 10 pillars). With 11 pillars and the unchanged gate (`SERVICE_CITY_SITEMAP_TOP = 5` plus metro-labor cities) the child holds 3,840 URLs, so the ceiling is pinned just above the real count, as the twin sites do. Tightening it means narrowing the gate, which is a Chris call.
+- The four editorial shells with a named reviewer (`/knowledge/*`, `/insights/*`) print the byline "Christopher Skerritt, M.Ed., MBA, CRC, CLCP, MSCC", exactly as the React `AuthorByline` does (top three `team.ts` credentials not already in the name). The prerender mirrors the hydrated page on purpose; if the economics site should not surface CRC/CLCP/MSCC in bylines, the fix is to trim or reorder `credentials` in `team.ts`, not the shell.
+- `package.json` `name` is still `kwlcp-website` (lockfile-coupled metadata; no runtime effect).
 
 ## Related repos
 
-- **kwvrs-site** (`~/Documents/New project/kwvrs-site`) is the structural upstream: routing, prerender pipeline, sitemap partitioning, server, and the data-file shapes were cloned from it and then stripped to life care planning. Fixes to shared mechanics (prerender, sitemap gating, server hardening) should be considered for both.
-- **kweconomics** hosts the forensic-economics practice the `/services/forensic-economics` card links to.
+- **kwlcp-website** (`~/Documents/New project/kwlcp-website`, kwlcp.com) is the structural upstream: this repo started as a byte-identical import of its commit `b1e643c` (2026-08-26) and swapped the data layer, brand constants, copy, and tests. Fixes to shared mechanics (prerender, sitemap gating, server hardening, lead mailer) should be considered for all three sites.
+- **kwvrs-site** (`~/Documents/New project/kwvrs-site`, kwvrs.com) is kwlcp's upstream and the source of the team roster copy.
+- The old `cskerritt/kweconomics` site and the legacy tagonline build are not a source for anything here: no code, copy, routes, or redirects are carried from them.
 
 ## Stack
 

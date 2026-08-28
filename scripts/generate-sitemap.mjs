@@ -1,5 +1,5 @@
 /**
- * KW Life Care Planning sitemap generator
+ * KW Economics sitemap generator
  *
  * Writes a sitemap INDEX at public/sitemap.xml (the URL Search Console has on
  * file - an index at the same path keeps the existing submission valid) plus
@@ -85,8 +85,9 @@ async function loadContentReadiness() {
 }
 
 const states = extractSlugs("states.ts");
-// Pillar services only: `pillar: false` entries (forensic economics cross-sell)
-// are never advertised. Object-boundary split lives in scripts/lib/service-slugs.mjs.
+// Pillar services only: `pillar: false` entries (the vocational and life care
+// plan cross-sells) are never advertised. Object-boundary split lives in
+// scripts/lib/service-slugs.mjs.
 const serviceSlugs = pillarServiceSlugs(
   readFileSync(join(SRC_DATA, "services.ts"), "utf-8"),
 );
@@ -159,8 +160,8 @@ guides.forEach((g) => urls.add(`/guides/${g}`));
 comparisons.forEach((c) => urls.add(`/compare/${c}`));
 
 // Geographic pages: state hubs, city pages, and service x state. These are
-// prerendered local-SEO landing pages (state narrative, labor, courts, VR
-// regulations) that were previously omitted from the sitemap.
+// prerendered local-SEO landing pages (state narrative, wage and cost-of-living
+// context, courts, state damages rules).
 const cityFiles = readdirSync(join(SRC_DATA, "cities")).filter(
   (f) => f.endsWith(".ts") && f !== "index.ts",
 );
@@ -187,7 +188,7 @@ states.forEach((st) => {
   });
 });
 
-// Attorney journey pages: 4 stage index pages + 4 stages × 12 case types
+// Attorney journey pages: 4 stage index pages + 4 stages x 14 case types
 ["considering", "retaining", "preparing-deposition", "trial"].forEach((stage) => {
   urls.add(`/attorneys/${stage}`);
   caseTypes.forEach((c) => urls.add(`/attorneys/${stage}/${c}`));

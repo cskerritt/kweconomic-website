@@ -1,21 +1,26 @@
-# KW Life Care Planning (KW LCP)
+# KW Economics
 
 ## About
 
-KW Life Care Planning is a life care planning practice preparing independent, physician-informed life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for legal proceedings. The practice provides objective analysis for both plaintiff and defense attorneys, with certified life care planners who offer court-admissible opinions and expert witness testimony nationwide.
+KW Economics is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.
 
 ## Services
 
-- Life Care Planning: Individualized, evidence-based life care plans projecting the future medical, rehabilitation, and non-medical needs of individuals living with catastrophic injuries or chronic conditions. Each plan documents the items of care recommended across the patient's remaining life expectancy, with cost research grounded in geographic-specific provider data.
-- Pediatric Life Care Planning: Life care plans for minors with birth-related injuries, congenital conditions, or pediatric trauma. Plans address developmental considerations, transitions to adulthood, and lifetime care needs from current age through projected life expectancy.
-- Catastrophic Injury Life Care Plans: Life care plans for adults with traumatic brain injury, spinal cord injury, severe burns, amputations, and other catastrophic injuries. Plans coordinate medical, attendant care, equipment, home modification, and transportation needs over the life span.
-- Medical Cost Projections: Future medical care cost projections for cases that do not require a full life care plan. Useful for settlement valuation, mediation, and matters where a focused future-medical analysis is appropriate.
-- Workers' Compensation Life Care Plans: Life care plans built for workers' compensation matters, covering future medical care, attendant care, and rehabilitation needs, coordinated with the vocational specialist where return-to-work is contested.
-- Life Care Plan Updates: Updates of prior life care plans to reflect current medical condition, costs, and life expectancy data. Includes re-pricing of existing plans, incorporation of new treatment recommendations, and refresh of a plan prepared for an earlier stage of the case.
-- Life Care Plan Rebuttal and Critique: Independent review of an opposing party's life care plan for plaintiff or defense counsel. We examine each recommendation for foundation in the medical record, duplication, support for frequency and duration, pricing methodology, and life expectancy basis, and deliver a written critique with an optional alternative plan.
-- Medicare Set-Aside Allocations: Workers' compensation and liability Medicare set-aside allocation reports prepared by a certified Medicare set-aside consultant. Each allocation projects the future injury-related care that Medicare would otherwise cover and prices it using the accepted allocation methodology, in coordination with counsel regarding CMS review thresholds and submission strategy.
-- Elder and Long-Term Care Planning: Non-litigation life care plans for families, guardians, trustees, and special-needs trusts. Plans document current care needs, project future care levels and costs, and give families and fiduciaries a defensible basis for budgeting, placement, and trust administration decisions.
-- Expert Witness Testimony: Qualified expert witness testimony for depositions and trial on life care planning, future medical costs, and standards of practice in the field. Experience in state and federal courts across jurisdictions, for plaintiff and defense counsel.
+- Lost Earnings and Earning Capacity Analysis: Past and future lost earnings and fringe benefits for a person whose injury has removed them from work or reduced what they can earn. The analysis builds from the earnings history, projects the but-for path over the person's expected worklife with wage growth, and discounts the future stream to present value. When the person can still work in a reduced capacity, the loss is framed as diminished earning capacity, with the post-injury path drawn from a vocational opinion or the treating record and offset against the but-for projection.
+- Wrongful Death Economic Loss: The economic loss to survivors when a wage earner or homemaker dies: the decedent's lost earnings and fringe benefits net of personal consumption, the household services the decedent would have provided, and the financial support that would have flowed to dependents. Which elements are recoverable, and whether the loss is measured to the estate or to the survivors, vary by state, so the analysis is structured to the framework counsel identifies and every assumption is stated so it can be examined.
+- Personal Injury Economic Damages: An integrated economic damages report for an injured person: lost earnings and fringe benefits, lost household services, and the present value of future medical and care costs supplied by treating providers or a life care plan. One report carries every economic component to a single present value with consistent growth, discount, and life expectancy assumptions, so counsel can present the damages as a whole and the jury sees one set of numbers.
+- Household Services Valuation: Replacement-cost valuation of the household production an injured or deceased person can no longer provide: meal preparation, cleaning, home and vehicle maintenance, shopping, child care, and care of other household members. The hours are drawn from national time-use data adjusted to the person's household composition and pre-injury role, and each category is priced at the local wage for the occupation that would replace it, then projected and discounted over the period of loss.
+- Life Care Plan Cost Projection and Present Value: Reduction of a life care plan's line items to a single present value. The plan's items, frequencies, durations, and unit costs are carried forward with medical cost growth appropriate to each category, then discounted over the applicable life expectancy. Plan authorship stays with the life care planner; our role is the economic translation of the plan into a damages figure that reconciles with the plan and can be examined item by item.
+- Employment and Wage-Loss Damages: Back pay, front pay, and lost benefits in discrimination, retaliation, wrongful termination, and wage-and-hour matters. The analysis reconstructs what the employee would have earned in the position, including raises, bonuses, and benefit accruals, measures actual interim earnings, and evaluates mitigation and the period over which front pay is reasonable. In wage-and-hour matters the same records drive an hours and pay reconstruction for the individual claim or the class.
+- Business Valuation: Valuation of closely held businesses and ownership interests for shareholder and partnership disputes, divorce, estate and gift matters, and buy-sell disagreements. The work applies the income, market, and asset approaches under the standard of value that governs the matter, addresses discounts for lack of control and marketability where they apply, and documents every input so the conclusion can be tested on cross-examination.
+- Lost Profits and Commercial Damages: Lost profits and related commercial damages for contract, business-tort, and business-interruption matters. The analysis builds the but-for revenue and cost path from the company's own history, its market, and the terms of the disputed relationship, links each claimed loss to the conduct at issue, addresses mitigation, and reasons through the period of loss so the damages figure answers the causation question as well as the amount.
+- Fraud Investigation and Asset Tracing: Forensic accounting for embezzlement, misappropriation, and financial statement irregularities. The work reconstructs the flow of funds through bank, ledger, and payment records, traces diverted assets to where they came to rest, quantifies the loss for each scheme identified, and documents the evidence trail so it can support a civil claim, an insurance recovery, or a referral to authorities.
+- Divorce and Marital Financial Analysis: Financial analysis for matrimonial matters: determination of income available for support when a spouse is self-employed or compensated in ways that do not appear on a pay stub, valuation of business interests in the marital estate, lifestyle analysis that documents the marital standard of living, and tracing of separate versus marital funds through accounts and assets. Each analysis is written so counsel can present it directly and the other side can test it.
+- Expert Rebuttal and Report Review: Critique of an opposing economic damages, valuation, or forensic accounting report for plaintiff or defense counsel. The review tests the assumptions, data sources, discount rates, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The result supports cross-examination, a rebuttal report, or a motion directed at the reliability of the opinion.
+
+## Case Types
+
+Personal Injury, Wrongful Death, Medical Malpractice, Motor Vehicle Accident, Traumatic Brain Injury, Spinal Cord Injury, Workers' Compensation, Employment Discrimination, Wrongful Termination, Commercial Contract Dispute, Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Fraud and Embezzlement, Product Liability
 
 ## Geographic Coverage
 
@@ -23,31 +28,42 @@ KW Life Care Planning is a life care planning practice preparing independent, ph
 - District of Columbia
 - U.S. territories including Puerto Rico, U.S. Virgin Islands, Guam, American Samoa, Northern Mariana Islands
 
-## Credentials Held by the Team
+## Credentials and Standards
 
-- CLCP - Certified Life Care Planner
-- CNLCP - Certified Nurse Life Care Planner
-- MSCC - Medicare Set-Aside Certified Consultant
-- CDMS - Certified Disability Management Specialist
-- CRC - Certified Rehabilitation Counselor
-- M.D. - Doctor of Medicine
-- R.N. - Registered Nurse
-- Ph.D. - Doctor of Philosophy
+Reference pages on how a forensic economist is qualified to testify on damages: graduate training in economics, finance, and business, the professional standards of the national forensic economics associations, and a record of reports and testimony. No state licenses forensic economists. These pages describe the qualification and how courts weigh it; they do not list the roster.
+
+- Forensic Economist - Forensic Economics Expert Witness
+- NAFE - National Association of Forensic Economics Member
+- AAEFE - American Academy of Economic and Financial Experts Member
+- MBA / M.A. / Ph.D. - Graduate Economics and Business Degrees
+
+## Team
+
+- Christopher Skerritt, M.Ed., MBA - Chief of Economic Services
+- Zachary Sperling - Economics Associate / Expert Liaison
 
 ## Office Locations
 
 - Headquarters: Hackensack, New Jersey
-- Office: Virginia
+- Office: Richmond, Virginia
 
 ## Contact
 
 - Phone: (201) 343-0700
 - Website: https://kweconomics.com
 
-## Related Site
+## Key Pages
 
-- https://kweconomics.com - Forensic economics sister practice
+- Services: https://kweconomics.com/services
+- Case types: https://kweconomics.com/case-types
+- Guides for attorneys: https://kweconomics.com/guides
+- Methods: https://kweconomics.com/methods
+- Comparisons: https://kweconomics.com/compare
+- Frequently asked questions: https://kweconomics.com/resources/faq
+- White papers: https://kweconomics.com/white-papers
+- Locations: https://kweconomics.com/locations
+- Full reference: https://kweconomics.com/llms-full.txt
 
-## Case Types Served
+## Related Practices
 
-Traumatic Brain Injury, Spinal Cord Injury, Amputation, Wrongful Death, Medical Malpractice, Burn Injury, Personal Injury, Workers' Compensation, Motor Vehicle Accident, Birth Injury, Cerebral Palsy
+KW Economics is part of the Kincaid Wolstein family of expert practices. Vocational evaluation (employability and post-injury work capacity) and life care plan authorship are performed by sister practices in the same group; this site links to them from its services pages and does not offer those services itself. When a matter needs both, the economist builds the loss on the sister practice's opinion so the reports reconcile.

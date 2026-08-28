@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <sitemap><loc>https://kwlcp.com/sitemap-core.xml</loc></sitemap>
-  <sitemap><loc>https://kwlcp.com/sitemap-services.xml</loc></sitemap>
-  <sitemap><loc>https://kwlcp.com/sitemap-locations.xml</loc></sitemap>
-  <sitemap><loc>https://kwlcp.com/sitemap-case-types.xml</loc></sitemap>
-  <sitemap><loc>https://kwlcp.com/sitemap-credentials.xml</loc></sitemap>
-  <sitemap><loc>https://kwlcp.com/image-sitemap.xml</loc></sitemap>
+  <sitemap><loc>https://kweconomics.com/sitemap-core.xml</loc></sitemap>
+  <sitemap><loc>https://kweconomics.com/sitemap-services.xml</loc></sitemap>
+  <sitemap><loc>https://kweconomics.com/sitemap-locations.xml</loc></sitemap>
+  <sitemap><loc>https://kweconomics.com/sitemap-case-types.xml</loc></sitemap>
+  <sitemap><loc>https://kweconomics.com/sitemap-credentials.xml</loc></sitemap>
+  <sitemap><loc>https://kweconomics.com/image-sitemap.xml</loc></sitemap>
 </sitemapindex>

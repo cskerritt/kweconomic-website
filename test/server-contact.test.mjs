@@ -52,7 +52,7 @@ describe("POST /api/contact end-to-end (no external services)", () => {
   it("accepts a valid lead, returns success, and queues the lead email", async () => {
     const res = await post(base, "/api/contact", {
       name: "Ann Attorney", email: "ann@firm.com", phone: "201-555-1212",
-      message: "Need a TBI life care plan for a Bergen County matter.",
+      message: "Need a lost earnings analysis for a Bergen County matter.",
     });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ success: true });
