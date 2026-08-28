@@ -38,22 +38,22 @@ const whatToExpect = [
   {
     step: "3",
     heading: "Consultation Call",
-    body: "We will schedule a telephone or video consultation to discuss the case in more detail - the injury, the relevant medical records, the timeline, and whether a full life care plan, a medical cost projection, or a plan rebuttal fits the matter. This call is typically 30-45 minutes.",
+    body: "We will schedule a telephone or video consultation to discuss the case in more detail - the loss claim, the earnings, benefit, or financial records available, the timeline, and whether a full damages report, a present value analysis, or a rebuttal of an opposing report fits the matter. This call is typically 30-45 minutes.",
   },
   {
     step: "4",
     heading: "Engagement and Records",
-    body: "If we proceed, we will confirm scope, timeline, and fee in writing and send a records request list. Once the engagement letter is signed and materials received, the planner will begin the evaluation.",
+    body: "If we proceed, we will confirm scope, timeline, and fee in writing and send a records request list. Once the engagement letter is signed and materials received, the economist will begin the analysis.",
   },
 ];
 
 const infoToHaveReady = [
   "Nature of the matter (case type and jurisdiction)",
-  "Date of injury, incident, or event at issue",
-  "Injured person's age and current living situation",
-  "Diagnoses, treating providers, and a medical summary, if available",
+  "Date of the injury, death, termination, breach, or other event at issue",
+  "The claimant's age, occupation, and work history, or the business whose losses are at issue",
+  "Earnings, tax, and benefit records or business financial statements, if available",
   "Any deadlines - trial date, discovery cutoff, or expert disclosure date",
-  "Whether you need a plaintiff-side or defense-side plan, or a rebuttal of an existing plan",
+  "Whether you need an affirmative damages report, a rebuttal of an opposing economist's report, or both",
 ];
 
 export default function ScheduleConsultation() {
@@ -107,7 +107,7 @@ export default function ScheduleConsultation() {
   usePageMeta({
     title: `Schedule a Consultation | ${ORG_NAME}`,
     description:
-      `Contact ${ORG_NAME} to discuss your case and schedule a consultation with a certified life care planner. Response within one business day.`,
+      `Contact ${ORG_NAME} to discuss your case and schedule an economic damages consultation with a forensic economist. Response within one business day.`,
     canonical: `${SITE_URL}/schedule-consultation`,
   });
 
@@ -138,7 +138,7 @@ export default function ScheduleConsultation() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Picture
             src="/images/mentor-trainee.jpg"
-            alt="Life care planner guiding an attorney through the consultation process"
+            alt="Economist walking an attorney through the consultation process"
             width={1200}
             height={400}
             className="rounded-2xl shadow-xl w-full object-cover max-h-72"
@@ -334,7 +334,7 @@ export default function ScheduleConsultation() {
                     rows={4}
                     required
                     className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent resize-none"
-                    placeholder="Describe the injury, the records you have, and the plan or projection you need..."
+                    placeholder="Describe the loss claim, the records you have, and the analysis you need..."
                   />
                 </div>
 

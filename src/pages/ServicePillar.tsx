@@ -2,7 +2,7 @@ import { useParams, Navigate, Link } from "react-router-dom";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, serviceSchema, breadcrumbSchema, faqPageSchema, ORG_URL } from "@/lib/schema";
 import { getServiceBySlug } from "@/data/services";
-import { caseTypes } from "@/data/caseTypes";
+import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { states } from "@/data/states";
 import { ORG_NAME, ORG_SHORT } from "@/lib/brand";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -26,6 +26,17 @@ const REGIONS: { key: "northeast" | "southeast" | "midwest" | "west"; label: str
 const CASE_TYPE_SLUGS: Record<string, string> = Object.fromEntries(
   caseTypes.map((c) => [c.name, c.slug]),
 );
+
+// services.ts lists case types by slug; resolve to the case-type record (name
+// lookup kept as a fallback) so the chips print names and link real pages.
+const resolveCaseType = (ref: string) => getCaseType(ref) ?? caseTypes.find((c) => c.name === ref);
+
+// Non-pillar cross-sell cards point back at the economics line that consumes
+// the sister practice's opinion.
+const NON_PILLAR_RELATED: Record<string, { href: string; label: string }> = {
+  "vocational-evaluation": { href: "/services/lost-earnings-and-earning-capacity", label: "Lost earnings analysis" },
+  "life-care-planning": { href: "/services/life-care-plan-cost-projection", label: "Life care plan costing" },
+};
 
 export default function ServicePillar() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>();
@@ -60,7 +71,7 @@ export default function ServicePillar() {
     },
     {
       question: `Does ${ORG_SHORT} work for both plaintiff and defense?`,
-      answer: `Yes. ${ORG_NAME} provides independent, objective ${service.shortName.toLowerCase()} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every plan is grounded in published standards of practice.`,
+      answer: `Yes. ${ORG_NAME} provides independent, objective ${service.shortName.toLowerCase()} analysis for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every report is built from the records in the case and published data, with each assumption stated.`,
     },
     {
       question: `Where does ${ORG_SHORT} provide ${service.shortName.toLowerCase()}?`,
@@ -68,7 +79,7 @@ export default function ServicePillar() {
     },
     {
       question: `What is the typical turnaround for a full ${service.shortName.toLowerCase()} report?`,
-      answer: `Full retained-expert reports typically take 30 to 90 days from records receipt depending on case complexity. Rush turnarounds are accommodated case-by-case.`,
+      answer: `Most reports are delivered within several weeks after the records are complete, depending on the number of loss components and scenarios to be analyzed. Rush turnarounds are accommodated case by case.`,
     },
   ];
 
@@ -141,12 +152,12 @@ export default function ServicePillar() {
               </h2>
               <div className="flex flex-wrap gap-2">
                 {service.caseTypes.map((ct) => {
-                  const slug = CASE_TYPE_SLUGS[ct];
+                  const type = resolveCaseType(ct);
                   const className =
                     "inline-block bg-navy/5 text-navy font-medium text-sm px-4 py-1.5 rounded-full border border-navy/15 hover:bg-navy hover:text-white transition-colors";
-                  return slug ? (
-                    <Link key={ct} to={`/case-types/${slug}`} className={className}>
-                      {ct}
+                  return type ? (
+                    <Link key={ct} to={`/case-types/${type.slug}`} className={className}>
+                      {type.name}
                     </Link>
                   ) : (
                     <span key={ct} className={className.replace(" hover:bg-navy hover:text-white transition-colors", "")}>
@@ -305,6 +316,7 @@ export default function ServicePillar() {
 function NonPillarCard({ service }: { service: Service }) {
   const external = service.externalUrl;
   const host = external ? new URL(external).hostname.replace(/^www\./, "") : null;
+  const related = NON_PILLAR_RELATED[service.slug] ?? { href: "/services", label: "All services" };
   return (
     <div className="min-h-screen bg-neutral-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -318,16 +330,16 @@ function NonPillarCard({ service }: { service: Service }) {
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="bg-white rounded-xl border border-neutral-200 p-8">
           <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3">
-            Offered through the firm&apos;s economics practice
+            Offered through a sister practice
           </p>
           <h1 className="font-serif text-3xl lg:text-4xl text-navy font-bold mb-4">
             {service.name}
           </h1>
           <p className="text-lg text-neutral-600 mb-6">{service.description}</p>
           <p className="text-neutral-600 mb-8">
-            {ORG_NAME} prepares the life care plan; the present-value analysis of its
-            costs is performed by the firm&apos;s forensic economists, who coordinate
-            with the planner so the plan and the valuation reconcile.
+            This work is performed by a sister practice in the same family of expert firms.
+            {" "}{ORG_NAME} builds its economic analysis on that opinion and coordinates
+            testimony so the two reports reconcile.
           </p>
           <div className="flex flex-wrap gap-3">
             {external && (
@@ -341,10 +353,10 @@ function NonPillarCard({ service }: { service: Service }) {
               </a>
             )}
             <Link
-              to="/services/life-care-planning"
+              to={related.href}
               className="inline-flex items-center gap-2 border border-teal text-teal hover:bg-teal/10 font-medium px-6 py-3 rounded-lg transition-colors"
             >
-              Life care planning <ArrowRight className="w-4 h-4" />
+              {related.label} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>

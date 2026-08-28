@@ -85,7 +85,7 @@ export interface TeamMember {
   priorTestimony?: string;
   cvUrl?: string;
   fullBio?: string;
-  sameAs?: string[]; // External profile URLs (LinkedIn, ABVE, ResearchGate, Google Scholar, ORCID, etc.) for sameAs Person schema
+  sameAs?: string[]; // External profile URLs (LinkedIn, NAFE, ResearchGate, Google Scholar, ORCID, etc.) for sameAs Person schema
   memoriam?: boolean; // Deceased colleague honored in the team page's In Memoriam section; excluded from active-expert listings
   // Retention tier shown on the intake forms' expert picker. ABSENT means the
   // member is not offered for retention (support, operations, interns, and

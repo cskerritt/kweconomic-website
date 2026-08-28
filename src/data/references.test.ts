@@ -44,7 +44,7 @@ const ECONOMICS_KEYS: Record<string, ReferenceTier> = {
 };
 
 // Life-care-planning-only and vocational-only sources have no place on an
-// economics site; the kwlcp/kwvrs builds carried them and this build prunes them.
+// economics site; the sister-site builds carried them and this build prunes them.
 const PRUNED = [
   "WEED_BERENS",
   "IARP_IALCP_STANDARDS",

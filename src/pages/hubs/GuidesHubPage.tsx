@@ -9,9 +9,9 @@ import { ORG_NAME } from "@/lib/brand";
 export default function GuidesHubPage() {
   const url = `${ORG_URL}/guides`;
   usePageMeta({
-    title: `Life Care Planning Guides | ${ORG_NAME}`,
+    title: `Forensic Economics Guides for Attorneys | ${ORG_NAME}`,
     description:
-      "In-depth practitioner guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice. Methodology, admissibility, and engagement guidance.",
+      "In-depth practitioner guides on lost earnings, wrongful death damages, household services, present value, expert disclosure and admissibility, business valuation, lost profits, and rebutting an economic report.",
     canonical: url,
   });
   return (
@@ -24,10 +24,10 @@ export default function GuidesHubPage() {
             Practitioner Guides
           </p>
           <h1 className="kw-enter kw-enter-1 font-serif text-3xl md:text-4xl font-bold leading-tight mb-3">
-            Guides
+            Guides for Attorneys
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            In-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice.
+            In-depth guides on economic damages, business valuation, forensic accounting, and expert witness practice, written for the attorneys who retain and cross-examine economists.
           </p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default function GuidesHubPage() {
       )}
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Guides", description: `In-depth guides from ${ORG_NAME}.`, url }),
+        articleSchema({ title: "Guides for Attorneys", description: `In-depth economic damages guides from ${ORG_NAME}.`, url }),
         breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Guides", url }]),
       ])} />
     </div>

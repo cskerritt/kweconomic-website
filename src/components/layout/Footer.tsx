@@ -14,19 +14,20 @@ import {
   telHref,
 } from "@/lib/brand";
 
-// Static list of the 10 LCP pillar service links. Kept static for render speed;
+// Static list of the 11 pillar service links. Kept static for render speed;
 // src/components/layout/nav.pillars.test.mjs pins the hrefs to pillarServices() order.
 const serviceLinks = [
-  { name: "Life Care Planning", href: "/services/life-care-planning" },
-  { name: "Pediatric Life Care Planning", href: "/services/pediatric-life-care-planning" },
-  { name: "Catastrophic Injury LCPs", href: "/services/catastrophic-injury-planning" },
-  { name: "Medical Cost Projections", href: "/services/medical-cost-projection" },
-  { name: "Workers' Comp Life Care Plans", href: "/services/workers-compensation-lcp" },
-  { name: "Plan Updates", href: "/services/plan-update-and-review" },
-  { name: "Plan Rebuttal & Critique", href: "/services/life-care-plan-rebuttal" },
-  { name: "Medicare Set-Asides", href: "/services/medicare-set-aside" },
-  { name: "Elder & Long-Term Care Planning", href: "/services/elder-and-long-term-care-planning" },
-  { name: "Expert Testimony", href: "/services/expert-witness-testimony" },
+  { name: "Lost Earnings & Earning Capacity", href: "/services/lost-earnings-and-earning-capacity" },
+  { name: "Wrongful Death Economic Loss", href: "/services/wrongful-death-economic-loss" },
+  { name: "Personal Injury Economic Damages", href: "/services/personal-injury-economic-damages" },
+  { name: "Household Services Valuation", href: "/services/household-services-valuation" },
+  { name: "Life Care Plan Costing", href: "/services/life-care-plan-cost-projection" },
+  { name: "Employment & Wage-Loss Damages", href: "/services/employment-and-wage-loss-damages" },
+  { name: "Business Valuation", href: "/services/business-valuation" },
+  { name: "Lost Profits & Commercial Damages", href: "/services/lost-profits-and-commercial-damages" },
+  { name: "Fraud & Asset Tracing", href: "/services/fraud-and-asset-tracing" },
+  { name: "Divorce & Marital Financial Analysis", href: "/services/divorce-and-marital-financial-analysis" },
+  { name: "Expert Rebuttal & Report Review", href: "/services/expert-rebuttal-and-report-review" },
 ];
 
 // Top 8 + a "View all" link so the long-tail state hubs still get a crawl
@@ -67,12 +68,12 @@ const companyLinks = [
   { name: "Terms", href: "/terms" },
 ];
 
-// Sister practices in the KW family (external, new tab). The visible label is
-// the host of the link so the domains are never spelled out here.
+// Sister practices in the Kincaid Wolstein family (external, new tab). The
+// visible label is the host of the link so the domains are never spelled here.
 const hostOf = (url: string) => new URL(url).host;
 const familyLinks = [
-  { name: hostOf(VOC_SITE_URL), blurb: "Vocational Practice", href: VOC_SITE_URL },
-  { name: hostOf(LCP_SITE_URL), blurb: "Life Care Plans", href: LCP_SITE_URL },
+  { name: hostOf(VOC_SITE_URL), blurb: "Vocational practice", href: VOC_SITE_URL },
+  { name: hostOf(LCP_SITE_URL), blurb: "Life care plans", href: LCP_SITE_URL },
 ];
 
 export default function Footer() {
@@ -88,8 +89,9 @@ export default function Footer() {
               <img src="/images/logo.svg" alt={ORG_NAME} className="h-8 brightness-0 invert" />
             </Link>
             <p className="mt-3 text-sm text-neutral-400 leading-relaxed">
-              {ORG_NAME} - certified life care planners preparing court-ready life care plans and
-              medical cost projections for plaintiff and defense counsel.
+              {ORG_NAME} - forensic economists preparing court-ready lost earnings, wrongful
+              death, household services, business valuation, and forensic accounting analyses
+              for plaintiff and defense counsel.
             </p>
             <div className="mt-5 space-y-2">
               <div className="flex items-center gap-2 text-sm text-neutral-400">
@@ -174,7 +176,7 @@ export default function Footer() {
 
           {/* Column 6: KW family (sister sites) */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">KW Family of Practices</h3>
+            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Kincaid Wolstein Family</h3>
             <ul className="mt-4 space-y-3">
               {familyLinks.map((link) => (
                 <li key={link.href}>
@@ -207,7 +209,7 @@ export default function Footer() {
                 Terms of Service
               </Link>
               <p className="text-xs text-neutral-400">
-                CLCP &middot; CRC
+                Forensic Economics &middot; Business Valuation &middot; Forensic Accounting
               </p>
             </div>
           </div>

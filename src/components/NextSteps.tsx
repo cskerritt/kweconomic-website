@@ -4,9 +4,9 @@ import { useMagnetic } from "@/hooks/use-pointer-fx";
 import { ORG_NAME, ORG_PHONE, ORG_PHONE_DISPLAY, telHref } from "@/lib/brand";
 
 const CORE_SERVICES = [
-  { label: "Life Care Planning", slug: "life-care-planning" },
-  { label: "Catastrophic Injury LCPs", slug: "catastrophic-injury-planning" },
-  { label: "Medical Cost Projections", slug: "medical-cost-projection" },
+  { label: "Lost Earnings Analysis", slug: "lost-earnings-and-earning-capacity" },
+  { label: "Wrongful Death Economic Loss", slug: "wrongful-death-economic-loss" },
+  { label: "Business Valuation", slug: "business-valuation" },
 ];
 
 interface NextStepsProps {
@@ -32,9 +32,9 @@ export default function NextSteps({ context }: NextStepsProps) {
           Discuss how this applies to your case{context ? ` (${context})` : ""}
         </h2>
         <p className="text-neutral-300 mb-6 max-w-2xl">
-          {ORG_NAME} provides independent, objective life care planning analysis for
+          {ORG_NAME} provides independent, objective economic damages analysis for
           plaintiff and defense counsel nationwide. Tell us about the matter and we will scope the
-          appropriate deliverable, or explore the relevant practice area below.
+          appropriate deliverable, or explore the relevant service line below.
         </p>
 
         <div className="flex flex-wrap gap-2 mb-7">
@@ -53,7 +53,7 @@ export default function NextSteps({ context }: NextStepsProps) {
           <Link
             ref={magnet}
             to="/contact"
-            className="kw-magnetic group inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-teal/20"
+            className="kw-magnetic group inline-flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-amber/20"
           >
             Request a Consultation <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>

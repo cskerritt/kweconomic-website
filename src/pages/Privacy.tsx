@@ -48,7 +48,7 @@ If you have reason to believe that your interaction with us has been compromised
   },
   {
     heading: "Third-Party Links",
-    content: `This website may contain links to third-party websites, including the websites of our affiliated vocational and forensic economics practices. We are not responsible for the privacy practices or content of those sites. This Privacy Policy applies only to ${DOMAIN}. We encourage you to review the privacy policies of any third-party sites you visit.`,
+    content: `This website may contain links to third-party websites, including the websites of our affiliated vocational and life care planning practices. We are not responsible for the privacy practices or content of those sites. This Privacy Policy applies only to ${DOMAIN}. We encourage you to review the privacy policies of any third-party sites you visit.`,
   },
   {
     heading: "Children's Privacy",

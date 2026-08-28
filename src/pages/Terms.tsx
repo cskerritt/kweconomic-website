@@ -14,7 +14,7 @@ ${ORG_LEGAL}, doing business as ${ORG_NAME} ("${ORG_SHORT}"), reserves the right
   },
   {
     heading: "Use of the Site",
-    content: `This Site is intended to provide general information about the services offered by ${ORG_NAME}. The Site is intended for use by legal professionals, their clients, insurers, and others with a legitimate interest in life care planning, medical cost projection, and related expert witness services.
+    content: `This Site is intended to provide general information about the services offered by ${ORG_NAME}. The Site is intended for use by legal professionals, their clients, insurers, and others with a legitimate interest in forensic economics, economic damages analysis, business valuation, forensic accounting, and related expert witness services.
 
 You agree to use the Site only for lawful purposes and in accordance with these Terms. You agree not to use the Site: (a) in any way that violates applicable federal, state, or local laws or regulations; (b) to transmit any unsolicited commercial communications; (c) to impersonate any person or entity or misrepresent your affiliation with any person or entity; (d) to engage in any conduct that restricts or inhibits anyone's use or enjoyment of the Site; or (e) to attempt to gain unauthorized access to any portion of the Site or any connected system.`,
   },
@@ -44,7 +44,7 @@ ${ORG_SHORT}'s total liability for any claims arising under these Terms or in co
   },
   {
     heading: "Third-Party Links",
-    content: `The Site may contain links to third-party websites, including the websites of our affiliated vocational and forensic economics practices and other external resources. These links are provided for convenience only and do not constitute an endorsement by ${ORG_SHORT} of any third-party site or its content. ${ORG_SHORT} has no control over and assumes no responsibility for the content, privacy practices, or availability of any linked third-party site. Your use of linked sites is subject to the terms and policies of those sites.`,
+    content: `The Site may contain links to third-party websites, including the websites of our affiliated vocational and life care planning practices and other external resources. These links are provided for convenience only and do not constitute an endorsement by ${ORG_SHORT} of any third-party site or its content. ${ORG_SHORT} has no control over and assumes no responsibility for the content, privacy practices, or availability of any linked third-party site. Your use of linked sites is subject to the terms and policies of those sites.`,
   },
   {
     heading: "Indemnification",

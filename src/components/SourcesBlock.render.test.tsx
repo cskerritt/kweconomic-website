@@ -46,10 +46,10 @@ describe("SourcesBlock render - APA bibliography", () => {
 describe("renderTextWithLinks render - internal anchors", () => {
   it("emits an internal <a> for a valid marker and preserves surrounding text", () => {
     const out = html(
-      createElement("p", null, ...renderTextWithLinks("See [[/methods/transferable-skills-analysis|TSA]] now")),
+      createElement("p", null, ...renderTextWithLinks("See [[/methods/present-value-and-discounting|present value]] now")),
     );
-    expect(out).toContain('href="/methods/transferable-skills-analysis"');
-    expect(out).toContain(">TSA</a>");
+    expect(out).toContain('href="/methods/present-value-and-discounting"');
+    expect(out).toContain(">present value</a>");
     expect(out).toContain("See ");
     expect(out).toContain(" now");
   });

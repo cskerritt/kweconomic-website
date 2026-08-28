@@ -9,7 +9,7 @@ export default function KnowledgeHub() {
   usePageMeta({
     title: `Knowledge Center | ${ORG_NAME}`,
     description:
-      "In-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness testimony - written for attorneys and other legal professionals.",
+      "In-depth guides on economic damages, expert witness testimony, and the methods behind a defensible damages figure - written for attorneys and other legal professionals.",
     canonical: `${SITE_URL}/knowledge`,
   });
 
@@ -28,9 +28,9 @@ export default function KnowledgeHub() {
               Knowledge Center
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              Authoritative guides on life care planning, medical cost projection, and expert
-              witness practice - written to help attorneys and legal professionals understand
-              the methodologies behind future-care damages.
+              Authoritative guides on economic damages and expert witness practice - written to
+              help attorneys and legal professionals understand the methods behind a damages
+              figure.
             </p>
           </div>
         </div>

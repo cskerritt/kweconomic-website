@@ -100,7 +100,7 @@ const insightDates = extractInsightDates();
 
 // Routes registered in src/App.tsx only. The retired vocational-site surfaces
 // (intake, forms, PHQ/HIPAA downloads, economic tools) have no route on
-// kwlcp.com and are neither advertised nor prerendered.
+// this site and are neither advertised nor prerendered.
 const CORE = [
   "/", "/about", "/team", "/contact",
   "/services", "/locations",

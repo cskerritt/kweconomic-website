@@ -9,9 +9,9 @@ import { ORG_NAME } from "@/lib/brand";
 export default function ComparisonsHubPage() {
   const url = `${ORG_URL}/compare`;
   usePageMeta({
-    title: `Life Care Planning Comparisons | ${ORG_NAME}`,
+    title: `Economic Damages Comparisons | ${ORG_NAME}`,
     description:
-      "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.",
+      "Side-by-side comparisons of the experts, measures, and methods in economic damages work: economist vs. forensic accountant, lost earnings vs. earning capacity, lost profits vs. business value, net vs. gross discount rate, and more.",
     canonical: url,
   });
   return (
@@ -27,7 +27,7 @@ export default function ComparisonsHubPage() {
             Comparisons
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            Side-by-side comparisons of expert disciplines, credentials, and methodologies to help attorneys select the right resource.
+            Side-by-side comparisons of expert disciplines, damages measures, and methods to help attorneys choose the right analysis and the right expert.
           </p>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default function ComparisonsHubPage() {
       )}
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Comparisons", description: "Life care planning discipline comparisons.", url }),
+        articleSchema({ title: "Comparisons", description: "Economic damages discipline, measure, and method comparisons.", url }),
         breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Compare", url }]),
       ])} />
     </div>

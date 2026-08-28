@@ -1,8 +1,8 @@
 // src/App.routes.test.mjs
 // Source-read guard tests (no jsdom/RTL in this repo - vitest.config.ts's
-// environment is "node"). Pins the KW LCP route set (spec §5): the LCP-only
-// site keeps the content/SEO routes and drops every intake, PSA, payment,
-// raffle, document-library, and economic-tool surface from the vocational site.
+// environment is "node"). Pins the KW Economics route set (spec §5): the
+// economics site keeps the content/SEO routes and drops every intake, PSA,
+// payment, raffle, document-library, and calculator surface from the sister sites.
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -16,7 +16,7 @@ const serverSrc = readFileSync(join(here, "../server.js"), "utf8");
 
 const registeredPaths = [...appSource.matchAll(/path="([^"]+)"/g)].map((m) => m[1]);
 
-describe("KW LCP route set (spec §5)", () => {
+describe("KW Economics route set (spec §5)", () => {
   it("registers every kept static route", () => {
     for (const p of [
       "/", "/about", "/team", "/contact", "/schedule-consultation", "/services", "/locations",

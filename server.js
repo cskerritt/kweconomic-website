@@ -304,8 +304,8 @@ function acceptsGzip(req) {
   return ae.includes("gzip");
 }
 
-// When CANONICAL_HOST is set (e.g. "kwlcp.com"), 301 every other hostname -
-// www.kwlcp.com, the *.up.railway.app default domain - to it, preserving the
+// When CANONICAL_HOST is set (e.g. "kweconomics.com"), 301 every other hostname -
+// www.kweconomics.com, the *.up.railway.app default domain - to it, preserving the
 // path. Unset (local dev, Docker tests) this is a no-op.
 const CANONICAL_HOST = process.env.CANONICAL_HOST || "";
 

@@ -24,7 +24,7 @@ export default function CaseTypesHubPage() {
             Practice Areas
           </p>
           <h1 className="kw-enter kw-enter-1 font-serif text-3xl md:text-4xl font-bold leading-tight mb-3">
-            Case Types
+            Case Types We Analyze
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
             {ORG_NAME} prepares economic damages analyses across the most common case types in civil and commercial litigation.

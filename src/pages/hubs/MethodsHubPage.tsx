@@ -9,9 +9,9 @@ import { ORG_NAME } from "@/lib/brand";
 export default function MethodsHubPage() {
   const url = `${ORG_URL}/methods`;
   usePageMeta({
-    title: `Life Care Planning Methodologies | Present Value, Cost Research | ${ORG_NAME}`,
+    title: `Forensic Economics Methods | Present Value, Worklife, Valuation | ${ORG_NAME}`,
     description:
-      "Life care planning methodologies used by our planners: life expectancy, present value analysis, plan development, functional capacity evaluation, cost research, and Medicare set-aside allocation.",
+      "The methods behind our economic damages reports: present value and discounting, worklife expectancy, wage growth, fringe benefits, household services, business valuation approaches, lost profits, and mitigation and offsets.",
     canonical: url,
   });
   return (
@@ -27,7 +27,7 @@ export default function MethodsHubPage() {
             Methods
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            Methodologies our life care planners use in plan development, cost research, and medical cost projection.
+            The methods our economists use to build, discount, and test a damages figure, each explained with its data sources and the questions it answers.
           </p>
         </div>
       </div>
@@ -43,7 +43,7 @@ export default function MethodsHubPage() {
       </ul>
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: "Methods", description: `${ORG_NAME} methodologies.`, url }),
+        articleSchema({ title: "Methods", description: `${ORG_NAME} economic damages methods.`, url }),
         breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }, { name: "Methods", url }]),
       ])} />
     </div>

@@ -27,6 +27,7 @@ export default function MobileNav({ serviceLinks, resourceLinks, phoneHref, phon
             ))}
           </div>
         </div>
+        <Link to="/case-types" onClick={onClose} className="block py-2 text-sm text-neutral-300 hover:text-white">Case Types</Link>
         <Link to="/locations" onClick={onClose} className="block py-2 text-sm text-neutral-300 hover:text-white">Locations</Link>
         <Link to="/team" onClick={onClose} className="block py-2 text-sm text-neutral-300 hover:text-white">Team</Link>
         <div className="py-2">
@@ -40,7 +41,7 @@ export default function MobileNav({ serviceLinks, resourceLinks, phoneHref, phon
         <Link to="/contact" onClick={onClose} className="block py-2 text-sm text-neutral-300 hover:text-white">Contact</Link>
         <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
           <a href={phoneHref} className="flex items-center gap-2 text-sm text-neutral-300"><Phone className="w-4 h-4" />{phoneDisplay}</a>
-          <Link to="/schedule-consultation" onClick={onClose} className="bg-teal hover:bg-teal-dark text-white text-sm font-medium px-4 py-2 rounded-lg text-center">Schedule Consultation</Link>
+          <Link to="/schedule-consultation" onClick={onClose} className="bg-amber hover:bg-amber-dark text-white text-sm font-medium px-4 py-2 rounded-lg text-center">Schedule Consultation</Link>
         </div>
       </div>
     </nav>

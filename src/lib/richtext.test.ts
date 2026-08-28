@@ -23,13 +23,13 @@ function links(nodes: ReturnType<typeof renderTextWithLinks>): ReactElement<{ to
 
 describe("renderTextWithLinks - marker parsing", () => {
   it("converts a valid marker into an internal Link with the right route and anchor", () => {
-    const nodes = renderTextWithLinks("See our [[/methods/transferable-skills-analysis|TSA method]] for detail.");
+    const nodes = renderTextWithLinks("See our [[/methods/present-value-and-discounting|present value method]] for detail.");
     expect(nodes[0]).toBe("See our ");
     const ls = links(nodes);
     expect(ls).toHaveLength(1);
     expect(ls[0].type).toBe(Link);
-    expect(ls[0].props.to).toBe("/methods/transferable-skills-analysis");
-    expect(ls[0].props.children).toBe("TSA method");
+    expect(ls[0].props.to).toBe("/methods/present-value-and-discounting");
+    expect(ls[0].props.children).toBe("present value method");
     expect(nodes[nodes.length - 1]).toBe(" for detail.");
   });
 
@@ -62,9 +62,9 @@ describe("renderTextWithLinks - rejection of bad routes", () => {
   });
 
   it("isAllowedRoute enforces the ^/[a-z0-9/-]*$ allow-list", () => {
-    expect(isAllowedRoute("/methods/transferable-skills-analysis")).toBe(true);
+    expect(isAllowedRoute("/methods/present-value-and-discounting")).toBe(true);
     expect(isAllowedRoute("/")).toBe(true);
-    expect(isAllowedRoute("/services/life-care-planning/cost")).toBe(true);
+    expect(isAllowedRoute("/services/business-valuation/cost")).toBe(true);
     expect(isAllowedRoute("/Bad")).toBe(false);
     expect(isAllowedRoute("/a.b")).toBe(false);
     expect(isAllowedRoute("javascript:alert(1)")).toBe(false);

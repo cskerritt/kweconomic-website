@@ -57,7 +57,7 @@ export default function ServiceCityCrossLinks({
             Other Services in {city.name}
           </h2>
           <p className="text-neutral-600 mb-5">
-            {ORG_NAME} offers complementary life care planning services for {city.name} cases.
+            {ORG_NAME} offers complementary economic damages services for {city.name} cases.
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             {siblingServices.map((s) => (

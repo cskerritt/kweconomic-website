@@ -4,8 +4,9 @@ import { pillarServices } from "@/data/services";
 import { hasServiceCityPages, serviceCityServices } from "@/lib/geo-links";
 import type { City, State } from "@/types";
 
-// Outside the service-city window only the core planning lines are surfaced.
-const EXCLUDED_SERVICES = new Set(["expert-witness-testimony"]);
+// Outside the service-city window only the core damages lines are surfaced;
+// rebuttal is engaged against an opposing report, not by location.
+const EXCLUDED_SERVICES = new Set(["expert-rebuttal-and-report-review"]);
 
 /**
  * "Services in {city}" link block for /locations/:state/:city pages.

@@ -4,33 +4,32 @@ import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import MobileNav from "./MobileNav";
 import { ORG_NAME, ORG_PHONE, ORG_PHONE_DISPLAY, ORG_SHORT, telHref } from "@/lib/brand";
 
-// Static list of the 10 LCP pillar service links. Kept static for render speed;
+// Static list of the 11 pillar service links. Kept static for render speed;
 // src/components/layout/nav.pillars.test.mjs pins the hrefs to pillarServices() order.
 const serviceLinks = [
   { name: "All Services", href: "/services" },
-  { name: "Life Care Planning", href: "/services/life-care-planning" },
-  { name: "Pediatric Life Care Planning", href: "/services/pediatric-life-care-planning" },
-  { name: "Catastrophic Injury LCPs", href: "/services/catastrophic-injury-planning" },
-  { name: "Medical Cost Projections", href: "/services/medical-cost-projection" },
-  { name: "Workers' Comp Life Care Plans", href: "/services/workers-compensation-lcp" },
-  { name: "Plan Updates", href: "/services/plan-update-and-review" },
-  { name: "Plan Rebuttal & Critique", href: "/services/life-care-plan-rebuttal" },
-  { name: "Medicare Set-Asides", href: "/services/medicare-set-aside" },
-  { name: "Elder & Long-Term Care Planning", href: "/services/elder-and-long-term-care-planning" },
-  { name: "Expert Testimony", href: "/services/expert-witness-testimony" },
+  { name: "Lost Earnings & Earning Capacity", href: "/services/lost-earnings-and-earning-capacity" },
+  { name: "Wrongful Death Economic Loss", href: "/services/wrongful-death-economic-loss" },
+  { name: "Personal Injury Economic Damages", href: "/services/personal-injury-economic-damages" },
+  { name: "Household Services Valuation", href: "/services/household-services-valuation" },
+  { name: "Life Care Plan Costing", href: "/services/life-care-plan-cost-projection" },
+  { name: "Employment & Wage-Loss Damages", href: "/services/employment-and-wage-loss-damages" },
+  { name: "Business Valuation", href: "/services/business-valuation" },
+  { name: "Lost Profits & Commercial Damages", href: "/services/lost-profits-and-commercial-damages" },
+  { name: "Fraud & Asset Tracing", href: "/services/fraud-and-asset-tracing" },
+  { name: "Divorce & Marital Financial Analysis", href: "/services/divorce-and-marital-financial-analysis" },
+  { name: "Expert Rebuttal & Report Review", href: "/services/expert-rebuttal-and-report-review" },
 ];
 
+// Resources dropdown (spec section 5). Case Types is a top-level nav item;
+// credentials, attorney stages, and jurisdictions stay reachable from the footer.
 const resourceLinks = [
-  { name: "Knowledge Center", href: "/knowledge" },
   { name: "Guides", href: "/guides" },
-  { name: "White Papers", href: "/white-papers" },
-  { name: "Insights", href: "/insights" },
-  { name: "Case Types", href: "/case-types" },
-  { name: "Credentials", href: "/credentials" },
+  { name: "Compare", href: "/compare" },
   { name: "Methods", href: "/methods" },
-  { name: "Comparisons", href: "/compare" },
-  { name: "Attorney Resources", href: "/attorneys" },
-  { name: "Jurisdictions", href: "/jurisdictions" },
+  { name: "Knowledge Center", href: "/knowledge" },
+  { name: "Insights", href: "/insights" },
+  { name: "White Papers", href: "/white-papers" },
   { name: "FAQ", href: "/resources/faq" },
 ];
 
@@ -113,7 +112,7 @@ function Dropdown({
                 key={link.href}
                 to={link.href}
                 onClick={() => setOpen(false)}
-                className="block px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-teal transition-colors"
+                className="block px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-amber-dark transition-colors"
               >
                 {link.name}
               </Link>
@@ -181,6 +180,9 @@ export default function Header() {
               About
             </Link>
             <Dropdown label="Services" links={serviceLinks} />
+            <Link to="/case-types" className="text-sm hover:text-amber transition-colors">
+              Case Types
+            </Link>
             <Link to="/locations" className="text-sm hover:text-amber transition-colors">
               Locations
             </Link>
@@ -203,7 +205,7 @@ export default function Header() {
             </a>
             <Link
               to="/schedule-consultation"
-              className="bg-teal hover:bg-teal-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+              className="bg-amber hover:bg-amber-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
             >
               Schedule Consultation
             </Link>
@@ -250,7 +252,7 @@ export default function Header() {
         </a>
         <Link
           to="/contact"
-          className="flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-teal text-white hover:bg-teal-dark transition-colors"
+          className="flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-amber text-white hover:bg-amber-dark transition-colors"
         >
           Get a Quote
         </Link>

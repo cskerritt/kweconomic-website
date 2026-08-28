@@ -16,15 +16,15 @@ function formatDate(dateStr: string) {
 
 const categoryColors: Record<string, string> = {
   Legal: "bg-navy/10 text-navy",
-  "Life Care Planning": "bg-forest/10 text-forest",
   Economics: "bg-amber/10 text-amber-dark",
+  Valuation: "bg-forest/10 text-forest",
 };
 
 export default function InsightsHub() {
   usePageMeta({
     title: `Insights | ${ORG_NAME}`,
     description:
-      `Articles on life care planning, medical cost projection, Medicare set-asides, and expert witness standards - from the practitioners at ${ORG_NAME}.`,
+      `Articles on economic damages, business valuation, forensic accounting, and expert witness standards - from the economists at ${ORG_NAME}.`,
     canonical: `${SITE_URL}/insights`,
   });
 
@@ -50,9 +50,9 @@ export default function InsightsHub() {
               Insights
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              Practical articles on life care planning, medical cost projection, and the
-              legal standards that govern future-care testimony - written for attorneys and
-              legal professionals navigating catastrophic-injury damages.
+              Practical articles on economic damages, business valuation, and the legal
+              standards that govern expert testimony - written for attorneys and legal
+              professionals handling damages claims.
             </p>
           </div>
         </div>

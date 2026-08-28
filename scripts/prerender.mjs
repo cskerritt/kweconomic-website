@@ -371,12 +371,12 @@ const HOME_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 const corePages = [
   {
     path: "/",
-    title: `Life Care Planning Expert Witness Services | ${ORG_NAME}`,
+    title: `Forensic Economics and Economic Damages Experts | ${ORG_NAME}`,
     description:
-      "Independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states. Response in 1 business day.",
+      "Independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense attorneys in all 50 states.",
     innerHtml:
-      `<h1>Life Care Plans That Document the Future of Care</h1>` +
-      `<p>${ORG_NAME} produces independent, evidence-based life care plans and medical cost projections for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
+      `<h1>Economic Damages Analysis That Holds Up in Court</h1>` +
+      `<p>${ORG_NAME} delivers independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
       `<p>Engagements accepted in all 50 states, the District of Columbia, and U.S. territories. Headquarters in Hackensack, NJ with a Richmond, VA office. <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>.</p>` +
       // FAQ block - the same copy Home.tsx renders (shared src/data/home-faqs.mjs).
       renderFaqHtml(HOME_FAQS, "Common questions") +
@@ -386,11 +386,11 @@ const corePages = [
   },
   {
     path: "/about",
-    title: `About ${ORG_NAME} - Independent, Physician-Informed Life Care Planning`,
+    title: `About ${ORG_NAME} - Independent Forensic Economics and Damages Analysis`,
     description:
-      `${ORG_NAME} prepares independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states.`,
+      `${ORG_NAME} prepares independent, transparent economic damages analyses, business valuations, and forensic accounting reports for plaintiff and defense attorneys in all 50 states.`,
     innerHtml:
-      `<h1>About ${ORG_NAME}</h1><p>${ORG_NAME} is a nationwide practice preparing independent, physician-informed life care plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for plaintiff and defense counsel.</p><nav><a href="/team">Our Team</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
+      `<h1>About ${ORG_NAME}</h1><p>${ORG_NAME} is a nationwide forensic economics practice measuring lost earnings, wrongful death losses, household services, the present value of future care, employment damages, lost profits, and the value of business interests for plaintiff and defense counsel.</p><nav><a href="/team">Our Team</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "LocalBusiness",
   },
   {
@@ -406,18 +406,18 @@ const corePages = [
     path: "/contact",
     title: `Contact Us | ${ORG_NAME}`,
     description:
-      `Contact ${ORG_NAME} to discuss a life care plan, medical cost projection, or plan rebuttal for your case. Offices in New Jersey and Virginia; response in 1 business day.`,
+      `Contact ${ORG_NAME} to discuss a lost earnings, wrongful death, household services, business valuation, or forensic accounting analysis for your case. Offices in New Jersey and Virginia; response in 1 business day.`,
     innerHtml:
-      `<h1>Contact ${ORG_NAME}</h1><p>Reach out to discuss a life care plan, medical cost projection, or plan rebuttal for your case, or to schedule a consultation.</p><nav><a href="/services">Services</a> <a href="/locations">Locations</a> <a href="/about">About</a></nav>`,
+      `<h1>Contact ${ORG_NAME}</h1><p>Reach out to discuss a lost earnings, wrongful death, household services, business valuation, or forensic accounting analysis for your case, or to schedule a consultation.</p><nav><a href="/services">Services</a> <a href="/locations">Locations</a> <a href="/about">About</a></nav>`,
     schemaType: "LocalBusiness",
   },
   {
     path: "/services",
-    title: `Life Care Planning Services | ${ORG_NAME}`,
+    title: `Forensic Economics and Damages Services | ${ORG_NAME}`,
     description:
-      `${ORG_NAME} prepares life care plans, pediatric and catastrophic injury plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations - serving all states.`,
+      `${ORG_NAME} prepares lost earnings, wrongful death, household services, life care plan costing, employment, business valuation, lost profits, fraud, and marital financial analyses - serving all states.`,
     innerHtml:
-      `<h1>Life Care Planning Services</h1><p>${ORG_NAME} prepares life care plans, pediatric and catastrophic injury plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations for litigation support nationwide.</p><nav><a href="/services/life-care-planning">Life Care Planning</a> <a href="/services/medical-cost-projection">Medical Cost Projections</a> <a href="/services/life-care-plan-rebuttal">Plan Rebuttal</a> <a href="/contact">Contact</a></nav>`,
+      `<h1>Forensic Economics and Damages Services</h1><p>${ORG_NAME} prepares lost earnings, wrongful death, household services, life care plan costing, employment, business valuation, lost profits, fraud, and marital financial analyses for litigation support nationwide.</p><nav><a href="/services/lost-earnings-and-earning-capacity">Lost Earnings</a> <a href="/services/wrongful-death-economic-loss">Wrongful Death</a> <a href="/services/business-valuation">Business Valuation</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "Service",
   },
   {
@@ -433,9 +433,9 @@ const corePages = [
     path: "/resources/faq",
     title: `Frequently Asked Questions | ${ORG_NAME}`,
     description:
-      `Answers to common questions about ${ORG_NAME}'s life care plans, medical cost projections, plan rebuttals, planner credentials, fees, and nationwide coverage.`,
+      `Answers to common questions about ${ORG_NAME}'s economic damages analyses, the records they need, methods, admissibility, fees, and nationwide coverage.`,
     innerHtml:
-      `<h1>Frequently Asked Questions</h1><p>Find answers to common questions about life care plans, medical cost projections, plan rebuttals, planner credentials, fees, and working with ${ORG_NAME}.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>`,
+      `<h1>Frequently Asked Questions</h1><p>Find answers to common questions about economic damages analyses, the records they need, methods, admissibility, fees, and working with ${ORG_NAME}.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>`,
     schemaType: "WebPage",
   },
 ];
@@ -452,36 +452,36 @@ const phase2Pages = [
     path: "/knowledge",
     title: `Knowledge Center | ${ORG_NAME}`,
     description:
-      "In-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness testimony - written for attorneys and other legal professionals.",
+      "In-depth guides on economic damages, expert witness testimony, and the methods behind a defensible damages figure - written for attorneys and other legal professionals.",
     innerHtml:
-      '<h1>Knowledge Center</h1><p>Explore in-depth guides on life care planning, medical cost projection, Medicare set-asides, and expert witness testimony.</p><nav><a href="/services">Services</a> <a href="/insights">Insights</a> <a href="/contact">Contact</a></nav>',
+      '<h1>Knowledge Center</h1><p>Explore in-depth guides on economic damages, expert witness testimony, and the methods behind a defensible damages figure.</p><nav><a href="/services">Services</a> <a href="/insights">Insights</a> <a href="/contact">Contact</a></nav>',
     schemaType: "WebPage",
   },
   {
     path: "/insights",
     title: `Insights | ${ORG_NAME}`,
     description:
-      `Articles on life care planning, medical cost projection, Medicare set-asides, and expert witness standards - from the practitioners at ${ORG_NAME}.`,
+      `Articles on economic damages, business valuation, forensic accounting, and expert witness standards - from the economists at ${ORG_NAME}.`,
     innerHtml:
-      '<h1>Insights</h1><p>Articles and analysis on life care planning, medical cost projection, Medicare set-asides, and litigation topics.</p><nav><a href="/knowledge">Knowledge Center</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
+      '<h1>Insights</h1><p>Articles and analysis on economic damages, business valuation, forensic accounting, and expert witness standards.</p><nav><a href="/knowledge">Knowledge Center</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>',
     schemaType: "WebPage",
   },
   {
     path: "/case-studies",
-    title: `Illustrative Life Care Planning Engagements | ${ORG_NAME}`,
+    title: `Illustrative Economic Damages Engagements | ${ORG_NAME}`,
     description:
-      `${ORG_NAME} prepares life care plans, medical cost projections, and Medicare set-aside allocations for plaintiff and defense counsel. Three anonymized, illustrative engagements show how a plan is built.`,
+      `${ORG_NAME} prepares lost earnings, lost profits, and business valuation analyses for plaintiff and defense counsel. Three anonymized, illustrative engagements show how a damages figure is built.`,
     innerHtml:
-      `<h1>Illustrative Life Care Planning Engagements</h1><p>Anonymized, illustrative engagements showing how ${ORG_NAME} builds a life care plan, a medical cost projection, and a Medicare set-aside allocation.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
+      `<h1>How an Economic Damages Analysis Is Built</h1><p>Anonymized, illustrative engagements showing how ${ORG_NAME} builds a lost earnings analysis, a lost profits analysis, and a business valuation.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebPage",
   },
   {
     path: "/schedule-consultation",
     title: `Schedule a Consultation | ${ORG_NAME}`,
     description:
-      `Contact ${ORG_NAME} to discuss your case and schedule a consultation with a certified life care planner. Response within one business day.`,
+      `Contact ${ORG_NAME} to discuss your case and schedule an economic damages consultation with a forensic economist. Response within one business day.`,
     innerHtml:
-      `<h1>Schedule a Consultation</h1><p>Contact ${ORG_NAME} to discuss your case requirements and schedule a consultation with a certified life care planner.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
+      `<h1>Schedule a Consultation</h1><p>Contact ${ORG_NAME} to discuss your case requirements and schedule an economic damages consultation with a forensic economist.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebPage",
   },
   {
@@ -810,11 +810,11 @@ const memoriamSlugs = new Set(
 
 // Mirror the src/pages/hubs/*HubPage.tsx usePageMeta values.
 const newHubPages = [
-  { path: "/case-types", title: `Case Types | ${ORG_NAME}`, description: "Economic damages analysis across the most common civil and commercial case types: personal injury, wrongful death, employment, commercial disputes, divorce, fraud, and more.", innerHtml: "<h1>Case Types</h1>", schemaType: "WebPage" },
+  { path: "/case-types", title: `Case Types | ${ORG_NAME}`, description: "Economic damages analysis across the most common civil and commercial case types: personal injury, wrongful death, employment, commercial disputes, divorce, fraud, and more.", innerHtml: "<h1>Case Types We Analyze</h1>", schemaType: "WebPage" },
   { path: "/credentials", title: `Credentials of a Forensic Economist | ${ORG_NAME}`, description: "What qualifies a forensic economist to testify on damages: graduate training in economics and finance, the professional standards of NAFE and AAEFE, and a record of reports and testimony. No state license applies.", innerHtml: "<h1>Credentials of a Forensic Economist</h1>", schemaType: "WebPage" },
-  { path: "/guides", title: `Life Care Planning Guides | ${ORG_NAME}`, description: "In-depth practitioner guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice. Methodology, admissibility, and engagement guidance.", innerHtml: "<h1>Guides</h1>", schemaType: "WebPage" },
-  { path: "/compare", title: `Life Care Planning Comparisons | ${ORG_NAME}`, description: "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
-  { path: "/methods", title: `Life Care Planning Methodologies | Present Value, Cost Research | ${ORG_NAME}`, description: "Life care planning methodologies used by our planners: life expectancy, present value analysis, plan development, functional capacity evaluation, cost research, and Medicare set-aside allocation.", innerHtml: "<h1>Methods</h1>", schemaType: "WebPage" },
+  { path: "/guides", title: `Forensic Economics Guides for Attorneys | ${ORG_NAME}`, description: "In-depth practitioner guides on lost earnings, wrongful death damages, household services, present value, expert disclosure and admissibility, business valuation, lost profits, and rebutting an economic report.", innerHtml: "<h1>Guides for Attorneys</h1>", schemaType: "WebPage" },
+  { path: "/compare", title: `Economic Damages Comparisons | ${ORG_NAME}`, description: "Side-by-side comparisons of the experts, measures, and methods in economic damages work: economist vs. forensic accountant, lost earnings vs. earning capacity, lost profits vs. business value, net vs. gross discount rate, and more.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
+  { path: "/methods", title: `Forensic Economics Methods | Present Value, Worklife, Valuation | ${ORG_NAME}`, description: "The methods behind our economic damages reports: present value and discounting, worklife expectancy, wage growth, fringe benefits, household services, business valuation approaches, lost profits, and mitigation and offsets.", innerHtml: "<h1>Methods</h1>", schemaType: "WebPage" },
   { path: "/jurisdictions", title: `Jurisdictions | ${ORG_NAME} Nationwide`, description: `${ORG_NAME} prepares economic damages analyses in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`, innerHtml: "<h1>Jurisdictions</h1>", schemaType: "WebPage" },
   { path: "/attorneys", title: `Resources for Attorneys | ${ORG_NAME}`, description: "Stage-by-stage attorney resources for retaining, preparing, and using a forensic economist. Considering, retaining, deposition, and trial.", innerHtml: "<h1>Resources for Attorneys</h1><p>Stage-by-stage guides for retaining, preparing, and using a forensic economist across each major case type: what the loss claim consists of, which records drive it, and how the number is defended.</p>", schemaType: "WebPage" },
 ];
@@ -1036,12 +1036,12 @@ writePage(
   "/white-papers",
   buildPage({
     path: "/white-papers",
-    title: `White Papers | Life Care Planning Methodology | ${ORG_NAME}`,
+    title: `White Papers | Economic Damages Methodology | ${ORG_NAME}`,
     description:
-      `In-depth white papers on the methodology behind defensible life care plans and medical cost projections. From ${ORG_NAME}.`,
+      `In-depth white papers on the methodology behind defensible economic damages reports and litigation business valuations. From ${ORG_NAME}.`,
     innerHtml:
       `<h1>White papers on defensible expert methodology</h1>` +
-      `<p>Detailed, objective treatments of how ${ORG_NAME} builds life care plans and cost projections that can be examined and tested.</p>` +
+      `<p>Detailed, objective treatments of how ${ORG_NAME} builds damages analyses and valuations that can be examined and tested.</p>` +
       `<ul>${wpList
         .map((w) => `<li><a href="/white-papers/${w.slug}">${escapeHtml(w.title)}</a> - ${escapeHtml(w.subtitle)}</li>`)
         .join("")}</ul>` +

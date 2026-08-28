@@ -71,7 +71,7 @@ export default function Contact() {
   usePageMeta({
     title: `Contact Us | ${ORG_NAME}`,
     description:
-      `Contact ${ORG_NAME} to discuss a life care plan, medical cost projection, or plan rebuttal for your case. Offices in New Jersey and Virginia; response in 1 business day.`,
+      `Contact ${ORG_NAME} to discuss a lost earnings, wrongful death, household services, business valuation, or forensic accounting analysis for your case. Offices in New Jersey and Virginia; response in 1 business day.`,
     canonical: `${SITE_URL}/contact`,
   });
 
@@ -100,8 +100,8 @@ export default function Contact() {
               Contact {ORG_NAME}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              Ready to discuss your case? Tell us about the injury, the records you have, and your
-              deadlines. A member of the team responds within one business day.
+              Ready to discuss your case? Tell us about the loss claim, the records you have, and
+              your deadlines. A member of the team responds within one business day.
             </p>
           </div>
         </div>
@@ -125,10 +125,10 @@ export default function Contact() {
       <section className="py-12 md:py-16 bg-white border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="font-serif text-2xl font-bold text-navy mb-2">
-            Ready to retain a life care planner?
+            Ready to retain a forensic economist?
           </h2>
           <p className="text-neutral-700 mb-6 max-w-3xl">
-            Book a no-cost consultation to discuss the injury, the records you have, and your
+            Book a no-cost consultation to discuss the loss claim, the records you have, and your
             deadlines. We will confirm scope, timeline, and fee before any work begins.
           </p>
           <Link
@@ -240,7 +240,7 @@ export default function Contact() {
                   </li>
                   <li className="flex gap-3">
                     <span className="flex-shrink-0 w-5 h-5 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center">2</span>
-                    <span><strong className="text-navy">Scope and fee</strong> confirmed in writing for the plan you need.</span>
+                    <span><strong className="text-navy">Scope and fee</strong> confirmed in writing for the analysis you need.</span>
                   </li>
                   <li className="flex gap-3">
                     <span className="flex-shrink-0 w-5 h-5 rounded-full bg-navy text-white text-xs font-bold flex items-center justify-center">3</span>
@@ -358,7 +358,7 @@ export default function Contact() {
                     rows={5}
                     required
                     className={`${INPUT} resize-none`}
-                    placeholder="Briefly describe the injury, the records you have, and any deadlines..."
+                    placeholder="Briefly describe the loss claim, the records you have, and any deadlines..."
                   />
                 </div>
 

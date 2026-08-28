@@ -44,9 +44,9 @@ function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typ
 
 export default function WhitePapersHub() {
   usePageMeta({
-    title: `White Papers | Life Care Planning Methodology | ${ORG_NAME}`,
+    title: `White Papers | Economic Damages Methodology | ${ORG_NAME}`,
     description:
-      `In-depth white papers on the methodology behind defensible life care plans and medical cost projections. From ${ORG_NAME}.`,
+      `In-depth white papers on the methodology behind defensible economic damages reports and litigation business valuations. From ${ORG_NAME}.`,
     canonical: `${ORG_URL}/white-papers`,
   });
 
@@ -78,9 +78,9 @@ export default function WhitePapersHub() {
             <span className="kw-gradient-text">White papers</span> on defensible expert methodology
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-2xl">
-            Detailed, objective treatments of how {ORG_NAME} builds life care plans and cost
-            projections that can be examined and tested. Written for attorneys who want to understand the
-            method, not just the conclusion.
+            Detailed, objective treatments of how {ORG_NAME} builds damages analyses and
+            valuations that can be examined and tested. Written for attorneys who want to
+            understand the method, not just the conclusion.
           </p>
         </div>
       </section>

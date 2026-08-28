@@ -9,9 +9,9 @@ import { ORG_NAME, ORG_SHORT, SITE_URL } from "@/lib/brand";
 
 export default function ServicesHub() {
   usePageMeta({
-    title: `Life Care Planning Services | ${ORG_NAME}`,
+    title: `Forensic Economics and Damages Services | ${ORG_NAME}`,
     description:
-      `${ORG_NAME} prepares life care plans, pediatric and catastrophic injury plans, medical cost projections, plan rebuttals, and Medicare set-aside allocations - serving all states.`,
+      `${ORG_NAME} prepares lost earnings, wrongful death, household services, life care plan costing, employment, business valuation, lost profits, fraud, and marital financial analyses - serving all states.`,
     canonical: `${SITE_URL}/services`,
   });
 
@@ -27,13 +27,13 @@ export default function ServicesHub() {
               What We Do
             </p>
             <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
-              Life Care Planning Services
+              Forensic Economics and Damages Services
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              {ORG_SHORT} prepares independent life care plans, medical cost projections, and
-              plan rebuttals for attorneys, insurers, and claimants in every U.S. jurisdiction.
-              Each plan is developed by a certified life care planner and reviewed by a
-              board-certified physician.
+              {ORG_SHORT} prepares independent economic damages analyses, business valuations,
+              and forensic accounting work for attorneys, insurers, and businesses in every U.S.
+              jurisdiction. Each report states its records, data sources, and assumptions so it
+              can be examined line by line.
             </p>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function ServicesHub() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Picture
             src="/images/legal-team-discussion.jpg"
-            alt="Legal team reviewing a life care plan"
+            alt="Legal team reviewing an economic damages report"
             width={1200}
             height={400}
             className="rounded-2xl shadow-xl w-full object-cover max-h-80"
@@ -61,8 +61,8 @@ export default function ServicesHub() {
               All Services
             </h2>
             <p className="text-neutral-600 max-w-2xl mx-auto">
-              From records review through deposition and trial testimony, our planners support
-              every stage of litigation with objective, evidence-based analysis.
+              From records review through deposition and trial testimony, our economists support
+              every stage of litigation with objective, data-driven analysis.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

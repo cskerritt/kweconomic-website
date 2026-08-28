@@ -111,7 +111,7 @@ export default function App() {
 
         {/* Retired vocational-site surfaces (intake, PSA agreements, payment, raffle,
             document libraries, expert-disclosure, economic tools) are NOT
-            registered on kwlcp.com; server.js 404s or redirects them. */}
+            registered on this site; server.js 404s or redirects them. */}
         <Route path="/services/:serviceSlug/:stateSlug" element={<ServiceState />} />
         <Route path="/services/:serviceSlug/:stateSlug/:citySlug" element={<ServiceStateCity />} />
         <Route path="/locations" element={<LocationsHub />} />

@@ -20,8 +20,8 @@ function formatDate(dateStr: string) {
 
 const categoryColors: Record<string, string> = {
   Legal: "bg-navy/10 text-navy",
-  "Life Care Planning": "bg-forest/10 text-forest",
   Economics: "bg-amber/10 text-amber-dark",
+  Valuation: "bg-forest/10 text-forest",
 };
 
 export default function InsightPost() {
@@ -180,8 +180,8 @@ export default function InsightPost() {
                       Knowledge Center <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                     <p className="text-xs text-neutral-500 mt-1">
-                      In-depth guides on life care planning, medical cost projection, and
-                      the standards that govern future-care testimony.
+                      In-depth guides on economic damages, expert testimony, and the
+                      methods behind a defensible damages figure.
                     </p>
                   </div>
                 </div>

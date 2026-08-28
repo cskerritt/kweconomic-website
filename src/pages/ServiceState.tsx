@@ -32,7 +32,10 @@ import { useMagnetic } from "@/hooks/use-pointer-fx";
 import { ArrowRight, Briefcase } from "lucide-react";
 import { ICONS } from "@/lib/icons";
 
-const EXCLUDED_SERVICES = new Set(["expert-witness-testimony"]);
+// Rebuttal is engaged in reaction to an opposing report, not by matter type, so
+// it is not offered as a related-service card (the pillar page still links its
+// state directory). Mirrors the home-page service grid.
+const EXCLUDED_SERVICES = new Set(["expert-rebuttal-and-report-review"]);
 
 export default function ServiceState() {
   const { serviceSlug, stateSlug } = useParams<{ serviceSlug: string; stateSlug: string }>();
@@ -287,7 +290,7 @@ export default function ServiceState() {
                 Expert Credentials
               </h3>
               <p className="text-sm text-neutral-600 mb-3">
-                Our {state.name} {service.shortName.toLowerCase()} experts hold recognized certifications, including:
+                Qualifications and standards that bear on {service.shortName.toLowerCase()} testimony in {state.name}:
               </p>
               <div className="flex flex-wrap gap-2">
                 {service.relevantCredentials.map((cred) => (

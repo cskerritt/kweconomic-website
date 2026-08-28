@@ -31,7 +31,7 @@ export default function FAQ() {
   usePageMeta({
     title: `Frequently Asked Questions | ${ORG_NAME}`,
     description:
-      `Answers to common questions about ${ORG_NAME}'s life care plans, medical cost projections, plan rebuttals, planner credentials, fees, and nationwide coverage.`,
+      `Answers to common questions about ${ORG_NAME}'s economic damages analyses, the records they need, methods, admissibility, fees, and nationwide coverage.`,
     canonical: `${SITE_URL}/resources/faq`,
   });
 
@@ -57,8 +57,9 @@ export default function FAQ() {
               Frequently Asked Questions
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              Answers to common questions about life care plans, our process, planner credentials,
-              fees, and geographic coverage. Don't see your question? Contact us directly.
+              Answers to common questions about economic damages analysis, our process, the
+              records we need, fees, and geographic coverage. Don't see your question? Contact us
+              directly.
             </p>
           </div>
         </div>

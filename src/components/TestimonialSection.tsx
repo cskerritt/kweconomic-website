@@ -18,8 +18,8 @@ export default function TestimonialSection({ indices = [0, 1, 2] }: TestimonialS
             What Attorneys Say
           </h2>
           <p className="text-neutral-600 max-w-2xl mx-auto">
-            {ORG_NAME} works with plaintiff and defense attorneys. Our life care planners deliver independent, objective analysis grounded in accepted
-            methodology.
+            {ORG_NAME} works with plaintiff and defense attorneys. Our economists deliver independent, objective analysis grounded in accepted
+            methods and published data.
           </p>
         </div>
 

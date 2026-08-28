@@ -8,17 +8,17 @@ import { Picture } from "@/components/Picture";
 import { organizationSchema } from "@/lib/schema";
 
 const VALUES = [
-  { title: "Objectivity", text: "Plaintiff and defense engagements accepted. The plan follows the medical evidence, not the retaining party." },
-  { title: "Rigor", text: "Published standards of practice, clinical practice guidelines, and documented cost research behind every line item." },
+  { title: "Objectivity", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data, not the retaining party." },
+  { title: "Rigor", text: "Government wage and price series, published worklife tables, market yield data, and accepted valuation methods behind every figure." },
   { title: "Responsiveness", text: "Scope, timeline, and fee confirmed in writing before work begins; clear communication through delivery and testimony." },
-  { title: "Integrity", text: `${ORG_SHORT} documents future care needs. It does not advocate for a number.` },
+  { title: "Integrity", text: `${ORG_SHORT} measures the loss. It does not advocate for a number.` },
 ];
 
 export default function About() {
   usePageMeta({
-    title: `About ${ORG_NAME} - Independent, Physician-Informed Life Care Planning`,
+    title: `About ${ORG_NAME} - Independent Forensic Economics and Damages Analysis`,
     description:
-      `${ORG_NAME} prepares independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states.`,
+      `${ORG_NAME} prepares independent, transparent economic damages analyses, business valuations, and forensic accounting reports for plaintiff and defense attorneys in all 50 states.`,
     canonical: `${SITE_URL}/about`,
   });
 
@@ -31,17 +31,18 @@ export default function About() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-teal-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
               Who We Are
             </p>
             <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               About {ORG_NAME}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              {ORG_NAME} is a life care planning practice. We prepare independent, evidence-based
-              life care plans, medical cost projections, and plan rebuttals for attorneys and their
-              clients across all U.S. jurisdictions, and we testify to that work when the case
-              requires it.
+              {ORG_NAME} is a forensic economics practice. We measure economic losses for
+              litigation - lost earnings, wrongful death losses, household services, the present
+              value of future care, employment damages, lost profits, and the value of business
+              interests - for attorneys and their clients across all U.S. jurisdictions, and we
+              testify to that work when the case requires it.
             </p>
           </div>
         </div>
@@ -57,19 +58,22 @@ export default function About() {
               </h2>
               <div className="space-y-4 text-neutral-700 leading-relaxed">
                 <p>
-                  {ORG_NAME} is the life care planning practice of {ORG_LEGAL}, a rehabilitation
-                  and expert-services firm headquartered in Hackensack, New Jersey. The life care
-                  planning group grew out of the firm's catastrophic-injury work and now operates
-                  under its own name so that attorneys, adjusters, and courts can find a dedicated
-                  planning practice.
+                  {ORG_NAME} is the trade name of {ORG_LEGAL}, the forensic economics, forensic
+                  accounting, and business valuation practice of a family of expert firms
+                  headquartered in Hackensack, New Jersey. The economics work grew out of the
+                  group's injury and disability litigation practice, where the question after
+                  the medical and vocational opinions was always the same: what is the loss
+                  worth? The practice now operates under its own name so that attorneys,
+                  insurers, and courts can find a dedicated economics resource.
                 </p>
                 <p>
-                  Plans are developed by certified life care planners with a board-certified
-                  physician life care planner on the team, supported by planners with
-                  doctoral-level rehabilitation training. Every recommendation is traced to
-                  the medical record, treating-provider input, and published clinical practice
-                  guidelines, and every cost is sourced to the geographic market where care will
-                  be delivered.
+                  Every analysis is built from the records in the case and from published data:
+                  tax returns, wage and benefit records, and financial statements on one side,
+                  and government wage, price, and worklife series, market yield data, and the
+                  forensic economics literature on the other. The report states each assumption
+                  in plain language and presents the loss under alternative scenarios where the
+                  record supports more than one reading of the facts, so the other side can
+                  recompute the figure from the report alone.
                 </p>
                 <p>
                   {ORG_SHORT} accepts plaintiff and defense engagements equally. Opinions follow the
@@ -85,7 +89,7 @@ export default function About() {
               {/* Photo */}
               <Picture
                 src="/images/mentor-trainee.jpg"
-                alt="Life care planner reviewing a plan with a colleague"
+                alt="Economist reviewing a damages analysis with a colleague"
                 width={800}
                 height={533}
                 className="rounded-xl shadow-lg w-full object-cover"
@@ -95,9 +99,8 @@ export default function About() {
               <div className="bg-navy-dark text-white rounded-xl p-8">
                 <h3 className="font-serif text-xl font-bold mb-3">Our Mission</h3>
                 <p className="text-neutral-300 leading-relaxed">
-                  Independent, physician-informed life care planning that gives courts and parties a
-                  documented, defensible picture of what an injured person will need and what it
-                  will cost.
+                  Independent, transparent economic damages analysis that gives courts and parties
+                  a documented, reproducible measure of what a loss is worth.
                 </p>
               </div>
               {/* Values */}
@@ -106,7 +109,7 @@ export default function About() {
                 <ul className="space-y-3">
                   {VALUES.map((v) => (
                     <li key={v.title} className="flex items-start gap-3">
-                      <span className="w-2 h-2 rounded-full bg-teal mt-2 shrink-0" />
+                      <span className="w-2 h-2 rounded-full bg-amber mt-2 shrink-0" />
                       <div>
                         <span className="font-semibold text-navy">{v.title}: </span>
                         <span className="text-neutral-600">{v.text}</span>
@@ -123,14 +126,15 @@ export default function About() {
       {/* Leadership Teaser */}
       <section className="py-16 bg-neutral-50 border-y border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Planners</h2>
+          <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Economists</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto mb-8">
-            The team includes a board-certified physician who is a Certified Life Care Planner
-            and doctoral-level rehabilitation professionals who hold the CLCP credential. Read the credentials and background of each planner.
+            The practice is led by a Chief of Economic Services who directs every analysis and
+            testifies to it, supported by an economics associate who coordinates each engagement
+            with counsel. Read the background and practice areas of each member of the team.
           </p>
           <Link
             to="/team"
-            className="inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+            className="inline-flex items-center gap-2 bg-amber hover:bg-amber-dark text-white font-semibold px-8 py-3 rounded-lg transition-colors"
           >
             Meet the Team
           </Link>

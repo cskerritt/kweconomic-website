@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Phone, Award, Users, MapPin } from "lucide-react";
+import { ArrowRight, Shield, Phone, FileCheck, Scale, MapPin } from "lucide-react";
 import { pillarServices } from "@/data/services";
 import { states } from "@/data/states";
 import { homepageFaqs } from "@/data/home-faqs.mjs";
@@ -25,14 +25,15 @@ import {
 const HOMEPAGE_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 
 const HOW_WE_WORK = [
-  { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. Plans are evidence-based and document the foundation for every recommendation." },
-  { icon: Award, title: "Physician-Informed Planning", text: "Plans are developed by certified life care planners with a board-certified physician life care planner on the team." },
-  { icon: Users, title: "Clinical Foundation", text: "Direct emergency medicine clinical experience grounds every recommendation in the plan." },
-  { icon: MapPin, title: "Nationwide Practice", text: "Engagements in all 50 states, the District of Columbia, and U.S. territories with state-specific cost research." },
+  { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data, not the retaining party." },
+  { icon: FileCheck, title: "Transparent Assumptions", text: "Every report states its earnings base, growth rate, worklife horizon, discount rate, and data sources so the other side can recompute the figure." },
+  { icon: Scale, title: "Court-Tested Methods", text: "Present value, worklife expectancy, and valuation methods drawn from the forensic economics literature and applied the same way in every venue." },
+  { icon: MapPin, title: "Nationwide Practice", text: "Engagements in all 50 states, the District of Columbia, and U.S. territories, with state and metro wage, cost of living, and damages-rule context." },
 ];
 
 const CASE_TYPE_ENTRIES = [
-  { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Catastrophic injury, medical malpractice, workers' compensation, and pediatric matters" },
+  { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Lost earnings, wrongful death, household services, employment, and commercial damages matters" },
+  { label: "Rebut an Opposing Report", href: "/services/expert-rebuttal-and-report-review", blurb: "Review of an opposing economist's inputs, methods, and arithmetic against the record" },
   { label: "General Inquiry", href: "/contact", blurb: "Anything else - we respond in 1 business day" },
 ];
 
@@ -44,26 +45,27 @@ const REGION_ORDER: { key: string; label: string }[] = [
 ];
 
 const KNOWLEDGE_RESOURCES = [
-  { label: "What Is a Life Care Plan?", href: "/guides/what-is-life-care-plan" },
-  { label: "How a Life Care Plan Is Priced", href: "/guides/how-a-life-care-plan-is-priced" },
-  { label: "Life Care Plan vs Medicare Set-Aside", href: "/guides/life-care-plan-vs-medicare-set-aside" },
-  { label: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
-  { label: "CLCP vs CNLCP", href: "/compare/clcp-vs-cnlcp" },
+  { label: "What Is a Forensic Economist?", href: "/guides/what-is-a-forensic-economist" },
+  { label: "How Lost Earnings Are Calculated", href: "/guides/how-lost-earnings-are-calculated" },
+  { label: "Present Value, Explained for Attorneys", href: "/guides/present-value-explained-for-attorneys" },
+  { label: "How to Rebut an Economic Damages Report", href: "/guides/how-to-rebut-an-economic-damages-report" },
+  { label: "Lost Earnings vs. Lost Earning Capacity", href: "/compare/lost-earnings-vs-lost-earning-capacity" },
+  { label: "Forensic Economist vs. Forensic Accountant", href: "/compare/forensic-economist-vs-forensic-accountant" },
 ];
 
 export default function Home() {
   usePageMeta({
-    title: `Life Care Planning Expert Witness Services | ${ORG_NAME}`,
+    title: `Forensic Economics and Economic Damages Experts | ${ORG_NAME}`,
     description:
-      "Independent, physician-informed life care plans and medical cost projections for plaintiff and defense attorneys in all 50 states. Response in 1 business day.",
+      "Independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense attorneys in all 50 states.",
     canonical: `${SITE_URL}/`,
   });
 
-  // Planning lines only; testimony is a mode of every engagement, not a card.
-  const coreServices = pillarServices().filter((s) => s.slug !== "expert-witness-testimony");
+  // Damages lines only; rebuttal is a mode of every engagement, not a card.
+  const coreServices = pillarServices().filter((s) => s.slug !== "expert-rebuttal-and-report-review");
 
-  // Anonymous retaining-attorney quote (owner-attested set). Index 0 = the
-  // expert-report quote.
+  // Representative retaining-attorney feedback (labeled as such on the card).
+  // Index 0 = the lost earnings quote used as the hero pull-quote.
   const heroQuote = testimonials[0];
   const allStates = states.filter((s) => s.type === "state");
 
@@ -85,22 +87,22 @@ export default function Home() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
             <div>
-              <p className="kw-enter text-teal-light text-xs font-semibold uppercase tracking-[0.18em] mb-5">
-                Certified Life Care Planners
+              <p className="kw-enter text-amber-light text-xs font-semibold uppercase tracking-[0.18em] mb-5">
+                Forensic Economists and Damages Experts
               </p>
               <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] mb-6">
-                Life Care Plans That Document the <span className="kw-gradient-text">Future of Care</span>
+                Economic Damages Analysis That <span className="kw-gradient-text">Holds Up in Court</span>
               </h1>
               <p className="kw-enter kw-enter-2 text-lg md:text-xl text-neutral-300 mb-8 leading-relaxed max-w-xl">
-                {ORG_NAME} produces independent, evidence-based life care plans and medical
-                cost projections for plaintiff and defense counsel in all 50 states, the District
-                of Columbia, and U.S. territories.
+                {ORG_NAME} delivers independent lost earnings, wrongful death, household services,
+                employment, business valuation, and forensic accounting analyses for plaintiff and
+                defense counsel in all 50 states, the District of Columbia, and U.S. territories.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
                 <Link
                   to="/contact"
-                  className="group inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-7 py-4 rounded-lg text-base transition-colors shadow-lg shadow-teal/20"
+                  className="group inline-flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white font-semibold px-7 py-4 rounded-lg text-base transition-colors shadow-lg shadow-amber/20"
                 >
                   Request a Consultation <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -161,7 +163,7 @@ export default function Home() {
                   </span>
                   <Link
                     to="/case-types"
-                    className="text-xs text-teal font-semibold uppercase tracking-wider hover:underline"
+                    className="text-xs text-amber-dark font-semibold uppercase tracking-wider hover:underline"
                   >
                     See case types
                   </Link>
@@ -176,11 +178,11 @@ export default function Home() {
       <section className="bg-neutral-100 border-y border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-navy">
           <span className="inline-flex items-center gap-2 font-semibold">
-            <Shield className="w-4 h-4 text-teal" />
+            <Shield className="w-4 h-4 text-amber" />
             Plaintiff <span className="text-neutral-500">·</span> Defense
           </span>
           <span className="text-neutral-600">All 50 states + DC + U.S. territories</span>
-          <span className="text-neutral-600">M.D., Ph.D., CLCP, CRC credentialed</span>
+          <span className="text-neutral-600">Reports built for deposition and trial</span>
           <span className="text-neutral-600">Hackensack, NJ - Richmond, VA</span>
         </div>
       </section>
@@ -199,8 +201,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {HOW_WE_WORK.map((item, i) => (
               <Reveal key={item.title} delay={i * 60} className="text-center">
-                <div className="w-14 h-14 rounded-full bg-teal/10 flex items-center justify-center mx-auto mb-4">
-                  <item.icon className="w-7 h-7 text-teal" aria-hidden="true" />
+                <div className="w-14 h-14 rounded-full bg-amber/10 flex items-center justify-center mx-auto mb-4">
+                  <item.icon className="w-7 h-7 text-amber" aria-hidden="true" />
                 </div>
                 <h3 className="font-semibold text-navy text-lg mb-2">{item.title}</h3>
                 <p className="text-sm text-neutral-600">{item.text}</p>
@@ -218,7 +220,7 @@ export default function Home() {
               Start where your case is
             </h2>
             <p className="text-neutral-600 max-w-2xl">
-              Tell us about the injury, the records you have, and your deadlines. We confirm
+              Tell us about the loss claim, the records you have, and your deadlines. We confirm
               scope, timeline, and fee before any work begins.
             </p>
           </Reveal>
@@ -227,13 +229,13 @@ export default function Home() {
               <Reveal key={entry.href} delay={i * 60}>
                 <Link
                   to={entry.href}
-                  className="kw-lift group block h-full rounded-lg border border-neutral-200 hover:border-teal hover:shadow-lg bg-white p-5"
+                  className="kw-lift group block h-full rounded-lg border border-neutral-200 hover:border-amber hover:shadow-lg bg-white p-5"
                 >
-                  <h3 className="font-serif text-lg font-bold text-navy mb-1 group-hover:text-teal transition-colors">
+                  <h3 className="font-serif text-lg font-bold text-navy mb-1 group-hover:text-amber-dark transition-colors">
                     {entry.label}
                   </h3>
                   <p className="text-sm text-neutral-600 mb-3">{entry.blurb}</p>
-                  <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-teal">
+                  <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-amber-dark">
                     Get started <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
                   </span>
                 </Link>
@@ -251,8 +253,10 @@ export default function Home() {
               Services
             </h2>
             <p className="text-neutral-600 max-w-2xl">
-              Adult and pediatric life care plans, catastrophic injury projections, medical cost
-              projections, workers' compensation LCPs, and plan updates and reviews.
+              Lost earnings and earning capacity, wrongful death economic loss, personal injury
+              damages, household services, life care plan costing, employment and wage-loss
+              damages, business valuation, lost profits, fraud and asset tracing, and marital
+              financial analysis.
             </p>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -271,7 +275,7 @@ export default function Home() {
           <div className="mt-10">
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors"
+              className="inline-flex items-center gap-2 text-navy font-semibold hover:text-amber-dark transition-colors"
             >
               View all services <ArrowRight className="w-4 h-4" />
             </Link>
@@ -291,7 +295,7 @@ export default function Home() {
             </h2>
             <p className="text-neutral-600 max-w-2xl">
               {ORG_NAME} serves clients in all 50 states, the District of Columbia, and U.S.
-              territories. Select a state for local cost research and provider context.
+              territories. Select a state for wage, cost of living, and damages-rule context.
             </p>
           </Reveal>
           <div className="space-y-8">
@@ -300,7 +304,7 @@ export default function Home() {
               if (regionStates.length === 0) return null;
               return (
                 <Reveal key={region.key} delay={ri * 80}>
-                  <h3 className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.14em] text-teal mb-4">
+                  <h3 className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.14em] text-amber-dark mb-4">
                     {region.label}
                     <span className="h-px flex-1 bg-neutral-200" aria-hidden="true" />
                   </h3>
@@ -309,9 +313,9 @@ export default function Home() {
                       <Link
                         key={state.slug}
                         to={`/locations/${state.slug}`}
-                        className="group bg-white rounded-lg border border-neutral-200 px-4 py-3 text-center hover:border-teal hover:-translate-y-0.5 hover:shadow-md transition-all"
+                        className="group bg-white rounded-lg border border-neutral-200 px-4 py-3 text-center hover:border-amber hover:-translate-y-0.5 hover:shadow-md transition-all"
                       >
-                        <span className="block text-sm font-semibold text-navy group-hover:text-teal transition-colors">
+                        <span className="block text-sm font-semibold text-navy group-hover:text-amber-dark transition-colors">
                           {state.abbreviation}
                         </span>
                         <span className="block text-[11px] text-neutral-500 mt-0.5 truncate">
@@ -327,7 +331,7 @@ export default function Home() {
           <div className="mt-8">
             <Link
               to="/locations"
-              className="inline-flex items-center gap-2 text-navy font-semibold hover:text-teal transition-colors"
+              className="inline-flex items-center gap-2 text-navy font-semibold hover:text-amber-dark transition-colors"
             >
               View all locations <ArrowRight className="w-4 h-4" />
             </Link>
@@ -343,7 +347,7 @@ export default function Home() {
               Common questions
             </h2>
             <p className="text-neutral-600">
-              Direct answers for attorneys evaluating a life care planning engagement.
+              Direct answers for attorneys evaluating an economic damages engagement.
             </p>
           </Reveal>
           <Reveal>
@@ -360,8 +364,8 @@ export default function Home() {
               Background reading
             </h2>
             <p className="text-neutral-600 max-w-2xl">
-              In-depth guides and side-by-side comparisons on the issues that show up in life
-              care planning and future medical cost matters.
+              In-depth guides and side-by-side comparisons on the questions that come up in
+              economic damages, valuation, and expert testimony matters.
             </p>
           </Reveal>
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -369,12 +373,12 @@ export default function Home() {
               <Reveal as="li" key={r.href} delay={i * 60}>
                 <Link
                   to={r.href}
-                  className="kw-lift block h-full rounded-lg border border-neutral-200 bg-white px-5 py-4 hover:border-teal hover:shadow-md"
+                  className="kw-lift block h-full rounded-lg border border-neutral-200 bg-white px-5 py-4 hover:border-amber hover:shadow-md"
                 >
                   <span className="block font-medium text-navy text-sm leading-snug">
                     {r.label}
                   </span>
-                  <span className="text-xs text-teal font-semibold uppercase tracking-wider mt-1 inline-flex items-center gap-1">
+                  <span className="text-xs text-amber-dark font-semibold uppercase tracking-wider mt-1 inline-flex items-center gap-1">
                     Read <ArrowRight className="w-3 h-3" />
                   </span>
                 </Link>
@@ -382,21 +386,22 @@ export default function Home() {
             ))}
           </ul>
           <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            <Link to="/guides" className="text-navy font-semibold hover:text-teal">
+            <Link to="/guides" className="text-navy font-semibold hover:text-amber-dark">
               All guides <ArrowRight className="w-3 h-3 inline" />
             </Link>
-            <Link to="/compare" className="text-navy font-semibold hover:text-teal">
+            <Link to="/compare" className="text-navy font-semibold hover:text-amber-dark">
               All comparisons <ArrowRight className="w-3 h-3 inline" />
             </Link>
-            <Link to="/knowledge" className="text-navy font-semibold hover:text-teal">
+            <Link to="/knowledge" className="text-navy font-semibold hover:text-amber-dark">
               Knowledge center <ArrowRight className="w-3 h-3 inline" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Testimonials (index 0 is the hero pull-quote above) */}
-      <TestimonialSection indices={[1, 2, 3]} />
+      {/* Representative feedback (index 0 is the hero pull-quote; it closes the
+          row so all three quotes render) */}
+      <TestimonialSection indices={[1, 2, 0]} />
 
       {/* Final CTA */}
       <section className="py-16 md:py-24">
