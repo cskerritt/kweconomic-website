@@ -2,6 +2,7 @@ import {
   Activity,
   Baby,
   Briefcase,
+  Building2,
   Calculator,
   FileSearch,
   FileText,
@@ -9,10 +10,13 @@ import {
   HardHat,
   HeartPulse,
   Home,
+  LineChart,
   RefreshCcw,
   Scale,
+  Search,
   ShieldCheck,
   TrendingUp,
+  Users,
 } from "lucide-react";
 import type { ComponentType } from "react";
 
@@ -28,6 +32,7 @@ export const ICONS: Record<string, IconComponent | undefined> = {
   Activity,
   Baby,
   Briefcase,
+  Building2,
   Calculator,
   FileSearch,
   FileText,
@@ -35,8 +40,11 @@ export const ICONS: Record<string, IconComponent | undefined> = {
   HardHat,
   HeartPulse,
   Home,
+  LineChart,
   RefreshCcw,
   Scale,
+  Search,
   ShieldCheck,
   TrendingUp,
+  Users,
 };
