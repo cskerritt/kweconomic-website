@@ -13,11 +13,19 @@ import { states } from "./states";
  *
  * Copy rules: citation-free prose (no statute, rule, or case cites), hyphens
  * only, no invented statistics, no LCP or vocational vocabulary, and NEVER a
- * claim that a named person holds an association membership. Whether the
- * team's economists currently hold NAFE or AAEFE membership is a
+ * claim that the firm or a named person holds an association membership.
+ * Whether the team's economists currently hold NAFE or AAEFE membership is a
  * facts-to-confirm item (README); until confirmed, the membership pages carry
  * `expertSlugs: []` and describe the association, not the roster.
- * `sources` come from the registry in references.ts only.
+ * `expertSlugs` is the only roster switch: the credential templates list named
+ * economists from it and from nowhere else (never from a team.ts label match),
+ * so an empty list guarantees that no person is attached to the credential
+ * anywhere on the site. `sources` come from the registry in references.ts only.
+ *
+ * `category` is the schema.org credentialCategory. Nothing here is a
+ * certification or a license: the forensic-economist page describes a
+ * professional qualification, the association pages describe memberships, and
+ * the degree page describes academic degrees.
  *
  * Build scripts (scripts/prerender.mjs, scripts/generate-sitemap.mjs,
  * scripts/generate-extra-sitemaps.mjs) read this file as text and pair
@@ -28,10 +36,14 @@ import { states } from "./states";
  * and no state licensure applies. Templates render "na" as
  * "Recognized nationally; no state licensure applies".
  */
+export type CredentialCategory = "Professional Qualification" | "Professional Membership" | "Academic Degree";
+
 export interface Credential {
   slug: string;
   name: string;
   abbreviation: string;
+  /** Schema.org credentialCategory (see credentialSchema in src/lib/schema.ts). */
+  category: CredentialCategory;
   issuer?: string;
   issuerUrl?: string;
   scope: string;
@@ -53,6 +65,7 @@ export const credentials: Credential[] = [
     slug: "forensic-economist",
     name: "Forensic Economics Expert Witness",
     abbreviation: "Forensic Economist",
+    category: "Professional Qualification",
     scope:
       "A forensic economist measures economic loss for litigation: the earnings, benefits, household services, business income, or asset value that a person or company lost because of an injury, a death, a wrongful employment action, a breach of contract, or a fraud, reduced to present value as of the date of trial or settlement. The role is defined by training and method rather than by a license. Its foundation is graduate study in economics, finance, or business, applied through a damages methodology that the profession has published and tested in peer-reviewed journals, and proven through reports that hold up at deposition and under cross-examination. The economist does not diagnose an injury, rate an impairment, or decide what work a person can still do; those opinions come from physicians and other retained experts, and the economist converts them into dollars with stated assumptions and identified data sources.",
     requirements: [
@@ -94,6 +107,7 @@ export const credentials: Credential[] = [
     slug: "nafe-member",
     name: "National Association of Forensic Economics Member",
     abbreviation: "NAFE",
+    category: "Professional Membership",
     issuer: "National Association of Forensic Economics",
     issuerUrl: "https://nafe.net/",
     scope:
@@ -136,6 +150,7 @@ export const credentials: Credential[] = [
     slug: "aaefe-member",
     name: "American Academy of Economic and Financial Experts Member",
     abbreviation: "AAEFE",
+    category: "Professional Membership",
     issuer: "American Academy of Economic and Financial Experts",
     issuerUrl: "https://aaefe.org/",
     scope:
@@ -173,6 +188,7 @@ export const credentials: Credential[] = [
     slug: "graduate-economics-degree",
     name: "Graduate Economics and Business Degrees",
     abbreviation: "MBA / M.A. / Ph.D.",
+    category: "Academic Degree",
     issuer: "Accredited Colleges and Universities",
     scope:
       "Graduate degrees in economics, finance, and business are the educational foundation of damages work. A master's or doctorate in economics supplies the theory of wages, labor supply, and market behavior that lost earnings and lost profits analyses rest on, together with the statistics and econometrics needed to use government data series correctly. An MBA or a master's in finance supplies financial mathematics, valuation, and the reading of financial statements that business valuation, lost profits, and divorce financial analyses require. Courts weigh education together with experience rather than in isolation: a doctorate does not qualify a witness to testify outside the methods they actually practice, and a master's-level economist with a record of applied damages work and testimony is routinely accepted. What matters is that the degree covered the tools the opinion uses and that the economist can explain them from first principles under cross-examination.",

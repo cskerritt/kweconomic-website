@@ -31,7 +31,10 @@ export default function CredentialHub() {
   const idx = credentials.findIndex((c) => c.slug === slug);
   const prev = idx > 0 ? { label: credentials[idx - 1].abbreviation, href: `/credentials/${credentials[idx - 1].slug}` } : undefined;
   const next = idx < credentials.length - 1 ? { label: credentials[idx + 1].abbreviation, href: `/credentials/${credentials[idx + 1].slug}` } : undefined;
-  const experts = activeTeam.filter((m) => m.credentials.some((c) => c.toLowerCase() === cred.abbreviation.toLowerCase()));
+  // Named holders come from the credential's own expertSlugs list and from
+  // nowhere else: the membership pages carry an empty list until membership is
+  // confirmed (spec 4.3), so no person is ever attached to NAFE or AAEFE here.
+  const experts = activeTeam.filter((m) => cred.expertSlugs.includes(m.slug));
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -75,7 +78,7 @@ export default function CredentialHub() {
 
       {experts.length > 0 && (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">Our planners holding {cred.abbreviation}</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Our economists with this credential</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {experts.map((m) => (
               <li key={m.slug}>
@@ -106,7 +109,7 @@ export default function CredentialHub() {
 
       <SchemaOrg data={graphSchema([
         credentialSchema({
-          slug: cred.slug, name: cred.name, abbreviation: cred.abbreviation,
+          slug: cred.slug, name: cred.name, abbreviation: cred.abbreviation, category: cred.category,
           issuer: cred.issuer, issuerUrl: cred.issuerUrl, scope: cred.scope,
         }),
         faqPageSchema(cred.faqs, url),

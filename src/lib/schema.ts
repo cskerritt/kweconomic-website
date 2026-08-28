@@ -243,6 +243,13 @@ export function credentialSchema(args: {
   slug: string;
   name: string;
   abbreviation: string;
+  /**
+   * Schema.org credentialCategory. Required, with no default: the site's
+   * credentials are a professional qualification, association memberships,
+   * and academic degrees, none of which is a certification, so callers pass
+   * the category recorded on the credential entry (Credential.category).
+   */
+  category: string;
   issuer?: string;
   issuerUrl?: string;
   scope: string;
@@ -253,7 +260,7 @@ export function credentialSchema(args: {
     name: args.name,
     alternateName: args.abbreviation,
     description: args.scope,
-    credentialCategory: "Professional Certification",
+    credentialCategory: args.category,
     ...(args.issuer
       ? {
           recognizedBy: {

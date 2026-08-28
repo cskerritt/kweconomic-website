@@ -48,4 +48,16 @@ describe("economics credentials", () => {
     expect(getCredential("clcp")).toBeUndefined();
     expect(getCredential("forensic-economist")?.expertSlugs).toEqual(["christopher-skerritt"]);
   });
+
+  // Schema.org credentialCategory: the membership pages say "It is not a
+  // certification" in their own copy, and the JSON-LD must agree.
+  it("carries a schema category that is never a certification", () => {
+    expect(Object.fromEntries(credentials.map((c) => [c.slug, c.category]))).toEqual({
+      "forensic-economist": "Professional Qualification",
+      "nafe-member": "Professional Membership",
+      "aaefe-member": "Professional Membership",
+      "graduate-economics-degree": "Academic Degree",
+    });
+    for (const c of credentials) expect(c.category, c.slug).not.toMatch(/certif|licen/i);
+  });
 });

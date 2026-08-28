@@ -7,6 +7,7 @@ import {
   graphSchema,
   websiteSchema,
   serviceSchema,
+  credentialSchema,
 } from "./schema";
 
 describe("schema builders", () => {
@@ -29,6 +30,22 @@ describe("schema builders", () => {
     expect(p["@id"]).toBe(`${ORG_URL}/team/daniel-wolstein#person`);
     expect((p.worksFor as { "@id": string })["@id"]).toBe(ORG_ID);
     expect((p.hasCredential as unknown[]).length).toBe(2);
+  });
+
+  it("credentialSchema stamps the category it is given and never a certification default", () => {
+    const c = credentialSchema({
+      slug: "nafe-member",
+      name: "National Association of Forensic Economics Member",
+      abbreviation: "NAFE",
+      category: "Professional Membership",
+      issuer: "National Association of Forensic Economics",
+      issuerUrl: "https://nafe.net/",
+      scope: "test scope",
+    });
+    expect(c["@id"]).toBe(`${ORG_URL}/credentials/nafe-member#credential`);
+    expect(c.credentialCategory).toBe("Professional Membership");
+    expect((c.recognizedBy as { name: string; url: string }).url).toBe("https://nafe.net/");
+    expect(JSON.stringify(c)).not.toContain("Professional Certification");
   });
 
   it("graphSchema wraps entities in @graph", () => {
