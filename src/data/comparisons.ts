@@ -24,357 +24,434 @@ export interface Comparison {
   related?: RelatedItem[];
 }
 
+// Each entry keeps `slug` then `title` on consecutive lines (scripts/prerender.mjs
+// extracts the pair positionally). Prose is citation-free; sources render
+// through the registry. The two entries that compare the economist with the
+// sister disciplines (vocational and life care planning) are the only copy on
+// the site allowed to name those experts; the off-brand guard carves them out.
 export const comparisons: Comparison[] = [
   {
-    slug: "life-care-plan-vs-future-cost-projection",
-    title: "Life Care Plan vs. Future Cost Projection",
-    dateModified: "2026-04-21",
+    slug: "forensic-economist-vs-forensic-accountant",
+    title: "Forensic Economist vs. Forensic Accountant",
+    dateModified: "2026-08-27",
     a: {
-      label: "Life Care Plan",
-      summary: "Comprehensive itemized care plan following [[/methods/life-care-plan-development|IALCP/IARP standards]] with frequencies, durations, and costs across the lifespan (Reavis, 2002).",
+      label: "Forensic Economist",
+      summary:
+        "An economist who measures losses to people and households: [[/services/lost-earnings-and-earning-capacity|lost earnings and benefits]], household services, support to survivors, and the present value of future costs, using the person's records and published labor market, demographic, and financial data.",
+      url: "/services/lost-earnings-and-earning-capacity",
+    },
+    b: {
+      label: "Forensic Accountant",
+      summary:
+        "An accountant who examines the books and records of a business: [[/services/fraud-and-asset-tracing|tracing funds]], reconstructing transactions, quantifying commercial losses, and valuing business interests, usually from a CPA background with fraud examination or valuation credentials.",
+      url: "/services/fraud-and-asset-tracing",
+    },
+    rows: [
+      { dimension: "Primary subject", a: "Individuals and households", b: "Businesses and their records" },
+      { dimension: "Typical questions", a: "Lost earnings, earning capacity, death losses, present value of care", b: "Lost profits, fraud and tracing, valuation, marital business interests" },
+      { dimension: "Core data", a: "Tax returns, pay records, BLS and Census data, Treasury yields", b: "General ledgers, bank records, financial statements, transaction data" },
+      { dimension: "Professional standards", a: "NAFE and AAEFE ethics statements and the forensic economics literature", b: "AICPA, NACVA, and ACFE standards" },
+      { dimension: "Where the two meet", a: "Self-employed earnings, death of a business owner", b: "Owner compensation, discounting of lost profits" },
+    ],
+    whenUseA:
+      "Retain the economist when the loss belongs to a person or a household: an injured worker's earnings, a decedent's support to survivors, the value of household work, or the present value of a life care plan. The economist also discounts any future stream, including lost profits, once the stream has been established.",
+    whenUseB:
+      "Retain the forensic accountant when the question lives inside a company's records: whether money was diverted and where it went, what a business earned before and after an event, how owner compensation should be normalized, or what an interest in the business is worth under a stated standard of value.",
+    overlap:
+      "Both disciplines quantify financial loss from documents and both testify to it. They meet in the self-employed claimant, whose tax returns mix labor income with the return on the business, and in the death of an owner, where the survivors' loss depends on both the owner's earnings and the company's prospects. Under one roof the practice fields both, and the report identifies which discipline's method was applied to each component so the foundation for every figure is clear.",
+    faqs: [
+      {
+        question: "Can the same expert serve as both?",
+        answer:
+          "Some practitioners hold training in both fields and can address both sets of questions. Whether one expert or two is better depends on the case: a matter with a personal loss and a business loss often benefits from an expert for each, with the reports reconciled so the same revenue is not counted twice.",
+      },
+      {
+        question: "Which expert values a business in a divorce?",
+        answer:
+          "Business valuation is a valuation discipline governed by professional standards, and the valuator is usually credentialed in valuation regardless of whether the background is accounting or economics. The economist typically handles the income determination and support analysis in the same matter.",
+      },
+      {
+        question: "Who discounts lost profits to present value?",
+        answer:
+          "Either expert can, and the method is the same. What matters is that the discount rate reflects the risk of the projected profits and that the person who built the projection and the person who discounted it used consistent assumptions.",
+      },
+    ],
+    sources: refsToSources(["NAFE_ETHICS", "AICPA_SSVS1", "ACFE", "NACVA_STANDARDS"]),
+    related: [
+      { title: "Fraud Investigation and Asset Tracing", href: "/services/fraud-and-asset-tracing", description: "Tracing diverted funds and quantifying the loss." },
+      { title: "Business Valuation Approaches", href: "/methods/business-valuation-approaches", description: "Income, market, and asset approaches to value." },
+      { title: "What Is a Forensic Economist?", href: "/guides/what-is-a-forensic-economist", description: "What the discipline covers and how the work is done." },
+    ],
+  },
+  {
+    slug: "forensic-economist-vs-vocational-expert",
+    title: "Forensic Economist vs. Vocational Expert",
+    dateModified: "2026-08-27",
+    a: {
+      label: "Forensic Economist",
+      summary:
+        "The expert who converts a loss into dollars over time: the but-for earnings, the post-event earnings, fringe benefits, household services, the worklife horizon, and the [[/methods/present-value-and-discounting|present value]] of the difference.",
+      url: "/services/lost-earnings-and-earning-capacity",
+    },
+    b: {
+      label: "Vocational Expert",
+      summary:
+        "An evaluator of employability and earning capacity: which occupations a person can perform after an injury, what those jobs pay in the local labor market, and how long it takes to reach them. The economist relies on this opinion when the record does not fix the post-injury earnings directly.",
+      url: "/services/vocational-evaluation",
+    },
+    rows: [
+      { dimension: "Core question", a: "How much is the loss worth, in present dollars", b: "What work the person can do and what it pays" },
+      { dimension: "Inputs", a: "Earnings records, benefit records, published wage and time-use data, discount rates", b: "Medical restrictions, work history, skills, local job market data" },
+      { dimension: "Output", a: "Present value damages report with schedules", b: "Employability and earning capacity opinion" },
+      { dimension: "Typical retention", a: "Any matter with a lost earnings, household services, death, or business claim", b: "Injury, disability, and employment matters where post-injury work capacity is disputed" },
+      { dimension: "Testimony", a: "Numbers, assumptions, and sensitivity", b: "Capacity, placeability, and wage findings" },
+    ],
+    whenUseA:
+      "Retain the economist whenever a loss must be expressed as a dollar figure over time: lost earnings, benefits, household services, support to survivors, the present value of a care plan, or lost profits. The economist can proceed on the record alone when post-event earnings are documented or agreed.",
+    whenUseB:
+      "Retain the vocational expert when the post-injury capacity to work is contested and the record does not settle it: what jobs remain open, what they pay, and whether retraining is realistic. The opinion supplies the post-event side of the earnings comparison.",
+    overlap:
+      "Both experts address earning capacity, from different directions. The vocational opinion establishes what the person can earn; the economist converts the difference between that figure and the but-for earnings into a present value. In many injury matters both are retained and the reports reconcile: the economist adopts the vocational findings as inputs and states that reliance. Where only one is retained, the economist can present the loss under alternative post-event earnings assumptions drawn from the medical record, and the report says so. The [[/compare/lost-earnings-vs-lost-earning-capacity|lost earnings versus lost earning capacity]] comparison explains when the capacity question arises.",
+    faqs: [
+      {
+        question: "Can the economist testify to what jobs the plaintiff can do?",
+        answer:
+          "No. That is a vocational question outside the economist's field. The economist presents the loss under the post-event earnings scenarios the record supports and identifies which expert or document supports each scenario.",
+      },
+      {
+        question: "Do I always need both?",
+        answer:
+          "Not always. Where the person has returned to work at a documented wage, or the parties agree on post-event earnings, the economist can proceed without a separate vocational opinion. Where capacity is contested, the economist's post-event assumption needs a foundation, and that is usually the vocational expert.",
+      },
+      {
+        question: "Which expert should be retained first?",
+        answer:
+          "Ideally both early, and the vocational opinion before the economist finalizes the report, since the post-event earnings figure flows from it. A short interval between the two reports keeps the assumptions consistent.",
+      },
+    ],
+    sources: refsToSources(["BLS_OES", "BLS_CPS", "NAFE_ETHICS"]),
+    related: [
+      { title: "Lost Earnings and Earning Capacity Analysis", href: "/services/lost-earnings-and-earning-capacity", description: "The economist's affirmative earnings analysis." },
+      { title: "Worklife Expectancy", href: "/methods/worklife-expectancy", description: "How the earnings horizon is set." },
+      { title: "Vocational Assessment (sister practice)", href: "/services/vocational-evaluation", description: "Employability and capacity opinions from the vocational practice." },
+    ],
+  },
+  {
+    slug: "lost-earnings-vs-lost-earning-capacity",
+    title: "Lost Earnings vs. Lost Earning Capacity",
+    dateModified: "2026-08-27",
+    a: {
+      label: "Lost Earnings",
+      summary:
+        "The wages and benefits actually not received because of the event, measured from the person's own earnings history: pay records, tax returns, and employer statements, from the event to the return to work or to the end of the projection.",
+      url: "/services/lost-earnings-and-earning-capacity",
+    },
+    b: {
+      label: "Lost Earning Capacity",
+      summary:
+        "The reduction in the ability to earn, whether or not that ability was fully used before the event. It applies when the pre-event history understates what the person could have earned, or when the injury forecloses work the person had not yet begun.",
+      url: "/services/lost-earnings-and-earning-capacity",
+    },
+    rows: [
+      { dimension: "Measure", a: "Actual earnings history projected forward", b: "Capacity to earn, from education, training, and market data" },
+      { dimension: "Best evidence", a: "Tax returns, W-2 forms, pay stubs", b: "Occupational wage data, education, documented career path, vocational findings" },
+      { dimension: "Typical claimant", a: "Established worker with a stable history", b: "Student, homemaker, underemployed worker, business owner, worker between jobs" },
+      { dimension: "Contested point", a: "Growth rate, horizon, post-event earnings", b: "Whether the capacity was real and would have been used" },
+      { dimension: "Other experts", a: "Often only the medical evidence", b: "Vocational and medical opinions on capacity" },
+    ],
+    whenUseA:
+      "Lost earnings is the baseline measure whenever the person had a stable job and a documented history. The [[/methods/wage-growth-and-earnings-projection|earnings projection]] starts from the records, carries them forward with wage growth over the [[/methods/worklife-expectancy|worklife]], adds benefits, and nets post-event earnings.",
+    whenUseB:
+      "Lost earning capacity is the measure when the history does not describe the loss: a student whose career had not started, a parent who had left the labor force and intended to return, a worker who was between jobs or underemployed, or a person whose injury forecloses a documented path to higher-paying work. The projection is built from education, training, and occupational earnings data rather than from pay stubs alone.",
+    overlap:
+      "Both measures produce a but-for earnings stream and a post-event earnings stream and take the difference. The distinction is in the foundation for the but-for stream. In practice many reports blend the two: the history sets the starting point and capacity evidence supports growth beyond it, such as a promotion the person had already been offered. The report states which measure was applied to each period and why, so the trier of fact can see where the history ends and the capacity opinion begins.",
+    faqs: [
+      {
+        question: "Does a person who was unemployed at the time of injury have a claim?",
+        answer:
+          "Often, yes, as lost earning capacity. The analysis asks what the person could have earned given education, skills, and the local labor market, and whether the record shows an intent and ability to work. The history of employment before the gap is relevant evidence.",
+      },
+      {
+        question: "Do courts recognize earning capacity as a separate measure?",
+        answer:
+          "Most jurisdictions recognize the loss of the ability to earn as compensable, with the foundation and terminology varying by state. Counsel confirms the governing framework, and the economist presents the figures in the form that framework uses.",
+      },
+      {
+        question: "How does the economist avoid speculation in a capacity claim?",
+        answer:
+          "By tying each assumption to evidence: the degree program the person was enrolled in, the occupation the training leads to, the published earnings for that occupation and education level in the area, and the vocational and medical opinions on post-event capacity. Where the record leaves the path open, the report shows the result under each alternative.",
+      },
+    ],
+    sources: refsToSources(["BLS_OES", "CENSUS_ACS", "SKOOG_CIECKA_KRUEGER_2011"]),
+    related: [
+      { title: "How Lost Earnings Are Calculated", href: "/guides/how-lost-earnings-are-calculated", description: "The full calculation, input by input." },
+      { title: "Wage Growth and Earnings Projection", href: "/methods/wage-growth-and-earnings-projection", description: "Building the but-for and post-event streams." },
+      { title: "Economist and Vocational Witness Roles", href: "/compare/forensic-economist-vs-vocational-expert", description: "Who supplies the capacity opinion and who values it." },
+    ],
+  },
+  {
+    slug: "lost-profits-vs-business-valuation",
+    title: "Lost Profits vs. Business Valuation",
+    dateModified: "2026-08-27",
+    a: {
+      label: "Lost Profits",
+      summary:
+        "The profits a continuing business would have earned but for the wrongful act, measured over a defined loss period, net of avoided costs and mitigation, and [[/methods/lost-profits-but-for-analysis|discounted to present value]].",
+      url: "/services/lost-profits-and-commercial-damages",
+    },
+    b: {
+      label: "Business Valuation",
+      summary:
+        "The value of the business interest as a whole at a valuation date, applied when the business was destroyed or the interest was taken, measured under a stated standard of value using the [[/methods/business-valuation-approaches|income, market, and asset approaches]].",
+      url: "/services/business-valuation",
+    },
+    rows: [
+      { dimension: "When it applies", a: "The business survives and recovers", b: "The business is destroyed or the interest is taken" },
+      { dimension: "Time frame", a: "A loss period from the act to recovery", b: "A single valuation date" },
+      { dimension: "What is measured", a: "The difference in profits over the period", b: "The value of all expected future cash flows" },
+      { dimension: "Risk treatment", a: "Discount rate applied to projected profits", b: "Discount or capitalization rate within the income approach" },
+      { dimension: "Governing standard", a: "Reasonable certainty of the fact of loss", b: "The standard of value the framework specifies" },
+    ],
+    whenUseA:
+      "Use lost profits when the business continued to operate and the harm was an interruption: a breached supply contract, a lost customer, a period of closure, or a diverted opportunity. The loss period ends when the business recovered or would have recovered, and the measure is profits, not revenue.",
+    whenUseB:
+      "Use business valuation when the harm ended the business or removed the owner's interest: a company forced to close, a partner squeezed out, a franchise terminated, or a marital interest to be divided. The measure is what the interest was worth on the valuation date under the standard of value the governing framework requires.",
+    overlap:
+      "Both measures rest on projected cash flows and both discount them for time and risk. The danger is double recovery: a business valued as of the date of destruction already incorporates the profits it would have earned afterward, so claiming both lost profits after that date and the lost value of the business counts the same cash flows twice. Where a business was harmed for a period and then destroyed, the analysis presents lost profits through the date of destruction and the value of the business as of that date, with the boundary stated. The [[/guides/lost-profits-vs-lost-business-value|lost profits versus lost business value]] guide works through the choice.",
+    faqs: [
+      {
+        question: "Can a plaintiff claim both lost profits and lost business value?",
+        answer:
+          "Only for different periods. Lost profits can run from the wrongful act to the date the business was destroyed, and the business can be valued as of that date, but lost profits after the valuation date are already inside the value and cannot be added again.",
+      },
+      {
+        question: "Which is larger?",
+        answer:
+          "Neither is inherently larger. A short interruption of a valuable business produces small lost profits and no change in value; the destruction of a marginal business produces a small value and, had it survived, small profits. The facts, not the label, drive the number.",
+      },
+      {
+        question: "Does the discount rate differ between the two?",
+        answer:
+          "Both use a rate that reflects the risk of the cash flows. In a valuation the rate is built up from the company's risk profile within the income approach; in a lost profits analysis the rate reflects the risk of the specific projected profits, which can be lower where the profits were contractually assured.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD"]),
+    related: [
+      { title: "Lost Profits and But-For Analysis", href: "/methods/lost-profits-but-for-analysis", description: "Building the but-for scenario and the loss period." },
+      { title: "Business Valuation Approaches", href: "/methods/business-valuation-approaches", description: "Income, market, and asset approaches to value." },
+      { title: "Business Valuation in Litigation", href: "/guides/business-valuation-in-litigation", description: "Standards of value, valuation dates, and discounts." },
+    ],
+  },
+  {
+    slug: "plaintiff-economist-vs-defense-economist",
+    title: "Plaintiff Economist vs. Defense Economist: Is the Method Different?",
+    dateModified: "2026-08-27",
+    a: {
+      label: "Plaintiff Economist",
+      summary:
+        "An economist retained by the injured person, the survivors, or the business claiming the loss, usually to prepare the affirmative [[/services/personal-injury-economic-damages|damages report]] that states the loss and its foundation.",
+      url: "/services/personal-injury-economic-damages",
+    },
+    b: {
+      label: "Defense Economist",
+      summary:
+        "An economist retained by the defendant or the carrier, usually to [[/services/expert-rebuttal-and-report-review|review the affirmative report]], test its inputs against the record, and often to present an alternative calculation.",
+      url: "/services/expert-rebuttal-and-report-review",
+    },
+    rows: [
+      { dimension: "Method", a: "The same accepted methods", b: "The same accepted methods" },
+      { dimension: "Data sources", a: "Case records and published government data", b: "The same, tested against the record" },
+      { dimension: "Typical assignment", a: "Affirmative report", b: "Rebuttal review and, often, an alternative calculation" },
+      { dimension: "Common disagreements", a: "Earnings base, growth rate, worklife, post-event earnings, consumption, discount rate", b: "The same inputs, argued from the other side of the record" },
+      { dimension: "Ethical obligation", a: "Objective analysis regardless of retaining party", b: "The same" },
+    ],
+    whenUseA:
+      "Retain an economist to prepare the affirmative report when representing the person, the survivors, or the business claiming the loss. The report should state each input, its source, and the sensitivity of the result, because a defense economist will test every one of them.",
+    whenUseB:
+      "Retain an economist to review the affirmative report when representing the defendant or the carrier. A useful rebuttal does more than list objections: it identifies which inputs the record supports, recalculates the loss under supportable alternatives, and gives the trier of fact a second number with its own foundation.",
+    overlap:
+      "The method does not change with the retaining party, and a report that changes it has a credibility problem before the first question on cross-examination. Both economists use the same published wage, benefit, time-use, expenditure, and yield data and the same discounting arithmetic; they differ on which facts in the record control each input. KW Economics accepts engagements from both plaintiff and defense and applies the same method to each, which is what allows an economist to be believed when the analysis favors the retaining party and when it does not.",
+    faqs: [
+      {
+        question: "Should I avoid an economist who usually works for the other side?",
+        answer:
+          "Not categorically. An economist with a balanced record is often more credible under cross-examination, and the deposition and trial history is disclosed in most jurisdictions anyway. What matters is whether the method holds constant across engagements.",
+      },
+      {
+        question: "Do the two economists always disagree?",
+        answer:
+          "Rarely on everything. Opposing economists usually agree on the framework and on most inputs and disagree on a few: the earnings base, the growth rate, the post-event earnings, the consumption percentage in a death claim, or the discount rate. Narrowing the dispute to those inputs is what a good rebuttal does.",
+      },
+      {
+        question: "Will the defense economist produce a number of their own?",
+        answer:
+          "Usually, where the record supports one. An alternative calculation gives the trier of fact a supported figure rather than only a critique, and it demonstrates that the reviewer applied the method rather than simply rejecting the result.",
+      },
+    ],
+    sources: refsToSources(["NAFE_ETHICS", "FRE_702", "FRCP_26"]),
+    related: [
+      { title: "Expert Rebuttal and Report Review", href: "/services/expert-rebuttal-and-report-review", description: "Testing an opposing economic report against the record." },
+      { title: "How to Rebut an Economic Damages Report", href: "/guides/how-to-rebut-an-economic-damages-report", description: "Where damages reports fail and how to show it." },
+      { title: "Expert Witness Testimony Guide", href: "/knowledge/expert-witness-testimony-guide", description: "Admissibility, deposition, and trial for economic testimony." },
+    ],
+  },
+  {
+    slug: "fair-market-value-vs-fair-value",
+    title: "Fair Market Value vs. Fair Value",
+    dateModified: "2026-08-27",
+    a: {
+      label: "Fair Market Value",
+      summary:
+        "The price at which the interest would change hands between a willing buyer and a willing seller, neither under compulsion and both with reasonable knowledge of the relevant facts. It is the standard in tax matters, in many divorce and buy-sell contexts, and it ordinarily considers discounts for lack of control and lack of marketability.",
+      url: "/services/business-valuation",
+    },
+    b: {
+      label: "Fair Value",
+      summary:
+        "A standard defined by statute or case law for a specific purpose, most often dissenting and oppressed shareholder matters, that frequently excludes some or all of the discounts fair market value would apply. Its meaning depends on the jurisdiction and the context, and it is not the same as the financial reporting definition of the term.",
+      url: "/services/business-valuation",
+    },
+    rows: [
+      { dimension: "Where defined", a: "Tax authority definitions and professional valuation standards", b: "State statutes and case law; separately, financial reporting standards" },
+      { dimension: "Hypothetical parties", a: "A willing buyer and a willing seller", b: "Often the actual parties and the actual transaction" },
+      { dimension: "Discounts", a: "Lack of control and lack of marketability usually considered", b: "Often excluded, depending on the jurisdiction" },
+      { dimension: "Typical use", a: "Tax, divorce in many states, buy-sell agreements", b: "Dissenting and oppressed shareholder matters" },
+      { dimension: "Effect on a minority interest", a: "Usually lower", b: "Usually higher" },
+    ],
+    whenUseA:
+      "Fair market value applies where the governing framework, the agreement, or the tax context calls for it: estate and gift matters, most buy-sell agreements that name it, and divorce in the states that adopt it. The [[/methods/business-valuation-approaches|valuation]] considers what a hypothetical buyer would pay for the interest as it exists, including the disadvantages of holding a minority stake in a closely held company.",
+    whenUseB:
+      "Fair value applies where a statute or a court defines it for the matter at hand, most commonly when a shareholder dissents from a merger or claims oppression and the company or the majority must buy the shares. Many jurisdictions read the standard to exclude discounts for lack of control and marketability so the departing owner receives a proportionate share of the whole.",
+    overlap:
+      "The two standards share the same approaches to value and often the same enterprise-level conclusion; they diverge in how the interest is treated after the enterprise is valued. The choice of standard is a legal question, and the valuator applies the one counsel identifies, states it in the report, and where the standard is unsettled presents the result under each. Applying the wrong standard is one of the most common reasons a valuation is rejected, so the [[/guides/business-valuation-in-litigation|business valuation in litigation]] guide treats the standard of value as the first decision of the engagement.",
+    faqs: [
+      {
+        question: "Is fair value the same as the accounting term?",
+        answer:
+          "No. Financial reporting standards define fair value for measuring assets and liabilities on financial statements. The litigation standard is defined by the state's statute and case law for shareholder matters, and the two definitions can differ in important ways.",
+      },
+      {
+        question: "Why do discounts matter so much?",
+        answer:
+          "A discount for lack of control or lack of marketability can reduce the value of a minority interest substantially below its proportionate share of the enterprise. Whether the standard allows the discount can therefore change the number more than any other single decision in the valuation.",
+      },
+      {
+        question: "Which standard applies in divorce?",
+        answer:
+          "It varies by state. Some states use fair market value, some apply a fair value concept that limits discounts, and some have developed their own approach through case law. Counsel identifies the standard and the valuator applies it.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS"]),
+    related: [
+      { title: "Business Valuation", href: "/services/business-valuation", description: "Valuation of closely held interests for litigation." },
+      { title: "Business Valuation in Litigation", href: "/guides/business-valuation-in-litigation", description: "Standards of value, valuation dates, and discounts." },
+      { title: "Income Determination in Divorce", href: "/guides/income-determination-in-divorce", description: "Owner income, perquisites, and support analysis." },
+    ],
+  },
+  {
+    slug: "net-vs-gross-discount-rate",
+    title: "Net vs. Gross Discount Rate",
+    dateModified: "2026-08-27",
+    a: {
+      label: "Net Discount Rate",
+      summary:
+        "A single rate that combines growth and discounting: the difference between the rate at which the loss stream grows and the rate at which future amounts are discounted. It is applied to a loss stated in today's dollars and is the usual presentation where both rates are drawn from the same period.",
+      url: "/methods/present-value-and-discounting",
+    },
+    b: {
+      label: "Gross Discount Rate",
+      summary:
+        "The full nominal discount rate applied to a loss stream that has already been grown into future nominal dollars. It shows growth and discounting as two visible steps and is the presentation many readers expect when the growth rate differs by loss category.",
+      url: "/methods/present-value-and-discounting",
+    },
+    rows: [
+      { dimension: "Loss stream", a: "Stated in constant, present-day dollars", b: "Projected in future nominal dollars" },
+      { dimension: "Rates shown", a: "One number; the growth assumption is implicit", b: "Two numbers; growth and discount both visible" },
+      { dimension: "Consistency risk", a: "Low when both rates share a period and a basis", b: "Higher if growth and discount come from different periods" },
+      { dimension: "Multiple loss categories", a: "One net rate per category", b: "One growth rate per category, one discount rate overall" },
+      { dimension: "Total offset", a: "A net rate of zero: growth and discount cancel", b: "Not a separate case; total offset is a net-rate convention" },
+    ],
+    whenUseA:
+      "A net rate suits a projection with one loss category and rates drawn from the same historical window, and it is the natural form where a venue directs a total-offset approach, under which the net rate is zero and the present value equals the undiscounted sum of the losses in today's dollars. The report should still show the two components so the reader can see what the net rate contains.",
+    whenUseB:
+      "A gross presentation suits a report with several loss categories growing at different rates, such as wages, household replacement costs, and medical costs, because each category can be grown on its own series and the whole stream discounted at one rate. It also makes the [[/methods/wage-growth-and-earnings-projection|growth assumption]] visible, which is where most cross-examination on discounting begins.",
+    overlap:
+      "The two presentations are arithmetically equivalent when the assumptions are consistent: growing a stream at one rate and discounting it at another produces the same present value as applying the net of the two rates to the constant-dollar stream. The choice is about transparency and venue convention, not about the size of the number. The [[/methods/present-value-and-discounting|present value method]] page explains the mechanics; some jurisdictions fix the approach by case law, and the report follows the venue's rule and says so.",
+    faqs: [
+      {
+        question: "What is the total offset method?",
+        answer:
+          "A convention under which the growth rate and the discount rate are assumed to cancel, so future losses are neither grown nor discounted and the present value equals the sum of the losses stated in today's dollars. Some states direct it by case law; elsewhere it is one assumption among several and must be justified.",
+      },
+      {
+        question: "Which produces the larger present value?",
+        answer:
+          "Neither, if the assumptions are consistent. A net rate of two percent and a gross presentation with five percent growth and seven percent discount give the same result. Differences appear only when the two components are drawn from different periods or bases, which is a consistency problem rather than a presentation choice.",
+      },
+      {
+        question: "Does the economist have to use Treasury yields?",
+        answer:
+          "Yields on low-risk instruments are the mainstream basis because the award is meant to be invested safely, not speculatively. The report states the instruments, the maturities, and the period used, and shows the sensitivity of the result to reasonable alternatives.",
+      },
+    ],
+    sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "KACZKOWSKI_V_BOLUBASZ", "TREASURY_YIELD", "BLS_ECI"]),
+    related: [
+      { title: "Present Value and Discounting", href: "/methods/present-value-and-discounting", description: "How future losses are reduced to a single sum." },
+      { title: "Present Value Explained for Attorneys", href: "/guides/present-value-explained-for-attorneys", description: "The concepts behind the discount rate, in plain terms." },
+      { title: "Wage Growth and Earnings Projection", href: "/methods/wage-growth-and-earnings-projection", description: "Where the growth side of the net rate comes from." },
+    ],
+  },
+  {
+    slug: "economist-vs-life-care-planner",
+    title: "Forensic Economist vs. Life Care Planner",
+    dateModified: "2026-08-27",
+    a: {
+      label: "Forensic Economist",
+      summary:
+        "The expert who reduces a life care plan's year-by-year costs to [[/methods/present-value-and-discounting|present value]], applies growth rates by care category, and reconciles the valuation to the plan item by item.",
+      url: "/services/life-care-plan-cost-projection",
+    },
+    b: {
+      label: "Life Care Planner",
+      summary:
+        "The clinician who identifies the future medical and support needs that flow from an injury and prices each item with its frequency and duration, producing the life care plan that the economist values.",
       url: "/services/life-care-planning",
     },
-    b: {
-      label: "Future Medical Cost Projection",
-      summary: "A narrower, [[/services/medical-cost-projection|scoped projection of future medical costs]] for a defined set of needs, prepared without the full life care planning process.",
-      url: "/services/medical-cost-projection",
-    },
     rows: [
-      { dimension: "Methodology", a: "IALCP/IARP standards, treating-team grounded", b: "Variable; often summary of treating-physician testimony" },
-      { dimension: "Scope", a: "Medical + non-medical categories across lifespan", b: "Typically medical categories only" },
-      { dimension: "Preparer", a: "CLCP", b: "Sometimes physician or economist" },
-      { dimension: "Defensibility", a: "Methodology-driven; grounded in published life-care-planning standards", b: "Variable, depends on author and method" },
+      { dimension: "Core question", a: "What the plan costs in present dollars", b: "What care the person needs and what each item costs today" },
+      { dimension: "Foundation", a: "The plan's cost tables, growth data, discount rates, life expectancy", b: "Medical records, provider recommendations, cost research" },
+      { dimension: "Output", a: "Present value schedule reconciled to the plan", b: "Itemized life care plan" },
+      { dimension: "Contested inputs", a: "Growth rates, discount rate, horizon", b: "Medical foundation, frequency, duration, unit cost" },
+      { dimension: "Credential family", a: "Graduate economics or finance training, professional association membership", b: "Clinical license plus a planning certification" },
     ],
     whenUseA:
-      "Prefer a full life care plan when damages include long-term care across multiple categories.",
+      "Retain the economist once a plan exists, or is expected, and the future care cost must be presented as a single figure alongside the other economic losses. The economist also reviews an opposing valuation of a plan and reprices it under supportable growth and discount assumptions.",
     whenUseB:
-      "A simpler projection may suffice when the scope is limited to a single medical category or short horizon.",
+      "Retain the life care planner when the case involves lifelong or long-term care needs that no treating provider has organized into a costed plan. The plan is the foundation; without it the economist has no item-level cost stream to value.",
     overlap:
-      "Both project future costs. The life care plan provides comprehensive, methodology-grounded coverage across the full scope of needs (Weed & Berens, 2018).",
+      "Both experts work on the same future-care number, and the two reports must reconcile. The plan supplies the items, frequencies, durations, unit costs, and the life expectancy basis; the economist supplies the growth rates by category, the discount rate, and the arithmetic that turns the schedule into a present value. Neither substitutes for the other: the economist does not add or remove care items, and the plan's author does not discount. The [[/services/life-care-plan-cost-projection|life care plan cost projection]] service describes the hand-off.",
     faqs: [
       {
-        question: "Is a future cost projection admissible without a CLCP?",
+        question: "Can the economist prepare the life care plan?",
         answer:
-          "In some cases, where a physician can quantify projected care costs. Broader projections typically require a CLCP.",
+          "No. The plan is a clinical document that rests on medical foundation and cost research, prepared by a credentialed planner. The economist values the plan and states in the report that the items and costs were taken from it.",
+      },
+      {
+        question: "Can one report cover both?",
+        answer:
+          "The economist's report can attach or summarize the plan and then value it, but the plan's authorship stays with its author, who is disclosed and available for testimony on the items. Courts and opposing counsel expect each expert to testify to their own work.",
+      },
+      {
+        question: "What if the plan and the valuation use different life expectancies?",
+        answer:
+          "They should not. The economist adopts the plan's horizon and states it, or presents the valuation under each horizon in dispute. A mismatch between the two reports is a common cross-examination theme and is avoidable.",
       },
     ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS"]),
+    sources: refsToSources(["BLS_CPI_MEDICAL", "NCHS_LIFE_TABLES", "TREASURY_YIELD"]),
     related: [
-      { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
-      { title: "Certified Life Care Planner (CLCP)", href: "/credentials/clcp", description: "Life care planner certification." },
-      { title: "Future Medical Costs in Personal Injury", href: "/guides/future-medical-costs-in-personal-injury", description: "How future care costs are projected and reduced to present value." },
-    ],
-  },
-  {
-    slug: "in-person-evaluation-vs-file-review",
-    title: "In-Person Evaluation vs. File Review",
-    dateModified: "2026-04-21",
-    a: {
-      label: "In-Person Evaluation",
-      summary: "The life care planner meets with the evaluee, typically in the home, to interview, observe function and the care environment, and confirm what the records describe.",
-      url: "/services/life-care-planning",
-    },
-    b: {
-      label: "File Review",
-      summary: "The planner works from the medical record, deposition testimony, and provider input alone, typically for a [[/services/life-care-plan-rebuttal|rebuttal]] or when access to the evaluee is not available.",
-    },
-    rows: [
-      { dimension: "Data source", a: "Records + interview + home and functional observation", b: "Records, depositions, and provider correspondence only" },
-      { dimension: "Depth", a: "Confirms current function, equipment in use, caregiver burden, home barriers", b: "Limited to what the record documents" },
-      { dimension: "Cost and time", a: "Higher; requires scheduling and travel", b: "Lower; faster" },
-      { dimension: "Typical use", a: "Plaintiff-retained plans, catastrophic and pediatric cases", b: "Defense rebuttal, records-only file review, plan updates when the evaluee is unavailable" },
-    ],
-    whenUseA:
-      "Prefer in-person evaluation in catastrophic cases, where cognitive or behavioral factors matter, or where the defense has raised consistency concerns.",
-    whenUseB:
-      "File review is appropriate when the record is complete, when the engagement is a rebuttal of an opposing plan, or when direct access to the evaluee is not available (International Association of Rehabilitation Professionals, n.d.).",
-    overlap:
-      "The underlying [[/methods/life-care-plan-development|methodology]] is the same: records review, treating-team input, published clinical guidance, and [[/methods/cost-research-methodology|documented cost research]]. The in-person evaluation adds direct observation of function, the home, and the care actually being provided, which is often where a records-only plan and the lived situation diverge.",
-    faqs: [
-      {
-        question: "Will courts give less weight to a file-review opinion?",
-        answer:
-          "Depends on the case. Comprehensive file-review opinions are frequently admitted when the record is complete and the methodology is documented (Fed. R. Evid. 702; Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993).",
-      },
-    ],
-    sources: refsToSources(["FRE_702", "DAUBERT", "IARP"]),
-    related: [
-      { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
-      { title: "Life Care Plan Rebuttal", href: "/services/life-care-plan-rebuttal", description: "Records-based review of an opposing life care plan." },
-      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan", description: "What a rebuttal reviewer tests in an opposing plan." },
-    ],
-  },
-  {
-    slug: "fce-vs-ime",
-    title: "Functional Capacity Evaluation (FCE) vs. Independent Medical Examination (IME)",
-    dateModified: "2026-04-21",
-    a: {
-      label: "Functional Capacity Evaluation (FCE)",
-      summary: "A standardized assessment of physical work capacity conducted by an OT or PT using validated protocols over 4-8 hours (Genovese & Galper, 2009).",
-      url: "/methods/functional-capacity-evaluation",
-    },
-    b: {
-      label: "Independent Medical Examination (IME)",
-      summary: "A physician-led examination and records review that provides diagnostic and causation opinions, typically in a single session (American Medical Association, 2023).",
-    },
-    rows: [
-      { dimension: "Examiner", a: "OT or PT", b: "Physician" },
-      { dimension: "Duration", a: "4-8 hours, sometimes 2 days", b: "30-90 minutes, typically single session" },
-      { dimension: "Primary output", a: "Safe maximum demonstrated physical capacities", b: "Diagnostic and causation opinion" },
-      { dimension: "Methodology", a: "Standardized physical tests with effort/consistency measures", b: "History, examination, record review" },
-      { dimension: "Typical use", a: "Establish work capacity restrictions", b: "Establish diagnosis, causation, prognosis" },
-    ],
-    whenUseA:
-      "Use an FCE when physical capacity must be quantified to support items in a [[/services/life-care-planning|life care plan]] such as attendant care hours, home modifications, or the need for adaptive equipment, or to document restrictions in a [[/case-types/workers-compensation|workers' compensation]] matter.",
-    whenUseB:
-      "Use an IME when diagnostic, causation, or prognosis questions need physician-level opinion, often on behalf of the defense.",
-    overlap:
-      "Both examine the claimant. They answer different questions: FCE quantifies physical capacity; IME addresses medical questions. In catastrophic cases, both are often performed, and the life care planner may rely on either as part of the medical foundation for the plan.",
-    faqs: [
-      {
-        question: "Can an IME include functional testing?",
-        answer:
-          "Some IME physicians perform or order functional testing, though dedicated FCEs by OTs and PTs produce more detailed and standardized physical capacity data.",
-      },
-    ],
-    sources: refsToSources(["GENOVESE_GALPER_2009", "AMA_GUIDES_IMPAIRMENT"]),
-    related: [
-      { title: "Functional Capacity Evaluation", href: "/methods/functional-capacity-evaluation", description: "How an FCE is administered and reported." },
-      { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
-      { title: "Workers' Compensation Life Care Plans", href: "/services/workers-compensation-lcp", description: "Plans prepared for workers' compensation settlement and reserving." },
-    ],
-  },
-  {
-    slug: "plaintiff-expert-vs-defense-expert",
-    title: "Plaintiff Expert vs. Defense Expert: Is the Methodology Different?",
-    dateModified: "2026-04-21",
-    a: {
-      label: "Plaintiff Expert",
-      summary: "A [[/services/life-care-planning|life care planner]] or other damages expert retained by the injured party.",
-    },
-    b: {
-      label: "Defense Expert",
-      summary: "A life care planner or other damages expert retained by the defendant or carrier, often to prepare a [[/services/life-care-plan-rebuttal|rebuttal plan]].",
-    },
-    rows: [
-      { dimension: "Methodology", a: "Same accepted methodology", b: "Same accepted methodology" },
-      { dimension: "Credentials", a: "CLCP, CNLCP, RN, MD, PhD as applicable", b: "Same" },
-      { dimension: "Standards", a: "IALCP Standards of Practice; AANLCP scope for nurse planners", b: "Same" },
-      { dimension: "Typical disagreement source", a: "Medical foundation, frequency and duration, unit cost source, life expectancy", b: "Same" },
-    ],
-    whenUseA:
-      "Retain when representing an injured claimant or a plaintiff in litigation.",
-    whenUseB:
-      "Retain when representing a defendant or insurer.",
-    overlap:
-      "The methodology, standards, and credentials are the same on both sides (Reavis, 2002). KW Life Care Planning accepts engagements from both plaintiff and defense and applies the same methodology regardless of retaining party: every item traces to a medical foundation, a stated frequency and duration, and a documented cost source.",
-    faqs: [
-      {
-        question: "Should I avoid an expert who has primarily worked for the other side?",
-        answer:
-          "Not categorically. An expert with balanced experience on both sides is often more credible under cross-examination. KW Life Care Planning maintains a balanced plaintiff and defense caseload by policy.",
-      },
-      {
-        question: "Do plaintiff and defense experts always disagree?",
-        answer:
-          "No. Opposing life care planners frequently agree on the diagnosis and most categories of need and disagree on specific inputs: whether a given item has a physician recommendation, how often it is needed, which cost source applies, and what life expectancy governs. Transparency on those inputs is the standard of practice.",
-      },
-    ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "FRE_702", "IARP"]),
-    related: [
-      { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
-      { title: "Life Care Plan Rebuttal", href: "/services/life-care-plan-rebuttal", description: "Review and rebuttal of an opposing life care plan." },
-      { title: "Life Expectancy in Life Care Planning", href: "/methods/life-expectancy-in-life-care-planning", description: "How the plan horizon is set and presented." },
-      { title: "Present Value Analysis", href: "/methods/present-value-analysis", description: "Discounting future losses to present value." },
-    ],
-  },
-  {
-    slug: "life-care-plan-vs-medical-chronology",
-    title: "Life Care Plan vs. Medical Chronology",
-    dateModified: "2026-04-20",
-    a: {
-      label: "Life Care Plan",
-      summary: "Forward-looking projection of future medical and non-medical care costs across the claimant's [[/methods/life-expectancy-in-life-care-planning|expected lifespan]] (Arias et al., 2025).",
-      url: "/methods/life-care-plan-development",
-    },
-    b: {
-      label: "Medical Chronology",
-      summary: "Backward-looking organized summary of the claimant's medical history drawn from treatment records.",
-    },
-    rows: [
-      { dimension: "Direction in time", a: "Future (prospective projection)", b: "Past (historical summary)" },
-      { dimension: "Primary output", a: "Itemized plan with costs and frequencies", b: "Date-organized narrative summary" },
-      { dimension: "Prepared by", a: "CLCP with clinical background", b: "Medical chronologist, often RN" },
-      { dimension: "Typical use", a: "Damages quantification", b: "Case understanding, deposition prep, expert support" },
-    ],
-    whenUseA:
-      "Use a life care plan to quantify future care costs for trial, settlement, or mediation in catastrophic injury or chronic disease cases (Reavis, 2002).",
-    whenUseB:
-      "Use a medical chronology to summarize the record for internal review, deposition preparation, or to support other experts preparing opinions.",
-    overlap:
-      "Both rely on careful record review, and the same clinical record is often the primary source. The life care plan and chronology are complementary: the chronology informs the plan by establishing the clinical trajectory.",
-    faqs: [
-      {
-        question: "Should every catastrophic case have both?",
-        answer:
-          "Not categorically, but many benefit from both. The chronology is often assembled first and provides the clinical foundation for the life care plan.",
-      },
-    ],
-    sources: refsToSources(["NCHS_LIFE_TABLES", "IARP_IALCP_STANDARDS"]),
-    related: [
-      { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
-      { title: "Life Expectancy in Life Care Planning", href: "/methods/life-expectancy-in-life-care-planning", description: "How the plan horizon is set and presented." },
-      { title: "Certified Life Care Planner (CLCP)", href: "/credentials/clcp", description: "Life care planner certification." },
-    ],
-  },
-  {
-    slug: "clcp-vs-case-manager",
-    title: "Certified Life Care Planner (CLCP) vs. Case Manager",
-    dateModified: "2026-04-20",
-    a: {
-      label: "Certified Life Care Planner (CLCP)",
-      summary: "A credentialed life care planner who [[/methods/life-care-plan-development|projects future medical and non-medical care needs and costs across the lifespan]] for litigation or settlement (International Commission on Health Care Certification, n.d.).",
-      url: "/credentials/clcp",
-    },
-    b: {
-      label: "Case Manager",
-      summary: "A healthcare professional who coordinates ongoing services, providers, and insurance authorizations to support day-to-day care (Case Management Society of America, 2022; Commission for Case Manager Certification, n.d.).",
-    },
-    rows: [
-      { dimension: "Primary purpose", a: "Forensic projection of future needs", b: "Coordination of current care" },
-      { dimension: "Time horizon", a: "Lifetime (expected life expectancy)", b: "Active case period" },
-      { dimension: "Output", a: "Written plan with itemized costs", b: "Ongoing service coordination notes" },
-      { dimension: "Certification", a: "CLCP via ICHCC, with prior clinical credential", b: "CCM (Commission for Case Manager Certification) or similar" },
-      { dimension: "Litigation role", a: "Expert witness", b: "Fact witness (sometimes)" },
-      { dimension: "Methodology source", a: "IALCP / IARP standards", b: "Case management standards (CMSA, etc.)" },
-    ],
-    whenUseA:
-      "Retain a CLCP when projecting [[/services/life-care-planning|lifetime care costs for a catastrophic injury]] or chronic condition, typically for trial, mediation, or settlement purposes.",
-    whenUseB:
-      "Engage a case manager when coordinating active medical care, provider access, or insurance authorizations during the active treatment period.",
-    overlap:
-      "Both professionals may hold nursing or rehabilitation backgrounds, and CLCPs often have prior case management experience. The distinction is scope and purpose: forensic lifetime projection (CLCP) versus active care coordination (case manager).",
-    faqs: [
-      {
-        question: "Can one person serve as both?",
-        answer:
-          "The same professional sometimes performs both functions at different times, though it is uncommon within the same case - the treating case manager typically does not serve as the forensic life care planner to preserve independence.",
-      },
-      {
-        question: "Do case managers testify in litigation?",
-        answer:
-          "Sometimes as fact witnesses regarding coordination they performed. Expert testimony on future needs is generally the life care planner's role.",
-      },
-    ],
-    sources: refsToSources(["ICHCC_CLCP", "CMSA_STANDARDS_2022", "CCMC"]),
-    related: [
-      { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
-      { title: "Life Care Planning", href: "/services/life-care-planning", description: "Itemized projection of future care needs and costs." },
-      { title: "Life Expectancy in Life Care Planning", href: "/methods/life-expectancy-in-life-care-planning", description: "How the plan horizon is set and presented." },
-    ],
-  },
-  {
-    slug: "clcp-vs-cnlcp",
-    title: "CLCP vs. CNLCP: Which Life Care Planning Credential?",
-    dateModified: "2026-08-26",
-    a: {
-      label: "Certified Life Care Planner (CLCP)",
-      summary: "A multidisciplinary credential open to nurses, rehabilitation counselors, therapists, physicians, and other qualifying clinicians who complete approved training and pass the certification examination (International Commission on Health Care Certification, n.d.).",
-      url: "/credentials/clcp",
-    },
-    b: {
-      label: "Certified Nurse Life Care Planner (CNLCP)",
-      summary: "A nursing-specific credential for registered nurses who practice life care planning through the nursing process, administered by the CNLCP Certification Board and affiliated with the American Association of Nurse Life Care Planners (American Association of Nurse Life Care Planners, n.d.).",
-      url: "/credentials/cnlcp",
-    },
-    rows: [
-      { dimension: "Eligible base license", a: "RN, CRC, OT, PT, MD, and other qualifying clinical credentials", b: "Registered nurse only" },
-      { dimension: "Issuing body", a: "ICHCC", b: "CNLCP Certification Board (affiliated with AANLCP)" },
-      { dimension: "Practice framework", a: "IALCP Standards of Practice", b: "Nursing process plus AANLCP scope and standards; IALCP standards are also widely followed" },
-      { dimension: "Methodology", a: "Same: records, treating-team foundation, frequency and duration, documented cost research", b: "Same" },
-      { dimension: "Typical strength", a: "Breadth of clinical backgrounds on a planning team", b: "Nursing assessment, medication and skilled-care detail" },
-      { dimension: "Litigation role", a: "Expert witness", b: "Expert witness" },
-    ],
-    whenUseA:
-      "Either credential is appropriate for a [[/services/life-care-planning|life care plan]]. A CLCP with a rehabilitation or therapy background may be a natural fit where equipment, mobility, and community reintegration dominate the plan.",
-    whenUseB:
-      "A CNLCP may be a natural fit where skilled nursing, medication management, wound or ventilator care, and complex medical oversight dominate, as in many [[/case-types/spinal-cord-injury|high-level spinal cord injury]] or [[/case-types/birth-injury|birth injury]] plans.",
-    overlap:
-      "Both credentials require a clinical license, approved coursework, and an examination, and both planners follow the same core [[/methods/life-care-plan-development|methodology]]. Many planners hold both. Courts qualify experts on training and experience rather than on which of the two letters follows the name, so the better question is whether the planner's clinical background matches the evaluee's needs.",
-    faqs: [
-      {
-        question: "Is one credential more admissible than the other?",
-        answer:
-          "No. Admissibility turns on the planner's qualifications, methodology, and foundation, not on which certifying body issued the credential. Both are recognized in the field.",
-      },
-      {
-        question: "Can a physician be a life care planner?",
-        answer:
-          "Yes. Physicians are eligible for the CLCP, and a physician planner can supply parts of the medical foundation directly. KW Life Care Planning pairs physician review with nurse and rehabilitation planners on complex cases.",
-      },
-      {
-        question: "Does the credential change how the plan is priced?",
-        answer:
-          "No. Cost research follows the same standards regardless of credential: geographically matched sources, documented quotes, and a stated basis for each unit cost.",
-      },
-    ],
-    sources: refsToSources(["ICHCC_CLCP", "AANLCP_SCOPE", "IARP_IALCP_STANDARDS"]),
-    related: [
-      { title: "CLCP Certification", href: "/credentials/clcp", description: "Eligibility and scope of the Certified Life Care Planner credential." },
-      { title: "CNLCP Certification", href: "/credentials/cnlcp", description: "The nurse life care planner credential." },
-      { title: "Life Care Plan Development", href: "/methods/life-care-plan-development", description: "How a life care plan is researched and costed." },
-    ],
-  },
-  {
-    slug: "life-care-plan-vs-msa",
-    title: "Life Care Plan vs. Medicare Set-Aside Allocation",
-    dateModified: "2026-08-26",
-    a: {
-      label: "Life Care Plan",
-      summary: "A comprehensive projection of all injury-related future medical and non-medical needs and their cost across the [[/methods/life-expectancy-in-life-care-planning|expected lifespan]], prepared for litigation, mediation, or settlement (Reavis, 2002).",
-      url: "/services/life-care-planning",
-    },
-    b: {
-      label: "Medicare Set-Aside (MSA) Allocation",
-      summary: "An estimate of the portion of a settlement to reserve for future injury-related care that Medicare would otherwise pay, prepared under [[/methods/msa-allocation-methodology|Medicare's review guidance]] (Centers for Medicare & Medicaid Services, 2026).",
-      url: "/services/medicare-set-aside",
-    },
-    rows: [
-      { dimension: "Purpose", a: "Quantify the full cost of future care as damages", b: "Protect Medicare's interest when a settlement closes future medical" },
-      { dimension: "Audience", a: "Trier of fact, mediator, adjuster", b: "Settling parties, CMS reviewer, professional administrator" },
-      { dimension: "Scope", a: "All injury-related needs, medical and non-medical", b: "Medicare-covered, injury-related items only" },
-      { dimension: "Pricing basis", a: "Cost of care in the evaluee's market, documented per item", b: "Fee schedule or usual-and-customary per Medicare guidance" },
-      { dimension: "Horizon", a: "Population life expectancy unless a physician adjusts it", b: "Life expectancy or an underwriter's rated age" },
-      { dimension: "Typical size", a: "Larger", b: "Smaller; a subset of the plan" },
-    ],
-    whenUseA:
-      "Prepare a life care plan whenever future care is a significant component of damages in a [[/case-types/personal-injury|personal injury]], malpractice, or catastrophic injury matter, whether the case is headed to trial or settlement.",
-    whenUseB:
-      "Prepare an MSA allocation when a [[/case-types/workers-compensation|workers' compensation]] or liability settlement involves a Medicare beneficiary or someone with a reasonable expectation of enrollment and the settlement releases future medical care.",
-    overlap:
-      "Both start from the same medical record and the same treating-team recommendations, and the same planner can prepare both. The allocation is best understood as a carve-out from the plan: the subset of items Medicare would cover, priced the way Medicare's guidance expects. Many catastrophic workers' compensation cases need both, and preparing them from a single record review keeps the two documents consistent.",
-    faqs: [
-      {
-        question: "Can the MSA simply be the life care plan total?",
-        answer:
-          "No. The plan includes care Medicare does not cover and prices items at market cost rather than fee schedule. Using the plan total as the set-aside overstates the reserve and does not follow Medicare's guidance.",
-      },
-      {
-        question: "Does every settlement with a Medicare beneficiary need an MSA?",
-        answer:
-          "Medicare's interests must be considered whenever future medical care is released. Whether a formal allocation is prepared, and whether it is submitted for review, depends on the settlement amount, the beneficiary's status, and counsel's judgment.",
-      },
-      {
-        question: "Which comes first?",
-        answer:
-          "Usually the life care plan, because it establishes the complete inventory of future needs. The allocation is then derived from that inventory by removing non-covered and unrelated items and re-pricing what remains.",
-      },
-    ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "CMS_WCMSA_GUIDE", "CMS_WCMSA"]),
-    related: [
-      { title: "Medicare Set-Aside Allocations", href: "/services/medicare-set-aside", description: "MSA allocation service for settling parties." },
-      { title: "MSA Allocation Methodology", href: "/methods/msa-allocation-methodology", description: "How an allocation is built and priced." },
-      { title: "Life Care Plan vs. Medicare Set-Aside (guide)", href: "/guides/life-care-plan-vs-medicare-set-aside", description: "Longer treatment of purpose, audience, and when both are needed." },
+      { title: "Life Care Plan Cost Projection and Present Value", href: "/services/life-care-plan-cost-projection", description: "Valuing a plan's cost stream to present value." },
+      { title: "Present Value and Discounting", href: "/methods/present-value-and-discounting", description: "How future costs are reduced to a single sum." },
+      { title: "Life Care Plans (sister practice)", href: "/services/life-care-planning", description: "Plan authorship from the life care planning practice." },
     ],
   },
 ];

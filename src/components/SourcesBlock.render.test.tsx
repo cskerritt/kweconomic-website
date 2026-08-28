@@ -14,12 +14,12 @@ describe("SourcesBlock render - APA bibliography", () => {
   it("renders the References heading, APA text, a hostname link, hanging indent and a type label", () => {
     const out = html(
       createElement(SourcesBlock, {
-        sources: refsToSources(["WEED_BERENS", "DAUBERT"]),
+        sources: refsToSources(["SKOOG_CIECKA_KRUEGER_2011", "DAUBERT"]),
       }),
     );
     expect(out).toContain("References</h2>");
-    expect(out).toContain("Weed,");
-    expect(out).toContain('href="https://doi.org/10.4324/9781315157283"');
+    expect(out).toContain("Skoog,");
+    expect(out).toContain('href="https://doi.org/10.5085/jfe.22.2.165"');
     expect(out).toContain(">doi.org<"); // hostname link label
     expect(out).toContain("text-indent"); // hanging indent applied
     expect(out).toContain("-1.5em");

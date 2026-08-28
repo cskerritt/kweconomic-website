@@ -11,18 +11,21 @@ import type { Source, SourceType } from "./types";
  *
  *   "verified"      (a) One of the pre-verified entries in the audit's
  *                       verified-references.json (DOIs/citations confirmed live).
- *                       The kwlcp.com build (2026-08-26) pruned every entry
- *                       cited only by vocational/economic content; 4 remain.
+ *                       The kweconomics.com build (2026-08-27) pruned every entry
+ *                       cited only by life-care-planning or vocational content;
+ *                       2 remain (the current U.S. life tables and the
+ *                       Pennsylvania total-offset decision).
  *   "anchor"        (b) An institutional/legal anchor beyond doubt: Daubert,
- *                       Frye, FRE 702, FRCP 26, BLS program pages, O*NET, DOT,
- *                       SSA, CDC/NCHS, Census ACS, CRCC, ABVE, ICHCC, IARP.
- *   "live-verified" (c) Confirmed with a live web search/fetch while building
- *                       this registry (see the session log). Volumes, pages,
- *                       DOIs, reporter cites, statute sections and URLs were each
- *                       checked against an authoritative source before adding.
+ *                       Frye, FRE 702, FRCP 26, BLS program pages, Census ACS.
+ *   "live-verified" (c) Confirmed with a live web fetch or browser session while
+ *                       building this registry (see the session log). Volumes,
+ *                       pages, DOIs, reporter cites, and URLs were each checked
+ *                       against an authoritative source before adding.
  *
  * A citation that cannot be backed by one of these tiers is SKIPPED, never
- * approximated. Nothing outside this registry may ship as a reference.
+ * approximated. Nothing outside this registry may ship as a reference, and
+ * src/data/references.test.ts fails on any registry key that no data file
+ * cites (no dead entries).
  *
  * RENDERING CONVENTION
  * --------------------
@@ -32,7 +35,13 @@ import type { Source, SourceType } from "./types";
  * twice. Legal materials use a Bluebook-style string in `apa`.
  *
  * HOUSE RULES: objective tone, hyphens only (no em/en dashes; APA page ranges
- * use hyphens here by house rule).
+ * use hyphens here by house rule). Page copy is citation-free: references reach
+ * the reader only through SourcesBlock, never as parentheticals in prose.
+ *
+ * LIVE-CHECK NOTES (2026-08-27): bls.gov, cdc.gov, and justia.com return 403 to
+ * non-browser fetches, so those URLs are confirmed in a headless browser
+ * session; aaefe.org serves a bot challenge to curl but renders in a browser;
+ * the remaining URLs were confirmed HTTP 200 with curl on the date recorded.
  */
 
 export type ReferenceTier = "verified" | "anchor" | "live-verified";
@@ -66,33 +75,12 @@ export const REFERENCES: Record<string, Reference> = {
     "Arias, E., Xu, J., & Kochanek, K. D. (2025). United States life tables, 2023. National Vital Statistics Reports, 74(6), 1-63. National Center for Health Statistics.",
     "https://doi.org/10.15620/cdc/174591",
   ),
-  WEED_BERENS: R(
-    "WEED_BERENS",
-    "verified",
-    "peer-reviewed",
-    "Weed, R. O., & Berens, D. E. (Eds.). (2018). Life care planning and case management handbook (4th ed.). Routledge.",
-    "https://doi.org/10.4324/9781315157283",
-  ),
-  IARP_IALCP_STANDARDS: R(
-    "IARP_IALCP_STANDARDS",
-    "live-verified",
-    "org",
-    "Reavis, S. L. (2002). Standards of practice. Journal of Life Care Planning, 1(1), 49-57. International Academy of Life Care Planners / International Association of Rehabilitation Professionals.",
-    "https://doi.org/10.70385/001c.151342",
-  ),
   KACZKOWSKI_V_BOLUBASZ: R(
     "KACZKOWSKI_V_BOLUBASZ",
     "verified",
     "case-law",
     "Kaczkowski v. Bolubasz, 491 Pa. 561, 421 A.2d 1027 (1980).",
     "https://law.justia.com/cases/pennsylvania/supreme-court/1980/491-pa-561-0.html",
-  ),
-  KING_ET_AL_1998: R(
-    "KING_ET_AL_1998",
-    "verified",
-    "peer-reviewed",
-    "King, P. M., Tuckwell, N., & Barrett, T. E. (1998). A critical review of functional capacity evaluations. Physical Therapy, 78(8), 852-866.",
-    "https://doi.org/10.1093/ptj/78.8.852",
   ),
 
   // ---------------------------------------------------------------------------
@@ -127,209 +115,7 @@ export const REFERENCES: Record<string, Reference> = {
     "Fed. R. Civ. P. 26.",
     "https://www.law.cornell.edu/rules/frcp/rule_26",
   ),
-  // BLS program pages
-  BLS_CPI_MEDICAL: R(
-    "BLS_CPI_MEDICAL",
-    "anchor",
-    "gov",
-    "U.S. Bureau of Labor Statistics. (n.d.). Consumer Price Index: Medical care [Fact sheet]. U.S. Department of Labor.",
-    "https://www.bls.gov/cpi/factsheets/medical-care.htm",
-  ),
-  // O*NET / DOT
-  // SSA
-  // Census
-  // Credentialing / professional bodies
-  ICHCC_CLCP: R(
-    "ICHCC_CLCP",
-    "anchor",
-    "org",
-    "International Commission on Health Care Certification. (n.d.). Certified Life Care Planner (CLCP). Retrieved August 26, 2026.",
-    "https://www.ichcc.org/certified-life-care-planner-clcp.html",
-  ),
-  IARP: R(
-    "IARP",
-    "anchor",
-    "org",
-    "International Association of Rehabilitation Professionals. (n.d.). Standards and ethics: Forensic section. Retrieved July 19, 2026.",
-    "https://rehabpro.org/",
-  ),
-
-  // ---------------------------------------------------------------------------
-  // TIER (c) LIVE-VERIFIED - confirmed via web search/fetch during this build
-  // ---------------------------------------------------------------------------
-  // Supreme Court (Daubert trilogy siblings + present-value)
-  KUMHO_TIRE: R(
-    "KUMHO_TIRE",
-    "live-verified",
-    "case-law",
-    "Kumho Tire Co. v. Carmichael, 526 U.S. 137 (1999).",
-    "https://supreme.justia.com/cases/federal/us/526/137/",
-  ),
-  GE_JOINER: R(
-    "GE_JOINER",
-    "live-verified",
-    "case-law",
-    "General Electric Co. v. Joiner, 522 U.S. 136 (1997).",
-    "https://supreme.justia.com/cases/federal/us/522/136/",
-  ),
-  JONES_LAUGHLIN_PFEIFER: R(
-    "JONES_LAUGHLIN_PFEIFER",
-    "live-verified",
-    "case-law",
-    "Jones & Laughlin Steel Corp. v. Pfeifer, 462 U.S. 523 (1983).",
-    "https://supreme.justia.com/cases/federal/us/462/523/",
-  ),
-  // SSA regulations / rulings (section numbers and titles confirmed on eCFR)
-  // Statutes / secondary authority
-  RESTATEMENT_TORTS_920A: R(
-    "RESTATEMENT_TORTS_920A",
-    "live-verified",
-    "case-law",
-    "Restatement (Second) of Torts sec. 920A (Am. L. Inst. 1979).",
-    "https://www.law.cornell.edu/wex/collateral_source_rule",
-  ),
-  MSP_1395Y: R(
-    "MSP_1395Y",
-    "live-verified",
-    "case-law",
-    "Medicare Secondary Payer, 42 U.S.C. sec. 1395y(b) (2018).",
-    "https://www.law.cornell.edu/uscode/text/42/1395y",
-  ),
-  // Federal government program pages
-  TREASURY_YIELD: R(
-    "TREASURY_YIELD",
-    "live-verified",
-    "gov",
-    "U.S. Department of the Treasury. (n.d.). Daily Treasury par yield curve rates.",
-    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
-  ),
-  CMS_PFS: R(
-    "CMS_PFS",
-    "live-verified",
-    "gov",
-    "Centers for Medicare & Medicaid Services. (n.d.). Physician fee schedule. U.S. Department of Health and Human Services.",
-    "https://www.cms.gov/medicare/payment/fee-schedules/physician",
-  ),
-  CMS_MSP: R(
-    "CMS_MSP",
-    "live-verified",
-    "gov",
-    "Centers for Medicare & Medicaid Services. (n.d.). Medicare secondary payer. U.S. Department of Health and Human Services.",
-    "https://www.cms.gov/medicare/coordination-benefits-recovery/overview",
-  ),
-  AHRQ_GUIDELINES: R(
-    "AHRQ_GUIDELINES",
-    "live-verified",
-    "gov",
-    "Agency for Healthcare Research and Quality. (n.d.). Clinical guidelines and recommendations. U.S. Department of Health and Human Services.",
-    "https://www.ahrq.gov/prevention/guidelines/index.html",
-  ),
-  // Peer-reviewed journals / scholarly texts
-  MOFFETT_MOORE_2011: R(
-    "MOFFETT_MOORE_2011",
-    "live-verified",
-    "peer-reviewed",
-    "Moffett, P., & Moore, G. (2011). The standard of care: Legal history and definitions: The bad and good news. Western Journal of Emergency Medicine, 12(1), 109-112.",
-    "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3088386/",
-  ),
-  AOTA_OTPF_2020: R(
-    "AOTA_OTPF_2020",
-    "live-verified",
-    "peer-reviewed",
-    "American Occupational Therapy Association. (2020). Occupational therapy practice framework: Domain and process (4th ed.). American Journal of Occupational Therapy, 74(Suppl. 2), 7412410010.",
-    "https://doi.org/10.5014/ajot.2020.74S2001",
-  ),
-  GENOVESE_GALPER_2009: R(
-    "GENOVESE_GALPER_2009",
-    "live-verified",
-    "peer-reviewed",
-    "Genovese, E., & Galper, J. S. (Eds.). (2009). Guide to the evaluation of functional ability: How to request, interpret, and apply functional capacity evaluations. American Medical Association.",
-    "https://search.worldcat.org/search?q=bn:9781603590013",
-  ),
-  AMA_GUIDES_IMPAIRMENT: R(
-    "AMA_GUIDES_IMPAIRMENT",
-    "live-verified",
-    "peer-reviewed",
-    "American Medical Association. (2023). AMA guides to the evaluation of permanent impairment (6th ed.). American Medical Association.",
-    "https://www.ama-assn.org/practice-management/ama-guides",
-  ),
-  // Professional organizations
-  CMSA_STANDARDS_2022: R(
-    "CMSA_STANDARDS_2022",
-    "live-verified",
-    "org",
-    "Case Management Society of America. (2022). Standards of practice for case management (Rev. 2022). CMSA.",
-    "https://cmsa.org/about/standards-of-case-management-practice/",
-  ),
-  CCMC: R(
-    "CCMC",
-    "live-verified",
-    "org",
-    "Commission for Case Manager Certification. (n.d.). Certified Case Manager (CCM) certification. Retrieved July 19, 2026.",
-    "https://ccmcertification.org/",
-  ),
-  ABMS: R(
-    "ABMS",
-    "live-verified",
-    "org",
-    "American Board of Medical Specialties. (n.d.). ABMS board certification. Retrieved July 19, 2026.",
-    "https://www.abms.org/board-certification/",
-  ),
-  FAIR_HEALTH: R(
-    "FAIR_HEALTH",
-    "live-verified",
-    "org",
-    "FAIR Health. (n.d.). FAIR Health. Retrieved July 19, 2026.",
-    "https://www.fairhealth.org/",
-  ),
-  // ---------------------------------------------------------------------------
-  // NOTE on IARP_IALCP_STANDARDS: the current (4th, 2022) edition is sold by
-  // IARP (rehabpro.org/page/IALCP-standards-purchase) and rehabpro.org returns
-  // 403 to non-browser fetches, so no current-edition URL could be verified.
-  // The registry therefore cites the open-access founding edition (Reavis,
-  // 2002) that the linked PDF actually is. Do not describe it as the 4th ed.
-  // ---------------------------------------------------------------------------
-  // LCP-SITE ADDITIONS (2026-08-26) - each URL fetched with curl and confirmed
-  // HTTP 200 on the date recorded before entry.
-  // ---------------------------------------------------------------------------
-  AANLCP_SCOPE: R(
-    "AANLCP_SCOPE",
-    "live-verified",
-    "org",
-    "American Association of Nurse Life Care Planners. (n.d.). Nurse life care planning standards of practice. Retrieved August 26, 2026.",
-    "https://www.aanlcp.org/nurse-life-care-planning-standards-of-practice/",
-  ),
-  CMS_WCMSA_GUIDE: R(
-    "CMS_WCMSA_GUIDE",
-    "live-verified",
-    "gov",
-    "Centers for Medicare & Medicaid Services. (2026). Workers' compensation Medicare set-aside arrangement (WCMSA) reference guide (Version 4.6). U.S. Department of Health and Human Services.",
-    "https://www.cms.gov/files/document/wcmsa-reference-guide-version-4-6-july-13-2026.pdf",
-  ),
-  CMS_WCMSA: R(
-    "CMS_WCMSA",
-    "live-verified",
-    "gov",
-    "Centers for Medicare & Medicaid Services. (n.d.). Workers' compensation Medicare set aside arrangements. U.S. Department of Health and Human Services. Retrieved August 26, 2026.",
-    "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-comp-set-aside-arrangements",
-  ),
-  CDC_LIFE_TABLES: R(
-    "CDC_LIFE_TABLES",
-    "live-verified",
-    "gov",
-    "National Center for Health Statistics. (n.d.). Life tables. Centers for Disease Control and Prevention. Retrieved August 26, 2026.",
-    "https://www.cdc.gov/nchs/products/life_tables.htm",
-  ),
-  // ---------------------------------------------------------------------------
-  // KW ECONOMICS ADDITIONS (2026-08-27) - forensic economics, accounting, and
-  // valuation anchors used by src/data/caseTypes.ts. BLS program pages and the
-  // Census ACS are tier (b) anchors; each was still confirmed HTTP 200 on the
-  // date recorded (BLS and CDC return 403 to non-browser fetches, so those were
-  // confirmed in a headless browser session; the rest with curl). Professional
-  // bodies and standards pages are tier (c), fetched and title-checked the
-  // same day. nafe.net canonicalizes to the bare host; the URLs below are the
-  // final (non-redirecting) forms.
-  // ---------------------------------------------------------------------------
+  // BLS program pages (browser-confirmed; bls.gov blocks non-browser fetches)
   BLS_CPS: R(
     "BLS_CPS",
     "anchor",
@@ -365,6 +151,28 @@ export const REFERENCES: Record<string, Reference> = {
     "U.S. Bureau of Labor Statistics. (n.d.). Consumer Expenditure Surveys (CE). U.S. Department of Labor.",
     "https://www.bls.gov/cex/",
   ),
+  BLS_ECI: R(
+    "BLS_ECI",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). Employment Cost Index (ECI). U.S. Department of Labor.",
+    "https://www.bls.gov/eci/",
+  ),
+  BLS_CPI: R(
+    "BLS_CPI",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). Consumer Price Index (CPI). U.S. Department of Labor.",
+    "https://www.bls.gov/cpi/",
+  ),
+  BLS_CPI_MEDICAL: R(
+    "BLS_CPI_MEDICAL",
+    "anchor",
+    "gov",
+    "U.S. Bureau of Labor Statistics. (n.d.). Consumer Price Index: Medical care [Fact sheet]. U.S. Department of Labor.",
+    "https://www.bls.gov/cpi/factsheets/medical-care.htm",
+  ),
+  // Census
   CENSUS_ACS: R(
     "CENSUS_ACS",
     "anchor",
@@ -372,6 +180,68 @@ export const REFERENCES: Record<string, Reference> = {
     "U.S. Census Bureau. (n.d.). American Community Survey (ACS). U.S. Department of Commerce.",
     "https://www.census.gov/programs-surveys/acs",
   ),
+
+  // ---------------------------------------------------------------------------
+  // TIER (c) LIVE-VERIFIED - confirmed via web fetch/browser during this build
+  // ---------------------------------------------------------------------------
+  // Supreme Court (Daubert trilogy siblings + present value)
+  KUMHO_TIRE: R(
+    "KUMHO_TIRE",
+    "live-verified",
+    "case-law",
+    "Kumho Tire Co. v. Carmichael, 526 U.S. 137 (1999).",
+    "https://supreme.justia.com/cases/federal/us/526/137/",
+  ),
+  GE_JOINER: R(
+    "GE_JOINER",
+    "live-verified",
+    "case-law",
+    "General Electric Co. v. Joiner, 522 U.S. 136 (1997).",
+    "https://supreme.justia.com/cases/federal/us/522/136/",
+  ),
+  JONES_LAUGHLIN_PFEIFER: R(
+    "JONES_LAUGHLIN_PFEIFER",
+    "live-verified",
+    "case-law",
+    "Jones & Laughlin Steel Corp. v. Pfeifer, 462 U.S. 523 (1983).",
+    "https://supreme.justia.com/cases/federal/us/462/523/",
+  ),
+  // Secondary authority
+  RESTATEMENT_TORTS_920A: R(
+    "RESTATEMENT_TORTS_920A",
+    "live-verified",
+    "case-law",
+    "Restatement (Second) of Torts sec. 920A (Am. L. Inst. 1979).",
+    "https://www.law.cornell.edu/wex/collateral_source_rule",
+  ),
+  // Federal government program pages
+  TREASURY_YIELD: R(
+    "TREASURY_YIELD",
+    "live-verified",
+    "gov",
+    "U.S. Department of the Treasury. (n.d.). Daily Treasury par yield curve rates.",
+    "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
+  ),
+  CDC_LIFE_TABLES: R(
+    "CDC_LIFE_TABLES",
+    "live-verified",
+    "gov",
+    "National Center for Health Statistics. (n.d.). Life tables. Centers for Disease Control and Prevention. Retrieved August 26, 2026.",
+    "https://www.cdc.gov/nchs/products/life_tables.htm",
+  ),
+  // Peer-reviewed journals. The DOI below was resolved live on 2026-08-27 to
+  // the Journal of Forensic Economics volume 22, issue 2 article beginning at
+  // page 165 (the extended Markov worklife tables).
+  SKOOG_CIECKA_KRUEGER_2011: R(
+    "SKOOG_CIECKA_KRUEGER_2011",
+    "live-verified",
+    "peer-reviewed",
+    "Skoog, G. R., Ciecka, J. E., & Krueger, K. V. (2011). The Markov process model of labor force activity: Extended tables of central tendency, shape, percentile points, and bootstrap standard errors. Journal of Forensic Economics, 22(2), 165-229.",
+    "https://doi.org/10.5085/jfe.22.2.165",
+  ),
+  // Professional bodies and standards (forensic economics, accounting,
+  // valuation). nafe.net canonicalizes to the bare host; the URLs below are
+  // the final (non-redirecting) forms.
   NAFE: R(
     "NAFE",
     "live-verified",
@@ -399,6 +269,13 @@ export const REFERENCES: Record<string, Reference> = {
     "org",
     "American Academy of Economic and Financial Experts. (n.d.). American Academy of Economic and Financial Experts. Retrieved August 27, 2026.",
     "https://aaefe.org/",
+  ),
+  AAEFE_JLE: R(
+    "AAEFE_JLE",
+    "live-verified",
+    "org",
+    "American Academy of Economic and Financial Experts. (n.d.). Journal of Legal Economics. Retrieved August 27, 2026.",
+    "https://aaefe.org/journal-of-legal-economics/",
   ),
   AICPA_SSVS1: R(
     "AICPA_SSVS1",

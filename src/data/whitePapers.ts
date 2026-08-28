@@ -1,6 +1,5 @@
 import type { Source } from "./types";
 import { refsToSources } from "./references";
-import { VOC_SITE_URL } from "@/lib/brand";
 
 export interface WhitePaperSection {
   heading: string;
@@ -31,71 +30,129 @@ export interface WhitePaper {
   sources?: Source[];
 }
 
+// White papers render inline through WhitePaperGate (abstract, takeaways, and
+// the first section open; later sections behind the email gate). There is no
+// downloadable asset; the page is the paper. Section bodies are HTML in
+// double-quoted strings with escaped attribute quotes so the internal anchors
+// are visible to src/citations.routes.test.mjs. Prose is citation-free.
 export const whitePapers: WhitePaper[] = [
   {
-    slug: "daubert-ready-life-care-plan",
-    title: "Building a Daubert-Ready Life Care Plan",
+    slug: "daubert-ready-economic-damages-report",
+    title: "Building a Daubert-Ready Economic Damages Report",
     subtitle:
-      "Foundations, costing, and documentation for a future-care projection that withstands admissibility review.",
-    discipline: "Life Care",
-    icon: "HeartPulse",
-    serviceSlug: "life-care-planning",
+      "Foundation, inputs, discounting, and documentation for a damages opinion that withstands admissibility review on the merits.",
+    discipline: "Economic",
+    icon: "Scale",
+    serviceSlug: "lost-earnings-and-earning-capacity",
     summary:
-      "A life care plan is an itemized projection of the future medical, rehabilitative, and support needs of an individual with a catastrophic injury or chronic condition, together with the cost and frequency of each item. It is the evidentiary foundation for the economist's present-value calculation of future care damages. This paper describes how a plan is built on the medical record, costed from defensible sources, and documented so that each recommendation can be traced and tested.",
+      "Admissibility frameworks ask whether an expert opinion rests on sufficient facts or data, applies reliable methods, and applies them reliably to the case. For economic damages testimony the discipline's methods are well established, so challenges target the inputs: an earnings base that departs from the records, a growth rate inconsistent with the discount rate, a horizon no table supports, offsets ignored, or a projection with no foundation. This paper sets out how a damages report is built so that each input is visible, sourced, and testable, and how the report, the work file, and the sensitivity analysis together answer the questions a gatekeeping court asks.",
     keyTakeaways: [
-      "Each item in a life care plan should trace to a medical foundation in the record, not to unsupported assumption.",
-      "Frequency, duration, and unit cost are stated for every item so the projection can be reproduced.",
-      "Costs are drawn from defensible, geographically appropriate sources and documented.",
-      "A plan that distinguishes injury-related needs from pre-existing or unrelated needs is more defensible.",
+      "The frameworks rarely exclude the discipline; they exclude inputs the record does not support.",
+      "Every input in a defensible report is stated, sourced to the records or a published series, and reproducible.",
+      "Growth and discount assumptions must be drawn on a consistent basis and from comparable periods.",
+      "A sensitivity analysis and an organized work file convert an admissibility fight into a dispute over weight.",
     ],
-    readingTime: "11 min read",
-    datePublished: "2026-06-03",
-    dateModified: "2026-06-03",
+    readingTime: "12 min read",
+    datePublished: "2026-08-27",
+    dateModified: "2026-08-27",
+    authorSlug: "christopher-skerritt",
     sections: [
       {
-        heading: "What a life care plan is for",
+        heading: "What the frameworks ask of an economic opinion",
         bodyHtml:
-          "<p>A <a href=\"/guides/what-is-life-care-plan\">life care plan</a> translates a person's future care needs into a structured, costed projection that a jury can understand and an economist can value (Weed &amp; Berens, 2018; Reavis, 2002). It addresses the medical and non-medical needs that flow from the injury or condition over the relevant horizon, including physician and therapy services, medications, equipment, supplies, attendant care, and home or transportation modifications where supported.</p><p>The plan does not decide the medicine. It organizes and projects care that the medical record and treating or evaluating providers support, and it makes the basis for each item explicit.</p>",
+          "<p>Federal courts and most state courts apply a reliability-based gatekeeping framework under which the trial judge decides whether an expert's method is reliable and reliably applied to the facts, considering factors such as testing, peer review and publication, error rate, controlling standards, and general acceptance. A minority of states apply a general-acceptance framework that asks only whether the method is accepted in the relevant community. The <a href=\"/guides/federal-vs-state-court-daubert\">federal versus state court</a> guide compares them.</p><p>For economic damages testimony the distinction matters less than it might seem. Projection from documented earnings with published wage growth, worklife expectancy from published tables, replacement cost valuation of household services, personal consumption deductions from expenditure data, and discounting at low-risk yields are established methods taught in the field's literature and applied by economists on both sides of the bar. Courts excluding economic opinions almost always cite the application: a conclusion connected to the data only by the expert's assertion, an input with no source, or an assumption the record contradicts. A Daubert-ready report is therefore a report in which every input can be traced.</p>",
       },
       {
-        heading: "Grounding the plan in the medical record",
+        heading: "Foundation: the records and the assumptions adopted",
         bodyHtml:
-          "<p>Every recommendation should rest on a medical foundation: a treating provider's recommendation, an evaluating specialist's opinion, published clinical guidance appropriate to the diagnosis (Agency for Healthcare Research and Quality, n.d.), or a combination of these. The planner documents which source supports each item. Where the foundation is a provider opinion, the plan identifies the provider; where it is clinical guidance, the plan identifies the guidance.</p><p>This sourcing is what separates a defensible plan from a list of plausible services. It allows opposing experts to test each item against the same record rather than against the planner's unexplained judgment.</p>",
+          "<p>The report opens with what the economist considered and what the economist assumed. The records are listed: tax returns by year, W-2 and 1099 forms, pay and benefit records, employer statements, medical and vocational opinions, and, where relevant, the life care plan. The assumptions adopted from other witnesses are identified with their source: the physician's opinion on the horizon, the vocational opinion on post-event capacity, the plan's items and life expectancy. An economist who adopts another expert's finding says so; an economist who substitutes a personal judgment on a medical or vocational question has stepped outside the field, and the opinion is exposed at that point.</p><p>Gaps in the record are disclosed rather than papered over. A missing tax year, a capacity opinion not yet issued, or a plan under revision is noted, the assumption used in its place is stated, and the report commits to a supplemental schedule when the record is complete.</p>",
       },
       {
-        heading: "Specifying frequency, duration, and quantity",
+        heading: "The earnings base and the projection",
         bodyHtml:
-          "<p>For each item, the plan states how often it is needed, for how long, and in what quantity. A therapy is not simply listed; it is specified as a number of sessions over a defined period. Equipment is specified with a replacement interval. Attendant care is specified in hours at a defined level of skill. These parameters are what make the projection reproducible and what allow the economist to build a year-by-year stream.</p>",
+          "<p>The earnings base is the person's documented compensation over several years, with the components carried forward identified and any unusual year addressed. A self-employed claimant's labor income is separated from the return on the business. The base is projected with a growth rate from a named published series, or an age-earnings profile where the person was early in a career, over a <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> from a named table and edition for the person's age, sex, education, and labor force status. The <a href=\"/methods/wage-growth-and-earnings-projection\">earnings projection</a> page describes the choices.</p><p>A projection that assumes a promotion, a career change, or a business trajectory the record does not document is the most common foundation problem in affirmative reports. Where the record supports a contested element, the report shows the result with and without it, so that the trier of fact rather than the gatekeeper decides.</p>",
       },
       {
-        heading: "Costing from defensible sources",
+        heading: "Horizons: worklife and life expectancy",
         bodyHtml:
-          "<p>Unit costs are drawn from sources appropriate to the item and the geography in which care will be delivered, such as provider quotes, recognized cost databases, and published fee information (Centers for Medicare &amp; Medicaid Services, n.d.). The plan documents the source of each cost and the date it was obtained. Where a cost varies by setting or region, the plan states the basis for the figure used.</p><p>Geographic appropriateness matters: the cost of care in the relevant community is the relevant figure, not a national average applied without explanation.</p>",
+          "<p>Earnings run over worklife expectancy; household services and care costs run over life expectancy from the current published life tables; support to a child runs over the child's dependency. Each horizon is stated with its source, and any departure from the published figure rests on evidence in the record, such as a medical opinion on reduced life expectancy or a mandatory retirement age in the occupation, and is explained. A fixed retirement age substituted for a worklife table without a basis, or a life expectancy the medical evidence contradicts, is an input a gatekeeper can see.</p>",
       },
       {
-        heading: "Separating related from unrelated needs",
+        heading: "Benefits, offsets, and consumption",
         bodyHtml:
-          "<p>A defensible plan distinguishes needs arising from the injury or condition at issue from needs the person would have had regardless. Pre-existing conditions and unrelated care are identified and, where appropriate, excluded or apportioned. Addressing this directly, rather than leaving it for cross-examination to expose, strengthens the plan and reflects the objective stance expected of an expert.</p>",
+          "<p><a href=\"/methods/fringe-benefits-valuation\">Fringe benefits</a> are valued from plan documents where they exist and from published employer cost data where they do not, with the source stated and double counting avoided. Post-event earnings are projected on the same basis as but-for earnings from pay records or from the capacity evidence, and mitigation is addressed. In a death claim the personal consumption deduction is applied from household expenditure data for the household's size and income with the percentage stated. Collateral payments are cataloged on their own schedule so counsel can apply the venue's rule. The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> page describes each deduction; an offset omitted without explanation is a recurring ground for challenge.</p>",
       },
       {
-        heading: "Documentation and admissibility",
+        heading: "Discounting and consistency",
         bodyHtml:
-          "<p>Admissibility frameworks generally ask whether an opinion rests on a reliable foundation and a sound method applied to the facts of the case (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Fed. R. Evid. 702). A life care plan answers those questions when it shows its work: the records reviewed, the foundation for each item, the parameters and costs with their sources, and any limitations. The attorney is responsible for confirming <a href=\"/guides/federal-vs-state-court-daubert\">the governing admissibility standard</a> for the jurisdiction, but a plan built and documented this way is positioned to be examined on the merits.</p>",
+          "<p>Future losses are reduced to present value at a rate tied to yields on low-risk instruments with maturities matched to the horizon, with the instruments, the period, and the source stated. The growth and discount rates are drawn on a consistent basis, both nominal or both real, and from comparable periods, because the spread between them drives the result over a long horizon and an inconsistent pair is the most common discounting challenge. Where the venue directs a convention, such as a total offset approach or a rate fixed by the court, the report follows it and says so. The <a href=\"/methods/present-value-and-discounting\">present value method</a> page and the <a href=\"/compare/net-vs-gross-discount-rate\">net versus gross</a> comparison describe the mechanics and the presentations.</p>",
       },
       {
-        heading: "Handing off to the economist",
+        heading: "Sensitivity, reproducibility, and the work file",
         bodyHtml:
-          `<p>The completed plan provides <a href="${VOC_SITE_URL}/services/forensic-economics">the economist</a> with a clean, itemized stream of future costs, each with frequency, duration, quantity, and unit cost. Keeping the life care plan and the economic analysis methodologically aligned, while each remains the work of its own expert, produces a future-care damages figure that is consistent end to end and easier to defend as a whole.</p>`,
+          "<p>A defensible report shows how the result changes under the alternatives most likely to be contested: the growth rate, the discount rate, the horizon, the post-event earnings, and the consumption percentage. Presenting the sensitivity does not weaken the opinion; it demonstrates that the conclusion was tested and shows where it is stable and where it is not, which moves the dispute from admissibility to weight. Given the same records and the same published data, another economist should be able to reproduce every schedule, and the work file is organized so that the records considered, the series and tables used, and the calculations can be produced under the <a href=\"/guides/expert-witness-disclosure-rules\">disclosure rules</a>. Reproducibility, not the size of the number, is the measure of a sound calculation, and it is what allows the opinion to be examined on the merits. The <a href=\"/knowledge/expert-witness-testimony-guide\">expert witness testimony guide</a> describes how the report then carries through deposition and trial.</p>",
       },
     ],
-    sources: refsToSources([
-      "AHRQ_GUIDELINES",
-      "CMS_PFS",
-      "DAUBERT",
-      "FRE_702",
-      "IARP_IALCP_STANDARDS",
-      "WEED_BERENS",
-    ]),
+    sources: refsToSources(["DAUBERT", "KUMHO_TIRE", "GE_JOINER", "FRE_702", "FRCP_26", "SKOOG_CIECKA_KRUEGER_2011", "TREASURY_YIELD", "NAFE_ETHICS"]),
+  },
+  {
+    slug: "business-valuation-standards-in-litigation",
+    title: "Business Valuation Standards in Litigation",
+    subtitle:
+      "How the professional valuation standards structure a contested valuation, from the engagement definition to the report, and how they answer cross-examination.",
+    discipline: "Economic",
+    icon: "Building2",
+    serviceSlug: "business-valuation",
+    summary:
+      "A business valuation prepared for litigation is tested against two things: the governing legal framework, which sets the standard of value, the valuation date, and the treatment of discounts, and the professional valuation standards, which prescribe how the engagement is defined, how the approaches are applied, and what the report must contain. This paper describes how those standards structure a contested valuation of a closely held interest, where opposing valuators most often diverge, and how a report built to the standards answers the questions asked on cross-examination.",
+    keyTakeaways: [
+      "The standard of value is a legal decision and the first decision of the engagement; applying the wrong one is the most common reason a valuation is rejected.",
+      "Normalization adjustments and the discount rate are where opposing valuators diverge, and each must be documented to its source.",
+      "The income, market, and asset approaches are applied as the company warrants, and the report explains why any was not used.",
+      "Discounts for lack of control and marketability must be tied to the interest actually valued and the standard that governs it.",
+    ],
+    readingTime: "11 min read",
+    datePublished: "2026-08-27",
+    dateModified: "2026-08-27",
+    authorSlug: "christopher-skerritt",
+    sections: [
+      {
+        heading: "Why standards matter in a contested valuation",
+        bodyHtml:
+          "<p>Two valuators can reach different conclusions from the same financial statements, and in litigation they usually do. The professional standards published by the accounting and valuation bodies exist to make those differences visible and testable: they require the valuator to define the engagement, to consider each recognized approach, to document the information relied on and the adjustments made, and to report the assumptions and limiting conditions. A <a href=\"/services/business-valuation\">valuation</a> that follows the standards can be examined on its choices; one that does not leaves the court to guess at what was done, which is the situation a gatekeeping framework is designed to prevent.</p><p>The standards are not the law. The governing framework decides the standard of value, the valuation date, and whether discounts apply, and the valuator applies those decisions. The standards govern how the valuation is then performed and reported.</p>",
+      },
+      {
+        heading: "Defining the engagement",
+        bodyHtml:
+          "<p>The engagement definition states the interest being valued, the valuation date, the standard of value, and the premise of value. The interest matters because a controlling stake and a minority stake in the same company are not worth proportionate amounts. The date matters because value is measured with what was known or knowable then. The standard matters because fair market value, fair value as a statute defines it, and investment value can diverge materially for the same interest, as the <a href=\"/compare/fair-market-value-vs-fair-value\">fair market value versus fair value</a> comparison explains. The premise, going concern or liquidation, matters because it determines whether the company's earning power or its assets drive the conclusion. Each is stated at the outset, and where the framework leaves one unsettled the report presents the result under each alternative.</p>",
+      },
+      {
+        heading: "Normalizing the financial statements",
+        bodyHtml:
+          "<p>The standards require the valuator to analyze the company's historical financial information and to adjust it to reflect sustainable earning power. Non-recurring gains and losses are removed. Owner compensation is restated to what an outside manager would be paid. Personal expenses run through the business are added back. Related-party rents, loans, and sales are adjusted to market terms. Non-operating assets are identified and valued separately. Each adjustment is listed with its basis in the general ledger, the tax returns, or market data, because the normalized earnings feed the income approach and the adjustments are where opposing valuators most often differ. The <a href=\"/guides/income-determination-in-divorce\">income determination guide</a> covers the owner compensation question in the divorce setting, where it also drives support.</p>",
+      },
+      {
+        heading: "The three approaches and reconciliation",
+        bodyHtml:
+          "<p>The standards require consideration of the income, market, and asset approaches and an explanation of which were applied. The income approach converts expected cash flows into value by discounting a projection or capitalizing normalized earnings, with a rate built from the company's risk profile and disclosed component by component. The market approach draws on prices paid for guideline companies or transactions, adjusted for size, growth, profitability, and risk, with the comparables identified. The asset approach values the assets net of liabilities and serves as a floor or as the primary approach for asset-heavy and liquidating companies. The indications are reconciled with stated weights and stated reasons. The <a href=\"/methods/business-valuation-approaches\">business valuation approaches</a> page describes each in more detail.</p>",
+      },
+      {
+        heading: "Discounts and premiums",
+        bodyHtml:
+          "<p>Whether a discount for lack of control or lack of marketability applies depends first on the standard of value and the interest, and only then on the evidence of magnitude. Under fair market value a minority interest in a closely held company is ordinarily discounted; under many statutory fair value frameworks it is not. Where a discount applies, its size is tied to the specific company: the rights the interest carries, the transfer restrictions in the governing documents, the dividend history, and the likelihood and timing of a sale, with published studies used as context rather than as a formula. A discount applied by rote is the most frequent cross-examination target in a valuation, and the report explains both the decision to apply it and the magnitude.</p>",
+      },
+      {
+        heading: "Report content the standards require",
+        bodyHtml:
+          "<p>The standards prescribe the content of a valuation report: the engagement definition, the sources of information, the analysis of the company and its industry and economic environment, the normalization adjustments, the approaches considered and applied with the reasons, the reconciliation, the discounts and premiums considered, the conclusion, and the assumptions and limiting conditions. In litigation the report also serves as the expert disclosure, so it must contain every opinion the valuator will offer and the basis for each, as the <a href=\"/guides/expert-witness-disclosure-rules\">disclosure guide</a> describes. A report organized to the standards is a report organized to the questions the other side will ask.</p>",
+      },
+      {
+        heading: "Cross-examination themes and how the standards answer them",
+        bodyHtml:
+          "<p>The recurring themes are predictable. Did you apply the standard of value the framework requires? The engagement definition answers. Why did you add back that expense, or restate that salary? The normalization schedule and its sources answer. Why did you not use the market approach? The approaches section answers. Where did each component of your discount rate come from? The rate build-up answers. Why did you apply a discount, and why that size? The discounts section answers. What did you assume, and what did you not verify? The assumptions and limiting conditions answer. A valuation built to the standards has an answer in the report for each question, which is what allows it to be tested on the merits rather than excluded at the threshold. The <a href=\"/guides/business-valuation-in-litigation\">business valuation in litigation</a> guide walks through the same decisions from counsel's side, and the <a href=\"/guides/lost-profits-vs-lost-business-value\">lost profits versus lost business value</a> guide addresses when a valuation is the right measure at all.</p>",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "FRE_702", "DAUBERT", "TREASURY_YIELD"]),
   },
 ];
 

@@ -1,7 +1,6 @@
 import type { Faq, Source } from "./types";
 import type { RelatedItem } from "@/components/RelatedContent";
 import { refsToSources } from "./references";
-import { VOC_SITE_URL } from "@/lib/brand";
 
 export interface GuideSection {
   id: string;
@@ -22,836 +21,914 @@ export interface Guide {
   related?: RelatedItem[];
 }
 
+// Attorney guides written from the economist's standpoint. Each entry keeps
+// `slug` then `title` on consecutive lines (scripts/prerender.mjs extracts the
+// pair positionally). Section bodies are HTML in double-quoted strings with
+// escaped attribute quotes, so the internal anchors are visible to
+// src/citations.routes.test.mjs. Prose is citation-free; sources render
+// through the registry. FAQ answers render as plain text.
 export const guides: Guide[] = [
+  {
+    slug: "what-is-a-forensic-economist",
+    title: "What Is a Forensic Economist?",
+    tldr:
+      "A forensic economist measures economic losses for litigation: lost earnings and benefits, household services, support to survivors, the present value of future care, lost profits, and business value. The work is built from the records in the case and published government data, follows the methods published in the field's literature, and is presented so that every input can be traced and tested by the other side.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
+    sections: [
+      {
+        id: "what-the-discipline-covers",
+        heading: "What the discipline covers",
+        bodyHtml:
+          "<p>Forensic economics is the application of economic analysis to questions in litigation, almost always the question of what a loss is worth. The economist is retained to quantify economic damages: the money a person, a family, or a business did not receive and will not receive because of an injury, a death, a termination, a breach, or a fraud. The losses are measured in dollars over time and reduced to a single present value that a court can award.</p><p>The engagements fall into a few families. <a href=\"/services/lost-earnings-and-earning-capacity\">Lost earnings and earning capacity</a> compare what a person would have earned with what the person can now earn. <a href=\"/services/wrongful-death-economic-loss\">Wrongful death economic loss</a> measures the support and services a decedent would have provided to survivors. <a href=\"/services/household-services-valuation\">Household services valuation</a> puts a replacement cost on unpaid work at home. Life care plan cost projection reduces a clinician's plan for future care to present value. On the commercial side, <a href=\"/services/lost-profits-and-commercial-damages\">lost profits</a> measure what a business lost from an interruption, and <a href=\"/services/business-valuation\">business valuation</a> measures what an interest was worth on a given date.</p>",
+      },
+      {
+        id: "how-the-work-is-done",
+        heading: "How the work is done",
+        bodyHtml:
+          "<p>Every damages calculation has the same shape. The economist projects what would have happened but for the event, projects what will happen given the event, takes the difference year by year, and reduces the future portion to present value. What differs between engagements is which streams are in the comparison and what evidence supports each input.</p><p>The inputs come from two places. The records in the case, tax returns, pay and benefit records, medical and vocational opinions, financial statements, and contracts, establish the facts specific to the person or the business. Published government data supply what the records cannot: wage growth, labor force participation, hours spent on household work, the share of income a household spends on each member, and the yields at which an award can be invested. The <a href=\"/methods/wage-growth-and-earnings-projection\">earnings projection</a> and <a href=\"/methods/present-value-and-discounting\">present value</a> method pages show how those pieces are assembled, and the <a href=\"/knowledge/guide-to-economic-damages\">guide to economic damages</a> walks through the whole calculation.</p>",
+      },
+      {
+        id: "training-and-professional-standards",
+        heading: "Training and professional standards",
+        bodyHtml:
+          "<p>Forensic economists typically hold graduate training in economics, finance, or a closely related field, and the discipline maintains its own literature and professional bodies. The National Association of Forensic Economics and the American Academy of Economic and Financial Experts publish peer-reviewed journals in which the methods used in damages work are developed and tested, and each publishes an ethics statement that calls for the same method regardless of the retaining party, disclosure of assumptions and their sources, and opinions limited to the economist's field. Our economists follow those statements in every engagement. The <a href=\"/credentials/forensic-economist\">forensic economist</a> credential page describes the family of qualifications, and the <a href=\"/credentials/graduate-economics-degree\">graduate economics</a> page describes the training.</p>",
+      },
+      {
+        id: "what-the-economist-does-not-do",
+        heading: "What the economist does not do",
+        bodyHtml:
+          "<p>The economist does not opine on liability or on medical causation, does not decide what work a person can physically do, and does not author a life care plan. Those questions belong to other witnesses, and the economist adopts their findings as inputs and says so. The report is stronger for the discipline: a damages figure that rests on a medical opinion for the horizon and a vocational opinion for post-event capacity can be defended input by input, while a figure that rests on the economist's own guess about medicine or work cannot. The comparisons with the <a href=\"/compare/forensic-economist-vs-forensic-accountant\">forensic accountant</a>, the <a href=\"/compare/forensic-economist-vs-vocational-expert\">vocational discipline</a>, and the <a href=\"/compare/economist-vs-life-care-planner\">author of a life care plan</a> explain where each line is drawn.</p>",
+      },
+      {
+        id: "when-to-retain",
+        heading: "When to retain one",
+        bodyHtml:
+          "<p>Retain an economist whenever a claim includes a loss that runs over time: earnings, benefits, household services, support, future care, or profits. Early retention lets the economist identify the records the calculation will need and coordinate assumptions with the other experts before their reports are final. The <a href=\"/guides/when-do-you-need-an-economic-expert\">when to retain</a> guide lists the signals, and the <a href=\"/contact\">contact page</a> describes how an engagement begins.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a forensic economist the same as an accountant?",
+        answer:
+          "No. The economist measures losses to people and households from records and published data; the forensic accountant works inside a company's books. The two disciplines meet on self-employed earnings, business owner death claims, and commercial damages, and some practitioners work in both.",
+      },
+      {
+        question: "Does the economist need to examine the plaintiff?",
+        answer:
+          "No. The economist works from records and from the opinions of the medical and vocational witnesses. An interview with the person or the household is often useful for household services and for the earnings history, but it is not an examination.",
+      },
+      {
+        question: "Does the economist work for plaintiffs or defendants?",
+        answer:
+          "Both. The method does not change with the retaining party. On the defense side the assignment is usually a review of the affirmative report and an alternative calculation.",
+      },
+    ],
+    sources: refsToSources(["NAFE_ETHICS", "NAFE_JFE", "AAEFE_JLE", "FRE_702"]),
+    related: [
+      { title: "Guide to Economic Damages", href: "/knowledge/guide-to-economic-damages" },
+      { title: "Forensic Economist vs. Forensic Accountant", href: "/compare/forensic-economist-vs-forensic-accountant" },
+      { title: "Our Economists", href: "/team" },
+    ],
+  },
+  {
+    slug: "how-lost-earnings-are-calculated",
+    title: "How Lost Earnings Are Calculated",
+    tldr:
+      "Lost earnings are the difference between two projected streams: the earnings and benefits a person would have received but for the event, and the earnings and benefits the person can now expect. Each stream starts from documented records, grows at a stated rate over a published worklife horizon, includes fringe benefits, and the future difference is reduced to present value. This guide walks through the calculation input by input.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
+    sections: [
+      {
+        id: "the-two-streams",
+        heading: "The two streams",
+        bodyHtml:
+          "<p>A <a href=\"/services/lost-earnings-and-earning-capacity\">lost earnings analysis</a> is a comparison. The but-for stream is what the person would have earned, year by year, had the event not occurred. The post-event stream is what the person has earned since and can expect to earn going forward. The loss in any year is the difference, and the total loss is the sum of those differences, with the portion after trial discounted to present value. Past loss, from the event to the trial date, is stated in the dollars of the years it occurred. Future loss, after the trial date, is projected and discounted.</p>",
+      },
+      {
+        id: "the-earnings-base",
+        heading: "The earnings base",
+        bodyHtml:
+          "<p>The but-for stream starts from the earnings base: the person's actual compensation before the event, drawn from tax returns, W-2 and 1099 forms, pay stubs, and employer records over several years. The economist separates base wages from overtime, bonuses, and commissions, decides which components the record supports carrying forward, and addresses any unusual year. A self-employed person's returns mix labor income with the return on the business, and the economist separates the two before projecting. Where the history is short or the career had not started, the base is built from occupational earnings data for the work the person was trained for, as the <a href=\"/compare/lost-earnings-vs-lost-earning-capacity\">lost earnings versus earning capacity</a> comparison explains.</p>",
+      },
+      {
+        id: "growth-and-horizon",
+        heading: "Growth and horizon",
+        bodyHtml:
+          "<p>The base is carried forward with a growth rate. General wage growth from published series is the usual choice; an age-earnings profile applies where the person was early in a career and would have seen earnings rise with experience; an occupation-specific path applies where the record documents it. The <a href=\"/methods/wage-growth-and-earnings-projection\">wage growth method</a> page describes the choice.</p><p>The stream runs over a <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> drawn from published tables for the person's age, sex, education, and labor force status. Worklife is not a retirement age; it is an expected number of years of labor force activity that already reflects the probability of time out of the labor force. The report names the table and the edition, and explains any departure the record supports.</p>",
+      },
+      {
+        id: "fringe-benefits",
+        heading: "Fringe benefits",
+        bodyHtml:
+          "<p>Compensation is more than wages. Employer contributions to health insurance and retirement plans, legally required payroll contributions, and paid leave are valued from the person's own plan documents or, where those are unavailable, from published employer cost data by industry and occupation, and added to both streams. The <a href=\"/methods/fringe-benefits-valuation\">fringe benefits method</a> page explains the valuation and the double-counting errors to avoid.</p>",
+      },
+      {
+        id: "post-event-earnings-and-offsets",
+        heading: "Post-event earnings and offsets",
+        bodyHtml:
+          "<p>The post-event stream is built on the same basis. Where the person has returned to work, pay records fix the figure and the same growth rate carries it forward. Where the person has not, the report uses the earnings the medical and vocational evidence supports, and where that is contested, presents the loss under more than one scenario with the basis for each stated. Collateral payments such as disability benefits are shown separately so counsel can apply the venue's rule, and where the venue requires after-tax figures the report shows them. The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> page describes each deduction.</p>",
+      },
+      {
+        id: "present-value",
+        heading: "Present value",
+        bodyHtml:
+          "<p>The future differences are discounted to the trial date at a rate tied to yields on low-risk instruments whose maturities match the horizon, with the growth and discount assumptions drawn on a consistent basis. The <a href=\"/methods/present-value-and-discounting\">present value method</a> page explains the mechanics and the <a href=\"/guides/present-value-explained-for-attorneys\">present value guide</a> explains the concepts. The report shows the undiscounted total, the present value, and a sensitivity table for the contested inputs.</p>",
+      },
+      {
+        id: "the-structure-of-the-schedules",
+        heading: "The structure of the schedules",
+        bodyHtml:
+          "<p>A well-organized report presents the calculation as a set of schedules: the earnings history and base; the but-for projection by year with growth applied; the fringe benefit schedule; the post-event projection by year; the year-by-year difference, split between past and future; the present value of the future difference; and the sensitivity analysis. Each schedule cites its inputs and each input cites its source, so that another economist could reproduce the result from the same records. Reproducibility is the measure of a sound calculation, and it is what allows the analysis to be examined on the merits rather than excluded as speculation.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "How far back does the earnings history go?",
+        answer:
+          "Usually three to five years before the event, and further where earnings were irregular or a career change is at issue. The report explains which years were used and why any year was excluded or adjusted.",
+      },
+      {
+        question: "What if the person was planning a career change or promotion?",
+        answer:
+          "The projection reflects a change the record documents, such as a promotion already offered, a degree in progress, or a licensing exam passed, and shows the result with and without it where the evidence is contested. An undocumented expectation is not carried forward.",
+      },
+      {
+        question: "Are lost earnings calculated before or after tax?",
+        answer:
+          "It depends on the venue. Some frameworks require after-tax figures, some prohibit tax evidence, and some leave it to the court. The report presents the figures the governing framework requires and, where that is unsettled, both.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_ECI", "BLS_ECEC", "SKOOG_CIECKA_KRUEGER_2011", "TREASURY_YIELD"]),
+    related: [
+      { title: "Lost Earnings and Earning Capacity Analysis", href: "/services/lost-earnings-and-earning-capacity" },
+      { title: "Worklife Expectancy", href: "/methods/worklife-expectancy" },
+      { title: "Present Value Explained for Attorneys", href: "/guides/present-value-explained-for-attorneys" },
+    ],
+  },
+  {
+    slug: "wrongful-death-damages-explained",
+    title: "Wrongful Death Damages, Explained",
+    tldr:
+      "In a wrongful death matter the economic loss belongs to the survivors, and the question is what the decedent would have contributed to the household over an expected life. The analysis projects earnings and benefits, deducts the decedent's personal consumption, adds the replacement value of household services and other support, measures each survivor's loss over that survivor's period of dependency, and reduces the future portion to present value. The components are presented separately because states differ on which are recoverable and by whom.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
+    sections: [
+      {
+        id: "whose-loss-it-is",
+        heading: "Whose loss it is",
+        bodyHtml:
+          "<p>A <a href=\"/services/wrongful-death-economic-loss\">wrongful death economic loss</a> analysis does not ask what the decedent would have earned in isolation. It asks what the decedent would have contributed to the people who depended on the decedent: financial support, household services, and, where the governing framework allows, guidance and care. Some frameworks give the claim to the survivors, some to the estate, and some divide it, with a survival claim for the decedent's own losses before death alongside a wrongful death claim for the survivors. The report is organized to the framework counsel identifies and presents each component separately so it can be included or excluded as the law requires.</p>",
+      },
+      {
+        id: "earnings-and-benefits",
+        heading: "Earnings and benefits",
+        bodyHtml:
+          "<p>The analysis starts as an earnings projection: the decedent's earnings base from tax returns and pay records, carried forward with a growth rate over a <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> for the decedent's age, sex, education, and labor force status, plus <a href=\"/methods/fringe-benefits-valuation\">fringe benefits</a> from plan documents or published employer cost data. Where the decedent was young or a career was interrupted early, the base is built from occupational earnings data for the path the record supports. Retirement income the decedent would have received and shared, such as a pension or Social Security benefits, is projected past worklife where the framework allows.</p>",
+      },
+      {
+        id: "personal-consumption",
+        heading: "The personal consumption deduction",
+        bodyHtml:
+          "<p>A decedent would have spent part of that income on personal needs rather than on the household, and the survivors' loss excludes that share. The personal consumption deduction is derived from published household expenditure data adjusted to the household's size and income: smaller households spend a larger share on each member, and the percentage typically falls as household income rises. Because the deduction scales the whole earnings figure it is the assumption most likely to be contested, and the report states the percentage, its source, and the result under the alternatives. The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> page describes the deduction alongside the others.</p>",
+      },
+      {
+        id: "household-services-and-support",
+        heading: "Household services and other support",
+        bodyHtml:
+          "<p>To the net earnings the economist adds the replacement value of the <a href=\"/services/household-services-valuation\">household services</a> the decedent performed: cooking, cleaning, home and yard maintenance, household management, transportation, and care of children or other family members, measured from the household's account and time-use data and valued at local replacement wage rates. This component stands on its own and does not depend on the decedent having earned wages; for a homemaker or a caregiver it is often the largest component. Where the framework allows, the value of guidance, counsel, and care to minor children is presented as a separate component with its basis stated.</p>",
+      },
+      {
+        id: "dependency-and-horizons",
+        heading: "Dependency periods and horizons",
+        bodyHtml:
+          "<p>Each survivor's loss runs over that survivor's period of dependency. A spouse's loss of support typically runs through the decedent's expected life or worklife; a child's through majority or the completion of education, as the record and the framework support. Household services run over the decedent's life expectancy from the current published life tables, because household work does not stop at retirement. The report presents the periods separately so counsel can address each and so the trier of fact can see how the total changes with the horizon.</p>",
+      },
+      {
+        id: "present-value-and-presentation",
+        heading: "Present value and presentation",
+        bodyHtml:
+          "<p>The future components are reduced to present value at a rate tied to low-risk yields, with growth and discount assumptions on a consistent basis, as the <a href=\"/methods/present-value-and-discounting\">present value method</a> page describes. The summary shows past and future loss by component and by survivor, and the sensitivity analysis shows the effect of the consumption percentage, the horizon, and the discount rate. Where the estate's claim and the survivors' claims are separate, the report presents the components applicable to each so the same figures support both without double counting.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is the personal consumption deduction always taken?",
+        answer:
+          "It is taken whenever the claim measures the survivors' loss of support, which is the usual case. Some frameworks measure a different loss, such as the decedent's own lost earnings in a survival claim, where the deduction may not apply. The report follows the framework counsel identifies.",
+      },
+      {
+        question: "What if the decedent was retired or not working?",
+        answer:
+          "The earnings component may be small or zero, but household services, retirement income the decedent shared, and support to dependents remain. The analysis measures what the decedent actually contributed, whatever its form.",
+      },
+      {
+        question: "How is a decedent's future promotion or business growth handled?",
+        answer:
+          "Only where the record supports it: a promotion already offered, a degree in progress, or a business whose financial statements show the trajectory. The report shows the result with and without the contested element.",
+      },
+    ],
+    sources: refsToSources(["BLS_CEX", "BLS_ATUS", "NCHS_LIFE_TABLES", "SKOOG_CIECKA_KRUEGER_2011", "TREASURY_YIELD"]),
+    related: [
+      { title: "Wrongful Death Economic Loss", href: "/services/wrongful-death-economic-loss" },
+      { title: "Wrongful Death Case Type", href: "/case-types/wrongful-death" },
+      { title: "Household Services Methodology", href: "/methods/household-services-methodology" },
+    ],
+  },
+  {
+    slug: "household-services-in-personal-injury",
+    title: "Household Services in Personal Injury Claims",
+    tldr:
+      "Household services are the unpaid work an injured person can no longer perform at home. The loss is measured as the hours no longer performed, established from the household's account and time-use data, multiplied by the cost of replacing that work with paid labor in the local market, and projected over life expectancy as the household changes. This guide describes what counts, how hours and rates are established, and which records support the claim.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
+    sections: [
+      {
+        id: "what-counts",
+        heading: "What counts as household services",
+        bodyHtml:
+          "<p>Household services are the tasks a person performs for the household without pay: meal preparation, cleaning, laundry, shopping, home and yard maintenance, household management and bill paying, driving family members, and care of children, elderly parents, or a disabled family member. When an injury reduces a person's capacity for those tasks, the household either does without, redistributes the work to other members, or pays someone. Each is a loss with economic value, and the <a href=\"/services/household-services-valuation\">household services valuation</a> measures it as the cost of replacement.</p>",
+      },
+      {
+        id: "measuring-hours",
+        heading: "Establishing the pre-injury hours",
+        bodyHtml:
+          "<p>The starting point is what the person actually did. The household's own account, by task and by week, is the primary evidence, and it is corroborated by published time-use survey data, which report the hours people of the same sex, age, employment status, and household composition spend on each category of household work. Where the household's account is far from the survey averages, the report explains why: a parent of young children, a person maintaining a large property, or a caregiver for a disabled relative will differ from the average, and the record should show it. The <a href=\"/methods/household-services-methodology\">household services method</a> page describes the data.</p>",
+      },
+      {
+        id: "post-injury-capacity",
+        heading: "Determining post-injury capacity by task",
+        bodyHtml:
+          "<p>Capacity is assessed task by task from the medical and functional evidence, not as a single percentage. A person with a back injury may still cook and manage the household but no longer do yard work, carry laundry, or lift a child. The lost hours are the difference between pre-injury hours and post-injury capacity in each category, and the report shows the categories separately so the trier of fact can see where the loss falls. Where the medical evidence expects capacity to change over time, the projection changes with it.</p>",
+      },
+      {
+        id: "replacement-rates",
+        heading: "Selecting replacement wage rates",
+        bodyHtml:
+          "<p>Each task category is valued at the wage of the occupation that would perform it in the market where the household lives: cooks, housekeepers and maids, childcare workers, grounds maintenance workers, and similar occupations, from published occupational wage data by metropolitan area. Replacement cost is the mainstream measure and the report says so; where the household has actually hired help, the invoices corroborate both the hours and the rate. The rates are carried forward with wage growth on the same basis as the rest of the analysis.</p>",
+      },
+      {
+        id: "horizon-and-household-changes",
+        heading: "The horizon and changes in the household",
+        bodyHtml:
+          "<p>Household services run over life expectancy from the current published life tables, not over worklife, because household work continues after retirement. The projection reflects the household's composition changing over time, children reaching adulthood and leaving, for example, and the decline in hours with age that the time-use data show. The future portion is reduced to present value with the rest of the loss, as the <a href=\"/methods/present-value-and-discounting\">present value method</a> describes.</p>",
+      },
+      {
+        id: "records-to-collect",
+        heading: "Records that support the claim",
+        bodyHtml:
+          "<p>The claim is easier to prove with a few documents collected early: a written account from the household of who did which tasks before and after the injury, with approximate weekly hours; medical and functional evidence addressing physical capacity for household tasks, not only for work; invoices or receipts for any paid help since the injury; and information about the household's composition and any changes expected. The <a href=\"/guides/how-lost-earnings-are-calculated\">lost earnings guide</a> describes the parallel records for the earnings claim, and the <a href=\"/case-types/personal-injury\">personal injury</a> case type page describes how the components fit together.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can a person who worked full time claim household services?",
+        answer:
+          "Yes. Employed people spend fewer hours on household work than people not in the labor force, and the time-use data reflect that, but the hours are rarely zero. The projection uses the hours for the person's actual employment status.",
+      },
+      {
+        question: "Does the household have to hire someone to recover?",
+        answer:
+          "No. The loss is the value of the work no longer performed, measured at what it would cost to replace, whether or not the household has paid for replacement. Where help has been hired, the invoices strengthen the claim.",
+      },
+      {
+        question: "Is household services a separate claim from lost earnings?",
+        answer:
+          "It is a separate component of economic damages, valued on its own evidence and presented on its own schedule. A person can have a household services loss with no earnings loss, and the reverse.",
+      },
+    ],
+    sources: refsToSources(["BLS_ATUS", "BLS_OES", "NCHS_LIFE_TABLES"]),
+    related: [
+      { title: "Household Services Valuation", href: "/services/household-services-valuation" },
+      { title: "Household Services Methodology", href: "/methods/household-services-methodology" },
+      { title: "Personal Injury Economic Damages", href: "/services/personal-injury-economic-damages" },
+    ],
+  },
+  {
+    slug: "present-value-explained-for-attorneys",
+    title: "Present Value, Explained for Attorneys",
+    tldr:
+      "Present value is the single sum that, invested today at a stated rate, would replace a stream of future losses as they come due. The result depends on the loss stream, the growth rate applied to it, and the discount rate used to bring it back to the present. This guide explains each in plain terms, what a net rate and a gross rate are, what the total offset approach is, and how to read a present value schedule.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
+    sections: [
+      {
+        id: "why-present-value",
+        heading: "Why present value is required",
+        bodyHtml:
+          "<p>An award is paid once, in present dollars. The losses it compensates would have been received over many future years. A dollar received in ten years is worth less than a dollar received today, because a dollar today can be invested and grow. Present value is the arithmetic that makes the two comparable: it asks what sum, invested now on safe terms, would fund the projected future losses as each comes due. Without the step, future losses would be overstated by ignoring the return on the award, or understated by ignoring growth in wages and costs. The <a href=\"/methods/present-value-and-discounting\">present value method</a> page describes the mechanics.</p>",
+      },
+      {
+        id: "the-discount-rate",
+        heading: "The discount rate",
+        bodyHtml:
+          "<p>The discount rate is the return the award is assumed to earn when invested. The mainstream basis is the yield on low-risk instruments, such as Treasury securities, with maturities matched to the horizon of the loss, because the award is meant to be invested safely rather than speculatively. A higher rate produces a smaller present value; a lower rate produces a larger one. The rate's source and the period from which it was drawn matter more than the rate itself, and a report should state both and show the result across a reasonable range.</p>",
+      },
+      {
+        id: "the-growth-rate",
+        heading: "The growth rate",
+        bodyHtml:
+          "<p>Before discounting, each loss stream is projected forward at a growth rate appropriate to it. Wages grow with general wage inflation and, early in a career, with experience; household replacement costs grow with wages in the occupations that perform the work; medical costs grow at their own rate. The <a href=\"/methods/wage-growth-and-earnings-projection\">wage growth method</a> page describes the series used. The growth and discount rates must be drawn on a consistent basis, both nominal or both real, and from comparable periods; a projection that grows losses at an optimistic rate and discounts them at an unrelated rate is inconsistent whichever way it cuts.</p>",
+      },
+      {
+        id: "net-versus-gross",
+        heading: "Net rate versus gross rate",
+        bodyHtml:
+          "<p>Some reports combine the two rates into a single net discount rate, the difference between growth and discount, applied to a loss stated in today's dollars. Others show the two steps separately, growing the stream into future dollars and then discounting at the full rate. The presentations are arithmetically equivalent when the assumptions are consistent, and the choice is about transparency and venue convention. The <a href=\"/compare/net-vs-gross-discount-rate\">net versus gross discount rate</a> comparison sets out when each is used.</p>",
+      },
+      {
+        id: "total-offset-and-venue-rules",
+        heading: "The total offset approach and venue rules",
+        bodyHtml:
+          "<p>Under the total offset approach the growth rate and the discount rate are assumed to cancel, so the present value equals the sum of future losses stated in today's dollars. Some jurisdictions direct that approach by case law; elsewhere it is one assumption among several and must be justified like any other. Other venues have their own conventions, such as a rate fixed by statute or by the court, or a requirement that past losses carry interest to the trial date. The economist follows the venue's rule, states it in the report, and where the rule is unsettled presents the result under each alternative. Counsel confirms the governing rule against primary sources.</p>",
+      },
+      {
+        id: "reading-the-schedule",
+        heading: "Reading a present value schedule",
+        bodyHtml:
+          "<p>A present value schedule shows, for each future year, the projected loss in that year's dollars, the discount factor applied, and the resulting present value, with the column totals giving the undiscounted and discounted sums. Read it with four questions: what growth rate produced the yearly figures and from what series; what discount rate and what instruments and period; are the two consistent; and what does the sensitivity table show at the ends of a reasonable range. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> applies those questions to an opposing report, and the <a href=\"/knowledge/guide-to-economic-damages\">guide to economic damages</a> places the schedule within the full calculation.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Why do opposing economists reach different present values from the same loss?",
+        answer:
+          "Usually because of the spread between growth and discount, not the loss itself. A one-point difference in the net rate compounds over decades. The sensitivity table in each report shows how much of the gap the rate explains.",
+      },
+      {
+        question: "Does present value apply to past losses?",
+        answer:
+          "No. Past losses are stated in the dollars of the years they occurred and, where the framework allows, carried forward with interest to the trial date. Only future losses are discounted.",
+      },
+      {
+        question: "Is a structured settlement the same as present value?",
+        answer:
+          "A structured settlement is a way of paying an award over time. Present value is the lump sum equivalent of a future stream. The two are related, and an annuity quote for a structure is one check on a present value calculation, but the economist's figure does not depend on how the award is ultimately paid.",
+      },
+    ],
+    sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "KACZKOWSKI_V_BOLUBASZ", "TREASURY_YIELD", "BLS_CPI"]),
+    related: [
+      { title: "Present Value and Discounting", href: "/methods/present-value-and-discounting" },
+      { title: "Net vs. Gross Discount Rate", href: "/compare/net-vs-gross-discount-rate" },
+      { title: "How Lost Earnings Are Calculated", href: "/guides/how-lost-earnings-are-calculated" },
+    ],
+  },
   {
     slug: "expert-witness-disclosure-rules",
     title: "Expert Witness Disclosure: A Practitioner Overview",
     tldr:
-      "Pre-trial expert disclosure typically requires a written statement of the expert's identity, opinions, the bases for those opinions, qualifications, prior testimony, and compensation. Content and timing requirements vary by jurisdiction. Missing a disclosure requirement is a common basis for expert exclusion. Attorneys are responsible for confirming the governing framework against primary sources.",
-    dateModified: "2026-05-03",
+      "Pre-trial expert disclosure typically requires a written statement of the expert's identity, opinions, the bases for those opinions, the facts or data considered, qualifications, prior testimony, and compensation. Content and timing vary by jurisdiction, and a missed requirement is a common basis for excluding an economist. This guide outlines the elements, the timing, the duty to supplement, and the points specific to economic damages reports.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
         id: "what-is-disclosure",
-        heading: "What is pre-trial expert disclosure?",
+        heading: "What pre-trial expert disclosure is",
         bodyHtml:
-          "<p><a href=\"/services/expert-witness-testimony\">Pre-trial expert disclosure</a> is the formal statement to the opposing party of the expert's expected testimony before trial. Depending on the jurisdiction, the disclosure may take the form of a written report, an interrogatory-style answer signed by the expert, or another format set by the governing framework. The point is to identify the expert, describe what the expert will say, and provide <a href=\"/guides/federal-vs-state-court-daubert\">the basis for the opinions</a> in time for the opposing party to prepare a response.</p>",
+          "<p>Pre-trial expert disclosure is the formal statement to the opposing party of the expert's expected testimony before trial. Depending on the jurisdiction it takes the form of a written report signed by the expert, an interrogatory-style answer, or another format the governing framework sets. The purpose is to identify the expert, describe the opinions, and provide their bases in time for the other side to test them through deposition and, where warranted, a motion. For an economist the disclosure is the damages report itself, and the <a href=\"/knowledge/expert-witness-testimony-guide\">expert witness testimony guide</a> describes how the report, the deposition, and the trial presentation fit together.</p>",
       },
       {
         id: "common-content",
         heading: "Common content elements",
         bodyHtml:
-          "<p>Most disclosure frameworks call for the expert's identity, the subject matter, the substance of opinions, the bases for those opinions, qualifications, and (in many jurisdictions) prior testimony and <a href=\"/services/life-care-planning/cost\">compensation</a> (Fed. R. Civ. P. 26(a)(2)). The exact inventory varies by jurisdiction, and trial-track engagements in federal court typically call for a more comprehensive written report than settlement-stage state-court disclosure.</p>",
+          "<p>Most frameworks call for a complete statement of all opinions and the basis and reasons for them; the facts or data considered in forming them; any exhibits that summarize or support them; the witness's qualifications, including publications for a stated number of prior years; a list of cases in which the witness testified at trial or deposition for a stated number of prior years; and a statement of compensation. Federal trial-track engagements call for the full written report; many state frameworks accept a statement of the substance of the opinions instead, sometimes through interrogatories. The inventory varies, and counsel confirms it for the case.</p>",
       },
       {
         id: "timing",
         heading: "Timing",
         bodyHtml:
-          "<p>Disclosure timing is set by the case scheduling order or by the governing framework's default deadlines. Practitioners should pull the scheduling order at the outset of the case and calendar both the disclosure deadline and the close of expert discovery.</p>",
+          "<p>Disclosure deadlines are set by the scheduling order or by the framework's default. The party with the burden usually discloses first, with rebuttal disclosures due a set period afterward. Counsel should pull the scheduling order at the outset, calendar the disclosure deadline and the close of expert discovery, and give the economist the records early enough that the report is complete by the deadline; a report that omits an opinion because a record arrived late invites a dispute over whether the opinion may be offered at all.</p>",
       },
       {
         id: "supplementation",
         heading: "Supplementation",
         bodyHtml:
-          "<p>Most frameworks impose a continuing duty to supplement when the disclosing party learns the prior response is incomplete or incorrect (Fed. R. Civ. P. 26(e)). Failure to supplement can support a motion to preclude the expert testimony at trial.</p>",
+          "<p>Most frameworks impose a continuing duty to supplement when the disclosing party learns that a prior disclosure is incomplete or incorrect. For an economic report the triggers are concrete: new pay records that change the post-event stream, an updated medical or vocational opinion that changes the horizon or capacity, a revised life care plan, or a change in the trial date that shifts the valuation date and the discount period. A supplemental schedule served promptly is far better than an amended opinion offered at deposition or trial.</p>",
+      },
+      {
+        id: "economist-specific-points",
+        heading: "Points specific to economic reports",
+        bodyHtml:
+          "<p>Three items deserve attention in an economist's disclosure. First, the facts or data considered include everything reviewed, not only what was relied upon, so the work file should be organized for production and the report should list the records. Second, the published data series, tables, and yield data used should be identified by source and edition, so the other side can check them; the <a href=\"/methods/present-value-and-discounting\">present value</a> and <a href=\"/methods/worklife-expectancy\">worklife</a> pages show the level of specificity expected. Third, where the economist adopted another expert's opinion, for example a vocational finding on post-event capacity or a life care plan, the report says so and identifies the source, because that opinion is part of the basis of the economist's own. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> shows how a missing element becomes a cross-examination theme.</p>",
       },
       {
         id: "verify",
         heading: "Verify the governing framework",
         bodyHtml:
-          "<p>This page provides a general overview only and does not provide legal advice. Disclosure rules vary by jurisdiction and change over time. Always confirm the governing framework, the court's scheduling order, and any local rule requirements against primary sources for the specific case.</p>",
+          "<p>This page is a general overview and not legal advice. Disclosure rules vary by jurisdiction and change over time. Always confirm the governing framework, the court's scheduling order, and any local rule against primary sources for the specific case.</p>",
       },
     ],
     faqs: [
       {
-        question: "Does every retained expert need to produce a written report?",
+        question: "Does every retained economist need to produce a written report?",
         answer:
-          "It depends on the jurisdiction. Federal-court trial-track engagements typically require a comprehensive written report; many state frameworks accept a substance-of-opinions statement instead, sometimes via interrogatory. Confirm the governing framework for the specific case.",
+          "It depends on the jurisdiction. Federal trial-track engagements typically require a comprehensive written report; many state frameworks accept a substance-of-opinions statement, sometimes through interrogatories. In practice the economist prepares a full report in either setting because the schedules are what make the opinion defensible.",
       },
       {
-        question: "What counts as 'facts or data considered'?",
+        question: "What counts as facts or data considered?",
         answer:
-          "All materials the expert reviewed in forming the opinion, including those the expert chose not to rely upon. Most jurisdictions interpret this category broadly.",
+          "All materials the expert reviewed in forming the opinion, including those the expert chose not to rely on. Most jurisdictions read the category broadly.",
+      },
+      {
+        question: "Can the economist change an opinion after disclosure?",
+        answer:
+          "New records or a changed assumption can support a supplemental report, served under the duty to supplement and within the deadlines. An undisclosed change offered for the first time at trial risks exclusion.",
       },
     ],
     sources: refsToSources(["FRCP_26"]),
     related: [
-      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
+      { title: "Expert Witness Testimony Guide", href: "/knowledge/expert-witness-testimony-guide" },
       { title: "Federal vs. State Court Admissibility", href: "/guides/federal-vs-state-court-daubert" },
-      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
-    ],
-  },
-  {
-    slug: "standard-of-care-analysis",
-    title: "Standard of Care Analysis in Medical Litigation",
-    tldr:
-      "Standard of care analysis establishes whether a healthcare provider's conduct met the accepted standard of practice for the specialty at the time and place of treatment. It is the threshold opinion in medical malpractice litigation and requires a qualified physician expert.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "concept",
-        heading: "The concept",
-        bodyHtml:
-          "<p>Standard of care is the degree of skill and care that a reasonable practitioner in the same specialty would apply in the same or similar circumstances. The analysis is jurisdiction-specific (some states use a national standard, others a locality rule) (Moffett & Moore, 2011).</p>",
-      },
-      {
-        id: "who-provides",
-        heading: "Who provides the opinion",
-        bodyHtml:
-          "<p>A physician expert, typically board-certified in the relevant specialty (American Board of Medical Specialties, n.d.), provides the standard of care opinion. Expert qualifications are often specified by state law, and many states require the expert to practice in the same specialty as the defendant provider.</p>",
-      },
-      {
-        id: "coordination",
-        heading: "Coordination with damages experts",
-        bodyHtml:
-          "<p>Standard of care and causation opinions set the framework for the damages experts who follow. Once a breach and its consequences are established, the <a href=\"/services/life-care-planning\">life care planner</a> projects the future care the injury will require, a <a href=\"/services/medical-cost-projection\">medical cost projection</a> may quantify a narrower set of needs, and an economist reduces those costs to present value. The life care planner does not opine on whether the standard of care was met; the plan takes the causation opinion as its starting point and documents the care that flows from the injury at issue.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Can a physician expert address standard of care outside their specialty?",
-        answer:
-          "Generally no, and many states have statutes requiring same-specialty standard of care experts.",
-      },
-    ],
-    sources: refsToSources(["MOFFETT_MOORE_2011", "ABMS"]),
-    related: [
-      { title: "Medical Malpractice Case Type", href: "/case-types/medical-malpractice" },
-      { title: "Life Care Planning", href: "/services/life-care-planning" },
-      { title: "Birth Injury Case Type", href: "/case-types/birth-injury" },
-    ],
-  },
-  {
-    slug: "collateral-source-rule-explained",
-    title: "The Collateral Source Rule, Explained",
-    tldr:
-      "The collateral source rule governs whether insurance, Medicare, Medicaid, or other third-party payments offset a defendant's liability for damages. Some jurisdictions preserve the traditional rule (no offset); others have modified or abrogated it by statute.",
-    dateModified: "2026-04-21",
-    sections: [
-      {
-        id: "traditional-rule",
-        heading: "The traditional rule",
-        bodyHtml:
-          "<p>Under the traditional rule, a tortfeasor does not benefit from payments the plaintiff received from collateral sources such as insurance (Restatement (Second) of Torts sec. 920A). Damages are calculated without offsetting those payments.</p>",
-      },
-      {
-        id: "modifications",
-        heading: "Modifications and exceptions",
-        bodyHtml:
-          "<p>Many jurisdictions have modified or abrogated the rule by statute, permitting or requiring offsets for specific types of collateral payments. The specifics vary widely by state and by category of payment.</p>",
-      },
-      {
-        id: "medicare-medicaid",
-        heading: "Medicare, Medicaid, and liens",
-        bodyHtml:
-          "<p>Federal and state programs have separate lien and reimbursement rules (the Medicare Secondary Payer framework, state Medicaid liens). These interact with, but are distinct from, the collateral source rule. For a life care plan the practical point is that the plan projects the cost of care regardless of who ultimately pays; whether public or private payments offset the award is a legal question for counsel. Where a settlement must protect Medicare's interests, a <a href=\"/services/medicare-set-aside\">Medicare set-aside allocation</a> is a separate analysis from the life care plan (see <a href=\"/guides/life-care-plan-vs-medicare-set-aside\">life care plan vs. Medicare set-aside</a>).</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Does the collateral source rule apply to future damages?",
-        answer:
-          "Generally yes, though offsets for anticipated collateral payments are imposed in some jurisdictions. Confirm state-specific rules.",
-      },
-    ],
-    sources: refsToSources(["RESTATEMENT_TORTS_920A", "MSP_1395Y", "CMS_MSP"]),
-    related: [
-      { title: "Life Care Plan vs. Medicare Set-Aside", href: "/guides/life-care-plan-vs-medicare-set-aside" },
-      { title: "Medicare Set-Aside Allocations", href: "/services/medicare-set-aside" },
+      { title: "How to Rebut an Economic Damages Report", href: "/guides/how-to-rebut-an-economic-damages-report" },
     ],
   },
   {
     slug: "federal-vs-state-court-daubert",
     title: "Expert Testimony Admissibility: Federal vs. State Court",
     tldr:
-      "Federal courts apply a reliability-based gatekeeping framework that considers the methodology's testability, peer review, error rate, controlling standards, and general acceptance. State courts vary: some apply a similar reliability framework, others apply a narrower general-acceptance test, and several use distinctive hybrid frameworks. Experts should prepare testimony that satisfies the most demanding of the potentially applicable standards. Attorneys are responsible for confirming the governing framework against primary sources.",
-    dateModified: "2026-05-03",
+      "Federal courts apply a reliability-based gatekeeping framework that considers testability, peer review, error rate, controlling standards, and general acceptance. State courts vary: some apply a similar reliability framework, others a narrower general-acceptance test, and several use hybrids. For economic testimony the frameworks rarely exclude the discipline; they exclude inputs the record does not support. Attorneys confirm the governing framework against primary sources.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
         id: "federal-framework",
-        heading: "Federal-court framework",
+        heading: "The federal framework",
         bodyHtml:
-          "<p>Federal courts apply a <a href=\"/services/expert-witness-testimony\">reliability-based gatekeeping framework</a> (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Kumho Tire Co. v. Carmichael, 1999). The trial judge evaluates whether the expert's methodology is reliable and reliably applied to the case, considering factors such as testability, peer review and publication, known or potential rate of error, the existence of controlling standards, and general acceptance in the relevant field (Fed. R. Evid. 702). The factors are non-exclusive and the analysis is case specific.</p>",
+          "<p>Federal courts apply a reliability-based gatekeeping framework. The trial judge decides whether the expert's method is reliable and reliably applied to the facts of the case, considering non-exclusive factors such as whether the method has been tested, whether it has been published and peer reviewed, its known or potential rate of error, the existence and maintenance of controlling standards, and its general acceptance in the relevant field. The inquiry extends to technical and other specialized knowledge, including economics, and the court may exclude an opinion connected to the data only by the expert's assertion. The <a href=\"/knowledge/expert-witness-testimony-guide\">expert witness testimony guide</a> describes the framework in more detail.</p>",
       },
       {
         id: "state-frameworks",
-        heading: "State-court frameworks",
+        heading: "State frameworks",
         bodyHtml:
-          "<p>Some states apply a similar reliability framework to the federal courts. Other states retain a <a href=\"/insights/daubert-vs-frye-expert-testimony-standards\">narrower general-acceptance framework</a> that focuses on whether the methodology is generally accepted in the relevant scientific community (Frye v. United States, 1923). Several states have <a href=\"/jurisdictions\">distinctive hybrid frameworks</a>, sometimes codified by statute or rule.</p>",
+          "<p>Many states apply a reliability framework similar to the federal one. A smaller number retain a general-acceptance framework that asks only whether the method is generally accepted in the relevant professional community. Several states apply hybrids, some codified in evidence rules, and the frameworks continue to evolve. The <a href=\"/insights/daubert-vs-frye-expert-testimony-standards\">admissibility frameworks post</a> compares the two families, and the <a href=\"/jurisdictions\">jurisdictions</a> hub collects the state pages.</p>",
+      },
+      {
+        id: "what-is-challenged-in-economic-testimony",
+        heading: "What is challenged in economic testimony",
+        bodyHtml:
+          "<p>The core methods of forensic economics, projection from documented earnings with published wage growth, <a href=\"/methods/worklife-expectancy\">worklife tables</a>, replacement cost valuation of household services, personal consumption deductions from expenditure data, and <a href=\"/methods/present-value-and-discounting\">discounting at low-risk yields</a>, are established under either framework. Challenges therefore target application: an earnings base that departs from the tax returns, a growth rate inconsistent with the discount rate, a horizon no table supports, post-event earnings that ignore a documented return to work, a death claim without a consumption deduction, or a lost profits projection for a business with no history and no comparable. Each is a gap between the data and the conclusion, and each is avoidable.</p>",
+      },
+      {
+        id: "preparing-the-report",
+        heading: "Preparing a report for the most demanding framework",
+        bodyHtml:
+          "<p>An economist cannot always know at the time of the report which court will hear the case, so the practical rule is to prepare for the most demanding framework that could apply: state every input and its source, use published series and tables the other side can check, show the sensitivity of the result to the contested assumptions, stay within the economist's field, and document the work file. A report built that way is positioned to be examined on the merits under any framework, and the <a href=\"/white-papers/daubert-ready-economic-damages-report\">white paper on a defensible damages report</a> sets out the elements in order.</p>",
       },
       {
         id: "verify",
         heading: "Verify the governing framework",
         bodyHtml:
-          "<p>Always confirm the governing admissibility framework for the specific case against primary sources before preparing expert testimony. The framework can vary by case type, by court within the same state, and over time as state law evolves.</p>",
+          "<p>Always confirm the governing admissibility framework for the specific case against primary sources before the report is finalized. The framework can vary by case type, by court within the same state, and over time as the law evolves, and the <a href=\"/guides/expert-witness-disclosure-rules\">disclosure guide</a> covers the procedural requirements that run alongside it.</p>",
       },
     ],
     faqs: [
       {
-        question: "Do all federal courts apply the admissibility framework identically?",
+        question: "Do all federal courts apply the framework identically?",
         answer:
-          "The framework is uniform across federal courts, but application varies by circuit and by trial judge. Prior decisions in the same district and circuit are informative for case preparation.",
+          "The framework is uniform, but application varies by circuit and by trial judge. Prior decisions in the same district and circuit on economic testimony are informative for preparation.",
+      },
+      {
+        question: "Is an economist's discount rate a methodology question or a fact question?",
+        answer:
+          "Usually a question of weight for the trier of fact, provided the economist explains the basis. It becomes an admissibility question when the rate has no stated source or is inconsistent with the growth assumption.",
       },
     ],
-    sources: refsToSources(["DAUBERT", "KUMHO_TIRE", "FRYE", "FRE_702"]),
+    sources: refsToSources(["DAUBERT", "KUMHO_TIRE", "GE_JOINER", "FRYE", "FRE_702"]),
     related: [
-      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
+      { title: "Expert Witness Testimony Guide", href: "/knowledge/expert-witness-testimony-guide" },
       { title: "Admissibility Frameworks Compared", href: "/insights/daubert-vs-frye-expert-testimony-standards" },
-      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
+      { title: "Building a Daubert-Ready Economic Damages Report", href: "/white-papers/daubert-ready-economic-damages-report" },
     ],
   },
   {
-    slug: "future-medical-costs-in-personal-injury",
-    title: "Future Medical Costs in Personal Injury Cases",
+    slug: "when-do-you-need-an-economic-expert",
+    title: "When Do You Need an Economic Expert?",
     tldr:
-      "Future medical costs are typically projected in a life care plan prepared by a CLCP, then reduced to present value by a forensic economist. Methodology combines treating-team recommendations, peer-reviewed duration literature, and geographically matched cost data.",
-    dateModified: "2026-04-21",
+      "An economic expert is warranted whenever a claim includes a loss that runs over time: earnings, benefits, household services, support to survivors, future care costs, lost profits, or the value of a business. Courts admit the testimony because the projection and discounting require specialized knowledge the trier of fact does not have. Retain early so the economist can identify the records and coordinate assumptions with the other experts.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
-        id: "who-prepares",
-        heading: "Who prepares the projection",
-        bodyHtml:
-          `<p><a href="/credentials/clcp">Certified Life Care Planners (CLCPs)</a> prepare <a href="/services/life-care-planning">the itemized plan</a>. A <a href="${VOC_SITE_URL}/services/forensic-economics">forensic economist</a> then reduces the plan to present value using appropriate discount and growth rates.</p>`,
-      },
-      {
-        id: "inputs",
-        heading: "Inputs to the projection",
-        bodyHtml:
-          "<p>Core inputs include treating team recommendations, peer-reviewed duration literature, local provider cost quotations, and published rate data (Medicare, usual-and-customary compilations) (Centers for Medicare & Medicaid Services, n.d.).</p>",
-      },
-      {
-        id: "categories",
-        heading: "Typical categories",
-        bodyHtml:
-          "<p>Categories include routine and specialty medical care, diagnostic testing, therapies, medications, durable medical equipment with replacement intervals, home modifications, transportation, and attendant care.</p>",
-      },
-      {
-        id: "discounting",
-        heading: "Reducing to present value",
-        bodyHtml:
-          "<p>The plan's annual costs are <a href=\"/methods/present-value-analysis\">reduced to present value</a> using a discount rate matched to the projection horizon and a growth rate reflecting medical cost inflation (U.S. Bureau of Labor Statistics, n.d.). Methodology is documented with sensitivity analysis.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "How far into the future do projections extend?",
-        answer:
-          "Projections extend across the claimant's expected life expectancy, drawing on published life tables (Arias et al., 2025) and any adjustments supported by the record.",
-      },
-      {
-        question: "Are collateral sources deducted?",
-        answer:
-          "Deduction depends on the jurisdiction's collateral source rule. Some jurisdictions require offset; others do not.",
-      },
-    ],
-    sources: refsToSources(["CMS_PFS", "BLS_CPI_MEDICAL", "NCHS_LIFE_TABLES", "IARP_IALCP_STANDARDS"]),
-    related: [
-      { title: "Life Care Planning Service", href: "/services/life-care-planning" },
-      { title: "Life Care Plan Development", href: "/methods/life-care-plan-development" },
-      { title: "Present Value Analysis", href: "/methods/present-value-analysis" },
-      { title: "How a Life Care Plan Is Priced", href: "/guides/how-a-life-care-plan-is-priced" },
-    ],
-  },
-  {
-    slug: "when-do-you-need-expert-witness",
-    title: "When Do You Need an Expert Witness in Your Case?",
-    tldr:
-      "An expert witness is warranted when the case involves future medical and non-medical care needs, the cost of that care, causation, or medical standard of care. Courts admit expert testimony where specialized knowledge will help the trier of fact understand evidence or determine a fact in issue. Retain early so the expert can inform discovery and strategy.",
-    dateModified: "2026-04-20",
-    sections: [
-      {
-        id: "governing-rule",
+        id: "the-governing-rule",
         heading: "The governing rule",
         bodyHtml:
-          "<p>The federal admissibility framework and analogous state frameworks permit expert testimony where specialized knowledge will help the trier of fact, the testimony is based on sufficient facts or data, it is the product of reliable principles and methods, and the expert has reliably applied those principles to the case (Daubert v. Merrell Dow Pharmaceuticals, Inc., 1993; Fed. R. Evid. 702).</p>",
-      },
-      {
-        id: "common-categories",
-        heading: "Common expert categories in civil litigation",
-        bodyHtml:
-          `<p>In an injury case with long-term care implications, several experts commonly address distinct questions that together establish damages. The <a href="/services/life-care-planning">life care planner</a> projects future medical and non-medical needs and their cost. The treating physician or a physical medicine and rehabilitation specialist supplies the medical foundation for those needs. A standard of care expert addresses breach in medical malpractice matters. An occupational or physical therapist may quantify functional capacity or assess the home. A <a href="${VOC_SITE_URL}/services/forensic-economics">forensic economist</a> reduces the projected costs to present value. Where a settlement must account for Medicare, a <a href="/services/medicare-set-aside">Medicare set-aside</a> allocator may be added.</p>`,
-      },
-      {
-        id: "timing",
-        heading: "When to retain",
-        bodyHtml:
-          "<p>Retain as early as practical. Early retention allows the expert to inform records collection, suggest FCE referrals, evaluate the claimant's medical trajectory, and provide input on deposition questions. Late retention risks gaps in the record and shortened report timelines.</p>",
+          "<p>The federal admissibility framework and its state counterparts permit expert testimony where specialized knowledge will help the trier of fact, the testimony rests on sufficient facts or data, it is the product of reliable principles and methods, and the expert has reliably applied them to the case. Projecting earnings over a worklife, valuing household work, deducting personal consumption, and reducing future streams to present value are that kind of specialized knowledge, and a jury asked to do them without an economist is asked to guess. The <a href=\"/knowledge/expert-witness-testimony-guide\">expert witness testimony guide</a> describes the frameworks.</p>",
       },
       {
         id: "signals",
-        heading: "Signals that expert testimony is warranted",
+        heading: "Signals that an economist is warranted",
         bodyHtml:
-          "<p>Consider expert retention when the case involves a <a href=\"/services/catastrophic-injury-planning\">catastrophic injury</a> with lifelong care implications, when the opposing party has served a life care plan that needs a <a href=\"/services/life-care-plan-rebuttal\">rebuttal</a>, when future medical costs are a significant component of damages, when medical causation is at issue, when standard of care is disputed, or when the defense has retained opposing experts.</p>",
+          "<p>Consider retention when the person has lost earnings that will continue past the trial date; when the person was self-employed, a student, a homemaker, or between jobs, so that the earnings history alone does not describe the loss; when a death claim requires support, consumption, and household services to be measured for each survivor; when a life care plan must be reduced to present value; when a termination claim involves back pay, front pay, and lost benefits; when a business claims lost profits or must be valued in a shareholder dispute or a divorce; and when the other side has served an economic report that needs a <a href=\"/services/expert-rebuttal-and-report-review\">review and rebuttal</a>. The <a href=\"/case-types\">case types</a> hub describes how the loss is built in each kind of matter.</p>",
+      },
+      {
+        id: "which-experts-work-together",
+        heading: "Which experts work together",
+        bodyHtml:
+          "<p>In an injury case several experts address distinct questions that together establish damages. The treating or evaluating physicians supply the medical foundation for capacity and, where relevant, for a reduced horizon. A vocational witness may supply the post-injury earning capacity where it is contested. A clinician may prepare a life care plan for future care. The economist takes those findings as inputs, adds the earnings and household records and the published data, and produces the present value of the whole. The comparisons with the <a href=\"/compare/forensic-economist-vs-vocational-expert\">vocational discipline</a> and with the <a href=\"/compare/economist-vs-life-care-planner\">author of a life care plan</a> describe the hand-offs, and the <a href=\"/compare/forensic-economist-vs-forensic-accountant\">forensic accountant comparison</a> covers the commercial side.</p>",
+      },
+      {
+        id: "when-to-retain",
+        heading: "When to retain",
+        bodyHtml:
+          "<p>Retain as early as practical. An economist retained early can list the records the calculation will need so they are requested once, identify the assumptions that will drive the result so the other experts address them, and inform discovery on the opposing damages theory. Late retention risks a report built on an incomplete record and a schedule that leaves no time for a supplemental analysis when new records arrive. Timing also affects the <a href=\"/guides/expert-witness-disclosure-rules\">disclosure</a> deadlines.</p>",
+      },
+      {
+        id: "what-to-send-first",
+        heading: "What to send first",
+        bodyHtml:
+          "<p>For a personal claim: several years of tax returns and W-2 or 1099 forms, pay stubs and employer records, benefit statements, the medical and vocational evidence bearing on work capacity, and the household's account of the services the person performed. For a death claim: the same for the decedent, plus the household's composition and the survivors' ages. For a business claim: financial statements and tax returns for several years before and after the event, the contracts at issue, and any forecasts prepared before the dispute. The <a href=\"/schedule-consultation\">consultation page</a> describes the intake, and the <a href=\"/services\">services</a> pages list the records for each engagement.</p>",
       },
     ],
     faqs: [
       {
-        question: "Is a treating physician the same as an expert witness?",
+        question: "Is an economist needed if the plaintiff has returned to work?",
         answer:
-          "A treating physician can testify as both a fact witness (regarding treatment) and, in some jurisdictions, as an expert witness (regarding opinion), but limits apply. Retained experts are typically engaged specifically for expert opinion.",
+          "Often, yes. A return to work at a lower wage, with fewer benefits, or with a shortened worklife still produces a loss, and the economist measures it. The analysis is simpler when post-event earnings are documented, not unnecessary.",
       },
       {
-        question: "How many experts does a typical case need?",
+        question: "How many experts does a typical injury case need?",
         answer:
-          "It varies. Many catastrophic injury cases use a life care planner, a physician who supplies the medical foundation, and a forensic economist together. Smaller cases may need only a medical cost projection and a physician.",
+          "It varies. A serious injury case commonly involves the treating physicians, a vocational witness where capacity is contested, a clinician for a life care plan where future care is at issue, and an economist to value the whole. A smaller case may need only the medical evidence and the economist.",
       },
       {
-        question: "Can experts be designated and later withdrawn?",
+        question: "Can the economist be retained for consultation without testifying?",
         answer:
-          "Yes, subject to jurisdictional disclosure rules. Early designation preserves flexibility; withdrawal procedures are governed by local rules.",
+          "Yes. A consulting engagement to evaluate a claim, review an opposing report, or support mediation is common, and the disclosure rules for consulting experts differ from those for testifying experts. Counsel decides whether and when to designate.",
       },
     ],
     sources: refsToSources(["FRE_702", "DAUBERT"]),
     related: [
-      { title: "How a Life Care Plan Is Priced", href: "/guides/how-a-life-care-plan-is-priced" },
-      { title: "Life Care Plan vs. Future Cost Projection", href: "/compare/life-care-plan-vs-future-cost-projection" },
-      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
+      { title: "What Is a Forensic Economist?", href: "/guides/what-is-a-forensic-economist" },
+      { title: "Expert Witness Disclosure Rules", href: "/guides/expert-witness-disclosure-rules" },
+      { title: "Schedule a Consultation", href: "/schedule-consultation" },
     ],
   },
   {
-    slug: "what-is-life-care-plan",
-    title: "What is a Life Care Plan?",
+    slug: "collateral-source-rule-explained",
+    title: "The Collateral Source Rule, Explained",
     tldr:
-      "A life care plan is a dynamic document that projects the future medical and non-medical care needs of an individual with a catastrophic injury or chronic condition, with itemized frequencies and costs across the expected lifespan. Certified life care planners follow published standards (IALCP, IARP) and build plans from treating-team recommendations, peer-reviewed duration literature, and geographically matched cost data.",
-    dateModified: "2026-08-23",
+      "The collateral source rule governs whether payments the plaintiff received from insurance, public benefits, or other third parties reduce the defendant's liability for damages. Some jurisdictions preserve the traditional rule, under which the defendant gets no credit; many have modified it by statute for specific categories of payment. The economist does not decide the rule; the report presents each collateral payment on its own schedule so counsel can apply the venue's rule.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
-        id: "definition",
-        heading: "Definition",
+        id: "traditional-rule",
+        heading: "The traditional rule",
         bodyHtml:
-          "<p>A life care plan is a comprehensive, individualized roadmap of the future medical, rehabilitation, and non-medical care a person will need to manage a <a href=\"/case-types/spinal-cord-injury\">catastrophic injury or chronic condition</a>. It quantifies the frequency, duration, and cost of each recommended item and aggregates them into <a href=\"/methods/present-value-analysis\">annual and lifetime projections</a>.</p>",
+          "<p>Under the traditional rule, a wrongdoer does not benefit from payments the injured person received from sources independent of the wrongdoer, such as health insurance, disability insurance, or benefits the person earned through employment. Damages are measured without offsetting those payments, on the reasoning that the plaintiff, not the defendant, paid for the coverage and that any double recovery is better left with the injured person than with the party at fault. The rule also governs what the jury may hear about such payments.</p>",
       },
       {
-        id: "components",
-        heading: "Components of a plan",
+        id: "modifications",
+        heading: "Modifications and exceptions",
         bodyHtml:
-          "<p>Typical categories include routine medical and specialty follow-up, diagnostic testing, therapies (PT, OT, speech, cognitive, mental health), medications, <a href=\"/methods/life-care-plan-development\">durable medical equipment with replacement intervals</a>, home modifications, transportation or vehicle modifications, and attendant care.</p>",
+          "<p>Many jurisdictions have modified the rule by statute, permitting or requiring offsets for specific categories: some for health insurance payments, some for public benefits, some for workers' compensation, and some only in particular kinds of cases such as medical malpractice. Some frameworks distinguish payments already received from payments expected in the future, and some allow the offset only net of the premiums the plaintiff paid. The specifics vary widely by state and by category, change over time, and are a legal question for counsel to resolve against primary sources.</p>",
       },
       {
-        id: "who-writes-them",
-        heading: "Who writes life care plans",
+        id: "what-the-economist-does",
+        heading: "What the economist does",
         bodyHtml:
-          "<p>Life care plans are typically <a href=\"/services/life-care-planning\">prepared by Certified Life Care Planners</a> (<a href=\"/credentials/clcp\">CLCPs</a>) with qualifying clinical backgrounds (RN, OT, PT, CRC, physician). The CLCP credential is issued by ICHCC (International Commission on Health Care Certification, n.d.); practice standards are published by IALCP and IARP (Reavis, 2002).</p>",
+          "<p>The economist measures the loss and keeps each collateral payment visible and separate. The <a href=\"/services/lost-earnings-and-earning-capacity\">lost earnings</a> schedules show the gross loss; a separate schedule catalogs the disability benefits, workers' compensation indemnity, insurance payments, and other collateral sources in the record, with amounts and periods; and the summary shows the result with and without each offset. Counsel then applies the venue's rule, and the trier of fact sees a number built to that rule rather than one in which the offsets were silently netted or silently ignored. The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> page describes the schedule alongside the other deductions.</p>",
       },
       {
-        id: "methodology",
-        heading: "Methodology",
+        id: "collateral-payments-versus-mitigation",
+        heading: "Collateral payments versus mitigation",
         bodyHtml:
-          "<p>Plans follow a standardized methodology: review records, collaborate with treating team, document treating team recommendations, identify needs across categories, apply peer-reviewed duration and frequency literature, collect geographically matched cost data, and compile the plan with documented sources.</p>",
+          "<p>Collateral payments are distinct from post-event earnings. Wages the person earns after the event are part of the loss calculation itself, netted against but-for earnings in every framework, because the loss is the difference between the two streams. Insurance and benefit payments are not earnings; they are compensation from a third party for the same loss, and whether they reduce the award is what the collateral source rule decides. The <a href=\"/guides/how-lost-earnings-are-calculated\">lost earnings guide</a> shows where each sits in the calculation.</p>",
       },
       {
-        id: "after-catastrophic-injury",
-        heading: "Life care planning after a catastrophic injury",
+        id: "liens-and-reimbursement",
+        heading: "Liens and reimbursement rights",
         bodyHtml:
-          "<p>Catastrophic injuries such as <a href=\"/case-types/spinal-cord-injury\">spinal cord injury</a>, <a href=\"/case-types/traumatic-brain-injury\">traumatic brain injury</a>, <a href=\"/case-types/amputation\">amputation</a>, and severe burns create care needs that change over the lifespan rather than ending at discharge. A life care plan for these cases typically addresses acute and follow-up medical care, rehabilitation therapies, medications and supplies, durable medical equipment with replacement intervals, home and vehicle modifications, attendant or facility care, and the periodic re-evaluations that each of these items will require (Weed &amp; Berens, 2018). Because needs and costs differ by age, condition, and location, the plan is individualized to the person and the treating team's recommendations, not drawn from a template.</p>",
+          "<p>Separate from the collateral source rule, some payers have reimbursement or lien rights against a recovery: health insurers under plan terms, public programs under their own statutes, and workers' compensation carriers under state law. Those rights affect how a settlement is distributed rather than how the loss is measured, and the economist's schedules of collateral payments are often the starting point for counsel's analysis of them. The <a href=\"/case-types/workers-compensation\">workers' compensation</a> case type page discusses the interaction in that setting.</p>",
       },
       {
-        id: "timing-and-updates",
-        heading: "When the plan is prepared and how it changes",
+        id: "verify",
+        heading: "Verify the governing rule",
         bodyHtml:
-          `<p>A plan is usually prepared once the medical picture is stable enough to project, which may be before maximum medical improvement when the treating team can describe the expected course. The planner gathers records, interviews the individual and family, consults treating or evaluating providers, and documents each recommendation with its source. Because a life care plan is a dynamic document, it is updated when the condition, the treatment plan, or the care setting changes, and the cost figures are refreshed so the <a href="/methods/present-value-analysis">economic analysis</a> reflects current pricing. In litigation the plan is typically paired with a <a href="${VOC_SITE_URL}/services/forensic-economics">forensic economic</a> projection that carries the itemized costs across the <a href="/methods/life-expectancy-in-life-care-planning">expected lifespan</a> and discounts them to present value.</p>`,
+          "<p>This page is a general overview and not legal advice. The collateral source rule, its statutory modifications, and the related reimbursement rights differ by state and by case type. Counsel confirms the governing rule against primary sources, and the economist builds the schedules to it.</p>",
       },
     ],
     faqs: [
       {
-        question: "How is a life care plan different from a case management plan?",
+        question: "Does the collateral source rule apply to future benefits?",
         answer:
-          "A case management plan coordinates ongoing services. A life care plan projects the full scope of future needs for litigation or settlement purposes, with quantified costs across the lifespan.",
+          "It depends on the jurisdiction. Some frameworks address only payments already received; others allow offsets for benefits reasonably expected in the future, sometimes only where the entitlement is certain. The report can present expected future benefits on their own schedule where counsel requests it.",
       },
       {
-        question: "Who pays for the services in a life care plan?",
+        question: "Should the economist deduct disability payments from lost earnings?",
         answer:
-          "The plan projects costs; funding is a separate question answered by settlement, judgment, insurance, or public benefits depending on the case.",
+          "Not on the economist's own initiative. The report shows the gross loss and the disability payments separately, and the offset is applied or not according to the venue's rule and counsel's instruction.",
       },
       {
-        question: "Are life care plans admissible?",
+        question: "Are employer-paid benefits collateral sources?",
         answer:
-          "Yes, when prepared by a qualified practitioner following accepted methodology and supported by physician recommendations.",
-      },
-      {
-        question: "Is a life care plan only for catastrophic injuries?",
-        answer:
-          "No. Plans are most often prepared for catastrophic injury and chronic conditions, but the same methodology applies to any injury or illness with documented long-term care needs.",
+          "Benefits the person earned through employment, such as disability insurance provided by the employer, are generally treated as collateral in jurisdictions that follow the traditional rule, on the reasoning that they are part of the person's compensation. Statutory modifications vary, and counsel confirms the treatment.",
       },
     ],
-    sources: refsToSources(["ICHCC_CLCP", "IARP_IALCP_STANDARDS", "IARP", "WEED_BERENS"]),
+    sources: refsToSources(["RESTATEMENT_TORTS_920A"]),
     related: [
-      { title: "CLCP Certification", href: "/credentials/clcp" },
-      { title: "Life Care Plan Development Methodology", href: "/methods/life-care-plan-development" },
-      { title: "Spinal Cord Injury Cases", href: "/case-types/spinal-cord-injury" },
+      { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets" },
+      { title: "How Lost Earnings Are Calculated", href: "/guides/how-lost-earnings-are-calculated" },
+      { title: "Jurisdictions", href: "/jurisdictions" },
     ],
   },
   {
-    slug: "how-a-life-care-plan-is-priced",
-    title: "How a Life Care Plan Is Priced",
+    slug: "business-valuation-in-litigation",
+    title: "Business Valuation in Litigation",
     tldr:
-      "A life care plan engagement is billed on the planner's time, typically against a retainer, and the fee is driven by the volume of records, the complexity of the injury, whether an in-person evaluation is required, and how many treating providers must be consulted. A scoped medical cost projection is the lower-cost alternative when the question is narrower than lifetime care.",
-    dateModified: "2026-08-26",
+      "A litigation valuation begins with four decisions the governing framework shapes: the interest being valued, the valuation date, the standard of value, and the premise of value. The valuator then normalizes the financial statements, applies the income, market, and asset approaches as the company warrants, considers discounts and premiums appropriate to the standard and the interest, and reconciles the indications into a conclusion documented to professional standards. This guide walks through each decision and where valuations are attacked.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
-        id: "how-fees-are-structured",
-        heading: "How the fee is structured",
+        id: "standard-of-value",
+        heading: "The standard of value",
         bodyHtml:
-          "<p>Life care planning is professional time. The planner bills hourly for records review, the evaluation, provider correspondence, cost research, and report writing, and separately for deposition and trial testimony. Most engagements open with a retainer that is applied against hourly work, with the balance billed as the plan progresses. Rate schedules and retainer amounts are set out in the engagement letter, and <a href=\"/services/life-care-planning/cost\">the current terms for a life care plan engagement</a> are available on request before any work begins.</p><p>The retainer is not a flat fee for the plan. It is a deposit against the time the work actually takes. A straightforward plan may finish within the retainer; a catastrophic pediatric case with a decade of records will not. Counsel should expect an estimate at intake and updated estimates as the record is opened, and should treat any planner who quotes a fixed price for an unread record with caution.</p>",
+          "<p>The standard of value defines whose perspective the valuation takes and therefore what the number means. Fair market value asks what a hypothetical willing buyer would pay a willing seller. Fair value, as defined by statute or case law for dissenting and oppressed shareholder matters, often excludes the discounts a hypothetical buyer would demand. Investment value asks what the interest is worth to a particular owner. The standard is a legal question the governing framework answers, and applying the wrong one is among the most common reasons a <a href=\"/services/business-valuation\">valuation</a> is rejected. The <a href=\"/compare/fair-market-value-vs-fair-value\">fair market value versus fair value</a> comparison explains the difference in detail.</p>",
       },
       {
-        id: "what-drives-cost",
-        heading: "What drives the cost of a plan",
+        id: "valuation-date",
+        heading: "The valuation date",
         bodyHtml:
-          "<p>Four inputs account for most of the variation between one engagement and the next.</p><p><strong>Volume and condition of the records.</strong> Reading the record is the largest single block of time. A recent injury with a few hundred pages reviews quickly. A <a href=\"/case-types/birth-injury\">birth injury</a> case with neonatal, pediatric, therapy, and school records spanning years does not, and disorganized or duplicated productions add hours before analysis begins.</p><p><strong>Complexity of the injury.</strong> The number of body systems involved, the number of specialties treating the person, and the number of categories of need all scale the plan. A single-limb <a href=\"/case-types/amputation\">amputation</a> with a stable prosthetic plan is simpler than a high-level <a href=\"/case-types/spinal-cord-injury\">spinal cord injury</a> with respiratory, skin, bladder, bowel, and attendant care needs that interact.</p><p><strong>Whether an evaluation is required.</strong> An in-person evaluation, usually in the home, adds travel and a day of interview and observation, and it is the norm for a plaintiff-retained plan. A <a href=\"/compare/in-person-evaluation-vs-file-review\">records-only review</a> is appropriate for many rebuttal engagements and some updates.</p><p><strong>Provider consultation.</strong> Every item in the plan needs a medical foundation. Where the record already contains the treating team's recommendations, the planner confirms them. Where it does not, the planner must correspond with each provider, wait for responses, and sometimes arrange an evaluation, all of which adds time.</p>",
+          "<p>Value is measured as of a specific date using what was known or reasonably knowable then. In a divorce the date may be the filing, the separation, or the trial, depending on the state; in a shareholder matter it is often the day before the transaction the shareholder dissented from; in a damages matter it is usually the date of the wrongful act. Events after the date are generally excluded unless the framework directs otherwise, so the choice of date can change the conclusion materially, and the report states the date and its basis.</p>",
       },
       {
-        id: "what-inflates-cost",
-        heading: "What inflates the cost unnecessarily",
+        id: "normalization",
+        heading: "Normalizing the financial statements",
         bodyHtml:
-          "<p>Some cost is avoidable. Incomplete productions that arrive in waves force the planner to re-read and re-index. Late retention compresses the schedule and pushes work into rush time. Unclear scope leads to a plan that covers needs the case does not put at issue. Missing provider contacts mean the planner spends hours locating the right clinician for a recommendation the attorney could have obtained at a deposition.</p><p>The remedy is a clean intake: a single organized production, a clear statement of the questions the plan must answer, the names and contact details of the treating providers, and retention early enough that the plan can inform discovery rather than react to it. A planner retained after the close of fact discovery is often pricing care for which no physician has yet been asked to state a need.</p>",
+          "<p>Closely held company statements rarely show sustainable earning power without adjustment. The valuator removes non-recurring gains and losses, restates owner compensation to what an outside manager would be paid, separates personal expenses run through the business, adjusts related-party rents and loans to market terms, and identifies non-operating assets to be valued separately. Each adjustment is listed with its basis, because the normalized earnings drive the income approach and the adjustments are where opposing valuators most often differ. The <a href=\"/guides/income-determination-in-divorce\">income determination guide</a> covers the owner compensation question from the support side.</p>",
       },
       {
-        id: "what-you-receive",
-        heading: "What the fee buys",
+        id: "three-approaches",
+        heading: "The three approaches and reconciliation",
         bodyHtml:
-          "<p>The deliverable is a written plan that lists each recommended item with its medical foundation, frequency, duration, unit cost, and cost source, organized by category and summarized by year. Behind the report sits a work file: the records index, provider correspondence, cost quotes with dates and contacts, and the life tables relied on. That file is what allows the plan to be defended at deposition, re-priced at a <a href=\"/services/plan-update-and-review\">later update</a>, and handed to an economist for present-value calculation without re-derivation. The <a href=\"/methods/cost-research-methodology\">cost research methodology</a> page describes how each figure is documented.</p>",
+          "<p>The income approach converts expected cash flows into value, either by discounting a projection or by capitalizing a normalized level of earnings, with a rate built from the company's risk profile. The market approach draws on prices paid for comparable companies or interests, adjusted for size, growth, and risk. The asset approach values the assets net of liabilities and serves as a floor or as the primary approach for holding companies and businesses being liquidated. The valuator applies the approaches the company warrants, explains why any was not used, and reconciles the indications with stated weights. The <a href=\"/methods/business-valuation-approaches\">business valuation approaches</a> page describes each.</p>",
       },
       {
-        id: "scoping-a-projection-instead",
-        heading: "When to scope a medical cost projection instead",
+        id: "discounts-and-premiums",
+        heading: "Discounts and premiums",
         bodyHtml:
-          "<p>Not every case needs a lifetime plan. Where the injury is significant but the future care question is narrow, a <a href=\"/services/medical-cost-projection\">medical cost projection</a> answers it at a fraction of the cost. A projection is records-based, covers a defined set of medical needs such as a planned surgery and its follow-up, and typically carries a shorter horizon. It does not include non-medical categories such as attendant care or home modification, and it does not usually include an in-person evaluation.</p><p>The choice is about the question, not the budget. If the case turns on whether a person will need a knee revision and what it will cost, a projection is the right tool. If the case involves care across multiple categories for the rest of the person's life, the plan is the right tool and a projection will leave damages on the table or, for the defense, leave the plaintiff's plan unanswered. The <a href=\"/compare/life-care-plan-vs-future-cost-projection\">comparison of the two</a> sets out the differences in more detail, and the <a href=\"/services/life-care-planning/process\">engagement process</a> page describes how scope is set at intake.</p>",
+          "<p>A minority interest in a closely held company may be worth less than its proportionate share of the whole because the holder cannot control the company and cannot readily sell the interest. Discounts for lack of control and lack of marketability reflect those disadvantages, and they are the most litigated inputs in valuation because they can reduce the number substantially. Whether they apply depends on the standard of value and the interest being valued, and the magnitude must be tied to the specific company rather than applied by rote from a study. The report explains both decisions.</p>",
       },
       {
-        id: "testimony-costs",
-        heading: "Testimony and update costs",
+        id: "the-report-and-standards",
+        heading: "The report and the professional standards",
         bodyHtml:
-          "<p>Deposition and trial testimony are billed separately from the plan, usually at a different hourly rate with a minimum for the appearance and preparation time. Travel is billed at cost. An update to an existing plan is priced on the change: if the condition, the treatment plan, or the living situation has changed materially, the update approaches a new plan; if only the costs need refreshing, it is a fraction of that. Counsel should ask at intake how updates and testimony are billed so the total cost of carrying the plan through trial is understood from the start.</p>",
+          "<p>Professional valuation standards prescribe the engagement definition, the approaches, the analysis, and the report content, including the standard and premise of value, the valuation date, the sources of information, the approaches applied and the reasons, the discounts considered, and the assumptions and limiting conditions. A report that follows them is positioned to meet a methodology challenge; a report that does not gives the other side its cross-examination outline. The <a href=\"/white-papers/business-valuation-standards-in-litigation\">white paper on valuation standards</a> sets out the elements, and the <a href=\"/guides/lost-profits-vs-lost-business-value\">lost profits versus lost business value</a> guide addresses when a valuation rather than a lost profits analysis is the right measure.</p>",
       },
     ],
     faqs: [
       {
-        question: "Can you give a fixed quote for a life care plan?",
+        question: "Who chooses the standard of value?",
         answer:
-          "Not responsibly before the record is reviewed. An estimate is provided at intake based on the volume of records, the injury, and whether an evaluation is required, and it is updated once the records are opened. The engagement letter sets out the rates and retainer.",
+          "The governing framework does, and counsel identifies it. The valuator applies the standard counsel identifies, states it in the report, and where the standard is unsettled presents the result under each alternative.",
       },
       {
-        question: "Does the plaintiff's or the defendant's side pay more?",
+        question: "Can a valuation rely on management's projections?",
         answer:
-          "The methodology and the rates are the same on both sides. A defense rebuttal is often less expensive because it may proceed on records alone, but a defense-retained full plan with an evaluation costs what a plaintiff-retained plan does.",
+          "Only with scrutiny. Projections prepared before the dispute for business purposes carry weight; projections prepared for the litigation are tested against the company's history and the market, and the report explains what was accepted, adjusted, or rejected.",
       },
       {
-        question: "Is the retainer refundable?",
+        question: "How is goodwill handled in a divorce valuation?",
         answer:
-          "The retainer is applied against hourly work. Any unused balance at the close of the engagement is handled as set out in the engagement letter.",
-      },
-      {
-        question: "Does the plan fee include the economist?",
-        answer:
-          "No. The present-value calculation is a separate engagement with a forensic economist. The plan is prepared so the economist can use it directly, which keeps that second engagement efficient.",
+          "Many states distinguish enterprise goodwill, which belongs to the business and is divisible, from personal goodwill, which attaches to the owner and in some states is not. The distinction is a legal one that varies by state, and the valuator allocates the goodwill according to the framework counsel identifies.",
       },
     ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS"]),
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD"]),
     related: [
-      { title: "Life Care Planning", href: "/services/life-care-planning" },
-      { title: "Medical Cost Projection", href: "/services/medical-cost-projection" },
-      { title: "Life Care Plan vs. Future Cost Projection", href: "/compare/life-care-plan-vs-future-cost-projection" },
-      { title: "Cost Research Methodology", href: "/methods/cost-research-methodology" },
+      { title: "Business Valuation", href: "/services/business-valuation" },
+      { title: "Business Valuation Approaches", href: "/methods/business-valuation-approaches" },
+      { title: "Partnership and Shareholder Disputes", href: "/case-types/partnership-and-shareholder-dispute" },
     ],
   },
   {
-    slug: "life-care-plan-vs-medicare-set-aside",
-    title: "Life Care Plan vs. Medicare Set-Aside: Purpose, Audience, and Method",
+    slug: "lost-profits-vs-lost-business-value",
+    title: "Lost Profits vs. Lost Business Value",
     tldr:
-      "A life care plan projects the full cost of injury-related future care for damages. A Medicare set-aside allocation reserves the portion of a settlement that Medicare would otherwise pay for that care. They start from the same record but differ in purpose, audience, scope, pricing, and horizon, and many catastrophic settlements need both.",
-    dateModified: "2026-08-26",
+      "Lost profits measure what a continuing business would have earned but for the wrongful act over a defined loss period. Lost business value measures what the business or the owner's interest was worth on a valuation date when the act destroyed it. Both rest on projected cash flows, so claiming both for the same period counts the loss twice. This guide explains when each measure applies, where the boundary lies, and how the proof and the discounting differ.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
-        id: "two-documents",
-        heading: "Two documents, two questions",
+        id: "two-measures",
+        heading: "Two measures of the same harm",
         bodyHtml:
-          "<p>A <a href=\"/services/life-care-planning\">life care plan</a> answers the question: what will this person's injury-related care cost over the rest of their life? It is prepared for a trier of fact, a mediator, or an adjuster, and it supports a damages figure. A <a href=\"/services/medicare-set-aside\">Medicare set-aside allocation</a> answers a different question: of the money changing hands in a settlement that closes future medical care, how much should be reserved so that Medicare is not asked to pay for care the settlement was meant to cover? It is prepared for the settling parties and, when submitted, for Medicare's reviewer.</p><p>Because the questions differ, the documents differ, even when the same planner prepares both from the same record. Treating one as a substitute for the other is the most common error counsel make with them.</p>",
+          "<p>A business harmed by a breach, a tort, or a fraud can lose profits for a period and then recover, or it can be destroyed. The first harm is measured as <a href=\"/services/lost-profits-and-commercial-damages\">lost profits</a>: the difference between the profits the business would have earned and the profits it did earn, over a loss period, net of avoided costs and mitigation. The second is measured as lost business value: what the business was worth on the date it was destroyed, developed through a <a href=\"/services/business-valuation\">valuation</a> under the standard of value the framework requires. The measures answer different questions, and the choice depends on what happened to the business.</p>",
       },
       {
-        id: "audience",
-        heading: "Audience",
+        id: "when-lost-profits-applies",
+        heading: "When lost profits is the measure",
         bodyHtml:
-          "<p>The plan is written to be understood by a jury and tested by an opposing expert. It explains the injury, describes the person's current function, sets out each need in plain terms, and shows the foundation for it. The allocation is written for a settlement file and a government review process. It is organized around Medicare coverage categories, cites the version of Medicare's guidance relied on, and is accompanied by the medical and payment records that support each line. The reader of an allocation is checking compliance; the reader of a plan is weighing evidence.</p>",
+          "<p>Lost profits apply when the business continued to operate through the harm. A breached supply contract, a lost customer, a period of closure, a diverted opportunity, or a defective input that disrupted production produces a loss with a beginning and an end. The <a href=\"/methods/lost-profits-but-for-analysis\">but-for analysis</a> establishes what revenue the business would have earned, deducts the costs it avoided, nets what it earned by mitigating, tests causation against the other events of the period, and discounts any future portion. The loss period ends when the business recovered or would have recovered, which may be the remaining term of a contract or the time needed to rebuild a customer base.</p>",
       },
       {
-        id: "scope",
-        heading: "What each includes and excludes",
+        id: "when-business-value-applies",
+        heading: "When business value is the measure",
         bodyHtml:
-          "<p>The plan includes every injury-related need the treating team supports, medical and non-medical: physician follow-up, therapies, medications, supplies, equipment, home and vehicle modification, attendant care, case management, and where appropriate residential placement. It excludes care the person would have needed regardless of the injury.</p><p>The allocation includes only injury-related care that Medicare would cover. Most home modifications, vehicle modifications, non-skilled attendant care, case management, and many supplies fall outside it. Within covered categories, it includes only what the treating providers recommend. Prescription drugs are addressed as a separate component. An allocation is therefore always a subset of the plan, usually a substantially smaller one.</p>",
+          "<p>Business value applies when the harm ended the business or removed the owner's interest: a company forced to close, a franchise terminated, a partner frozen out, or an owner whose interest was taken. The measure is the value of the business or the interest as of the date of destruction, which already reflects the profits the business would have earned afterward, developed through the <a href=\"/methods/business-valuation-approaches\">income, market, and asset approaches</a> and adjusted for the standard of value and the interest. A lost profits projection running indefinitely is usually a business valuation in disguise and is better presented as one.</p>",
       },
       {
-        id: "pricing",
-        heading: "Pricing basis",
+        id: "the-boundary",
+        heading: "The boundary and double recovery",
         bodyHtml:
-          "<p>The plan prices each item at the cost of the care in the person's own market, using provider quotes, usual-and-customary data, and published schedules as appropriate, with the source recorded for each figure (see <a href=\"/methods/cost-research-methodology\">cost research methodology</a>). The allocation prices covered items on the basis Medicare's guidance expects, which in workers' compensation matters is generally the applicable state fee schedule or, where none applies, usual-and-customary charges for the jurisdiction. The same physician visit can carry two different prices in the two documents, and that is correct.</p>",
+          "<p>Because a valuation as of the date of destruction incorporates all future profits, adding lost profits after that date counts the same cash flows twice. Where a business was harmed for a period and then destroyed, the analysis presents lost profits from the wrongful act to the date of destruction and the value of the business as of that date, with the boundary stated and the two schedules reconciled. The <a href=\"/compare/lost-profits-vs-business-valuation\">lost profits versus business valuation</a> comparison sets out the distinction side by side.</p>",
       },
       {
-        id: "horizon",
-        heading: "Horizon and life expectancy",
+        id: "proof",
+        heading: "Proof and reasonable certainty",
         bodyHtml:
-          "<p>The plan carries items across the person's <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy</a>, starting from the published population tables and departing from them only on a physician's opinion. The allocation may instead use a rated age obtained from a life insurance underwriter, which can shorten the allocation period when the person's health profile supports it. A rated age is a pricing device for annuities and set-asides; it is not a medical opinion, and a plan prepared for litigation does not rely on it.</p>",
+          "<p>Most jurisdictions require the fact of a lost profits loss to be proved with reasonable certainty, with more latitude on the amount once the fact is shown. An established business proves the fact from its history; a new business faces a higher bar and proves it from signed contracts, comparable businesses, or pre-dispute performance. A valuation is proved by following the professional standards and grounding the projections in the company's history and market, as the <a href=\"/guides/business-valuation-in-litigation\">business valuation in litigation</a> guide describes. In both cases the report shows the basis for each projection so the trier of fact can weigh it.</p>",
       },
       {
-        id: "when-both",
-        heading: "When both are needed",
+        id: "discounting-differences",
+        heading: "How the discounting differs",
         bodyHtml:
-          "<p>Both documents are needed when a catastrophic <a href=\"/case-types/workers-compensation\">workers' compensation</a> or liability matter is settling, the injured person is a Medicare beneficiary or reasonably expects to become one, and the settlement releases future medical care. The plan establishes the full scope of need so the settlement is adequate; the allocation establishes the Medicare-protected portion so the settlement is compliant. Preparing both from one record review keeps them consistent, and a reconciliation showing which plan items fed the allocation and which fell outside it answers the questions a reviewer or an opposing party will ask. The <a href=\"/methods/msa-allocation-methodology\">allocation methodology</a> page describes the steps, and <a href=\"/compare/life-care-plan-vs-msa\">the comparison page</a> summarizes the differences in a table.</p>",
-      },
-      {
-        id: "who-prepares",
-        heading: "Who prepares the allocation and how it is coordinated",
-        bodyHtml:
-          "<p>An allocation is prepared by a planner or allocator with training in Medicare's review guidance, often the same certified life care planner who prepared the plan. Coordination with counsel happens at three points. Before the work begins, counsel confirms the injured person's Medicare status, the settlement structure, and whether submission for review is intended, because each changes what the allocation must contain. During preparation, the planner flags items whose coverage status is unclear so counsel can decide how to treat them rather than discovering the question at review. At delivery, the planner supplies the allocation, the supporting records, and a reconciliation to the life care plan, and remains available to respond to reviewer questions or to revise the allocation if the settlement terms change.</p>",
-      },
-      {
-        id: "common-errors",
-        heading: "Common errors",
-        bodyHtml:
-          "<p>Three errors recur. The first is using the plan total as the set-aside, which overstates the reserve and ignores Medicare's pricing basis. The second is preparing only an allocation in a case that will be tried, which leaves the non-covered categories, often the largest, unquantified. The third is building the two documents from different records or different providers, so that the allocation lists care the plan does not, or the plan omits care the allocation reserves for. Each is avoided by treating the allocation as a carve-out from the plan rather than as an independent exercise.</p>",
+          "<p>Both measures discount future cash flows for time and risk, but the rate is built differently. In a valuation the rate is developed within the income approach from the company's risk profile and applied to all expected cash flows. In a lost profits analysis the rate reflects the risk of the specific projected profits, which can be lower where the profits were contractually assured and higher where they depended on winning new business. The <a href=\"/methods/present-value-and-discounting\">present value method</a> page explains the mechanics common to both.</p>",
       },
     ],
     faqs: [
       {
-        question: "Does Medicare have to approve the set-aside?",
+        question: "Can a plaintiff choose the larger of the two?",
         answer:
-          "Submission for review is voluntary and available only when the settlement meets published thresholds. Parties may settle without review, but the allocation should still be reasonable and documented so Medicare's interests are demonstrably considered.",
+          "The measure follows the facts: whether the business survived or was destroyed. Where the facts are contested, the report can present both measures with the boundary stated, but they cannot be combined for the same period.",
       },
       {
-        question: "Can a life care plan be used in a settlement without an MSA?",
+        question: "What if the business was sold after the harm?",
         answer:
-          "Yes, when Medicare's interests are not implicated, for example where the person is not a beneficiary and has no reasonable expectation of enrollment, or where future medical care is not being released.",
+          "The sale price is evidence of value as of the sale date, and the analysis considers whether the harm reduced it. Lost profits may run from the harm to the sale, with the reduction in sale price as the measure of the loss after that.",
       },
       {
-        question: "Who administers the set-aside after settlement?",
+        question: "Does a start-up have a claim for lost business value?",
         answer:
-          "The funds may be self-administered by the injured person or placed with a professional administrator. Professional administration is often recommended for larger allocations because it documents that the funds were spent on covered, injury-related care.",
-      },
-      {
-        question: "Is a rated age ever used in the life care plan?",
-        answer:
-          "Generally no. The plan's horizon rests on population life tables and physician opinion. The rated age belongs to the allocation and to structured settlement pricing.",
+          "Possibly, if it can be valued with reasonable certainty from evidence such as investment rounds, comparable transactions, or contracts in hand. The analysis is demanding, and the report addresses the risks the business faced directly.",
       },
     ],
-    sources: refsToSources(["CMS_WCMSA_GUIDE", "CMS_WCMSA", "CMS_MSP", "IARP_IALCP_STANDARDS", "NCHS_LIFE_TABLES"]),
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD", "AAEFE_JLE"]),
     related: [
-      { title: "Medicare Set-Aside Allocations", href: "/services/medicare-set-aside" },
-      { title: "MSA Allocation Methodology", href: "/methods/msa-allocation-methodology" },
-      { title: "Life Care Plan vs. MSA (comparison)", href: "/compare/life-care-plan-vs-msa" },
-      { title: "Workers' Compensation Life Care Plans", href: "/services/workers-compensation-lcp" },
+      { title: "Lost Profits and Commercial Damages", href: "/services/lost-profits-and-commercial-damages" },
+      { title: "Lost Profits and But-For Analysis", href: "/methods/lost-profits-but-for-analysis" },
+      { title: "Commercial Contract Disputes", href: "/case-types/commercial-contract-dispute" },
     ],
   },
   {
-    slug: "pediatric-life-care-plans-and-transition-to-adulthood",
-    title: "Pediatric Life Care Plans and the Transition to Adulthood",
+    slug: "income-determination-in-divorce",
+    title: "Income Determination in Divorce",
     tldr:
-      "A pediatric life care plan is staged by development rather than written as a single lifetime schedule. Equipment is replaced on growth cycles, education and therapy shift when school-based services end, and the transition around age 21 changes who provides care, where the person lives, and what it costs. A plan that ignores these transitions understates or misstates lifetime care.",
-    dateModified: "2026-08-26",
+      "Support in a divorce depends on each spouse's income, and for a business owner or a high earner the tax return rarely tells the whole story. The economist determines income from cash flow rather than taxable income, normalizes owner compensation and perquisites, analyzes the marital lifestyle where the framework uses it, and addresses the earning capacity of a spouse who is not working. Where a business interest is marital property, the income analysis and the valuation are coordinated so the same dollars are not counted twice.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
-        id: "why-pediatric-differs",
-        heading: "Why a pediatric plan is different",
+        id: "why-income-is-contested",
+        heading: "Why income is contested",
         bodyHtml:
-          "<p>An adult with a stable catastrophic injury has needs that can be projected as a largely steady state with periodic replacements and re-evaluations. A child does not. The child grows, which changes equipment, medication dosing, and the physical demands of caregiving. The child develops, which changes what therapy is for and what independence is realistic. And the child ages out of the systems that provide much of early care, chiefly school-based services, at a fixed point. A <a href=\"/services/pediatric-life-care-planning\">pediatric life care plan</a> is built around those transitions.</p><p>The most common pediatric diagnoses in litigation are <a href=\"/case-types/cerebral-palsy\">cerebral palsy</a> and other <a href=\"/case-types/birth-injury\">birth-related neurological injuries</a>, pediatric <a href=\"/case-types/traumatic-brain-injury\">traumatic brain injury</a>, spinal cord injury, and severe burns. The staging described here applies to each, with the specifics driven by the diagnosis and the treating team.</p>",
+          "<p>Support formulas and equitable distribution both turn on income, and for a wage earner with a W-2 the number is rarely disputed. For a business owner, a professional with a practice, a commissioned salesperson, or a spouse with investment income, the tax return reflects choices about timing, deductions, and compensation that may not describe the money actually available to the household. The <a href=\"/services/divorce-and-marital-financial-analysis\">divorce and marital financial analysis</a> engagement determines the income the framework should use and documents how it was derived.</p>",
       },
       {
-        id: "developmental-staging",
-        heading: "Developmental staging",
+        id: "owner-compensation-and-perquisites",
+        heading: "Owner compensation and perquisites",
         bodyHtml:
-          "<p>The plan is organized in stages, typically early childhood, school age, adolescence, and adulthood, with a further stage for older adulthood where expectancy supports it. Each item is assigned a start and stop point tied to a stage rather than a calendar year, so that when the plan is updated the structure survives. Early intervention therapies end when school begins; school-based therapy ends when school ends; adult outpatient therapy is frequently episodic rather than continuous. Specialist follow-up changes as pediatric providers hand off to adult specialists, and that hand-off is itself a period of increased visits and re-evaluation.</p><p>Staging also makes the plan easier to test. An opposing reviewer can ask whether a given item belongs in a given stage, and the planner can answer with the developmental basis. A single undifferentiated lifetime schedule invites the objection that a five-year-old's needs have been projected onto a forty-year-old.</p>",
+          "<p>An owner controls how the business pays them: salary, distributions, retained earnings, and expenses the business pays on the owner's behalf. The analysis restates the owner's income to include distributions and personal expenses run through the business, such as vehicles, travel, meals, insurance, and family members on the payroll, and considers whether retained earnings were a genuine business need or a way to hold income inside the company. Each adjustment is listed with its source in the general ledger or the bank records, so the resulting income can be traced. The same adjustments feed the normalization step in a <a href=\"/guides/business-valuation-in-litigation\">business valuation</a>.</p>",
       },
       {
-        id: "equipment-growth-cycles",
-        heading: "Equipment and growth cycles",
+        id: "cash-flow-versus-taxable-income",
+        heading: "Cash flow versus taxable income",
         bodyHtml:
-          "<p>Pediatric durable equipment is replaced on growth, not on wear. Wheelchairs, seating systems, standers, gait trainers, bath and toileting equipment, and orthotics are outgrown on cycles that vary with age and the item, and the intervals are shorter in early childhood than in adolescence. The plan carries each item on its own growth-driven cycle until adult sizing, then shifts to the adult replacement interval. Orthotics may be replaced several times a year in a young child. A plan that applies a single adult replacement interval to a child understates equipment cost substantially in the early years. The <a href=\"/guides/home-modification-and-equipment-costing\">equipment costing guide</a> describes how replacement schedules are documented.</p>",
+          "<p>Taxable income is reduced by depreciation, carryforwards, and elective deductions that do not reduce the cash available to the household, and it can be increased by items that produce no cash. The economist builds income from cash flow: what came in, from all sources, and what was actually spent on the business, over several years to smooth timing. Where the framework defines income for support purposes, the report presents the figure under that definition and shows the reconciliation to the tax return so the court can see the difference and its causes.</p>",
       },
       {
-        id: "education-and-therapy",
-        heading: "Education, therapy, and what the school provides",
+        id: "the-business-interest",
+        heading: "The business interest and double counting",
         bodyHtml:
-          "<p>During the school years, much therapy and some equipment are provided through the educational system under the child's education plan. The life care plan must decide how to treat those services. Services provided at school are directed at educational access, not medical need, and are frequently less frequent and less intensive than the treating team recommends. The planner documents what the school provides, what the treating team recommends, and projects the difference as a private need, together with the summer months and the periods when school services are unavailable. Educational consultation, advocacy, and tutoring may appear in the plan where the record supports them. When school services end, the full recommended therapy schedule becomes a private cost, and the plan shows that step change.</p>",
+          "<p>When a business interest is marital property, it is valued for division under the standard of value the state uses, and the owner's income from the same business is used for support. The two analyses must be coordinated. A valuation that capitalizes the owner's excess earnings and a support award based on those same earnings can count the same dollars twice; the report identifies the overlap and presents the alternatives so the court can decide how to treat it. The <a href=\"/methods/business-valuation-approaches\">business valuation approaches</a> page describes the valuation, and the <a href=\"/compare/fair-market-value-vs-fair-value\">standard of value</a> comparison explains why the state's standard matters.</p>",
       },
       {
-        id: "age-21-transition",
-        heading: "The transition around age 21",
+        id: "lifestyle-analysis",
+        heading: "Lifestyle analysis",
         bodyHtml:
-          "<p>Between roughly ages 18 and 22 the plan changes character. School-based services end. Pediatric specialists hand off to adult medicine. The parents who have provided most of the care are aging, and the plan must state honestly whether family-provided care can continue and for how long. Guardianship or supported decision-making may be needed. Adult day programming, supported employment or vocational habilitation where appropriate, and community participation replace school as the structure of the day. Each of these has a cost, and several begin at the same time. The plan carries the transition as a distinct stage with its own items, and the attendant care projection moves from the family-supplemented childhood level to the full adult level described in the <a href=\"/guides/attendant-care-in-life-care-plans\">attendant care guide</a>.</p>",
+          "<p>Some frameworks measure support against the marital standard of living. A lifestyle analysis reconstructs the household's spending from bank and credit card records over a representative period, categorizes it, separates recurring from one-time expenses, and identifies what was paid by the business rather than the household. The result is a documented picture of the marital lifestyle and, incidentally, a check on reported income: spending that exceeds reported income points to income the return does not show, which is where a <a href=\"/services/fraud-and-asset-tracing\">tracing analysis</a> may begin.</p>",
       },
       {
-        id: "residential-options",
-        heading: "Residential options in adulthood",
+        id: "earning-capacity-of-a-non-working-spouse",
+        heading: "The earning capacity of a spouse who is not working",
         bodyHtml:
-          "<p>The plan must address where the adult will live once family care is no longer realistic, and it should do so explicitly rather than assuming that parents will provide care indefinitely. The options are in-home care with attendants, a supported living arrangement with shared staffing, a group residence, or a skilled facility for those with medical complexity. Each has a different cost profile, and each has a different effect on the rest of the plan: a facility placement absorbs some items that in-home care lists separately, while in-home care requires home modification and full attendant staffing. The planner prices the option the treating team and the family consider appropriate and, where the record supports more than one path, presents the alternatives so the trier of fact can see the cost consequence of the choice.</p>",
+          "<p>Where a spouse left the labor force during the marriage, support may turn on what that spouse could earn now. The economist projects earning capacity from education, prior work history, and published earnings for the occupations and the area, with an allowance for the time needed to re-enter the labor force and any retraining the record supports. The analysis parallels the <a href=\"/compare/lost-earnings-vs-lost-earning-capacity\">earning capacity</a> question in injury matters, and where capacity is contested a vocational opinion may supply the foundation.</p>",
       },
       {
-        id: "life-expectancy-in-pediatric-plans",
-        heading: "Life expectancy in pediatric plans",
+        id: "records",
+        heading: "Records that drive the analysis",
         bodyHtml:
-          "<p>Because the horizon is long, life expectancy drives the total more than in any adult plan, and it is frequently contested. The planner starts from the published population tables for the child's age and sex and departs from them only when a qualified physician has opined that the condition changes expectancy. Where the parties' physicians disagree, the plan is presented at each horizon. The <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy method</a> page describes the approach. The plan should also be scheduled for <a href=\"/services/plan-update-and-review\">periodic update</a>, since a plan prepared for a toddler will be stale by adolescence regardless of how carefully it was staged.</p>",
+          "<p>The analysis needs several years of personal and business tax returns with all schedules, business financial statements and general ledgers, bank and credit card statements for the household and the business, payroll records, loan applications and personal financial statements submitted to lenders, and any buy-sell or partnership agreements. Loan applications deserve particular attention because they state income to a lender under a different incentive than a tax return. The <a href=\"/case-types/divorce-and-marital-dissolution\">divorce and marital dissolution</a> case type page describes how the pieces fit together.</p>",
       },
     ],
     faqs: [
       {
-        question: "How often should a pediatric life care plan be updated?",
+        question: "Is the economist's income figure the same as the support formula's?",
         answer:
-          "There is no fixed interval, but a plan prepared in early childhood should be revisited at each major transition and whenever the treatment plan or living situation changes. In litigation, an update before trial is common when significant time has passed since the evaluation.",
+          "The economist determines income under the definition the framework uses and documents it. The formula or the court then applies that income. Where the framework's definition is unsettled, the report presents the figure under each reading.",
       },
       {
-        question: "Does the plan assume parents will provide care?",
+        question: "Can income be imputed to a spouse who is voluntarily underemployed?",
         answer:
-          "The plan documents what the family currently provides and states for how long that is realistic. It then projects paid care at the level the treating team supports, so the plan does not depend on unpaid family labor continuing indefinitely.",
+          "Whether to impute is a legal question. The economist supplies the analysis: what the spouse could earn given education, history, and the labor market, and over what timeline. The court decides whether to use it.",
       },
       {
-        question: "Are school-provided services deducted from the plan?",
+        question: "What if the other spouse controls all the records?",
         answer:
-          "The plan records what the school provides and projects the difference between that and the treating team's recommendation as a private need during the school years. When school services end, the full schedule becomes a private cost.",
-      },
-      {
-        question: "Can a pediatric plan include vocational or day programming for adulthood?",
-        answer:
-          "Yes, where the record supports it. Adult day programming, supported employment, or habilitation services are common transition-stage items, priced in the person's own market.",
+          "The analysis begins with what is available, identifies the specific records needed, and supports counsel's discovery requests with a list. Bank records and loan applications obtained by subpoena often fill the gaps.",
       },
     ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "NCHS_LIFE_TABLES", "AANLCP_SCOPE"]),
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_OES", "CENSUS_ACS", "ACFE"]),
     related: [
-      { title: "Pediatric Life Care Planning", href: "/services/pediatric-life-care-planning" },
-      { title: "Cerebral Palsy Cases", href: "/case-types/cerebral-palsy" },
-      { title: "Birth Injury Cases", href: "/case-types/birth-injury" },
-      { title: "Attendant Care in Life Care Plans", href: "/guides/attendant-care-in-life-care-plans" },
+      { title: "Divorce and Marital Financial Analysis", href: "/services/divorce-and-marital-financial-analysis" },
+      { title: "Business Valuation in Litigation", href: "/guides/business-valuation-in-litigation" },
+      { title: "Fraud Investigation and Asset Tracing", href: "/services/fraud-and-asset-tracing" },
     ],
   },
   {
-    slug: "how-to-rebut-a-life-care-plan",
-    title: "How to Rebut a Life Care Plan",
+    slug: "how-to-rebut-an-economic-damages-report",
+    title: "How to Rebut an Economic Damages Report",
     tldr:
-      "A life care plan rebuttal tests the opposing plan item by item against the record: whether each item has a medical foundation, whether items duplicate one another, whether frequency and duration are supported, whether the cost sources are documented and geographically appropriate, and whether the life expectancy basis is sound. The findings organize both the rebuttal report and the deposition of the opposing planner.",
-    dateModified: "2026-08-26",
+      "A rebuttal tests an opposing economic report input by input against the record: the records considered and the assumptions adopted, the earnings base and growth rate, the worklife and life expectancy horizons, the fringe benefits and offsets, the consumption deduction in a death claim, the discount rate and its consistency with growth, and, in a commercial report, the but-for revenue, avoided costs, and causation. The findings organize the rebuttal report, an alternative calculation, and the deposition of the opposing economist.",
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-08-27",
     sections: [
       {
         id: "what-a-rebuttal-is",
         heading: "What a rebuttal is and is not",
         bodyHtml:
-          "<p>A <a href=\"/services/life-care-plan-rebuttal\">life care plan rebuttal</a> is an independent review of an opposing plan by a qualified planner. It is not a list of deletions. A rebuttal that simply strikes items without a stated basis is as vulnerable as a plan that adds them without one. The reviewer applies the same <a href=\"/methods/life-care-plan-development\">standards of practice</a> the original planner was bound by, and where the record supports an item the rebuttal says so. Where the reviewer has access to the evaluee, an in-person evaluation strengthens the review; where not, the rebuttal proceeds on the record and says so plainly.</p><p>The output is usually a written report that addresses the opposing plan category by category, and often an alternative plan that shows what the record does support. The alternative plan gives the trier of fact a second number rather than only a critique of the first.</p>",
+          "<p>An <a href=\"/services/expert-rebuttal-and-report-review\">economic rebuttal</a> is an independent review of an opposing report by a qualified economist, applying the same methods the opposing economist was bound by. It is not a list of objections. A rebuttal that rejects a report without showing what the record does support is as vulnerable as a report that overstates the loss, and the trier of fact is left with one number and a complaint. The output is usually a written report that addresses the opposing analysis schedule by schedule and, where the record supports it, an alternative calculation that gives the trier of fact a second number with its own foundation. The <a href=\"/compare/plaintiff-economist-vs-defense-economist\">plaintiff versus defense economist</a> comparison explains why the method must hold constant.</p>",
       },
       {
-        id: "foundation-review",
-        heading: "Foundation review",
+        id: "records-and-assumptions",
+        heading: "Records considered and assumptions adopted",
         bodyHtml:
-          "<p>The first test for every item is its medical foundation. The reviewer traces each recommendation to its source: a treating provider's record, an evaluating specialist's report, a provider's answer to the planner's questionnaire, or published clinical guidance for the diagnosis. Items with no identifiable source, items whose source is the planner's own judgment on a medical question outside the planner's license, and items recommended by a provider retained for litigation but never mentioned in treatment records are flagged. The reviewer also checks the date and context of each recommendation: a recommendation made once during acute care and never repeated may not support a lifetime item.</p>",
+          "<p>The review begins with what the opposing economist had and assumed. The list of records considered is compared with what has been produced: missing tax years, pay records after the event, updated medical or vocational opinions, and a revised life care plan are common omissions. The assumptions adopted from other experts are traced to their sources: a post-event capacity figure with no vocational or medical opinion behind it, or a horizon that departs from the medical evidence, is a foundation problem before it is a calculation problem.</p>",
       },
       {
-        id: "duplication",
-        heading: "Duplication and overlap",
+        id: "earnings-base-and-growth",
+        heading: "Earnings base and growth",
         bodyHtml:
-          "<p>Plans that are built category by category can list the same service twice under different headings. Common examples are case management hours that overlap with attendant care supervision, therapy that appears both as an outpatient course and within a residential program's bundled rate, supplies that are included in a facility's per diem and also listed separately, and equipment maintenance listed alongside a replacement schedule that already assumes replacement rather than repair. The reviewer maps each item against the others and against any bundled rates to identify overlap.</p>",
+          "<p>The earnings base is checked against the tax returns and pay records: which years were used, whether an unusual year was included or excluded without explanation, whether overtime and bonuses were carried forward at a level the history supports, and whether a self-employed claimant's return on capital was separated from labor income. The growth rate is checked for its series and period and for consistency with the discount rate. The <a href=\"/methods/wage-growth-and-earnings-projection\">earnings projection</a> page sets out the standard, and an undocumented promotion or career path is the most frequent finding.</p>",
       },
       {
-        id: "frequency-and-duration",
-        heading: "Frequency and duration support",
+        id: "horizons",
+        heading: "Worklife and life expectancy",
         bodyHtml:
-          "<p>An item can have a sound foundation and still be overstated. The reviewer asks whether the stated frequency matches the recommendation and the clinical literature, whether the duration is lifetime when the provider described a course, and whether the item's start and stop points reflect the person's actual trajectory. Therapy carried at an acute-phase frequency for life, specialist visits at an annual frequency the specialist never recommended, and pediatric equipment replaced on an adult interval are recurring findings. For pediatric plans the reviewer also tests whether transitions are staged, as described in the <a href=\"/guides/pediatric-life-care-plans-and-transition-to-adulthood\">pediatric guide</a>.</p>",
+          "<p>The horizon multiplies everything. The reviewer identifies the <a href=\"/methods/worklife-expectancy\">worklife table</a> and edition, whether the labor force status used matches the record, whether a fixed retirement age was substituted for the table without a basis, and whether household services and care costs run over life expectancy from the current life tables. A projection to a retirement age the record does not support, or a life expectancy the medical evidence contradicts, is presented with its effect on the total.</p>",
       },
       {
-        id: "pricing-audit",
-        heading: "Pricing source audit",
+        id: "benefits-and-offsets",
+        heading: "Benefits, offsets, and consumption",
         bodyHtml:
-          "<p>Each unit cost is checked for its source, its date, and its geography. The reviewer asks whether the price reflects the market where the person lives, whether billed charges were used where the jurisdiction measures damages differently, whether a national average or a distant market was substituted for local research, and whether the plan explains any choice between divergent figures. Attendant care is examined most closely because it is usually the largest category: the level of care, the number of hours, the agency versus private-hire basis, and the rate source each affect the total, as set out in the <a href=\"/guides/attendant-care-in-life-care-plans\">attendant care guide</a>. Equipment and home modification are checked against the approach described in the <a href=\"/guides/home-modification-and-equipment-costing\">costing guide</a>. The reviewer re-prices significant items independently using the <a href=\"/methods/cost-research-methodology\">same documented method</a>.</p>",
+          "<p>Fringe benefits are checked for double counting and for whether a published average was applied where plan documents were available. Post-event earnings are checked against pay records and the capacity evidence, and the reviewer asks whether mitigation was addressed at all. In a death claim the personal consumption deduction is checked for its presence, its percentage, and its source, and collateral payments are checked for whether they were netted or presented separately as the venue's rule requires. The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> page describes each deduction and the <a href=\"/guides/collateral-source-rule-explained\">collateral source guide</a> the legal overlay.</p>",
       },
       {
-        id: "life-expectancy-basis",
-        heading: "Life expectancy basis",
+        id: "discounting",
+        heading: "Discounting",
         bodyHtml:
-          "<p>The horizon multiplies everything. The reviewer identifies which life table the plan used and whether it is the current vintage, whether the planner departed from the population figure, and if so on whose opinion. A planner who shortened or lengthened expectancy without a physician's support has stepped outside the planner's role. Where the record contains competing physician opinions, the rebuttal presents the alternative horizon and its effect on the total. The <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy method</a> page sets out the standard.</p>",
+          "<p>The discount rate is checked for its instruments, its period, and its consistency with the growth rate. A growth rate drawn from a high-inflation decade paired with a discount rate from a low-yield year, or a net rate with no visible components, is a consistency problem that changes the total materially over a long horizon. The reviewer recalculates present value under a consistent pair of rates and reports the difference, as the <a href=\"/methods/present-value-and-discounting\">present value method</a> and the <a href=\"/compare/net-vs-gross-discount-rate\">net versus gross</a> comparison describe.</p>",
+      },
+      {
+        id: "commercial-reports",
+        heading: "Commercial reports",
+        bodyHtml:
+          "<p>A lost profits or valuation report is tested on its own terms: whether the but-for revenue rests on the company's history, a valid yardstick, or pre-dispute projections; whether avoided costs were deducted and fixed and variable costs classified from the company's accounting; whether causation was analyzed against the other events of the period or assumed; whether the loss period has a stated end; whether the standard of value matches the framework; and whether discounts were tied to the interest actually valued. The <a href=\"/methods/lost-profits-but-for-analysis\">lost profits</a> and <a href=\"/methods/business-valuation-approaches\">valuation</a> method pages set out the standards.</p>",
       },
       {
         id: "deposition-themes",
         heading: "Deposition themes",
         bodyHtml:
-          "<p>The rebuttal findings organize the deposition of the opposing planner. Productive lines of questioning follow the review: which document supports each contested item and when it was written; whether the planner asked the provider the question or inferred the answer; how each frequency was chosen; where each price came from, when it was obtained, and whether the planner spoke to the source; which life table was used and who authorized any departure from it; whether the planner examined the evaluee and, if so, what was observed that the record does not show; and whether the plan distinguishes injury-related needs from pre-existing conditions. The goal is a transcript in which each contested item either has a foundation or does not, so the trier of fact is not left weighing two totals in the abstract. Counsel should confirm the <a href=\"/guides/federal-vs-state-court-daubert\">governing admissibility framework</a> before deciding whether the findings support a motion or are better used at trial.</p>",
+          "<p>The findings organize the deposition of the opposing economist. Productive lines follow the review: which document supports each contested input and when it was produced; whether the economist asked the other experts the question or inferred the answer; which table and edition set the horizon and why any departure was made; where each rate came from, from what period, and whether the growth and discount rates were drawn together; whether the sensitivity of the result was tested and, if so, why it was not reported; and whether the economist has applied a different assumption on the same question in another matter. The goal is a transcript in which each contested input either has a foundation or does not. Counsel confirms the <a href=\"/guides/federal-vs-state-court-daubert\">governing admissibility framework</a> before deciding whether the findings support a motion or are better used at trial.</p>",
       },
     ],
     faqs: [
       {
-        question: "Does a rebuttal require examining the plaintiff?",
+        question: "Should the rebuttal include an alternative calculation?",
         answer:
-          "No, but it helps. Many rebuttals proceed on the record alone, particularly where the defense has no access to the evaluee. Where an examination is available, direct observation of current function and the home often reveals differences from the plan that the record does not.",
+          "Usually. An alternative calculation grounded in the same record gives the trier of fact a supported number rather than only a critique, and it demonstrates that the reviewer applied the method rather than simply rejecting the result. Where the record does not support any loss, the rebuttal says so and explains why.",
       },
       {
-        question: "Should the rebuttal include an alternative plan?",
+        question: "How quickly can a rebuttal be prepared?",
         answer:
-          "Usually. An alternative plan grounded in the same record gives the trier of fact a supported number rather than only a critique, and it demonstrates that the reviewer applied the standards rather than simply deleting items.",
+          "Faster than an affirmative report, because the framework and most inputs are already on the table. The timeline depends on the length of the opposing report, the state of the record, and whether an alternative calculation is required.",
       },
       {
-        question: "Can the rebuttal address the economist's calculation?",
+        question: "Can the rebuttal address the medical or vocational assumptions?",
         answer:
-          "The life care planner addresses the care schedule and its costs. Discount rates and growth assumptions belong to the economist. A rebuttal planner will, however, flag where the economist's inputs do not match the plan, for example a different horizon or item schedule.",
+          "The economist identifies where the opposing report's assumptions depart from the medical and vocational evidence and shows the effect of using the evidence instead. Whether the underlying opinions are correct is for the medical and vocational witnesses.",
       },
       {
-        question: "What if the opposing plan has no work file?",
+        question: "What if the opposing report has no schedules?",
         answer:
-          "The absence of documented sources for costs and recommendations is itself a finding. The reviewer reports what could and could not be verified and re-prices significant items from documented sources.",
+          "The absence of visible inputs is itself a finding. The reviewer reconstructs the calculation as far as the report allows, identifies what could not be verified, and recalculates from documented sources.",
       },
     ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "NCHS_LIFE_TABLES", "FRE_702", "DAUBERT"]),
+    sources: refsToSources(["FRE_702", "DAUBERT", "FRCP_26", "SKOOG_CIECKA_KRUEGER_2011", "TREASURY_YIELD"]),
     related: [
-      { title: "Life Care Plan Rebuttal", href: "/services/life-care-plan-rebuttal" },
-      { title: "Plaintiff Expert vs. Defense Expert", href: "/compare/plaintiff-expert-vs-defense-expert" },
-      { title: "In-Person Evaluation vs. File Review", href: "/compare/in-person-evaluation-vs-file-review" },
-      { title: "Expert Witness Testimony", href: "/services/expert-witness-testimony" },
-    ],
-  },
-  {
-    slug: "attendant-care-in-life-care-plans",
-    title: "Attendant Care in Life Care Plans",
-    tldr:
-      "Attendant care is usually the largest category in a catastrophic life care plan. The planner specifies the level of care, the hours across the day and week, the basis for those hours, the agency or private-hire rate in the person's market, how family-provided care is treated, and respite for the caregivers. Each of those choices is tested in a rebuttal, so each is documented.",
-    dateModified: "2026-08-26",
-    sections: [
-      {
-        id: "why-attendant-care-matters",
-        heading: "Why attendant care dominates the plan",
-        bodyHtml:
-          "<p>A wheelchair is replaced every few years. Attendant care recurs every day. For a person with a high-level <a href=\"/case-types/spinal-cord-injury\">spinal cord injury</a>, a severe <a href=\"/case-types/traumatic-brain-injury\">brain injury</a>, or <a href=\"/case-types/cerebral-palsy\">cerebral palsy</a> with significant motor involvement, the cost of the people who provide daily assistance and supervision typically exceeds every other category combined. Small differences in hours or rate compound over decades, which is why attendant care receives the closest scrutiny from opposing experts and why the planner's documentation must be complete.</p>",
-      },
-      {
-        id: "levels-of-care",
-        heading: "Levels of care",
-        bodyHtml:
-          "<p>The plan states the level of care required, because the level determines who can provide it and what it costs. The common levels are companion or supervisory care for a person who is physically able but cannot be left alone safely because of cognitive or behavioral impairment; personal care or home health aide assistance for hands-on help with bathing, dressing, transfers, toileting, and feeding; licensed practical or vocational nursing for delegated skilled tasks such as medication administration, tube feeding, and routine catheter or wound care; and registered nursing for ventilator management, complex assessment, and unstable medical conditions. Many plans specify more than one level across the day, for example aide-level care for morning and evening routines and supervisory care in between. The level is a medical determination: the planner documents the treating provider's statement of what the person needs and matches the level to it.</p>",
-      },
-      {
-        id: "hours-methodology",
-        heading: "How hours are determined",
-        bodyHtml:
-          "<p>Hours are built from the person's day, not assumed. The planner documents the person's function from the record and, where possible, from direct observation in the home: what assistance is needed to get up, bathe, dress, eat, toilet, transfer, and get to bed; whether the person can be left alone and for how long; what happens overnight; and what changes on days with appointments or therapy. From that the planner constructs a schedule across the 24-hour day and the 7-day week, distinguishing active hands-on hours from supervisory presence and identifying whether overnight care is awake or asleep. The treating physician or therapist confirms the level and the general scope of hours. For a person who cannot be left alone, the plan will often show continuous coverage, and the planner should say so directly rather than presenting a partial schedule and leaving the gap unexplained.</p>",
-      },
-      {
-        id: "agency-vs-private-hire",
-        heading: "Agency versus private-hire rates",
-        bodyHtml:
-          "<p>The same hour of aide care costs more through a licensed agency than through a directly employed caregiver, because the agency rate carries recruitment, supervision, training, insurance, payroll taxes, and coverage for absences. The plan states which basis it uses and why. Agency rates are appropriate when the family cannot realistically act as an employer, when skilled care is needed, or when reliable coverage for absences matters. Private-hire rates are appropriate when the family can manage employment and the plan accounts for the employer's costs, including payroll taxes, workers' compensation coverage, and backup coverage, rather than quoting a bare hourly wage. Rates are researched in the person's own market from agencies and, where applicable, state rate schedules, and the source and date of each are recorded as described in the <a href=\"/methods/cost-research-methodology\">cost research methodology</a>.</p>",
-      },
-      {
-        id: "family-provided-care",
-        heading: "Family-provided care",
-        bodyHtml:
-          "<p>Most catastrophically injured people receive substantial care from family members, and the plan must address it honestly. The planner documents what the family currently provides and at what cost to the family members' own health, employment, and sleep. The plan then projects care at the level and hours the treating team supports, priced as paid care, because family members age, become ill, and cannot be assumed to provide skilled or continuous care indefinitely. Whether family-provided care is compensable, and at what rate, is a legal question that varies by jurisdiction; the plan gives counsel the hours and the market rate so the legal question can be answered, and it identifies separately any period during which the plan assumes family care will continue.</p>",
-      },
-      {
-        id: "respite",
-        heading: "Respite care",
-        bodyHtml:
-          "<p>Where the plan relies on family care for any period, it includes respite: paid coverage that gives the family caregivers scheduled relief. Respite is specified as hours or days per period at the appropriate level of care and priced at the applicable rate. Its purpose is to keep the family-care assumption realistic. A plan that projects a parent providing care for years without relief is projecting a schedule no one can sustain, and an opposing reviewer will say so.</p>",
-      },
-      {
-        id: "documentation-and-updates",
-        heading: "Documentation and updates",
-        bodyHtml:
-          "<p>The work file for attendant care contains the functional basis for the hours, the provider statements supporting the level, the observed daily schedule where an evaluation was performed, the rate quotes with agency names and dates, and the reasoning for the agency or private-hire choice. Because needs change with age and condition and rates change with the local care market, attendant care is re-examined at every <a href=\"/services/plan-update-and-review\">plan update</a>. In pediatric plans it is restated at each developmental stage, as described in the <a href=\"/guides/pediatric-life-care-plans-and-transition-to-adulthood\">pediatric guide</a>. The <a href=\"/guides/how-to-rebut-a-life-care-plan\">rebuttal guide</a> lists the questions an opposing reviewer will ask of each of these elements.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Who decides how many hours of attendant care a person needs?",
-        answer:
-          "The level of care is a medical determination documented by the treating provider. The hours are built by the planner from the person's documented function and daily routine, confirmed against the provider's statement of need.",
-      },
-      {
-        question: "Should the plan use the agency rate or the private-hire rate?",
-        answer:
-          "It depends on the level of care, the family's ability to act as an employer, and the need for reliable coverage. The plan states the basis chosen and why, and prices private-hire care with employer costs included rather than as a bare wage.",
-      },
-      {
-        question: "Does the plan include care the family provides for free?",
-        answer:
-          "The plan documents family-provided care and projects the same care at market rates for the period the treating team supports it, because family care cannot be assumed to continue indefinitely. Whether it is compensable is a legal question for counsel.",
-      },
-      {
-        question: "Is overnight care always awake care?",
-        answer:
-          "No. The plan distinguishes awake overnight care, needed when the person requires turning, suctioning, or supervision during the night, from asleep or on-call presence. The two are priced differently.",
-      },
-    ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "AANLCP_SCOPE"]),
-    related: [
-      { title: "Catastrophic Injury Planning", href: "/services/catastrophic-injury-planning" },
-      { title: "Spinal Cord Injury Cases", href: "/case-types/spinal-cord-injury" },
-      { title: "Home Modification and Equipment Costing", href: "/guides/home-modification-and-equipment-costing" },
-      { title: "How to Rebut a Life Care Plan", href: "/guides/how-to-rebut-a-life-care-plan" },
-    ],
-  },
-  {
-    slug: "home-modification-and-equipment-costing",
-    title: "Home Modification and Equipment Costing in Life Care Plans",
-    tldr:
-      "Home modification and durable equipment are costed differently from recurring care. The planner assesses the home for accessibility, separates one-time items from recurring and periodically replaced ones, documents a replacement schedule for each piece of equipment, and prices from vendor quotes and recognized databases with the source recorded. The result is a schedule the economist can carry year by year.",
-    dateModified: "2026-08-26",
-    sections: [
-      {
-        id: "accessibility-assessment",
-        heading: "The accessibility assessment",
-        bodyHtml:
-          "<p>Home modification begins with the home. During the in-person evaluation the planner documents the entrance and any steps, door widths and thresholds, hallway and turning clearances, the bathroom layout and fixtures, the bedroom and its distance from the bathroom, kitchen access, flooring, and the parking and path to the vehicle. The planner records what the person can and cannot do in that environment now, what equipment is already in use, and where the caregivers are lifting, carrying, or improvising. Where the person is expected to move, the planner notes that and prices modifications for a typical accessible dwelling rather than for the current home. Where the home cannot practically be modified, the plan says so and addresses relocation or the differential cost of an accessible residence as the record supports.</p>",
-      },
-      {
-        id: "one-time-vs-recurring",
-        heading: "One-time, recurring, and periodically replaced items",
-        bodyHtml:
-          "<p>The plan distinguishes three kinds of cost. One-time items are incurred once: a ramp or lift at the entrance, widened doorways, a roll-in shower, an accessible kitchen, a ceiling track system, and the associated design and permitting. Recurring items are consumed continuously: incontinence supplies, catheters, wound care supplies, nutritional formula, and the maintenance contracts on lifts and power equipment. Periodically replaced items are bought, used, and replaced on an interval: wheelchairs and seating, hospital beds and mattresses, patient lifts, shower and commode chairs, communication devices, orthotics and prosthetics, and vehicle modifications. Each kind is carried differently in the schedule, and mixing them, for example listing a one-time ramp as an annual cost or a replaced wheelchair as a one-time purchase, is a common error a reviewer will find.</p><p>Supplies illustrate how the recurring category is built. For a person with a neurogenic bladder managed by intermittent catheterization, the plan states the catheter type the treating provider prescribes, the number of catheterizations per day, and the resulting monthly quantity, then prices that quantity from a supplier in the person's market. Gloves, lubricant, and skin-care products are listed alongside on the same basis. The same approach applies to incontinence products, tracheostomy and suction supplies, and enteral formula: quantity per day from the provider's order, price per unit from a documented source, carried monthly for the plan horizon and re-priced at each update.</p>",
-      },
-      {
-        id: "replacement-schedules",
-        heading: "Replacement schedules",
-        bodyHtml:
-          "<p>Every periodically replaced item carries a stated replacement interval and the basis for it. Manufacturer guidance, funding-source replacement criteria, the treating therapist's recommendation, and the item's actual history in the record all inform the interval. Power wheelchairs, manual wheelchairs, cushions, and batteries each have their own cycle; a child's equipment is replaced on growth rather than wear, as described in the <a href=\"/guides/pediatric-life-care-plans-and-transition-to-adulthood\">pediatric guide</a>; a prosthesis has a socket cycle shorter than its component cycle. The schedule then places each replacement in the year it falls within the plan's <a href=\"/methods/life-expectancy-in-life-care-planning\">life expectancy horizon</a>. Maintenance and repair between replacements are listed as a recurring item, and the plan avoids counting both a repair allowance that assumes the item is kept and a replacement schedule that assumes it is not.</p>",
-      },
-      {
-        id: "vendor-quotes-vs-databases",
-        heading: "Vendor quotes versus databases",
-        bodyHtml:
-          "<p>Equipment and modification are priced from two kinds of source. Vendor and contractor quotes are specific to the item, the configuration, and the market, and they are the preferred source for custom equipment such as seating systems, for vehicle modifications, and for construction work, where the price depends on the home. Recognized pricing databases and manufacturer list prices are appropriate for standardized items and as a check on quotes. The plan states for each item which source was used, records the vendor, contact, date, and any configuration assumptions, and explains any choice between divergent figures. For construction, the planner obtains a contractor's estimate based on the assessment or, where that is not possible, prices the modification from published cost data for the region and says so. The general approach is set out in the <a href=\"/methods/cost-research-methodology\">cost research methodology</a>.</p>",
-      },
-      {
-        id: "vehicle-modification",
-        heading: "Vehicle modification and transportation",
-        bodyHtml:
-          "<p>Transportation is costed as the modification, not the vehicle, unless the record supports a vehicle the person would not otherwise own. Lowered-floor conversions, ramps or lifts, hand controls, transfer seats, and securement systems are priced from mobility dealers, and the conversion is carried on a replacement interval tied to the vehicle's expected life. Where the person cannot drive and family transport is not realistic, the plan prices accessible transportation services instead of, or in addition to, vehicle modification, and it states which assumption it makes.</p>",
-      },
-      {
-        id: "common-errors",
-        heading: "Common errors and how a reviewer finds them",
-        bodyHtml:
-          "<p>The errors that recur in this category are pricing modifications for a home the person is unlikely to stay in without addressing the alternative; carrying a one-time modification as recurring; applying a single replacement interval to items with different cycles; listing maintenance and replacement so that both assume the same item; quoting list price for equipment that is routinely discounted, or a discounted price for custom equipment that is not; and omitting the design, permitting, and installation costs that accompany construction. Each is visible in a work file that records source, date, and basis, which is why the <a href=\"/guides/how-to-rebut-a-life-care-plan\">rebuttal reviewer</a> asks for that file first.</p>",
-      },
-    ],
-    faqs: [
-      {
-        question: "Does the plan pay to modify a rented home?",
-        answer:
-          "The plan addresses the person's actual situation. Where the person rents, the plan may price portable equipment and modifications the landlord permits, the differential cost of an accessible unit, or relocation, as the record supports, and it states which assumption it makes.",
-      },
-      {
-        question: "How is a replacement interval chosen?",
-        answer:
-          "From manufacturer guidance, funding-source replacement criteria, the treating therapist's recommendation, and the item's actual history in the record. The plan states the interval and its basis for each item.",
-      },
-      {
-        question: "Should equipment be priced at list or at a discounted rate?",
-        answer:
-          "At the price the person will actually face in their market. For standardized items that is often below list; for custom-configured items a dealer quote is the reliable source. The plan records which was used.",
-      },
-      {
-        question: "Is a home modification a medical item?",
-        answer:
-          "It is a non-medical category supported by a clinical assessment, usually from an occupational or physical therapist or the planner acting within scope. It is included in a life care plan but generally falls outside a Medicare set-aside allocation.",
-      },
-    ],
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS", "AOTA_OTPF_2020"]),
-    related: [
-      { title: "Life Care Planning", href: "/services/life-care-planning" },
-      { title: "Cost Research Methodology", href: "/methods/cost-research-methodology" },
-      { title: "Attendant Care in Life Care Plans", href: "/guides/attendant-care-in-life-care-plans" },
-      { title: "Amputation Cases", href: "/case-types/amputation" },
+      { title: "Expert Rebuttal and Report Review", href: "/services/expert-rebuttal-and-report-review" },
+      { title: "Plaintiff Economist vs. Defense Economist", href: "/compare/plaintiff-economist-vs-defense-economist" },
+      { title: "Components of an Economic Damages Report", href: "/insights/components-of-an-economic-damages-report" },
     ],
   },
 ];

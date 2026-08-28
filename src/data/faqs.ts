@@ -1,6 +1,6 @@
 import type { Faq } from "./types";
 import { refsToSources } from "./references";
-import { ORG_PHONE_DISPLAY } from "@/lib/brand";
+import { ORG_NAME, ORG_PHONE_DISPLAY } from "@/lib/brand";
 
 const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
 
@@ -15,76 +15,88 @@ const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
 // sources (refsToSources) are surfaced as a consolidated References block on the page.
 export const faqs: Faq[] = [
   {
-    question: "What is a life care plan?",
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "ICHCC_CLCP", "NCHS_LIFE_TABLES"]),
+    question: "What does a forensic economist do?",
+    sources: refsToSources(["NAFE_ETHICS", "NAFE_JFE"]),
     answer:
-      "A [[/services/life-care-planning|life care plan]] is an individualized, evidence-based document that projects the future medical and non-medical care needs of a person with a catastrophic injury or chronic condition. It itemizes each need with its frequency, duration, and cost across the person's [[/methods/life-expectancy-in-life-care-planning|remaining life expectancy]] and is typically used to establish future damages in litigation or to fund a settlement. KW Life Care Planning's [[/knowledge/guide-to-life-care-planning|certified life care planners]] prepare plans that follow the published standards of practice.",
+      "A forensic economist measures economic losses for litigation: [[/services/lost-earnings-and-earning-capacity|lost earnings and fringe benefits]], the value of [[/services/household-services-valuation|household services]], the support a decedent would have provided to survivors, the present value of future care costs, [[/services/lost-profits-and-commercial-damages|lost profits]], and the value of a [[/services/business-valuation|business interest]]. The analysis is built from the records in the case and published government data, and every assumption is stated so the calculation can be examined and reproduced. The [[/guides/what-is-a-forensic-economist|what is a forensic economist]] guide describes the discipline.",
   },
   {
-    question: "Who prepares a life care plan?",
-    sources: refsToSources(["ICHCC_CLCP", "AANLCP_SCOPE"]),
+    question: `What types of matters does ${ORG_NAME} handle?`,
     answer:
-      "Life care plans are prepared by credentialed planners with a clinical background. The two principal credentials are the [[/credentials/clcp|Certified Life Care Planner (CLCP)]] and the [[/credentials/cnlcp|Certified Nurse Life Care Planner (CNLCP)]], held by nurses, rehabilitation counselors, therapists, and physicians. Every plan rests on a medical foundation: the treating or evaluating physicians recommend the care, and the planner organizes, projects, and prices it. See [[/compare/clcp-vs-cnlcp|CLCP vs. CNLCP]] for how the credentials differ.",
+      "Economic damages analyses are prepared for [[/case-types/personal-injury|personal injury]], [[/case-types/wrongful-death|wrongful death]], [[/case-types/medical-malpractice|medical malpractice]], [[/case-types/motor-vehicle-accident|motor vehicle]], [[/case-types/traumatic-brain-injury|traumatic brain injury]], [[/case-types/spinal-cord-injury|spinal cord injury]], [[/case-types/workers-compensation|workers' compensation]], and [[/case-types/product-liability|product liability]] matters; [[/case-types/employment-discrimination|employment discrimination]] and [[/case-types/wrongful-termination|wrongful termination]] claims; and [[/case-types/commercial-contract-dispute|commercial contract]], [[/case-types/partnership-and-shareholder-dispute|shareholder and partnership]], [[/case-types/divorce-and-marital-dissolution|divorce]], and [[/case-types/fraud-and-embezzlement|fraud and embezzlement]] matters. Engagements are accepted from plaintiff and defense counsel and from carriers.",
   },
   {
-    question: "What types of cases does KW Life Care Planning accept?",
+    question: "What records does the economist need?",
     answer:
-      "Plans and cost projections are prepared for [[/case-types/personal-injury|personal injury]], [[/case-types/medical-malpractice|medical malpractice]], [[/case-types/birth-injury|birth injury]], [[/case-types/workers-compensation|workers' compensation]], and other matters involving [[/case-types/traumatic-brain-injury|traumatic brain injury]], [[/case-types/spinal-cord-injury|spinal cord injury]], [[/case-types/amputation|amputation]], [[/case-types/burn-injury|burns]], and [[/case-types/cerebral-palsy|cerebral palsy]]. Engagements are accepted from both plaintiff and defense counsel and from carriers, and opinions are based solely on the record.",
+      "For a personal claim: tax returns and W-2 or 1099 forms for several years before the event, pay stubs and employer records, benefit statements, the medical and vocational evidence bearing on the ability to work, and the household's account of the services the person performed. For a death claim, the same for the decedent plus the household's composition and the survivors' ages. For a business claim: financial statements and tax returns for several years before and after the event, general ledgers, the contracts at issue, and any forecasts prepared before the dispute. A records checklist is provided at retention, and the [[/guides/when-do-you-need-an-economic-expert|when to retain]] guide lists what to send first.",
   },
   {
-    question: "What is the difference between a life care plan and a medical cost projection?",
-    sources: refsToSources(["IARP_IALCP_STANDARDS", "WEED_BERENS"]),
+    question: "How are lost earnings calculated?",
+    sources: refsToSources(["SKOOG_CIECKA_KRUEGER_2011", "BLS_ECI", "BLS_ECEC"]),
     answer:
-      "A life care plan covers the full scope of injury-related needs, medical and non-medical, across the lifespan, and typically includes an interview and evaluation of the person. A [[/services/medical-cost-projection|medical cost projection]] is a narrower, records-based estimate of a defined set of future medical costs, often for a shorter horizon or a single treatment pathway. The [[/compare/life-care-plan-vs-future-cost-projection|comparison page]] explains when each is appropriate.",
+      "The economist projects two streams: the earnings and benefits the person would have received but for the event, and the earnings and benefits the person can now expect. The but-for stream starts from the documented earnings base, grows at a stated rate from published wage series over a [[/methods/worklife-expectancy|worklife expectancy]] drawn from published tables, and includes [[/methods/fringe-benefits-valuation|fringe benefits]]. The post-event stream is built the same way from pay records or from the capacity evidence. The difference, year by year, is the loss, and the future portion is reduced to present value. The [[/guides/how-lost-earnings-are-calculated|lost earnings guide]] walks through each input.",
   },
   {
-    question: "What is a Medicare set-aside, and is it the same as a life care plan?",
-    sources: refsToSources(["CMS_WCMSA_GUIDE", "CMS_MSP"]),
+    question: "How is the economic loss in a wrongful death case measured?",
+    sources: refsToSources(["BLS_CEX", "BLS_ATUS", "NCHS_LIFE_TABLES"]),
     answer:
-      "A [[/services/medicare-set-aside|Medicare set-aside allocation]] estimates the portion of a settlement to reserve for future injury-related care that Medicare would otherwise pay. It is narrower than a life care plan: it includes only Medicare-covered items and prices them on a fee-schedule basis under Medicare's review guidance. Many catastrophic workers' compensation settlements need both, and the same record review can support each. See [[/guides/life-care-plan-vs-medicare-set-aside|life care plan vs. Medicare set-aside]].",
+      "As what the decedent would have contributed to the survivors: projected earnings and benefits over a worklife, less the share the decedent would have consumed personally, plus the replacement value of the household services the decedent performed and, where the governing framework allows, other forms of support, each measured over the relevant survivor's period of dependency and reduced to present value. The personal consumption deduction comes from published household expenditure data and is stated with its percentage. The [[/guides/wrongful-death-damages-explained|wrongful death damages guide]] explains the components, and the [[/services/wrongful-death-economic-loss|wrongful death service]] page describes the engagement.",
   },
   {
-    question: "How are the costs in a life care plan researched?",
-    sources: refsToSources(["CMS_PFS", "FAIR_HEALTH"]),
+    question: "What are household services, and how are they valued?",
+    sources: refsToSources(["BLS_ATUS", "BLS_OES"]),
     answer:
-      "Each item is priced for the geographic market where the person lives, using provider and vendor quotes, recognized usual-and-customary charge data, published fee schedules, and manufacturer pricing as appropriate. The source and date of every cost are recorded so the figure can be traced and re-priced at a later update. The [[/methods/cost-research-methodology|cost research methodology]] page describes the process, and [[/guides/how-a-life-care-plan-is-priced|how a life care plan is priced]] explains what drives the fee for the engagement itself.",
+      "Household services are the unpaid work a person performs for the household: cooking, cleaning, shopping, home and yard maintenance, household management, transportation, and care of family members. When an injury or death removes that work, the loss is measured as the hours no longer performed, from the household's account and published time-use data, valued at the cost of replacing them with paid labor in the local market from published occupational wage data. The [[/methods/household-services-methodology|household services method]] page describes the data, and the [[/guides/household-services-in-personal-injury|household services guide]] describes the records that support the claim.",
   },
   {
-    question: "How is life expectancy handled?",
-    sources: refsToSources(["NCHS_LIFE_TABLES", "CDC_LIFE_TABLES"]),
+    question: "What is present value, and why does the discount rate matter?",
+    sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD"]),
     answer:
-      "The plan horizon starts from the current published United States life tables for the person's age and sex. The planner departs from the population figure only when a qualified physician has opined that the condition changes it, and documents that basis. Where the parties dispute expectancy, the plan can be presented at each proposed horizon. See [[/methods/life-expectancy-in-life-care-planning|life expectancy in life care planning]].",
+      "An award is paid once, in present dollars, while the losses it replaces would have been received over many years. Present value is the single sum that, invested today at a stated rate, would fund those future losses as they come due. The discount rate is the return the award is assumed to earn, tied to yields on low-risk instruments; a lower rate produces a larger present value and a higher rate a smaller one, and the rate's relationship to the growth rate applied to the loss stream drives the result over a long horizon. The [[/guides/present-value-explained-for-attorneys|present value guide]] explains the concepts and the [[/methods/present-value-and-discounting|present value method]] page the mechanics.",
   },
   {
-    question: "Are life care plans admissible in state and federal court?",
+    question: `Does ${ORG_NAME} value life care plans?`,
+    sources: refsToSources(["BLS_CPI_MEDICAL", "CDC_LIFE_TABLES"]),
+    answer:
+      "Yes. A [[/services/life-care-plan-cost-projection|life care plan cost projection]] takes a plan prepared by a qualified clinician, carries each item forward with a growth rate appropriate to its care category, applies the plan's life expectancy, and discounts the stream to present value, reconciled item by item to the plan. The economist values the plan and does not author it; plan authorship stays with the clinician, and the report says so. The [[/compare/economist-vs-life-care-planner|comparison page]] describes the hand-off between the two experts.",
+  },
+  {
+    question: `Does ${ORG_NAME} handle business valuation, lost profits, and forensic accounting?`,
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "ACFE"]),
+    answer:
+      "Yes. [[/services/business-valuation|Business valuation]] engagements value closely held interests under the standard of value the governing framework requires, following the professional valuation standards. [[/services/lost-profits-and-commercial-damages|Lost profits]] analyses measure what a business lost from a breach, an interruption, or a tort. [[/services/fraud-and-asset-tracing|Fraud investigation and asset tracing]] engagements reconstruct transactions and quantify diverted funds, and [[/services/divorce-and-marital-financial-analysis|divorce financial analyses]] determine income and value marital business interests. The [[/compare/forensic-economist-vs-forensic-accountant|forensic economist versus forensic accountant]] comparison explains where the disciplines meet.",
+  },
+  {
+    question: `Can ${ORG_NAME} review an opposing economist's report?`,
+    sources: refsToSources(["FRE_702", "FRCP_26"]),
+    answer:
+      "Yes. An [[/services/expert-rebuttal-and-report-review|expert rebuttal and report review]] tests the opposing report input by input against the record: the earnings base, the growth rate, the worklife and life expectancy horizons, the fringe benefits and offsets, the consumption deduction in a death claim, the discount rate and its consistency with growth, and in a commercial report the but-for revenue, avoided costs, and causation. Where the record supports it, the review includes an alternative calculation, and the findings organize the deposition of the opposing economist. The [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] sets out the review in order.",
+  },
+  {
+    question: "Is economic damages testimony admissible in state and federal court?",
     sources: refsToSources(["DAUBERT", "FRE_702", "FRYE"]),
     answer:
-      "Yes, when prepared by a qualified planner following accepted methodology and grounded in physician recommendations and documented cost research. KW Life Care Planning's planners have provided [[/services/expert-witness-testimony|deposition and trial testimony]] in state and federal courts, and reports are prepared to meet the [[/guides/federal-vs-state-court-daubert|admissibility frameworks]] applied in each. Attorneys confirm the governing framework for the specific case.",
+      "Yes, when the opinion rests on the records and published data, applies the established methods of the field, and states its assumptions so they can be tested. Reliability-based and general-acceptance frameworks alike rarely exclude the discipline; they exclude inputs the record does not support. Reports are prepared to meet the most demanding framework that could apply, and the [[/guides/federal-vs-state-court-daubert|admissibility guide]] describes the frameworks. Attorneys confirm the governing framework for the specific case.",
   },
   {
-    question: "Can KW Life Care Planning review an opposing party's life care plan?",
+    question: `Does ${ORG_NAME} work for both plaintiff and defense?`,
+    sources: refsToSources(["NAFE_ETHICS"]),
     answer:
-      "Yes. A [[/services/life-care-plan-rebuttal|life care plan rebuttal]] tests each item in the opposing plan for medical foundation, duplication, supported frequency and duration, documented and geographically appropriate pricing, and the life expectancy basis. The review may be records-only or may include an evaluation of the person, depending on access and the needs of the case. [[/guides/how-to-rebut-a-life-care-plan|How to rebut a life care plan]] outlines the approach.",
+      "Yes. Engagements are accepted from plaintiff counsel, defense counsel, and carriers, and the method does not change with the retaining party: the same data sources, the same discounting conventions, and the same disclosure of assumptions. The [[/compare/plaintiff-economist-vs-defense-economist|plaintiff versus defense economist]] comparison explains why that consistency is what makes an economist credible on either side.",
   },
   {
-    question: "Does KW Life Care Planning work in all 50 states?",
+    question: `Does ${ORG_NAME} work in all 50 states?`,
     answer:
-      "Yes. Plans are prepared for matters in [[/locations|all 50 states, the District of Columbia, and U.S. territories]]. Cost research is performed in the person's own market, and the planners are familiar with jurisdiction-specific [[/guides/expert-witness-disclosure-rules|expert disclosure rules]] and admissibility frameworks.",
+      "Yes. Engagements are accepted for matters in [[/locations|all 50 states, the District of Columbia, and U.S. territories]], with wage, cost of living, and labor market data specific to each state and metropolitan area. The economists are familiar with the [[/guides/expert-witness-disclosure-rules|expert disclosure rules]] and admissibility frameworks applied in each jurisdiction, and the [[/jurisdictions|jurisdictions]] hub collects the state pages.",
   },
   {
-    question: "How long does it take to receive a life care plan?",
+    question: "How long does an economic damages report take?",
     answer:
-      "Turnaround depends on the complexity of the injury, the completeness of the medical records, whether an in-person evaluation is required, and how quickly treating providers respond to requests for recommendations. Most plans are delivered within several weeks of receiving complete records and completing the evaluation; a records-based [[/services/medical-cost-projection|medical cost projection]] is typically faster. Shorter timelines may be available - [[/contact|contact us]] to discuss your deadline.",
+      "Most reports are delivered within several weeks after the records are complete, depending on the number of loss components, whether a business must be valued, and whether the analysis must be run under alternative scenarios. A rebuttal review of an opposing report is usually faster because the framework and most inputs are already on the table. Shorter timelines are considered case by case; [[/contact|contact us]] to discuss a deadline. Each [[/services|service]] page states its typical timeline.",
   },
   {
-    question: "Should a life care plan be updated before trial?",
-    sources: refsToSources(["IARP_IALCP_STANDARDS"]),
+    question: `How do I retain ${ORG_NAME} for a case?`,
     answer:
-      "Often, yes. A life care plan is a dynamic document. When the person's condition, treatment plan, or living situation has changed, or when significant time has passed since the costs were researched, a [[/services/plan-update-and-review|plan update]] refreshes the medical foundation and re-prices each item so the plan reflects current care and current costs.",
-  },
-  {
-    question: "How do I retain KW Life Care Planning for a case?",
-    answer:
-      `Contact our office by phone at ${PHONE_DISPLAY} or via the [[/contact|contact form on this website]]. A member of our [[/schedule-consultation|intake team]] will follow up within one business day to discuss the case, the records needed, and [[/team|planner availability]]. We accept cases from plaintiff counsel, defense counsel, and insurance carriers.`,
+      `Contact our office by phone at ${PHONE_DISPLAY} or through the [[/contact|contact form on this website]]. A member of our [[/schedule-consultation|intake team]] will follow up within one business day to discuss the case, the records needed, and [[/team|economist availability]]. We run a conflict check before any engagement begins and confirm scope and fee in writing.`,
   },
 ];

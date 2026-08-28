@@ -1,9 +1,13 @@
-// Client testimonials sourced from the parent firm's public site.
-// Attribution is limited on the public source (most are "Client Comment").
-// Only quotes that are compatible with a life-care-planning engagement are
-// kept; outcome-focused or insurance-specific quotes were dropped for this site.
-// Set isPlaceholder: true and use bracketed placeholder text to flag any
-// entries that still need replacement.
+// Attorney feedback shown on the home page and service pages.
+//
+// FACTS TO CONFIRM (tracked in README): the parent firm's public site carries
+// client comments, but none of them refers to economic damages work, and the
+// content plan drops every quote that does not. The entries below are
+// therefore REPRESENTATIVE FEEDBACK - illustrative of the feedback the
+// practice receives, written in the attorney's voice, attributed only by role,
+// and labeled as representative on the card (title) and with the placeholder
+// badge (isPlaceholder). Replace them with verified client quotes, attributed
+// by role, before launch. Never add a client name, firm, or case identifier.
 
 export interface Testimonial {
   id: string;
@@ -17,33 +21,33 @@ export interface Testimonial {
 
 export const testimonials: Testimonial[] = [
   {
-    id: "4",
+    id: "r1",
     quote:
-      "Thank you for your assistance in this matter. The expert report you provided was a very helpful tool in resolving this matter.",
-    author: "Retaining Attorney",
-    title: "Client Comment",
+      "The lost earnings report set out the earnings base, the growth rate, the worklife horizon, and the discount rate on separate schedules. We could walk the mediator through the number line by line, and the other side's economist ended up disputing one input rather than the whole analysis.",
+    author: "Retaining attorney, personal injury",
+    title: "Representative feedback",
     firm: "",
-    caseType: "Expert Report",
-    isPlaceholder: false,
+    caseType: "Lost Earnings",
+    isPlaceholder: true,
   },
   {
-    id: "5",
+    id: "r2",
     quote:
-      "I enjoyed working with you very much, and thank you for your consistent availability as well as your insight.",
-    author: "Retaining Attorney",
-    title: "Client Comment",
+      "In a wrongful death matter the personal consumption deduction and the household services value were the two figures we expected to fight over. The report showed each one under the alternative assumptions, with the sources named, which is exactly what we needed for the deposition.",
+    author: "Retaining attorney, wrongful death",
+    title: "Representative feedback",
     firm: "",
-    caseType: "Expert Engagement",
-    isPlaceholder: false,
+    caseType: "Wrongful Death",
+    isPlaceholder: true,
   },
   {
-    id: "6",
+    id: "r3",
     quote:
-      "The matter was resolved with a favorable disposition. Thank you for your help in this matter.",
-    author: "Retaining Attorney",
-    title: "Client Comment",
+      "The lost profits analysis was tied to our client's own financial statements and contracts, deducted the avoided costs, and addressed causation directly. It read like an analysis, not an advocacy piece, and it held up at trial.",
+    author: "Retaining attorney, commercial litigation",
+    title: "Representative feedback",
     firm: "",
-    caseType: "Case Resolution",
-    isPlaceholder: false,
+    caseType: "Lost Profits",
+    isPlaceholder: true,
   },
 ];
