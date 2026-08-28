@@ -3,6 +3,10 @@ import type { Faq } from "./types";
 
 export const ISLAND_SLUGS: Set<string>;
 export function placeName(stateName: string): string;
+/** Bare name for attributive slots ("District of Columbia wage levels"); accepts a raw state name or a placeName() result. */
+export function placeAttr(name: string): string;
+/** "The Bronx" -> "Bronx" for attributive slots ("the Bronx area"). */
+export function cityAttr(cityName: string): string;
 /** The first five employer names for a metro, in data order (context only). */
 export function majorEmployers(topEmployers: readonly string[] | undefined): string[];
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getCityNarrative, getStateNarrative, serviceStateDirectAnswer } from "./narratives";
+import { getCityNarrative, getStateNarrative, serviceCityDirectAnswer, serviceStateDirectAnswer } from "./narratives";
 import {
   cityGeographicFaqs,
   serviceCityGeographicFaqs,
@@ -7,7 +7,7 @@ import {
   stateGeographicFaqs,
 } from "./geographicFaqs";
 import { majorEmployers } from "./geo-prose.mjs";
-import { getServiceBySlug } from "./services";
+import { getServiceBySlug, pillarServices } from "./services";
 import { getStateBySlug, states } from "./states";
 import { stateRegulations } from "./regulations/state-regs";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
@@ -21,6 +21,12 @@ const CARE_COST = /attendant care|home health|skilled nursing|life care planner|
 const TYPOGRAPHY = /[–—§]/;
 // Figures the geo prose must never print: rates, percentages, dollar amounts.
 const FIGURES = /unemployment rate|median hourly wage|\d+(\.\d+)?\s?%|\$\d/i;
+// Doubled articles ("a the District of Columbia", "the The Bronx") and an
+// indefinite article in front of a capitalized vowel-initial name ("a Alabama
+// case", "a Employment ... engagement"): the template slots are worded so that
+// neither can be rendered for any state, city, or pillar service.
+const DOUBLED_ARTICLE = /\b(a|an|the) (a|an|the)\b/i;
+const MISARTICLED = /\ba [AEIO]\w|\ban [B-DF-HJ-NP-TV-Z]\w/;
 
 const stateText = (slug: string, serviceSlug = "lost-earnings-and-earning-capacity") => {
   const state = getStateBySlug(slug)!;
@@ -65,6 +71,84 @@ describe("economics geo narratives", () => {
     expect(stateText("puerto-rico")).toMatch(/mainland/i);
     expect(stateText("wyoming")).not.toMatch(/most expensive|highest in the nation/i);
     expect(stateText("california")).not.toMatch(/most expensive|highest in the nation/i);
+  });
+
+  it("District of Columbia FAQs keep the article off attributive slots on all four templates", () => {
+    const dc = getStateBySlug("district-of-columbia")!;
+    const svc = getServiceBySlug("wrongful-death-economic-loss")!;
+    const sets = {
+      state: stateGeographicFaqs(dc.name),
+      city: cityGeographicFaqs(dc.name, "Washington"),
+      serviceState: serviceStateGeographicFaqs(svc.name, dc.name),
+      serviceCity: serviceCityGeographicFaqs(svc.name, dc.name, "Washington"),
+    };
+    for (const [label, faqs] of Object.entries(sets)) {
+      const json = JSON.stringify(faqs);
+      expect(json, label).not.toMatch(DOUBLED_ARTICLE);
+      expect(json, label).not.toMatch(MISARTICLED);
+      expect(json, label).not.toMatch(/in District of Columbia|, District of Columbia is/);
+    }
+    const state = JSON.stringify(sets.state);
+    expect(state).toContain("for District of Columbia cases?");
+    expect(state).toContain("account for District of Columbia wage levels");
+    expect(state).toContain("for a wrongful death claim in the District of Columbia?");
+    expect(state).toContain("a question of District of Columbia law");
+    expect(state).toContain("Which courts in the District of Columbia hear");
+    const serviceState = JSON.stringify(sets.serviceState);
+    expect(serviceState).toContain("data for the District of Columbia market");
+    expect(serviceState).toContain("engagement look like for a case venued in the District of Columbia?");
+    expect(JSON.stringify(sets.city)).toContain("Do you testify in Washington, the District of Columbia?");
+    expect(JSON.stringify(sets.serviceCity)).toContain("data for the District of Columbia as a whole");
+    // The court's own name already names the district: no "sitting in District of Columbia".
+    const n = getCityNarrative(dc, "Washington", "washington", "District of Columbia", {
+      msaName: "Washington-Arlington-Alexandria, DC-VA-MD-WV",
+    });
+    expect(n.blurb).toContain("heard in the Superior Court of the District of Columbia.");
+    expect(n.blurb).not.toMatch(/sitting in District of Columbia/);
+    expect(`${n.directAnswer} ${n.blurb}`).not.toMatch(DOUBLED_ARTICLE);
+  });
+
+  it("no geo template mis-articles a state, city, or service name (every state, largest city, every pillar)", () => {
+    const pillars = pillarServices();
+    for (const st of states) {
+      const city = st.largestCity;
+      const citySlug = city.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const n = getStateNarrative(st);
+      const c = getCityNarrative(st, city, citySlug, `${city} County`);
+      const texts = [
+        Object.values(n).join(" "),
+        `${c.directAnswer} ${c.blurb}`,
+        JSON.stringify(stateGeographicFaqs(st.name)),
+        JSON.stringify(cityGeographicFaqs(st.name, city)),
+        ...pillars.flatMap((s) => [
+          serviceStateDirectAnswer(ORG_NAME, s.shortName, st.name, n),
+          serviceCityDirectAnswer(ORG_NAME, s.shortName, st.name, city, c),
+          JSON.stringify(serviceStateGeographicFaqs(s.name, st.name)),
+          JSON.stringify(serviceCityGeographicFaqs(s.name, st.name, city)),
+        ]),
+      ];
+      for (const text of texts) {
+        expect(text, `${st.slug}/${citySlug}`).not.toMatch(DOUBLED_ARTICLE);
+        expect(text, `${st.slug}/${citySlug}`).not.toMatch(MISARTICLED);
+      }
+    }
+    // A city that carries its own article, and vowel-initial names, are the
+    // cases the slots were worded around.
+    const bronx = JSON.stringify(cityGeographicFaqs("New York", "The Bronx"));
+    expect(bronx).not.toMatch(DOUBLED_ARTICLE);
+    expect(bronx).toContain("wage data for the Bronx area");
+    expect(bronx).toContain("account for Bronx wage levels");
+    expect(bronx).toContain("Do you testify in The Bronx, New York?");
+    expect(JSON.stringify(serviceCityGeographicFaqs("Business Valuation", "New York", "The Bronx"))).toContain(
+      "What deliverables are available for a case venued in The Bronx?",
+    );
+    expect(JSON.stringify(stateGeographicFaqs("Alabama"))).toContain("for a wrongful death claim in Alabama?");
+    expect(JSON.stringify(serviceStateGeographicFaqs("Employment and Wage Loss Damages", "Alabama"))).toContain(
+      "What does an Employment and Wage Loss Damages engagement look like for a case venued in Alabama?",
+    );
+    expect(JSON.stringify(serviceStateGeographicFaqs("Business Valuation", "Ohio"))).toContain(
+      "What does a Business Valuation engagement look like for a case venued in Ohio?",
+    );
   });
 
   it("city narrative and FAQs are economics-framed for every state's largest city", () => {

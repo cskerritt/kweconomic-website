@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { pillarServices } from "@/data/services";
+import { getCaseType } from "@/data/caseTypes";
 import { ORG_NAME } from "@/lib/brand";
 
 interface RelatedServicesProps {
@@ -50,7 +51,7 @@ export default function RelatedServices({ caseTypes, stateSlug }: RelatedService
                       key={ct}
                       className="text-xs text-teal bg-teal/10 px-2 py-0.5 rounded-full"
                     >
-                      {ct}
+                      {getCaseType(ct)?.name ?? ct}
                     </span>
                   ))}
               </div>

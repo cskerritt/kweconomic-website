@@ -55,6 +55,26 @@ export const ISLAND_SLUGS = new Set([
 export const placeName = (stateName) =>
   stateName === "District of Columbia" ? "the District of Columbia" : stateName;
 
+/** Attributive form for slots where the name modifies a noun ("District of
+ * Columbia wage levels", "the District of Columbia market", "a question of
+ * District of Columbia law"): never carries the article placeName() adds, so
+ * "a the" and "the the" cannot be rendered. Accepts a raw state name or a
+ * placeName() result. */
+export const placeAttr = (name) => name.replace(/^the /, "");
+
+/** Attributive form of a city name: "The Bronx" becomes "Bronx" so that "the
+ * Bronx area" and "Bronx wage levels" read naturally. Non-attributive slots
+ * ("cases venued in The Bronx") keep the full name. */
+export const cityAttr = (cityName) => cityName.replace(/^The /, "");
+
+/** "a"/"an" by first letter. Used only for the pillar service names, where the
+ * letter rule is exact ("an Employment and Wage Loss Damages engagement"); the
+ * place and city slots are worded so that no indefinite article precedes a
+ * proper name ("a Alabama case" is never rendered). */
+const indefiniteArticle = (phrase) => (/^[aeiou]/i.test(phrase) ? "an" : "a");
+
+const capFirst = (text) => `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
+
 /** Regional wage and cost-of-living framing. General, defensible, no figures:
  * each sentence says how the local market enters the analysis, not what the
  * market pays. */
@@ -107,15 +127,15 @@ export function buildStateNarrative(input) {
   if (isIsland) {
     scope = pop
       ? `With about ${pop} residents, ${place} is a compact wage market, and the analysis uses local wage and household data where it exists and names every mainland benchmark it borrows.`
-      : `${place} is a compact wage market, and the analysis uses local wage and household data where it exists and names every mainland benchmark it borrows.`;
+      : `${capFirst(place)} is a compact wage market, and the analysis uses local wage and household data where it exists and names every mainland benchmark it borrows.`;
   } else if (isDistrict) {
     scope = pop
       ? `With about ${pop} residents inside a much larger metropolitan wage market, ${place} is analyzed with occupational wage data from the Bureau of Labor Statistics for the Washington metropolitan area and with household and cost-of-living data from the American Community Survey.`
-      : `${place} sits inside a much larger metropolitan wage market and is analyzed with occupational wage data from the Bureau of Labor Statistics for the Washington metropolitan area and with household and cost-of-living data from the American Community Survey.`;
+      : `${capFirst(place)} sits inside a much larger metropolitan wage market and is analyzed with occupational wage data from the Bureau of Labor Statistics for the Washington metropolitan area and with household and cost-of-living data from the American Community Survey.`;
   } else {
     scope = pop
       ? `With about ${pop} residents, ${place} contains more than one distinct wage market, and the analysis uses the one the plaintiff actually worked in: occupational wage data from the Bureau of Labor Statistics for that metropolitan or nonmetropolitan area, and household and cost-of-living data from the American Community Survey.`
-      : `${place} contains more than one distinct wage market, and the analysis uses the one the plaintiff actually worked in: occupational wage data from the Bureau of Labor Statistics for that metropolitan or nonmetropolitan area, and household and cost-of-living data from the American Community Survey.`;
+      : `${capFirst(place)} contains more than one distinct wage market, and the analysis uses the one the plaintiff actually worked in: occupational wage data from the Bureau of Labor Statistics for that metropolitan or nonmetropolitan area, and household and cost-of-living data from the American Community Survey.`;
   }
   const economicContext = [
     scope,
@@ -137,7 +157,7 @@ export function buildStateNarrative(input) {
   if (supremeCourt) legalParts.push(`Final appeals in ${placeThe} court system run to the ${supremeCourt}.`);
   if (federalDistrictCount > 0) {
     legalParts.push(
-      `${place[0].toUpperCase()}${place.slice(1)} is served by ${federalDistrictCount} federal district court${federalDistrictCount === 1 ? "" : "s"}, where the same analyses are offered under the federal expert-disclosure framework.`,
+      `${capFirst(place)} is served by ${federalDistrictCount} federal district court${federalDistrictCount === 1 ? "" : "s"}, where the same analyses are offered under the federal expert-disclosure framework.`,
     );
   }
   const legalContext = legalParts.join(" ");
@@ -165,6 +185,7 @@ export function buildCityNarrative(input) {
   } = input;
 
   const named = employers.slice(0, 3);
+  const cityA = cityAttr(cityName);
   let anchor;
   if (named.length > 0) {
     anchor = `Earnings histories in ${cityName} are shaped by employers such as ${listNames(named)}, and the analysis measures each loss against the wage and benefit structure of the plaintiff's own occupation and employer rather than against a citywide average.`;
@@ -181,19 +202,21 @@ export function buildCityNarrative(input) {
 
   const blurbParts = [];
   if (county) {
-    blurbParts.push(
-      trialCourtName
-        ? `Civil claims arising in ${cityName} are typically heard in the ${trialCourtName} sitting in ${county}.`
-        : `Civil claims arising in ${cityName} are typically heard in the trial court sitting in ${county}.`,
-    );
+    // When the court's own name already names the county ("Superior Court of
+    // the District of Columbia"), the "sitting in" clause would only repeat it.
+    let venue;
+    if (!trialCourtName) venue = `the trial court sitting in ${county}`;
+    else if (trialCourtName.includes(county)) venue = `the ${trialCourtName}`;
+    else venue = `the ${trialCourtName} sitting in ${county}`;
+    blurbParts.push(`Civil claims arising in ${cityName} are typically heard in ${venue}.`);
   }
   blurbParts.push(
     hasMetroData || named.length > 0 || msaName
-      ? `The report documents the source behind every wage, benefit, and growth figure so counsel can trace each component of the loss to ${cityName}-area data or to the plaintiff's own records.`
-      : `Where a ${cityName}-area figure does not exist, the report states which broader benchmark it uses and why, so no component of the loss rests on an undocumented assumption.`,
+      ? `The report documents the source behind every wage, benefit, and growth figure so counsel can trace each component of the loss to ${cityA}-area data or to the plaintiff's own records.`
+      : `Where no ${cityA}-area figure exists, the report states which broader benchmark it uses and why, so no component of the loss rests on an undocumented assumption.`,
   );
   blurbParts.push(
-    `Deposition and trial testimony are available for ${cityName} matters, in person or by remote appearance where the forum allows.`,
+    `Deposition and trial testimony are available for ${cityA} matters, in person or by remote appearance where the forum allows.`,
   );
   const blurb = blurbParts.join(" ");
 
@@ -216,13 +239,14 @@ export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, ci
 
 export function stateGeographicFaqs(orgName, stateName) {
   const place = placeName(stateName);
+  const attr = placeAttr(stateName);
   return [
     {
-      question: `Does ${orgName} provide forensic economics services for ${place} cases?`,
+      question: `Does ${orgName} provide forensic economics services for ${attr} cases?`,
       answer: `Yes. ${orgName} prepares lost earnings, wrongful death economic loss, household services, employment damages, lost profits, and business valuation analyses, and reviews and rebuts opposing economic reports, for attorneys handling matters venued in ${place}, for plaintiff and defense counsel alike. Every projection is anchored to the plaintiff's own records and to wage data for the area of ${place} where the plaintiff actually worked.`,
     },
     {
-      question: `How does a forensic economist account for ${place} wage levels in a lost earnings claim?`,
+      question: `How does a forensic economist account for ${attr} wage levels in a lost earnings claim?`,
       answer: `The starting point is the plaintiff's own earnings history - tax returns, W-2s, pay records, and benefit statements - rather than an average. Occupational wage data from the Bureau of Labor Statistics for the plaintiff's metropolitan or nonmetropolitan area in ${place} is used to test that history, to project a career that was still developing, and to value residual earnings after the injury, and household composition and cost-of-living data come from the American Community Survey. The source behind each figure is documented in the report.`,
     },
     {
@@ -230,40 +254,42 @@ export function stateGeographicFaqs(orgName, stateName) {
       answer: `Personal injury, wrongful death, employment, and commercial damages claims are heard in ${place}'s general-jurisdiction trial courts and, where jurisdiction allows, in the federal district courts serving ${place}. Wage-loss disputes in workers' compensation matters proceed before the compensation forum rather than the civil courts. Attorneys are responsible for confirming the venue and the governing damages rules for their specific case.`,
     },
     {
-      question: `How is present value calculated for a ${place} wrongful death claim?`,
-      answer: `The decedent's earnings and fringe benefits are projected over a documented worklife expectancy, reduced by the decedent's own personal consumption where the measure of damages in ${place} calls for it, and combined with the value of the household services the decedent would have provided. Each future year is then discounted to present value at a documented rate tied to the growth assumptions, so the report shows the lump sum that replaces the lost stream today. Which components are recoverable is a question of ${place} law that counsel confirms; the report is structured so each component can be included or removed.`,
+      question: `How is present value calculated for a wrongful death claim in ${place}?`,
+      answer: `The decedent's earnings and fringe benefits are projected over a documented worklife expectancy, reduced by the decedent's own personal consumption where the measure of damages in ${place} calls for it, and combined with the value of the household services the decedent would have provided. Each future year is then discounted to present value at a documented rate tied to the growth assumptions, so the report shows the lump sum that replaces the lost stream today. Which components are recoverable is a question of ${attr} law that counsel confirms; the report is structured so each component can be included or removed.`,
     },
   ];
 }
 
 export function cityGeographicFaqs(orgName, stateName, cityName) {
   const place = placeName(stateName);
+  const cityA = cityAttr(cityName);
   return [
     {
-      question: `Does ${orgName} provide forensic economics services for ${cityName}, ${place} cases?`,
-      answer: `Yes. ${orgName} prepares economic damages analyses - lost earnings, wrongful death economic loss, household services, employment damages, and business damages - for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel alike. Each projection is anchored to wage data for the ${cityName} area rather than to statewide or national averages.`,
+      question: `Does ${orgName} provide forensic economics services for cases venued in ${cityName}, ${place}?`,
+      answer: `Yes. ${orgName} prepares economic damages analyses - lost earnings, wrongful death economic loss, household services, employment damages, and business damages - for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel alike. Each projection is anchored to wage data for the ${cityA} area rather than to statewide or national averages.`,
     },
     {
-      question: `How does a forensic economist account for ${cityName} wage levels in a lost earnings claim?`,
-      answer: `The plaintiff's own earnings history is the base of the projection. Occupational wage data for the ${cityName} area from the Bureau of Labor Statistics is used to test that history, to project a career that was still developing, and to value residual earnings after the injury, and the ${cityName}-area cost of living enters the replacement cost of household services. Every figure carries its source so it can be traced and tested at deposition.`,
+      question: `How does a forensic economist account for ${cityA} wage levels in a lost earnings claim?`,
+      answer: `The plaintiff's own earnings history is the base of the projection. Occupational wage data for the ${cityA} area from the Bureau of Labor Statistics is used to test that history, to project a career that was still developing, and to value residual earnings after the injury, and the ${cityA}-area cost of living enters the replacement cost of household services. Every figure carries its source so it can be traced and tested at deposition.`,
     },
     {
       question: `Do you testify in ${cityName}, ${place}?`,
-      answer: `Yes. ${orgName} economists testify at deposition, trial, and arbitration for ${cityName} matters, in person or by remote appearance where the forum allows, and the report is written to the disclosure requirements of the forum that will examine it. Consulting engagements without testimony are also available when counsel needs an early damages estimate or a review of an opposing report.`,
+      answer: `Yes. ${orgName} economists testify at deposition, trial, and arbitration for ${cityA} matters, in person or by remote appearance where the forum allows, and the report is written to the disclosure requirements of the forum that will examine it. Consulting engagements without testimony are also available when counsel needs an early damages estimate or a review of an opposing report.`,
     },
   ];
 }
 
 export function serviceStateGeographicFaqs(orgName, serviceName, stateName) {
   const place = placeName(stateName);
+  const attr = placeAttr(stateName);
   const svc = serviceName;
   return [
     {
       question: `Does ${orgName} provide ${svc} in ${place}?`,
-      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${place}, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the records that drive the claim and from data for the ${place} market rather than from national averages.`,
+      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${place}, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the records that drive the claim and from data for the ${attr} market rather than from national averages.`,
     },
     {
-      question: `What does a ${svc} engagement look like for a ${place} case?`,
+      question: `What does ${indefiniteArticle(svc)} ${svc} engagement look like for a case venued in ${place}?`,
       answer: `A complete engagement typically includes a records request tailored to the claim (tax returns, pay and benefit records, and business financial statements as applicable), a review of the record and the pleadings, a written statement of assumptions, a report that presents each loss component and its present value, review and rebuttal of any opposing report, and deposition and trial testimony when required. Scope and turnaround are calibrated to the case posture and the governing disclosure framework.`,
     },
     {
@@ -275,18 +301,19 @@ export function serviceStateGeographicFaqs(orgName, serviceName, stateName) {
 
 export function serviceCityGeographicFaqs(orgName, serviceName, stateName, cityName) {
   const place = placeName(stateName);
+  const cityA = cityAttr(cityName);
   const svc = serviceName;
   return [
     {
       question: `Does ${orgName} provide ${svc} in ${cityName}, ${place}?`,
-      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel across the case mix common to ${cityName} matters.`,
+      answer: `Yes. ${orgName} provides ${svc} for attorneys handling matters venued in ${cityName}, ${place}, for plaintiff and defense counsel across the case mix common to ${cityA} matters.`,
     },
     {
-      question: `How are ${cityName} wage levels and cost of living handled in the analysis?`,
-      answer: `Earnings and household services are measured against the plaintiff's own records and against wage data for the ${cityName} area, with ${place} statewide data used only where a local figure is unavailable and only with the substitution stated. The source behind every figure is documented so the loss can be traced and defended.`,
+      question: `How are ${cityA} wage levels and cost of living handled in the analysis?`,
+      answer: `Earnings and household services are measured against the plaintiff's own records and against wage data for the ${cityA} area, with data for ${place} as a whole used only where a local figure is unavailable and only with the substitution stated. The source behind every figure is documented so the loss can be traced and defended.`,
     },
     {
-      question: `What deliverables are available for a ${cityName} case?`,
+      question: `What deliverables are available for a case venued in ${cityName}?`,
       answer: `${orgName} provides full economic damages reports, preliminary damages estimates for settlement evaluation, reviews and rebuttals of opposing economic reports, and deposition and trial testimony, sized to both trial-track and settlement matters. The appropriate deliverable depends on case posture.`,
     },
   ];
