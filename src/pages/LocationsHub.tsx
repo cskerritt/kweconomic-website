@@ -20,7 +20,7 @@ export default function LocationsHub() {
   usePageMeta({
     title: `Locations | ${ORG_NAME} - Serving All 50 States`,
     description:
-      `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, and U.S. territories. Find your state to learn more.`,
+      `${ORG_NAME} prepares economic damages analyses - lost earnings, wrongful death, household services, and business damages - in all 50 states, DC, and U.S. territories. Find your state to learn more.`,
     canonical: `${SITE_URL}/locations`,
   });
 
@@ -48,8 +48,8 @@ export default function LocationsHub() {
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
               {ORG_NAME} accepts cases in all 50 states, the District of Columbia, and U.S. territories.
-              Our planners understand jurisdiction-specific rules, local costs of care, and court standards
-              wherever your case is filed.
+              Our economists understand each jurisdiction's damages rules, local wage levels and cost of
+              living, and court standards wherever your case is filed.
             </p>
           </div>
         </div>

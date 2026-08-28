@@ -19,8 +19,9 @@ import { placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
 import { getStateNarrative, serviceStateDirectAnswer } from "@/data/narratives";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
+import { getCaseType } from "@/data/caseTypes";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
-import CareContextWidget from "@/components/CareContextWidget";
+import EconomicContextWidget from "@/components/EconomicContextWidget";
 import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
 import LocationCard from "@/components/LocationCard";
@@ -45,7 +46,7 @@ export default function ServiceState() {
       : `Service | ${ORG_NAME}`,
     description:
       service && state
-        ? `${ORG_NAME} provides ${service.name.toLowerCase()} in ${state.name}. Certified life care planners pricing attendant care, home health, equipment, and future medical needs for attorneys and insurers across ${state.name}.`
+        ? `${ORG_NAME} provides ${service.name.toLowerCase()} in ${state.name}. Forensic economists measuring lost earnings, household services, and business damages against ${state.name} wage data and the state's damages rules, for plaintiff and defense counsel across ${state.name}.`
         : "",
     canonical: `${ORG_URL}/services/${serviceSlug ?? ""}/${stateSlug ?? ""}`,
   });
@@ -170,9 +171,8 @@ export default function ServiceState() {
               </p>
               {regulations && (
                 <p className="text-neutral-700 leading-relaxed mb-4">
-                  {regulations.practiceContext} Outside the civil courts, the{" "}
-                  <strong>{regulations.careOversightAgency}</strong> is the forum where a plan's future
-                  medical component is most often examined.
+                  {regulations.damagesContext} Outside the civil courts, wage-loss disputes in workers'
+                  compensation matters proceed before the <strong>{regulations.compensationForum}</strong>.
                 </p>
               )}
             </Reveal>
@@ -188,7 +188,7 @@ export default function ServiceState() {
                     key={ct}
                     className="inline-block bg-teal/10 text-teal font-medium text-sm px-4 py-1.5 rounded-full border border-teal/20"
                   >
-                    {ct}
+                    {getCaseType(ct)?.name ?? ct}
                   </span>
                 ))}
               </div>
@@ -265,12 +265,12 @@ export default function ServiceState() {
           {/* Sidebar - 1/3 */}
           <aside className="mt-10 lg:mt-0 space-y-6">
 
-            {/* Care context */}
+            {/* Economic context */}
             <Reveal variant="up">
-              <CareContextWidget
+              <EconomicContextWidget
                 areaName={state.name}
                 population={state.population}
-                oversightAgency={regulations?.careOversightAgency}
+                compensationForum={regulations?.compensationForum}
               />
             </Reveal>
 

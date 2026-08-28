@@ -47,7 +47,7 @@ export function extractStateCourtsMap(srcData) {
   return map;
 }
 
-/** regulations/state-regs.ts -> { [slug]: { careOversightAgency, practiceContext } } */
+/** regulations/state-regs.ts -> { [slug]: { compensationForum, damagesContext } } */
 export function extractStateRegsMap(srcData) {
   const content = readFileSync(join(srcData, "regulations", "state-regs.ts"), "utf-8");
   const map = {};
@@ -55,14 +55,14 @@ export function extractStateRegsMap(srcData) {
     const slug = block.match(/stateSlug:\s*"([^"]+)"/)?.[1];
     if (!slug) continue;
     map[slug] = {
-      careOversightAgency: block.match(/careOversightAgency:\s*"([^"]+)"/)?.[1],
-      practiceContext: block.match(/practiceContext:\s*"([^"]+)"/)?.[1],
+      compensationForum: block.match(/compensationForum:\s*"([^"]+)"/)?.[1],
+      damagesContext: block.match(/damagesContext:\s*"([^"]+)"/)?.[1],
     };
   }
   return map;
 }
 
-/** labor/metro-labor.ts -> { ["state/city"]: { topEmployers } } (employer names feed the medical-center filter only). */
+/** labor/metro-labor.ts -> { ["state/city"]: { topEmployers } } (employer names are prose context only; no rates or wages are extracted). */
 export function extractMetroMap(srcData) {
   const content = readFileSync(join(srcData, "labor", "metro-labor.ts"), "utf-8");
   const map = {};
@@ -131,7 +131,7 @@ export function createGeoNarrators(srcData, orgName) {
       trialCourtName: courts?.trialCourtName,
       supremeCourt: courts?.supremeCourt,
       federalDistrictCount: courts?.federalDistrictCount ?? 0,
-      careOversightAgency: regs?.careOversightAgency,
+      compensationForum: regs?.compensationForum,
     });
   }
 
@@ -145,7 +145,7 @@ export function createGeoNarrators(srcData, orgName) {
       cityName: city.name,
       county: city.county,
       msaName: city.msaName,
-      medicalCenters: geoProse.careMedicalCenters(metro?.topEmployers),
+      employers: geoProse.majorEmployers(metro?.topEmployers),
       hasMetroData: metro !== undefined,
       trialCourtName: courts?.trialCourtName,
     });

@@ -20,12 +20,13 @@ import { readFileSync } from "node:fs";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const srcData = join(root, "src", "data");
 
-// Same list the runtime test uses; both sides must be free of it.
+// Same lists the runtime test uses; both sides must satisfy them. Care-cost
+// framing and vocational vocabulary are out; so are printed rates and figures.
 const BANNED = new RegExp(
-  `labor market|unemployment|median hourly wage|median household income|employers|earning capacity|transferable skills|vocational rehabilitation|${LEGACY_BRAND_PATTERN.source}`,
+  `attendant care|home health|skilled nursing|life care planner|vocational expert|CLCP|unemployment rate|median hourly wage|\\d+(\\.\\d+)?\\s?%|\\$\\d|${LEGACY_BRAND_PATTERN.source}`,
   "i",
 );
-const CARE = /attendant care|home health|provider|cost of care/i;
+const ECON = /wage|earnings|cost of living|damages|present value/i;
 
 let server;
 let ts;
@@ -65,7 +66,7 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
       const runtime = ts.narratives.getStateNarrative(state);
       expect(prerenderState(state), state.slug).toEqual(runtime);
       const text = Object.values(runtime).join(" ");
-      expect(text, state.slug).toMatch(CARE);
+      expect(text, state.slug).toMatch(ECON);
       expect(text, state.slug).not.toMatch(BANNED);
     }
   });
@@ -86,9 +87,12 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
       });
       expect(prerenderCity(state, city), city.slug).toEqual(runtime);
       const text = `${runtime.directAnswer} ${runtime.blurb}`;
-      expect(text, city.slug).toMatch(CARE);
+      expect(text, city.slug).toMatch(ECON);
       expect(text, city.slug).not.toMatch(BANNED);
     }
+    // Houston is a metro city: the shared employer list reaches both sides as
+    // context (first names in data order), never as a rate or a wage.
+    expect(prerenderCity(texas, houston).directAnswer).toMatch(/Memorial Hermann Health System/);
     // The regex extractor must see the same optional msaName the TS module has.
     const rows = extractCityRows(srcData, "texas");
     expect(rows.find((r) => r.slug === "houston")?.msaName).toBe(houston.msaName);
@@ -96,7 +100,7 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
   });
 
   it("FAQ blocks are identical on all four geo templates", () => {
-    const svc = "Life Care Planning";
+    const svc = "Household Services Valuation";
     expect(geoProse.stateGeographicFaqs(ORG_NAME, "Texas")).toEqual(ts.faqs.stateGeographicFaqs("Texas"));
     expect(geoProse.cityGeographicFaqs(ORG_NAME, "Texas", "Houston")).toEqual(
       ts.faqs.cityGeographicFaqs("Texas", "Houston"),
@@ -114,29 +118,30 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
     const svcRows = pillarServiceEntries(readFileSync(join(srcData, "services.ts"), "utf-8"));
     const tsPillars = ts.services.pillarServices();
     expect(svcRows.map((s) => [s.slug, s.shortName])).toEqual(tsPillars.map((s) => [s.slug, s.shortName]));
-    const msa = svcRows.find((s) => s.slug === "medicare-set-aside");
+    const hsv = svcRows.find((s) => s.slug === "household-services-valuation");
+    expect(hsv).toBeTruthy();
     const texas = ts.states.getStateBySlug("texas");
     const houston = ts.cities.texas.find((c) => c.slug === "houston");
-    const stateSentence = geoProse.serviceStateDirectAnswer(ORG_NAME, msa.shortName, texas.name, prerenderState(texas));
+    const stateSentence = geoProse.serviceStateDirectAnswer(ORG_NAME, hsv.shortName, texas.name, prerenderState(texas));
     expect(stateSentence).toBe(
-      ts.narratives.serviceStateDirectAnswer(ORG_NAME, "Medicare Set-Aside", texas.name, ts.narratives.getStateNarrative(texas)),
+      ts.narratives.serviceStateDirectAnswer(ORG_NAME, "Household Services", texas.name, ts.narratives.getStateNarrative(texas)),
     );
-    expect(stateSentence.startsWith("Medicare Set-Aside from KW Life Care Planning for matters venued in Texas.")).toBe(true);
-    const citySentence = geoProse.serviceCityDirectAnswer(ORG_NAME, msa.shortName, texas.name, houston.name, prerenderCity(texas, houston));
+    expect(stateSentence.startsWith("Household Services from KW Economics for matters venued in Texas.")).toBe(true);
+    const citySentence = geoProse.serviceCityDirectAnswer(ORG_NAME, hsv.shortName, texas.name, houston.name, prerenderCity(texas, houston));
     expect(citySentence).toBe(
       ts.narratives.serviceCityDirectAnswer(
-        ORG_NAME, "Medicare Set-Aside", texas.name, houston.name,
+        ORG_NAME, "Household Services", texas.name, houston.name,
         ts.narratives.getCityNarrative(texas, houston.name, houston.slug, houston.county, { msaName: houston.msaName }),
       ),
     );
-    // FAQ templates keep proper nouns in the service name.
-    expect(JSON.stringify(ts.faqs.serviceStateGeographicFaqs("Medicare Set-Aside Allocation", "Texas"))).not.toMatch(/medicare set-aside/);
+    // FAQ templates keep proper nouns in the service name (never lowercased).
+    expect(JSON.stringify(ts.faqs.serviceStateGeographicFaqs("Household Services Valuation", "Texas"))).not.toMatch(/household services valuation/);
   });
 
   it("regulation extractor sees every state with both renamed fields", () => {
     for (const state of ts.states.states) {
-      expect(regs[state.slug]?.careOversightAgency, state.slug).toBeTruthy();
-      expect(regs[state.slug]?.practiceContext, state.slug).toBeTruthy();
+      expect(regs[state.slug]?.compensationForum, state.slug).toBeTruthy();
+      expect(regs[state.slug]?.damagesContext, state.slug).toBeTruthy();
     }
   });
 });

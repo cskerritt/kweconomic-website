@@ -2,7 +2,8 @@
  * Citation-free FAQ generators for geographic page templates. Each generator
  * returns 3-4 Q&A pairs templated with state/city tokens so that every
  * geographic page (state hub, service-state, city, service-city) has its own
- * FAQ block + faqPageSchema for AEO/SERP-features eligibility.
+ * FAQ block + faqPageSchema for AEO/SERP-features eligibility. Economics
+ * framing: local wage levels, the damages venue, testimony, present value.
  *
  * Templates live in ./geo-prose.mjs (shared with scripts/prerender.mjs) so the
  * prerendered shells match the hydrated page byte for byte.

@@ -1,5 +1,6 @@
 import { useParams, Navigate, Link } from "react-router-dom";
 import { getServiceBySlug } from "@/data/services";
+import { getCaseType } from "@/data/caseTypes";
 import { getStateBySlug } from "@/data/states";
 import { useStateCities } from "@/hooks/use-state-cities";
 import Loading from "@/components/Loading";
@@ -169,10 +170,10 @@ export default function ServiceStateCity() {
               </p>
               <p className="text-neutral-700 leading-relaxed">
                 {ORG_NAME} serves counsel throughout {city.name} and the surrounding{" "}
-                {city.county ? city.county : state.name} area. Our planners price attendant care, home
-                health, equipment, and specialist follow-up from providers serving {city.name}, and are
-                familiar with the court system and disclosure requirements that affect{" "}
-                {service.name.toLowerCase()} engagements in {state.name}.
+                {city.county ? city.county : state.name} area. Our economists measure earnings, fringe
+                benefits, and household services against wage data for the {city.name} area and the
+                plaintiff's own records, and are familiar with the court system and disclosure
+                requirements that affect {service.name.toLowerCase()} engagements in {state.name}.
               </p>
             </Reveal>
 
@@ -185,7 +186,7 @@ export default function ServiceStateCity() {
                     key={ct}
                     className="inline-block bg-teal/10 text-teal font-medium text-sm px-4 py-1.5 rounded-full border border-teal/20"
                   >
-                    {ct}
+                    {getCaseType(ct)?.name ?? ct}
                   </span>
                 ))}
               </div>

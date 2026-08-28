@@ -18,7 +18,7 @@ export default function JurisdictionsHubPage() {
   usePageMeta({
     title: `Jurisdictions | ${ORG_NAME} Nationwide`,
     description:
-      `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`,
+      `${ORG_NAME} prepares economic damages analyses in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`,
     canonical: url,
   });
   return (
@@ -34,7 +34,7 @@ export default function JurisdictionsHubPage() {
             Jurisdictions
           </h1>
           <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">
-            State and federal jurisdictions where our life care planners practice.
+            State and federal jurisdictions where our forensic economists testify.
           </p>
         </div>
       </div>

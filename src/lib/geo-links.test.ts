@@ -31,23 +31,24 @@ function makeCity(slug: string, latitude: number, longitude: number): City {
 // guards).
 
 describe("serviceCityServices", () => {
-  it("returns exactly the pillar services (the forensic-economics cross-sell has no city tier)", () => {
+  it("returns exactly the pillar services (the sister-practice cross-sells have no city tier)", () => {
     const slugs = serviceCityServices(services).map((s) => s.slug);
     expect(slugs).toEqual([
-      "life-care-planning",
-      "pediatric-life-care-planning",
-      "catastrophic-injury-planning",
-      "medical-cost-projection",
-      "workers-compensation-lcp",
-      "plan-update-and-review",
-      "life-care-plan-rebuttal",
-      "medicare-set-aside",
-      "elder-and-long-term-care-planning",
-      "expert-witness-testimony",
+      "lost-earnings-and-earning-capacity",
+      "wrongful-death-economic-loss",
+      "personal-injury-economic-damages",
+      "household-services-valuation",
+      "life-care-plan-cost-projection",
+      "employment-and-wage-loss-damages",
+      "business-valuation",
+      "lost-profits-and-commercial-damages",
+      "fraud-and-asset-tracing",
+      "divorce-and-marital-financial-analysis",
+      "expert-rebuttal-and-report-review",
     ]);
-    expect(serviceHasCityPages("life-care-planning")).toBe(true);
-    expect(serviceHasCityPages("forensic-economics")).toBe(false);
-    expect(serviceHasCityPages("vocational-expert")).toBe(false);
+    expect(serviceHasCityPages("lost-earnings-and-earning-capacity")).toBe(true);
+    expect(serviceHasCityPages("vocational-evaluation")).toBe(false);
+    expect(serviceHasCityPages("life-care-planning")).toBe(false);
   });
 });
 

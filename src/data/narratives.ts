@@ -1,12 +1,13 @@
 /**
  * State + city narrative helpers. These synthesize short factual paragraphs
  * from the courts / regulations / metro data so each geographic page (state
- * hub, service-state, city, service-city) has unique, life-care-planning
- * copy without hand-authoring 56 state essays + 800 city blurbs.
+ * hub, service-state, city, service-city) has unique, economics-framed copy
+ * without hand-authoring 56 state essays + 800 city blurbs.
  *
  * The sentence templates live in ./geo-prose.mjs, which scripts/prerender.mjs
  * imports too - this module only does the data joins. Citation-free by
- * policy; never prints wages, unemployment, or employer lists.
+ * policy; never prints unemployment rates or wage figures. Employer names
+ * reach the prose only as context for the local earnings picture.
  */
 
 import { ORG_NAME } from "@/lib/brand";
@@ -16,7 +17,7 @@ import { getRegulationsByState } from "./regulations/state-regs";
 import {
   buildCityNarrative,
   buildStateNarrative,
-  careMedicalCenters,
+  majorEmployers,
   type CityNarrativeOutput,
   type StateNarrativeOutput,
 } from "./geo-prose.mjs";
@@ -39,7 +40,7 @@ export function getStateNarrative(state: State): StateNarrative {
     trialCourtName: courts?.trialCourts?.[0]?.name,
     supremeCourt: courts?.supremeCourt,
     federalDistrictCount: courts?.federalDistricts?.length ?? 0,
-    careOversightAgency: regs?.careOversightAgency,
+    compensationForum: regs?.compensationForum,
   });
 }
 
@@ -62,7 +63,7 @@ export function getCityNarrative(
     cityName,
     county,
     msaName: extras.msaName,
-    medicalCenters: careMedicalCenters(metro?.topEmployers),
+    employers: majorEmployers(metro?.topEmployers),
     hasMetroData: metro !== undefined,
     trialCourtName: courts?.trialCourts?.[0]?.name,
   });

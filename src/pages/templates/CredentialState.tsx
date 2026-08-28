@@ -88,7 +88,7 @@ export default function CredentialState() {
         </p>
         {regulations && (
           <>
-            <p className="text-neutral-700 mb-3">{regulations.practiceContext}</p>
+            <p className="text-neutral-700 mb-3">{regulations.damagesContext}</p>
             <p className="text-neutral-700">
               {ORG_NAME} economists apply nationally recognized methods while accounting for {state.name}'s wage levels, venue, and damages rules.
             </p>

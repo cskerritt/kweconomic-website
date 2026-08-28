@@ -25,7 +25,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ServiceCard from "@/components/ServiceCard";
 import LocationCard from "@/components/LocationCard";
-import CareContextWidget from "@/components/CareContextWidget";
+import EconomicContextWidget from "@/components/EconomicContextWidget";
 import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
 import { Award, Users } from "lucide-react";
@@ -37,8 +37,8 @@ export default function StateHub() {
   usePageMeta(
     state
       ? {
-          title: `Life Care Planners in ${placeName(state.name)} | ${ORG_NAME}`,
-          description: `${ORG_NAME} prepares life care plans, future medical cost projections, plan rebuttals, and expert testimony throughout ${state.name}. Cost of care priced for ${state.name} communities; jurisdiction-aware reports for ${state.name} courts.`,
+          title: `Forensic Economists in ${placeName(state.name)} | ${ORG_NAME}`,
+          description: `${ORG_NAME} prepares lost earnings, wrongful death, household services, employment, and business damages analyses and expert testimony throughout ${state.name}. Projections anchored to ${state.name} wage data; reports written for ${state.name} courts.`,
           canonical: `${ORG_URL}/locations/${state.slug}`,
         }
       : null,
@@ -51,8 +51,9 @@ export default function StateHub() {
     return <Navigate to="/locations" replace />;
   }
 
-  // Planning lines only; testimony is a mode of every engagement, not a card.
-  const coreServices = pillarServices().filter((s) => s.slug !== "expert-witness-testimony");
+  // Every pillar has a service x state page; testimony is a mode of each
+  // engagement rather than a card of its own.
+  const coreServices = pillarServices();
 
   const courts = getCourtsByState(state.slug);
   const regulations = getRegulationsByState(state.slug);
@@ -69,7 +70,7 @@ export default function StateHub() {
           organizationSchema(),
           serviceSchema({
             slug: `state-${state.slug}`,
-            name: `Life Care Planning Services in ${state.name}`,
+            name: `Economic Damages Services in ${state.name}`,
             description: narrative.directAnswer,
             areaServed: { "@type": "AdministrativeArea", name: state.name },
           }),
@@ -99,13 +100,13 @@ export default function StateHub() {
               {state.region !== "territory" ? state.region.charAt(0).toUpperCase() + state.region.slice(1) : "U.S. Territory"} &middot; {state.abbreviation}
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-4">
-              Life Care Planners in {placeName(state.name)}
+              Forensic Economists in {placeName(state.name)}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed mb-3">
               {narrative.directAnswer}
             </p>
             <p className="text-base text-neutral-300 leading-relaxed">
-              {narrative.careContext}
+              {narrative.economicContext}
             </p>
           </div>
         </div>
@@ -125,7 +126,7 @@ export default function StateHub() {
                   Expert Services in {state.name}
                 </h2>
                 <p className="text-neutral-600">
-                  Our certified life care planners prepare plans, cost projections, and rebuttals for {state.name} litigation. Each plan is priced for the evaluee's own community and written to the jurisdiction's expert evidence standards.
+                  Our forensic economists prepare lost earnings, wrongful death, household services, employment, and business damages analyses and rebuttals for {state.name} litigation. Each projection is anchored to the plaintiff's own records and to {state.name} wage data, and written to the jurisdiction's expert evidence standards.
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -150,7 +151,7 @@ export default function StateHub() {
                     Cities We Serve in {state.name}
                   </h2>
                   <p className="text-neutral-600">
-                    {ORG_NAME} accepts cases from attorneys across {state.name}. Select a city for local care-context and venue information.
+                    {ORG_NAME} accepts cases from attorneys across {state.name}. Select a city for local wage-market and venue context.
                   </p>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -171,36 +172,36 @@ export default function StateHub() {
               <section>
                 <div className="mb-6">
                   <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-2">
-                    Where {state.name} Life Care Plans Are Litigated
+                    Where {state.name} Damages Claims Are Litigated
                   </h2>
                   <p className="text-neutral-600">
-                    A life care plan is written for the forum that will examine it. Our planners are familiar with {state.name}'s civil and compensation forums, its expert evidence standards, and the disclosure practice that governs how plans are exchanged.
+                    An economic damages report is written for the forum that will examine it and around the damages rules that forum applies. Our economists are familiar with {state.name}'s civil and compensation forums, its expert evidence standards, and the disclosure practice that governs how reports are exchanged.
                   </p>
                 </div>
 
                 <div className="space-y-5">
-                  {/* Venue context */}
+                  {/* Damages framework */}
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0 mt-0.5">
                         <Users className="w-5 h-5 text-teal" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-navy mb-1">Venue Context</h3>
-                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.practiceContext}</p>
+                        <h3 className="font-semibold text-navy mb-1">Damages Framework</h3>
+                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.damagesContext}</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Compensation / oversight forum */}
+                  {/* Workers' compensation forum */}
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0 mt-0.5">
                         <Award className="w-5 h-5 text-teal" />
                       </div>
                       <div>
-                        <h3 className="font-semibold text-navy mb-1">Compensation &amp; Oversight Forum</h3>
-                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.careOversightAgency}</p>
+                        <h3 className="font-semibold text-navy mb-1">Workers' Compensation Forum</h3>
+                        <p className="text-neutral-700 text-sm leading-relaxed">{regulations.compensationForum}</p>
                       </div>
                     </div>
                   </div>
@@ -216,7 +217,7 @@ export default function StateHub() {
                   Case Types We Support in {state.name}
                 </h2>
                 <p className="text-neutral-600">
-                  Case-specific guidance on life care planning and future medical cost analysis for {state.name} matters.
+                  Case-specific guidance on what the economic loss claim consists of and how the analysis is built for {state.name} matters.
                 </p>
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-sm">
@@ -306,11 +307,11 @@ export default function StateHub() {
           {/* Sidebar (1/3) */}
           <aside className="lg:col-span-1 space-y-6">
 
-            {/* Care context */}
-            <CareContextWidget
+            {/* Economic context */}
+            <EconomicContextWidget
               areaName={state.name}
               population={state.population}
-              oversightAgency={regulations?.careOversightAgency}
+              compensationForum={regulations?.compensationForum}
             />
 
             {/* Court Info Panel */}

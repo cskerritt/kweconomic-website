@@ -1,10 +1,10 @@
 // Type surface for src/data/geo-prose.mjs (shared with scripts/prerender.mjs).
 import type { Faq } from "./types";
 
-export const HEALTH_SYSTEM_RE: RegExp;
 export const ISLAND_SLUGS: Set<string>;
 export function placeName(stateName: string): string;
-export function careMedicalCenters(topEmployers: readonly string[] | undefined): string[];
+/** The first five employer names for a metro, in data order (context only). */
+export function majorEmployers(topEmployers: readonly string[] | undefined): string[];
 
 export interface StateNarrativeInput {
   orgName: string;
@@ -15,11 +15,11 @@ export interface StateNarrativeInput {
   trialCourtName?: string;
   supremeCourt?: string;
   federalDistrictCount?: number;
-  careOversightAgency?: string;
+  compensationForum?: string;
 }
 export interface StateNarrativeOutput {
   directAnswer: string;
-  careContext: string;
+  economicContext: string;
   legalContext: string;
 }
 export function buildStateNarrative(input: StateNarrativeInput): StateNarrativeOutput;
@@ -30,7 +30,7 @@ export interface CityNarrativeInput {
   cityName: string;
   county?: string;
   msaName?: string;
-  medicalCenters?: string[];
+  employers?: string[];
   hasMetroData?: boolean;
   trialCourtName?: string;
 }

@@ -123,14 +123,14 @@ export interface StateCourtSystem {
 
 export interface StateRegulation {
   stateSlug: string;
-  /** Public agency that administers workers' compensation (or, for territories
-   * without a knowable compensation forum, the health department) - the body
-   * whose forum a life care plan is most often offered in outside civil court. */
-  careOversightAgency: string;
-  /** 1-2 citation-free sentences on where life care plans are litigated in the
-   * state: civil trial forum vs. compensation forum, med-mal venue notes. No
-   * statutes, rule numbers, or damage caps. */
-  practiceContext: string;
+  /** The public body that administers workers' compensation claims - the forum
+   * outside the civil courts where a wage-loss dispute is most often decided. */
+  compensationForum: string;
+  /** One to three citation-free sentences on the state's damages framework as
+   * it bears on an economic loss analysis: survival vs. wrongful death
+   * recovery, collateral source treatment, and whether prejudgment interest
+   * exists. No statutes, rule numbers, rates, or cap amounts. */
+  damagesContext: string;
 }
 
 export interface PageMeta {

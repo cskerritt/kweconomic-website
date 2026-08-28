@@ -171,7 +171,8 @@ for (const s of stateData) {
 // the React runtime (src/data/narratives.ts, src/data/geographicFaqs.ts), so
 // the static shells carry exactly the copy the hydrated page renders. Only the
 // data joins happen here; src/data/narratives.parity.test.mjs pins the two.
-// Never feed wages, unemployment, or employer lists into the prose.
+// Never feed unemployment rates or wage figures into the prose; employer names
+// reach it only as context for the local earnings picture.
 // ---------------------------------------------------------------------------
 
 const { buildStateNarrative, buildCityNarrative } = createGeoNarrators(SRC_DATA, ORG_NAME);
@@ -423,9 +424,9 @@ const corePages = [
     path: "/locations",
     title: `Locations | ${ORG_NAME} - Serving All 50 States`,
     description:
-      `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, and U.S. territories. Find your state to learn more.`,
+      `${ORG_NAME} prepares economic damages analyses - lost earnings, wrongful death, household services, and business damages - in all 50 states, DC, and U.S. territories. Find your state to learn more.`,
     innerHtml:
-      `<h1>Nationwide Coverage</h1><p>${ORG_NAME} accepts cases in all 50 states, the District of Columbia, and U.S. territories. Select a state to learn more about life care planning in your area.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>`,
+      `<h1>Nationwide Coverage</h1><p>${ORG_NAME} accepts cases in all 50 states, the District of Columbia, and U.S. territories. Select a state to learn more about economic damages analysis for cases venued there.</p><nav><a href="/services">Services</a> <a href="/contact">Contact</a> <a href="/about">About</a></nav>`,
     schemaType: "WebPage",
   },
   {
@@ -653,9 +654,9 @@ for (const state of stateData) {
   const faqs = stateGeographicFaqs(state.name);
   const url = `${BASE_URL}${path}`;
   const innerHtml =
-    `<h1>Life Care Planners in ${escapeHtml(geoProse.placeName(state.name))}</h1>` +
+    `<h1>Forensic Economists in ${escapeHtml(geoProse.placeName(state.name))}</h1>` +
     `<p>${escapeHtml(narrative.directAnswer)}</p>` +
-    `<p>${escapeHtml(narrative.careContext)}</p>` +
+    `<p>${escapeHtml(narrative.economicContext)}</p>` +
     `<p>${escapeHtml(narrative.legalContext)}</p>` +
     renderFaqHtml(faqs, `Frequently asked: ${state.name} expert services`) +
     `<nav><a href="/services">Services</a> <a href="/locations">All Locations</a> <a href="/contact">Contact</a></nav>`;
@@ -664,7 +665,7 @@ for (const state of stateData) {
     buildPage({
       path,
       // Match StateHub.tsx (placeName: "the District of Columbia").
-      title: `Life Care Planners in ${geoProse.placeName(state.name)} | ${ORG_NAME}`,
+      title: `Forensic Economists in ${geoProse.placeName(state.name)} | ${ORG_NAME}`,
       description: narrative.directAnswer.slice(0, 160),
       innerHtml,
       schemaType: "Service",
@@ -685,7 +686,7 @@ for (const state of stateData) {
     const faqs = cityGeographicFaqs(state.name, city.name);
     const url = `${BASE_URL}${path}`;
     const innerHtml =
-      `<h1>Life Care Planners in ${escapeHtml(city.name)}, ${escapeHtml(state.name)}</h1>` +
+      `<h1>Forensic Economists in ${escapeHtml(city.name)}, ${escapeHtml(state.name)}</h1>` +
       `<p>${escapeHtml(narrative.directAnswer)}</p>` +
       `<p>${escapeHtml(narrative.blurb)}</p>` +
       renderFaqHtml(faqs, `Frequently asked: ${city.name} expert services`) +
@@ -694,7 +695,7 @@ for (const state of stateData) {
       path,
       buildPage({
         path,
-        title: `Life Care Planners in ${city.name}, ${state.name} | ${ORG_NAME}`,
+        title: `Forensic Economists in ${city.name}, ${state.name} | ${ORG_NAME}`,
         description: narrative.directAnswer.slice(0, 160),
         innerHtml,
         schemaType: "Service",
@@ -814,7 +815,7 @@ const newHubPages = [
   { path: "/guides", title: `Life Care Planning Guides | ${ORG_NAME}`, description: "In-depth practitioner guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice. Methodology, admissibility, and engagement guidance.", innerHtml: "<h1>Guides</h1>", schemaType: "WebPage" },
   { path: "/compare", title: `Life Care Planning Comparisons | ${ORG_NAME}`, description: "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
   { path: "/methods", title: `Life Care Planning Methodologies | Present Value, Cost Research | ${ORG_NAME}`, description: "Life care planning methodologies used by our planners: life expectancy, present value analysis, plan development, functional capacity evaluation, cost research, and Medicare set-aside allocation.", innerHtml: "<h1>Methods</h1>", schemaType: "WebPage" },
-  { path: "/jurisdictions", title: `Jurisdictions | ${ORG_NAME} Nationwide`, description: `${ORG_NAME} prepares life care plans and medical cost projections in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`, innerHtml: "<h1>Jurisdictions</h1>", schemaType: "WebPage" },
+  { path: "/jurisdictions", title: `Jurisdictions | ${ORG_NAME} Nationwide`, description: `${ORG_NAME} prepares economic damages analyses in all 50 states, DC, US territories, and across federal courts. Browse by state or federal circuit.`, innerHtml: "<h1>Jurisdictions</h1>", schemaType: "WebPage" },
   { path: "/attorneys", title: `Resources for Attorneys | ${ORG_NAME}`, description: "Stage-by-stage attorney resources for retaining, preparing, and using a forensic economist. Considering, retaining, deposition, and trial.", innerHtml: "<h1>Resources for Attorneys</h1><p>Stage-by-stage guides for retaining, preparing, and using a forensic economist across each major case type: what the loss claim consists of, which records drive it, and how the number is defended.</p>", schemaType: "WebPage" },
 ];
 for (const p of newHubPages) { writePage(p.path, buildPage(p)); counts.core++; }
