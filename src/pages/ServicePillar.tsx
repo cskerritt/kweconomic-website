@@ -5,6 +5,10 @@ import { getServiceBySlug } from "@/data/services";
 import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { states } from "@/data/states";
 import { ORG_NAME, ORG_SHORT } from "@/lib/brand";
+// Service.shortName is a heading label ("Fraud & Tracing"); the templated FAQ
+// sentences and the "by Case Type" intro render it as prose through the shared
+// helpers. Headings keep the short name as written.
+import { proseName, workPhrase, withArticle } from "@/lib/service-prose";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ContactCTA from "@/components/ContactCTA";
@@ -37,32 +41,6 @@ const NON_PILLAR_RELATED: Record<string, { href: string; label: string }> = {
   "vocational-evaluation": { href: "/services/lost-earnings-and-earning-capacity", label: "Lost earnings analysis" },
   "life-care-planning": { href: "/services/life-care-plan-cost-projection", label: "Life care plan costing" },
 };
-
-// Service.shortName is a heading label ("Fraud & Tracing"). The three helpers
-// below turn it into prose for the templated FAQ sentences and the "by Case
-// Type" intro; headings keep the short name as written.
-
-// Attributive prose form: lowercase, ampersand spelled out ("fraud and
-// tracing engagements", "a full wrongful death report").
-function proseName(shortName: string): string {
-  return shortName.toLowerCase().replace(/\s*&\s*/g, " and ");
-}
-
-// Noun phrase for the work a pillar performs ("wrongful death analysis").
-// Most short names are loss subjects rather than work, so they take
-// " analysis"; the ones that already end in a work noun (Divorce Financial
-// Analysis, Business Valuation, Life Care Plan Costing) are used as-is so the
-// template never prints "analysis analysis".
-function workPhrase(shortName: string): string {
-  const name = proseName(shortName);
-  return /(analysis|valuation|costing)$/.test(name) ? name : `${name} analysis`;
-}
-
-// "a lost earnings", "an employment damages". Mirrors the private
-// indefiniteArticle() in src/data/geo-prose.mjs.
-function withArticle(phrase: string): string {
-  return `${/^[aeiou]/i.test(phrase) ? "an" : "a"} ${phrase}`;
-}
 
 export default function ServicePillar() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>();

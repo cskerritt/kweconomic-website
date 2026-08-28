@@ -17,6 +17,7 @@ import {
 } from "@/lib/schema";
 import { placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
+import { proseName } from "@/lib/service-prose";
 import { getStateNarrative, serviceStateDirectAnswer } from "@/data/narratives";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
 import { getCaseType } from "@/data/caseTypes";
@@ -290,7 +291,7 @@ export default function ServiceState() {
                 Expert Credentials
               </h3>
               <p className="text-sm text-neutral-600 mb-3">
-                Qualifications and standards that bear on {service.shortName.toLowerCase()} testimony in {state.name}:
+                Qualifications and standards that bear on {proseName(service.shortName)} testimony in {placeName(state.name)}:
               </p>
               <div className="flex flex-wrap gap-2">
                 {service.relevantCredentials.map((cred) => (

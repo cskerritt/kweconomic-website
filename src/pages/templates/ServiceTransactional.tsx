@@ -6,6 +6,7 @@ import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, serviceSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
+import { proseName } from "@/lib/service-prose";
 import NotFound from "@/pages/NotFound";
 
 type Variant = "cost" | "process" | "timeline";
@@ -21,11 +22,13 @@ export default function ServiceTransactional({ variant }: { variant: Variant }) 
   const s = pillarServices().find((x) => x.slug === serviceSlug);
   const url = s ? `${ORG_URL}/services/${s.slug}/${variant}` : "";
   const title = s ? `${s.name} ${LABEL[variant]}` : "";
+  // Meta-description prose form of the short name ("fraud and tracing").
+  const name = s ? proseName(s.shortName) : "";
   const variantBlurb: Record<Variant, string> | null = s
     ? {
-        cost: `${s.shortName} pricing, fee structure, and engagement cost considerations.`,
-        process: `Step-by-step ${s.shortName.toLowerCase()} engagement process, from intake to deliverable.`,
-        timeline: `Typical ${s.shortName.toLowerCase()} engagement timeline and turnaround expectations.`,
+        cost: `Pricing, fee structure, and engagement cost considerations for ${name} engagements.`,
+        process: `Step-by-step ${name} engagement process, from intake to deliverable.`,
+        timeline: `Typical ${name} engagement timeline and turnaround expectations.`,
       }
     : null;
   usePageMeta(

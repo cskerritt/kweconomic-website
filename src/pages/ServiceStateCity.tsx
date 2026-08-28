@@ -16,6 +16,7 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
+import { proseName } from "@/lib/service-prose";
 import { getCityNarrative, serviceCityDirectAnswer } from "@/data/narratives";
 import { serviceCityGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
@@ -212,8 +213,7 @@ export default function ServiceStateCity() {
             <div className="bg-white rounded-xl border border-neutral-200 p-6">
               <h3 className="font-serif text-lg font-bold text-navy mb-4">Expert Credentials</h3>
               <p className="text-sm text-neutral-600 mb-3">
-                Our {service.shortName.toLowerCase()} experts hold recognized certifications,
-                including:
+                Qualifications and standards that bear on {proseName(service.shortName)} testimony in {city.name}:
               </p>
               <div className="flex flex-wrap gap-2">
                 {service.relevantCredentials.map((cred) => (

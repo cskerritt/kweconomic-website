@@ -241,7 +241,7 @@ export default function StateHub() {
                   Expert Credentials in {state.name}
                 </h2>
                 <p className="text-neutral-600">
-                  How each credential is recognized in {state.name} courts and which {ORG_NAME} experts hold it.
+                  How each credential is recognized in {state.name} courts and how it bears on economic damages testimony there.
                 </p>
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 text-sm">
