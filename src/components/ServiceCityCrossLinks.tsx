@@ -5,6 +5,9 @@ import { ORG_NAME } from "@/lib/brand";
 // The "we also provide" sentence names the work, not the heading label
 // ("wrongful death analysis", "fraud and tracing analysis").
 import { workPhrase } from "@/lib/service-prose.mjs";
+// "for Bronx cases", never "for The Bronx cases": the attributive slot drops
+// the city's own article; the headings and link labels keep the name as written.
+import { cityAttr } from "@/data/geo-prose.mjs";
 import {
   hasServiceCityPages,
   nearestCities,
@@ -60,7 +63,7 @@ export default function ServiceCityCrossLinks({
             Other Services in {city.name}
           </h2>
           <p className="text-neutral-600 mb-5">
-            {ORG_NAME} offers complementary economic damages services for {city.name} cases.
+            {ORG_NAME} offers complementary economic damages services for {cityAttr(city.name)} cases.
           </p>
           <div className="grid gap-2 sm:grid-cols-2">
             {siblingServices.map((s) => (

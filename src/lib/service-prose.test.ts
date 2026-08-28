@@ -26,6 +26,11 @@ describe("workPhrase", () => {
     expect(workPhrase("Business Valuation")).toBe("business valuation");
     expect(workPhrase("Life Care Plan Costing")).toBe("life care plan costing");
   });
+
+  it("spells out the work where the bare short name would name the injury instead", () => {
+    expect(workPhrase("Personal Injury")).toBe("personal injury economic damages analysis");
+    expect(workPhrase("personal injury")).toBe("personal injury analysis");
+  });
 });
 
 describe("withArticle", () => {

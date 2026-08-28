@@ -20,15 +20,28 @@ export function proseName(shortName) {
 }
 
 /**
+ * Short names whose bare form plus " analysis" would misname the work:
+ * "personal injury analysis" reads as an analysis of the injury rather than
+ * of the economic damages, so that pillar's work is spelled out in full.
+ * Keyed by Service.shortName exactly as written in services.ts.
+ */
+const WORK_PHRASE_OVERRIDES = {
+  "Personal Injury": "personal injury economic damages analysis",
+};
+
+/**
  * Noun phrase for the work a pillar performs ("wrongful death analysis").
  * Most short names are loss subjects rather than work, so they take
  * " analysis"; the ones that already end in a work noun (Divorce Financial
  * Analysis, Business Valuation, Life Care Plan Costing) are used as-is so a
- * template never prints "analysis analysis".
+ * template never prints "analysis analysis"; the ones in
+ * WORK_PHRASE_OVERRIDES are spelled out.
  * @param {string} shortName
  * @returns {string}
  */
 export function workPhrase(shortName) {
+  const override = WORK_PHRASE_OVERRIDES[shortName];
+  if (override) return override;
   const name = proseName(shortName);
   return /(analysis|valuation|costing)$/.test(name) ? name : `${name} analysis`;
 }

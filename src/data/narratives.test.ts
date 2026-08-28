@@ -159,6 +159,13 @@ describe("economics geo narratives", () => {
     expect(n.blurb).toContain("heard in the Superior Court of the District of Columbia.");
     expect(n.blurb).not.toMatch(/sitting in District of Columbia/);
     expect(`${n.directAnswer} ${n.blurb}`).not.toMatch(DOUBLED_ARTICLE);
+    // One form of the venue on the city pages: the narrative sentence and the
+    // service-city hero both read "Washington, the District of Columbia".
+    expect(n.directAnswer).toContain("for cases venued in Washington, the District of Columbia.");
+    expect(n.directAnswer).not.toContain("Washington, District of Columbia");
+    expect(serviceCityDirectAnswer(ORG_NAME, svc.shortName, dc.name, "Washington", n)).toContain(
+      "for cases venued in Washington, the District of Columbia.",
+    );
   });
 
   it("no geo template mis-articles a state, city, or service name (every state, largest city, every pillar)", () => {

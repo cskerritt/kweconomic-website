@@ -16,7 +16,7 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
-import { placeName } from "@/data/geo-prose.mjs";
+import { cityAttr, placeName } from "@/data/geo-prose.mjs";
 import { proseName } from "@/lib/service-prose.mjs";
 import { getCityNarrative, serviceCityDirectAnswer } from "@/data/narratives";
 import { serviceCityGeographicFaqs } from "@/data/geographicFaqs";
@@ -76,8 +76,11 @@ export default function ServiceStateCity() {
 
   const narrative = getCityNarrative(state, city.name, city.slug, city.county, { msaName: city.msaName });
   const faqs = serviceCityGeographicFaqs(service, state.name, city.name);
-  // "the District of Columbia" after "in"; states as-is.
+  // "the District of Columbia" after "in"; states as-is. "The Bronx" drops
+  // its own article in the attributive slot ("wage data for the Bronx area")
+  // and keeps it everywhere else ("throughout The Bronx", "in The Bronx, NY").
   const place = placeName(state.name);
+  const cityA = cityAttr(city.name);
   const directAnswer = serviceCityDirectAnswer(ORG_NAME, service.shortName, state.name, city.name, narrative);
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
   const motion = serviceMotion(service.slug);
@@ -175,7 +178,7 @@ export default function ServiceStateCity() {
               <p className="text-neutral-700 leading-relaxed">
                 {ORG_NAME} serves counsel throughout {city.name} and the surrounding{" "}
                 {city.county ? city.county : state.name} area. Our economists measure earnings, fringe
-                benefits, and household services against wage data for the {city.name} area and the
+                benefits, and household services against wage data for the {cityA} area and the
                 plaintiff's own records, and are familiar with the court system and disclosure
                 requirements that affect {proseName(service.shortName)} engagements in {place}.
               </p>

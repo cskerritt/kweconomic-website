@@ -88,7 +88,8 @@ describe("ServicePillar templated copy", () => {
       "accepts wrongful death engagements in all 50 states",
     ],
     "personal-injury-economic-damages": [
-      "Where does KW Economics provide personal injury analysis?",
+      "Where does KW Economics provide personal injury economic damages analysis?",
+      "objective personal injury economic damages analysis for plaintiff and defense counsel",
     ],
     "household-services-valuation": [
       "Where does KW Economics provide household services analysis?",
@@ -140,7 +141,7 @@ describe("ServicePillar templated copy", () => {
   // and names the work performed, not the loss subject.
   const CASE_TYPE_INTRO_PINS: Record<string, string> = {
     "wrongful-death-economic-loss": "How wrongful death analysis applies to the specific demands of each case type",
-    "personal-injury-economic-damages": "How personal injury analysis applies to the specific demands of each case type",
+    "personal-injury-economic-damages": "How personal injury economic damages analysis applies to the specific demands of each case type",
     "fraud-and-asset-tracing": "How fraud and tracing analysis applies to the specific demands of each case type",
     "business-valuation": "How business valuation applies to the specific demands of each case type",
     "life-care-plan-cost-projection": "How life care plan costing applies to the specific demands of each case type",

@@ -200,7 +200,7 @@ export function buildCityNarrative(input) {
     anchor = `For ${cityName}, the analysis uses wage data for the metropolitan or nonmetropolitan area that covers ${county ?? cityName} rather than a statewide average, so the earnings and household-services components reflect the plaintiff's own market.`;
   }
   const directAnswer = [
-    `${orgName} prepares economic damages analyses for cases venued in ${cityName}, ${stateName}.`,
+    `${orgName} prepares economic damages analyses for cases venued in ${cityName}, ${placeName(stateName)}.`,
     anchor,
     "Plaintiff and defense.",
   ].join(" ");

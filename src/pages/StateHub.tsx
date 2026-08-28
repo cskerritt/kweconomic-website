@@ -29,6 +29,17 @@ import EconomicContextWidget from "@/components/EconomicContextWidget";
 import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
 import { Award, Users } from "lucide-react";
+import type { State } from "@/types";
+
+// Hero eyebrow. The District of Columbia is a federal district (type
+// "district"); it carries region "territory" in states.ts only so that the
+// directory groups it with the territories, so the label branches on type
+// before the region fallback. Every state reads its region name.
+function jurisdictionLabel(state: State): string {
+  if (state.type === "district") return "Federal District";
+  if (state.region === "territory") return "U.S. Territory";
+  return state.region.charAt(0).toUpperCase() + state.region.slice(1);
+}
 
 export default function StateHub() {
   const { stateSlug } = useParams<{ stateSlug: string }>();
@@ -100,7 +111,7 @@ export default function StateHub() {
           </div>
           <div className="max-w-3xl">
             <p className="text-amber-light text-sm font-semibold uppercase tracking-wider mb-3">
-              {state.region !== "territory" ? state.region.charAt(0).toUpperCase() + state.region.slice(1) : "U.S. Territory"} &middot; {state.abbreviation}
+              {jurisdictionLabel(state)} &middot; {state.abbreviation}
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-4">
               Forensic Economists in {place}

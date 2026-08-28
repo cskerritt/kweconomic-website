@@ -7,6 +7,7 @@ import { getServiceBySlug, pillarServices } from "@/data/services";
 import { workPhrase } from "@/lib/service-prose.mjs";
 import { getStateBySlug } from "@/data/states";
 import { newJerseyCities } from "@/data/cities/new-jersey";
+import { newYorkCities } from "@/data/cities/new-york";
 
 const service = getServiceBySlug("lost-earnings-and-earning-capacity")!;
 const state = getStateBySlug("new-jersey")!;
@@ -87,10 +88,15 @@ describe("ServiceCityCrossLinks sentence prose for every pillar", () => {
       );
       expect(html).toContain(`We also provide ${workPhrase(pillar.shortName)} in these New Jersey communities.`);
       expect(html).not.toMatch(/We also provide [^.]*&amp;/);
-      // The lowercased full name is a seam only where it differs from the
-      // work phrase (for Business Valuation the two coincide).
-      if (pillar.name.toLowerCase() !== workPhrase(pillar.shortName)) {
-        expect(html).not.toContain(`We also provide ${pillar.name.toLowerCase()}`);
+      // The lowercased full name is a seam only where it is not the work
+      // phrase itself (for Business Valuation the two coincide) or its opening
+      // words ("personal injury economic damages analysis").
+      const lowered = pillar.name.toLowerCase();
+      const work = workPhrase(pillar.shortName);
+      if (!work.startsWith(lowered)) {
+        expect(html).not.toContain(`We also provide ${lowered}`);
+      } else if (lowered !== work) {
+        expect(html).not.toContain(`We also provide ${lowered} in these`);
       }
     });
   }
@@ -105,6 +111,31 @@ describe("ServiceCityCrossLinks sentence prose for every pillar", () => {
     );
     expect(html).toContain("Fraud &amp; Tracing in Nearby New Jersey Cities");
     expect(html).toContain("We also provide fraud and tracing analysis in these New Jersey communities.");
+  });
+});
+
+describe("ServiceCityCrossLinks in The Bronx", () => {
+  // The one prerendered city whose name carries its own article: the
+  // attributive slot drops it, the heading and the link labels keep it.
+  const newYork = getStateBySlug("new-york")!;
+  const bronx = newYorkCities.find((c) => c.slug === "the-bronx")!;
+  const html = renderToStaticMarkup(
+    createElement(
+      MemoryRouter,
+      null,
+      createElement(ServiceCityCrossLinks, { service, state: newYork, city: bronx, cities: newYorkCities }),
+    ),
+  );
+
+  it("renders the sibling-services block (The Bronx is inside the service-city window)", () => {
+    expect(html).toContain('href="/services/wrongful-death-economic-loss/new-york/the-bronx"');
+  });
+
+  it("drops the borough's article in the attributive slot and keeps it in the heading and labels", () => {
+    expect(html).toContain("Other Services in The Bronx");
+    expect(html).toContain("KW Economics offers complementary economic damages services for Bronx cases.");
+    expect(html).toContain("Wrongful Death in The Bronx");
+    expect(html).not.toContain("for The Bronx cases");
   });
 });
 

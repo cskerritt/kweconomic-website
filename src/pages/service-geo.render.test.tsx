@@ -6,7 +6,7 @@ import StateHub from "./StateHub";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { pillarServices } from "@/data/services";
 import { getStateBySlug } from "@/data/states";
-import { placeAttr, placeName } from "@/data/geo-prose.mjs";
+import { cityAttr, placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
 import { proseName, workPhrase } from "@/lib/service-prose.mjs";
 import {
@@ -42,6 +42,12 @@ import {
 // Economic Loss"). And every slot after in/across/throughout reads the
 // District of Columbia with its article, as the H1 already does.
 //
+// The Bronx is the one prerendered city whose name carries its own article,
+// so the attributive slots ("wage data for the Bronx area", "for Bronx
+// cases") go through cityAttr() while the headings keep "The Bronx"; the
+// doubled-word guard runs over the whole visible page for every sampled city
+// so "the The Bronx" cannot come back in any paragraph.
+//
 // ServiceStateCity resolves its city from useStateCities, an effect-driven
 // per-state chunk load that never settles under renderToStaticMarkup (the
 // page would render <Loading /> forever). The hook is replaced with a
@@ -52,10 +58,12 @@ vi.mock("@/hooks/use-state-cities", async () => {
   const { newJerseyCities } = await import("@/data/cities/new-jersey");
   const { texasCities } = await import("@/data/cities/texas");
   const { districtOfColumbiaCities } = await import("@/data/cities/district-of-columbia");
+  const { newYorkCities } = await import("@/data/cities/new-york");
   const BY_STATE: Record<string, City[]> = {
     "new-jersey": newJerseyCities,
     texas: texasCities,
     "district-of-columbia": districtOfColumbiaCities,
+    "new-york": newYorkCities,
   };
   return {
     useStateCities: (stateSlug?: string) => ({
@@ -98,18 +106,24 @@ function credentialsIntro(html: string): string {
   return m ? visibleText(m[1]).trim() : "";
 }
 
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 /** Every way a template could print a service name as the thing supplied.
- * The lowercased full name is a seam only where it differs from the work
- * phrase (for Business Valuation the two coincide, and that is correct). */
-function rawServiceSeams(service: { name: string; shortName: string }): string[] {
+ * The lowercased full name is a seam only where it is not the work phrase
+ * itself (for Business Valuation the two coincide) or its opening words
+ * ("provides personal injury economic damages analysis" is the work;
+ * "provides personal injury economic damages for" is the seam). */
+function rawServiceSeams(service: { name: string; shortName: string }): RegExp[] {
   const seams = [
-    `provide ${service.name}`,
-    `provides ${service.name}`,
-    `provide ${service.shortName}`,
-    `provides ${service.shortName}`,
-    `${service.shortName} from ${ORG_NAME}`,
+    new RegExp(`provides? ${escapeRe(service.name)}`),
+    new RegExp(`provides? ${escapeRe(service.shortName)}`),
+    new RegExp(`${escapeRe(service.shortName)} from ${escapeRe(ORG_NAME)}`),
   ];
-  if (service.name.toLowerCase() !== workPhrase(service.shortName)) seams.push(`provides ${service.name.toLowerCase()}`);
+  const lowered = service.name.toLowerCase();
+  const work = workPhrase(service.shortName);
+  const rest = work.startsWith(lowered) ? work.slice(lowered.length) : undefined;
+  // "(?!)" never matches, so a full name that is the work phrase adds no seam.
+  seams.push(new RegExp(`provides ${escapeRe(lowered)}(?!${rest === undefined ? "" : escapeRe(rest)})`));
   return seams;
 }
 
@@ -117,6 +131,7 @@ const STATES = ["new-jersey", "texas"] as const;
 const CITIES = [
   { stateSlug: "new-jersey", citySlug: "hackensack", cityName: "Hackensack" },
   { stateSlug: "texas", citySlug: "houston", cityName: "Houston" },
+  { stateSlug: "new-york", citySlug: "the-bronx", cityName: "The Bronx" },
 ] as const;
 
 describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
@@ -144,9 +159,9 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
             `${ORG_NAME} provides ${work} for matters venued in ${place}. Forensic economists measuring lost earnings, household services, and business damages against ${placeAttr(state.name)} wage data and the jurisdiction's damages rules, for plaintiff and defense counsel across ${place}.`,
           );
           for (const seam of rawServiceSeams(service)) {
-            expect(text).not.toContain(seam);
-            expect(description).not.toContain(seam);
-            expect(jsonLdBlocks(html)).not.toContain(seam);
+            expect(text).not.toMatch(seam);
+            expect(description).not.toMatch(seam);
+            expect(jsonLdBlocks(html)).not.toMatch(seam);
           }
         });
 
@@ -155,7 +170,7 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
           expect(faqText(html)).toContain(question);
           expect(faqLdStrings(html)).toContain(question);
           expect(faqText(html)).toContain(`Yes. ${ORG_NAME} provides ${work} for attorneys handling matters venued in ${place},`);
-          for (const s of faqLdStrings(html)) for (const seam of rawServiceSeams(service)) expect(s).not.toContain(seam);
+          for (const s of faqLdStrings(html)) for (const seam of rawServiceSeams(service)) expect(s).not.toMatch(seam);
         });
 
         it("introduces the chips as qualifications that bear on the testimony, not as held certifications", () => {
@@ -214,9 +229,9 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           expect(title).toBe(`${service.shortName} in ${cityName}, ${state.abbreviation} | ${ORG_NAME}`);
           expect(description.startsWith(`${ORG_NAME} provides ${work} for cases venued in ${cityName}, `)).toBe(true);
           for (const seam of rawServiceSeams(service)) {
-            expect(text).not.toContain(seam);
-            expect(description).not.toContain(seam);
-            expect(jsonLdBlocks(html)).not.toContain(seam);
+            expect(text).not.toMatch(seam);
+            expect(description).not.toMatch(seam);
+            expect(jsonLdBlocks(html)).not.toMatch(seam);
           }
         });
 
@@ -224,7 +239,7 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           const question = `Does ${ORG_NAME} provide ${work} in ${cityName}, ${place}?`;
           expect(faqText(html)).toContain(question);
           expect(faqLdStrings(html)).toContain(question);
-          for (const s of faqLdStrings(html)) for (const seam of rawServiceSeams(service)) expect(s).not.toContain(seam);
+          for (const s of faqLdStrings(html)) for (const seam of rawServiceSeams(service)) expect(s).not.toMatch(seam);
         });
 
         it("names the work in the nearby-cities cross-link sentence and the local-context paragraph", () => {
@@ -232,6 +247,15 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           expect(text).toContain(
             `requirements that affect ${proseName(service.shortName)} engagements in ${place}.`,
           );
+        });
+
+        it("reads the city name attributively where it modifies a noun and as written elsewhere", () => {
+          const attr = cityAttr(cityName);
+          expect(text).toContain(`serves counsel throughout ${cityName} and the surrounding`);
+          expect(text).toContain(`against wage data for the ${attr} area and the plaintiff's own records`);
+          expect(text).toContain(`Other Services in ${cityName}`);
+          expect(text).toContain(`offers complementary economic damages services for ${attr} cases.`);
+          expect(faqText(html)).toContain(`common to ${attr} matters.`);
         });
 
         it("introduces the chips as qualifications that bear on the testimony, not as held certifications", () => {
@@ -254,6 +278,9 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
             expect(excerpt(t, DOUBLED_WORD)).toBeUndefined();
             expect(excerpt(t, MIS_ARTICLE)).toBeUndefined();
           }
+          // The whole visible page, so a seam in any paragraph ("the The
+          // Bronx area") is caught, not only the sentences pinned above.
+          expect(excerpt(text, DOUBLED_WORD)).toBeUndefined();
         });
       });
     }
@@ -287,6 +314,29 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
     );
     expect(faqText(wdCity.html)).not.toContain("Wrongful Death Economic Loss in Houston");
     expect(visibleText(wdCity.html)).toContain("We also provide wrongful death analysis in these Texas communities.");
+  });
+
+  it("drops The Bronx's article in the attributive slots and keeps it in the headings and venue slots", () => {
+    const { html, description } = render(
+      "/services/wrongful-death-economic-loss/new-york/the-bronx",
+      CITY_ROUTE,
+      ServiceStateCity,
+    );
+    const text = visibleText(html);
+    expect(html).not.toContain("Loading...");
+    expect(text).toContain("in The Bronx, NY");
+    expect(text).toContain("Wrongful Death in The Bronx");
+    expect(text).toContain("Other Services in The Bronx");
+    expect(text).toContain("KW Economics provides wrongful death analysis for cases venued in The Bronx, New York.");
+    expect(text).toContain("serves counsel throughout The Bronx and the surrounding Bronx County area.");
+    expect(text).toContain("against wage data for the Bronx area and the plaintiff's own records");
+    expect(text).toContain("KW Economics offers complementary economic damages services for Bronx cases.");
+    expect(faqText(html)).toContain("Does KW Economics provide wrongful death analysis in The Bronx, New York?");
+    expect(faqText(html)).toContain("How are Bronx wage levels and cost of living handled in the analysis?");
+    expect(text).not.toContain("the The Bronx");
+    expect(text).not.toContain("for The Bronx cases");
+    expect(excerpt(text, DOUBLED_WORD)).toBeUndefined();
+    expect(excerpt(description, DOUBLED_WORD)).toBeUndefined();
   });
 });
 
@@ -362,7 +412,27 @@ describe("District of Columbia place name on the geo templates", () => {
       expect(text).toContain(slot);
     }
     expect(jsonLdBlocks(html)).toContain("Economic Damages Services in the District of Columbia");
+    // A federal district, not a territory: states.ts groups it under region
+    // "territory" for the directory only.
+    expect(text).toContain("Federal District \u00b7 DC");
+    expect(text).not.toContain("Territory");
   });
+});
+
+// The hero eyebrow names the kind of jurisdiction: a state's region, "Federal
+// District" for the District of Columbia, "U.S. Territory" for the islands.
+describe("StateHub hero eyebrow", () => {
+  for (const [slug, label] of [
+    ["new-jersey", "Northeast \u00b7 NJ"],
+    ["texas", "West \u00b7 TX"],
+    ["district-of-columbia", "Federal District \u00b7 DC"],
+    ["puerto-rico", "U.S. Territory \u00b7 PR"],
+  ] as const) {
+    it(`/locations/${slug} reads "${label}"`, () => {
+      const { html } = render(`/locations/${slug}`, HUB_ROUTE, StateHub);
+      expect(visibleText(html)).toContain(label);
+    });
+  }
 });
 
 // The state hub's "Expert Credentials in {state}" section links the same
