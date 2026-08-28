@@ -27,7 +27,7 @@ const HOMEPAGE_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 const HOW_WE_WORK = [
   { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data, not the retaining party." },
   { icon: FileCheck, title: "Transparent Assumptions", text: "Every report states its earnings base, growth rate, worklife horizon, discount rate, and data sources so the other side can recompute the figure." },
-  { icon: Scale, title: "Court-Tested Methods", text: "Present value, worklife expectancy, and valuation methods drawn from the forensic economics literature and applied the same way in every venue." },
+  { icon: Scale, title: "Established Methods", text: "Present value, worklife expectancy, and valuation methods drawn from the forensic economics literature and applied the same way in every venue." },
   { icon: MapPin, title: "Nationwide Practice", text: "Engagements in all 50 states, the District of Columbia, and U.S. territories, with state and metro wage, cost of living, and damages-rule context." },
 ];
 
@@ -91,7 +91,7 @@ export default function Home() {
                 Forensic Economists and Damages Experts
               </p>
               <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] mb-6">
-                Economic Damages Analysis That <span className="kw-gradient-text">Holds Up in Court</span>
+                Economic Damages Analysis Built on <span className="kw-gradient-text">Transparent Methods</span>
               </h1>
               <p className="kw-enter kw-enter-2 text-lg md:text-xl text-neutral-300 mb-8 leading-relaxed max-w-xl">
                 {ORG_NAME} delivers independent lost earnings, wrongful death, household services,

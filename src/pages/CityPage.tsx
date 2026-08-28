@@ -50,7 +50,7 @@ function buildCityIntro(city: City, state: State): string {
   } else {
     role = `Counsel across ${city.county} retain ${ORG_NAME} for objective lost earnings, wrongful death, household services, and business damages analyses.`;
   }
-  const close = `${ORG_NAME} prepares court-admissible economic damages reports for ${city.name} attorneys and insurers, grounded in ${state.name}'s expert evidence standards and damages rules and measured against wage data for the ${cityAttr(city.name)} area.`;
+  const close = `${ORG_NAME} prepares independent economic damages reports for ${city.name} attorneys and insurers, grounded in ${state.name}'s expert evidence standards and damages rules and measured against wage data for the ${cityAttr(city.name)} area.`;
   return `${lead} ${role} ${close}`;
 }
 

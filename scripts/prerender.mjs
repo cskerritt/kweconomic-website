@@ -382,7 +382,7 @@ const corePages = [
     description:
       "Independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense attorneys in all 50 states.",
     innerHtml:
-      `<h1>Economic Damages Analysis That Holds Up in Court</h1>` +
+      `<h1>Economic Damages Analysis Built on Transparent Methods</h1>` +
       `<p>${ORG_NAME} delivers independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
       `<p>Engagements accepted in all 50 states, the District of Columbia, and U.S. territories. Headquarters in Hackensack, NJ with a Richmond, VA office. <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>.</p>` +
       // FAQ block - the same copy Home.tsx renders (shared src/data/home-faqs.mjs).
