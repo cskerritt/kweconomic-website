@@ -120,9 +120,12 @@ function templateMeta(file) {
 const TEMPLATED_ROUTES = {
   "`/case-types/${c.slug}`": "CaseTypeHub.tsx",
   "`/case-types/${c.slug}/${s.slug}`": "CaseTypeState.tsx",
+  // CredentialHub.tsx describes with truncateAtWord(scope), not a literal, so
+  // only the credential x state template is pinned here.
+  "`/credentials/${c.slug}/${s.slug}`": "CredentialState.tsx",
 };
 
-describe("prerender shells mirror the templated case-type page meta", () => {
+describe("prerender shells mirror the templated case-type and credential page meta", () => {
   for (const [pathLiteral, file] of Object.entries(TEMPLATED_ROUTES)) {
     it(`${pathLiteral} title + description match ${file}`, () => {
       expect(prerenderTemplateMeta(pathLiteral)).toEqual(templateMeta(file));

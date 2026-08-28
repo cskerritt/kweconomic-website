@@ -1,5 +1,33 @@
 import type { Faq, Source } from "./types";
+import { refsToSources } from "./references";
+import { states } from "./states";
 
+/**
+ * KW Economics credentials.
+ *
+ * One family of four pages, membership- and education-based rather than
+ * certification-based, because no state licenses forensic economists and no
+ * single certification defines the field. Each page explains what the
+ * credential establishes about a damages expert, what it does not establish,
+ * and how courts weigh it. Copy is written from the economist's standpoint.
+ *
+ * Copy rules: citation-free prose (no statute, rule, or case cites), hyphens
+ * only, no invented statistics, no LCP or vocational vocabulary, and NEVER a
+ * claim that a named person holds an association membership. Whether the
+ * team's economists currently hold NAFE or AAEFE membership is a
+ * facts-to-confirm item (README); until confirmed, the membership pages carry
+ * `expertSlugs: []` and describe the association, not the roster.
+ * `sources` come from the registry in references.ts only.
+ *
+ * Build scripts (scripts/prerender.mjs, scripts/generate-sitemap.mjs,
+ * scripts/generate-extra-sitemaps.mjs) read this file as text and pair
+ * `slug:` with `name:` and `abbreviation:` in file order, so keep those as the
+ * first three fields of every entry and never spell `slug:`/`name:` elsewhere.
+ *
+ * `stateReciprocity` is "na" for every state: these are national credentials
+ * and no state licensure applies. Templates render "na" as
+ * "Recognized nationally; no state licensure applies".
+ */
 export interface Credential {
   slug: string;
   name: string;
@@ -15,318 +43,172 @@ export interface Credential {
   sources: Source[];
 }
 
+/** Every state, district, and territory slug mapped to "na" (no state licensure). */
+function nationalOnly(): Record<string, "na"> {
+  return Object.fromEntries(states.map((s) => [s.slug, "na" as const]));
+}
+
 export const credentials: Credential[] = [
   {
-    slug: "clcp",
-    name: "Certified Life Care Planner",
-    abbreviation: "CLCP",
-    issuer: "International Commission on Health Care Certification",
-    issuerUrl: "https://www.ichcc.org/",
+    slug: "forensic-economist",
+    name: "Forensic Economics Expert Witness",
+    abbreviation: "Forensic Economist",
     scope:
-      "The CLCP is the most widely held certification for life care planners. Scope includes the development of comprehensive, individualized life care plans for people with catastrophic injury or chronic illness, documenting every category of future care with its frequency, duration, and cost, and defending that plan through report, deposition, and trial testimony.",
+      "A forensic economist measures economic loss for litigation: the earnings, benefits, household services, business income, or asset value that a person or company lost because of an injury, a death, a wrongful employment action, a breach of contract, or a fraud, reduced to present value as of the date of trial or settlement. The role is defined by training and method rather than by a license. Its foundation is graduate study in economics, finance, or business, applied through a damages methodology that the profession has published and tested in peer-reviewed journals, and proven through reports that hold up at deposition and under cross-examination. The economist does not diagnose an injury, rate an impairment, or decide what work a person can still do; those opinions come from physicians and other retained experts, and the economist converts them into dollars with stated assumptions and identified data sources.",
     requirements: [
-      "Qualifying healthcare or rehabilitation credential (for example RN, OT, PT, CRC, or physician)",
-      "Completion of a 120-hour post-graduate life care planning training program",
-      "Qualifying professional experience per ICHCC eligibility criteria",
-      "Passing score on the CLCP examination",
-      "Continuing education and renewal every five years",
+      "Graduate training in economics, finance, or business - an MBA, a master's degree, or a doctorate with coursework in microeconomic theory, statistics or econometrics, and financial mathematics",
+      "Command of the applied damages methodology: worklife expectancy, wage growth, fringe benefit valuation, household services, present value discounting, and mitigation and offsets",
+      "Working knowledge of the published literature and professional standards, including the peer-reviewed journals of the forensic economics associations",
+      "Experience preparing damages reports and testifying at deposition and trial for both plaintiff and defense",
+      "Adherence to a professional ethics statement that requires the same methods regardless of which side retains the economist",
     ],
     admissibilityHistory:
-      "CLCP-authored plans are routinely accepted in state and federal courts when they follow published life care planning standards, rest on treating-team recommendations, and document frequency, duration, and cost sources for each item. Challenges typically target the clinical foundation for specific items rather than the credential itself.",
-    stateReciprocity: {},
-    expertSlugs: ["jesse-wolstein", "paul-bourgeois", "daniel-wolstein", "christopher-skerritt", "matthew-putts"],
-    faqs: [
-      {
-        question: "Does a CLCP require a prior clinical credential?",
-        answer:
-          "Yes. CLCP candidates must hold a qualifying healthcare or rehabilitation credential, such as RN, OT, PT, CRC, or physician, before completing the training and examination.",
-      },
-      {
-        question: "How is life care planning methodology standardized?",
-        answer:
-          "Practice standards published by the profession's organizations call for a consistent process: record review, evaluee interview, consultation with treating providers, itemized recommendations with frequency and duration, and cost research from identified sources. A CLCP plan should be traceable at every line.",
-      },
-      {
-        question: "Can a CLCP testify on causation?",
-        answer:
-          "Causation opinions come from physicians. The CLCP projects care consistent with physician-supported recommendations and testifies to the needs, frequencies, durations, and costs in the plan.",
-      },
-      {
-        question: "How does a CLCP differ from a nurse or physician who prepares plans?",
-        answer:
-          "The CLCP is a specialty certification layered on a clinical or rehabilitation background. Nurses, physicians, and rehabilitation counselors can all hold it; the certification documents training and examination in life care planning methodology specifically.",
-      },
-    ],
-    sources: [
-      { title: "ICHCC - Certified Life Care Planner (CLCP)", url: "https://www.ichcc.org/certified-life-care-planner-clcp.html", type: "org" },
-      { title: "IARP Life Care Planning Section", url: "https://rehabpro.org/sections/lcp", type: "org" },
-    ],
-  },
-  {
-    slug: "cnlcp",
-    name: "Certified Nurse Life Care Planner",
-    abbreviation: "CNLCP",
-    issuer: "CNLCP Certification Board",
-    issuerUrl: "https://www.cnlcp.org/",
-    scope:
-      "The CNLCP certifies registered nurses in life care planning grounded in the nursing process: assessment, nursing diagnosis, planning, implementation, and evaluation. Nurse life care planners bring hands-on clinical knowledge of medications, supplies, skilled care, and daily care routines to the documentation of future needs, frequencies, and costs.",
-    requirements: [
-      "Active, unrestricted registered nurse license",
-      "Completion of required life care planning education hours",
-      "Documented nursing and life care planning experience",
-      "Passing score on the CNLCP examination",
-      "Continuing education and periodic recertification",
-    ],
-    admissibilityHistory:
-      "CNLCP-authored plans are routinely accepted where the nurse planner documents methodology and the clinical foundation for each recommendation. The nursing license and the certification together establish qualification to describe care needs; physician recommendations remain the source for medical items.",
-    stateReciprocity: {},
-    expertSlugs: [],
-    faqs: [
-      {
-        question: "How does the CNLCP differ from the CLCP?",
-        answer:
-          "Both certify life care planning competence. The CNLCP is open only to registered nurses and frames the plan around the nursing process; the CLCP is open to several clinical and rehabilitation disciplines. Many nurse planners hold both.",
-      },
-      {
-        question: "What does a nurse life care planner add to a catastrophic injury case?",
-        answer:
-          "Practical knowledge of skilled nursing tasks, supply quantities, medication administration, and the daily routines of bowel, bladder, skin, and respiratory care, which makes the attendant care and supply sections of a plan concrete and defensible.",
-      },
-      {
-        question: "Can a CNLCP testify to future medical costs?",
-        answer:
-          "Yes, to the projected cost of the care documented in the plan, using stated cost sources. Opinions on the medical necessity of a treatment come from the treating or examining physician.",
-      },
-    ],
-    sources: [
-      { title: "CNLCP Certification Board", url: "https://www.cnlcp.org/", type: "org" },
-      { title: "AANLCP - Nurse Life Care Planning Standards of Practice", url: "https://www.aanlcp.org/nurse-life-care-planning-standards-of-practice/", type: "org" },
-    ],
-  },
-  {
-    slug: "mscc",
-    name: "Medicare Set-Aside Certified Consultant",
-    abbreviation: "MSCC",
-    issuer: "International Commission on Health Care Certification",
-    issuerUrl: "https://www.ichcc.org/",
-    scope:
-      "The MSCC certifies professionals in the preparation of Medicare Set-Aside allocations for workers' compensation and liability settlements. Scope includes identifying injury-related, Medicare-covered future care, pricing it under the applicable fee schedule, and documenting the allocation in a form that satisfies Medicare's review process and protects the parties' interests.",
-    requirements: [
-      "Qualifying professional credential in a health care, rehabilitation, legal, or insurance discipline",
-      "Completion of an approved Medicare Set-Aside training program",
-      "Passing score on the MSCC examination",
-      "Continuing education and periodic renewal",
-    ],
-    admissibilityHistory:
-      "Medicare Set-Aside reports are primarily settlement and compliance documents rather than trial exhibits. Testimony arises when the allocation methodology is disputed, for example over which future care is injury-related or Medicare-covered, and in that setting the MSCC's documented methodology and pricing sources are what is examined.",
-    stateReciprocity: {},
+      "Economic damages testimony is evaluated under the reliability standards that federal courts and most state courts apply to expert opinion: the court asks whether the witness is qualified by education and experience, whether the method is one the profession recognizes and has tested, and whether it was applied to the facts of the case rather than to assumptions the record does not support. Forensic economists have a long history of admission on lost earnings, wrongful death, household services, and present value questions. When an opinion is limited or excluded, the reason is typically an input without record support, such as an unsupported work-capacity or life expectancy assumption, rather than any doubt about the discipline itself.",
+    stateReciprocity: nationalOnly(),
     expertSlugs: ["christopher-skerritt"],
     faqs: [
       {
-        question: "When is a Medicare Set-Aside required?",
+        question: "Is forensic economist a licensed title?",
         answer:
-          "When a settlement closes future medical benefits and the claimant is a Medicare beneficiary or has a reasonable expectation of enrollment within the period Medicare's guidance addresses. Counsel and the MSCC confirm the review thresholds and current guidance for the specific settlement.",
+          "No. No state licenses forensic economists and no single certification defines the field. Qualification is established in each case from the witness's education, training, published methods, and testimony history, which is why these pages document those elements rather than a license number.",
       },
       {
-        question: "How does a Medicare Set-Aside relate to a life care plan?",
+        question: "What education does a forensic economist need?",
         answer:
-          "Both project future injury-related care from the same records and physician recommendations. The set-aside is limited to Medicare-covered items priced under the fee schedule; the life care plan covers all reasonable future care at the pricing appropriate to the case.",
+          "Graduate training in economics, finance, or business is the norm. The specific degree matters less than whether the coursework covered the tools that damages work relies on: the microeconomics of wages and labor supply, statistics, financial mathematics, and the interpretation of government data series on earnings, benefits, and time use.",
       },
       {
-        question: "Can an MSCC prepare allocations for liability settlements as well as workers' compensation?",
+        question: "How does a forensic economist differ from a forensic accountant?",
         answer:
-          "Yes. The methodology is similar, though liability allocations involve additional judgment about apportionment and the absence of a formal review program comparable to the workers' compensation process.",
+          "The two overlap in commercial damages. A forensic economist projects what would have happened absent the wrongful act, using economic theory, wage and market data, and discounting. A forensic accountant reconstructs what did happen from books, records, and transactions. Lost earnings and wrongful death work is economic; fraud tracing is accounting; lost profits and business valuation draw on both, and one practice can offer both when it has the training for each.",
+      },
+      {
+        question: "Can a forensic economist testify about what work an injured person can do?",
+        answer:
+          "No. The economist takes the work-capacity opinion from the treating physicians and the retained rehabilitation expert and prices its consequences: the wage difference, the lost benefits, the shortened worklife. Keeping that boundary clear is one of the first things opposing counsel tests at deposition, and a report that respects it is far harder to challenge.",
       },
     ],
-    sources: [
-      { title: "ICHCC - Medicare Set-Aside Certified Consultant (MSCC)", url: "https://www.ichcc.org/medicare-set-aside-certified-consultant-mscc.html", type: "org" },
-      { title: "CMS - Workers' Compensation Medicare Set-Aside Arrangements", url: "https://www.cms.gov/medicare/coordination-benefits-recovery/workers-comp-set-aside-arrangements", type: "gov" },
-    ],
+    sources: refsToSources(["NAFE_ETHICS", "NAFE_JFE", "BLS_CPS"]),
   },
   {
-    slug: "cdms",
-    name: "Certified Disability Management Specialist",
-    abbreviation: "CDMS",
-    issuer: "Commission on Rehabilitation Counselor Certification",
-    issuerUrl: "https://www.crccertification.com/",
+    slug: "nafe-member",
+    name: "National Association of Forensic Economics Member",
+    abbreviation: "NAFE",
+    issuer: "National Association of Forensic Economics",
+    issuerUrl: "https://nafe.net/",
     scope:
-      "The CDMS certifies professionals in disability management: coordinating medical care, benefits, and return-to-work planning for injured workers within workers' compensation and disability systems. In life care planning the credential is relevant to workers' compensation plans, where the planner must understand fee schedules, claims administration, and how future care interacts with the benefit system.",
+      "The National Association of Forensic Economics is the principal professional association for economists who work in litigation. It publishes the Journal of Forensic Economics, the peer-reviewed journal in which the methods used for lost earnings, worklife expectancy, discounting, and household services were developed and debated, and it maintains a Statement of Ethical Principles and Principles of Professional Practice that addresses engagement, compensation, diligence, disclosure of data and methods, and consistency of method regardless of which party retains the economist. Membership signals that an economist participates in that professional discourse and has agreed to its ethics statement. It is not a certification: the association does not examine members, review their reports, or attest to their competence, and a membership line on a CV should be read alongside the education and testimony record that actually qualifies the witness.",
     requirements: [
-      "Qualifying degree or professional credential with disability management experience",
-      "Documented employment in disability management roles",
-      "Passing score on the CDMS examination",
-      "Continuing education and renewal every five years",
+      "Professional work in forensic economics or a related field - the association is open to economists, accountants, and other practitioners who prepare or review economic damages analyses",
+      "Agreement to the association's Statement of Ethical Principles and Principles of Professional Practice",
+      "Current dues and good standing with the association, confirmed with the association rather than from a CV line",
+      "No examination or peer review of work product is involved, so membership documents affiliation rather than tested competence",
     ],
     admissibilityHistory:
-      "CDMS holders most often contribute to workers' compensation matters, where opinions are presented before administrative tribunals and in settlement negotiation rather than jury trial. The credential documents familiarity with the benefit system in which the life care plan or set-aside will be used.",
-    stateReciprocity: {},
+      "Courts do not require association membership to admit economic testimony, and membership alone does not establish that an opinion is reliable. What the association contributes to admissibility is indirect. The methods published in its peer-reviewed journal are the kind of tested, criticized, and refined approaches a court looks for when it asks whether a technique has been vetted by the profession, and an economist whose report follows the ethics statement - disclosing data, assumptions, and method, and applying the same approach for plaintiff and defense - has already answered most of the questions a reliability challenge raises.",
+    stateReciprocity: nationalOnly(),
     expertSlugs: [],
     faqs: [
       {
-        question: "How does the CDMS relate to life care planning?",
+        question: "Does NAFE membership mean an economist is certified?",
         answer:
-          "It documents expertise in the workers' compensation and disability benefit environment. A planner who holds it understands how the plan's items will be paid, disputed, and settled within that system.",
+          "No. NAFE is a membership association, not a certifying body. It does not examine applicants or audit reports. Membership shows that the economist has joined the field's professional community and agreed to its ethics statement; it does not test or attest to competence.",
       },
       {
-        question: "Is the CDMS a counseling credential?",
+        question: "Why does the NAFE ethics statement matter in a damages case?",
         answer:
-          "No. It certifies disability management practice, which is a coordination and planning role. Counseling credentials such as the CRC are separate, though some professionals hold both.",
+          "Because it sets out, in the profession's own words, what a reliable damages analysis looks like: disclosed data and assumptions, methods the economist would apply the same way for either side, fees that do not depend on the outcome, and opinions offered only within the economist's competence. Counsel can hold any report, including an opposing one, up against those principles directly.",
+      },
+      {
+        question: "How do I verify that an expert is a NAFE member?",
+        answer:
+          "Ask the expert for the membership year and confirm it with the association. A CV line is a representation, not a record, and membership can lapse. This site does not represent that any particular person is a current member; ask us directly about the affiliations of the economist assigned to your matter and we will answer specifically.",
+      },
+      {
+        question: "What is the Journal of Forensic Economics?",
+        answer:
+          "The association's peer-reviewed journal. It is where much of the worklife expectancy, discounting, wage growth, and household services literature that damages reports rely on was published, refined, and criticized, which is why reports cite it when they explain their method and why courts treat those methods as tested.",
       },
     ],
-    sources: [
-      { title: "CRCC - CDMS Certification", url: "https://www.crccertification.com/", type: "org" },
-    ],
+    sources: refsToSources(["NAFE", "NAFE_ETHICS", "NAFE_JFE"]),
   },
   {
-    slug: "crc",
-    name: "Certified Rehabilitation Counselor",
-    abbreviation: "CRC",
-    issuer: "Commission on Rehabilitation Counselor Certification",
-    issuerUrl: "https://crccertification.com/",
+    slug: "aaefe-member",
+    name: "American Academy of Economic and Financial Experts Member",
+    abbreviation: "AAEFE",
+    issuer: "American Academy of Economic and Financial Experts",
+    issuerUrl: "https://aaefe.org/",
     scope:
-      "The CRC is the national certification for rehabilitation counselors. In life care planning it is one of the qualifying credentials for CLCP certification and supports the plan's coverage of rehabilitation services, assistive technology, community reintegration, supported living, and the day-program and vocational services that adults with disabilities use across the life span.",
+      "The American Academy of Economic and Financial Experts is a professional association of economists, finance academics, and accountants who serve as experts in litigation. It publishes the Journal of Legal Economics, a peer-reviewed journal on the measurement of damages in personal injury, wrongful death, employment, and commercial matters, including the discount rate, valuation, and lost profits questions that arise in business disputes, and it holds meetings at which practitioners present and critique methods. Like NAFE membership, academy membership signals participation in the field's professional discourse and is not a certification or an examination. Its value to counsel is the literature it curates: an economist who can point to the academy's journal for the method in a report has a published basis for it, and an opposing report that departs from that literature can be measured against it.",
     requirements: [
-      "Master's degree in rehabilitation counseling or a closely related field",
-      "Supervised clinical experience per CRCC criteria",
-      "Passing score on the national CRC examination",
-      "Continuing education and renewal every five years",
-      "Adherence to the CRCC Code of Professional Ethics",
+      "Professional or academic work in economics, finance, or accounting applied to litigation - the academy draws members from practice and from universities",
+      "Application to the academy and payment of dues under the terms the academy sets; confirm the current criteria with the academy directly",
+      "Engagement with the academy's meetings and journal, which is where members present, publish, and review damages methods",
+      "No examination, so membership documents affiliation and access to the literature rather than a tested qualification",
     ],
     admissibilityHistory:
-      "CRC-credentialed life care planners have a long history of acceptance in state and federal courts when the plan is grounded in treating-team recommendations, documented methodology, and stated cost sources. The credential establishes the rehabilitation foundation of the plan; medical items are supported by physician recommendation.",
-    stateReciprocity: {},
-    expertSlugs: ["paul-bourgeois", "daniel-wolstein", "matthew-putts"],
+      "Academy membership is not a prerequisite for admission and does not by itself establish the reliability of an opinion. Its relevance to admissibility runs through the literature: an economist who can show that a discount rate approach, a valuation method, or a lost profits framework has been published, criticized, and refined in the academy's journal has a ready answer to whether the method has been tested and accepted by peers. The qualification inquiry still turns on the individual witness's training and experience and on the fit between the method and the facts of the case.",
+    stateReciprocity: nationalOnly(),
+    expertSlugs: [],
     faqs: [
       {
-        question: "Is the CRC a license or a certification?",
+        question: "How does AAEFE differ from NAFE?",
         answer:
-          "The CRC is a national certification administered by CRCC. It is distinct from state licensure, though many states also license professional or rehabilitation counselors separately.",
+          "Both are membership associations for economists and financial experts in litigation, and many practitioners belong to both. NAFE publishes the Journal of Forensic Economics and maintains a formal ethics statement; the academy publishes the Journal of Legal Economics and convenes practitioners and academics around damages and valuation questions. Neither examines or certifies its members.",
       },
       {
-        question: "Why does a life care planner hold a CRC?",
+        question: "Is AAEFE membership a certification?",
         answer:
-          "The CRC is one of the recognized entry credentials to CLCP certification, and its training in disability, rehabilitation services, and community resources supports the non-medical sections of a life care plan such as supported living, day programs, and assistive technology.",
+          "No. The academy does not test applicants or review their reports. Membership shows participation in the field; it does not attest to competence, and it should be weighed with the expert's education, methods, and testimony history.",
       },
       {
-        question: "Do courts require a specific credential to testify on a life care plan?",
+        question: "Are your economists AAEFE members?",
         answer:
-          "No single credential is mandated. Qualification is assessed case by case on education, training, and experience, and the CRC combined with life care planning certification is widely accepted.",
-      },
-      {
-        question: "How often must a CRC renew?",
-        answer:
-          "Every five years, with documented continuing education meeting CRCC's requirements.",
+          "Membership is an individual affiliation, and we confirm it per economist at engagement rather than advertising it. Our analyses follow the published standards of the forensic economics associations regardless of any individual membership, and we will tell you exactly which affiliations the economist assigned to your matter holds.",
       },
     ],
-    sources: [
-      { title: "CRCC - Certification Overview", url: "https://crccertification.com/crc-certification/", type: "org" },
-      { title: "CRCC Code of Professional Ethics", url: "https://www.crccertification.com/code-of-ethics/", type: "org" },
-    ],
+    sources: refsToSources(["AAEFE", "NAFE_ETHICS"]),
   },
   {
-    slug: "md",
-    name: "Doctor of Medicine",
-    abbreviation: "M.D.",
-    issuer: "Accredited Medical Schools and State Medical Boards",
+    slug: "graduate-economics-degree",
+    name: "Graduate Economics and Business Degrees",
+    abbreviation: "MBA / M.A. / Ph.D.",
+    issuer: "Accredited Colleges and Universities",
     scope:
-      "The M.D. degree with state licensure authorizes the practice of medicine. In life care planning, physicians supply the medical foundation of the plan: diagnosis, prognosis, life expectancy considerations, and the treatment, medication, surgical, and follow-up recommendations that the planner itemizes and prices. A physician life care planner can both make and document those recommendations.",
+      "Graduate degrees in economics, finance, and business are the educational foundation of damages work. A master's or doctorate in economics supplies the theory of wages, labor supply, and market behavior that lost earnings and lost profits analyses rest on, together with the statistics and econometrics needed to use government data series correctly. An MBA or a master's in finance supplies financial mathematics, valuation, and the reading of financial statements that business valuation, lost profits, and divorce financial analyses require. Courts weigh education together with experience rather than in isolation: a doctorate does not qualify a witness to testify outside the methods they actually practice, and a master's-level economist with a record of applied damages work and testimony is routinely accepted. What matters is that the degree covered the tools the opinion uses and that the economist can explain them from first principles under cross-examination.",
     requirements: [
-      "Graduation from an accredited medical school",
-      "Completion of residency training in the relevant specialty",
-      "Active state medical license",
-      "Board certification in the relevant specialty where applicable",
-      "Continuing medical education for license renewal",
+      "A master's or doctoral degree in economics, finance, business administration, or a closely related quantitative field from an accredited institution",
+      "Graduate coursework in microeconomic theory, statistics or econometrics, and financial mathematics - the tools that worklife, growth, discounting, and valuation methods draw on",
+      "For business valuation and lost profits work, training in financial statement analysis and valuation methods, whether through the degree or through recognized valuation credentials",
+      "Continuing study of the peer-reviewed damages literature after the degree, since applied damages methods are learned largely from the literature and from practice rather than from degree coursework",
     ],
     admissibilityHistory:
-      "Physician testimony on future medical needs and prognosis is routinely admitted when the opinion is within the physician's specialty and grounded in the record. A physician-authored life care plan carries the medical recommendations and their basis in a single document, which limits disputes over whether each item has physician support.",
-    stateReciprocity: {},
-    expertSlugs: ["jesse-wolstein"],
+      "Education is the first element courts examine when an economic expert is challenged, and the inquiry is practical: does the witness's training cover the method offered? A graduate degree in economics, finance, or business ordinarily settles that question for lost earnings, present value, and household services opinions. Where challenges succeed, it is usually because the opinion strayed into a field the degree does not reach, such as medical prognosis, work capacity, or accounting reconstruction, or because the witness could not explain the mechanics of the method from the underlying theory. Experience testifying and a record of reports that have survived scrutiny weigh alongside the degree.",
+    stateReciprocity: nationalOnly(),
+    expertSlugs: ["christopher-skerritt"],
     faqs: [
       {
-        question: "Does a physician life care planner still consult the treating physicians?",
+        question: "Does a forensic economist need a Ph.D.?",
         answer:
-          "Yes. The plan documents the treating providers' recommendations and the physician planner's own review of the record. Where the two differ, the plan states the basis for the recommendation adopted.",
+          "No. A doctorate is common among academic forensic economists and helps where the dispute turns on theory or econometrics, but master's-level economists and MBA-trained analysts with applied damages experience are routinely qualified. Courts look at whether the education covers the methods actually used in the report.",
       },
       {
-        question: "Do forensic physicians need board certification?",
+        question: "How does an MBA support damages work?",
         answer:
-          "Courts do not categorically require it, but board certification in the specialty relevant to the injury is frequently persuasive on qualification.",
+          "An MBA covers financial mathematics, valuation, financial statement analysis, and the economics of firms and markets. Those are the tools of business valuation, lost profits, and commercial damages, and they also underpin the present value and fringe benefit calculations in injury and death cases.",
       },
       {
-        question: "Can a physician planner address life expectancy?",
+        question: "Do courts weigh education or experience more heavily?",
         answer:
-          "A physician can present a medical opinion on life expectancy based on the evaluee's condition, function, and the relevant literature. The plan shows the sources relied on and, where appropriate, the cost of the plan across a range of life expectancies.",
+          "Both, and together. The degree establishes that the witness was trained in the discipline; testimony history and prior reports establish that the witness applies it reliably. An expert who is strong on one and weak on the other is more exposed to challenge than one with a balanced record.",
+      },
+      {
+        question: "Can an economist with an economics degree testify on business valuation?",
+        answer:
+          "Only with training in valuation methods. Valuation has its own standards and its own body of methods, the income, market, and asset approaches, and an economist offering a valuation opinion should be able to show coursework or recognized valuation credentials that cover them, not general economic training alone.",
       },
     ],
-    sources: [{ title: "American Board of Medical Specialties", url: "https://www.abms.org/", type: "org" }],
-  },
-  {
-    slug: "rn",
-    name: "Registered Nurse",
-    abbreviation: "R.N.",
-    issuer: "State Boards of Nursing",
-    scope:
-      "Registered nurse licensure authorizes the practice of professional nursing. In life care planning, the RN is a qualifying clinical credential for both CLCP and CNLCP certification and grounds the plan in direct knowledge of skilled nursing care, medication administration, wound and skin care, supplies, and the daily routines that determine attendant care hours.",
-    requirements: [
-      "Graduation from an accredited nursing program (associate, bachelor's, or higher)",
-      "Passing score on the NCLEX-RN examination",
-      "Active, unrestricted state nursing license",
-      "Continuing education as required by the licensing state",
-    ],
-    admissibilityHistory:
-      "Nurse life care planners are routinely accepted to testify on care needs, frequencies, durations, and costs when the plan documents its methodology and the physician recommendations behind medical items. Nursing licensure is generally treated as the clinical foundation for describing care rather than a basis for medical causation opinions.",
-    stateReciprocity: {},
-    expertSlugs: ["christina-rivera"],
-    faqs: [
-      {
-        question: "What does a nurse contribute to a life care plan?",
-        answer:
-          "Clinical familiarity with the hands-on care a condition requires: skilled nursing tasks, medication and supply quantities, equipment use, and the practical hours of attendant care a person needs at each level of function.",
-      },
-      {
-        question: "Does an RN need life care planning certification to prepare plans?",
-        answer:
-          "Certification is not legally required, but the CLCP or CNLCP documents specific training and examination in life care planning methodology and is widely expected in litigation.",
-      },
-      {
-        question: "Can a nurse life care planner testify to medical necessity?",
-        answer:
-          "The nurse planner testifies to the needs documented in the plan and their cost. Opinions that a specific treatment is medically necessary or causally related come from the treating or examining physician.",
-      },
-    ],
-    sources: [
-      { title: "National Council of State Boards of Nursing", url: "https://www.ncsbn.org/", type: "org" },
-    ],
-  },
-  {
-    slug: "phd",
-    name: "Doctor of Philosophy",
-    abbreviation: "Ph.D.",
-    issuer: "Accredited Universities",
-    scope:
-      "Doctoral preparation in rehabilitation counseling, rehabilitation science, psychology, or a related field supports research fluency and advanced assessment in life care planning. Ph.D.-level planners are often called on to explain the literature behind frequency, duration, and life expectancy recommendations and to review the methodology of opposing plans.",
-    requirements: [
-      "Completion of an accredited doctoral program in a relevant discipline",
-      "Dissertation research in a relevant area",
-      "Applicable professional licensure or certification for the planner's clinical or rehabilitation practice",
-    ],
-    admissibilityHistory:
-      "Ph.D.-credentialed life care planners are accepted on the basis of doctoral preparation combined with applied credentials such as the CLCP or CRC. The degree is most persuasive where the dispute turns on research literature, methodology, or the reliability of the opposing plan.",
-    stateReciprocity: {},
-    expertSlugs: ["paul-bourgeois"],
-    faqs: [
-      {
-        question: "Is a Ph.D. required to prepare or defend a life care plan?",
-        answer:
-          "No. Master's-level and nursing professionals with life care planning certification are routinely accepted. Doctoral preparation adds research and methodological depth that is useful in contested or complex matters.",
-      },
-      {
-        question: "When is a Ph.D. planner most useful?",
-        answer:
-          "In rebuttal work, in cases where life expectancy or long-term outcome literature is contested, and in matters involving cognitive or psychological disability where assessment interpretation is central to the plan.",
-      },
-    ],
-    sources: [{ title: "U.S. Department of Education - Accreditation", url: "https://www.ed.gov/accreditation", type: "gov" }],
+    sources: refsToSources(["NAFE_JFE", "AICPA_SSVS1", "BLS_OES"]),
   },
 ];
 

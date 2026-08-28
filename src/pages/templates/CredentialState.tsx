@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { credentials, getCredential } from "@/data/credentials";
+import { credentials, getCredential, type Credential } from "@/data/credentials";
 import { states } from "@/data/states";
 import { pillarServices } from "@/data/services";
 import { activeTeam } from "@/data/team";
@@ -15,9 +15,26 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
-// Credential strings differ in punctuation across data files ("R.N." in
-// credentials/team vs "RN" in services). Compare on letters and digits only.
+// services.ts and team.ts name credentials as a label set ("Forensic
+// Economist", "NAFE", "MBA", "PhD"); credentials.ts keys them by a punctuated,
+// sometimes slash-separated abbreviation ("MBA / M.A. / Ph.D."). Compare on
+// letters and digits only, and let any part of a slash-separated abbreviation
+// match (same rule as CaseTypeHub.tsx).
 const normalizeCredential = (s: string) => s.replace(/[^a-z0-9]/gi, "").toLowerCase();
+const abbreviationParts = (cred: Credential) => cred.abbreviation.split("/").map(normalizeCredential);
+const holdsCredential = (labels: string[], cred: Credential) => {
+  const parts = abbreviationParts(cred);
+  return labels.some((label) => parts.includes(normalizeCredential(label)));
+};
+
+// stateReciprocity values are "na" for every credential on this site (no
+// state licenses forensic economists); the other labels keep the type honest.
+const RECOGNITION_LABEL: Record<Credential["stateReciprocity"][string], (stateName: string) => string> = {
+  na: () => "Recognized nationally; no state licensure applies",
+  full: (stateName) => `Recognized in ${stateName} by reciprocity`,
+  limited: (stateName) => `Recognized in ${stateName} with conditions`,
+  none: (stateName) => `Not recognized in ${stateName}`,
+};
 
 export default function CredentialState() {
   const { credSlug = "", stateSlug = "" } = useParams();
@@ -29,8 +46,8 @@ export default function CredentialState() {
   usePageMeta(
     cred && state
       ? {
-          title: `${cred.abbreviation} Experts in ${state.name} | ${ORG_NAME}`,
-          description: `${cred.name} (${cred.abbreviation}) credential scope, recognition, and life care planners available for ${state.name} matters. Plaintiff and defense.`,
+          title: `${cred.abbreviation} Credential in ${state.name} | ${ORG_NAME}`,
+          description: `${cred.name} (${cred.abbreviation}): what the credential covers, how it is recognized in ${state.name}, and the forensic economists available for ${state.name} damages matters. Plaintiff and defense.`,
           canonical: url,
         }
       : null,
@@ -39,10 +56,11 @@ export default function CredentialState() {
   if (!cred || !state) return <NotFound />;
 
   const experts = activeTeam.filter(
-    (m) => m.statesServed.includes(state.abbreviation) && m.credentials.some((c) => normalizeCredential(c) === normalizeCredential(cred.abbreviation))
+    (m) => m.statesServed.includes(state.abbreviation) && holdsCredential(m.credentials, cred)
   );
   const regulations = getRegulationsByState(state.slug);
   const courts = getCourtsByState(state.slug);
+  const recognition = RECOGNITION_LABEL[cred.stateReciprocity[state.slug] ?? "na"](state.name);
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -55,17 +73,20 @@ export default function CredentialState() {
       <h1 className="font-serif text-4xl text-navy mb-4">{cred.abbreviation} in {state.name}</h1>
       <AuthorByline />
       <p className="text-lg text-neutral-700 mb-8">
-        Licensing and practice information for {cred.name} in {state.name}, and our planners holding the credential who serve {state.name}.
+        {cred.abbreviation} in {state.name}: what the credential establishes about a damages expert, how {state.name} courts treat it, and the economists holding it who serve {state.name} matters.
       </p>
 
       <section id="recognition" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">Recognition and qualification in {state.name}</h2>
         <p className="text-neutral-700 mb-3">{cred.scope}</p>
+        <p className="text-neutral-700 mb-3">
+          <strong className="text-navy">State recognition:</strong> {recognition}. Qualification to testify on economic damages in {state.name} is decided case by case on education, method, and experience. There is no state license for forensic economists to check, so counsel verify the credential with its issuer and review the economist's testimony record directly.
+        </p>
         {regulations && (
           <>
             <p className="text-neutral-700 mb-3">{regulations.practiceContext}</p>
             <p className="text-neutral-700">
-              Outside the civil courts, the {regulations.careOversightAgency} is the forum where a plan is most often examined in {state.name}. {ORG_NAME} {cred.abbreviation}-credentialed experts apply nationally recognized standards while accounting for {state.name}'s practice environment.
+              {ORG_NAME} economists holding {cred.abbreviation} apply nationally recognized methods while accounting for {state.name}'s wage levels, venue, and damages rules.
             </p>
           </>
         )}
@@ -75,7 +96,7 @@ export default function CredentialState() {
         <section id="courts" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">{state.name} courts and venues</h2>
           <p className="text-neutral-700 mb-2">
-            {cred.abbreviation}-credentialed experts provide testimony in {state.name}'s courts, where expert qualification is determined case by case.
+            Economists holding {cred.abbreviation} testify in {state.name}'s courts, where expert qualification is decided case by case on education, method, and experience.
           </p>
           <ul className="list-disc ml-5 text-neutral-700 space-y-1">
             {courts.trialCourts.slice(0, 3).map((c) => (
@@ -91,7 +112,7 @@ export default function CredentialState() {
 
       {experts.length > 0 ? (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">{cred.abbreviation} experts serving {state.name}</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Economists holding {cred.abbreviation} who serve {state.name}</h2>
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {experts.map((m) => (
               <li key={m.slug}>
@@ -103,9 +124,9 @@ export default function CredentialState() {
         </section>
       ) : (
         <section id="experts" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">{cred.abbreviation} experts for {state.name} matters</h2>
+          <h2 className="font-serif text-2xl text-navy mb-2">Economists holding {cred.abbreviation} for {state.name} matters</h2>
           <p className="text-neutral-700">
-            {ORG_NAME} provides {cred.abbreviation}-credentialed life care planners for {state.name} cases, including remote consultation and on-site evaluation where required. <Link to="/contact" className="text-teal hover:underline">Contact us</Link> to discuss availability for your matter.
+            {ORG_NAME} provides forensic economists for {state.name} damages matters, including remote consultation, report preparation, and deposition or trial testimony where the case is venued. <Link to="/contact" className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">Contact us</Link> to discuss availability for your matter.
           </p>
         </section>
       )}
@@ -118,11 +139,11 @@ export default function CredentialState() {
               to={`/locations/${state.slug}`}
               className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
             >
-              Life care planners in {state.name}
+              Forensic economists in {state.name}
             </Link>
           </li>
           {pillarServices()
-            .filter((s) => s.relevantCredentials.some((rc) => normalizeCredential(rc) === normalizeCredential(cred.abbreviation)))
+            .filter((s) => holdsCredential(s.relevantCredentials, cred))
             .map((s) => (
               <li key={s.slug}>
                 <Link
@@ -161,8 +182,8 @@ export default function CredentialState() {
         credentialSchema({ slug: cred.slug, name: cred.name, abbreviation: cred.abbreviation, issuer: cred.issuer, issuerUrl: cred.issuerUrl, scope: cred.scope }),
         serviceSchema({
           slug: `cred-${cred.slug}-${state.slug}`,
-          name: `${cred.abbreviation} Life Care Planners in ${state.name}`,
-          description: `${ORG_NAME} ${cred.abbreviation}-credentialed planners available for ${state.name} matters.`,
+          name: `Forensic Economists Holding ${cred.abbreviation} in ${state.name}`,
+          description: `${ORG_NAME} economists holding ${cred.abbreviation} available for ${state.name} damages matters.`,
           areaServed: { "@type": "AdministrativeArea", name: state.name },
         }),
         faqPageSchema(cred.faqs.slice(0, 4), url),

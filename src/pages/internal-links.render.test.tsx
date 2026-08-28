@@ -79,26 +79,30 @@ describe("CaseTypeState cross-links", () => {
 });
 
 describe("CredentialState cross-links", () => {
-  const html = render("/credentials/crc/new-jersey", "/credentials/:credSlug/:stateSlug", CredentialState);
+  const html = render("/credentials/forensic-economist/new-jersey", "/credentials/:credSlug/:stateSlug", CredentialState);
 
   it("links the other credentials in the same state", () => {
-    for (const cred of credentials.filter((c) => c.slug !== "crc")) {
+    for (const cred of credentials.filter((c) => c.slug !== "forensic-economist")) {
       expect(html).toContain(`href="/credentials/${cred.slug}/new-jersey"`);
     }
-    expect(html).not.toContain('href="/credentials/crc/new-jersey"');
+    expect(html).not.toContain('href="/credentials/forensic-economist/new-jersey"');
   });
 
   it("links the state hub and the service x state pages that use the credential", () => {
     expect(html).toContain('href="/locations/new-jersey"');
-    expect(html).toContain('href="/services/life-care-planning/new-jersey"');
-    expect(html).toContain('href="/services/catastrophic-injury-planning/new-jersey"');
+    expect(html).toContain('href="/services/lost-earnings-and-earning-capacity/new-jersey"');
+    expect(html).toContain('href="/services/business-valuation/new-jersey"');
+  });
+
+  it("renders the national-recognition label (no state licensure applies)", () => {
+    expect(html).toContain("Recognized nationally; no state licensure applies");
   });
 });
 
-describe("CredentialState cross-links for punctuated abbreviations", () => {
-  // services.ts uses "RN"/"MD"; credentials.ts uses "R.N."/"M.D.". The
-  // service x state list must still populate for these credentials.
-  for (const slug of ["rn", "md"]) {
+describe("CredentialState cross-links for punctuated and slash-separated abbreviations", () => {
+  // services.ts uses "MBA"/"PhD"/"NAFE"; credentials.ts uses "MBA / M.A. / Ph.D."
+  // and "NAFE". The service x state list must still populate for these credentials.
+  for (const slug of ["graduate-economics-degree", "nafe-member"]) {
     it(`/credentials/${slug}/new-jersey lists at least one service x state page`, () => {
       const html = render(`/credentials/${slug}/new-jersey`, "/credentials/:credSlug/:stateSlug", CredentialState);
       expect(html).toMatch(/href="\/services\/[a-z-]+\/new-jersey"/);

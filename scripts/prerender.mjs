@@ -781,6 +781,20 @@ const credentialData = extractPairs(credentialsContent, /slug:\s*"([^"]+)"/g, /\
 const credAbbrBySlug = Object.fromEntries(
   extractPairs(credentialsContent, /slug:\s*"([^"]+)"/g, /abbreviation:\s*"([^"]+)"/g).map((x) => [x.slug, x.name]),
 );
+// CredentialHub.tsx describes each credential hub with truncateAtWord(scope)
+// (src/lib/text.ts). Extract the scope and apply the same word-boundary cut so
+// the shell's meta description matches the hydrated page.
+const credScopeBySlug = Object.fromEntries(
+  extractPairs(credentialsContent, /slug:\s*"([^"]+)"/g, /\bscope:\s*"([^"]+)"/g).map((x) => [x.slug, x.name]),
+);
+function truncateAtWord(text, max = 160) {
+  const s = (text ?? "").trim();
+  if (s.length <= max) return s;
+  const slice = s.slice(0, max - 1);
+  const lastSpace = slice.lastIndexOf(" ");
+  const cut = lastSpace > max * 0.5 ? slice.slice(0, lastSpace) : slice;
+  return cut.replace(/[\s.,;:!?\-&]+$/, "") + "…";
+}
 const methodData = extractPairs(readFileSync(join(SRC_DATA, "methods.ts"), "utf-8"), /slug:\s*"([^"]+)"/g, /\bname:\s*"([^"]+)"/g);
 const teamData = extractPairs(readFileSync(join(SRC_DATA, "team.ts"), "utf-8"), /slug:\s*"([^"]+)"/g, /\bname:\s*"([^"]+)"/g);
 // Slugs flagged memoriam in team.ts (same block-splitting as teamMap above):
@@ -796,7 +810,7 @@ const memoriamSlugs = new Set(
 // Mirror the src/pages/hubs/*HubPage.tsx usePageMeta values.
 const newHubPages = [
   { path: "/case-types", title: `Case Types | ${ORG_NAME}`, description: "Economic damages analysis across the most common civil and commercial case types: personal injury, wrongful death, employment, commercial disputes, divorce, fraud, and more.", innerHtml: "<h1>Case Types</h1>", schemaType: "WebPage" },
-  { path: "/credentials", title: `Expert Credentials | CLCP, CNLCP, MSCC, CRC | ${ORG_NAME}`, description: "Professional credentials held by our life care planners: CLCP, CNLCP, MSCC, CDMS, CRC, M.D., R.N., and Ph.D. Scope, requirements, admissibility.", innerHtml: "<h1>Credentials</h1>", schemaType: "WebPage" },
+  { path: "/credentials", title: `Credentials of a Forensic Economist | ${ORG_NAME}`, description: "What qualifies a forensic economist to testify on damages: graduate training in economics and finance, the professional standards of NAFE and AAEFE, and a record of reports and testimony. No state license applies.", innerHtml: "<h1>Credentials of a Forensic Economist</h1>", schemaType: "WebPage" },
   { path: "/guides", title: `Life Care Planning Guides | ${ORG_NAME}`, description: "In-depth practitioner guides on life care planning, medical cost projection, Medicare set-asides, and expert witness practice. Methodology, admissibility, and engagement guidance.", innerHtml: "<h1>Guides</h1>", schemaType: "WebPage" },
   { path: "/compare", title: `Life Care Planning Comparisons | ${ORG_NAME}`, description: "Side-by-side comparisons of life care planning services, methodologies, and credentials. Life care plan vs. cost projection, CLCP vs. CNLCP, FCE vs. IME, and more.", innerHtml: "<h1>Comparisons</h1>", schemaType: "WebPage" },
   { path: "/methods", title: `Life Care Planning Methodologies | Present Value, Cost Research | ${ORG_NAME}`, description: "Life care planning methodologies used by our planners: life expectancy, present value analysis, plan development, functional capacity evaluation, cost research, and Medicare set-aside allocation.", innerHtml: "<h1>Methods</h1>", schemaType: "WebPage" },
@@ -836,9 +850,10 @@ for (const c of credentialData) {
   const abbr = credAbbrBySlug[c.slug] || c.name;
   writePage(`/credentials/${c.slug}`, buildPage({
     path: `/credentials/${c.slug}`,
-    // Match CredentialHub.tsx (title `${abbr} Credential | ${name} | ${ORG_NAME}`, H1 `${name} (${abbr})`).
+    // Match CredentialHub.tsx (title `${abbr} Credential | ${name} | ${ORG_NAME}`,
+    // description truncateAtWord(scope), H1 `${name} (${abbr})`).
     title: `${abbr} Credential | ${c.name} | ${ORG_NAME}`,
-    description: `${c.name} - scope, requirements, and our planners holding this credential.`,
+    description: truncateAtWord(credScopeBySlug[c.slug] || `${c.name} (${abbr}): what the credential covers, what it requires, and how economic damages testimony resting on it is evaluated.`),
     innerHtml: `<h1>${escapeHtml(c.name)} (${escapeHtml(abbr)})</h1>`,
     schemaType: "Article",
   }));
@@ -846,9 +861,10 @@ for (const c of credentialData) {
   for (const s of stateData) {
     writePage(`/credentials/${c.slug}/${s.slug}`, buildPage({
       path: `/credentials/${c.slug}/${s.slug}`,
-      // Match CredentialState.tsx (abbreviation-based title + H1).
-      title: `${abbr} Experts in ${s.name} | ${ORG_NAME}`,
-      description: `${c.name} (${abbr}) credential scope, recognition, and life care planners available for ${s.name} matters. Plaintiff and defense.`,
+      // Match CredentialState.tsx (abbreviation-based title + H1); pinned by
+      // scripts/prerender-meta.test.mjs.
+      title: `${abbr} Credential in ${s.name} | ${ORG_NAME}`,
+      description: `${c.name} (${abbr}): what the credential covers, how it is recognized in ${s.name}, and the forensic economists available for ${s.name} damages matters. Plaintiff and defense.`,
       innerHtml: `<h1>${escapeHtml(abbr)} in ${escapeHtml(s.name)}</h1>`,
       schemaType: "LocalBusiness",
     }));
