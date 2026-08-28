@@ -396,9 +396,9 @@ const corePages = [
     path: "/team",
     title: `Our Team | ${ORG_NAME}`,
     description:
-      "Meet the KW Life Care Planning team - a board-certified physician, doctoral-level Certified Life Care Planners, a Medicare Set-Aside Certified Consultant, and a registered nurse life care planner serving attorneys nationwide.",
+      `Meet the ${ORG_NAME} team - the Chief of Economic Services who directs the practice's lost earnings, wrongful death, household services, and commercial damages analyses, and the economics associate who coordinates each engagement with counsel.`,
     innerHtml:
-      `<h1>Our Team</h1><p>The ${ORG_NAME} team brings together a board-certified physician, Certified Life Care Planners, a Medicare Set-Aside Certified Consultant, and a registered nurse life care planner serving attorneys nationwide.</p><nav><a href="/about">About</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
+      `<h1>Our Team</h1><p>The ${ORG_NAME} team pairs a Chief of Economic Services, who directs every forensic economic analysis and is available to testify to it, with an economics associate who coordinates each engagement between the economics team and retaining counsel.</p><nav><a href="/about">About</a> <a href="/services">Services</a> <a href="/contact">Contact</a></nav>`,
     schemaType: "WebPage",
   },
   {

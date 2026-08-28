@@ -42,7 +42,7 @@ export default function ExpertProfile() {
             : `${m.name}${credentialList} | ${ORG_NAME}`,
           description: m.bio
             ? truncateAtWord(m.bio)
-            : `${m.name}${credentialList} - life care planning expert at ${ORG_NAME}.`,
+            : `${m.name}${credentialList} - ${m.title} at ${ORG_NAME}.`,
           canonical: url,
         }
       : null,

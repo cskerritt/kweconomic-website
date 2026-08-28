@@ -1,158 +1,48 @@
 import type { TeamMember } from "@/types";
 
-// KW Life Care Planning roster. Specialties use the keys in
+// KW Economics roster. Specialties use the keys in
 // src/lib/practice-areas.ts (SPECIALTY_TO_SERVICE) so each profile renders its
 // practice areas; credentials stay consistent with src/data/credentials.ts
-// expertSlugs (CLCP, MSCC, M.D., R.N., Ph.D., CRC).
+// expertSlugs. Only members with an expertTier are offered to counsel by name
+// (see retainableExperts). Rehabilitation-counseling and life-care-plan
+// credentials are listed as background; the work the roster is retained for
+// is forensic economics.
 export const team: TeamMember[] = [
-  // ── In Memoriam ────────────────────────────────────────────────
-  // Memoriam members keep their real role for the record but are excluded
-  // from every active listing via activeTeam; they render only in the team
-  // page's In Memoriam section and their own tribute profile.
-  {
-    slug: "charles-kincaid",
-    name: "Charles A. Kincaid, Ph.D.",
-    title: "Founding Principal and Director Emeritus",
-    credentials: ["Ph.D.", "LRC", "CRC", "ATP", "CVE", "CLCP", "ABVE/F"],
-    role: "leadership",
-    memoriam: true,
-    bio: "Dr. Charles Kincaid was the founding principal of the KW group of practices and a Certified Life Care Planner. He held a doctor of philosophy degree in rehabilitation counseling and a master of science degree in criminal justice, and was licensed and certified as a Licensed Rehabilitation Counselor, Certified Rehabilitation Counselor, Assistive Technology Professional, Certified Vocational Evaluator, Certified Life Care Planner, and Fellow of the American Board of Vocational Experts.",
-    specialties: ["Life Care Planning"],
-    statesServed: [],
-    imageUrl: "/team/charles-kincaid.jpg",
-  },
-
-  // ── Life Care Planning Leadership ──────────────────────────────
-  {
-    slug: "jesse-wolstein",
-    name: "Jesse Wolstein, M.D., M.A.",
-    title: "Chief Medical Director & Life Care Planner",
-    credentials: ["M.D.", "M.A.", "CLCP"],
-    role: "leadership",
-    expertTier: "senior",
-    bio: "Dr. Jesse Wolstein is a board-certified emergency medicine physician with 10 years of clinical experience, a Certified Life Care Planner (CLCP), and holder of a Master's in Rehabilitation Counseling. He develops comprehensive, evidence-based life care plans drawing on direct clinical experience and provides medical foundation reviews, life expectancy analyses, and expert witness testimony.",
-    specialties: ["Life Care Planning", "Catastrophic Injury", "Medical Cost Projection", "Life Care Plan Review", "Expert Testimony", "Medical-Legal Consulting"],
-    statesServed: ["NJ", "NY"],
-    imageUrl: "/team/jesse-wolstein.jpg",
-  },
-  {
-    slug: "paul-bourgeois",
-    name: "Paul Bourgeois, Ph.D.",
-    title: "Chief of Life Care Planning",
-    credentials: ["Ph.D.", "CRC", "CVE", "CLCP", "NCC"],
-    role: "leadership",
-    expertTier: "senior",
-    bio: "Dr. Bourgeois leads the life care planning practice. A Certified Life Care Planner with doctoral-level training, he develops comprehensive, evidence-based life care plans for individuals with catastrophic injuries and chronic conditions.",
-    specialties: ["Life Care Planning", "Catastrophic Injury", "Life Care Plan Review", "Expert Testimony"],
-    statesServed: ["NJ", "NY"],
-    imageUrl: "/team/paul-bourgeois.jpg",
-  },
-  {
-    slug: "daniel-wolstein",
-    name: "Daniel Wolstein, Ph.D.",
-    title: "Chief Executive Officer",
-    credentials: ["Ph.D.", "CRC", "CLCP", "IPEC", "ABVE/D", "LRC", "FVE", "CVE"],
-    role: "leadership",
-    expertTier: "senior",
-    bio: "Dr. Wolstein is Chief Executive Officer and a Certified Life Care Planner with a doctorate in rehabilitation counseling from East Carolina University. He served as President of the American Board of Vocational Experts (2023-2025) and brings decades of forensic rehabilitation experience to life care plans and expert testimony in catastrophic injury matters.",
-    specialties: ["Life Care Planning", "Catastrophic Injury", "Expert Testimony"],
-    statesServed: ["NJ", "NY", "MA", "VA", "RI", "CT", "PA"],
-    imageUrl: "/team/daniel-wolstein.jpg",
-  },
+  // --- Leadership ---------------------------------------------------------
   {
     slug: "christopher-skerritt",
     name: "Christopher Skerritt, M.Ed., MBA",
-    title: "Chief of Economic Services & Medicare Set-Aside Consultant",
-    credentials: ["M.Ed.", "MBA", "CRC", "LRC", "IPEC", "CVE", "ABVE/F", "REAS", "CEAS I", "CLCP", "MSCC", "CPRW", "QRC"],
+    title: "Chief of Economic Services",
+    credentials: ["M.Ed.", "MBA", "CRC", "CLCP", "MSCC"],
     role: "leadership",
-    expertTier: "fellow",
-    bio: "Christopher Skerritt is a Medicare Set-Aside Certified Consultant (MSCC) and Certified Life Care Planner who leads the practice's Medicare set-aside work and the economic side of life care planning, projecting the present value of future medical costs and preparing the MSA allocations that settlements require.",
-    specialties: ["Medicare Set-Aside", "Medical Cost Projection", "Life Care Planning", "Expert Testimony"],
+    expertTier: "senior",
+    bio: "Christopher Skerritt leads the economics practice, directing lost earnings, wrongful death, household services, employment, and commercial damages analyses for plaintiff and defense counsel. His graduate training in business and rehabilitation gives his damages work a grounded view of how injury, loss of employment, and disability translate into measurable economic loss.",
+    fullBio: [
+      "Christopher Skerritt is Chief of Economic Services and directs the practice's forensic economic work for plaintiff and defense counsel. He oversees the lost earnings, wrongful death, household services, employment, and commercial damages analyses the practice prepares, from the first review of the retaining attorney's file through the final report and any testimony that follows. His standard for every figure the practice puts in front of a court is the same: it must trace to a stated assumption and a named source that opposing counsel can check.",
+      "His analyses follow the sequence forensic economists use in injury and death cases. The pre-injury or but-for earnings base is established from tax returns, payroll records, and employment history. That base is projected over a worklife expectancy drawn from published tables, with a stated growth rate for wages and employer-paid benefits. The residual earnings the person can reasonably be expected to earn after the injury or loss are subtracted, so the loss claimed is the net difference rather than the gross pre-injury figure. The net loss is then discounted to present value at a documented rate. Household services and, where a life care plan exists, the future cost of care are treated the same way, each with its own source and each shown as a separate line so counsel can see how much of the total rests on any one assumption.",
+      "Reports are written for attorneys, adjusters, mediators, and jurors rather than for other economists. Each one states the question asked, lists the records relied on, sets out the assumptions in plain language, and presents the loss under alternative scenarios where the record supports more than one reading of the facts. He is available for deposition and trial testimony on his own reports and prepares rebuttal reviews of opposing economic reports, focusing on whether the opposing expert's inputs are supported by the record and whether the arithmetic follows from those inputs.",
+      "He holds a Master of Business Administration in healthcare leadership from Bryant University and a Master of Education in rehabilitation counseling from Springfield College, and he is a Certified Rehabilitation Counselor, a Certified Life Care Planner, and a Medicare Set-Aside Certified Consultant. That background shapes his damages work. The earnings question in an injury case turns on what the person could earn before the injury and what the person can earn now, and his analyses are built to connect the medical and functional record to the earnings figures that follow from it.",
+    ].join("\n\n"),
+    specialties: ["Forensic Economics", "Economic Damages", "Earning Capacity Analysis", "Wrongful Death Analysis", "Household Services", "Employment Damages", "Business Valuation", "Expert Testimony"],
     statesServed: ["NJ", "NY", "MA", "VA", "RI", "CT", "PA"],
     imageUrl: "/team/christopher-skerritt.jpg",
+    education: [
+      { degree: "Master of Business Administration - Healthcare Leadership", institution: "Bryant University", year: 2024 },
+      { degree: "Master of Education in Rehabilitation Counseling", institution: "Springfield College", year: 2016 },
+    ],
   },
 
-  // ── Life Care Planners ─────────────────────────────────────────
+  // --- Economics Team -----------------------------------------------------
   {
-    slug: "matthew-putts",
-    name: "Matthew R. Putts, Ph.D.",
-    title: "Senior Life Care Planner",
-    credentials: ["Ph.D.", "LPC", "LRC", "NCC", "CRC", "CLCP", "IPEC", "CVE"],
-    role: "expert",
-    expertTier: "fellow",
-    bio: "Dr. Putts is a Certified Life Care Planner, licensed professional counselor, and certified rehabilitation counselor with experience as CEO of a nonprofit community rehabilitation program. He prepares life care plans and provides expert testimony.",
-    specialties: ["Life Care Planning", "Expert Testimony"],
-    statesServed: ["NJ", "NY", "VA"],
-    imageUrl: "/team/matthew-putts.jpg",
-  },
-  {
-    slug: "christina-rivera",
-    name: "Christina Rivera, R.N., B.S.N.",
-    title: "Life Care Planner",
-    credentials: ["R.N.", "B.S.N.", "BLS", "ACLS", "PALS"],
-    role: "expert",
-    expertTier: "fellow",
-    bio: "Christina Rivera is a registered nurse life care planner who draws on clinical nursing experience to develop comprehensive care cost projections and the medical chronologies that ground each plan.",
-    specialties: ["Life Care Planning", "Medical Cost Projection"],
-    statesServed: ["NJ", "NY"],
-    imageUrl: "/team/christina-rivera.jpg",
-  },
-
-  // ── Plan Administration & Medical Chronology ───────────────────
-  {
-    slug: "danielle-vallone",
-    name: "Danielle Vallone",
-    title: "Senior Medical Chronologist",
+    slug: "zachary-sperling",
+    name: "Zachary Sperling",
+    title: "Economics Associate / Expert Liaison",
     credentials: [],
     role: "support",
-    bio: "Danielle Vallone leads the medical chronology team, producing detailed medical record summaries that form the clinical foundation of each life care plan.",
-    specialties: ["Medical Chronology", "Medical Record Analysis"],
+    bio: "Zachary Sperling serves as Economics Associate and Expert Liaison, supporting forensic economic analyses and coordinating between the economics team and retaining counsel.",
+    specialties: ["Forensic Economics", "Expert Liaison", "Economic Analysis"],
     statesServed: ["NJ", "NY"],
-    imageUrl: "/team/danielle-vallone.jpg",
-  },
-  {
-    slug: "abigail-wolstein",
-    name: "Abigail Wolstein",
-    title: "Medical Chronologist",
-    credentials: [],
-    role: "support",
-    bio: "Abigail Wolstein prepares comprehensive medical record summaries that support life care plan development and litigation.",
-    specialties: ["Medical Chronology"],
-    statesServed: ["NJ", "NY"],
-    imageUrl: "/team/abigail-wolstein.jpg",
-  },
-  {
-    slug: "rebecca-wolstein",
-    name: "Rebecca Wolstein",
-    title: "Medical Chronologist",
-    credentials: [],
-    role: "support",
-    bio: "Rebecca Wolstein prepares detailed medical record reviews and summaries for the life care planning team.",
-    specialties: ["Medical Chronology"],
-    statesServed: ["NJ", "NY"],
-    imageUrl: "/team/rebecca-wolstein.jpg",
-  },
-  {
-    slug: "cara-creighton",
-    name: "Cara Creighton",
-    title: "Life Care Plan Administrator",
-    credentials: [],
-    role: "support",
-    bio: "Cara Creighton supports the life care planning practice with case administration, documentation, and coordination from intake through plan delivery.",
-    specialties: ["Life Care Plan Administration", "Case Coordination"],
-    statesServed: ["NJ", "NY"],
-    imageUrl: "/team/cara-creighton.jpg",
-  },
-  {
-    slug: "lizette-mendoza",
-    name: "Lizette Mendoza",
-    title: "Life Care Plan Administrator",
-    credentials: [],
-    role: "support",
-    bio: "Lizette Mendoza provides administrative support for the life care planning practice, coordinating case materials, scheduling, and attorney communications.",
-    specialties: ["Life Care Plan Administration", "Case Coordination"],
-    statesServed: ["NJ", "NY"],
-    imageUrl: "/team/lizette-mendoza.jpg",
+    imageUrl: "/team/zachary-sperling.jpg",
   },
 ];
 

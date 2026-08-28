@@ -162,13 +162,14 @@ export default function Team() {
   usePageMeta({
     title: `Our Team | ${ORG_NAME}`,
     description:
-      "Meet the KW Life Care Planning team - a board-certified physician, doctoral-level Certified Life Care Planners, a Medicare Set-Aside Certified Consultant, and a registered nurse life care planner serving attorneys nationwide.",
+      `Meet the ${ORG_NAME} team - the Chief of Economic Services who directs the practice's lost earnings, wrongful death, household services, and commercial damages analyses, and the economics associate who coordinates each engagement with counsel.`,
     canonical: `${SITE_URL}/team`,
   });
 
   const leadership = getTeamByRole("leadership");
-  const planners = getTeamByRole("expert");
-  const support = getTeamByRole("support");
+  // Everyone who is not leadership renders under one "Economics Team" heading:
+  // economists (role "expert") first, then associates and support staff.
+  const economicsTeam = [...getTeamByRole("expert"), ...getTeamByRole("support")];
   const memoriam = getMemoriam();
 
   return (
@@ -201,11 +202,12 @@ export default function Team() {
               The {ORG_NAME} Team
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              {ORG_NAME} is built on a team of Certified Life Care Planners and a
-              registered nurse life care planner with medical, nursing, and
-              rehabilitation-counseling backgrounds, supported
-              by medical chronologists and plan administrators. Our life care planners
-              are qualified to provide testimony in state and federal courts nationwide.
+              {ORG_NAME} is a focused practice: a Chief of Economic Services who
+              directs every forensic economic analysis and is available to testify
+              to it, and an economics associate who coordinates each engagement
+              between the economics team and retaining counsel. Our analyses are
+              prepared for plaintiff and defense attorneys and are built to be
+              examined in the report, at deposition, and at trial.
             </p>
           </div>
         </div>
@@ -215,26 +217,21 @@ export default function Team() {
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <TeamSection
-            title="Life Care Planning Leadership"
-            description="The physician, doctoral-level planners, and Medicare Set-Aside consultant who lead the practice and testify to their plans."
+            title="Leadership"
+            description="The Chief of Economic Services who directs the practice's damages analyses and is available for deposition and trial testimony."
             members={leadership}
             columns="lg:grid-cols-4"
           />
 
           <TeamSection
-            title="Life Care Planners"
-            description="Life care planners who develop plans, project future care costs, and provide expert testimony."
-            members={planners}
+            title="Economics Team"
+            description="The team that supports each analysis and coordinates the engagement between the economics practice and retaining counsel."
+            members={economicsTeam}
             columns="lg:grid-cols-4"
           />
 
-          <TeamSection
-            title="Plan Administration & Medical Chronology"
-            description="The team behind every plan - medical chronologists who build the clinical record and administrators who coordinate each engagement from intake through delivery."
-            members={support}
-            columns="lg:grid-cols-5"
-          />
-
+          {/* The In Memoriam section renders only when the roster honors someone;
+              with getMemoriam() empty nothing is emitted. */}
           {memoriam.length > 0 && (
             <div className="mt-4 pt-12 border-t border-neutral-200">
               <div className="mb-8 max-w-2xl">
