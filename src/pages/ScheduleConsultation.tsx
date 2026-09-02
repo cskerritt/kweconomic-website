@@ -2,14 +2,25 @@ import { useState } from "react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { Phone, Mail, MapPin, Clock, CheckCircle } from "lucide-react";
 import { isEmail, isPhone } from "@/lib/validation";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { Picture } from "@/components/Picture";
+import SchemaOrg from "@/components/SchemaOrg";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
 import { caseTypes } from "@/data/caseTypes";
-import { ORG_NAME, ORG_EMAIL, ORG_PHONE, ORG_PHONE_VA, SITE_URL } from "@/lib/brand";
+import {
+  ORG_NAME,
+  ORG_EMAIL,
+  ORG_PHONE,
+  ORG_PHONE_VA,
+  ORG_PHONE_DISPLAY,
+  ORG_PHONE_VA_DISPLAY,
+  SITE_URL,
+  telHref,
+} from "@/lib/brand";
+import { graphSchema, organizationSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
 
-const PHONE_DISPLAY = "(201) 343-0700";
-const PHONE_VA_DISPLAY = "(804) 282-4199";
+const PAGE_URL = `${ORG_URL}/schedule-consultation`;
 const CASE_TYPE_OPTIONS = [...caseTypes.map((ct) => ct.name), "Other"];
 
 const statesAndTerritories = [
@@ -105,7 +116,7 @@ export default function ScheduleConsultation() {
   }
 
   usePageMeta({
-    title: `Schedule a Consultation | ${ORG_NAME}`,
+    title: `Schedule a Forensic Economist Consultation | ${ORG_NAME}`,
     description:
       `Contact ${ORG_NAME} to discuss your case and schedule an economic damages consultation with a forensic economist. Response within one business day.`,
     canonical: `${SITE_URL}/schedule-consultation`,
@@ -113,6 +124,41 @@ export default function ScheduleConsultation() {
 
   return (
     <>
+      {/* ContactPage node so the conversion page is typed and tied to the
+          Organization and WebSite ids; the breadcrumb runs through /contact,
+          the page that links here. */}
+      <SchemaOrg
+        data={graphSchema([
+          organizationSchema(),
+          {
+            "@type": "ContactPage",
+            "@id": `${PAGE_URL}#webpage`,
+            url: PAGE_URL,
+            name: "Schedule a Forensic Economist Consultation",
+            isPartOf: { "@id": WEBSITE_ID },
+            about: { "@id": ORG_ID },
+          },
+          breadcrumbSchema([
+            { name: "Home", url: `${ORG_URL}/` },
+            { name: "Contact", url: `${ORG_URL}/contact` },
+            { name: "Schedule a Consultation", url: PAGE_URL },
+          ]),
+        ])}
+      />
+
+      {/* Breadcrumb bar */}
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Breadcrumbs
+            items={[
+              { name: "Home", url: "/" },
+              { name: "Contact", url: "/contact" },
+              { name: "Schedule a Consultation", url: "/schedule-consultation" },
+            ]}
+          />
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-16 md:py-24">
         <div className="kw-aurora" aria-hidden="true" />
@@ -420,8 +466,8 @@ export default function ScheduleConsultation() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-teal shrink-0" />
-                  <a href={`tel:${ORG_PHONE}`} className="hover:text-teal transition-colors font-medium">
-                    {PHONE_DISPLAY}
+                  <a href={telHref(ORG_PHONE)} className="hover:text-teal transition-colors font-medium">
+                    {ORG_PHONE_DISPLAY}
                   </a>
                 </li>
                 <li className="flex items-center gap-2.5">
@@ -443,8 +489,8 @@ export default function ScheduleConsultation() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Phone className="w-4 h-4 text-teal shrink-0" />
-                  <a href={`tel:${ORG_PHONE_VA}`} className="hover:text-teal transition-colors font-medium">
-                    {PHONE_VA_DISPLAY}
+                  <a href={telHref(ORG_PHONE_VA)} className="hover:text-teal transition-colors font-medium">
+                    {ORG_PHONE_VA_DISPLAY}
                   </a>
                 </li>
               </ul>

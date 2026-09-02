@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, ORG_SHORT, ORG_LEGAL, SITE_URL } from "@/lib/brand";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
 import SchemaOrg from "@/components/SchemaOrg";
 import { Picture } from "@/components/Picture";
-import { organizationSchema } from "@/lib/schema";
+import { graphSchema, organizationSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
 
 const VALUES = [
   { title: "Objectivity", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data." },
@@ -13,17 +14,48 @@ const VALUES = [
   { title: "Integrity", text: `${ORG_SHORT} measures the loss. It does not advocate for a number.` },
 ];
 
+const PAGE_URL = `${ORG_URL}/about`;
+const LINK = "text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+
 export default function About() {
   usePageMeta({
-    title: `About ${ORG_NAME} - Independent Forensic Economics and Damages Analysis`,
+    title: `About ${ORG_NAME} - Independent Forensic Economics Practice`,
     description:
-      `${ORG_NAME} prepares independent, transparent economic damages analyses, business valuations, and forensic accounting reports for plaintiff and defense attorneys in all 50 states.`,
+      `${ORG_NAME} is an independent forensic economics practice: economic damages, business valuation, and forensic accounting analyses for plaintiff and defense.`,
     canonical: `${SITE_URL}/about`,
   });
 
   return (
     <>
-      <SchemaOrg data={organizationSchema()} />
+      {/* Entity page: the Organization node, an AboutPage node that points at
+          it, and the breadcrumb the page shows. Office LocalBusiness nodes stay
+          on /contact, the page that prints the office NAP block. */}
+      <SchemaOrg
+        data={graphSchema([
+          organizationSchema(),
+          {
+            "@type": "AboutPage",
+            "@id": `${PAGE_URL}#webpage`,
+            url: PAGE_URL,
+            name: `About ${ORG_NAME}`,
+            isPartOf: { "@id": WEBSITE_ID },
+            about: { "@id": ORG_ID },
+            mainEntity: { "@id": ORG_ID },
+          },
+          breadcrumbSchema([
+            { name: "Home", url: `${ORG_URL}/` },
+            { name: "About", url: PAGE_URL },
+          ]),
+        ])}
+      />
+
+      {/* Breadcrumb bar */}
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "About", url: "/about" }]} />
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-16 md:py-24">
         <div className="kw-aurora" aria-hidden="true" />
@@ -82,6 +114,17 @@ export default function About() {
                   With offices in Hackensack, NJ and Richmond, VA, {ORG_SHORT} accepts engagements
                   in all 50 states, the District of Columbia, and U.S. territories.
                 </p>
+                <p>
+                  The{" "}
+                  <Link to="/services" className={LINK}>service descriptions</Link>
+                  {" "}set out each analysis the practice prepares, the{" "}
+                  <Link to="/case-studies" className={LINK}>illustrative engagements</Link>
+                  {" "}show how a damages figure is built, the{" "}
+                  <Link to="/resources/faq" className={LINK}>attorney FAQ</Link>
+                  {" "}answers the questions that come up at retention, and the{" "}
+                  <Link to="/credentials" className={LINK}>credentials</Link>
+                  {" "}page describes what qualifies a forensic economist to testify.
+                </p>
               </div>
             </div>
             <div className="mt-10 lg:mt-0 space-y-6">
@@ -128,8 +171,9 @@ export default function About() {
           <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Economists</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto mb-8">
             The practice is led by a Chief of Economic Services who directs every analysis and
-            testifies to it, supported by an economics associate who coordinates each engagement
-            with counsel. Read the background and practice areas of each member of the team.
+            is available to testify to it, supported by an economics associate who coordinates
+            each engagement with counsel. Read the background and practice areas of each member
+            of the team.
           </p>
           <Link
             to="/team"

@@ -6,41 +6,62 @@ KW Economics is a forensic economics, forensic accounting, and business valuatio
 
 ## Services
 
-- Lost Earnings and Earning Capacity Analysis: Past and future lost earnings and fringe benefits for a person whose injury has removed them from work or reduced what they can earn. The analysis builds from the earnings history, projects the but-for path over the person's expected worklife with wage growth, and discounts the future stream to present value. When the person can still work in a reduced capacity, the loss is framed as diminished earning capacity, with the post-injury path drawn from a vocational opinion or the treating record and offset against the but-for projection.
-- Wrongful Death Economic Loss: The economic loss to survivors when a wage earner or homemaker dies: the decedent's lost earnings and fringe benefits net of personal consumption, the household services the decedent would have provided, and the financial support that would have flowed to dependents. Which elements are recoverable, and whether the loss is measured to the estate or to the survivors, vary by state, so the analysis is structured to the framework counsel identifies and every assumption is stated so it can be examined.
-- Personal Injury Economic Damages: An integrated economic damages report for an injured person: lost earnings and fringe benefits, lost household services, and the present value of future medical and care costs supplied by treating providers or a life care plan. One report carries every economic component to a single present value with consistent growth, discount, and life expectancy assumptions, so counsel can present the damages as a whole and the jury sees one set of numbers.
-- Household Services Valuation: Replacement-cost valuation of the household production an injured or deceased person can no longer provide: meal preparation, cleaning, home and vehicle maintenance, shopping, child care, and care of other household members. The hours are drawn from national time-use data adjusted to the person's household composition and pre-injury role, and each category is priced at the local wage for the occupation that would replace it, then projected and discounted over the period of loss.
-- Life Care Plan Cost Projection and Present Value: Reduction of a life care plan's line items to a single present value. The plan's items, frequencies, durations, and unit costs are carried forward with medical cost growth appropriate to each category, then discounted over the applicable life expectancy. Plan authorship stays with the life care planner; our role is the economic translation of the plan into a damages figure that reconciles with the plan and can be examined item by item.
-- Employment and Wage-Loss Damages: Back pay, front pay, and lost benefits in discrimination, retaliation, wrongful termination, and wage-and-hour matters. The analysis reconstructs what the employee would have earned in the position, including raises, bonuses, and benefit accruals, measures actual interim earnings, and evaluates mitigation and the period over which front pay is reasonable. In wage-and-hour matters the same records drive an hours and pay reconstruction for the individual claim or the class.
-- Business Valuation: Valuation of closely held businesses and ownership interests for shareholder and partnership disputes, divorce, estate and gift matters, and buy-sell disagreements. The work applies the income, market, and asset approaches under the standard of value that governs the matter, addresses discounts for lack of control and marketability where they apply, and documents every input so the conclusion can be tested on cross-examination.
-- Lost Profits and Commercial Damages: Lost profits and related commercial damages for contract, business-tort, and business-interruption matters. The analysis builds the but-for revenue and cost path from the company's own history, its market, and the terms of the disputed relationship, links each claimed loss to the conduct at issue, addresses mitigation, and reasons through the period of loss so the damages figure answers the causation question as well as the amount.
-- Fraud Investigation and Asset Tracing: Forensic accounting for embezzlement, misappropriation, and financial statement irregularities. The work reconstructs the flow of funds through bank, ledger, and payment records, traces diverted assets to where they came to rest, quantifies the loss for each scheme identified, and documents the evidence trail so it can support a civil claim, an insurance recovery, or a referral to authorities.
-- Divorce and Marital Financial Analysis: Financial analysis for matrimonial matters: determination of income available for support when a spouse is self-employed or compensated in ways that do not appear on a pay stub, valuation of business interests in the marital estate, lifestyle analysis that documents the marital standard of living, and tracing of separate versus marital funds through accounts and assets. Each analysis is written so counsel can present it directly and the other side can test it.
-- Expert Rebuttal and Report Review: Critique of an opposing economic damages, valuation, or forensic accounting report for plaintiff or defense counsel. The review tests the assumptions, data sources, discount rates, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The result supports cross-examination, a rebuttal report, or a motion directed at the reliability of the opinion.
+- Lost Earnings and Earning Capacity Analysis (https://kweconomics.com/services/lost-earnings-and-earning-capacity): Past and future lost earnings and fringe benefits for a person whose injury has removed them from work or reduced what they can earn. The analysis builds from the earnings history, projects the but-for path over the person's expected worklife with wage growth, and discounts the future stream to present value. When the person can still work in a reduced capacity, the loss is framed as diminished earning capacity, with the post-injury path drawn from a vocational opinion or the treating record and offset against the but-for projection.
+- Wrongful Death Economic Loss (https://kweconomics.com/services/wrongful-death-economic-loss): The economic loss to survivors when a wage earner or homemaker dies: the decedent's lost earnings and fringe benefits net of personal consumption, the household services the decedent would have provided, and the financial support that would have flowed to dependents. Which elements are recoverable, and whether the loss is measured to the estate or to the survivors, vary by state, so the analysis is structured to the framework counsel identifies and every assumption is stated so it can be examined.
+- Personal Injury Economic Damages (https://kweconomics.com/services/personal-injury-economic-damages): An integrated economic damages report for an injured person: lost earnings and fringe benefits, lost household services, and the present value of future medical and care costs supplied by treating providers or a life care plan. One report carries every economic component to a single present value with consistent growth, discount, and life expectancy assumptions, so counsel can present the damages as a whole and the jury sees one set of numbers.
+- Household Services Valuation (https://kweconomics.com/services/household-services-valuation): Replacement-cost valuation of the household production an injured or deceased person can no longer provide: meal preparation, cleaning, home and vehicle maintenance, shopping, child care, and care of other household members. The hours are drawn from national time-use data adjusted to the person's household composition and pre-injury role, and each category is priced at the local wage for the occupation that would replace it, then projected and discounted over the period of loss.
+- Life Care Plan Cost Projection and Present Value (https://kweconomics.com/services/life-care-plan-cost-projection): Reduction of a life care plan's line items to a single present value. The plan's items, frequencies, durations, and unit costs are carried forward with medical cost growth appropriate to each category, then discounted over the applicable life expectancy. Plan authorship stays with the life care planner; our role is the economic translation of the plan into a damages figure that reconciles with the plan and can be examined item by item.
+- Employment and Wage-Loss Damages (https://kweconomics.com/services/employment-and-wage-loss-damages): Back pay, front pay, and lost benefits in discrimination, retaliation, wrongful termination, and wage-and-hour matters. The analysis reconstructs what the employee would have earned in the position, including raises, bonuses, and benefit accruals, measures actual interim earnings, and evaluates mitigation and the period over which front pay is reasonable. In wage-and-hour matters the same records drive an hours and pay reconstruction for the individual claim or the class.
+- Business Valuation (https://kweconomics.com/services/business-valuation): Valuation of closely held businesses and ownership interests for shareholder and partnership disputes, divorce, estate and gift matters, and buy-sell disagreements. The work applies the income, market, and asset approaches under the standard of value that governs the matter, addresses discounts for lack of control and marketability where they apply, and documents every input so the conclusion can be tested on cross-examination.
+- Lost Profits and Commercial Damages (https://kweconomics.com/services/lost-profits-and-commercial-damages): Lost profits and related commercial damages for contract, business-tort, and business-interruption matters. The analysis builds the but-for revenue and cost path from the company's own history, its market, and the terms of the disputed relationship, links each claimed loss to the conduct at issue, addresses mitigation, and reasons through the period of loss so the damages figure answers the causation question as well as the amount.
+- Fraud Investigation and Asset Tracing (https://kweconomics.com/services/fraud-and-asset-tracing): Forensic accounting for embezzlement, misappropriation, and financial statement irregularities. The work reconstructs the flow of funds through bank, ledger, and payment records, traces diverted assets to where they came to rest, quantifies the loss for each scheme identified, and documents the evidence trail so it can support a civil claim, an insurance recovery, or a referral to authorities.
+- Divorce and Marital Financial Analysis (https://kweconomics.com/services/divorce-and-marital-financial-analysis): Financial analysis for matrimonial matters: determination of income available for support when a spouse is self-employed or compensated in ways that do not appear on a pay stub, valuation of business interests in the marital estate, lifestyle analysis that documents the marital standard of living, and tracing of separate versus marital funds through accounts and assets. Each analysis is written so counsel can present it directly and the other side can test it.
+- Expert Rebuttal and Report Review (https://kweconomics.com/services/expert-rebuttal-and-report-review): Critique of an opposing economic damages, valuation, or forensic accounting report for plaintiff or defense counsel. The review tests the assumptions, data sources, discount rates, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The result supports cross-examination, a rebuttal report, or a motion directed at the reliability of the opinion.
 
 ## Case Types
 
-Personal Injury, Wrongful Death, Medical Malpractice, Motor Vehicle Accident, Traumatic Brain Injury, Spinal Cord Injury, Workers' Compensation, Employment Discrimination, Wrongful Termination, Commercial Contract Dispute, Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Fraud and Embezzlement, Product Liability
+- Personal Injury: https://kweconomics.com/case-types/personal-injury
+- Wrongful Death: https://kweconomics.com/case-types/wrongful-death
+- Medical Malpractice: https://kweconomics.com/case-types/medical-malpractice
+- Motor Vehicle Accident: https://kweconomics.com/case-types/motor-vehicle-accident
+- Traumatic Brain Injury: https://kweconomics.com/case-types/traumatic-brain-injury
+- Spinal Cord Injury: https://kweconomics.com/case-types/spinal-cord-injury
+- Workers' Compensation: https://kweconomics.com/case-types/workers-compensation
+- Employment Discrimination: https://kweconomics.com/case-types/employment-discrimination
+- Wrongful Termination: https://kweconomics.com/case-types/wrongful-termination
+- Commercial Contract Dispute: https://kweconomics.com/case-types/commercial-contract-dispute
+- Partnership and Shareholder Dispute: https://kweconomics.com/case-types/partnership-and-shareholder-dispute
+- Divorce and Marital Dissolution: https://kweconomics.com/case-types/divorce-and-marital-dissolution
+- Fraud and Embezzlement: https://kweconomics.com/case-types/fraud-and-embezzlement
+- Product Liability: https://kweconomics.com/case-types/product-liability
 
 ## Geographic Coverage
 
-- All 50 U.S. states
+- All 50 U.S. states: https://kweconomics.com/locations
 - District of Columbia
 - U.S. territories including Puerto Rico, U.S. Virgin Islands, Guam, American Samoa, Northern Mariana Islands
 
-## Credentials and Standards
+## Credentials Reference Pages
 
-Reference pages on how a forensic economist is qualified to testify on damages: graduate training in economics, finance, and business, the professional standards of the national forensic economics associations, and a record of reports and testimony. No state licenses forensic economists. These pages describe the qualification and how courts weigh it; they do not list the roster.
+Reference pages on how a forensic economist is qualified to testify on damages: graduate training in economics, finance, and business, the professional standards of the national forensic economics associations, and a record of reports and testimony. No state licenses forensic economists. These pages describe the qualification and how courts weigh it; they do not list the roster and make no claim that the practice or any named person holds an association membership.
 
-- Forensic Economist - Forensic Economics Expert Witness
-- NAFE - National Association of Forensic Economics Member
-- AAEFE - American Academy of Economic and Financial Experts Member
-- MBA / M.A. / Ph.D. - Graduate Economics and Business Degrees
+- Forensic Economics Expert Witness (Forensic Economist): https://kweconomics.com/credentials/forensic-economist
+- National Association of Forensic Economics Member (NAFE): https://kweconomics.com/credentials/nafe-member
+- American Academy of Economic and Financial Experts Member (AAEFE): https://kweconomics.com/credentials/aaefe-member
+- Graduate Economics and Business Degrees (MBA / M.A. / Ph.D.): https://kweconomics.com/credentials/graduate-economics-degree
 
 ## Team
 
-- Christopher Skerritt, M.Ed., MBA - Chief of Economic Services
-- Zachary Sperling - Economics Associate / Expert Liaison
+- Christopher Skerritt, M.Ed., MBA - Chief of Economic Services (https://kweconomics.com/team/christopher-skerritt)
+- Zachary Sperling - Economics Associate / Expert Liaison (https://kweconomics.com/team/zachary-sperling)
+
+## Attorney Resources by Litigation Stage
+
+- All stages and case types: https://kweconomics.com/attorneys
+- Considering an Economist (https://kweconomics.com/attorneys/considering): Deciding whether the loss justifies a forensic economist. Pick your case type for the threshold questions, the records to gather first, and the questions to ask before retaining.
+- Retaining an Economist (https://kweconomics.com/attorneys/retaining): Engaging the economist: scope, conflict check, the records request, and how the report fits with the opinions other experts supply. Pick your case type for a step-by-step retention checklist.
+- Preparing for Deposition (https://kweconomics.com/attorneys/preparing-deposition): Getting the economist and the report ready for deposition. Pick your case type for the assumptions that will be tested, the documents to assemble, and the common attacks.
+- Trial Testimony (https://kweconomics.com/attorneys/trial): Presenting economic damages at trial. Pick your case type for demonstratives, the present value explanation for the fact finder, and rebuttal of the opposing economist.
 
 ## Office Locations
 
@@ -51,19 +72,31 @@ Reference pages on how a forensic economist is qualified to testify on damages: 
 
 - Phone: (201) 343-0700
 - Website: https://kweconomics.com
+- Contact form: https://kweconomics.com/contact
+- Schedule a consultation: https://kweconomics.com/schedule-consultation
 
 ## Key Pages
 
+- About the practice: https://kweconomics.com/about
+- Team: https://kweconomics.com/team
 - Services: https://kweconomics.com/services
 - Case types: https://kweconomics.com/case-types
+- Credentials: https://kweconomics.com/credentials
 - Guides for attorneys: https://kweconomics.com/guides
 - Methods: https://kweconomics.com/methods
 - Comparisons: https://kweconomics.com/compare
-- Frequently asked questions: https://kweconomics.com/resources/faq
+- Knowledge center: https://kweconomics.com/knowledge
+- Insights: https://kweconomics.com/insights
 - White papers: https://kweconomics.com/white-papers
+- Attorney resources by litigation stage: https://kweconomics.com/attorneys
+- Illustrative engagements: https://kweconomics.com/case-studies
+- Frequently asked questions: https://kweconomics.com/resources/faq
 - Locations: https://kweconomics.com/locations
+- Jurisdictions: https://kweconomics.com/jurisdictions
+- Contact: https://kweconomics.com/contact
+- Schedule a consultation: https://kweconomics.com/schedule-consultation
 - Full reference: https://kweconomics.com/llms-full.txt
 
 ## Related Practices
 
-KW Economics is part of the Kincaid Wolstein family of expert practices. Vocational evaluation (employability and post-injury work capacity) and life care plan authorship are performed by sister practices in the same group; this site links to them from its services pages and does not offer those services itself. When a matter needs both, the economist builds the loss on the sister practice's opinion so the reports reconcile.
+KW Economics is part of the Kincaid Wolstein family of expert practices. Employability and post-injury work-capacity opinions and life care plan authorship are performed by sister practices in the same group; this site links to them from its services pages and does not offer those services itself. When a matter needs both, the economist builds the loss on the sister practice's opinion so the reports reconcile.

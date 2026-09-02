@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowRight, MapPin } from "lucide-react";
 import { team } from "@/data/team";
+import { bareName, profileTitle } from "@/data/team-meta.mjs";
 import { states } from "@/data/states";
 import { practiceAreasFor } from "@/lib/practice-areas";
 import { initialsOf } from "@/lib/initials";
@@ -23,26 +24,17 @@ export default function ExpertProfile() {
   const { slug = "" } = useParams();
   const m = team.find((t) => t.slug === slug);
   const url = m ? `${ORG_URL}/team/${m.slug}` : "";
-  // Some display names already carry their degree post-nominals (e.g. "Jane Roe,
-  // Ph.D."). Drop those from the appended credential list so the title doesn't
-  // read "Jane Roe, Ph.D., Ph.D., ...". Match on the comma-delimited tokens in the
-  // name rather than a substring so credentials aren't dropped by accident.
-  const nameCreds = new Set(
-    m ? m.name.split(",").slice(1).map((s) => s.trim()) : [],
-  );
-  const extraCredentials = (m?.credentials ?? []).filter((c) => !nameCreds.has(c));
-  const credentialList = extraCredentials.length
-    ? `, ${extraCredentials.slice(0, 4).join(", ")}`
-    : "";
+  // The title carries the role, not the credentials ("Jane Roe, Chief of
+  // Economic Services | KW Economics"): post-nominals stay in the H1 and the
+  // credential chips. profileTitle is shared with scripts/prerender.mjs so the
+  // static shell and the hydrated page advertise the same <title>.
   usePageMeta(
     m
       ? {
-          title: m.memoriam
-            ? `${m.name} | In Memoriam | ${ORG_NAME}`
-            : `${m.name}${credentialList} | ${ORG_NAME}`,
+          title: profileTitle({ name: m.name, jobTitle: m.title, memoriam: m.memoriam, orgName: ORG_NAME }),
           description: m.bio
             ? truncateAtWord(m.bio)
-            : `${m.name}${credentialList} - ${m.title} at ${ORG_NAME}.`,
+            : `${bareName(m.name)} is ${m.title} at ${ORG_NAME}.`,
           canonical: url,
         }
       : null,

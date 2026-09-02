@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { Lock, Download, Check } from "lucide-react";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
+import { ORG_PHONE, ORG_PHONE_DISPLAY, telHref } from "@/lib/brand";
 import type { WhitePaper } from "@/data/whitePapers";
 
-const STORAGE_PREFIX = "kwvrs:wp:";
+// localStorage key prefix for the per-paper unlock flag. Named for this site
+// only: sister-brand tokens are spelled solely in src/lib/brand.ts.
+const STORAGE_PREFIX = "kweconomics:wp:";
 
 interface WhitePaperGateProps {
   paper: WhitePaper;
@@ -141,7 +144,11 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
               </button>
               {status === "error" && (
                 <p className="text-sm text-red-600">
-                  Something went wrong. Please try again or call (201) 343-0700.
+                  Something went wrong. Please try again or call{" "}
+                  <a href={telHref(ORG_PHONE)} className="underline">
+                    {ORG_PHONE_DISPLAY}
+                  </a>
+                  .
                 </p>
               )}
             </form>

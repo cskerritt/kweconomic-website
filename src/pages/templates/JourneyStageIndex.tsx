@@ -1,27 +1,38 @@
 import { Link, useParams } from "react-router-dom";
 import { caseTypes } from "@/data/caseTypes";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import NextSteps from "@/components/NextSteps";
 import SchemaOrg from "@/components/SchemaOrg";
-import { graphSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
+import {
+  graphSchema,
+  organizationSchema,
+  websiteSchema,
+  collectionPageSchema,
+  breadcrumbSchema,
+  ORG_URL,
+} from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
-import { STAGE_LABELS } from "@/lib/attorney-stages";
+import {
+  ATTORNEY_STAGES,
+  STAGE_LABELS,
+  journeyHeading,
+  stageIndexHeading,
+  stageIndexTitle,
+  stageIndexDescription,
+  stageIndexIntro,
+} from "@/lib/attorney-stages";
 
 // Per-stage index page (/attorneys/:stage). Fills the level between the
 // /attorneys hub and the 56 stage x case-type journey guides - the journey
-// pages' breadcrumbs (visible + schema.org) link to /attorneys/:stage, which
-// 404'd before this page existed.
-const STAGE_INTROS: Record<string, string> = {
-  considering:
-    "Deciding whether the loss justifies a forensic economist. Pick your case type for the threshold questions, the records to gather first, and the questions to ask before retaining.",
-  retaining:
-    "Engaging the economist: scope, conflict check, the records request, and how the report fits with the opinions other experts supply. Pick your case type for a step-by-step retention checklist.",
-  "preparing-deposition":
-    "Getting the economist and the report ready for deposition. Pick your case type for the assumptions that will be tested, the documents to assemble, and the common attacks.",
-  trial:
-    "Presenting economic damages at trial. Pick your case type for demonstratives, the present value explanation for jurors, and rebuttal of the opposing economist.",
-};
+// pages' breadcrumbs (visible + schema.org) link to /attorneys/:stage. The
+// heading, title, description, and intro all come from src/lib/attorney-stages
+// so the static shell in scripts/prerender.mjs can print the same strings.
+// Each card prints the target page's heading (journeyHeading), which is also
+// the ListItem name in the CollectionPage schema below, so the structured data
+// names nothing the page does not show. The schema uses the shared
+// collectionPageSchema() builder (the shape the /attorneys hub emits) with the
+// WebSite node on the page so its isPartOf reference resolves.
 
 export default function JourneyStageIndex() {
   const { stage = "" } = useParams();
@@ -31,14 +42,20 @@ export default function JourneyStageIndex() {
   usePageMeta(
     stageLabel
       ? {
-          title: `${stageLabel}: Attorney Guides by Case Type | ${ORG_NAME}`,
-          description: `${stageLabel} guides for attorneys, by case type: step-by-step actions, required documents, common pitfalls, and FAQs.`,
+          title: stageIndexTitle(stage),
+          description: stageIndexDescription(stage),
           canonical: url,
         }
       : null,
   );
 
   if (!stageLabel) return <NotFound />;
+
+  const heading = stageIndexHeading(stage);
+  const items = caseTypes.map((c) => ({
+    name: journeyHeading(stage, c),
+    url: `${ORG_URL}/attorneys/${stage}/${c.slug}`,
+  }));
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -49,8 +66,9 @@ export default function JourneyStageIndex() {
           { name: stageLabel, url: `/attorneys/${stage}` },
         ]}
       />
-      <h1 className="font-serif text-4xl text-navy mb-4">{stageLabel}</h1>
-      <p className="text-lg text-neutral-700 mb-8 max-w-3xl">{STAGE_INTROS[stage]}</p>
+      <p className="text-amber-dark text-sm font-semibold uppercase tracking-wider mb-2">{stageLabel}</p>
+      <h1 className="font-serif text-4xl text-navy mb-4">{heading}</h1>
+      <p className="text-lg text-neutral-700 mb-8 max-w-3xl">{stageIndexIntro(stage)}</p>
 
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10">
         {caseTypes.map((c) => (
@@ -59,27 +77,40 @@ export default function JourneyStageIndex() {
               to={`/attorneys/${stage}/${c.slug}`}
               className="block rounded-lg border border-neutral-200 p-3 hover:border-navy hover:shadow transition"
             >
-              <div className="font-semibold text-navy">{c.name}</div>
+              <div className="font-semibold text-navy">{journeyHeading(stage, c)}</div>
             </Link>
           </li>
         ))}
       </ul>
 
-      <p className="text-neutral-700">
-        Looking for a different stage?{" "}
-        <Link to="/attorneys" className="text-teal font-medium hover:underline">
-          Browse all attorney resources
-        </Link>
-        .
-      </p>
+      <section id="other-stages" className="mb-10">
+        <h2 className="font-serif text-2xl text-navy mb-2">Other stages</h2>
+        <ul className="list-disc ml-5 text-neutral-700 space-y-1">
+          {ATTORNEY_STAGES.filter((s) => s.slug !== stage).map((s) => (
+            <li key={s.slug}>
+              <Link
+                to={`/attorneys/${s.slug}`}
+                className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+              >
+                {stageIndexHeading(s.slug)}
+              </Link>
+            </li>
+          ))}
+          <li>
+            <Link to="/attorneys" className="text-teal font-medium hover:underline">
+              Browse all attorney resources
+            </Link>
+          </li>
+        </ul>
+      </section>
+
+      <NextSteps />
 
       <SchemaOrg
         data={graphSchema([
-          articleSchema({
-            title: `${stageLabel}: Attorney Guides by Case Type`,
-            description: `${stageLabel} guides for attorneys, organized by case type.`,
-            url,
-          }),
+          organizationSchema(),
+          websiteSchema(),
+          collectionPageSchema({ url, name: heading, description: stageIndexDescription(stage), items }),
           breadcrumbSchema([
             { name: "Home", url: `${ORG_URL}/` },
             { name: "Attorneys", url: `${ORG_URL}/attorneys` },

@@ -1,5 +1,4 @@
 import { useParams, Link } from "react-router-dom";
-import { truncateAtWord } from "@/lib/text";
 import { credentials, getCredential } from "@/data/credentials";
 import PaginateNav from "@/components/PaginateNav";
 import { activeTeam } from "@/data/team";
@@ -8,21 +7,23 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import FAQBlock from "@/components/FAQBlock";
 import SourcesBlock from "@/components/SourcesBlock";
 import AuthorByline from "@/components/AuthorByline";
+import NextSteps from "@/components/NextSteps";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, credentialSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
 export default function CredentialHub() {
   const { slug = "" } = useParams();
   const cred = getCredential(slug);
   const url = cred ? `${ORG_URL}/credentials/${cred.slug}` : "";
+  // Both fields are authored per credential (credentials.ts) and wrapped in
+  // template literals so the prerender parity guard can slot them.
   usePageMeta(
     cred
       ? {
-          title: `${cred.abbreviation} Credential | ${cred.name} | ${ORG_NAME}`,
-          description: truncateAtWord(cred.scope ?? cred.name),
+          title: `${cred.metaTitle}`,
+          description: `${cred.metaDescription}`,
           canonical: url,
         }
       : null,
@@ -34,7 +35,10 @@ export default function CredentialHub() {
   // Named holders come from the credential's own expertSlugs list and from
   // nowhere else: the membership pages carry an empty list until membership is
   // confirmed (spec 4.3), so no person is ever attached to NAFE or AAEFE here.
+  // The same switch decides the byline: a named reviewer only where the
+  // credential names him, the editorial byline on the membership pages.
   const experts = activeTeam.filter((m) => cred.expertSlugs.includes(m.slug));
+  const reviewer = experts[0];
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -44,7 +48,7 @@ export default function CredentialHub() {
         { name: cred.abbreviation, url: `/credentials/${cred.slug}` },
       ]} />
       <h1 className="font-serif text-4xl text-navy mb-4">{cred.name} ({cred.abbreviation})</h1>
-      <AuthorByline />
+      <AuthorByline slug={reviewer?.slug} datePublished={cred.datePublished} dateModified={cred.dateModified} />
       <p className="text-lg text-neutral-700 mb-8">{cred.scope}</p>
 
       {cred.issuer && (
@@ -105,6 +109,9 @@ export default function CredentialHub() {
 
       <FAQBlock faqs={cred.faqs} />
       <SourcesBlock sources={cred.sources} />
+      <div className="mt-12">
+        <NextSteps />
+      </div>
       <PaginateNav prev={prev} next={next} backHref="/credentials" backLabel="All credentials" />
 
       <SchemaOrg data={graphSchema([

@@ -1,5 +1,4 @@
 import { useParams, Link } from "react-router-dom";
-import { truncateAtWord } from "@/lib/text";
 import { renderTextWithLinks } from "@/lib/richtext";
 import { comparisons } from "@/data/comparisons";
 import Breadcrumbs from "@/components/Breadcrumbs";
@@ -15,6 +14,10 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
+// The H1 and the lead paragraph (.kw-lead) are the units an answer engine
+// should read aloud or quote; every editorial template marks the same pair.
+const SPEAKABLE = { speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".kw-lead"] } };
+
 export default function Comparison() {
   const { slug = "" } = useParams();
   const c = comparisons.find((x) => x.slug === slug);
@@ -22,8 +25,11 @@ export default function Comparison() {
   usePageMeta(
     c
       ? {
-          title: `${c.title} | ${ORG_NAME}`,
-          description: truncateAtWord(c.overlap),
+          // metaTitle keeps the <title> under 60 chars where the descriptive H1 runs long.
+          title: `${c.metaTitle ?? c.title} | ${ORG_NAME}`,
+          // The one-sentence answer is the meta description, the lead, and the
+          // Article description (the /compare hub cards are to adopt it too).
+          description: c.answer,
           canonical: url,
         }
       : null,
@@ -41,7 +47,9 @@ export default function Comparison() {
         { name: c.title, url: `/compare/${c.slug}` },
       ]} />
       <h1 className="font-serif text-4xl text-navy mb-4">{c.title}</h1>
-      <AuthorByline slug={c.authorSlug} dateModified={c.dateModified} />
+      <AuthorByline slug={c.authorSlug} datePublished={c.datePublished} dateModified={c.dateModified} />
+      {/* The answer block: the difference and the verdict, stated before the definition cards. */}
+      <p className="kw-lead text-lg text-neutral-700 mb-8">{c.answer}</p>
 
       <div className="grid md:grid-cols-2 gap-4 mb-8">
         <div className="border border-neutral-200 rounded-lg p-4">
@@ -65,17 +73,18 @@ export default function Comparison() {
       </div>
 
       <table className="w-full border border-neutral-200 mb-8">
+        <caption className="sr-only">{c.a.label} compared with {c.b.label}, by dimension</caption>
         <thead className="bg-neutral-50">
           <tr>
-            <th className="text-left p-2">Dimension</th>
-            <th className="text-left p-2">{c.a.label}</th>
-            <th className="text-left p-2">{c.b.label}</th>
+            <th scope="col" className="text-left p-2">Dimension</th>
+            <th scope="col" className="text-left p-2">{c.a.label}</th>
+            <th scope="col" className="text-left p-2">{c.b.label}</th>
           </tr>
         </thead>
         <tbody>
           {c.rows.map((r) => (
             <tr key={r.dimension} className="border-t border-neutral-200">
-              <td className="p-2 font-medium">{r.dimension}</td>
+              <th scope="row" className="text-left p-2 font-medium">{r.dimension}</th>
               <td className="p-2">{r.a}</td>
               <td className="p-2">{r.b}</td>
             </tr>
@@ -107,7 +116,17 @@ export default function Comparison() {
       <PaginateNav prev={prev} next={next} backHref="/compare" backLabel="All comparisons" />
 
       <SchemaOrg data={graphSchema([
-        articleSchema({ title: c.title, description: c.overlap, url, dateModified: c.dateModified, authorSlug: c.authorSlug }),
+        {
+          ...articleSchema({
+            title: c.title,
+            description: c.answer,
+            url,
+            datePublished: c.datePublished,
+            dateModified: c.dateModified,
+            authorSlug: c.authorSlug,
+          }),
+          ...SPEAKABLE,
+        },
         faqPageSchema(c.faqs, url),
         breadcrumbSchema([
           { name: "Home", url: `${ORG_URL}/` },

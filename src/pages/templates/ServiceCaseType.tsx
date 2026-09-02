@@ -1,20 +1,43 @@
-import { useParams } from "react-router-dom";
-import { pillarServices } from "@/data/services";
-import { getCaseType } from "@/data/caseTypes";
+import { useParams, Link } from "react-router-dom";
+import { pillarServices, servicesForCaseType, type PillarService } from "@/data/services";
+import { getCaseType, type CaseType } from "@/data/caseTypes";
+import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import ContactCTA from "@/components/ContactCTA";
 import FAQBlock from "@/components/FAQBlock";
+import RelatedContent from "@/components/RelatedContent";
 import SourcesBlock from "@/components/SourcesBlock";
 import AuthorByline from "@/components/AuthorByline";
 import SchemaOrg from "@/components/SchemaOrg";
-import { graphSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
+import { graphSchema, organizationSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
 // Service.shortName is a heading label ("Fraud & Tracing"); the meta
 // description and the intro sentence render the work the pillar performs
-// through the shared helper ("fraud and tracing analysis"). The title and
-// the H2 keep the full service name as a proper noun.
+// through the shared helper ("fraud and tracing analysis"). The H1 and the
+// H2 keep the full service name as a proper noun; the title uses the short
+// name with any ampersand spelled out so it stays under the length budget.
 import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import NotFound from "@/pages/NotFound";
+
+const LINK_CLASS = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+
+/** Short name for titles: "Fraud & Tracing" -> "Fraud and Tracing". */
+const titleShortName = (s: PillarService) => s.shortName.replace(/\s*&\s*/g, " and ");
+
+/** Title tag: short name plus the case type (the H1 keeps the full service name). */
+function pairTitle(service: PillarService, caseType: CaseType): string {
+  return `${titleShortName(service)} Expert for ${caseType.name} | ${ORG_NAME}`;
+}
+
+/** Meta description: 126-158 characters on every declared pair (pinned by the render test). */
+function pairDescription(service: PillarService, caseType: CaseType): string {
+  const work = workPhrase(service.shortName);
+  const base = `${capFirst(work)} for ${caseType.name.toLowerCase()} cases: how the loss is built, which records drive it, and testimony support.`;
+  // The audience tag rides along only while the description stays inside the
+  // 160-character SERP window (four undeclared pairs would otherwise run long).
+  return base.length + " Either side.".length <= 160 ? `${base} Either side.` : base;
+}
 
 export default function ServiceCaseType() {
   const { serviceSlug = "", typeSlug = "" } = useParams();
@@ -26,19 +49,27 @@ export default function ServiceCaseType() {
     service && caseType
       ? `${ORG_URL}/services/${service.slug}/case/${caseType.slug}`
       : "";
-  const title =
+  const heading =
     service && caseType ? `${service.name} for ${caseType.name} Cases` : "";
   usePageMeta(
     service && caseType
       ? {
-          title: `${title} | ${ORG_NAME}`,
-          description: `${ORG_NAME} provides ${work} tailored to ${caseType.name.toLowerCase()} cases. Methodology, deliverables, and testimony support. Plaintiff and defense.`,
+          title: pairTitle(service, caseType),
+          description: pairDescription(service, caseType),
           canonical: url,
         }
       : null,
   );
 
   if (!service || !caseType) return <NotFound />;
+
+  // Pair-specific copy exists only for the pairs the pillar declares in
+  // services.ts (caseTypeNotes). Undeclared pairs render the shared sections
+  // without a FAQ block or FAQPage markup, so the case-type hub stays the
+  // FAQ owner and no FAQPage is duplicated across the grid.
+  const note = service.caseTypeNotes[caseType.slug];
+  const siblings = servicesForCaseType(caseType.slug).filter((s) => s.slug !== service.slug);
+  const finalStep = service.process?.at(-1);
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -48,33 +79,92 @@ export default function ServiceCaseType() {
         { name: service.name, url: `/services/${service.slug}` },
         { name: caseType.name, url: `/services/${service.slug}/case/${caseType.slug}` },
       ]} />
-      <h1 className="font-serif text-4xl text-navy mb-4">{title}</h1>
-      <AuthorByline />
+      <h1 className="font-serif text-4xl text-navy mb-4">{heading}</h1>
+      <AuthorByline dateModified={service.dateModified} />
       <p className="text-lg text-neutral-700 mb-8">
         {capFirst(work)} applied to {caseType.name.toLowerCase()} litigation: methodology, deliverables, and case-specific considerations.
       </p>
 
       <section id="application" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">How {service.name} applies to {caseType.name}</h2>
-        <p className="text-neutral-700">{caseType.lossComponents || service.description}</p>
+        {note && <p className="text-neutral-700 mb-3">{note.summary}</p>}
+        <p className="text-neutral-700">{service.description}</p>
       </section>
-      <section id="deliverables" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Typical deliverables</h2>
-        <p className="text-neutral-700">
-          A written expert report, supporting data appendices, and, when retained, deposition and trial testimony.
-        </p>
+      <section id="loss-components" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">What the economic claim consists of</h2>
+        <p className="text-neutral-700">{caseType.lossComponents}</p>
+      </section>
+      {finalStep && (
+        <section id="deliverables" className="mb-6">
+          <h2 className="font-serif text-2xl text-navy mb-2">Typical deliverables</h2>
+          <p className="text-neutral-700">{finalStep.description}</p>
+        </section>
+      )}
+
+      {/* Crawl path out of the pair page: the case-type hub, the other
+          pillars that declare this case type (declared pairs only), the
+          pillar's engagement details, and the attorney-stage guides. */}
+      <section id="related-pages" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Related pages</h2>
+        <ul className="list-disc ml-5 text-neutral-700 space-y-1">
+          <li>
+            <Link to={`/case-types/${caseType.slug}`} className={LINK_CLASS}>
+              {caseType.name}: the economic claim, where the damages concentrate, and how the analysis is built
+            </Link>
+          </li>
+          {siblings.map((s) => (
+            <li key={s.slug}>
+              <Link to={`/services/${s.slug}/case/${caseType.slug}`} className={LINK_CLASS}>
+                {s.shortName} for {caseType.name}
+              </Link>
+            </li>
+          ))}
+          {([
+            ["cost", "Cost and fee structure"],
+            ["process", "Engagement process"],
+            ["timeline", "Typical timeline"],
+          ] as const).map(([variant, label]) => (
+            <li key={variant}>
+              <Link to={`/services/${service.slug}/${variant}`} className={LINK_CLASS}>
+                {label} for {service.shortName}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      <FAQBlock faqs={caseType.faqs.slice(0, 4)} />
-      <SourcesBlock sources={caseType.sources.slice(0, 5)} />
+      <section id="attorney-guides" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Attorney guides for {caseType.name.toLowerCase()} cases</h2>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {ATTORNEY_STAGES.map((stage) => (
+            <li key={stage.slug}>
+              <Link
+                to={`/attorneys/${stage.slug}/${caseType.slug}`}
+                className="block rounded-lg border border-neutral-200 p-3 hover:border-navy hover:shadow transition"
+              >
+                <div className="font-semibold text-navy">{stage.label}</div>
+                <div className="text-sm text-neutral-600 mt-1">{caseType.name} cases</div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <ContactCTA context={service.shortName} />
+
+      {note && <FAQBlock faqs={note.faqs} title={`Frequently asked: ${service.shortName} in ${caseType.name.toLowerCase()} matters`} />}
+      <RelatedContent items={service.related.slice(0, 3)} heading="Guides and methods" />
+      <SourcesBlock sources={service.sources.slice(0, 5)} />
 
       <SchemaOrg data={graphSchema([
+        organizationSchema(),
         serviceSchema({
           slug: `${service.slug}/case/${caseType.slug}`,
-          name: title,
-          description: `${service.name} methodology applied to ${caseType.name.toLowerCase()} cases.`,
+          name: heading,
+          description: pairDescription(service, caseType),
+          dateModified: service.dateModified,
         }),
-        faqPageSchema(caseType.faqs.slice(0, 4), url),
+        ...(note ? [faqPageSchema(note.faqs, url)] : []),
         breadcrumbSchema([
           { name: "Home", url: `${ORG_URL}/` },
           { name: "Services", url: `${ORG_URL}/services` },

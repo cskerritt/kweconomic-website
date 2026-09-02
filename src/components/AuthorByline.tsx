@@ -2,26 +2,48 @@ import { Link } from "react-router-dom";
 import { team } from "@/data/team";
 import { ORG_NAME } from "@/lib/brand";
 
-export default function AuthorByline({ slug, dateModified }: { slug?: string; dateModified?: string }) {
+interface AuthorBylineProps {
+  /** Team member slug. Unset renders the "<ORG_NAME> Editorial Team" byline (schema author = the organization). */
+  slug?: string;
+  /** ISO date first published. */
+  datePublished?: string;
+  /** ISO date last reviewed or updated; shown only when it differs from datePublished. */
+  dateModified?: string;
+}
+
+/**
+ * "By <name>, <title> · Published <date> · Reviewed <date>".
+ *
+ * The visible role ("By") matches the structured data, which names the same
+ * person as the Article `author`. The display name is the member's name, which
+ * already carries the academic credentials that belong on an economics byline
+ * ("Christopher Skerritt, M.Ed., MBA"), plus the job title. The
+ * rehabilitation-counseling, life-care-plan, and set-aside designations listed
+ * under `credentials` in team.ts stay on the /team profile (hasCredential,
+ * credential list) and are never appended here. renderBylineHtml in
+ * scripts/prerender.mjs must mirror this markup for the static shells.
+ */
+export default function AuthorByline({ slug, datePublished, dateModified }: AuthorBylineProps) {
   const member = slug ? team.find((m) => m.slug === slug) : undefined;
-  const displayName = member?.name ?? `${ORG_NAME} Editorial Team`;
+  const displayName = member ? `${member.name}, ${member.title}` : `${ORG_NAME} Editorial Team`;
   const linkTo = member ? `/team/${member.slug}` : "/team";
-  // Show top 3 credentials inline for E-E-A-T signal (e.g. "Dan Wolstein, Ph.D., CRC, ABVE/D").
-  // Filter credentials already present in the displayed name (the team data
-  // names often already include the primary credential like "Ph.D." or "M.D.").
-  const filtered = member?.credentials?.filter((c) => !displayName.includes(c)) ?? [];
-  const credentialList = filtered.length ? `, ${filtered.slice(0, 3).join(", ")}` : "";
+  const reviewed = dateModified && dateModified !== datePublished ? dateModified : undefined;
   return (
     <div className="text-sm text-neutral-600 mb-6">
-      <span>Reviewed by </span>
+      <span>By </span>
       <Link to={linkTo} className="text-navy hover:underline">
         {displayName}
-        {credentialList}
       </Link>
-      {dateModified && (
+      {datePublished && (
         <>
-          <span> · Last updated </span>
-          <time dateTime={dateModified}>{dateModified}</time>
+          <span> · Published </span>
+          <time dateTime={datePublished}>{datePublished}</time>
+        </>
+      )}
+      {reviewed && (
+        <>
+          <span> · Reviewed </span>
+          <time dateTime={reviewed}>{reviewed}</time>
         </>
       )}
     </div>

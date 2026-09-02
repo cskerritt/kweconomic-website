@@ -10,6 +10,10 @@ export interface WhitePaperSection {
 export interface WhitePaper {
   slug: string;
   title: string;
+  /** Shorter <title> form; the page title is `${metaTitle ?? title} | White Paper | ${ORG_NAME}`. The H1 keeps `title`. */
+  metaTitle?: string;
+  /** Written meta description (110-160 chars, a complete sentence); never an auto-cut of `summary`. */
+  metaDescription: string;
   subtitle: string;
   /** One of the core practice areas, used for the icon + cross-link. */
   discipline: "Vocational" | "Economic" | "Life Care";
@@ -39,6 +43,8 @@ export const whitePapers: WhitePaper[] = [
   {
     slug: "daubert-ready-economic-damages-report",
     title: "Building a Daubert-Ready Economic Damages Report",
+    metaTitle: "Daubert-Ready Damages Report",
+    metaDescription: "How a damages report is built so every input is stated, sourced, and testable: foundation, earnings base, horizons, offsets, discounting, and sensitivity.",
     subtitle:
       "Foundation, inputs, discounting, and documentation for a damages opinion that withstands admissibility review on the merits.",
     discipline: "Economic",
@@ -98,6 +104,8 @@ export const whitePapers: WhitePaper[] = [
   {
     slug: "business-valuation-standards-in-litigation",
     title: "Business Valuation Standards in Litigation",
+    metaTitle: "Business Valuation Standards",
+    metaDescription: "How professional valuation standards structure a contested valuation: engagement definition, normalization, the three approaches, discounts, and report content.",
     subtitle:
       "How the professional valuation standards structure a contested valuation, from the engagement definition to the report, and how they answer cross-examination.",
     discipline: "Economic",

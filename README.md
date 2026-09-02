@@ -40,6 +40,10 @@ Other scripts: `generate:sitemaps`, `generate:llms`, `images:webp` (needs `cwebp
 
 Build args `VITE_TURNSTILE_SITE_KEY` and `VITE_GA_MEASUREMENT_ID` default to empty; no keys are carried over from either sister site.
 
+### Legacy redirects
+
+`lib/legacy-redirects.server.mjs` is the 301 map from the retired kweconomics.com routes (the previous site's 22,418 sitemap URLs: 21 old service slugs by state and city, bare `/<state>` and `/<state>/<city>` pages, `/experience`, `/calculators`, `/tools`, `/blog`, and the keyword prefixes such as `/lost-earnings/*`). Old service and geo routes resolve to the closest pillar, state, or city page that actually has a prerendered shell in `dist/` (checked at request time, so a redirect never lands on a 404); vocational and life-care-planning routes go to the sister sites. The map runs after host and trailing-slash canonicalization, GET/HEAD only. `lib/legacy-redirects.server.test.mjs` pins every rule and replays `test/fixtures/legacy-sitemap-sample.txt` (307 URLs sampled from the old sitemap).
+
 ## Deployment
 
 Railway, Dockerfile builder (`railway.json`): multi-stage `node:22-alpine` image runs the full `npm run build` then copies `dist/` (which already contains `public/`), `server.js`, `validation.server.mjs`, `turnstile.server.mjs`, and `lib/` into the runtime stage (never `scripts/` or `src/`, which is why the runtime brand literals live in `lib/brand.server.mjs`). Healthcheck `GET /healthz` returns JSON with the mail/turnstile/durable-capture readiness flags. Standing rule: `docker build && docker run` locally before pushing to `main`:
@@ -87,7 +91,7 @@ Sitemap index `public/sitemap.xml` (5 children + image sitemap; news sitemap adv
 | `sitemap-locations.xml` | 859 |
 | `sitemap-case-types.xml` | 799 |
 | `sitemap-credentials.xml` | 229 |
-| `image-sitemap.xml` | 8 |
+| `image-sitemap.xml` | 7 |
 | `news-sitemap.xml` | 2 |
 
 Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 5,797 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`); `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404. `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.

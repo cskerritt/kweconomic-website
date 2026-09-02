@@ -34,9 +34,11 @@ const PUBLIC = join(ROOT, "public");
 const PUBLICATION_NAME = `${ORG_NAME} Insights`;
 
 // Office/stock photos and the core pages they appear on (ground truth from the
-// page components; an image sitemap should only list images present on the page).
+// page components; an image sitemap should only list images present on the
+// page). The home page renders no photograph (its hero is a gradient; the
+// hero-office-meeting file is only the site's og:image default), so it has no
+// entry. scripts/sitemap-index.test.mjs pins each src here to its page source.
 const PAGE_IMAGES = [
-  { path: "/", images: [{ src: "/images/hero-office-meeting.jpg", title: `${ORG_NAME} team consultation` }] },
   { path: "/about", images: [{ src: "/images/mentor-trainee.jpg", title: `${ORG_NAME} forensic economics consultation` }] },
   { path: "/contact", images: [{ src: "/images/legal-contract.jpg", title: `Retain ${ORG_NAME} for economic damages analysis` }] },
   { path: "/services", images: [{ src: "/images/legal-team-discussion.jpg", title: `${ORG_NAME} forensic economics and damages services` }] },

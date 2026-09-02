@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, SITE_URL } from "@/lib/brand";
+import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, ORG_PHONE_DISPLAY, SITE_URL } from "@/lib/brand";
 
 const DOMAIN = SITE_URL.replace(/^https?:\/\//, "");
-const PHONE_DISPLAY = "(201) 343-0700";
+const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
+// The effective date of the terms is Chris's call (README "Facts to confirm");
+// it is printed as machine-readable <time> so a crawler can read it either way.
+const EFFECTIVE_DATE = { iso: "2025-01-01", label: "January 1, 2025" };
 
 const sections = [
   {
@@ -69,7 +72,7 @@ export default function Terms() {
   usePageMeta({
     title: `Terms of Service | ${ORG_NAME}`,
     description:
-      `Terms of Service for ${DOMAIN} - governing your use of the ${ORG_NAME} website.`,
+      `Terms of use for the ${ORG_NAME} website: informational content only, no expert relationship until an engagement letter is signed, and New Jersey law.`,
     canonical: `${SITE_URL}/terms`,
   });
 
@@ -82,7 +85,9 @@ export default function Terms() {
             <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-3">
               Terms of Service
             </h1>
-            <p className="text-sm text-neutral-500 font-mono">Effective Date: January 1, 2025</p>
+            <p className="text-sm text-neutral-500 font-mono">
+              Effective Date: <time dateTime={EFFECTIVE_DATE.iso}>{EFFECTIVE_DATE.label}</time>
+            </p>
           </div>
         </div>
       </section>

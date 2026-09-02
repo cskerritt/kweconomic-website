@@ -1,20 +1,76 @@
 import { Link } from "react-router-dom";
-import { BookOpen, ArrowRight } from "lucide-react";
+import { BookOpen, ArrowRight, Phone } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { knowledgeGuides } from "@/data/knowledge";
 import Reveal from "@/components/Reveal";
-import { ORG_NAME, SITE_URL } from "@/lib/brand";
+import SchemaOrg from "@/components/SchemaOrg";
+import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
+import { graphSchema, organizationSchema, websiteSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
+import { ORG_NAME, ORG_PHONE, ORG_PHONE_DISPLAY, SITE_URL, telHref } from "@/lib/brand";
+
+// Lead definition: the extractable answer to "what is in the Knowledge Center".
+// Rendered in the hero and reused as the CollectionPage description.
+const LEAD =
+  "The Knowledge Center holds the long-form guides behind an economic damages report: what a loss claim consists of, which records drive it, and how a defensible figure is built and tested. Each guide is written for attorneys who retain or cross-examine economists and covers the methodology, the governing standards, and the practical considerations for litigation.";
+
+// Sibling editorial hubs, minus this page.
+const LIBRARY_LINKS = [
+  { href: "/guides", label: "Practitioner guides" },
+  { href: "/compare", label: "Side-by-side comparisons" },
+  { href: "/methods", label: "Forensic economics methods" },
+  { href: "/white-papers", label: "White papers" },
+  { href: "/knowledge", label: "Knowledge center" },
+  { href: "/insights", label: "Insights" },
+];
 
 export default function KnowledgeHub() {
+  const url = `${SITE_URL}/knowledge`;
   usePageMeta({
-    title: `Knowledge Center | ${ORG_NAME}`,
+    title: `Knowledge Center: Economic Damages Guides | ${ORG_NAME}`,
     description:
-      "In-depth guides on economic damages, expert witness testimony, and the methods behind a defensible damages figure - written for attorneys and other legal professionals.",
-    canonical: `${SITE_URL}/knowledge`,
+      "In-depth guides on economic damages, expert witness testimony, and the methods behind a defensible damages figure, written for attorneys who retain economists.",
+    canonical: url,
   });
 
   return (
     <>
+      {/* Index-page structured data: CollectionPage (own @id) + ItemList of the
+          knowledge guides, with the Organization and WebSite nodes the references resolve to. */}
+      <SchemaOrg
+        data={graphSchema([
+          organizationSchema(),
+          websiteSchema(),
+          {
+            "@type": "CollectionPage",
+            "@id": `${url}#webpage`,
+            url,
+            name: "Knowledge Center: Economic Damages Guides for Attorneys",
+            description: LEAD,
+            isPartOf: { "@id": WEBSITE_ID },
+            publisher: { "@id": ORG_ID },
+            mainEntity: {
+              "@type": "ItemList",
+              "@id": `${url}#list`,
+              numberOfItems: knowledgeGuides.length,
+              itemListElement: knowledgeGuides.map((g, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: g.title,
+                url: `${ORG_URL}/knowledge/${g.slug}`,
+              })),
+            },
+          },
+          breadcrumbSchema([
+            { name: "Home", url: `${ORG_URL}/` },
+            { name: "Knowledge Center", url },
+          ]),
+        ])}
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreadcrumbNav items={[{ label: "Knowledge Center" }]} />
+      </div>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-16 md:py-24">
         <div className="kw-aurora" aria-hidden="true" />
@@ -25,13 +81,9 @@ export default function KnowledgeHub() {
               Educational Resources
             </p>
             <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
-              Knowledge Center
+              Knowledge Center: Economic Damages Guides for Attorneys
             </h1>
-            <p className="text-lg text-neutral-300 leading-relaxed">
-              Authoritative guides on economic damages and expert witness practice - written to
-              help attorneys and legal professionals understand the methods behind a damages
-              figure.
-            </p>
+            <p className="text-lg text-neutral-300 leading-relaxed">{LEAD}</p>
           </div>
         </div>
       </section>
@@ -78,6 +130,19 @@ export default function KnowledgeHub() {
               </Link>
             ))}
           </Reveal>
+
+          <nav aria-label="More from the library" className="mt-14 border-t border-neutral-200 pt-6">
+            <h2 className="font-serif text-xl font-bold text-navy mb-3">More from the library</h2>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              {LIBRARY_LINKS.filter((l) => l.href !== "/knowledge").map((l) => (
+                <li key={l.href}>
+                  <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-teal hover:text-teal">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </section>
 
@@ -97,6 +162,13 @@ export default function KnowledgeHub() {
               >
                 Schedule a Consultation <ArrowRight className="w-4 h-4" />
               </Link>
+              <a
+                href={telHref(ORG_PHONE)}
+                className="inline-flex items-center justify-center gap-2 border border-white/30 hover:bg-white/10 text-white font-medium px-6 py-3 rounded-lg transition-colors"
+              >
+                <Phone className="w-4 h-4" />
+                {ORG_PHONE_DISPLAY}
+              </a>
               <Link
                 to="/insights"
                 className="inline-flex items-center justify-center gap-2 border border-white/30 hover:bg-white/10 text-white font-medium px-6 py-3 rounded-lg transition-colors"

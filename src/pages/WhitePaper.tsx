@@ -1,5 +1,4 @@
 import { useParams, Navigate, Link } from "react-router-dom";
-import { truncateAtWord } from "@/lib/text";
 import { ORG_NAME } from "@/lib/brand";
 import { ArrowRight, Check, FileText } from "lucide-react";
 import { ICONS } from "@/lib/icons";
@@ -9,9 +8,15 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
+import AuthorByline from "@/components/AuthorByline";
 import WhitePaperGate from "@/components/WhitePaperGate";
 import SourcesBlock from "@/components/SourcesBlock";
 import NextSteps from "@/components/NextSteps";
+
+// The H1 and the lead paragraph (.kw-lead, the abstract) are the units an
+// answer engine should read aloud or quote; every editorial template marks
+// the same pair.
+const SPEAKABLE = { speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".kw-lead"] } };
 
 export default function WhitePaper() {
   const { slug } = useParams<{ slug: string }>();
@@ -20,8 +25,9 @@ export default function WhitePaper() {
   usePageMeta(
     paper
       ? {
-          title: `${paper.title} | White Paper | ${ORG_NAME}`,
-          description: truncateAtWord(paper.summary),
+          // metaTitle keeps the <title> under 60 chars; the H1 keeps the full title.
+          title: `${paper.metaTitle ?? paper.title} | White Paper | ${ORG_NAME}`,
+          description: paper.metaDescription,
           canonical: `${ORG_URL}/white-papers/${paper.slug}`,
         }
       : null,
@@ -38,13 +44,17 @@ export default function WhitePaper() {
       <SchemaOrg
         data={graphSchema([
           organizationSchema(),
-          articleSchema({
-            title: paper.title,
-            description: paper.summary,
-            url,
-            dateModified: paper.dateModified,
-            authorSlug: paper.authorSlug,
-          }),
+          {
+            ...articleSchema({
+              title: paper.title,
+              description: paper.summary,
+              url,
+              datePublished: paper.datePublished,
+              dateModified: paper.dateModified,
+              authorSlug: paper.authorSlug,
+            }),
+            ...SPEAKABLE,
+          },
           breadcrumbSchema([
             { name: "Home", url: `${ORG_URL}/` },
             { name: "White Papers", url: `${ORG_URL}/white-papers` },
@@ -84,10 +94,12 @@ export default function WhitePaper() {
 
       {/* Body */}
       <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <AuthorByline slug={paper.authorSlug} datePublished={paper.datePublished} dateModified={paper.dateModified} />
+
         {/* Abstract */}
         <div className="rounded-xl border border-neutral-200 bg-white p-6 lg:p-8 mb-10">
           <h2 className="font-serif text-lg font-bold text-navy mb-2">Abstract</h2>
-          <p className="text-neutral-700 leading-relaxed">{paper.summary}</p>
+          <p className="kw-lead text-neutral-700 leading-relaxed">{paper.summary}</p>
         </div>
 
         {/* Key takeaways */}

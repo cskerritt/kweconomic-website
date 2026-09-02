@@ -1,12 +1,27 @@
 import type { StateCourtSystem } from "../../types";
 
-export const stateCourts: StateCourtSystem[] = [
+/**
+ * Per-state court systems. The trial-court descriptions are rendered on the
+ * case-type x state and credential x state pages, so they carry no dollar
+ * thresholds (indexed figures go stale and nothing on the page dates them),
+ * no editorial parentheticals, and no statute nicknames. Keep each entry's
+ * first trial court as its general-jurisdiction court: the geo narratives
+ * (src/data/narratives.ts and scripts/lib/geo-inputs.mjs) read it by position.
+ */
+export interface StateCourtSystemEntry extends StateCourtSystem {
+  /** One sentence for a jurisdiction whose venue picture needs explaining
+   * (a territory with no local federal district court). Rendered after the
+   * highest-court line. */
+  venueNote?: string;
+}
+
+export const stateCourts: StateCourtSystemEntry[] = [
   // Alabama
   {
     stateSlug: "alabama",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction trial court; hears civil cases over $10,000 and all felony criminal cases" },
-      { name: "District Court", description: "Limited jurisdiction; civil cases up to $10,000, misdemeanors, small claims" },
+      { name: "Circuit Court", description: "General jurisdiction trial court; hears larger civil cases and all felony criminal cases" },
+      { name: "District Court", description: "Limited jurisdiction; smaller civil cases, misdemeanors, small claims" },
       { name: "Probate Court", description: "Wills, estates, guardianships, mental health commitments" },
     ],
     appellateCourts: [
@@ -26,7 +41,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "alaska",
     trialCourts: [
       { name: "Superior Court", description: "General jurisdiction trial court; handles all civil and criminal matters" },
-      { name: "District Court", description: "Limited jurisdiction; civil cases up to $100,000, misdemeanors, small claims" },
+      { name: "District Court", description: "Limited jurisdiction; civil cases below the superior court threshold, misdemeanors, small claims" },
     ],
     appellateCourts: [
       { name: "Alaska Court of Appeals", description: "Reviews criminal cases, juvenile delinquency, and driver's license revocations" },
@@ -41,8 +56,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "arizona",
     trialCourts: [
-      { name: "Superior Court", description: "General jurisdiction; civil cases over $10,000, felonies, family law, probate" },
-      { name: "Justice Court", description: "Civil cases up to $10,000, misdemeanors, small claims" },
+      { name: "Superior Court", description: "General jurisdiction; larger civil cases, felonies, family law, probate" },
+      { name: "Justice Court", description: "Smaller civil cases, misdemeanors, small claims" },
       { name: "Municipal Court", description: "City ordinance violations and Class 1 misdemeanors within municipal limits" },
     ],
     appellateCourts: [
@@ -59,7 +74,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "arkansas",
     trialCourts: [
       { name: "Circuit Court", description: "General jurisdiction; civil, criminal, domestic, probate, and juvenile matters" },
-      { name: "District Court", description: "Limited jurisdiction; civil cases up to $25,000, misdemeanors, small claims" },
+      { name: "District Court", description: "Limited jurisdiction; smaller civil cases, misdemeanors, small claims" },
     ],
     appellateCourts: [
       { name: "Arkansas Court of Appeals", description: "12-judge intermediate appellate court reviewing circuit court decisions" },
@@ -98,8 +113,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "colorado",
     trialCourts: [
-      { name: "District Court", description: "General jurisdiction; civil cases over $15,000, felonies, domestic relations, probate" },
-      { name: "County Court", description: "Limited jurisdiction; civil cases up to $15,000, misdemeanors, traffic" },
+      { name: "District Court", description: "General jurisdiction; larger civil cases, felonies, domestic relations, probate" },
+      { name: "County Court", description: "Limited jurisdiction; smaller civil cases, misdemeanors, traffic" },
       { name: "Water Court", description: "Specialized court for water rights adjudication in 7 divisions" },
     ],
     appellateCourts: [
@@ -131,11 +146,11 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "delaware",
     trialCourts: [
-      { name: "Superior Court", description: "General jurisdiction; civil cases over $75,000, felonies" },
+      { name: "Superior Court", description: "General jurisdiction; larger civil cases, felonies" },
       { name: "Court of Chancery", description: "Equity jurisdiction; nationally prominent for corporate and business disputes" },
       { name: "Family Court", description: "All matters involving juveniles, domestic relations, and child support" },
-      { name: "Court of Common Pleas", description: "Civil cases up to $75,000, lesser criminal offenses" },
-      { name: "Justice of the Peace Court", description: "Civil cases up to $25,000, minor criminal offenses, landlord-tenant" },
+      { name: "Court of Common Pleas", description: "Mid-sized civil cases, lesser criminal offenses" },
+      { name: "Justice of the Peace Court", description: "Smaller civil cases, minor criminal offenses, landlord-tenant" },
     ],
     appellateCourts: [],
     supremeCourt: "Delaware Supreme Court",
@@ -155,7 +170,7 @@ export const stateCourts: StateCourtSystem[] = [
     ],
     supremeCourt: "District of Columbia Court of Appeals",
     federalDistricts: [
-      { name: "District of the District of Columbia", abbreviation: "D.D.C." },
+      { name: "District of Columbia", abbreviation: "D.D.C." },
     ],
     filingPortalUrl: "https://www.dccourts.gov",
   },
@@ -163,8 +178,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "florida",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $30,000, felonies, family law, probate" },
-      { name: "County Court", description: "Limited jurisdiction; civil cases up to $30,000, misdemeanors, small claims" },
+      { name: "Circuit Court", description: "General jurisdiction; larger civil cases, felonies, family law, probate" },
+      { name: "County Court", description: "Limited jurisdiction; smaller civil cases, misdemeanors, small claims" },
     ],
     appellateCourts: [
       { name: "First District Court of Appeal", description: "Covers North Florida (Tallahassee)" },
@@ -187,10 +202,10 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "georgia",
     trialCourts: [
       { name: "Superior Court", description: "General jurisdiction; civil cases, felonies, domestic relations, equity" },
-      { name: "State Court", description: "Limited jurisdiction; civil cases, misdemeanors, some traffic" },
+      { name: "State Court", description: "Civil actions regardless of amount except those reserved to the superior court, misdemeanors" },
       { name: "Juvenile Court", description: "All matters involving minors" },
       { name: "Probate Court", description: "Wills, estates, guardianships, mental health" },
-      { name: "Magistrate Court", description: "Civil cases up to $15,000, issue warrants, preliminary hearings" },
+      { name: "Magistrate Court", description: "Smaller civil cases, warrants, preliminary hearings" },
     ],
     appellateCourts: [
       { name: "Georgia Court of Appeals", description: "15-judge intermediate appellate court" },
@@ -207,8 +222,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "hawaii",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $40,000, felonies, family court division" },
-      { name: "District Court", description: "Civil cases up to $40,000, misdemeanors, small claims, traffic" },
+      { name: "Circuit Court", description: "General jurisdiction; larger civil cases, felonies, family court division" },
+      { name: "District Court", description: "Smaller civil cases, misdemeanors, small claims, traffic" },
     ],
     appellateCourts: [
       { name: "Intermediate Court of Appeals", description: "Reviews circuit and district court decisions" },
@@ -223,8 +238,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "idaho",
     trialCourts: [
-      { name: "District Court", description: "General jurisdiction; civil cases over $10,000, felonies, domestic relations, probate" },
-      { name: "Magistrate Division", description: "Civil cases up to $10,000, misdemeanors, small claims, traffic" },
+      { name: "District Court", description: "General jurisdiction; larger civil cases, felonies, domestic relations, probate" },
+      { name: "Magistrate Division", description: "Smaller civil cases, misdemeanors, small claims, traffic" },
     ],
     appellateCourts: [
       { name: "Idaho Court of Appeals", description: "Reviews district court decisions; primarily criminal cases" },
@@ -239,7 +254,7 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "illinois",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; 25 judicial circuits across the state (24 numbered circuits plus the unnumbered Circuit Court of Cook County)" },
+      { name: "Circuit Court", description: "General jurisdiction; 25 judicial circuits across the state, including the Circuit Court of Cook County" },
     ],
     appellateCourts: [
       { name: "Appellate Court, First District", description: "Covers Cook County (Chicago)" },
@@ -262,7 +277,7 @@ export const stateCourts: StateCourtSystem[] = [
     trialCourts: [
       { name: "Circuit Court", description: "General jurisdiction; oldest courts in each county" },
       { name: "Superior Court", description: "General jurisdiction; exists in most counties alongside circuit courts" },
-      { name: "Small Claims Court", description: "Civil cases up to $6,000 in Marion County" },
+      { name: "Small Claims Court", description: "Small claims in Marion County" },
     ],
     appellateCourts: [
       { name: "Indiana Court of Appeals", description: "15-judge intermediate appellate court in five districts" },
@@ -311,8 +326,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "kentucky",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $5,000, felonies, domestic relations" },
-      { name: "District Court", description: "Civil cases up to $5,000, misdemeanors, probate, small claims, juvenile" },
+      { name: "Circuit Court", description: "General jurisdiction; larger civil cases, felonies, domestic relations" },
+      { name: "District Court", description: "Smaller civil cases, misdemeanors, probate, small claims, juvenile" },
     ],
     appellateCourts: [
       { name: "Kentucky Court of Appeals", description: "14-judge intermediate appellate court" },
@@ -329,7 +344,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "louisiana",
     trialCourts: [
       { name: "District Court", description: "General jurisdiction; civil and criminal cases at the parish level" },
-      { name: "City Court", description: "Limited jurisdiction within city limits; civil cases up to $20,000" },
+      { name: "City Court", description: "Limited jurisdiction within city limits; smaller civil cases" },
       { name: "Family Court", description: "Domestic relations in parishes with dedicated family courts" },
       { name: "Juvenile Court", description: "Matters involving minors" },
     ],
@@ -367,8 +382,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "maryland",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $30,000, felonies, equity, domestic relations" },
-      { name: "District Court", description: "Civil cases up to $30,000, misdemeanors, motor vehicle, landlord-tenant" },
+      { name: "Circuit Court", description: "General jurisdiction; larger civil cases, felonies, equity, domestic relations" },
+      { name: "District Court", description: "Smaller civil cases, misdemeanors, motor vehicle, landlord-tenant" },
       { name: "Orphans' Court", description: "Probate matters, administration of estates" },
     ],
     appellateCourts: [
@@ -384,8 +399,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "massachusetts",
     trialCourts: [
-      { name: "Superior Court", description: "General jurisdiction; civil cases over $25,000, major criminal cases" },
-      { name: "District Court", description: "Civil cases up to $25,000, misdemeanors, small claims" },
+      { name: "Superior Court", description: "General jurisdiction; larger civil cases, major criminal cases" },
+      { name: "District Court", description: "Smaller civil cases, misdemeanors, small claims" },
       { name: "Boston Municipal Court", description: "Civil and criminal jurisdiction within Boston" },
       { name: "Probate and Family Court", description: "Domestic relations, probate, adoptions" },
       { name: "Land Court", description: "Specialized court for real property disputes" },
@@ -405,8 +420,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "michigan",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $25,000, felonies, domestic relations" },
-      { name: "District Court", description: "Civil cases up to $25,000, misdemeanors, small claims, traffic" },
+      { name: "Circuit Court", description: "General jurisdiction; larger civil cases, felonies, domestic relations" },
+      { name: "District Court", description: "Smaller civil cases, misdemeanors, small claims, traffic" },
       { name: "Probate Court", description: "Estates, trusts, guardianships, mental health" },
       { name: "Family Division of Circuit Court", description: "Domestic relations and juvenile matters" },
     ],
@@ -439,10 +454,10 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "mississippi",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $200, felonies" },
+      { name: "Circuit Court", description: "General jurisdiction; civil cases above the justice court threshold, felonies" },
       { name: "Chancery Court", description: "Equity jurisdiction; domestic relations, probate, real property, contract" },
-      { name: "County Court", description: "Exists in more populous counties; civil cases up to $200,000" },
-      { name: "Justice Court", description: "Civil cases up to $3,500, misdemeanors" },
+      { name: "County Court", description: "Exists in more populous counties; mid-sized civil cases" },
+      { name: "Justice Court", description: "Small civil cases, misdemeanors" },
     ],
     appellateCourts: [
       { name: "Mississippi Court of Appeals", description: "10-judge intermediate appellate court" },
@@ -477,7 +492,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "montana",
     trialCourts: [
       { name: "District Court", description: "General jurisdiction; one district in each of 56 counties" },
-      { name: "Justice Court", description: "Civil cases up to $15,000, misdemeanors, small claims" },
+      { name: "Justice Court", description: "Smaller civil cases, misdemeanors, small claims" },
       { name: "City Court", description: "Municipal ordinance violations and city misdemeanors" },
       { name: "Water Court", description: "Adjudicates water rights; statewide jurisdiction" },
     ],
@@ -492,8 +507,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "nebraska",
     trialCourts: [
-      { name: "District Court", description: "General jurisdiction; civil cases over $57,910, felonies, domestic relations" },
-      { name: "County Court", description: "Civil cases up to $57,910, misdemeanors, probate, small claims" },
+      { name: "District Court", description: "General jurisdiction; civil cases above the county court threshold, felonies, domestic relations" },
+      { name: "County Court", description: "Smaller civil cases, misdemeanors, probate, small claims" },
     ],
     appellateCourts: [
       { name: "Nebraska Court of Appeals", description: "6-judge intermediate appellate court (sits in three-judge panels)" },
@@ -508,8 +523,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "nevada",
     trialCourts: [
-      { name: "District Court", description: "General jurisdiction; civil cases over $15,000, felonies, domestic relations" },
-      { name: "Justice Court", description: "Civil cases up to $15,000, misdemeanors, small claims, traffic" },
+      { name: "District Court", description: "General jurisdiction; larger civil cases, felonies, domestic relations" },
+      { name: "Justice Court", description: "Smaller civil cases, misdemeanors, small claims, traffic" },
       { name: "Municipal Court", description: "Violations of city ordinances" },
       { name: "Family Court Division", description: "Domestic relations and juvenile matters in Clark and Washoe counties" },
     ],
@@ -526,8 +541,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "new-hampshire",
     trialCourts: [
-      { name: "Superior Court", description: "General jurisdiction; civil cases over $1,500 with jury trials, felonies" },
-      { name: "Circuit Court", description: "Three divisions: District (civil/criminal), Family (domestic), Probate" },
+      { name: "Superior Court", description: "General jurisdiction; civil cases with jury trials, felonies" },
+      { name: "Circuit Court", description: "Three divisions: District for civil and criminal matters, Family for domestic relations, and Probate" },
     ],
     appellateCourts: [],
     supremeCourt: "New Hampshire Supreme Court",
@@ -540,7 +555,7 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "new-jersey",
     trialCourts: [
-      { name: "Superior Court, Law Division", description: "General civil and criminal matters over $15,000; jury trials" },
+      { name: "Superior Court, Law Division", description: "General civil and criminal matters; jury trials" },
       { name: "Superior Court, Chancery Division", description: "Equity matters, family court, probate" },
       { name: "Superior Court, Family Division", description: "Domestic relations, juvenile, and family matters" },
       { name: "Tax Court", description: "Reviews local property tax assessments and state tax determinations" },
@@ -560,7 +575,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "new-mexico",
     trialCourts: [
       { name: "District Court", description: "General jurisdiction; 13 judicial districts; all civil, criminal, and domestic matters" },
-      { name: "Magistrate Court", description: "Civil cases up to $10,000, misdemeanors, petty misdemeanors" },
+      { name: "Magistrate Court", description: "Smaller civil cases, misdemeanors, petty misdemeanors" },
       { name: "Municipal Court", description: "City ordinance violations and petty misdemeanors" },
       { name: "Bernalillo County Metropolitan Court", description: "Largest limited jurisdiction court; covers Albuquerque" },
     ],
@@ -577,15 +592,15 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "new-york",
     trialCourts: [
-      { name: "Supreme Court", description: "General jurisdiction trial court (confusingly named); handles major civil cases and felonies; one in each county" },
-      { name: "County Court", description: "Outside NYC; handles felonies and civil cases up to $25,000" },
+      { name: "Supreme Court", description: "General jurisdiction trial court for major civil cases and felonies; one in each county" },
+      { name: "County Court", description: "Outside New York City; felonies and mid-sized civil cases" },
       { name: "Family Court", description: "Matters involving children and families; custody, support, neglect, juvenile delinquency" },
       { name: "Surrogate's Court", description: "Probate, estates, adoptions" },
-      { name: "City Court", description: "Civil cases up to $15,000 in cities outside NYC" },
-      { name: "Town and Village Justice Court", description: "Local matters; civil cases up to $3,000" },
+      { name: "City Court", description: "Smaller civil cases in cities outside New York City" },
+      { name: "Town and Village Justice Court", description: "Local matters; small civil cases" },
       { name: "Court of Claims", description: "Claims against New York State" },
-      { name: "Civil Court of the City of New York", description: "Civil cases up to $25,000 within NYC" },
-      { name: "Criminal Court of the City of New York", description: "Misdemeanors and violations within NYC" },
+      { name: "Civil Court of the City of New York", description: "Mid-sized civil cases within New York City" },
+      { name: "Criminal Court of the City of New York", description: "Misdemeanors and violations within New York City" },
     ],
     appellateCourts: [
       { name: "Appellate Division, First Department", description: "Covers Manhattan and the Bronx" },
@@ -607,8 +622,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "north-carolina",
     trialCourts: [
-      { name: "Superior Court", description: "General jurisdiction; civil cases over $25,000, felonies" },
-      { name: "District Court", description: "Civil cases up to $25,000, misdemeanors, domestic relations, juvenile" },
+      { name: "Superior Court", description: "General jurisdiction; larger civil cases, felonies" },
+      { name: "District Court", description: "Smaller civil cases, misdemeanors, domestic relations, juvenile" },
     ],
     appellateCourts: [
       { name: "North Carolina Court of Appeals", description: "15-judge intermediate appellate court" },
@@ -640,9 +655,9 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "ohio",
     trialCourts: [
-      { name: "Court of Common Pleas", description: "General jurisdiction; civil cases over $500, felonies; four divisions: General, Domestic, Probate, Juvenile" },
-      { name: "Municipal Court", description: "Civil cases up to $15,000, misdemeanors, traffic" },
-      { name: "County Court", description: "In counties without municipal courts; civil cases up to $15,000" },
+      { name: "Court of Common Pleas", description: "General jurisdiction; civil cases above the municipal court threshold, felonies; four divisions: General, Domestic, Probate, Juvenile" },
+      { name: "Municipal Court", description: "Smaller civil cases, misdemeanors, traffic" },
+      { name: "County Court", description: "In counties without municipal courts; smaller civil cases" },
       { name: "Court of Claims", description: "Claims against the State of Ohio" },
     ],
     appellateCourts: [
@@ -694,8 +709,8 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "pennsylvania",
     trialCourts: [
       { name: "Court of Common Pleas", description: "General jurisdiction; 60 judicial districts; civil, criminal, family, and orphans' court divisions" },
-      { name: "Magisterial District Court", description: "Civil cases up to $12,000, summary offenses, traffic, landlord-tenant" },
-      { name: "Philadelphia Municipal Court", description: "Civil cases up to $12,000 in Philadelphia; traffic and misdemeanors" },
+      { name: "Magisterial District Court", description: "Smaller civil cases, summary offenses, traffic, landlord-tenant" },
+      { name: "Philadelphia Municipal Court", description: "Smaller civil cases in Philadelphia; traffic and misdemeanors" },
       { name: "Pittsburgh Municipal Court", description: "Traffic and misdemeanor matters in Pittsburgh" },
     ],
     appellateCourts: [
@@ -714,8 +729,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "rhode-island",
     trialCourts: [
-      { name: "Superior Court", description: "General jurisdiction; civil cases over $10,000, felonies" },
-      { name: "District Court", description: "Civil cases up to $10,000, misdemeanors, small claims, traffic" },
+      { name: "Superior Court", description: "General jurisdiction; larger civil cases, felonies" },
+      { name: "District Court", description: "Smaller civil cases, misdemeanors, small claims, traffic" },
       { name: "Family Court", description: "All domestic relations and juvenile matters" },
       { name: "Probate Court", description: "Wills, estates, guardianships at the municipal level" },
       { name: "Workers' Compensation Court", description: "Workers' compensation disputes" },
@@ -731,10 +746,10 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "south-carolina",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $7,500, felonies; two divisions: Common Pleas (civil) and General Sessions (criminal)" },
+      { name: "Circuit Court", description: "General jurisdiction; larger civil cases, felonies; two divisions, Common Pleas for civil and General Sessions for criminal matters" },
       { name: "Family Court", description: "All domestic relations, juvenile, and adoption matters" },
       { name: "Probate Court", description: "Wills, estates, guardianships, mental health commitments" },
-      { name: "Magistrate Court", description: "Civil cases up to $7,500, misdemeanors, traffic" },
+      { name: "Magistrate Court", description: "Smaller civil cases, misdemeanors, traffic" },
       { name: "Municipal Court", description: "City ordinance violations and traffic within municipal limits" },
     ],
     appellateCourts: [
@@ -751,7 +766,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "south-dakota",
     trialCourts: [
       { name: "Circuit Court", description: "General jurisdiction; 7 circuits across 66 counties; all civil, criminal, and domestic matters" },
-      { name: "Magistrate Court", description: "Civil cases up to $10,000, misdemeanors, small claims" },
+      { name: "Magistrate Court", description: "Smaller civil cases, misdemeanors, small claims" },
     ],
     appellateCourts: [],
     supremeCourt: "South Dakota Supreme Court",
@@ -769,7 +784,7 @@ export const stateCourts: StateCourtSystem[] = [
       { name: "Criminal Court", description: "Felony criminal cases in larger counties" },
       { name: "Juvenile Court", description: "Matters involving minors" },
       { name: "Probate Court", description: "Wills and estates in larger counties" },
-      { name: "General Sessions Court", description: "Civil cases up to $25,000, misdemeanors, preliminary hearings" },
+      { name: "General Sessions Court", description: "Smaller civil cases, misdemeanors, preliminary hearings" },
     ],
     appellateCourts: [
       { name: "Tennessee Court of Appeals", description: "12-judge intermediate court for civil matters" },
@@ -787,10 +802,10 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "texas",
     trialCourts: [
-      { name: "District Court", description: "General jurisdiction; civil cases over $200, felonies, domestic relations" },
-      { name: "County Court at Law", description: "Statutory courts; civil cases up to $200,000, misdemeanors" },
-      { name: "Constitutional County Court", description: "All 254 counties; civil cases up to $10,000, Class A and B misdemeanors" },
-      { name: "Justice Court", description: "Civil cases up to $20,000, Class C misdemeanors, small claims" },
+      { name: "District Court", description: "General jurisdiction; civil cases above the justice court threshold, felonies, domestic relations" },
+      { name: "County Court at Law", description: "Statutory courts; mid-sized civil cases, misdemeanors" },
+      { name: "Constitutional County Court", description: "All 254 counties; smaller civil cases, Class A and B misdemeanors" },
+      { name: "Justice Court", description: "Smaller civil cases, Class C misdemeanors, small claims" },
       { name: "Municipal Court", description: "Class C misdemeanors and city ordinance violations" },
     ],
     appellateCourts: [
@@ -810,7 +825,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "utah",
     trialCourts: [
       { name: "District Court", description: "General jurisdiction; 8 judicial districts; all civil, criminal, domestic, and juvenile matters" },
-      { name: "Justice Court", description: "Civil cases up to $11,000, infractions, Class B and C misdemeanors" },
+      { name: "Justice Court", description: "Smaller civil cases, infractions, Class B and C misdemeanors" },
     ],
     appellateCourts: [
       { name: "Utah Court of Appeals", description: "7-judge intermediate appellate court" },
@@ -826,7 +841,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "vermont",
     trialCourts: [
       { name: "Superior Court", description: "General jurisdiction; civil, criminal, family, and probate divisions in each county" },
-      { name: "Environmental Division", description: "Land use, environmental law, and Act 250 permits" },
+      { name: "Environmental Division", description: "Land use, environmental law, and land use permits" },
     ],
     appellateCourts: [],
     supremeCourt: "Vermont Supreme Court",
@@ -839,8 +854,8 @@ export const stateCourts: StateCourtSystem[] = [
   {
     stateSlug: "virginia",
     trialCourts: [
-      { name: "Circuit Court", description: "General jurisdiction; civil cases over $25,000, felonies, domestic relations, equity" },
-      { name: "General District Court", description: "Civil cases up to $25,000, misdemeanors, traffic, small claims" },
+      { name: "Circuit Court", description: "General jurisdiction; larger civil cases, felonies, domestic relations, equity" },
+      { name: "General District Court", description: "Smaller civil cases, misdemeanors, traffic, small claims" },
       { name: "Juvenile and Domestic Relations District Court", description: "All matters involving minors and domestic relations" },
     ],
     appellateCourts: [
@@ -858,7 +873,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "washington",
     trialCourts: [
       { name: "Superior Court", description: "General jurisdiction; one in each of 39 counties; all civil, criminal, and domestic matters" },
-      { name: "District Court", description: "Civil cases up to $100,000, misdemeanors, traffic, small claims" },
+      { name: "District Court", description: "Civil cases below the superior court threshold, misdemeanors, traffic, small claims" },
       { name: "Municipal Court", description: "City ordinance violations within municipal limits" },
     ],
     appellateCourts: [
@@ -878,7 +893,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "west-virginia",
     trialCourts: [
       { name: "Circuit Court", description: "General jurisdiction; one in each of 55 counties; all civil and criminal matters" },
-      { name: "Magistrate Court", description: "Civil cases up to $10,000, misdemeanors, small claims" },
+      { name: "Magistrate Court", description: "Smaller civil cases, misdemeanors, small claims" },
       { name: "Family Court", description: "Domestic relations matters in each county" },
       { name: "Municipal Court", description: "Municipal ordinance violations" },
     ],
@@ -913,7 +928,7 @@ export const stateCourts: StateCourtSystem[] = [
     stateSlug: "wyoming",
     trialCourts: [
       { name: "District Court", description: "General jurisdiction; 9 judicial districts across 23 counties" },
-      { name: "Circuit Court", description: "Civil cases up to $50,000, misdemeanors, small claims, traffic" },
+      { name: "Circuit Court", description: "Civil cases below the district court threshold, misdemeanors, small claims, traffic" },
       { name: "Municipal Court", description: "Violations of city ordinances" },
     ],
     appellateCourts: [],
@@ -968,10 +983,9 @@ export const stateCourts: StateCourtSystem[] = [
     appellateCourts: [
       { name: "High Court of American Samoa (Appellate Division)", description: "Highest local court; reviews decisions of the High Court trial divisions" },
     ],
-    supremeCourt: "High Court of American Samoa, Appellate Division (American Samoa has no separate supreme court)",
-    federalDistricts: [
-      { name: "No local U.S. district court - the High Court has limited federal jurisdiction; other federal matters are generally heard in the U.S. District Courts for the District of Hawaii or the District of Columbia", abbreviation: "none" },
-    ],
+    supremeCourt: "High Court of American Samoa, Appellate Division",
+    federalDistricts: [],
+    venueNote: "American Samoa has no separate supreme court and no local U.S. district court; the High Court exercises limited federal jurisdiction, and other federal matters are generally heard in the U.S. District Courts for the District of Hawaii or the District of Columbia.",
   },
   {
     stateSlug: "northern-mariana-islands",
@@ -986,6 +1000,61 @@ export const stateCourts: StateCourtSystem[] = [
   },
 ];
 
-export function getCourtsByState(stateSlug: string): StateCourtSystem | undefined {
+export function getCourtsByState(stateSlug: string): StateCourtSystemEntry | undefined {
   return stateCourts.find((c) => c.stateSlug === stateSlug);
+}
+
+export type TrialCourt = StateCourtSystem["trialCourts"][number];
+
+/** Which courts a page should list: the civil courts a damages claim is heard
+ * in, the family and equity courts for a divorce, or the chancery and business
+ * courts for a commercial dispute. */
+export type CourtSelection = "general" | "family" | "commercial";
+
+const GENERAL_JURISDICTION = /general jurisdiction|general civil/i;
+const SPECIALIZED = /family|probate|juvenile|traffic|municipal|tax|surrogate|orphans|water|land court|housing|environmental|workers' compensation|criminal court/i;
+// Small-claims-tier courts never hear a case that carries economic damages
+// testimony, so they do not back-fill the list behind the general court.
+const SMALL_CLAIMS = /small claims|smaller civil|small civil|petty/i;
+const FAMILY = /family|chancery|domestic/i;
+const COMMERCIAL = /chancery|business|commercial/i;
+
+const courtText = (c: TrialCourt) => `${c.name} ${c.description}`;
+
+/**
+ * The trial courts to show for a page, most relevant first. The state data
+ * lists courts in institutional order, so a wrongful death page would
+ * otherwise show the family and probate divisions. General-jurisdiction
+ * courts are always eligible; specialized courts are dropped for the general
+ * selection and preferred for the family and commercial selections, and
+ * small-claims-tier courts never back-fill either. Falls back to the first
+ * `limit` courts only when nothing is eligible.
+ */
+export function selectTrialCourts(courts: StateCourtSystem, kind: CourtSelection = "general", limit = 3): TrialCourt[] {
+  const all = courts.trialCourts;
+  const general = all.filter((c) => GENERAL_JURISDICTION.test(c.description));
+  let ranked: TrialCourt[];
+  if (kind === "family" || kind === "commercial") {
+    const wanted = kind === "family" ? FAMILY : COMMERCIAL;
+    const preferred = all.filter((c) => wanted.test(courtText(c)));
+    const generalRest = general.filter((c) => !preferred.includes(c));
+    const rest = all.filter(
+      (c) => !preferred.includes(c) && !generalRest.includes(c) && !SPECIALIZED.test(courtText(c)) && !SMALL_CLAIMS.test(courtText(c)),
+    );
+    ranked = [...preferred, ...generalRest, ...rest];
+  } else {
+    const other = all.filter((c) => !general.includes(c) && !SPECIALIZED.test(courtText(c)) && !SMALL_CLAIMS.test(courtText(c)));
+    ranked = [...general, ...other];
+  }
+  const picked = ranked.slice(0, limit);
+  return picked.length > 0 ? picked : all.slice(0, limit);
+}
+
+/** Display label for the state court system link ("njcourts.gov"). */
+export function courtSystemLabel(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "state court system";
+  }
 }

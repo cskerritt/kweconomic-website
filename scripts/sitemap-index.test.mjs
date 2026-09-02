@@ -236,6 +236,11 @@ describe("ungated sections stay complete", () => {
 describe("lastmod is emitted only where derivable", () => {
   const servicesXml = readFileSync(join(PUBLIC, "sitemap-services.xml"), "utf8");
   const coreXml = readFileSync(join(PUBLIC, "sitemap-core.xml"), "utf8");
+  const DATE = "\\d{4}-\\d{2}-\\d{2}";
+  const dated = (xml, path) => new RegExp(`<loc>${BASE}${path}</loc><lastmod>${DATE}</lastmod>`).test(xml);
+  // The date a data entry records, read from the source the way the
+  // generator reads it (one `dateModified` per entry block).
+  const firstEntryDate = (file) => readFileSync(join(SRC_DATA, file), "utf-8").match(/dateModified:\s*"(\d{4}-\d{2}-\d{2})"/)?.[1];
 
   it("insight posts carry a date; generic geo pages carry none", () => {
     expect(coreXml).toMatch(
@@ -244,6 +249,105 @@ describe("lastmod is emitted only where derivable", () => {
     expect(servicesXml).toContain(
       `<loc>${BASE}/services/lost-earnings-and-earning-capacity/new-jersey</loc><changefreq>`,
     );
+  });
+
+  it("every dated editorial family advertises its dateModified: guides, comparisons, knowledge, white papers, methods, the FAQ", () => {
+    for (const [file, prefix] of [
+      ["guides.ts", "/guides"],
+      ["comparisons.ts", "/compare"],
+      ["knowledge.ts", "/knowledge"],
+      ["whitePapers.ts", "/white-papers"],
+      ["methods.ts", "/methods"],
+    ]) {
+      const slugsInFile = extractSlugs(file);
+      expect(slugsInFile.length, file).toBeGreaterThan(0);
+      for (const slug of slugsInFile) {
+        expect(dated(coreXml, `${prefix}/${slug}`), `${prefix}/${slug} has no lastmod`).toBe(true);
+      }
+      expect(firstEntryDate(file), `${file} records dateModified`).toBeTruthy();
+    }
+    expect(dated(coreXml, "/resources/faq")).toBe(true);
+  });
+
+  it("every attorney journey page advertises its own dateModified", () => {
+    for (const stage of ["considering", "retaining", "preparing-deposition", "trial"]) {
+      for (const c of caseTypes) {
+        expect(dated(coreXml, `/attorneys/${stage}/${c}`), `/attorneys/${stage}/${c}`).toBe(true);
+      }
+    }
+  });
+
+  it("a pillar that records dateModified stamps its pillar, variant, and declared case-type pages", () => {
+    const blocks = serviceEntries(servicesSource).filter((e) => e.pillar);
+    let stamped = 0;
+    for (const { slug } of blocks) {
+      const block = servicesSource.split(`slug: "${slug}"`)[1]?.split(/\n  \},?\n/)[0] ?? "";
+      const date = block.match(/dateModified:\s*"(\d{4}-\d{2}-\d{2})"/)?.[1];
+      if (!date) continue;
+      stamped++;
+      expect(servicesXml, slug).toContain(`<loc>${BASE}/services/${slug}</loc><lastmod>${date}</lastmod>`);
+      for (const v of ["cost", "process", "timeline"]) {
+        expect(servicesXml, `${slug}/${v}`).toContain(`<loc>${BASE}/services/${slug}/${v}</loc><lastmod>${date}</lastmod>`);
+      }
+      const declared = [...(block.match(/caseTypes:\s*\[([^\]]*)\]/)?.[1] ?? "").matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+      for (const ct of declared) {
+        expect(servicesXml, `${slug}/case/${ct}`).toContain(`<loc>${BASE}/services/${slug}/case/${ct}</loc><lastmod>${date}</lastmod>`);
+      }
+    }
+    // Undated entries stay without lastmod rather than taking the build date;
+    // the count only documents how many pillars are dated today.
+    expect(stamped).toBeGreaterThanOrEqual(0);
+  });
+
+  it("never stamps a build date: every lastmod is a date an entry records", () => {
+    const dates = new Set([...coreXml.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)].map((m) => m[1]));
+    const recorded = new Set(
+      ["guides.ts", "comparisons.ts", "knowledge.ts", "whitePapers.ts", "methods.ts", "journeys.ts", "insights.ts", "faqs.ts"].flatMap((f) =>
+        [...readFileSync(join(SRC_DATA, f), "utf-8").matchAll(/(?:dateModified|publishedDate|FAQ_DATE_MODIFIED)[:=]?\s*"?(\d{4}-\d{2}-\d{2})"/g)].map((m) => m[1]),
+      ),
+    );
+    for (const d of dates) expect(recorded.has(d), `lastmod ${d} is not a date any entry records`).toBe(true);
+  });
+});
+
+describe("image sitemap lists only images that render on the page", () => {
+  const generatorSrc = readFileSync(join(ROOT, "scripts", "generate-extra-sitemaps.mjs"), "utf8");
+  const imageXml = readFileSync(join(PUBLIC, "image-sitemap.xml"), "utf8");
+  const pageImages = [...generatorSrc.matchAll(/\{ path: "([^"]+)", images: \[\{ src: "([^"]+)"/g)].map((m) => ({ path: m[1], src: m[2] }));
+  const PAGE_SOURCE = {
+    "/about": "src/pages/About.tsx",
+    "/contact": "src/pages/Contact.tsx",
+    "/services": "src/pages/ServicesHub.tsx",
+    "/schedule-consultation": "src/pages/ScheduleConsultation.tsx",
+  };
+
+  it("has no home-page entry (the home hero is a gradient, the share image is not on the page)", () => {
+    expect(pageImages.map((p) => p.path)).not.toContain("/");
+    expect(imageXml).not.toContain(`<loc>${BASE}</loc>`);
+    expect(imageXml).not.toContain("hero-office-meeting");
+    expect(imageXml).not.toContain("og-default");
+  });
+
+  it("every curated PAGE_IMAGES src is rendered by the page it is attributed to", () => {
+    expect(pageImages.length).toBeGreaterThan(0);
+    for (const { path, src } of pageImages) {
+      const file = PAGE_SOURCE[path];
+      expect(file, `${path} has no page source mapped in this test`).toBeTruthy();
+      expect(readFileSync(join(ROOT, file), "utf8"), `${file} renders ${src}`).toContain(`src="${src}"`);
+      expect(imageXml).toContain(`<loc>${BASE}${path}</loc>`);
+      expect(imageXml).toContain(`<image:loc>${BASE}${src}</image:loc>`);
+    }
+  });
+
+  it("carries the team headshots on /team and on each profile that has one", () => {
+    const teamSrc = readFileSync(join(SRC_DATA, "team.ts"), "utf-8");
+    const members = [...teamSrc.matchAll(/slug: "([^"]+)"[\s\S]*?imageUrl: "([^"]+)"/g)].map((m) => ({ slug: m[1], src: m[2] }));
+    expect(members.length).toBeGreaterThan(0);
+    for (const { slug, src } of members) {
+      expect(imageXml).toContain(`<loc>${BASE}/team/${slug}</loc>`);
+      expect(imageXml).toContain(`<image:loc>${BASE}${src}</image:loc>`);
+    }
+    expect(imageXml).toContain(`<loc>${BASE}/team</loc>`);
   });
 });
 

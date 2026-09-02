@@ -4,11 +4,12 @@ import { activeTeam, getTeamByRole, getMemoriam } from "@/data/team";
 import { ORG_NAME, SITE_URL } from "@/lib/brand";
 import { initialsOf } from "@/lib/initials";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
 import { Picture } from "@/components/Picture";
 import Reveal from "@/components/Reveal";
 import SchemaOrg from "@/components/SchemaOrg";
-import { organizationSchema, personSchema, graphSchema } from "@/lib/schema";
+import { organizationSchema, personSchema, breadcrumbSchema, graphSchema, ORG_URL } from "@/lib/schema";
 import type { TeamMember } from "@/types";
 
 function TeamCard({ member }: { member: TeamMember }) {
@@ -160,9 +161,9 @@ function TeamSection({
 
 export default function Team() {
   usePageMeta({
-    title: `Our Team | ${ORG_NAME}`,
+    title: `Forensic Economics Team | ${ORG_NAME}`,
     description:
-      `Meet the ${ORG_NAME} team - the Chief of Economic Services who directs the practice's lost earnings, wrongful death, household services, and commercial damages analyses, and the economics associate who coordinates each engagement with counsel.`,
+      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, and an associate who coordinates every engagement.`,
     canonical: `${SITE_URL}/team`,
   });
 
@@ -188,7 +189,19 @@ export default function Team() {
           bio: m.bio,
           sameAs: m.sameAs,
         })),
+        breadcrumbSchema([
+          { name: "Home", url: `${ORG_URL}/` },
+          { name: "Team", url: `${ORG_URL}/team` },
+        ]),
       ])} />
+
+      {/* Breadcrumb bar */}
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Team", url: "/team" }]} />
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-16 md:py-24">
         <div className="kw-aurora" aria-hidden="true" />

@@ -14,7 +14,16 @@ export const ORG_COUNTRY = "US";
 // Raster (PNG) logo for Organization/Article structured data - Google's
 // rich-results guidelines prefer PNG/JPG over SVG for the logo/image fields.
 export const ORG_LOGO = `${SITE_URL}/images/logo.png`;
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/hero-office-meeting.jpg`;
+// Site-wide share image: a 1200x630 (1.91:1) crop of the office photograph,
+// the size Open Graph and Twitter cards display without cropping (the full
+// 1200x800 file stays at /images/hero-office-meeting.jpg; final artwork is a
+// facts-to-confirm item). The dimensions are published as og:image:width and
+// og:image:height by index.html, use-page-meta, and the prerender shells so
+// previewers never have to fetch the file to size it.
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-default.jpg`;
+export const DEFAULT_OG_IMAGE_WIDTH = 1200;
+export const DEFAULT_OG_IMAGE_HEIGHT = 630;
+export const DEFAULT_OG_IMAGE_ALT = `${ORG_NAME} forensic economics and economic damages experts`;
 // Sister practices in the KW family. These are the ONLY places their domains
 // are spelled: everything else (Footer, CrossSell, data hrefs, sameAs) reads
 // these constants. Scripts that need them load this module through vite or
@@ -57,7 +66,24 @@ export const KNOWS_ABOUT = [
 // Office NAP records. Used to emit one LocalBusiness per office under the
 // parent ProfessionalService Organization. Geo coords are MSA-centroid level
 // (not specific to building) - acceptable for LocalBusiness disambiguation.
-export const OFFICES = [
+// The Richmond record carries no streetAddress or hasMap until the street
+// address is confirmed (README, facts to confirm): a placeholder such as the
+// city name is not a PostalAddress and a map search query is not a place URL.
+// officeSchemas() omits the undefined keys.
+export interface OfficeRecord {
+  id: string;
+  name: string;
+  streetAddress?: string;
+  addressLocality: string;
+  addressRegion: string;
+  postalCode: string;
+  addressCountry: string;
+  telephone: string;
+  latitude: number;
+  longitude: number;
+  hasMap?: string;
+}
+export const OFFICES: readonly OfficeRecord[] = [
   {
     id: `${SITE_URL}/#office-nj`,
     name: `${ORG_NAME} - New Jersey`,
@@ -74,7 +100,6 @@ export const OFFICES = [
   {
     id: `${SITE_URL}/#office-va`,
     name: `${ORG_NAME} - Virginia`,
-    streetAddress: "Richmond, Virginia",
     addressLocality: "Richmond",
     addressRegion: "VA",
     postalCode: "23219",
@@ -82,6 +107,5 @@ export const OFFICES = [
     telephone: ORG_PHONE_VA,
     latitude: 37.5407,
     longitude: -77.436,
-    hasMap: "https://www.google.com/maps/search/?api=1&query=Richmond+VA+23219",
   },
-] as const;
+];

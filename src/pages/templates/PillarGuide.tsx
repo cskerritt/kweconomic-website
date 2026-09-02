@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import { truncateAtWord } from "@/lib/text";
 import { guides } from "@/data/guides";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FAQBlock from "@/components/FAQBlock";
@@ -15,6 +14,10 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
+// The H1 and the lead paragraph (.kw-lead) are the units an answer engine
+// should read aloud or quote; every editorial template marks the same pair.
+const SPEAKABLE = { speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".kw-lead"] } };
+
 export default function PillarGuide() {
   const { slug = "" } = useParams();
   const guide = guides.find((g) => g.slug === slug);
@@ -23,8 +26,9 @@ export default function PillarGuide() {
   usePageMeta(
     guide
       ? {
-          title: `${guide.title} | ${ORG_NAME}`,
-          description: truncateAtWord(guide.tldr),
+          // metaTitle keeps the <title> under 60 chars where the descriptive H1 runs long.
+          title: `${guide.metaTitle ?? guide.title} | ${ORG_NAME}`,
+          description: guide.metaDescription,
           canonical: url,
         }
       : null,
@@ -46,8 +50,8 @@ export default function PillarGuide() {
           { name: guide.title, url: `/guides/${guide.slug}` },
         ]} />
         <h1 className="font-serif text-4xl text-navy mb-4">{guide.title}</h1>
-        <AuthorByline slug={guide.authorSlug} dateModified={guide.dateModified} />
-        <p className="text-lg text-neutral-700 mb-8">{guide.tldr}</p>
+        <AuthorByline slug={guide.authorSlug} datePublished={guide.datePublished} dateModified={guide.dateModified} />
+        <p className="kw-lead text-lg text-neutral-700 mb-8">{guide.tldr}</p>
 
         {guide.sections?.map((s) => (
           <section key={s.id} id={s.id} className="mb-8">
@@ -67,14 +71,18 @@ export default function PillarGuide() {
       <TOCSidebar items={tocItems} />
 
       <SchemaOrg data={graphSchema([
-        articleSchema({
-          title: guide.title,
-          description: guide.tldr,
-          url,
-          dateModified: guide.dateModified,
-          authorSlug: guide.authorSlug,
-          image: guide.image,
-        }),
+        {
+          ...articleSchema({
+            title: guide.title,
+            description: guide.tldr,
+            url,
+            datePublished: guide.datePublished,
+            dateModified: guide.dateModified,
+            authorSlug: guide.authorSlug,
+            image: guide.image,
+          }),
+          ...SPEAKABLE,
+        },
         faqPageSchema(guide.faqs ?? [], url),
         breadcrumbSchema([
           { name: "Home", url: `${ORG_URL}/` },

@@ -6,7 +6,7 @@
 // advertise different primary signals. Source-read (vitest env is "node", no
 // jsdom) - the same approach as src/App.routes.test.mjs.
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { ORG_NAME, ORG_SHORT, SITE_URL } from "./lib/site.mjs";
@@ -92,12 +92,19 @@ describe("prerender shells mirror the React page meta", () => {
   });
 });
 
-// Templated routes (case-type hub, case-type x state). The shells and the React
-// templates interpolate different variable names (`c.name` vs `caseType.name`),
-// so every data expression collapses to a `${}` slot and only the brand tokens
-// resolve before the two sides are compared.
+// Templated routes (case-type hub, case-type x state, credential tiers). The
+// shells and the React templates interpolate different variable names
+// (`c.name` vs `caseType.name`), so every data expression collapses to a `${}`
+// slot and only the brand tokens resolve before the two sides are compared.
+// A `placeName(...)` slot keeps its own token: the District of Columbia reads
+// "in the District of Columbia" on the hydrated page, so a shell that
+// regressed to the bare state name would no longer slot the same way.
 const slotify = (literal) =>
-  literal.slice(1, -1).replace(/\$\{([^}]*)\}/g, (_, expr) => (expr in TOKENS ? TOKENS[expr] : "${}"));
+  literal
+    .slice(1, -1)
+    .replace(/\$\{([^}]*)\}/g, (_, expr) =>
+      expr in TOKENS ? TOKENS[expr] : /^\s*placeName\(/.test(expr) ? "${place}" : "${}",
+    );
 
 /** prerender.mjs: `path: \`/x/${c.slug}\`, [// comment] title: ..., description: ...` */
 function prerenderTemplateMeta(pathLiteral) {
@@ -120,8 +127,9 @@ function templateMeta(file) {
 const TEMPLATED_ROUTES = {
   "`/case-types/${c.slug}`": "CaseTypeHub.tsx",
   "`/case-types/${c.slug}/${s.slug}`": "CaseTypeState.tsx",
-  // CredentialHub.tsx describes with truncateAtWord(scope), not a literal, so
-  // only the credential x state template is pinned here.
+  // Both credential tiers wrap their authored fields in template literals
+  // (`${cred.metaTitle}`, `${headings.title}`) so they slot the same way.
+  "`/credentials/${c.slug}`": "CredentialHub.tsx",
   "`/credentials/${c.slug}/${s.slug}`": "CredentialState.tsx",
 };
 
@@ -174,5 +182,239 @@ describe("prerender shell text is economics-framed", () => {
     expect(prerenderSrc).toContain('"/services/vocational-evaluation"');
     expect(prerenderSrc).toContain('"/services/life-care-planning"');
     expect(prerenderSrc).not.toContain('"/services/forensic-economics"');
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Shell mechanics the 2026-09-02 audit pinned: one JSON-LD graph per URL after
+// hydration, no hreflang on a single-language site, a dedicated 404 shell, the
+// byline and the family title/description builders shared with the React
+// templates, the FAQ shell, the share image, and the image sitemap. Source
+// reads; the build-output checks live in scripts/prerender-shells.test.mjs.
+// ---------------------------------------------------------------------------
+const schemaOrgSrc = read("src/components/SchemaOrg.tsx");
+const pageMetaSrc = read("src/hooks/use-page-meta.ts");
+const serverSrc = read("server.js");
+const brandSrc = read("src/lib/brand.ts");
+const indexHtml = read("index.html");
+const bylineSrc = read("src/components/AuthorByline.tsx");
+const extraSitemapSrc = read("scripts/generate-extra-sitemaps.mjs");
+const llmsSrc = read("scripts/generate-llms.mjs");
+
+describe("the shell graph and the hydrated graph describe one set of entities", () => {
+  it("prerender stamps its JSON-LD block and SchemaOrg removes it on mount", () => {
+    expect(prerenderSrc).toContain('<script type="application/ld+json" data-prerender="ld">');
+    expect(prerenderSrc).toContain("schema.graphSchema(nodes)");
+    expect(schemaOrgSrc).toContain('script[type="application/ld+json"][data-prerender]');
+    expect(schemaOrgSrc).toContain(".remove()");
+  });
+
+  it("every shell node comes from the src/lib/schema.ts builders the React pages use", () => {
+    for (const builder of [
+      "schema.organizationSchema()",
+      "schema.websiteSchema()",
+      "schema.breadcrumbSchema(",
+      "schema.faqPageSchema(",
+      "schema.articleSchema(",
+      "schema.blogPostingSchema(",
+      "schema.serviceSchema(",
+      "schema.credentialSchema(",
+      "schema.collectionPageSchema(",
+      "schema.officeSchemas()",
+      "schema.personSchema(",
+      "schema.howToSchema(",
+    ]) {
+      expect(prerenderSrc, builder).toContain(builder);
+    }
+    // No hand-rolled Service/Article/LocalBusiness branch keyed on a schemaType string.
+    expect(prerenderSrc).not.toMatch(/schemaType/);
+  });
+
+  it("neither side emits hreflang alternates (single-language site)", () => {
+    expect(prerenderSrc).not.toMatch(/hreflang=/);
+    expect(pageMetaSrc).not.toMatch(/ensureAlternate|"hreflang"|hreflang=/);
+  });
+});
+
+describe("the not-found shell", () => {
+  it("prerender writes dist/404.html with its own title, a noindex directive, no canonical, and no JSON-LD", () => {
+    const block = prerenderSrc.slice(prerenderSrc.indexOf('join(DIST, "404.html")'));
+    expect(block).toContain("title: `Page Not Found | ${ORG_NAME}`");
+    expect(block).toContain('robots: "noindex,follow"');
+    expect(block).toContain("canonical: false");
+    expect(block).toContain("jsonLd: []");
+  });
+
+  it("server.js answers unknown URLs with that shell, never the home page head", () => {
+    expect(serverSrc).toContain('join(DIST, "404.html")');
+    expect(serverSrc).toContain("const body = clientOnly ? indexHtml : notFoundHtml;");
+    expect(serverSrc).toContain("const CLIENT_ONLY_ROUTES = () => false;");
+  });
+});
+
+describe("the shell byline mirrors AuthorByline.tsx", () => {
+  it("prints name plus job title, the published and reviewed dates, and never a credential list", () => {
+    expect(bylineSrc).toContain("`${member.name}, ${member.title}`");
+    expect(prerenderSrc).toContain("`${member.name}, ${member.title}`");
+    expect(prerenderSrc).toContain('By <a href="${linkTo}">');
+    expect(prerenderSrc).toContain("Published ${time(datePublished)}");
+    expect(prerenderSrc).toContain("Reviewed ${time(reviewed)}");
+    expect(prerenderSrc).not.toContain("Reviewed by");
+    expect(prerenderSrc).not.toContain("Last updated");
+    expect(prerenderSrc).not.toMatch(/credentialsText/);
+  });
+});
+
+describe("the family title/description builders are shared with the React templates", () => {
+  it("journeys, credentials, variants, pairs, case types, profiles, and the editorial meta fields", () => {
+    for (const expr of [
+      "journeyTitle(stage, c)",
+      "journeyDescription(stage, c)",
+      "journeyHeading(stage, c)",
+      "stageIndexTitle(stage)",
+      "stageIndexDescription(stage)",
+      "stageIndexHeading(stage)",
+      "stageIndexIntro(stage)",
+      "credentialStateHeadings(c, s.name)",
+      "credentialStateAngle(c, s.name)",
+      "variantDescription(s, variant)",
+      "pairTitle(s, c)",
+      "pairDescription(s, c)",
+      "profileTitleFor(t)",
+      "title: `${c.titleBase} | ${ORG_NAME}`",
+      "title: `${c.titleBase} in ${placeName(s.name)} | ${ORG_NAME}`",
+      "title: `${c.metaTitle}`",
+      "description: `${c.metaDescription}`",
+      "title: `${headings.title}`",
+      "description: `${headings.description}`",
+      "title: `${svc.name} Expert | ${ORG_NAME}`",
+      "svc.metaDescription ?? svc.description",
+      "guide.metaDescription ?? truncateAtWord(guide.tldr)",
+      "title: `${m.name.endsWith(\"Methodology\") ? m.name : `${m.name} Method`} | ${ORG_NAME}`",
+      "m.metaDescription ?? truncateAtWord(m.summary)",
+      "cmp.answer ?? truncateAtWord(stripLinkMarkers(cmp.overlap))",
+      "post.metaDescription ?? post.excerpt",
+      "w.metaDescription ?? truncateAtWord(w.summary)",
+      "description: truncateAtWord(narrative.directAnswer)",
+      "description: truncateAtWord(directAnswer)",
+      "description: truncateAtWord(cityDirect)",
+    ]) {
+      expect(prerenderSrc, expr).toContain(expr);
+    }
+    // No mid-word slice remains anywhere in the shell descriptions.
+    expect(prerenderSrc).not.toMatch(/\.slice\(0, 160\)/);
+  });
+
+  it("uses the hand-authored pillar FAQ, the declared case-type pairs, and the pair notes", () => {
+    expect(prerenderSrc).toContain("const faqs = svc.faqs ?? pillarFaqs(svc);");
+    expect(prerenderSrc).toContain("const declaredCaseTypes = svc.caseTypes");
+    expect(prerenderSrc).toContain("const note = s.caseTypeNotes?.[c.slug];");
+    expect(prerenderSrc).toContain("...(note ? [buildFaqJsonLd(note.faqs, url)] : [])");
+  });
+});
+
+describe("the FAQ shell carries the site FAQ", () => {
+  it("renders every question as <details> and emits the FAQPage node from the same list", () => {
+    expect(prerenderSrc).toContain('load("/src/data/faqs.ts")');
+    expect(prerenderSrc).toContain('renderFaqHtml(siteFaqs, "Questions attorneys ask")');
+    expect(prerenderSrc).toContain("...buildFaqJsonLd(siteFaqs, `${BASE_URL}/resources/faq`)");
+    expect(prerenderSrc).toContain("dateModified: FAQ_DATE_MODIFIED");
+  });
+});
+
+describe("the share image is the 1200x630 card crop on every side", () => {
+  it("brand.ts, index.html, the shells, and use-page-meta agree on the file and its size", () => {
+    expect(constOf(brandSrc, "DEFAULT_OG_IMAGE")).toBe("`${SITE_URL}/images/og-default.jpg`");
+    expect(brandSrc).toContain("export const DEFAULT_OG_IMAGE_WIDTH = 1200;");
+    expect(brandSrc).toContain("export const DEFAULT_OG_IMAGE_HEIGHT = 630;");
+    expect(indexHtml).toContain(`<meta property="og:image" content="${SITE_URL}/images/og-default.jpg" />`);
+    expect(indexHtml).toContain('<meta property="og:image:width" content="1200" />');
+    expect(indexHtml).toContain('<meta property="og:image:height" content="630" />');
+    expect(indexHtml).toMatch(/<meta property="og:image:alt" content="[^"]+" \/>/);
+    expect(indexHtml).toContain(`<meta name="twitter:image" content="${SITE_URL}/images/og-default.jpg" />`);
+    for (const tag of ["og:type", "og:image", "og:image:width", "og:image:height", "og:image:alt"]) {
+      expect(prerenderSrc, tag).toContain(`setTemplateMeta(html, "property", "${tag}"`);
+    }
+    expect(prerenderSrc).toContain('setTemplateMeta(html, "name", "twitter:image", image)');
+    expect(prerenderSrc).toContain('article:published_time');
+    for (const tag of ["og:type", "og:image:width", "og:image:height", "og:image:alt", "article:published_time", "article:modified_time"]) {
+      expect(pageMetaSrc, tag).toContain(`"${tag}"`);
+    }
+    expect(pageMetaSrc).toContain('setMeta("twitter:image", ogImage)');
+    expect(existsSync(join(ROOT, "public", "images", "og-default.jpg"))).toBe(true);
+  });
+
+  it("team profiles override the share image with the member portrait", () => {
+    expect(prerenderSrc).toContain("ogImage: portrait?.src");
+    expect(prerenderSrc).toContain("ogImageAlt: portrait ? t.name : undefined");
+  });
+});
+
+describe("the image sitemap lists only images that render on the page", () => {
+  it("has no home-page entry (the home hero is a gradient; the share image is not on the page)", () => {
+    const block = extraSitemapSrc.match(/const PAGE_IMAGES = \[([\s\S]*?)\n\];/)?.[1] ?? "";
+    expect(block).not.toMatch(/path: "\/"/);
+    expect(block).not.toContain("hero-office-meeting");
+    expect(block).not.toContain("og-default");
+  });
+});
+
+describe("the AI-facing generator keeps the economics framing", () => {
+  it("scripts/generate-llms.mjs carries no sister-practice vocabulary and prints degree credentials only", () => {
+    const hits = llmsSrc
+      .split("\n")
+      .map((line, i) => (BANNED_LLMS.test(line) ? `${i + 1}: ${line.trim().slice(0, 140)}` : null))
+      .filter(Boolean);
+    expect(hits).toEqual([]);
+    expect(llmsSrc).toContain("degreeCredentials(m.credentials)");
+    expect(llmsSrc).not.toMatch(/Credentials: \$\{joinList\(m\.credentials\)\}/);
+  });
+});
+
+// Same list as the shell guard above plus the phrase the audit found in the
+// generator's sister-practice note.
+const BANNED_LLMS = /vocational evaluation|vocational expert|transferable skills|labor market survey|life care planner|CLCP|CNLCP|physician|KW LCP|kwlcp|Life Care Planning|KWVRS|Kincaid Wolstein Vocational/i;
+
+function constOf(src, name) {
+  return src.match(new RegExp(`export const ${name}\\s*=\\s*(\`[^\`]*\`|"[^"]*")`))?.[1];
+}
+
+// ---------------------------------------------------------------------------
+// Build-output walk over EVERY shell prerender.mjs writes, the city and
+// service x city tiers included (scripts/prerender-shells.test.mjs skips the
+// `locations/<state>/<city>` and `services/<pillar>/<anything>` subtrees, so
+// its walk never sees the variant, pair, service x state, or city shells).
+// House rules that hold on every page regardless of template: no
+// sister-practice credential abbreviation, no em or en dash, no section sign,
+// and no count claim. Gated on dist/ like the other build checks.
+// ---------------------------------------------------------------------------
+const DIST = join(ROOT, "dist");
+const HOUSE_RULE_BANNED = /CLCP|CNLCP|\bCRC\b|MSCC|[–—§]|\d+\+\s*(?:cases|years|firms|attorneys|clients|matters)\b/;
+
+describe.skipIf(!existsSync(join(DIST, "index.html")))("every shell in dist/ keeps the house rules (requires dist/)", () => {
+  it("no shell, city and service tiers included, carries CLCP/CNLCP/CRC/MSCC, an em or en dash, a section sign, or a count claim", () => {
+    const offenders = [];
+    let walked = 0;
+    const walk = (dir, rel) => {
+      for (const entry of readdirSync(dir)) {
+        const p = join(dir, entry);
+        const r = rel ? `${rel}/${entry}` : entry;
+        if (statSync(p).isDirectory()) {
+          if (r.startsWith("assets")) continue;
+          walk(p, r);
+        } else if (entry === "index.html" || entry === "404.html") {
+          walked++;
+          const html = readFileSync(p, "utf8");
+          const m = html.slice(html.indexOf("<head>")).match(HOUSE_RULE_BANNED);
+          if (m) offenders.push(`${r}: ${JSON.stringify(m[0])}`);
+        }
+      }
+    };
+    walk(DIST, "");
+    // The full route set: core + hubs + editorial + every geo, case-type,
+    // credential, service, and journey tier. A walk that saw only a few
+    // hundred files would mean the tiers were skipped again.
+    expect(walked).toBeGreaterThan(5000);
+    expect(offenders).toEqual([]);
   });
 });

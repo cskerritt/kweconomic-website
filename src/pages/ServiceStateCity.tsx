@@ -18,11 +18,18 @@ import {
 import { ORG_NAME } from "@/lib/brand";
 import { cityAttr, placeName } from "@/data/geo-prose.mjs";
 import { proseName } from "@/lib/service-prose.mjs";
-import { getCityNarrative, serviceCityDirectAnswer } from "@/data/narratives";
+import {
+  credentialPagePath,
+  geoSources,
+  getCityNarrative,
+  serviceCityContextParagraph,
+  serviceCityDirectAnswer,
+} from "@/data/narratives";
 import { serviceCityGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ContactCTA from "@/components/ContactCTA";
 import FAQBlock from "@/components/FAQBlock";
+import SourcesBlock from "@/components/SourcesBlock";
 import Reveal from "@/components/Reveal";
 import ServiceCityCrossLinks from "@/components/ServiceCityCrossLinks";
 import { serviceMotion } from "@/lib/service-motion";
@@ -164,23 +171,22 @@ export default function ServiceStateCity() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="lg:grid lg:grid-cols-3 lg:gap-10">
 
-          {/* Main - 2/3 */}
-          <main className="lg:col-span-2 space-y-10">
+          {/* Main - 2/3. A div, not a main: the layout already provides the
+              page's single main landmark. */}
+          <div className="lg:col-span-2 space-y-10">
 
-            {/* Service description in city context */}
+            {/* Service description in city context. The H2 states what the
+                section explains rather than repeating the H1; the paragraph
+                names what this pillar measures and against what. */}
             <Reveal as="section" variant={motion.reveal} className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8">
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">
-                {service.shortName} in {city.name}
+                How {service.shortName} Work Is Built for {cityA} Cases
               </h2>
               <p className="text-neutral-700 leading-relaxed mb-4">
                 {service.description}
               </p>
               <p className="text-neutral-700 leading-relaxed">
-                {ORG_NAME} serves counsel throughout {city.name} and the surrounding{" "}
-                {city.county ? city.county : state.name} area. Our economists measure earnings, fringe
-                benefits, and household services against wage data for the {cityA} area and the
-                plaintiff's own records, and are familiar with the court system and disclosure
-                requirements that affect {proseName(service.shortName)} engagements in {place}.
+                {serviceCityContextParagraph(service, state, city)}
               </p>
             </Reveal>
 
@@ -207,10 +213,15 @@ export default function ServiceStateCity() {
               <FAQBlock faqs={faqs} title={`Frequently asked: ${service.shortName} in ${city.name}`} />
             </Reveal>
 
+            {/* The pillar's data and standards, through the registry. */}
+            <Reveal variant={motion.reveal}>
+              <SourcesBlock sources={geoSources(service)} />
+            </Reveal>
+
             <Reveal variant={motion.reveal}>
               <ContactCTA context={`${service.shortName} in ${city.name}`} />
             </Reveal>
-          </main>
+          </div>
 
           {/* Sidebar - 1/3 */}
           <aside className="mt-10 lg:mt-0 space-y-6">
@@ -221,15 +232,23 @@ export default function ServiceStateCity() {
               <p className="text-sm text-neutral-600 mb-3">
                 Qualifications and standards that bear on {proseName(service.shortName)} testimony in {city.name}:
               </p>
+              {/* Each chip links the credential x state page that explains
+                  the qualification; the chips assert nothing about who holds it. */}
               <div className="flex flex-wrap gap-2">
-                {service.relevantCredentials.map((cred) => (
-                  <span
-                    key={cred}
-                    className="inline-block bg-forest/10 text-forest font-medium text-sm px-3 py-1 rounded-full border border-forest/20"
-                  >
-                    {cred}
-                  </span>
-                ))}
+                {service.relevantCredentials.map((cred) => {
+                  const href = credentialPagePath(cred, state.slug);
+                  const chip =
+                    "inline-block bg-forest/10 text-forest font-medium text-sm px-3 py-1 rounded-full border border-forest/20";
+                  return href ? (
+                    <Link key={cred} to={href} className={`${chip} hover:bg-forest/20 transition-colors`}>
+                      {cred}
+                    </Link>
+                  ) : (
+                    <span key={cred} className={chip}>
+                      {cred}
+                    </span>
+                  );
+                })}
               </div>
             </div>
 

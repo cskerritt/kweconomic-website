@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { getCityNarrative, getStateNarrative, serviceCityDirectAnswer, serviceStateDirectAnswer } from "./narratives";
+import {
+  credentialPagePath,
+  geoSources,
+  getCityNarrative,
+  getStateNarrative,
+  serviceCityContextParagraph,
+  serviceCityDirectAnswer,
+  serviceStateDirectAnswer,
+  serviceStateVenueParagraph,
+} from "./narratives";
 import {
   cityGeographicFaqs,
   serviceCityGeographicFaqs,
@@ -9,9 +18,11 @@ import {
 import { majorEmployers } from "./geo-prose.mjs";
 import { getServiceBySlug, pillarServices } from "./services";
 import { getStateBySlug, states } from "./states";
-import { stateRegulations } from "./regulations/state-regs";
+import { getRegulationsByState, stateRegulations } from "./regulations/state-regs";
+import { REFERENCES } from "./references";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 import { workPhrase } from "@/lib/service-prose.mjs";
+import type { City } from "../types";
 
 // Adapted from the task brief: the runtime helpers take a State object (and
 // return a sectioned narrative) rather than slugs, so the test joins the
@@ -292,6 +303,345 @@ describe("economics geo narratives", () => {
       expect(r.damagesContext, r.stateSlug).not.toMatch(CARE_COST);
       expect(r.damagesContext, r.stateSlug).not.toMatch(TYPOGRAPHY);
       expect(r.damagesContext, r.stateSlug).not.toMatch(LEGACY_BRAND_PATTERN);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Pillar angles. The service x state and service x city templates once
+// appended the shared state or city narrative to every pillar; each pillar now
+// carries its own angle, records list, forum paragraph, and, where wage levels
+// are not its subject, its own second city FAQ.
+// ---------------------------------------------------------------------------
+
+const TORT_FRAMEWORK_PILLARS = new Set([
+  "lost-earnings-and-earning-capacity",
+  "wrongful-death-economic-loss",
+  "personal-injury-economic-damages",
+  "household-services-valuation",
+  "life-care-plan-cost-projection",
+]);
+const WAGE_FAQ_PILLARS = new Set([...TORT_FRAMEWORK_PILLARS, "employment-and-wage-loss-damages"]);
+const COMMERCIAL_AND_REBUTTAL = [
+  "business-valuation",
+  "lost-profits-and-commercial-damages",
+  "fraud-and-asset-tracing",
+  "divorce-and-marital-financial-analysis",
+  "expert-rebuttal-and-report-review",
+];
+
+const cityRow = (name: string, county: string, stateSlug: string, stateAbbreviation: string): City => ({
+  slug: name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+  name,
+  stateSlug,
+  stateAbbreviation,
+  county,
+  population: 0,
+  latitude: 0,
+  longitude: 0,
+  isStateCapital: false,
+});
+
+describe("pillar angles on the service x geo templates", () => {
+  const tx = getStateBySlug("texas")!;
+  const nj = getStateBySlug("new-jersey")!;
+  const n = getStateNarrative(tx);
+  const c = getCityNarrative(tx, "Houston", "houston", "Harris County");
+  const pillars = pillarServices();
+
+  it("gives every pillar its own state and city angle; the shared narrative no longer rides along on any of them", () => {
+    const stateHeroes = pillars.map((s) => serviceStateDirectAnswer(ORG_NAME, s.shortName, tx.name, n));
+    const cityHeroes = pillars.map((s) => serviceCityDirectAnswer(ORG_NAME, s.shortName, tx.name, "Houston", c));
+    expect(new Set(stateHeroes).size).toBe(pillars.length);
+    expect(new Set(cityHeroes).size).toBe(pillars.length);
+    for (const hero of stateHeroes) {
+      expect(hero).not.toContain(n.economicContext);
+      expect(hero.endsWith(" Plaintiff and defense.")).toBe(true);
+    }
+    for (const hero of cityHeroes) {
+      expect(hero).not.toContain("The report documents the source behind every wage, benefit, and growth figure");
+      expect(hero.endsWith("Deposition and trial testimony are available for Houston matters, in person or by remote appearance where the forum allows.")).toBe(true);
+    }
+    for (const slug of COMMERCIAL_AND_REBUTTAL) {
+      const s = getServiceBySlug(slug)!;
+      expect(serviceStateDirectAnswer(ORG_NAME, s.shortName, tx.name, n), slug).not.toMatch(
+        /fringe benefits|household services|Bureau of Labor Statistics/,
+      );
+      expect(serviceCityDirectAnswer(ORG_NAME, s.shortName, tx.name, "Houston", c), slug).not.toMatch(
+        /fringe benefits|household services/,
+      );
+    }
+    expect(serviceStateDirectAnswer(ORG_NAME, "Business Valuation", nj.name, getStateNarrative(nj))).toBe(
+      "KW Economics provides business valuation for matters venued in New Jersey. The business is valued from its own financial statements, tax returns, and governing agreements under the income, market, and asset approaches, with the standard of value, the valuation date, and any discounts for lack of control or marketability set by the matter and by New Jersey law as counsel confirms it. Every input is documented so the conclusion can be tested at deposition, and no wage or household data enters the number. Plaintiff and defense.",
+    );
+    expect(serviceStateDirectAnswer(ORG_NAME, "Lost Earnings", tx.name, n)).toContain(
+      "tests it against occupational wage data from the Bureau of Labor Statistics for the metropolitan or nonmetropolitan area of Texas where the plaintiff worked",
+    );
+    expect(serviceStateDirectAnswer(ORG_NAME, "Fraud & Tracing", tx.name, n)).toContain(
+      "No wage or market data drives the number; the entity's own records do.",
+    );
+  });
+
+  it("orders the city hero as subject, then venue, then testimony, so the shells' 160-character description names the pillar", () => {
+    const hero = serviceCityDirectAnswer(ORG_NAME, "Business Valuation", tx.name, "Houston", c);
+    expect(
+      hero.startsWith(
+        "KW Economics provides business valuation for cases venued in Houston, Texas. For a business based in Houston, the Houston-area market for its goods and services, comparable transactions, and the company's own history each enter the analysis,",
+      ),
+    ).toBe(true);
+    const venue = c.blurb.slice(0, c.blurb.indexOf(". ") + 1);
+    expect(venue).toMatch(/^Civil claims arising in Houston are typically heard in /);
+    expect(hero).toContain(venue);
+    expect(hero.indexOf("For a business based in Houston")).toBeLessThan(hero.indexOf(venue));
+    // A city with no county carries no venue sentence and the hero still reads.
+    const noCounty = getCityNarrative(tx, "Sample City", "sample-city");
+    expect(serviceCityDirectAnswer(ORG_NAME, "Lost Profits", tx.name, "Sample City", noCounty)).toBe(
+      "KW Economics provides lost profits analysis for cases venued in Sample City, Texas. For a business operating in Sample City, the but-for path reflects the Sample City-area market the company sells into and its own financial history, and each claimed loss is tied to the conduct at issue and to the period over which it plausibly ran. Deposition and trial testimony are available for Sample City matters, in person or by remote appearance where the forum allows.",
+    );
+  });
+
+  it("falls back to the shared narrative for a short name without an angle", () => {
+    expect(serviceStateDirectAnswer(ORG_NAME, "Widget Review", tx.name, n)).toBe(
+      `KW Economics provides widget review analysis for matters venued in Texas. ${n.economicContext} Plaintiff and defense.`,
+    );
+    expect(serviceCityDirectAnswer(ORG_NAME, "Widget Review", tx.name, "Houston", c)).toContain(
+      "trace each component of the loss to Houston-area data or to the records that drive the claim.",
+    );
+    const faqs = serviceStateGeographicFaqs({ name: "Widget Review", shortName: "Widget Review" }, tx.name);
+    expect(faqs[1].answer).toContain("(tax returns, pay and benefit records, and business financial statements as applicable)");
+    expect(serviceCityGeographicFaqs({ name: "Widget Review", shortName: "Widget Review" }, tx.name, "Houston")[1].question).toBe(
+      "How are Houston wage levels and cost of living handled in the analysis?",
+    );
+  });
+
+  it("answers the disclosure FAQ on every pillar, and reads the District and the territories as their own trial courts", () => {
+    for (const s of pillars) {
+      const faq = serviceStateGeographicFaqs(s, tx.name)[2];
+      expect(faq.question, s.slug).toBe("When is expert disclosure due for a case venued in Texas?");
+      expect(faq.answer, s.slug).toBe(
+        "Expert disclosure in Texas is scheduled case by case: in the Texas trial courts by the case management or scheduling order, and in the federal district courts serving Texas by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
+      );
+    }
+    const dc = serviceStateGeographicFaqs(getServiceBySlug("wrongful-death-economic-loss")!, "District of Columbia")[2];
+    expect(dc.question).toBe("When is expert disclosure due for a case venued in the District of Columbia?");
+    expect(dc.answer).toContain(
+      "in the District of Columbia trial courts by the case management or scheduling order, and in the federal district courts serving the District of Columbia",
+    );
+    expect(dc.answer).not.toMatch(/state court|in District of Columbia/);
+    expect(serviceStateGeographicFaqs(getServiceBySlug("business-valuation")!, "Puerto Rico")[2].answer).toContain(
+      "in the Puerto Rico trial courts",
+    );
+  });
+
+  it("names the records that drive each pillar in the engagement FAQ", () => {
+    const answers = pillars.map((s) => serviceStateGeographicFaqs(s, tx.name)[1].answer);
+    expect(new Set(answers).size).toBe(pillars.length);
+    expect(serviceStateGeographicFaqs(getServiceBySlug("business-valuation")!, tx.name)[1].answer).toContain(
+      "(financial statements, tax returns, the general ledger, and the governing agreements)",
+    );
+    expect(serviceStateGeographicFaqs(getServiceBySlug("lost-earnings-and-earning-capacity")!, tx.name)[1].answer).toContain(
+      "(tax returns, wage statements, personnel and benefit plan records, and the medical or work-capacity opinions that define the post-injury earnings path)",
+    );
+    expect(
+      serviceStateGeographicFaqs(getServiceBySlug("expert-rebuttal-and-report-review")!, tx.name)[1].answer.startsWith(
+        "A rebuttal engagement typically includes a records request for the opposing report, its workpapers, and the data it relied on,",
+      ),
+    ).toBe(true);
+  });
+
+  it("keeps the wage-levels city FAQ where wage levels are the subject and asks about the pillar's own records elsewhere", () => {
+    const wageQuestion = "How are Houston wage levels and cost of living handled in the analysis?";
+    for (const s of pillars) {
+      const faqs = serviceCityGeographicFaqs(s, tx.name, "Houston");
+      expect(faqs, s.slug).toHaveLength(3);
+      if (WAGE_FAQ_PILLARS.has(s.slug)) {
+        expect(faqs[1].question, s.slug).toBe(wageQuestion);
+      } else {
+        expect(faqs[1].question, s.slug).not.toBe(wageQuestion);
+        expect(JSON.stringify(faqs[1]), s.slug).not.toMatch(/wage levels|household services/);
+      }
+      // The deliverables question is the third on every pillar.
+      expect(faqs[2].question, s.slug).toBe("What deliverables are available for a case venued in Houston?");
+    }
+    expect(serviceCityGeographicFaqs(getServiceBySlug("business-valuation")!, tx.name, "Houston")[1].question).toBe(
+      "What data does a valuation of a business based in Houston rest on?",
+    );
+    expect(serviceCityGeographicFaqs(getServiceBySlug("fraud-and-asset-tracing")!, "New York", "The Bronx")[1].question).toBe(
+      "What records drive a fraud and tracing engagement for an entity based in The Bronx?",
+    );
+    expect(serviceCityGeographicFaqs(getServiceBySlug("expert-rebuttal-and-report-review")!, "Ohio", "Akron")[1].question).toBe(
+      "What does a rebuttal of an opposing economic report cover for a case venued in Akron?",
+    );
+  });
+
+  it("every pillar's prose obeys the house rules in every state and its largest city", () => {
+    for (const st of states) {
+      const city = st.largestCity;
+      const citySlug = city.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+      const sn = getStateNarrative(st);
+      const cn = getCityNarrative(st, city, citySlug, `${city} County`);
+      for (const s of pillars) {
+        const texts = [
+          serviceStateDirectAnswer(ORG_NAME, s.shortName, st.name, sn),
+          serviceCityDirectAnswer(ORG_NAME, s.shortName, st.name, city, cn),
+          JSON.stringify(serviceStateGeographicFaqs(s, st.name)),
+          JSON.stringify(serviceCityGeographicFaqs(s, st.name, city)),
+        ];
+        for (const text of texts) {
+          const label = `${s.slug}/${st.slug}/${citySlug}`;
+          expect(text, label).not.toMatch(TYPOGRAPHY);
+          expect(text, label).not.toMatch(FIGURES);
+          expect(text, label).not.toMatch(CARE_COST);
+          expect(text, label).not.toMatch(LEGACY_BRAND_PATTERN);
+          expect(text, label).not.toMatch(DOUBLED_ARTICLE);
+          expect(text, label).not.toMatch(MISARTICLED);
+          expect(text, label).not.toMatch(/\b([a-z]{3,}) \1\b/i);
+          expect(text, label).not.toContain("&");
+          expect(text, label).not.toMatch(/in District of Columbia|, District of Columbia is/);
+        }
+      }
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Page-only prose (the shells do not render these blocks): the state page's
+// forum paragraph, the city page's context paragraph, the References block,
+// and the credential-chip links.
+// ---------------------------------------------------------------------------
+
+describe("page-only pillar prose, geo sources, and credential links", () => {
+  const nj = getStateBySlug("new-jersey")!;
+  const ny = getStateBySlug("new-york")!;
+  const dc = getStateBySlug("district-of-columbia")!;
+  const pillars = pillarServices();
+  const hackensack = cityRow("Hackensack", "Bergen County", "new-jersey", "NJ");
+  const bronx = cityRow("The Bronx", "Bronx County", "new-york", "NY");
+
+  it("prints the tort damages framework only on the injury and death pillars and a forum paragraph of the pillar's own elsewhere", () => {
+    for (const s of pillars) {
+      const venue = serviceStateVenueParagraph(s, nj);
+      if (TORT_FRAMEWORK_PILLARS.has(s.slug)) {
+        expect(venue, s.slug).toBeUndefined();
+      } else {
+        expect(venue, s.slug).toBeDefined();
+        expect(venue, s.slug).toContain("New Jersey");
+        expect(venue, s.slug).not.toMatch(TYPOGRAPHY);
+        expect(venue, s.slug).not.toMatch(FIGURES);
+        expect(venue, s.slug).not.toMatch(CARE_COST);
+        expect(venue, s.slug).not.toMatch(/\b([a-z]{3,}) \1\b/i);
+        // The District reads with its article after a preposition and bare attributively.
+        const dcVenue = serviceStateVenueParagraph(s, dc)!;
+        expect(dcVenue, s.slug).not.toMatch(/in District of Columbia|a the |the the /);
+        expect(dcVenue, s.slug).toMatch(/in the District of Columbia|the Superior Court of the District of Columbia/);
+      }
+    }
+    expect(serviceStateVenueParagraph(getServiceBySlug("business-valuation")!, nj)).toBe(
+      "Valuation disputes arising in New Jersey reach the civil courts through shareholder, partnership, and buy-sell litigation, the matrimonial courts through the division of marital property, and the federal district courts serving New Jersey where jurisdiction allows. The standard of value, the valuation date, and the treatment of discounts for lack of control and marketability are set by the governing agreement and by New Jersey law as counsel confirms it; the report states each choice and presents the value so it can be recomputed under an alternative.",
+    );
+    expect(serviceStateVenueParagraph(getServiceBySlug("expert-rebuttal-and-report-review")!, nj)).toContain(
+      `the Superior Court, Law Division for personal injury, wrongful death, employment, and commercial claims, the federal district courts serving New Jersey where jurisdiction allows, and the ${getRegulationsByState("new-jersey")!.compensationForum} where the dispute is over wage-loss benefits.`,
+    );
+    expect(serviceStateVenueParagraph(getServiceBySlug("lost-profits-and-commercial-damages")!, nj)).toContain(
+      "Lost profits claims arising in New Jersey are heard in the Superior Court, Law Division and, where jurisdiction allows, in the federal district courts serving New Jersey.",
+    );
+  });
+
+  it("names what each pillar measures in the city context paragraph", () => {
+    const paragraphs = pillars.map((s) => serviceCityContextParagraph(s, nj, hackensack));
+    expect(new Set(paragraphs).size).toBe(pillars.length);
+    for (const p of paragraphs) {
+      expect(p.startsWith("KW Economics serves counsel throughout Hackensack and the surrounding Bergen County area. Our economists ")).toBe(true);
+      expect(p).toMatch(/engagements in New Jersey\.$/);
+      expect(p).not.toMatch(TYPOGRAPHY);
+      expect(p).not.toMatch(CARE_COST);
+      expect(p).not.toContain("&");
+    }
+    expect(serviceCityContextParagraph(getServiceBySlug("business-valuation")!, nj, hackensack)).toBe(
+      "KW Economics serves counsel throughout Hackensack and the surrounding Bergen County area. Our economists value the business from its own financial statements, tax returns, and governing agreements and from the Hackensack-area market it serves, and are familiar with the court system and disclosure requirements that affect business valuation engagements in New Jersey.",
+    );
+    expect(serviceCityContextParagraph(getServiceBySlug("fraud-and-asset-tracing")!, nj, hackensack)).toContain(
+      "affect fraud and tracing engagements in New Jersey.",
+    );
+    // The Bronx keeps its article after "throughout" and drops it attributively.
+    const wd = serviceCityContextParagraph(getServiceBySlug("wrongful-death-economic-loss")!, ny, bronx);
+    expect(wd).toContain(
+      "throughout The Bronx and the surrounding Bronx County area. Our economists measure the decedent's earnings, fringe benefits, and household services against wage data for the Bronx area and the decedent's own records,",
+    );
+    expect(wd).not.toMatch(DOUBLED_ARTICLE);
+    // A city with no county falls back to the state name.
+    const noCounty = { ...hackensack, county: "" };
+    expect(serviceCityContextParagraph(getServiceBySlug("lost-earnings-and-earning-capacity")!, nj, noCounty)).toContain(
+      "throughout Hackensack and the surrounding New Jersey area.",
+    );
+  });
+
+  it("resolves geo sources through the registry: the narrative's data sources on the hub and city pages, the pillar's own on service pages", () => {
+    expect(geoSources().map((s) => s.url)).toEqual([
+      REFERENCES.BLS_OES.url,
+      REFERENCES.CENSUS_ACS.url,
+      REFERENCES.BLS_ECEC.url,
+      REFERENCES.BLS_ECI.url,
+      REFERENCES.SKOOG_CIECKA_KRUEGER_2011.url,
+      REFERENCES.TREASURY_YIELD.url,
+    ]);
+    expect(geoSources(getServiceBySlug("business-valuation")!).map((s) => s.url)).toEqual([
+      REFERENCES.AICPA_SSVS1.url,
+      REFERENCES.NACVA_STANDARDS.url,
+    ]);
+    expect(geoSources(getServiceBySlug("fraud-and-asset-tracing")!).map((s) => s.url)).toEqual([REFERENCES.ACFE.url]);
+    expect(geoSources(getServiceBySlug("lost-earnings-and-earning-capacity")!).map((s) => s.url)).toContain(REFERENCES.BLS_OES.url);
+    for (const s of pillars) {
+      const sources = geoSources(s);
+      expect(sources.length, s.slug).toBeGreaterThan(0);
+      for (const src of sources) {
+        expect(src.url.startsWith("https://"), s.slug).toBe(true);
+        expect(src.apa, s.slug).toBeTruthy();
+      }
+    }
+  });
+
+  it("maps every credential chip label to its credential x state page", () => {
+    expect(credentialPagePath("Forensic Economist", "new-jersey")).toBe("/credentials/forensic-economist/new-jersey");
+    expect(credentialPagePath("NAFE", "texas")).toBe("/credentials/nafe-member/texas");
+    expect(credentialPagePath("AAEFE", "texas")).toBe("/credentials/aaefe-member/texas");
+    expect(credentialPagePath("MBA", "texas")).toBe("/credentials/graduate-economics-degree/texas");
+    expect(credentialPagePath("PhD", "texas")).toBe("/credentials/graduate-economics-degree/texas");
+    expect(credentialPagePath("CPA", "texas")).toBeUndefined();
+    for (const s of pillars) {
+      for (const label of s.relevantCredentials) expect(credentialPagePath(label, "ohio"), `${s.slug}: ${label}`).toBeDefined();
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
+// The page-only prose renders for every state and city the site carries, so
+// it is held to the same house rules as the shared prose in every state and
+// its largest city, not only in the pinned New Jersey and District cases.
+// ---------------------------------------------------------------------------
+
+describe("page-only pillar prose obeys the house rules in every state and its largest city", () => {
+  const pillars = pillarServices();
+
+  it("venue paragraphs and city context paragraphs", () => {
+    for (const st of states) {
+      const city = cityRow(st.largestCity, `${st.largestCity} County`, st.slug, st.abbreviation);
+      for (const s of pillars) {
+        const texts = [serviceStateVenueParagraph(s, st) ?? "", serviceCityContextParagraph(s, st, city)];
+        for (const text of texts) {
+          const label = `${s.slug}/${st.slug}`;
+          expect(text, label).not.toMatch(TYPOGRAPHY);
+          expect(text, label).not.toMatch(FIGURES);
+          expect(text, label).not.toMatch(CARE_COST);
+          expect(text, label).not.toMatch(LEGACY_BRAND_PATTERN);
+          expect(text, label).not.toMatch(DOUBLED_ARTICLE);
+          expect(text, label).not.toMatch(MISARTICLED);
+          expect(text, label).not.toMatch(/\b([a-z]{3,}) \1\b/i);
+          expect(text, label).not.toContain("&");
+          expect(text, label).not.toMatch(/in District of Columbia|, District of Columbia is/);
+          expect(text, label).not.toMatch(/§|\bsec\.|\brule \d|\bv\.\s/i);
+        }
+      }
     }
   });
 });

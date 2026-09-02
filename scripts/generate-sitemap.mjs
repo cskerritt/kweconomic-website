@@ -25,9 +25,11 @@
  * prerendered, linked, and indexable - they are just not advertised.
  *
  * lastmod policy: emitted only where a real date is derivable from source data
- * (insights dateModified/publishedDate).
- * Stamping the build date on every URL made lastmod meaningless, so
- * non-derivable entries omit it (allowed by the sitemaps.org spec).
+ * (the dateModified / publishedDate an entry carries: insights, guides,
+ * comparisons, knowledge guides, white papers, methods, attorney journeys, the
+ * site FAQ, and any service entry that records one). Stamping the build date
+ * on every URL made lastmod meaningless, so non-derivable entries omit it
+ * (allowed by the sitemaps.org spec).
  *
  * Run: node scripts/generate-sitemap.mjs
  */
@@ -49,27 +51,12 @@ function extractSlugs(file) {
   return [...content.matchAll(/slug:\s*"([^"]+)"/g)].map((m) => m[1]);
 }
 
-// Extract slug -> lastmod for insight posts. Block-wise (not positional zip)
-// because dateModified is optional per entry; the interface block has no
-// quoted slug and is skipped.
-function extractInsightDates() {
-  const content = readFileSync(join(SRC_DATA, "insights.ts"), "utf-8");
-  const map = new Map();
-  const blocks = content.split(/(?=\n\s*\{\s*\n\s*slug:\s*")/);
-  for (const block of blocks) {
-    const slug = block.match(/slug:\s*"([^"]+)"/)?.[1];
-    if (!slug) continue;
-    const date =
-      block.match(/dateModified:\s*"([^"]+)"/)?.[1] ||
-      block.match(/publishedDate:\s*"([^"]+)"/)?.[1];
-    if (date) map.set(slug, date);
-  }
-  return map;
-}
-
-// Load the content-readiness gate (a TS module) the same way
-// generate-llms.mjs / generate-extra-sitemaps.mjs load data modules.
-async function loadContentReadiness() {
+// Load the content-readiness gate and the dated data modules (TS) the same
+// way generate-llms.mjs / generate-extra-sitemaps.mjs load data modules. The
+// dates come from the modules themselves rather than a regex over the source,
+// so an entry that references a shared constant (journeys.ts) or adds a field
+// later is read exactly as the React page reads it.
+async function loadDataModules() {
   const server = await createServer({
     root: ROOT,
     configFile: false,
@@ -79,9 +66,22 @@ async function loadContentReadiness() {
     server: { middlewareMode: true, hmr: false, ws: false },
     appType: "custom",
   });
-  const mod = await server.ssrLoadModule("/src/data/contentReadiness.ts");
+  const load = (p) => server.ssrLoadModule(p);
+  const [readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services] =
+    await Promise.all([
+      load("/src/data/contentReadiness.ts"),
+      load("/src/data/insights.ts"),
+      load("/src/data/guides.ts"),
+      load("/src/data/comparisons.ts"),
+      load("/src/data/knowledge.ts"),
+      load("/src/data/whitePapers.ts"),
+      load("/src/data/methods.ts"),
+      load("/src/data/journeys.ts"),
+      load("/src/data/faqs.ts"),
+      load("/src/data/services.ts"),
+    ]);
   await server.close();
-  return mod;
+  return { readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services };
 }
 
 const states = extractSlugs("states.ts");
@@ -97,7 +97,6 @@ const methods = extractSlugs("methods.ts");
 const team = extractSlugs("team.ts");
 const guides = extractSlugs("guides.ts");
 const comparisons = extractSlugs("comparisons.ts");
-const insightDates = extractInsightDates();
 
 // Routes registered in src/App.tsx only. The retired vocational-site surfaces
 // (intake, forms, PHQ/HIPAA downloads, economic tools) have no route on
@@ -118,8 +117,8 @@ const CORE = [
 // The readiness gate below advertises a SUBSET of this window in the sitemap.
 const SERVICE_CITY_TOP = 10;
 
-const { sitemapReadyCitySlugs, SERVICE_CITY_PRERENDER_TOP } =
-  await loadContentReadiness();
+const data = await loadDataModules();
+const { sitemapReadyCitySlugs, SERVICE_CITY_PRERENDER_TOP } = data.readiness;
 if (SERVICE_CITY_PRERENDER_TOP !== SERVICE_CITY_TOP) {
   throw new Error(
     `SERVICE_CITY_PRERENDER_TOP (${SERVICE_CITY_PRERENDER_TOP}) in src/data/contentReadiness.ts ` +
@@ -194,9 +193,29 @@ states.forEach((st) => {
   caseTypes.forEach((c) => urls.add(`/attorneys/${stage}/${c}`));
 });
 
+// ---------------------------------------------------------------------------
+// lastmod: one map from route to the date its data entry records.
+// ---------------------------------------------------------------------------
 const lastmodOverrides = new Map();
-for (const [slug, date] of insightDates) {
-  lastmodOverrides.set(`/insights/${slug}`, date);
+const setDate = (route, date) => {
+  if (typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)) lastmodOverrides.set(route, date);
+};
+for (const p of data.insights.insightPosts) setDate(`/insights/${p.slug}`, p.dateModified ?? p.publishedDate);
+for (const g of data.guides.guides) setDate(`/guides/${g.slug}`, g.dateModified);
+for (const c of data.comparisons.comparisons) setDate(`/compare/${c.slug}`, c.dateModified);
+for (const k of data.knowledge.knowledgeGuides) setDate(`/knowledge/${k.slug}`, k.dateModified);
+for (const w of data.whitePapers.whitePapers) setDate(`/white-papers/${w.slug}`, w.dateModified ?? w.datePublished);
+for (const m of data.methods.methods) setDate(`/methods/${m.slug}`, m.dateModified);
+for (const j of data.journeys.journeys) setDate(`/attorneys/${j.stage}/${j.caseTypeSlug}`, j.dateModified);
+setDate("/resources/faq", data.faqs.FAQ_DATE_MODIFIED);
+// A service entry that records dateModified stamps its pillar page, the three
+// engagement-detail variants, and its declared case-type pages; undated
+// entries (the norm today) stay without lastmod rather than taking the build date.
+for (const s of data.services.pillarServices()) {
+  if (!s.dateModified) continue;
+  setDate(`/services/${s.slug}`, s.dateModified);
+  for (const v of ["cost", "process", "timeline"]) setDate(`/services/${s.slug}/${v}`, s.dateModified);
+  for (const ct of s.caseTypes ?? []) setDate(`/services/${s.slug}/case/${ct}`, s.dateModified);
 }
 
 // PSA retainer intake forms: the unified /contact/intake form replaced the
@@ -268,5 +287,5 @@ ${indexChildren.map((f) => `  <sitemap><loc>${BASE}/${f}</loc></sitemap>`).join(
 writeFileSync(join(PUBLIC, "sitemap.xml"), indexXml);
 
 console.log(
-  `Sitemap index generated: ${urls.size} URLs across ${SECTIONS.length} child sitemaps (${counts.join(", ")})`,
+  `Sitemap index generated: ${urls.size} URLs across ${SECTIONS.length} child sitemaps (${counts.join(", ")}); ${lastmodOverrides.size} dated`,
 );

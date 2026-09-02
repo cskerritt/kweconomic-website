@@ -14,12 +14,23 @@ interface RelatedServicesProps {
 // Testimony is a mode of every engagement, not a sibling "related" service.
 const EXCLUDED = new Set(["expert-witness-testimony"]);
 
+/** How many of the page's case types the service declares. */
+function sharedCaseTypeCount(serviceCaseTypes: string[], caseTypeSet: Set<string>): number {
+  return serviceCaseTypes.filter((ct) => caseTypeSet.has(ct)).length;
+}
+
 export default function RelatedServices({ caseTypes, stateSlug }: RelatedServicesProps) {
-  // Find services that share at least one case type with the provided list
+  // Find services that share at least one case type with the provided list,
+  // ranked by how many they share (ties keep file order) before the slice, so
+  // the four cards are the pillars most relevant to the page's matters rather
+  // than the first four in file order.
   const caseTypeSet = new Set(caseTypes);
   const matched = pillarServices()
     .filter((s) => !EXCLUDED.has(s.slug))
-    .filter((s) => s.caseTypes.some((ct) => caseTypeSet.has(ct)))
+    .map((s, index) => ({ s, index, shared: sharedCaseTypeCount(s.caseTypes, caseTypeSet) }))
+    .filter((m) => m.shared > 0)
+    .sort((a, b) => b.shared - a.shared || a.index - b.index)
+    .map((m) => m.s)
     .slice(0, 4);
 
   if (matched.length === 0) return null;

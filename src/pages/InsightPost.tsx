@@ -2,21 +2,18 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import { ChevronRight, ArrowRight } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
-import { getPostBySlug, getRelatedPosts } from "@/data/insights";
+import { getPostBySlug, getRelatedPosts, formatPublishedDate, insightBlocks, insightHeadings } from "@/data/insights";
 import NextSteps from "@/components/NextSteps";
 import AuthorByline from "@/components/AuthorByline";
+import RelatedContent from "@/components/RelatedContent";
 import SourcesBlock from "@/components/SourcesBlock";
 import { renderTextWithLinks } from "@/lib/richtext";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, blogPostingSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 
-function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}
+// The H1 and the lead paragraph (.kw-lead) are the units an answer engine
+// should read aloud or quote; every editorial template marks the same pair.
+const SPEAKABLE = { speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".kw-lead"] } };
 
 const categoryColors: Record<string, string> = {
   Legal: "bg-navy/10 text-navy",
@@ -32,8 +29,9 @@ export default function InsightPost() {
   usePageMeta(
     post
       ? {
-          title: `${post.title} | ${ORG_NAME}`,
-          description: post.excerpt,
+          // metaTitle keeps the <title> under 60 chars where the descriptive H1 runs long.
+          title: `${post.metaTitle ?? post.title} | ${ORG_NAME}`,
+          description: post.metaDescription,
           canonical: `${ORG_URL}/insights/${post.slug}`,
         }
       : { title: `Insights | ${ORG_NAME}`, description: `Insights and articles from ${ORG_NAME}`, canonical: `${ORG_URL}/insights` }
@@ -44,20 +42,25 @@ export default function InsightPost() {
   }
 
   const postUrl = `${ORG_URL}/insights/${post.slug}`;
+  const blocks = insightBlocks(post.content);
+  const headings = insightHeadings(post.content);
 
   return (
     <>
       <SchemaOrg
         data={graphSchema([
           organizationSchema(),
-          blogPostingSchema({
-            title: post.title,
-            description: post.excerpt,
-            url: postUrl,
-            datePublished: post.publishedDate,
-            dateModified: post.dateModified ?? post.publishedDate,
-            authorSlug: post.authorSlug,
-          }),
+          {
+            ...blogPostingSchema({
+              title: post.title,
+              description: post.excerpt,
+              url: postUrl,
+              datePublished: post.publishedDate,
+              dateModified: post.dateModified ?? post.publishedDate,
+              authorSlug: post.authorSlug,
+            }),
+            ...SPEAKABLE,
+          },
           breadcrumbSchema([
             { name: "Home", url: `${ORG_URL}/` },
             { name: "Insights", url: `${ORG_URL}/insights` },
@@ -102,14 +105,14 @@ export default function InsightPost() {
               >
                 {post.category}
               </span>
-              <span className="text-sm text-neutral-500 font-mono">
-                {formatDate(post.publishedDate)}
-              </span>
+              <time dateTime={post.publishedDate} className="text-sm text-neutral-500 font-mono">
+                {formatPublishedDate(post.publishedDate)}
+              </time>
             </div>
             <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-4">
               {post.title}
             </h1>
-            <p className="text-lg text-neutral-300 leading-relaxed">{post.excerpt}</p>
+            <p className="kw-lead text-lg text-neutral-300 leading-relaxed">{post.excerpt}</p>
           </div>
         </div>
       </section>
@@ -120,14 +123,26 @@ export default function InsightPost() {
           <div className="lg:grid lg:grid-cols-[1fr_300px] lg:gap-12 items-start">
             {/* Article body */}
             <article>
-              <AuthorByline slug={post.authorSlug} dateModified={post.dateModified ?? post.publishedDate} />
+              <AuthorByline slug={post.authorSlug} datePublished={post.publishedDate} dateModified={post.dateModified ?? post.publishedDate} />
               <div className="space-y-5">
-                {post.content.split("\n\n").map((para, idx) => (
-                  <p key={idx} className="text-neutral-700 leading-relaxed text-base md:text-lg">
-                    {renderTextWithLinks(para.trim())}
-                  </p>
-                ))}
+                {blocks.map((block, idx) =>
+                  block.type === "heading" ? (
+                    <h2
+                      key={block.id}
+                      id={block.id}
+                      className="font-serif text-2xl md:text-3xl font-bold text-navy pt-4 leading-snug scroll-mt-24"
+                    >
+                      {block.text}
+                    </h2>
+                  ) : (
+                    <p key={idx} className="text-neutral-700 leading-relaxed text-base md:text-lg">
+                      {renderTextWithLinks(block.text)}
+                    </p>
+                  ),
+                )}
               </div>
+
+              <RelatedContent heading="Related reading" items={post.related ?? []} />
 
               <SourcesBlock sources={post.sources ?? []} />
 
@@ -139,6 +154,26 @@ export default function InsightPost() {
             {/* Sidebar */}
             <aside className="mt-12 lg:mt-0">
               <div className="sticky top-24 space-y-6">
+                {/* In-page contents */}
+                {headings.length > 0 && (
+                  <div className="bg-white rounded-xl border border-neutral-200 p-6">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+                      In This Article
+                    </h3>
+                    <nav aria-label="Article sections" className="space-y-1">
+                      {headings.map((h) => (
+                        <a
+                          key={h.id}
+                          href={`#${h.id}`}
+                          className="block text-sm text-neutral-600 hover:text-teal px-2 py-1.5 rounded hover:bg-teal/5 transition-colors leading-snug"
+                        >
+                          {h.text}
+                        </a>
+                      ))}
+                    </nav>
+                  </div>
+                )}
+
                 {/* Related posts */}
                 {related.length > 0 && (
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
@@ -155,9 +190,9 @@ export default function InsightPost() {
                           <p className="text-sm font-medium text-navy group-hover:text-teal transition-colors leading-snug mb-1">
                             {rp.title}
                           </p>
-                          <p className="text-xs text-neutral-500 font-mono">
-                            {formatDate(rp.publishedDate)}
-                          </p>
+                          <time dateTime={rp.publishedDate} className="block text-xs text-neutral-500 font-mono">
+                            {formatPublishedDate(rp.publishedDate)}
+                          </time>
                         </Link>
                       ))}
                     </div>

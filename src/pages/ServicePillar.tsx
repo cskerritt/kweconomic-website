@@ -1,39 +1,56 @@
 import { useParams, Navigate, Link } from "react-router-dom";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, serviceSchema, breadcrumbSchema, faqPageSchema, ORG_URL } from "@/lib/schema";
-import { getServiceBySlug } from "@/data/services";
+import { getServiceBySlug, isPillarService } from "@/data/services";
 import { caseTypes, getCaseType } from "@/data/caseTypes";
+import { credentials, type Credential } from "@/data/credentials";
 import { states } from "@/data/states";
-import { ORG_NAME, ORG_SHORT } from "@/lib/brand";
-// Service.shortName is a heading label ("Fraud & Tracing"); the templated FAQ
-// sentences and the "by Case Type" intro render it as prose through the shared
-// helpers. Headings keep the short name as written.
-import { proseName, workPhrase, withArticle } from "@/lib/service-prose.mjs";
+import { ORG_NAME } from "@/lib/brand";
+// Service.shortName is a heading label ("Fraud & Tracing"); the hero lead,
+// the credential sidebar, and the "by Case Type" intro render it as prose
+// through the shared helpers. Headings and link labels keep the short name.
+import { proseName, workPhrase } from "@/lib/service-prose.mjs";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
+import AuthorByline from "@/components/AuthorByline";
 import ContactCTA from "@/components/ContactCTA";
 import LocationCard from "@/components/LocationCard";
 import FAQBlock from "@/components/FAQBlock";
+import RelatedContent from "@/components/RelatedContent";
+import SourcesBlock from "@/components/SourcesBlock";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import type { Service } from "@/types";
 
-const REGIONS: { key: "northeast" | "southeast" | "midwest" | "west"; label: string }[] = [
+// Every entry in states.ts has a region; the fifth group carries the District
+// of Columbia and the five territories (same grouping as LocationsHub), so all
+// 56 service x state pages get a link from their parent pillar.
+const REGIONS: { key: "northeast" | "southeast" | "midwest" | "west" | "territory"; label: string }[] = [
   { key: "northeast", label: "Northeast" },
   { key: "southeast", label: "Southeast" },
   { key: "midwest", label: "Midwest" },
   { key: "west", label: "West" },
+  { key: "territory", label: "Territories and DC" },
 ];
-
-// Case-type chip targets are derived from the case-type data itself so the
-// pillar's "by Case Type" links can never point at a /case-types/<slug> or
-// /services/<svc>/case/<slug> page that is not prerendered.
-const CASE_TYPE_SLUGS: Record<string, string> = Object.fromEntries(
-  caseTypes.map((c) => [c.name, c.slug]),
-);
 
 // services.ts lists case types by slug; resolve to the case-type record (name
 // lookup kept as a fallback) so the chips print names and link real pages.
 const resolveCaseType = (ref: string) => getCaseType(ref) ?? caseTypes.find((c) => c.name === ref);
+
+// services.ts names credentials as a label set ("Forensic Economist", "NAFE",
+// "MBA", "PhD"); credentials.ts keys them by slug and a punctuated, sometimes
+// slash-separated abbreviation ("MBA / M.A. / Ph.D."). Compare on letters and
+// digits only and let any part of a slash-separated abbreviation match. This
+// mirrors CaseTypeHub.tsx and CredentialState.tsx; the three copies should be
+// consolidated into one shared helper (see the family notes). Filtering the
+// credential list, rather than mapping the labels, dedupes by credential
+// ("MBA" and "PhD" both resolve to the graduate degree page).
+const normalizeCredential = (s: string) => s.replace(/[^a-z0-9]/gi, "").toLowerCase();
+const credentialMatches = (cred: Credential, labels: string[]) =>
+  labels.some(
+    (label) =>
+      label === cred.slug ||
+      cred.abbreviation.split("/").some((part) => normalizeCredential(part) === normalizeCredential(label)),
+  );
 
 // Non-pillar cross-sell cards point back at the economics line that consumes
 // the sister practice's opinion.
@@ -42,60 +59,56 @@ const NON_PILLAR_RELATED: Record<string, { href: string; label: string }> = {
   "life-care-planning": { href: "/services/life-care-plan-cost-projection", label: "Life care plan costing" },
 };
 
+const CREDENTIAL_LINK_CLASS =
+  "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-teal hover:text-teal text-sm";
+
 export default function ServicePillar() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>();
-  const service = serviceSlug ? getServiceBySlug(serviceSlug) : undefined;
+  const entry = serviceSlug ? getServiceBySlug(serviceSlug) : undefined;
+  // Pillars carry the page content (metaDescription, faqs, related, sources,
+  // caseTypeNotes); cross-sells render as a short card instead.
+  const service = entry && isPillarService(entry) ? entry : undefined;
 
   usePageMeta({
-    title: service
-      ? `${service.name} - Nationwide Expert Witness | ${ORG_NAME}`
-      : `Service | ${ORG_NAME}`,
-    description: service?.description ?? "",
+    title: entry ? `${entry.name} Expert | ${ORG_NAME}` : `Service | ${ORG_NAME}`,
+    // The pillar meta description is the hand-authored metaDescription field
+    // (140-160 characters, states the offer), never the hero paragraph.
+    description: service?.metaDescription ?? entry?.description ?? "",
     canonical: `${ORG_URL}/services/${serviceSlug ?? ""}`,
     // Non-pillar cross-sells are reachable but never indexed, prerendered, or
     // listed in the sitemap; the card below hands the visitor to the practice
     // that actually performs the work.
-    noindex: service ? !service.pillar : false,
+    noindex: entry ? !entry.pillar : false,
   });
 
-  if (!service) {
+  if (!entry) {
     return <Navigate to="/services" replace />;
   }
 
-  if (!service.pillar) {
-    return <NonPillarCard service={service} />;
+  if (!service) {
+    return <NonPillarCard service={entry} />;
   }
 
-  const stateOnly = states.filter((s) => s.type === "state");
   const serviceUrl = `${ORG_URL}/services/${service.slug}`;
   const work = workPhrase(service.shortName);
   const name = proseName(service.shortName);
-  const pillarFaqs = [
-    {
-      question: `What does ${withArticle(name)} engagement cost?`,
-      answer: `Full retained-expert engagements are billed hourly across review, evaluation, report, and (if needed) testimony phases. Specific cost depends on case complexity and engagement scope.`,
-    },
-    {
-      question: `Does ${ORG_SHORT} work for both plaintiff and defense?`,
-      answer: `Yes. ${ORG_NAME} provides independent, objective ${work} for plaintiff and defense counsel. The methodology is the same regardless of which side commissions the work; every report is built from the records in the case and published data, with each assumption stated.`,
-    },
-    {
-      question: `Where does ${ORG_SHORT} provide ${work}?`,
-      answer: `${ORG_NAME} accepts ${name} engagements in all 50 states, the District of Columbia, and US territories. State-specific framing is available on the per-state pages linked below.`,
-    },
-    {
-      question: `What is the typical turnaround for a full ${name} report?`,
-      answer: `Most reports are delivered within several weeks after the records are complete, depending on the number of loss components and scenarios to be analyzed. Rush turnarounds are accommodated case by case.`,
-    },
-  ];
+  const declaredCaseTypes = service.caseTypes
+    .map(resolveCaseType)
+    .filter((type): type is NonNullable<typeof type> => Boolean(type));
+  const linkedCredentials = credentials.filter((c) => credentialMatches(c, service.relevantCredentials));
 
   return (
     <div className="min-h-screen bg-neutral-50">
       <SchemaOrg
         data={graphSchema([
           organizationSchema(),
-          serviceSchema({ slug: service.slug, name: service.name, description: service.description }),
-          faqPageSchema(pillarFaqs, serviceUrl),
+          serviceSchema({
+            slug: service.slug,
+            name: service.name,
+            description: service.metaDescription,
+            dateModified: service.dateModified,
+          }),
+          faqPageSchema(service.faqs, serviceUrl),
           breadcrumbSchema([
             { name: "Home", url: `${ORG_URL}/` },
             { name: "Services", url: `${ORG_URL}/services` },
@@ -119,8 +132,12 @@ export default function ServicePillar() {
           <h1 className="font-serif text-4xl lg:text-5xl text-navy font-bold mb-4">
             {service.name}
           </h1>
-          <p className="text-lg text-neutral-600 max-w-3xl mb-6">
+          <AuthorByline dateModified={service.dateModified} />
+          <p className="text-lg text-neutral-600 max-w-3xl mb-4">
             {service.description}
+          </p>
+          <p className="text-neutral-600 max-w-3xl mb-6">
+            {ORG_NAME} prepares {work} for plaintiff and defense counsel nationwide; the method is the same whichever side retains the economist.
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
@@ -174,9 +191,11 @@ export default function ServicePillar() {
               </div>
             </section>
 
-            {/* Service x Case-Type deep dives. These pages exist for every
-                case type (prerendered + in the sitemap) but had no inbound
-                internal links before this section - sitemap-only orphans. */}
+            {/* Service x Case-Type deep dives. Only the pairs this pillar
+                declares in services.ts are linked (the same set as the chips
+                above), so the page never advertises an offering the data does
+                not describe. The link label names the service so the anchor
+                differs from the case-type hub chip pointing elsewhere. */}
             <section>
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">
                 {service.shortName} by Case Type
@@ -186,26 +205,26 @@ export default function ServicePillar() {
                 type: methodology, deliverables, and what counsel should expect.
               </p>
               <div className="grid gap-2 sm:grid-cols-2">
-                {Object.entries(CASE_TYPE_SLUGS).map(([ct, slug]) => (
+                {declaredCaseTypes.map(({ slug, name: typeName }) => (
                   <Link
                     key={slug}
                     to={`/services/${service.slug}/case/${slug}`}
                     className="flex items-center justify-between rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-navy hover:border-navy hover:shadow transition"
                   >
-                    {ct} <ArrowRight className="w-4 h-4 text-teal" aria-hidden="true" />
+                    {service.shortName} for {typeName} <ArrowRight className="w-4 h-4 text-teal" aria-hidden="true" />
                   </Link>
                 ))}
               </div>
             </section>
 
-            {/* State Directory */}
+            {/* State Directory: all 56 entries (50 states, DC, 5 territories). */}
             <section>
               <h2 className="font-serif text-2xl font-bold text-navy mb-6">
                 {service.shortName} by State
               </h2>
               <div className="space-y-8">
                 {REGIONS.map(({ key, label }) => {
-                  const regionStates = stateOnly.filter((s) => s.region === key);
+                  const regionStates = states.filter((s) => s.region === key);
                   if (regionStates.length === 0) return null;
                   return (
                     <div key={key}>
@@ -228,48 +247,44 @@ export default function ServicePillar() {
               </div>
             </section>
 
-            {/* Contact CTA */}
-            <FAQBlock faqs={pillarFaqs} title={`Frequently asked: ${service.shortName}`} />
+            {/* Hand-authored, service-specific FAQ (services.ts `faqs`);
+                the same sentences feed the FAQPage JSON-LD above. */}
+            <FAQBlock faqs={service.faqs} title={`Frequently asked: ${service.shortName}`} />
+
+            <RelatedContent items={service.related} heading={`Guides and methods for ${name}`} />
 
             <ContactCTA context={service.shortName} />
+
+            <SourcesBlock sources={service.sources} />
           </main>
 
           {/* Sidebar - 1/3 */}
           <aside className="mt-10 lg:mt-0 space-y-8">
 
-            {/* Relevant Credentials */}
-            <div className="bg-white rounded-xl border border-neutral-200 p-6">
-              <h3 className="font-serif text-lg font-bold text-navy mb-4">
-                Relevant Credentials
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {service.relevantCredentials.map((cred) => (
-                  <span
-                    key={cred}
-                    className="inline-block bg-forest/10 text-forest font-medium text-sm px-3 py-1 rounded-full border border-forest/20"
-                  >
-                    {cred}
-                  </span>
-                ))}
+            {/* Credentials that bear on the work. Each label links to its
+                credential page and prints the credential's full name; the
+                bare tokens ("NAFE", "AAEFE", "PhD") never render here, and the
+                lead sentence frames the list as qualification criteria, not
+                as memberships or degrees the firm claims to hold. */}
+            {linkedCredentials.length > 0 && (
+              <div className="bg-white rounded-xl border border-neutral-200 p-6">
+                <h3 className="font-serif text-lg font-bold text-navy mb-3">
+                  How an expert on this work is qualified
+                </h3>
+                <p className="text-sm text-neutral-600 mb-4">
+                  No state licenses forensic economists. Qualification to testify on {work} is decided case by case on education, method, and testimony history; these pages explain what each credential establishes and what it does not.
+                </p>
+                <ul className="space-y-2">
+                  {linkedCredentials.map((c) => (
+                    <li key={c.slug}>
+                      <Link to={`/credentials/${c.slug}`} className={CREDENTIAL_LINK_CLASS}>
+                        {c.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>
-
-            {/* Keywords */}
-            <div className="bg-white rounded-xl border border-neutral-200 p-6">
-              <h3 className="font-serif text-lg font-bold text-navy mb-4">
-                Related Terms
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {service.keywords.map((kw) => (
-                  <span
-                    key={kw}
-                    className="inline-block bg-neutral-100 text-neutral-600 text-sm px-3 py-1 rounded-full border border-neutral-200"
-                  >
-                    {kw}
-                  </span>
-                ))}
-              </div>
-            </div>
+            )}
 
             {/* Engagement details: cost / process / timeline variant pages
                 (prerendered + in the sitemap; previously had no inbound links). */}

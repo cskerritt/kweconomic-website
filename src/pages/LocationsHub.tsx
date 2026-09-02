@@ -4,6 +4,9 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import LocationCard from "@/components/LocationCard";
 import ContactCTA from "@/components/ContactCTA";
 import Reveal from "@/components/Reveal";
+import SchemaOrg from "@/components/SchemaOrg";
+import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
+import { graphSchema, organizationSchema, websiteSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
 import { ORG_NAME, SITE_URL } from "@/lib/brand";
 
 const REGION_LABELS: Record<string, string> = {
@@ -16,12 +19,22 @@ const REGION_LABELS: Record<string, string> = {
 
 const REGION_ORDER = ["northeast", "southeast", "midwest", "west", "territory"];
 
+// The hero already leads with the definition; it doubles as the
+// CollectionPage description so the visible and structured-data summaries agree.
+const LEAD = `${ORG_NAME} accepts cases in all 50 states, the District of Columbia, and U.S. territories. Our economists understand each jurisdiction's damages rules, local wage levels and cost of living, and court standards wherever your case is filed.`;
+
+const RELATED_RESOURCES = [
+  { href: "/jurisdictions", label: "State and federal jurisdictions served" },
+  { href: "/services", label: "Forensic economics and damages services" },
+];
+
 export default function LocationsHub() {
+  const url = `${SITE_URL}/locations`;
   usePageMeta({
-    title: `Locations | ${ORG_NAME} - Serving All 50 States`,
+    title: `Forensic Economist by State: All 50 States | ${ORG_NAME}`,
     description:
-      `${ORG_NAME} prepares economic damages analyses - lost earnings, wrongful death, household services, and business damages - in all 50 states, DC, and U.S. territories. Find your state to learn more.`,
-    canonical: `${SITE_URL}/locations`,
+      "Lost earnings, wrongful death, household services, and business damages analyses in all 50 states, DC, and U.S. territories. Pick a state for venue context.",
+    canonical: url,
   });
 
   const stateOnly = states.filter((s) => s.type === "state");
@@ -34,6 +47,43 @@ export default function LocationsHub() {
 
   return (
     <>
+      {/* Index-page structured data: CollectionPage (own @id) + ItemList of the
+          state pages, with the Organization and WebSite nodes the references resolve to. */}
+      <SchemaOrg
+        data={graphSchema([
+          organizationSchema(),
+          websiteSchema(),
+          {
+            "@type": "CollectionPage",
+            "@id": `${url}#webpage`,
+            url,
+            name: "Forensic Economists in All 50 States, DC, and U.S. Territories",
+            description: LEAD,
+            isPartOf: { "@id": WEBSITE_ID },
+            publisher: { "@id": ORG_ID },
+            mainEntity: {
+              "@type": "ItemList",
+              "@id": `${url}#list`,
+              numberOfItems: states.length,
+              itemListElement: states.map((s, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: s.name,
+                url: `${ORG_URL}/locations/${s.slug}`,
+              })),
+            },
+          },
+          breadcrumbSchema([
+            { name: "Home", url: `${ORG_URL}/` },
+            { name: "Locations", url },
+          ]),
+        ])}
+      />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <BreadcrumbNav items={[{ label: "Locations" }]} />
+      </div>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-16 md:py-24">
         <div className="kw-aurora" aria-hidden="true" />
@@ -44,13 +94,9 @@ export default function LocationsHub() {
               Where We Work
             </p>
             <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
-              Nationwide Coverage
+              Forensic Economists in All 50 States, DC, and U.S. Territories
             </h1>
-            <p className="text-lg text-neutral-300 leading-relaxed">
-              {ORG_NAME} accepts cases in all 50 states, the District of Columbia, and U.S. territories.
-              Our economists understand each jurisdiction's damages rules, local wage levels and cost of
-              living, and court standards wherever your case is filed.
-            </p>
+            <p className="text-lg text-neutral-300 leading-relaxed">{LEAD}</p>
           </div>
         </div>
       </section>
@@ -69,6 +115,9 @@ export default function LocationsHub() {
                 className="bg-white rounded-lg border border-neutral-200 px-3 py-4 text-center text-sm font-semibold text-navy hover:border-teal hover:text-teal hover:shadow-sm transition-all"
               >
                 {state.abbreviation}
+                {/* The visible label stays the abbreviation; the hidden span puts
+                    the state name in the anchor text for readers and crawlers. */}
+                <span className="sr-only">, {state.name}</span>
               </Link>
             ))}
           </div>
@@ -95,6 +144,19 @@ export default function LocationsHub() {
               </div>
             </Reveal>
           ))}
+
+          <nav aria-label="Related resources" className="border-t border-neutral-200 pt-6">
+            <h2 className="font-serif text-xl font-bold text-navy mb-3">Related resources</h2>
+            <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+              {RELATED_RESOURCES.map((r) => (
+                <li key={r.href}>
+                  <Link to={r.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-teal hover:text-teal">
+                    {r.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </section>
 

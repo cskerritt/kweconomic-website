@@ -2,7 +2,8 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { team, activeTeam, retainableExperts, getMemoriam } from "./team";
-import { LEGACY_BRAND_PATTERN } from "@/lib/brand";
+import { bareName, profileTitle } from "./team-meta.mjs";
+import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 import { practiceAreasFor } from "@/lib/practice-areas";
 
 describe("KW Economics team", () => {
@@ -40,6 +41,27 @@ describe("KW Economics team", () => {
       expect(text, m.slug).not.toMatch(/[\u2013\u2014]/);
     }
   });
+  // /team/:slug <title> (shared with the static shell through team-meta.mjs):
+  // the person's role, never a credential, and the same string on both sides.
+  it("profile titles carry the role and drop the post-nominals and credentials", () => {
+    expect(bareName("Christopher Skerritt, M.Ed., MBA")).toBe("Christopher Skerritt");
+    expect(bareName("Zachary Sperling")).toBe("Zachary Sperling");
+    for (const m of team) {
+      const title = profileTitle({ name: m.name, jobTitle: m.title, memoriam: m.memoriam, orgName: ORG_NAME });
+      // A compound role keeps its first half in the title (team-meta.mjs).
+      expect(title, m.slug).toBe(`${bareName(m.name)}, ${m.title.split(" / ")[0]} | ${ORG_NAME}`);
+      for (const c of m.credentials) expect(title, `${m.slug} title spells ${c}`).not.toContain(c);
+      expect(title, m.slug).not.toMatch(/[\u2013\u2014]/);
+      expect(title.length, m.slug).toBeLessThanOrEqual(70);
+    }
+    expect(
+      profileTitle({ name: "Christopher Skerritt, M.Ed., MBA", jobTitle: "Chief of Economic Services", orgName: ORG_NAME }),
+    ).toBe(`Christopher Skerritt, Chief of Economic Services | ${ORG_NAME}`);
+    expect(
+      profileTitle({ name: "Jane Roe, Ph.D.", jobTitle: "Economist", memoriam: true, orgName: ORG_NAME }),
+    ).toBe(`Jane Roe | In Memoriam | ${ORG_NAME}`);
+  });
+
   it("every portrait referenced by the roster is shipped with its webp sibling", () => {
     for (const m of team) {
       expect(m.imageUrl, m.slug).toMatch(/^\/team\/[a-z-]+\.jpg$/);

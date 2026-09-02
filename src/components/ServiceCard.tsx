@@ -11,7 +11,7 @@ interface ServiceCardProps {
   href: string;
 }
 
-export default function ServiceCard({ shortName, description, icon, href }: ServiceCardProps) {
+export default function ServiceCard({ name, shortName, description, icon, href }: ServiceCardProps) {
   const IconComponent = ICONS[icon] ?? Briefcase;
   const tiltRef = useTilt<HTMLAnchorElement>();
   return (
@@ -28,7 +28,12 @@ export default function ServiceCard({ shortName, description, icon, href }: Serv
         <div className="flex-1">
           <h3 className="font-serif text-lg font-semibold text-navy group-hover:text-teal transition-colors">{shortName}</h3>
           <p className="text-sm text-neutral-600 mt-1 line-clamp-2">{description}</p>
-          <span className="inline-flex items-center gap-1 text-sm text-teal font-medium mt-3 group-hover:gap-2 transition-all">Learn More <ArrowRight className="w-4 h-4" /></span>
+          {/* The visible tail stays short; the full service name is part of
+              the link text for assistive technology and crawlers, so the
+              anchor is never a bare "Learn More". */}
+          <span className="inline-flex items-center gap-1 text-sm text-teal font-medium mt-3 group-hover:gap-2 transition-all">
+            Learn more<span className="sr-only"> about {name}</span> <ArrowRight className="w-4 h-4" aria-hidden="true" />
+          </span>
         </div>
       </div>
     </Link>

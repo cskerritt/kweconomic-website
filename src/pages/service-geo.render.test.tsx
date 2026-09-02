@@ -6,8 +6,20 @@ import StateHub from "./StateHub";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { pillarServices } from "@/data/services";
 import { getStateBySlug } from "@/data/states";
+import { getRegulationsByState } from "@/data/regulations/state-regs";
+import { newJerseyCities } from "@/data/cities/new-jersey";
+import { texasCities } from "@/data/cities/texas";
+import { newYorkCities } from "@/data/cities/new-york";
+import { REFERENCES } from "@/data/references";
+import {
+  getStateNarrative,
+  serviceCityContextParagraph,
+  serviceStateDirectAnswer,
+  serviceStateVenueParagraph,
+} from "@/data/narratives";
 import { cityAttr, placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
+import { truncateAtWord } from "@/lib/text";
 import { proseName, workPhrase } from "@/lib/service-prose.mjs";
 import {
   renderRoute,
@@ -41,6 +53,13 @@ import {
 // supplied ("Wrongful Death from KW Economics", "provides Wrongful Death
 // Economic Loss"). And every slot after in/across/throughout reads the
 // District of Columbia with its article, as the H1 already does.
+//
+// Each pillar carries its own angle after the hero's first sentence (the
+// records that drive it and how its number is built), its own venue or
+// damages-framework paragraph, its own city context paragraph, its own
+// References block, and, on the commercial pillars and rebuttal, its own
+// second city FAQ; the meta description is the hero cut at a word, as in the
+// static shells. The credential chips link the credential x state pages.
 //
 // The Bronx is the one prerendered city whose name carries its own article,
 // so the attributive slots ("wage data for the Bronx area", "for Bronx
@@ -133,6 +152,44 @@ const CITIES = [
   { stateSlug: "texas", citySlug: "houston", cityName: "Houston" },
   { stateSlug: "new-york", citySlug: "the-bronx", cityName: "The Bronx" },
 ] as const;
+const CITY_ROWS: Record<string, City> = Object.fromEntries(
+  [...newJerseyCities, ...texasCities, ...newYorkCities].map((c) => [`${c.stateSlug}/${c.slug}`, c]),
+);
+
+// The pillars whose state page prints the state's tort damages framework and
+// workers' compensation forum; the others print a forum paragraph of their own.
+const TORT_FRAMEWORK_PILLARS = new Set([
+  "lost-earnings-and-earning-capacity",
+  "wrongful-death-economic-loss",
+  "personal-injury-economic-damages",
+  "household-services-valuation",
+  "life-care-plan-cost-projection",
+]);
+// The pillars whose second city FAQ asks about wage levels and cost of living.
+const WAGE_FAQ_PILLARS = new Set([...TORT_FRAMEWORK_PILLARS, "employment-and-wage-loss-damages"]);
+
+// The credential x state page each chip label links to (services.ts labels ->
+// credentials.ts slugs). PhD and MBA both resolve to the graduate-degree page.
+const CREDENTIAL_PAGE: Record<string, string> = {
+  "Forensic Economist": "/credentials/forensic-economist",
+  NAFE: "/credentials/nafe-member",
+  AAEFE: "/credentials/aaefe-member",
+  MBA: "/credentials/graduate-economics-degree",
+  PhD: "/credentials/graduate-economics-degree",
+};
+
+/** Visible text of every <p> on the page, one entry per paragraph. */
+function paragraphs(html: string): string[] {
+  return [...html.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/g)].map((m) => visibleText(m[1]).trim());
+}
+
+function expectCredentialLinks(html: string, labels: readonly string[], stateSlug: string): void {
+  for (const cred of labels) {
+    const path = CREDENTIAL_PAGE[cred];
+    expect(path, `no credential page mapped for chip "${cred}"`).toBeDefined();
+    expect(html).toMatch(new RegExp(`<a [^>]*href="${escapeRe(`${path}/${stateSlug}`)}"[^>]*>${escapeRe(cred)}</a>`));
+  }
+}
 
 describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
   for (const service of pillarServices()) {
@@ -155,14 +212,55 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
           expect(text).toContain(hero);
           expect(jsonLdBlocks(html)).toContain(hero);
           expect(title).toBe(`${service.shortName} in ${place} | ${ORG_NAME}`);
-          expect(description).toBe(
-            `${ORG_NAME} provides ${work} for matters venued in ${place}. Forensic economists measuring lost earnings, household services, and business damages against ${placeAttr(state.name)} wage data and the jurisdiction's damages rules, for plaintiff and defense counsel across ${place}.`,
-          );
+          // The description is the hero cut at a word, as on the city page and
+          // in the static shells, so it names this pillar's subject and never
+          // the generic "lost earnings, household services, and business
+          // damages" list every pillar once carried.
+          const stateHero = serviceStateDirectAnswer(ORG_NAME, service.shortName, state.name, getStateNarrative(state));
+          expect(description).toBe(truncateAtWord(stateHero));
+          expect(description.startsWith(hero)).toBe(true);
+          expect(description).not.toContain("measuring lost earnings, household services, and business damages");
           for (const seam of rawServiceSeams(service)) {
             expect(text).not.toMatch(seam);
             expect(description).not.toMatch(seam);
             expect(jsonLdBlocks(html)).not.toMatch(seam);
           }
+        });
+
+        it("opens the body with an H2 that says what the section explains and prints this pillar's forum paragraph", () => {
+          const label = service.shortName.replace("&", "&amp;");
+          expect(html).toContain(`How ${label} Work Is Built for ${placeAttr(state.name)} Cases`);
+          // The H1 text is not repeated as the first H2.
+          expect(html).not.toContain(`mb-4">${label} in ${place}</h2>`);
+          const venue = serviceStateVenueParagraph(service, state);
+          const regs = getRegulationsByState(state.slug)!;
+          if (TORT_FRAMEWORK_PILLARS.has(service.slug)) {
+            expect(venue).toBeUndefined();
+            expect(text).toContain(regs.damagesContext);
+            expect(text).toContain("Outside the civil courts, wage-loss disputes in workers' compensation matters proceed before the");
+            expect(text).toContain(regs.compensationForum);
+          } else {
+            expect(venue).toBeDefined();
+            expect(text).toContain(venue!);
+            expect(text).not.toContain(regs.damagesContext);
+            expect(text).not.toContain("Outside the civil courts, wage-loss disputes");
+          }
+        });
+
+        it("answers the disclosure FAQ instead of restating the question, in the visible block and the FAQPage JSON-LD", () => {
+          const question = `When is expert disclosure due for a case venued in ${place}?`;
+          expect(faqText(html)).toContain(question);
+          expect(faqLdStrings(html)).toContain(question);
+          expect(faqText(html)).toContain(
+            `Expert disclosure in ${place} is scheduled case by case: in the ${placeAttr(state.name)} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework,`,
+          );
+          expect(faqText(html)).not.toContain("Disclosure timing is typically set by the scheduling order in the case.");
+        });
+
+        it("links each credential chip to its credential x state page, renders a References block, and nests no second main landmark", () => {
+          expectCredentialLinks(html, service.relevantCredentials, state.slug);
+          expect(html).toContain("References</h2>");
+          expect(html).not.toContain("<main");
         });
 
         it("asks the first geo FAQ about the work, in the visible block and the FAQPage JSON-LD", () => {
@@ -252,10 +350,38 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
         it("reads the city name attributively where it modifies a noun and as written elsewhere", () => {
           const attr = cityAttr(cityName);
           expect(text).toContain(`serves counsel throughout ${cityName} and the surrounding`);
-          expect(text).toContain(`against wage data for the ${attr} area and the plaintiff's own records`);
           expect(text).toContain(`Other Services in ${cityName}`);
           expect(text).toContain(`offers complementary economic damages services for ${attr} cases.`);
           expect(faqText(html)).toContain(`common to ${attr} matters.`);
+          expect(html).toContain(`How ${service.shortName.replace("&", "&amp;")} Work Is Built for ${attr} Cases`);
+        });
+
+        it("names what this pillar measures in the city context paragraph, under an H2 that does not repeat the H1", () => {
+          const city = CITY_ROWS[`${stateSlug}/${citySlug}`];
+          const paragraph = serviceCityContextParagraph(service, state, city);
+          expect(paragraph.startsWith(`${ORG_NAME} serves counsel throughout ${cityName} and the surrounding ${city.county} area. Our economists `)).toBe(true);
+          expect(text).toContain(paragraph);
+          expect(html).not.toContain(`mb-4">${service.shortName.replace("&", "&amp;")} in ${cityName}</h2>`);
+          // Only the pillars that measure earnings say so; a valuation, tracing,
+          // or rebuttal page never claims to measure household services.
+          if (!WAGE_FAQ_PILLARS.has(service.slug)) expect(paragraph).not.toContain("household services");
+        });
+
+        it("asks the second FAQ about wage levels on the injury, death, household, life-care, and employment pillars and about the pillar's own records elsewhere", () => {
+          const wageQuestion = `How are ${cityAttr(cityName)} wage levels and cost of living handled in the analysis?`;
+          if (WAGE_FAQ_PILLARS.has(service.slug)) {
+            expect(faqText(html)).toContain(wageQuestion);
+            expect(faqLdStrings(html)).toContain(wageQuestion);
+          } else {
+            expect(faqText(html)).not.toContain(wageQuestion);
+            expect(faqText(html)).not.toContain("wage levels");
+          }
+        });
+
+        it("links each credential chip to its credential x state page, renders a References block, and nests no second main landmark", () => {
+          expectCredentialLinks(html, service.relevantCredentials, state.slug);
+          expect(html).toContain("References</h2>");
+          expect(html).not.toContain("<main");
         });
 
         it("introduces the chips as qualifications that bear on the testimony, not as held certifications", () => {
@@ -316,6 +442,67 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
     expect(visibleText(wdCity.html)).toContain("We also provide wrongful death analysis in these Texas communities.");
   });
 
+  // The business valuation page in a place answers a business valuation
+  // question: its hero, forum paragraph, city context paragraph, second FAQ,
+  // and References are its own, and it shares only the place-level paragraphs
+  // with the lost earnings page in the same place.
+  it("gives the business valuation pages their own subject in every body block", () => {
+    const bvState = render("/services/business-valuation/new-jersey", STATE_ROUTE, ServiceState);
+    const bvText = visibleText(bvState.html);
+    expect(bvText).toContain(
+      "KW Economics provides business valuation for matters venued in New Jersey. The business is valued from its own financial statements, tax returns, and governing agreements under the income, market, and asset approaches,",
+    );
+    expect(bvText).toContain("Valuation disputes arising in New Jersey reach the civil courts through shareholder, partnership, and buy-sell litigation,");
+    expect(bvText).toContain("How Business Valuation Work Is Built for New Jersey Cases");
+    expect(bvText).not.toContain(getRegulationsByState("new-jersey")!.damagesContext);
+    expect(bvText).not.toContain("Fringe benefits, worklife expectancy, wage growth, and the discount rate are each documented");
+    expect(bvState.description.startsWith("KW Economics provides business valuation for matters venued in New Jersey. The business is valued from its own financial statements,")).toBe(true);
+    expect(faqText(bvState.html)).toContain("(financial statements, tax returns, the general ledger, and the governing agreements)");
+    expect(bvState.html).toContain(`href="${REFERENCES.AICPA_SSVS1.url}"`);
+    expect(bvState.html).toContain(`href="${REFERENCES.NACVA_STANDARDS.url}"`);
+    expect(bvState.html).not.toContain(`href="${REFERENCES.BLS_OES.url}"`);
+
+    const leState = render("/services/lost-earnings-and-earning-capacity/new-jersey", STATE_ROUTE, ServiceState);
+    const leText = visibleText(leState.html);
+    expect(leText).toContain(
+      "KW Economics provides lost earnings analysis for matters venued in New Jersey. The projection starts from the plaintiff's own earnings history, tests it against occupational wage data from the Bureau of Labor Statistics for the metropolitan or nonmetropolitan area of New Jersey where the plaintiff worked,",
+    );
+    expect(leText).toContain(getRegulationsByState("new-jersey")!.damagesContext);
+    expect(leState.html).toContain(`href="${REFERENCES.BLS_OES.url}"`);
+    expect(leState.html).toContain(`href="${REFERENCES.SKOOG_CIECKA_KRUEGER_2011.url}"`);
+
+    const bvCity = render("/services/business-valuation/new-jersey/hackensack", CITY_ROUTE, ServiceStateCity);
+    const bvCityText = visibleText(bvCity.html);
+    expect(bvCityText).toContain(
+      "KW Economics provides business valuation for cases venued in Hackensack, New Jersey. For a business based in Hackensack, the Hackensack-area market for its goods and services, comparable transactions, and the company's own history each enter the analysis,",
+    );
+    expect(bvCityText).toContain("Civil claims arising in Hackensack are typically heard in the Superior Court, Law Division sitting in Bergen County.");
+    expect(bvCityText).toContain("How Business Valuation Work Is Built for Hackensack Cases");
+    expect(bvCityText).toContain(
+      "Our economists value the business from its own financial statements, tax returns, and governing agreements and from the Hackensack-area market it serves, and are familiar with the court system and disclosure requirements that affect business valuation engagements in New Jersey.",
+    );
+    expect(faqText(bvCity.html)).toContain("What data does a valuation of a business based in Hackensack rest on?");
+    expect(faqText(bvCity.html)).not.toContain("How are Hackensack wage levels and cost of living handled in the analysis?");
+    expect(bvCity.description.startsWith("KW Economics provides business valuation for cases venued in Hackensack, New Jersey. For a business based in Hackensack,")).toBe(true);
+
+    const leCity = render("/services/lost-earnings-and-earning-capacity/new-jersey/hackensack", CITY_ROUTE, ServiceStateCity);
+    expect(visibleText(leCity.html)).toContain(
+      "Our economists measure lost earnings, fringe benefits, and post-injury earning capacity against wage data for the Hackensack area and the plaintiff's own records,",
+    );
+    expect(faqText(leCity.html)).toContain("How are Hackensack wage levels and cost of living handled in the analysis?");
+
+    // Sibling service pages in the same city share only the place-level
+    // paragraphs (the city narrative, the sibling-services intro, the
+    // deliverables FAQ, the CTA); the hero, context, and second FAQ differ.
+    const shared = paragraphs(bvCity.html).filter((p) => p && paragraphs(leCity.html).includes(p));
+    expect(shared.length).toBeLessThanOrEqual(4);
+    for (const p of shared) {
+      expect(p).not.toContain("provides business valuation");
+      expect(p).not.toContain("Our economists ");
+      expect(p).not.toContain("wage levels");
+    }
+  });
+
   it("drops The Bronx's article in the attributive slots and keeps it in the headings and venue slots", () => {
     const { html, description } = render(
       "/services/wrongful-death-economic-loss/new-york/the-bronx",
@@ -329,7 +516,9 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
     expect(text).toContain("Other Services in The Bronx");
     expect(text).toContain("KW Economics provides wrongful death analysis for cases venued in The Bronx, New York.");
     expect(text).toContain("serves counsel throughout The Bronx and the surrounding Bronx County area.");
-    expect(text).toContain("against wage data for the Bronx area and the plaintiff's own records");
+    expect(text).toContain("against wage data for the Bronx area and the decedent's own records");
+    expect(text).toContain("For a death case arising in The Bronx, the decedent's earnings are measured against Bronx-area wage data and the decedent's own records,");
+    expect(text).toContain("How Wrongful Death Work Is Built for Bronx Cases");
     expect(text).toContain("KW Economics offers complementary economic damages services for Bronx cases.");
     expect(faqText(html)).toContain("Does KW Economics provide wrongful death analysis in The Bronx, New York?");
     expect(faqText(html)).toContain("How are Bronx wage levels and cost of living handled in the analysis?");
@@ -358,7 +547,9 @@ describe("District of Columbia place name on the geo templates", () => {
       expect(description).not.toContain("the state's");
       expect(title).toBe(`${service.shortName} in the District of Columbia | ${ORG_NAME}`);
       expect(description).toContain(`for matters venued in the District of Columbia.`);
-      expect(description).toContain("across the District of Columbia.");
+      // Attributive slot: "District of Columbia Cases", never "the District of Columbia Cases".
+      expect(text).toContain(`How ${service.shortName} Work Is Built for District of Columbia Cases`);
+      expect(text).not.toContain("for the District of Columbia Cases");
       for (const slot of [
         `${service.shortName} in the District of Columbia`,
         `${service.shortName} Across the District of Columbia`,
@@ -396,7 +587,7 @@ describe("District of Columbia place name on the geo templates", () => {
     expect(text).not.toMatch(RAW_DC);
     expect(description).not.toMatch(RAW_DC);
     expect(title).toBe(`Forensic Economists in the District of Columbia | ${ORG_NAME}`);
-    expect(description).toContain("expert testimony throughout the District of Columbia.");
+    expect(description).toContain("Forensic economists for the District of Columbia:");
     for (const slot of [
       "Forensic Economists in the District of Columbia",
       "Expert Services in the District of Columbia",

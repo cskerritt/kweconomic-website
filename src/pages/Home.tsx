@@ -10,12 +10,10 @@ import Reveal from "@/components/Reveal";
 import ContactCTA from "@/components/ContactCTA";
 import CrossSell from "@/components/CrossSell";
 import SchemaOrg from "@/components/SchemaOrg";
-import FAQBlock from "@/components/FAQBlock";
 import {
   graphSchema,
   organizationSchema,
   websiteSchema,
-  breadcrumbSchema,
   faqPageSchema,
   ORG_URL,
 } from "@/lib/schema";
@@ -32,6 +30,7 @@ const HOW_WE_WORK = [
 const CASE_TYPE_ENTRIES = [
   { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Lost earnings, wrongful death, household services, employment, and commercial damages matters" },
   { label: "Rebut an Opposing Report", href: "/services/expert-rebuttal-and-report-review", blurb: "Review of an opposing economist's inputs, methods, and arithmetic against the record" },
+  { label: "Browse Case Types", href: "/case-types", blurb: "Personal injury, wrongful death, employment, commercial, and family law matters, with the loss components each one raises" },
   { label: "General Inquiry", href: "/contact", blurb: "Anything else - we respond in 1 business day" },
 ];
 
@@ -61,14 +60,17 @@ const REPORT_STATES = [
   { label: "Discount rate", text: "The rate that reduces future losses to present value, and its source." },
 ];
 
-function ReportContentsCard({ compact = false }: { compact?: boolean }) {
+// Rendered once: compact below the hero copy on small screens, full size in
+// the right-hand column at lg+. One render keeps a single H2 in the outline
+// (the static shell carries no duplicate either).
+function ReportContentsCard() {
   return (
-    <div className={`bg-white text-navy rounded-lg shadow-2xl relative ${compact ? "p-5" : "p-8"}`}>
+    <div className="bg-white text-navy rounded-lg shadow-2xl relative p-5 lg:p-8">
       <p className="text-amber-dark text-xs font-semibold uppercase tracking-[0.18em] mb-2">Built to be examined</p>
-      <h2 className={`font-serif font-bold leading-snug mb-4 ${compact ? "text-xl" : "text-2xl"}`}>
+      <h2 className="font-serif font-bold leading-snug mb-4 text-xl lg:text-2xl">
         What Every Report States
       </h2>
-      <ul className={`space-y-3 ${compact ? "text-sm" : "text-base"}`}>
+      <ul className="space-y-3 text-sm lg:text-base">
         {REPORT_STATES.map((item) => (
           <li key={item.label} className="flex gap-3">
             <Check className="w-5 h-5 text-amber shrink-0 mt-0.5" aria-hidden="true" />
@@ -93,7 +95,7 @@ export default function Home() {
   usePageMeta({
     title: `Forensic Economics and Economic Damages Experts | ${ORG_NAME}`,
     description:
-      "Independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense attorneys in all 50 states.",
+      "Independent lost earnings, wrongful death, household services, employment, and business damages analyses for plaintiff and defense attorneys in all 50 states.",
     canonical: `${SITE_URL}/`,
   });
 
@@ -104,11 +106,12 @@ export default function Home() {
 
   return (
     <>
+      {/* No BreadcrumbList on the root: a one-item trail claims navigation
+          the page does not show. */}
       <SchemaOrg
         data={graphSchema([
           organizationSchema(),
           websiteSchema(),
-          breadcrumbSchema([{ name: "Home", url: `${ORG_URL}/` }]),
           faqPageSchema(HOMEPAGE_FAQS, `${ORG_URL}/`),
         ])}
       />
@@ -154,15 +157,11 @@ export default function Home() {
                 <Phone className="w-4 h-4" />
                 Or call {ORG_PHONE_DISPLAY}
               </a>
-
-              {/* Compact report card for mobile/tablet (full card shows at lg+ in the right column) */}
-              <div className="kw-enter kw-enter-4 lg:hidden mt-8">
-                <ReportContentsCard compact />
-              </div>
             </div>
 
-            {/* Right column: report contents card */}
-            <div className="hidden lg:block kw-enter kw-enter-2">
+            {/* Report contents card: follows the hero copy on small screens,
+                fills the right column at lg+. */}
+            <div className="kw-enter kw-enter-2">
               <ReportContentsCard />
             </div>
           </div>
@@ -204,6 +203,23 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
+          <Reveal className="mt-10 text-center">
+            <p className="text-neutral-600 max-w-3xl mx-auto">
+              Read about{" "}
+              <Link to="/about" className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+                the practice and how each analysis is built
+              </Link>
+              , meet{" "}
+              <Link to="/team" className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+                the economics team
+              </Link>
+              , and see{" "}
+              <Link to="/credentials" className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+                what qualifies a forensic economist to testify
+              </Link>
+              .
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -219,7 +235,7 @@ export default function Home() {
               scope, timeline, and fee before any work begins.
             </p>
           </Reveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {CASE_TYPE_ENTRIES.map((entry, i) => (
               <Reveal key={entry.href} delay={i * 60}>
                 <Link
@@ -334,11 +350,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ - schema-marked-up answer block for AEO */}
-      <section className="py-16 md:py-20 bg-neutral-50 border-y border-neutral-200">
+      {/* FAQ - schema-marked-up answer block for AEO. Rendered inline rather
+          than through FAQBlock so the section carries ONE heading ("Common
+          questions", the same text the static shell prints) with its intro
+          sentence under it; the <details> markup matches FAQBlock's. */}
+      <section aria-labelledby="home-faq-heading" className="py-16 md:py-20 bg-neutral-50 border-y border-neutral-200">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <Reveal className="mb-8">
-            <h2 className="font-serif text-3xl md:text-4xl font-bold text-navy mb-3">
+            <h2 id="home-faq-heading" className="font-serif text-3xl md:text-4xl font-bold text-navy mb-3">
               Common questions
             </h2>
             <p className="text-neutral-600">
@@ -346,7 +365,14 @@ export default function Home() {
             </p>
           </Reveal>
           <Reveal>
-            <FAQBlock faqs={HOMEPAGE_FAQS} />
+            <div className="space-y-4">
+              {HOMEPAGE_FAQS.map((f) => (
+                <details key={f.question} className="border border-neutral-200 rounded-lg bg-white p-4">
+                  <summary className="cursor-pointer font-semibold text-navy">{f.question}</summary>
+                  <p className="mt-2 text-neutral-700">{f.answer}</p>
+                </details>
+              ))}
+            </div>
           </Reveal>
         </div>
       </section>
@@ -389,6 +415,12 @@ export default function Home() {
             </Link>
             <Link to="/knowledge" className="text-navy font-semibold hover:text-amber-dark">
               Knowledge center <ArrowRight className="w-3 h-3 inline" />
+            </Link>
+            <Link to="/resources/faq" className="text-navy font-semibold hover:text-amber-dark">
+              Attorney FAQ <ArrowRight className="w-3 h-3 inline" />
+            </Link>
+            <Link to="/case-studies" className="text-navy font-semibold hover:text-amber-dark">
+              Illustrative engagements <ArrowRight className="w-3 h-3 inline" />
             </Link>
           </div>
         </div>

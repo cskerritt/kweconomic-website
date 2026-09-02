@@ -11,7 +11,7 @@ import {
 import { ORG_NAME } from "@/lib/brand";
 import { placeName } from "@/data/geo-prose.mjs";
 import FAQBlock from "@/components/FAQBlock";
-import { getStateNarrative } from "@/data/narratives";
+import { geoSources, getStateNarrative } from "@/data/narratives";
 import { stateGeographicFaqs } from "@/data/geographicFaqs";
 import { getStateBySlug } from "@/data/states";
 import { pillarServices } from "@/data/services";
@@ -28,6 +28,7 @@ import LocationCard from "@/components/LocationCard";
 import EconomicContextWidget from "@/components/EconomicContextWidget";
 import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
+import SourcesBlock from "@/components/SourcesBlock";
 import { Award, Users } from "lucide-react";
 import type { State } from "@/types";
 
@@ -49,7 +50,7 @@ export default function StateHub() {
     state
       ? {
           title: `Forensic Economists in ${placeName(state.name)} | ${ORG_NAME}`,
-          description: `${ORG_NAME} prepares lost earnings, wrongful death, household services, employment, and business damages analyses and expert testimony throughout ${placeName(state.name)}. Projections anchored to ${state.name} wage data; reports written for ${state.name} courts.`,
+          description: `Forensic economists for ${placeName(state.name)}: lost earnings, wrongful death, household services, and business damages analyses, plaintiff and defense.`,
           canonical: `${ORG_URL}/locations/${state.slug}`,
         }
       : null,
@@ -130,8 +131,9 @@ export default function StateHub() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-          {/* Main Column (2/3) */}
-          <main className="lg:col-span-2 space-y-12">
+          {/* Main Column (2/3). A div, not a main: the layout already
+              provides the page's single main landmark. */}
+          <div className="lg:col-span-2 space-y-12">
 
             {/* Services Grid */}
             <section>
@@ -314,9 +316,14 @@ export default function StateHub() {
               <FAQBlock faqs={faqs} />
             </section>
 
+            {/* The data sources the narrative names (BLS wage data, ACS, and
+                the fringe-benefit, wage-growth, worklife, and discount-rate
+                sources), through the registry. */}
+            <SourcesBlock sources={geoSources()} />
+
             {/* Contact CTA */}
             <ContactCTA context={`${state.name} cases`} />
-          </main>
+          </div>
 
           {/* Sidebar (1/3) */}
           <aside className="lg:col-span-1 space-y-6">

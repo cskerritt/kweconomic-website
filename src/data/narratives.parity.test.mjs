@@ -147,6 +147,39 @@ describe("geo prose parity: prerender shells vs React runtime", () => {
     expect(JSON.stringify(geoProse.serviceStateGeographicFaqs(ORG_NAME, hsv, "Texas"))).toBe(faqJson);
   });
 
+  it("every pillar short name the shells extract has its own SERVICE_GEO angle, and the hero and FAQ blocks match for every pillar", () => {
+    const svcRows = pillarServiceEntries(readFileSync(join(srcData, "services.ts"), "utf-8"));
+    const texas = ts.states.getStateBySlug("texas");
+    const houston = ts.cities.texas.find((c) => c.slug === "houston");
+    const runtimeState = ts.narratives.getStateNarrative(texas);
+    const runtimeCity = ts.narratives.getCityNarrative(texas, houston.name, houston.slug, houston.county, {
+      msaName: houston.msaName,
+    });
+    for (const row of svcRows) {
+      expect(geoProse.SERVICE_GEO[row.shortName], row.slug).toBeDefined();
+      expect(
+        geoProse.serviceStateDirectAnswer(ORG_NAME, row.shortName, texas.name, prerenderState(texas)),
+        row.slug,
+      ).toBe(ts.narratives.serviceStateDirectAnswer(ORG_NAME, row.shortName, texas.name, runtimeState));
+      expect(
+        geoProse.serviceCityDirectAnswer(ORG_NAME, row.shortName, texas.name, houston.name, prerenderCity(texas, houston)),
+        row.slug,
+      ).toBe(ts.narratives.serviceCityDirectAnswer(ORG_NAME, row.shortName, texas.name, houston.name, runtimeCity));
+      expect(geoProse.serviceStateGeographicFaqs(ORG_NAME, row, "Texas"), row.slug).toEqual(
+        ts.faqs.serviceStateGeographicFaqs(row, "Texas"),
+      );
+      expect(geoProse.serviceCityGeographicFaqs(ORG_NAME, row, "Texas", "Houston"), row.slug).toEqual(
+        ts.faqs.serviceCityGeographicFaqs(row, "Texas", "Houston"),
+      );
+    }
+    // No orphaned angle either: a renamed pillar must rename its entry.
+    expect(Object.keys(geoProse.SERVICE_GEO).sort()).toEqual(svcRows.map((r) => r.shortName).sort());
+    // The venue sentence the city hero places after the pillar angle comes
+    // from the same city narrative on both sides.
+    expect(prerenderCity(texas, houston).venue).toBe(runtimeCity.venue);
+    expect(runtimeCity.venue).toMatch(/^Civil claims arising in Houston are typically heard in /);
+  });
+
   it("regulation extractor sees every state with both renamed fields", () => {
     for (const state of ts.states.states) {
       expect(regs[state.slug]?.compensationForum, state.slug).toBeTruthy();

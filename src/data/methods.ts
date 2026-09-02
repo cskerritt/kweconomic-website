@@ -4,6 +4,13 @@ import { refsToSources } from "./references";
 export interface Methodology {
   slug: string;
   name: string;
+  /** Team member slug for the AuthorByline and the Article author node. */
+  authorSlug: string;
+  /** ISO dates for the byline and the Article datePublished/dateModified. */
+  datePublished: string;
+  dateModified: string;
+  /** Written meta description (110-160 chars, a complete sentence); never an auto-cut of `summary`. */
+  metaDescription: string;
   summary: string;
   whenUsed: string;
   steps: string[];
@@ -21,10 +28,18 @@ export interface Methodology {
 // registry (refsToSources). `summary` renders as plain text on the hub, so it
 // carries no link markers; the other fields render through renderTextWithLinks.
 // FAQ answers render as plain text (FAQBlock) and carry no markers either.
+// Each entry keeps `slug` then `name` on consecutive lines (scripts/prerender.mjs
+// zips the two positionally); the byline and meta fields follow `name`. FAQ
+// pairs must not restate a sibling guide's FAQ (src/data/editorial.test.ts
+// caps the token overlap), so the method side answers with the mechanics.
 export const methods: Methodology[] = [
   {
     slug: "present-value-and-discounting",
     name: "Present Value and Discounting",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    metaDescription: "Present value converts projected future losses into one sum at a discount rate tied to low-risk yields, matched to the horizon and consistent with growth.",
     summary:
       "Present value converts a projected stream of future losses into the single sum that, invested today at a stated rate, would replace those losses as they come due. The economist selects a discount rate matched to the horizon, states how it interacts with the growth rate applied to the loss stream, and shows the arithmetic so the result can be reproduced.",
     whenUsed:
@@ -67,7 +82,7 @@ export const methods: Methodology[] = [
       {
         question: "Does the economist discount past losses?",
         answer:
-          "No. Losses that accrued before trial are stated in the dollars of the years in which they occurred and, where the governing framework allows, carried forward with interest to the trial date. Discounting applies only to losses that occur after the award.",
+          "Discounting runs from the trial date forward only. Losses that accrued between the event and trial are tabulated year by year in the dollars of each year, and where the governing framework allows, prejudgment interest carries them forward to the trial date on a separate line, so the two adjustments are never confused.",
       },
     ],
     sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "KACZKOWSKI_V_BOLUBASZ", "TREASURY_YIELD", "BLS_CPI", "BLS_ECI"]),
@@ -75,6 +90,10 @@ export const methods: Methodology[] = [
   {
     slug: "worklife-expectancy",
     name: "Worklife Expectancy",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-08-27",
+    metaDescription: "Worklife expectancy is the expected years of labor force activity for a person's age, sex, education, and status, from published tables, not a retirement age.",
     summary:
       "Worklife expectancy is the number of additional years a person of a given age, sex, education, and labor force status is expected to be employed or actively seeking work over the rest of a lifetime. It sets the horizon for a lost earnings projection and is drawn from published tables built on labor force transition data rather than from an assumed retirement age.",
     whenUsed:
@@ -119,6 +138,10 @@ export const methods: Methodology[] = [
   {
     slug: "wage-growth-and-earnings-projection",
     name: "Wage Growth and Earnings Projection",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-08-27",
+    metaDescription: "An earnings projection carries a documented base forward year by year at a stated growth rate over the worklife horizon, for the but-for and post-event streams.",
     summary:
       "An earnings projection starts from a documented earnings base and carries it forward over the worklife horizon with a growth rate that reflects general wage inflation, the person's stage of career, and any documented promotions or credentials. The projection is stated year by year so the growth assumption can be seen and tested rather than buried in a single multiplier.",
     whenUsed:
@@ -163,6 +186,10 @@ export const methods: Methodology[] = [
   {
     slug: "fringe-benefits-valuation",
     name: "Fringe Benefits Valuation",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-08-27",
+    metaDescription: "Fringe benefits are valued at the employer's cost from plan documents, or from published employer cost data where none exist, and added to the earnings streams.",
     summary:
       "Fringe benefits are the part of compensation paid in something other than wages: employer contributions to health insurance and retirement plans, legally required payroll contributions, paid leave, and similar items. The economist values the benefits the person actually received or would have received and adds them to the earnings projection, so that lost compensation is measured as a whole.",
     whenUsed:
@@ -207,6 +234,10 @@ export const methods: Methodology[] = [
   {
     slug: "household-services-methodology",
     name: "Household Services Methodology",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    metaDescription: "Household services are valued as lost hours by task, from the household's account and time-use data, at local replacement wages, projected over life expectancy.",
     summary:
       "Household services are the unpaid work a person performs for the household: cooking, cleaning, shopping, home and yard maintenance, household management, transportation, and care of children or other family members. The economist measures the hours the person can no longer perform, or that a decedent would have performed, and values them at the cost of replacing that work with paid labor in the local market.",
     whenUsed:
@@ -231,14 +262,14 @@ export const methods: Methodology[] = [
     relevantServices: ["household-services-valuation", "wrongful-death-economic-loss", "personal-injury-economic-damages"],
     faqs: [
       {
-        question: "Does the household have to have hired someone to recover household services?",
+        question: "Is the household services loss measured by what the household actually paid for help?",
         answer:
-          "No. The loss is the value of the services no longer performed, measured at what it would cost to replace them, whether or not the household has actually paid for replacement. Where the household has hired help, those invoices corroborate both the hours and the rate.",
+          "The measure is replacement cost rather than out-of-pocket cost: the lost hours in each task category are multiplied by the local wage of the occupation that would perform that task, whether or not anyone was hired. Where help was hired, the invoices enter the analysis as evidence of the hours and the rate, not as the measure itself.",
       },
       {
-        question: "Are household services valued for a person who worked full time outside the home?",
+        question: "How does the time-use data treat a person who was employed full time?",
         answer:
-          "Yes. Employed people perform fewer household hours on average than people not in the labor force, and the time-use data reflect that difference, but the hours are rarely zero. The projection uses the hours for the person's actual employment status.",
+          "The time-use tables report hours separately by employment status, so the projection for an employed person starts from the hours reported for employed people of the same sex and age, which run below the figures for people outside the labor force but rarely reach zero. The household's own account then corroborates or adjusts the table figure task by task.",
       },
       {
         question: "How does the analysis treat a partial loss of capacity?",
@@ -251,6 +282,10 @@ export const methods: Methodology[] = [
   {
     slug: "business-valuation-approaches",
     name: "Business Valuation Approaches",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-08-27",
+    metaDescription: "A business interest is valued under the income, market, and asset approaches, reconciled to one conclusion under a stated standard of value and valuation date.",
     summary:
       "A business interest is valued under three recognized approaches: the income approach, which converts expected future cash flows into a present value; the market approach, which draws on prices paid for comparable companies or interests; and the asset approach, which values the company's assets net of its liabilities. The valuator applies the approaches that fit the company, reconciles the indications, and states the standard of value and the valuation date.",
     whenUsed:
@@ -296,6 +331,10 @@ export const methods: Methodology[] = [
   {
     slug: "lost-profits-but-for-analysis",
     name: "Lost Profits and But-For Analysis",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-08-27",
+    metaDescription: "Lost profits are but-for profits minus actual profits over a loss period, net of avoided costs and mitigation, tested for causation, and discounted for risk.",
     summary:
       "Lost profits measure the difference between the profits a business would have earned had the wrongful act not occurred and the profits it actually earned or will earn. The economist builds the but-for scenario from the company's own history, its market, and the terms of the disrupted relationship, subtracts actual results and avoided costs, and reduces future losses to present value.",
     whenUsed:
@@ -341,6 +380,10 @@ export const methods: Methodology[] = [
   {
     slug: "mitigation-and-offsets",
     name: "Mitigation and Offsets",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    metaDescription: "Offsets turn a gross loss into a net loss: post-event earnings, personal consumption in a death claim, collateral payments, and taxes, each on its own schedule.",
     summary:
       "Mitigation and offsets are the deductions that turn a gross loss into a net loss: the earnings the person has earned or can reasonably earn after the event, the profits a business recovered, and, where the governing framework directs, collateral payments such as disability benefits, personal consumption in a death claim, or income taxes. The economist applies each deduction explicitly and separately so counsel can include or exclude it as the law requires.",
     whenUsed:
@@ -381,9 +424,9 @@ export const methods: Methodology[] = [
           "The share of a decedent's income that the decedent would have spent on personal needs rather than on the household. It is deducted in a wrongful death claim because the survivors' loss is the support they would have received, not the decedent's gross income. The percentage comes from household expenditure data and depends on household size and income.",
       },
       {
-        question: "Are damages calculated before or after taxes?",
+        question: "How are after-tax damages computed when the venue requires them?",
         answer:
-          "It depends on the venue and the claim. Some frameworks require after-tax figures, some prohibit tax evidence, and some leave it to the court. The report presents the figures the governing framework requires and, where that is unsettled, both.",
+          "Where the venue requires after-tax figures, the economist computes tax on both the but-for and post-event streams from the person's filing status and presents gross and net figures side by side so the effect of the adjustment is visible. Where the venue prohibits tax evidence, gross figures are presented alone.",
       },
     ],
     sources: refsToSources(["BLS_CEX", "RESTATEMENT_TORTS_920A", "BLS_CPS"]),

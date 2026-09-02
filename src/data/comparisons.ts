@@ -11,6 +11,15 @@ export interface ComparisonRow {
 export interface Comparison {
   slug: string;
   title: string;
+  /** Shorter <title> form (target: under 60 chars with the brand suffix). The H1, cards, and nav keep `title`. */
+  metaTitle?: string;
+  /**
+   * One sentence (at most 160 chars) that states the difference and the
+   * verdict. It is the lead paragraph under the H1, the meta description, and
+   * the Article description (the /compare hub cards are to adopt it too), so
+   * one sentence drives them all.
+   */
+  answer: string;
   a: { label: string; summary: string; url?: string };
   b: { label: string; summary: string; url?: string };
   rows: ComparisonRow[];
@@ -19,21 +28,27 @@ export interface Comparison {
   overlap: string;
   faqs: Faq[];
   sources: Source[];
-  dateModified?: string;
-  authorSlug?: string;
+  authorSlug: string;
+  datePublished: string;
+  dateModified: string;
   related?: RelatedItem[];
 }
 
 // Each entry keeps `slug` then `title` on consecutive lines (scripts/prerender.mjs
-// extracts the pair positionally). Prose is citation-free; sources render
-// through the registry. The two entries that compare the economist with the
-// sister disciplines (vocational and life care planning) are the only copy on
-// the site allowed to name those experts; the off-brand guard carves them out.
+// extracts the pair positionally); `answer`, the byline fields, and the dates
+// follow. Prose is citation-free; sources render through the registry. The two
+// entries that compare the economist with the sister disciplines (vocational
+// and life care planning) are the only copy on the site allowed to name those
+// experts; the off-brand guard carves them out.
 export const comparisons: Comparison[] = [
   {
     slug: "forensic-economist-vs-forensic-accountant",
     title: "Forensic Economist vs. Forensic Accountant",
-    dateModified: "2026-08-27",
+    answer:
+      "A forensic economist values losses to people and households; a forensic accountant works inside a company's records; the two meet on self-employed earnings.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Forensic Economist",
       summary:
@@ -86,7 +101,11 @@ export const comparisons: Comparison[] = [
   {
     slug: "forensic-economist-vs-vocational-expert",
     title: "Forensic Economist vs. Vocational Expert",
-    dateModified: "2026-08-27",
+    answer:
+      "The vocational expert opines on what work a person can do and what it pays; the economist converts the resulting earnings gap into a present value figure.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Forensic Economist",
       summary:
@@ -139,7 +158,11 @@ export const comparisons: Comparison[] = [
   {
     slug: "lost-earnings-vs-lost-earning-capacity",
     title: "Lost Earnings vs. Lost Earning Capacity",
-    dateModified: "2026-08-27",
+    answer:
+      "Lost earnings project a documented earnings history; lost earning capacity measures a reduced ability to earn when the history understates what was possible.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Lost Earnings",
       summary:
@@ -192,7 +215,11 @@ export const comparisons: Comparison[] = [
   {
     slug: "lost-profits-vs-business-valuation",
     title: "Lost Profits vs. Business Valuation",
-    dateModified: "2026-08-27",
+    answer:
+      "Lost profits apply when the business survives and recovers over a loss period; business valuation applies when it is destroyed or the interest is taken.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Lost Profits",
       summary:
@@ -245,7 +272,12 @@ export const comparisons: Comparison[] = [
   {
     slug: "plaintiff-economist-vs-defense-economist",
     title: "Plaintiff Economist vs. Defense Economist: Is the Method Different?",
-    dateModified: "2026-08-27",
+    metaTitle: "Plaintiff Economist vs. Defense Economist",
+    answer:
+      "The method is the same on both sides, with the same published data and discounting arithmetic; the two economists differ on which facts control each input.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Plaintiff Economist",
       summary:
@@ -285,7 +317,7 @@ export const comparisons: Comparison[] = [
       {
         question: "Will the defense economist produce a number of their own?",
         answer:
-          "Usually, where the record supports one. An alternative calculation gives the trier of fact a supported figure rather than only a critique, and it demonstrates that the reviewer applied the method rather than simply rejecting the result.",
+          "In most engagements, yes. The reviewing economist reruns the schedules with the inputs the record supports, so the trier of fact can compare two calculations built on the same framework and see exactly which inputs account for the gap between them.",
       },
     ],
     sources: refsToSources(["NAFE_ETHICS", "FRE_702", "FRCP_26"]),
@@ -298,7 +330,11 @@ export const comparisons: Comparison[] = [
   {
     slug: "fair-market-value-vs-fair-value",
     title: "Fair Market Value vs. Fair Value",
-    dateModified: "2026-08-27",
+    answer:
+      "Fair market value prices a hypothetical sale and usually applies minority discounts; fair value is a statutory shareholder standard that often excludes them.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Fair Market Value",
       summary:
@@ -351,7 +387,11 @@ export const comparisons: Comparison[] = [
   {
     slug: "net-vs-gross-discount-rate",
     title: "Net vs. Gross Discount Rate",
-    dateModified: "2026-08-27",
+    answer:
+      "A net rate, discount less growth, applies to constant dollars; a gross rate discounts a nominally grown stream; consistent inputs give the same present value.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Net Discount Rate",
       summary:
@@ -404,7 +444,11 @@ export const comparisons: Comparison[] = [
   {
     slug: "economist-vs-life-care-planner",
     title: "Forensic Economist vs. Life Care Planner",
-    dateModified: "2026-08-27",
+    answer:
+      "The life care planner identifies and prices future care needs item by item; the economist applies growth and discount rates to that plan to reach present value.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     a: {
       label: "Forensic Economist",
       summary:

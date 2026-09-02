@@ -27,11 +27,18 @@
     <!-- Search console verifications: add real codes via env or VITE replace before publishing.
          Placeholders intentionally not shipped. -->
 
-    <!-- Default OpenGraph (prerender overrides per-route) -->
+    <!-- Default OpenGraph / Twitter card. The prerender (scripts/prerender.mjs)
+         rewrites og:type, og:image and its size and alt, and twitter:image per
+         route; use-page-meta.ts does the same after hydration. The image values
+         mirror DEFAULT_OG_IMAGE* in src/lib/brand.ts. -->
     <meta property="og:site_name" content="KW Economics" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://kweconomics.com/images/hero-office-meeting.jpg" />
+    <meta property="og:image" content="https://kweconomics.com/images/og-default.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="KW Economics forensic economics and economic damages experts" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://kweconomics.com/images/og-default.jpg" />
 
     <!-- Robots directives -->
     <meta name="robots" content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1" />

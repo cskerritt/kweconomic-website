@@ -1,4 +1,4 @@
-import type { Source } from "./types";
+import type { Faq, Source } from "./types";
 import { refsToSources } from "./references";
 
 export interface KnowledgeSection {
@@ -9,10 +9,21 @@ export interface KnowledgeSection {
 export interface KnowledgeGuide {
   slug: string;
   title: string;
+  /** Shorter or query-bearing <title> form; the H1, hub card, and breadcrumb keep `title`. */
+  metaTitle?: string;
+  /** Hero lead paragraph and hub card copy (not the meta description). */
   description: string;
+  /** Written meta description (110-160 chars, a complete sentence). */
+  metaDescription: string;
+  /** Lift-able summary rendered as a list under the byline. */
+  keyPoints?: string[];
   sections: KnowledgeSection[];
+  /** Rendered by FAQBlock and emitted as FAQPage JSON-LD. Plain text, no link markers. */
+  faqs?: Faq[];
   /** Registry-backed references, rendered by SourcesBlock at the foot of the guide. */
   sources?: Source[];
+  /** ISO date the guide was first published. */
+  datePublished?: string;
   /** ISO date the guide was last reviewed/updated. Defaults to current date when unset. */
   dateModified?: string;
   /** Team member slug for the AuthorByline. Falls back to the "<ORG_NAME> Editorial Team" byline when unset. */
@@ -22,13 +33,24 @@ export interface KnowledgeGuide {
 // Long-form knowledge guides. Each entry starts with `slug` (scripts/prerender.mjs
 // splits entries on that line) and carries `title` once; section prose uses
 // the inline-link marker syntax from src/lib/richtext.tsx and is citation-free.
+// FAQ pairs must not restate a guide or method FAQ (src/data/editorial.test.ts
+// caps the token overlap).
 export const knowledgeGuides: KnowledgeGuide[] = [
   {
     slug: "guide-to-economic-damages",
     sources: refsToSources(["BLS_CPS", "BLS_ATUS", "BLS_CEX", "SKOOG_CIECKA_KRUEGER_2011", "JONES_LAUGHLIN_PFEIFER", "AAEFE_JLE", "NAFE_JFE"]),
     authorSlug: "christopher-skerritt",
-    dateModified: "2026-08-27",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     title: "Guide to Economic Damages",
+    metaTitle: "Guide to Economic Damages for Attorneys",
+    metaDescription: "What economic damages consist of and how each component is measured: lost earnings, survivor support, household services, future care, and commercial losses.",
+    keyPoints: [
+      "Economic damages are measured from records and published data; non-economic damages are valued by the trier of fact without an economic calculation.",
+      "Every calculation projects a but-for stream and a post-event stream, takes the difference year by year, and reduces the future portion to present value.",
+      "Earnings run over worklife expectancy; household services and care costs run over life expectancy; support to a child runs over the period of dependency.",
+      "Most disagreements between opposing economists reduce to a handful of inputs: the earnings base, growth rate, horizon, post-event earnings, consumption, and discount rate.",
+    ],
     description:
       "What economic damages consist of, how lost earnings, wrongful death losses, household services, future care costs, and commercial losses are measured, and how to read a damages report critically.",
     sections: [
@@ -89,13 +111,44 @@ Then look for consistency. Growth and discount rates should come from the same b
 Finally, look for what is missing. Undocumented promotions, benefits added on top of wages that already included them, a consumption deduction omitted from a death claim, mitigation ignored, or a discount rate chosen from an unrepresentative window are the usual gaps. The [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] sets out the review in order, and the [[/services/expert-rebuttal-and-report-review|rebuttal service]] applies it to an opposing report.`,
       },
     ],
+    faqs: [
+      {
+        question: "What is the difference between economic and non-economic damages?",
+        answer:
+          "Economic damages are financial losses that can be measured in dollars from records and data: earnings, benefits, household services, support to survivors, care costs, profits, and business value. Non-economic damages, such as pain and loss of enjoyment of life, are valued by the trier of fact without an economic calculation, and the economist does not address them.",
+      },
+      {
+        question: "What records does an economist need to calculate lost earnings?",
+        answer:
+          "Several years of tax returns, W-2 and 1099 forms, pay stubs, and employer benefit statements establish the earnings base; the medical and vocational evidence bears on what the person can earn now. For a business, financial statements, general ledgers, and contracts establish what the company earned and what it lost.",
+      },
+      {
+        question: "How is a damages report tested for reliability?",
+        answer:
+          "By tracing each input to its source. The earnings base should match the returns, the growth and discount rates should come from the same basis and period, each horizon should match a published table, and the post-event assumptions should rest on the medical and vocational record. A sensitivity table then shows how much of the total each contested input explains.",
+      },
+      {
+        question: "Does the economist value a life care plan?",
+        answer:
+          "The economist values the cost stream a qualified clinician sets out in the plan, carrying each item forward with a growth rate appropriate to its category and discounting over the applicable life expectancy. The economist does not author the plan and does not add or remove care items.",
+      },
+    ],
   },
   {
     slug: "expert-witness-testimony-guide",
     sources: refsToSources(["FRE_702", "DAUBERT", "KUMHO_TIRE", "GE_JOINER", "FRYE", "FRCP_26", "NAFE_ETHICS"]),
     authorSlug: "christopher-skerritt",
-    dateModified: "2026-08-27",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     title: "Expert Witness Testimony Guide",
+    metaTitle: "Economic Expert Witness Testimony Guide",
+    metaDescription: "What an economic expert does in litigation, how Daubert and Frye courts test the testimony, what gets challenged, and how deposition and disclosure work.",
+    keyPoints: [
+      "The economist translates the record and the other experts' opinions into a projected loss and a present value, and does not opine on liability, causation, or medical questions.",
+      "Challenges to economic testimony rarely attack the discipline; they attack inputs the record does not support.",
+      "Most expert testimony is given at deposition, and the transcript is used at trial to impeach any departure from it.",
+      "In federal court the written report is the disclosure: every opinion, its basis, the facts considered, qualifications, prior testimony, and compensation.",
+    ],
     description:
       "What an economic expert does in litigation, the reliability and general-acceptance admissibility frameworks, what gets challenged in economic testimony, deposition versus trial, disclosure, and how to select an economist.",
     sections: [
@@ -138,6 +191,28 @@ The prior testimony list is discoverable and will be read. An economist with a b
 Fourth, communication. The economist must be able to explain present value, worklife expectancy, and personal consumption to a jury in plain language and to hold that explanation under cross-examination. Reading a deposition transcript or watching prior trial testimony is the most reliable way to judge this before retention.
 
 Timing matters as much as selection. An economist retained early can identify the records the calculation will need, coordinate with the medical and vocational witnesses on the assumptions the economic analysis will adopt, and inform discovery on the other side's damages theory. The [[/guides/when-do-you-need-an-economic-expert|when to retain]] guide describes the signals, and the [[/team|team]] page describes the economists here.`,
+      },
+    ],
+    faqs: [
+      {
+        question: "What must a forensic economist show to be admitted as an expert?",
+        answer:
+          "That the economist is qualified by training and experience, that the opinion rests on sufficient facts or data, that it applies reliable methods, and that those methods were reliably applied to the case. For economic testimony the method is rarely the issue; the inputs are.",
+      },
+      {
+        question: "Why is deposition preparation as important as trial preparation?",
+        answer:
+          "Because most expert testimony is given at deposition, and the transcript will be used at trial to impeach any departure from it. The economist should be able to defend every schedule from memory, identify the source of every figure, and have reviewed everything produced since the report was written.",
+      },
+      {
+        question: "What happens if an opinion is not in the written report?",
+        answer:
+          "In federal court and many state courts it may be excluded at trial. New records that change an input call for a supplemental schedule served under the duty to supplement, not a new opinion offered for the first time at deposition or trial.",
+      },
+      {
+        question: "How should counsel select an economist for a damages case?",
+        answer:
+          "By training in economics or a closely related field, testimony experience for both plaintiff and defense in the relevant jurisdictions, a method that builds from records and published data with stated assumptions and sensitivity, and the ability to explain present value and worklife expectancy to a jury in plain language.",
       },
     ],
   },

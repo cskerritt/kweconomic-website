@@ -6,6 +6,7 @@ import { SERVICE_CITY_TOP, serviceCityCities } from "@/lib/geo-links";
 import { getCourtsByState } from "@/data/courts/state-courts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { usePageMeta } from "@/hooks/use-page-meta";
+import { truncateAtWord } from "@/lib/text";
 import SchemaOrg from "@/components/SchemaOrg";
 import {
   graphSchema,
@@ -18,11 +19,18 @@ import {
 import { placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
 // Service.shortName is a heading label; every sentence that names the work
-// goes through the shared helpers (workPhrase: "wrongful death analysis").
-// Slots after in/across/throughout take placeName ("the District of
-// Columbia"); attributive slots ("Texas wage data") take placeAttr.
-import { proseName, workPhrase } from "@/lib/service-prose.mjs";
-import { getStateNarrative, serviceStateDirectAnswer } from "@/data/narratives";
+// goes through the shared helpers (proseName: "fraud and tracing testimony";
+// the hero and FAQ builders apply workPhrase themselves). Slots after
+// in/across/throughout take placeName ("the District of Columbia");
+// attributive slots ("Texas Cases") take placeAttr.
+import { proseName } from "@/lib/service-prose.mjs";
+import {
+  credentialPagePath,
+  geoSources,
+  getStateNarrative,
+  serviceStateDirectAnswer,
+  serviceStateVenueParagraph,
+} from "@/data/narratives";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
 import { getCaseType } from "@/data/caseTypes";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
@@ -31,6 +39,7 @@ import CourtInfoPanel from "@/components/CourtInfoPanel";
 import ContactCTA from "@/components/ContactCTA";
 import LocationCard from "@/components/LocationCard";
 import FAQBlock from "@/components/FAQBlock";
+import SourcesBlock from "@/components/SourcesBlock";
 import Reveal from "@/components/Reveal";
 import { serviceMotion } from "@/lib/service-motion";
 import { useMagnetic } from "@/hooks/use-pointer-fx";
@@ -48,14 +57,18 @@ export default function ServiceState() {
   const service = serviceSlug ? getServiceBySlug(serviceSlug) : undefined;
   const state = stateSlug ? getStateBySlug(stateSlug) : undefined;
 
+  // The description is the hero cut at a word, as on the service x city page
+  // and in the static shells, so the prerendered and hydrated descriptions
+  // agree and each names the pillar's own subject rather than a generic list.
+  const directAnswerForMeta =
+    service && state
+      ? serviceStateDirectAnswer(ORG_NAME, service.shortName, state.name, getStateNarrative(state))
+      : "";
   usePageMeta({
     title: service && state
       ? `${service.shortName} in ${placeName(state.name)} | ${ORG_NAME}`
       : `Service | ${ORG_NAME}`,
-    description:
-      service && state
-        ? `${ORG_NAME} provides ${workPhrase(service.shortName)} for matters venued in ${placeName(state.name)}. Forensic economists measuring lost earnings, household services, and business damages against ${placeAttr(state.name)} wage data and the jurisdiction's damages rules, for plaintiff and defense counsel across ${placeName(state.name)}.`
-        : "",
+    description: truncateAtWord(directAnswerForMeta),
     canonical: `${ORG_URL}/services/${serviceSlug ?? ""}/${stateSlug ?? ""}`,
   });
 
@@ -90,6 +103,10 @@ export default function ServiceState() {
 
   const url = `${ORG_URL}/services/${service.slug}/${state.slug}`;
   const directAnswer = serviceStateDirectAnswer(ORG_NAME, service.shortName, state.name, narrative);
+  // Employment, the commercial pillars, and rebuttal get a forum paragraph of
+  // their own; the injury and death pillars print the state's tort damages
+  // framework and its workers' compensation forum below.
+  const venueParagraph = serviceStateVenueParagraph(service, state);
 
   return (
     <div className="min-h-screen bg-neutral-50 overflow-x-clip">
@@ -168,22 +185,28 @@ export default function ServiceState() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="lg:grid lg:grid-cols-3 lg:gap-10">
 
-          {/* Main content - 2/3 */}
-          <main className="lg:col-span-2 space-y-10">
+          {/* Main content - 2/3. A div, not a main: the layout already
+              provides the page's single main landmark. */}
+          <div className="lg:col-span-2 space-y-10">
 
-            {/* Service description + state-specific regulation context */}
+            {/* Service description + state-specific forum context. The H2
+                states what the section explains rather than repeating the H1. */}
             <Reveal as="section" variant={motion.reveal} className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8">
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">
-                {service.shortName} in {place}
+                How {service.shortName} Work Is Built for {placeAttr(state.name)} Cases
               </h2>
               <p className="text-neutral-700 leading-relaxed mb-4">
                 {service.description}
               </p>
-              {regulations && (
-                <p className="text-neutral-700 leading-relaxed mb-4">
-                  {regulations.damagesContext} Outside the civil courts, wage-loss disputes in workers'
-                  compensation matters proceed before the <strong>{regulations.compensationForum}</strong>.
-                </p>
+              {venueParagraph ? (
+                <p className="text-neutral-700 leading-relaxed mb-4">{venueParagraph}</p>
+              ) : (
+                regulations && (
+                  <p className="text-neutral-700 leading-relaxed mb-4">
+                    {regulations.damagesContext} Outside the civil courts, wage-loss disputes in workers'
+                    compensation matters proceed before the <strong>{regulations.compensationForum}</strong>.
+                  </p>
+                )
               )}
             </Reveal>
 
@@ -262,15 +285,21 @@ export default function ServiceState() {
               </Reveal>
             )}
 
-            {/* Contact CTA */}
+            {/* Frequently asked */}
             <Reveal variant={motion.reveal}>
               <FAQBlock faqs={faqs} title={`Frequently asked: ${service.shortName} in ${place}`} />
             </Reveal>
 
+            {/* The pillar's data and standards, through the registry. */}
+            <Reveal variant={motion.reveal}>
+              <SourcesBlock sources={geoSources(service)} />
+            </Reveal>
+
+            {/* Contact CTA */}
             <Reveal variant={motion.reveal}>
               <ContactCTA context={`${service.shortName} in ${place}`} />
             </Reveal>
-          </main>
+          </div>
 
           {/* Sidebar - 1/3 */}
           <aside className="mt-10 lg:mt-0 space-y-6">
@@ -299,15 +328,23 @@ export default function ServiceState() {
               <p className="text-sm text-neutral-600 mb-3">
                 Qualifications and standards that bear on {proseName(service.shortName)} testimony in {place}:
               </p>
+              {/* Each chip links the credential x state page that explains
+                  the qualification; the chips assert nothing about who holds it. */}
               <div className="flex flex-wrap gap-2">
-                {service.relevantCredentials.map((cred) => (
-                  <span
-                    key={cred}
-                    className="inline-block bg-forest/10 text-forest font-medium text-sm px-3 py-1 rounded-full border border-forest/20"
-                  >
-                    {cred}
-                  </span>
-                ))}
+                {service.relevantCredentials.map((cred) => {
+                  const href = credentialPagePath(cred, state.slug);
+                  const chip =
+                    "inline-block bg-forest/10 text-forest font-medium text-sm px-3 py-1 rounded-full border border-forest/20";
+                  return href ? (
+                    <Link key={cred} to={href} className={`${chip} hover:bg-forest/20 transition-colors`}>
+                      {cred}
+                    </Link>
+                  ) : (
+                    <span key={cred} className={chip}>
+                      {cred}
+                    </span>
+                  );
+                })}
               </div>
             </div>
 

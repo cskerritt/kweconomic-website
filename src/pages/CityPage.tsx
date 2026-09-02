@@ -14,13 +14,13 @@ import Loading from "@/components/Loading";
 import { truncateAtWord } from "@/lib/text";
 import { nearestCities } from "@/lib/geo-links";
 import { getMetroLabor } from "@/data/labor/metro-labor";
-import { majorEmployers, cityAttr } from "@/data/geo-prose.mjs";
+import { majorEmployers, cityAttr, placeName } from "@/data/geo-prose.mjs";
 import { caseTypes } from "@/data/caseTypes";
 import { ORG_NAME } from "@/lib/brand";
 import { getCourtsByState } from "@/data/courts/state-courts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { getLocalContent } from "@/data/local-content";
-import { getCityNarrative } from "@/data/narratives";
+import { geoSources, getCityNarrative } from "@/data/narratives";
 import { cityGeographicFaqs } from "@/data/geographicFaqs";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
@@ -31,17 +31,26 @@ import LocationCard from "@/components/LocationCard";
 import CityServiceLinks from "@/components/CityServiceLinks";
 import RelatedServices from "@/components/RelatedServices";
 import FAQBlock from "@/components/FAQBlock";
+import SourcesBlock from "@/components/SourcesBlock";
 import { ArrowRight } from "lucide-react";
 import type { City, State } from "@/types";
 
 // Builds a unique lead paragraph per city from its real attributes (county, MSA,
 // capital/largest-city status), so each city page has differentiated lead content
 // rather than an identical boilerplate sentence. No population or wage figures
-// (per the site content rules).
+// (per the site content rules). Slots after in/of take placeName ("the District
+// of Columbia"); the District's county is the District itself, so the lead does
+// not name it twice, and Washington reads as the federal seat, not a state capital.
 function buildCityIntro(city: City, state: State): string {
-  const lead = `${city.name} is located in ${city.county}, ${state.name}.`;
+  const place = placeName(state.name);
+  const lead =
+    city.county && city.county !== state.name
+      ? `${city.name} is located in ${city.county}, ${place}.`
+      : `${city.name} is located in ${place}.`;
   let role: string;
-  if (city.isStateCapital) {
+  if (state.type === "district") {
+    role = `As the seat of the federal government, ${city.name} is home to the District's courts and to federal agencies whose pay scales and benefit plans shape many of the earnings histories the economist is asked to project.`;
+  } else if (city.isStateCapital) {
     role = `As the capital of ${state.name}, ${city.name} is home to the state's principal courts and administrative agencies, and public-sector pay scales and benefit plans shape many of the earnings histories the economist is asked to project.`;
   } else if (city.name === state.largestCity) {
     role = `As the largest city in ${state.name}, ${city.name} anchors one of the state's most active litigation markets and its most diverse wage market, so an earnings projection has to be built for the plaintiff's own occupation and employer rather than for the city as a whole.`;
@@ -50,7 +59,7 @@ function buildCityIntro(city: City, state: State): string {
   } else {
     role = `Counsel across ${city.county} retain ${ORG_NAME} for objective lost earnings, wrongful death, household services, and business damages analyses.`;
   }
-  const close = `${ORG_NAME} prepares independent economic damages reports for ${city.name} attorneys and insurers, grounded in ${state.name}'s expert evidence standards and damages rules and measured against wage data for the ${cityAttr(city.name)} area.`;
+  const close = `${ORG_NAME} prepares independent economic damages reports for ${city.name} attorneys and insurers, grounded in ${place}'s expert evidence standards and damages rules and measured against wage data for the ${cityAttr(city.name)} area.`;
   return `${lead} ${role} ${close}`;
 }
 
@@ -128,8 +137,9 @@ export default function CityPage() {
           <p className="text-teal text-sm font-medium uppercase tracking-widest mb-2">
             {state.name}
           </p>
+          {/* States the page's subject, and matches the meta title. */}
           <h1 className="font-serif text-4xl lg:text-5xl font-bold mb-3">
-            {city.name}, {state.abbreviation}
+            Forensic Economists in {city.name}, {state.abbreviation}
           </h1>
           <p className="text-neutral-200 text-lg max-w-3xl mb-3">
             {narrative.directAnswer}
@@ -174,7 +184,7 @@ export default function CityPage() {
               </dl>
               {city.isStateCapital && (
                 <p className="mt-4 text-sm text-teal font-medium">
-                  State capital of {state.name}
+                  {state.type === "district" ? "Seat of the federal government" : `State capital of ${state.name}`}
                 </p>
               )}
             </section>
@@ -186,7 +196,7 @@ export default function CityPage() {
                   Where {state.name} Damages Claims Are Litigated
                 </h2>
                 <p className="text-neutral-600 mb-5 text-sm">
-                  Economic damages reports for {city.name} cases are prepared for {state.name}'s civil and compensation forums, its expert evidence standards, and the damages rules that decide which loss components are recoverable.
+                  Economic damages reports for {city.name} cases are prepared for {placeName(state.name)}'s civil and compensation forums, its expert evidence standards, and the damages rules that decide which loss components are recoverable.
                 </p>
                 <div className="space-y-4 text-sm">
                   <div>
@@ -244,6 +254,9 @@ export default function CityPage() {
 
             {/* Frequently asked */}
             <FAQBlock faqs={faqs} title={`Frequently asked: ${city.name} expert services`} />
+
+            {/* The data sources the narrative names, through the registry. */}
+            <SourcesBlock sources={geoSources()} />
 
             {/* Contact CTA */}
             <ContactCTA context={`${city.name}, ${state.abbreviation}`} />

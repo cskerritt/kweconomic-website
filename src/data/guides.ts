@@ -11,9 +11,14 @@ export interface GuideSection {
 export interface Guide {
   slug: string;
   title: string;
+  /** Shorter <title> form (target: under 60 chars with the brand suffix). The H1, cards, and nav keep `title`. */
+  metaTitle?: string;
+  /** Written meta description (110-160 chars, a complete sentence); never an auto-cut of `tldr`. */
+  metaDescription: string;
   tldr: string;
-  authorSlug?: string;
-  dateModified?: string;
+  authorSlug: string;
+  datePublished: string;
+  dateModified: string;
   image?: string;
   sections?: GuideSection[];
   faqs?: Faq[];
@@ -23,17 +28,22 @@ export interface Guide {
 
 // Attorney guides written from the economist's standpoint. Each entry keeps
 // `slug` then `title` on consecutive lines (scripts/prerender.mjs extracts the
-// pair positionally). Section bodies are HTML in double-quoted strings with
-// escaped attribute quotes, so the internal anchors are visible to
-// src/citations.routes.test.mjs. Prose is citation-free; sources render
-// through the registry. FAQ answers render as plain text.
+// pair positionally); the meta fields, the byline, and the dates follow.
+// Section bodies are HTML in double-quoted strings with escaped attribute
+// quotes, so the internal anchors are visible to src/citations.routes.test.mjs.
+// Prose is citation-free (case names such as Daubert and Frye are proper
+// nouns, not citations); sources render through the registry. FAQ answers
+// render as plain text and must not restate a sibling method FAQ
+// (src/data/editorial.test.ts caps the token overlap).
 export const guides: Guide[] = [
   {
     slug: "what-is-a-forensic-economist",
     title: "What Is a Forensic Economist?",
+    metaDescription: "A forensic economist measures litigation losses in dollars: lost earnings, household services, survivor support, future care, lost profits, and business value.",
     tldr:
       "A forensic economist measures economic losses for litigation: lost earnings and benefits, household services, support to survivors, the present value of future care, lost profits, and business value. The work is built from the records in the case and published government data, follows the methods published in the field's literature, and is presented so that every input can be traced and tested by the other side.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -94,9 +104,11 @@ export const guides: Guide[] = [
   {
     slug: "how-lost-earnings-are-calculated",
     title: "How Lost Earnings Are Calculated",
+    metaDescription: "Lost earnings are the difference between but-for and post-event earnings streams, built from tax and pay records, grown over a worklife horizon, and discounted.",
     tldr:
       "Lost earnings are the difference between two projected streams: the earnings and benefits a person would have received but for the event, and the earnings and benefits the person can now expect. Each stream starts from documented records, grows at a stated rate over a published worklife horizon, includes fringe benefits, and the future difference is reduced to present value. This guide walks through the calculation input by input.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -169,9 +181,11 @@ export const guides: Guide[] = [
   {
     slug: "wrongful-death-damages-explained",
     title: "Wrongful Death Damages, Explained",
+    metaDescription: "Wrongful death damages measure the support, services, and benefits a decedent would have provided to survivors, net of personal consumption, at present value.",
     tldr:
       "In a wrongful death matter the economic loss belongs to the survivors, and the question is what the decedent would have contributed to the household over an expected life. The analysis projects earnings and benefits, deducts the decedent's personal consumption, adds the replacement value of household services and other support, measures each survivor's loss over that survivor's period of dependency, and reduces the future portion to present value. The components are presented separately because states differ on which are recoverable and by whom.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -238,9 +252,11 @@ export const guides: Guide[] = [
   {
     slug: "household-services-in-personal-injury",
     title: "Household Services in Personal Injury Claims",
+    metaDescription: "Household services damages are the hours an injured person can no longer perform at home, by task, priced at local replacement wages over life expectancy.",
     tldr:
       "Household services are the unpaid work an injured person can no longer perform at home. The loss is measured as the hours no longer performed, established from the household's account and time-use data, multiplied by the cost of replacing that work with paid labor in the local market, and projected over life expectancy as the household changes. This guide describes what counts, how hours and rates are established, and which records support the claim.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -307,9 +323,11 @@ export const guides: Guide[] = [
   {
     slug: "present-value-explained-for-attorneys",
     title: "Present Value, Explained for Attorneys",
+    metaDescription: "Present value is the sum that, invested today at a stated rate, replaces future losses as they come due. How the discount and growth rates set the number.",
     tldr:
       "Present value is the single sum that, invested today at a stated rate, would replace a stream of future losses as they come due. The result depends on the loss stream, the growth rate applied to it, and the discount rate used to bring it back to the present. This guide explains each in plain terms, what a net rate and a gross rate are, what the total offset approach is, and how to read a present value schedule.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -376,9 +394,12 @@ export const guides: Guide[] = [
   {
     slug: "expert-witness-disclosure-rules",
     title: "Expert Witness Disclosure: A Practitioner Overview",
+    metaTitle: "Expert Witness Disclosure Rules for Attorneys",
+    metaDescription: "What an expert disclosure must contain, when it is due, the duty to supplement, and the items specific to an economic damages report that draw challenges.",
     tldr:
       "Pre-trial expert disclosure typically requires a written statement of the expert's identity, opinions, the bases for those opinions, the facts or data considered, qualifications, prior testimony, and compensation. Content and timing vary by jurisdiction, and a missed requirement is a common basis for excluding an economist. This guide outlines the elements, the timing, the duty to supplement, and the points specific to economic damages reports.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -438,29 +459,32 @@ export const guides: Guide[] = [
     sources: refsToSources(["FRCP_26"]),
     related: [
       { title: "Expert Witness Testimony Guide", href: "/knowledge/expert-witness-testimony-guide" },
-      { title: "Federal vs. State Court Admissibility", href: "/guides/federal-vs-state-court-daubert" },
+      { title: "Daubert vs. Frye in Federal and State Court", href: "/guides/federal-vs-state-court-daubert" },
       { title: "How to Rebut an Economic Damages Report", href: "/guides/how-to-rebut-an-economic-damages-report" },
     ],
   },
   {
     slug: "federal-vs-state-court-daubert",
-    title: "Expert Testimony Admissibility: Federal vs. State Court",
+    title: "Daubert vs. Frye: Admissibility in Federal and State Court",
+    metaTitle: "Daubert vs. Frye in Federal and State Court",
+    metaDescription: "Daubert asks whether a method is reliable and reliably applied; Frye asks whether it is generally accepted. What each means for economic damages testimony.",
     tldr:
-      "Federal courts apply a reliability-based gatekeeping framework that considers testability, peer review, error rate, controlling standards, and general acceptance. State courts vary: some apply a similar reliability framework, others a narrower general-acceptance test, and several use hybrids. For economic testimony the frameworks rarely exclude the discipline; they exclude inputs the record does not support. Attorneys confirm the governing framework against primary sources.",
+      "Federal courts apply the Daubert framework, a reliability-based gatekeeping test that considers testability, peer review, error rate, controlling standards, and general acceptance. State courts vary: many apply Daubert or a close variant, some retain the narrower Frye general-acceptance test, and several use hybrids. For economic testimony the frameworks rarely exclude the discipline; they exclude inputs the record does not support. Attorneys confirm the governing framework against primary sources.",
     authorSlug: "christopher-skerritt",
-    dateModified: "2026-08-27",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     sections: [
       {
         id: "federal-framework",
-        heading: "The federal framework",
+        heading: "The federal framework: Daubert",
         bodyHtml:
-          "<p>Federal courts apply a reliability-based gatekeeping framework. The trial judge decides whether the expert's method is reliable and reliably applied to the facts of the case, considering non-exclusive factors such as whether the method has been tested, whether it has been published and peer reviewed, its known or potential rate of error, the existence and maintenance of controlling standards, and its general acceptance in the relevant field. The inquiry extends to technical and other specialized knowledge, including economics, and the court may exclude an opinion connected to the data only by the expert's assertion. The <a href=\"/knowledge/expert-witness-testimony-guide\">expert witness testimony guide</a> describes the framework in more detail.</p>",
+          "<p>Federal courts apply the Daubert framework, a reliability-based gatekeeping test. The trial judge decides whether the expert's method is reliable and reliably applied to the facts of the case, considering non-exclusive factors such as whether the method has been tested, whether it has been published and peer reviewed, its known or potential rate of error, the existence and maintenance of controlling standards, and its general acceptance in the relevant field. The inquiry extends to technical and other specialized knowledge, including economics, and the court may exclude an opinion connected to the data only by the expert's assertion. The <a href=\"/knowledge/expert-witness-testimony-guide\">expert witness testimony guide</a> describes the framework in more detail.</p>",
       },
       {
         id: "state-frameworks",
-        heading: "State frameworks",
+        heading: "State frameworks: Daubert, Frye, and hybrids",
         bodyHtml:
-          "<p>Many states apply a reliability framework similar to the federal one. A smaller number retain a general-acceptance framework that asks only whether the method is generally accepted in the relevant professional community. Several states apply hybrids, some codified in evidence rules, and the frameworks continue to evolve. The <a href=\"/insights/daubert-vs-frye-expert-testimony-standards\">admissibility frameworks post</a> compares the two families, and the <a href=\"/jurisdictions\">jurisdictions</a> hub collects the state pages.</p>",
+          "<p>Many states apply a Daubert-style reliability framework. A smaller number retain the Frye general-acceptance test, which asks only whether the method is generally accepted in the relevant professional community and does not separately weigh testability or error rates. Several states apply hybrids, some codified in evidence rules, and the frameworks continue to evolve. The <a href=\"/insights/daubert-vs-frye-expert-testimony-standards\">Daubert versus Frye post</a> compares the two families, and the <a href=\"/jurisdictions\">jurisdictions</a> hub collects the state pages.</p>",
       },
       {
         id: "what-is-challenged-in-economic-testimony",
@@ -496,16 +520,18 @@ export const guides: Guide[] = [
     sources: refsToSources(["DAUBERT", "KUMHO_TIRE", "GE_JOINER", "FRYE", "FRE_702"]),
     related: [
       { title: "Expert Witness Testimony Guide", href: "/knowledge/expert-witness-testimony-guide" },
-      { title: "Admissibility Frameworks Compared", href: "/insights/daubert-vs-frye-expert-testimony-standards" },
+      { title: "Daubert vs. Frye for Economic Damages Testimony", href: "/insights/daubert-vs-frye-expert-testimony-standards" },
       { title: "Building a Daubert-Ready Economic Damages Report", href: "/white-papers/daubert-ready-economic-damages-report" },
     ],
   },
   {
     slug: "when-do-you-need-an-economic-expert",
     title: "When Do You Need an Economic Expert?",
+    metaDescription: "An economic expert is warranted when a claim includes a loss that runs over time: earnings, benefits, household services, support, future care, or profits.",
     tldr:
       "An economic expert is warranted whenever a claim includes a loss that runs over time: earnings, benefits, household services, support to survivors, future care costs, lost profits, or the value of a business. Courts admit the testimony because the projection and discounting require specialized knowledge the trier of fact does not have. Retain early so the economist can identify the records and coordinate assumptions with the other experts.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -566,9 +592,11 @@ export const guides: Guide[] = [
   {
     slug: "collateral-source-rule-explained",
     title: "The Collateral Source Rule, Explained",
+    metaDescription: "The collateral source rule decides whether insurance and benefit payments reduce an award. The economist lists each payment separately for counsel to apply it.",
     tldr:
       "The collateral source rule governs whether payments the plaintiff received from insurance, public benefits, or other third parties reduce the defendant's liability for damages. Some jurisdictions preserve the traditional rule, under which the defendant gets no credit; many have modified it by statute for specific categories of payment. The economist does not decide the rule; the report presents each collateral payment on its own schedule so counsel can apply the venue's rule.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -635,9 +663,11 @@ export const guides: Guide[] = [
   {
     slug: "business-valuation-in-litigation",
     title: "Business Valuation in Litigation",
+    metaDescription: "A litigation valuation turns on the standard of value, the valuation date, normalized statements, the three approaches, and the discounts the interest supports.",
     tldr:
       "A litigation valuation begins with four decisions the governing framework shapes: the interest being valued, the valuation date, the standard of value, and the premise of value. The valuator then normalizes the financial statements, applies the income, market, and asset approaches as the company warrants, considers discounts and premiums appropriate to the standard and the interest, and reconciles the indications into a conclusion documented to professional standards. This guide walks through each decision and where valuations are attacked.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -704,9 +734,11 @@ export const guides: Guide[] = [
   {
     slug: "lost-profits-vs-lost-business-value",
     title: "Lost Profits vs. Lost Business Value",
+    metaDescription: "Lost profits measure a surviving business over a loss period; lost business value measures a destroyed business at one date. Claiming both double counts.",
     tldr:
       "Lost profits measure what a continuing business would have earned but for the wrongful act over a defined loss period. Lost business value measures what the business or the owner's interest was worth on a valuation date when the act destroyed it. Both rest on projected cash flows, so claiming both for the same period counts the loss twice. This guide explains when each measure applies, where the boundary lies, and how the proof and the discounting differ.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -773,9 +805,11 @@ export const guides: Guide[] = [
   {
     slug: "income-determination-in-divorce",
     title: "Income Determination in Divorce",
+    metaDescription: "Income for support is determined from cash flow, not taxable income: owner compensation, perquisites, retained earnings, and lifestyle, tied to the records.",
     tldr:
       "Support in a divorce depends on each spouse's income, and for a business owner or a high earner the tax return rarely tells the whole story. The economist determines income from cash flow rather than taxable income, normalizes owner compensation and perquisites, analyzes the marital lifestyle where the framework uses it, and addresses the earning capacity of a spouse who is not working. Where a business interest is marital property, the income analysis and the valuation are coordinated so the same dollars are not counted twice.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {
@@ -848,9 +882,11 @@ export const guides: Guide[] = [
   {
     slug: "how-to-rebut-an-economic-damages-report",
     title: "How to Rebut an Economic Damages Report",
+    metaDescription: "A rebuttal tests an opposing damages report input by input against the record, then presents an alternative calculation with its own stated foundation.",
     tldr:
       "A rebuttal tests an opposing economic report input by input against the record: the records considered and the assumptions adopted, the earnings base and growth rate, the worklife and life expectancy horizons, the fringe benefits and offsets, the consumption deduction in a death claim, the discount rate and its consistency with growth, and, in a commercial report, the but-for revenue, avoided costs, and causation. The findings organize the rebuttal report, an alternative calculation, and the deposition of the opposing economist.",
     authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
     dateModified: "2026-08-27",
     sections: [
       {

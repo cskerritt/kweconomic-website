@@ -1,6 +1,8 @@
 import type { Faq, Source } from "./types";
 import { refsToSources } from "./references";
 import { states } from "./states";
+import { placeName, placeAttr } from "./geo-prose.mjs";
+import { ORG_NAME } from "@/lib/brand";
 
 /**
  * KW Economics credentials.
@@ -35,6 +37,10 @@ import { states } from "./states";
  * `stateReciprocity` is "na" for every state: these are national credentials
  * and no state licensure applies. Templates render "na" as
  * "Recognized nationally; no state licensure applies".
+ *
+ * The state tier (credentialStateHeadings, credentialStateAngle) is keyed on
+ * `category`, so the qualification, membership, and degree pages each carry
+ * their own title, H1, and credential x state paragraph.
  */
 export type CredentialCategory = "Professional Qualification" | "Professional Membership" | "Academic Degree";
 
@@ -44,6 +50,28 @@ export interface Credential {
   abbreviation: string;
   /** Schema.org credentialCategory (see credentialSchema in src/lib/schema.ts). */
   category: CredentialCategory;
+  /** Hub <title> (with the brand) and meta description, written to fit the
+   * SERP and to end with an answer rather than a cut-off sentence. The hub
+   * template wraps both in a template literal so the prerender parity guard
+   * can slot them. */
+  metaTitle: string;
+  metaDescription: string;
+  /** Verb phrase for the state-tier description: "What {whatItEstablishes},
+   * how {State} courts weigh it, ...". Names the qualification, membership,
+   * or degree by what it is, never by a role. */
+  whatItEstablishes: string;
+  /** ISO dates for the byline. `dateModified` moves when the copy changes. */
+  datePublished: string;
+  dateModified: string;
+  /** One sentence on what the credential adds to a state's qualification
+   * inquiry; rendered after the state's expertStandard in the state lead. */
+  stateLead: string;
+  /** The credential x state paragraph. `{place}` renders as placeName(state)
+   * ("the District of Columbia") and `{placeAttr}` as placeAttr(state)
+   * ("District of Columbia matter"); see credentialStateAngle(). For the
+   * membership credentials this describes verification and the ethics
+   * statement only, never the roster. */
+  stateAngle: string;
   issuer?: string;
   issuerUrl?: string;
   scope: string;
@@ -66,6 +94,16 @@ export const credentials: Credential[] = [
     name: "Forensic Economics Expert Witness",
     abbreviation: "Forensic Economist",
     category: "Professional Qualification",
+    metaTitle: "Forensic Economist Qualifications | KW Economics",
+    metaDescription:
+      "What a forensic economist measures, the training and published methods the role rests on, and how courts decide who may testify on damages. No license applies.",
+    whatItEstablishes: "the forensic economist qualification establishes",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    stateLead:
+      "The forensic economist qualification is what that inquiry examines: graduate training in economics, finance, or business, a published damages method applied to the record, and a record of reports and testimony.",
+    stateAngle:
+      "For a matter venued in {place}, counsel verify the qualification the same way in every venue, because no state licenses forensic economists and there is no {placeAttr} register to check. The elements are the economist's graduate training, the published method behind each component of the report, and the testimony record, and each can be examined directly: the CV, the report's stated sources, and the transcripts of prior depositions. In {place}, the same elements are what the court weighs when the opinion is challenged, so a report that ties every input to the record and names its data sources answers the qualification question before it is asked.",
     scope:
       "A forensic economist measures economic loss for litigation: the earnings, benefits, household services, business income, or asset value that a person or company lost because of an injury, a death, a wrongful employment action, a breach of contract, or a fraud, reduced to present value as of the date of trial or settlement. The role is defined by training and method rather than by a license. Its foundation is graduate study in economics, finance, or business, applied through a damages methodology that the profession has published and tested in peer-reviewed journals, and proven through reports that hold up at deposition and under cross-examination. The economist does not diagnose an injury, rate an impairment, or decide what work a person can still do; those opinions come from physicians and other retained experts, and the economist converts them into dollars with stated assumptions and identified data sources.",
     requirements: [
@@ -108,6 +146,16 @@ export const credentials: Credential[] = [
     name: "National Association of Forensic Economics Member",
     abbreviation: "NAFE",
     category: "Professional Membership",
+    metaTitle: "What NAFE Membership Establishes | KW Economics",
+    metaDescription:
+      "What NAFE membership establishes about a damages expert: a peer-reviewed literature and an ethics statement, not a certification. How to verify it.",
+    whatItEstablishes: "NAFE membership establishes",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    stateLead:
+      "NAFE membership adds a published ethics statement and a peer-reviewed literature that counsel can hold any report against; it does not replace that inquiry, and it is not a certification.",
+    stateAngle:
+      "NAFE membership means the same thing in {place} as anywhere else, because the association is national and no state recognizes or requires it: the economist has joined the field's professional body and agreed to its ethics statement. What that gives counsel in a matter venued in {place} is a written standard to test a report against, including an opposing report: disclosed data and assumptions, a method the economist would apply the same way for either side, and fees that do not depend on the outcome. Membership is verified with the association for the year in question rather than from a CV line, and the affiliations of the economist assigned to a matter venued in {place} are confirmed at engagement.",
     issuer: "National Association of Forensic Economics",
     issuerUrl: "https://nafe.net/",
     scope:
@@ -151,6 +199,16 @@ export const credentials: Credential[] = [
     name: "American Academy of Economic and Financial Experts Member",
     abbreviation: "AAEFE",
     category: "Professional Membership",
+    metaTitle: "What AAEFE Membership Establishes | KW Economics",
+    metaDescription:
+      "What AAEFE membership establishes about a damages expert: participation in the academy's journal and meetings, not a certification. How to verify it.",
+    whatItEstablishes: "AAEFE membership establishes",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    stateLead:
+      "AAEFE membership adds a curated damages literature, the academy's peer-reviewed journal, that a report's method can be measured against; it does not replace that inquiry, and it is not a certification.",
+    stateAngle:
+      "AAEFE membership carries no {placeAttr} recognition and needs none: the academy is a national association of economists, finance academics, and accountants who serve as experts, and membership signals participation in its journal and meetings rather than a tested qualification. Its value in a matter venued in {place} runs through the literature. When a discount rate approach, a valuation method, or a lost profits framework in a report can be traced to the academy's journal, the method has a published, criticized, and refined basis, and an opposing report that departs from that literature can be measured against it. Membership is confirmed with the academy directly, and the affiliations of the economist assigned to a matter venued in {place} are stated at engagement.",
     issuer: "American Academy of Economic and Financial Experts",
     issuerUrl: "https://aaefe.org/",
     scope:
@@ -189,6 +247,16 @@ export const credentials: Credential[] = [
     name: "Graduate Economics and Business Degrees",
     abbreviation: "MBA / M.A. / Ph.D.",
     category: "Academic Degree",
+    metaTitle: "Graduate Degrees of a Forensic Economist | KW Economics",
+    metaDescription:
+      "What graduate economics, finance, and MBA degrees establish about a damages expert, which methods each covers, and how courts weigh education with experience.",
+    whatItEstablishes: "graduate economics and MBA degrees establish",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    stateLead:
+      "A graduate degree in economics, finance, or business is the first element of that inquiry: it establishes training in the methods the opinion uses, and experience and the testimony record establish that the economist applies them reliably.",
+    stateAngle:
+      "Education is examined the same way in {place} as in any other venue: the question is whether the degree covered the tools the opinion actually uses. A master's or doctorate in economics supplies the theory of wages, labor supply, and market behavior behind a lost earnings or lost profits analysis, and an MBA or a master's in finance supplies the financial mathematics, valuation, and financial statement analysis behind a business valuation or a divorce financial analysis. For a matter venued in {place}, counsel can read the degree against the report: an opinion on present value, worklife, or household services sits squarely inside an economics degree, while a valuation opinion should be backed by valuation training or recognized valuation credentials as well. The degree is confirmed from the transcript or the institution, and it is weighed together with the economist's testimony record rather than on its own.",
     issuer: "Accredited Colleges and Universities",
     scope:
       "Graduate degrees in economics, finance, and business are the educational foundation of damages work. A master's or doctorate in economics supplies the theory of wages, labor supply, and market behavior that lost earnings and lost profits analyses rest on, together with the statistics and econometrics needed to use government data series correctly. An MBA or a master's in finance supplies financial mathematics, valuation, and the reading of financial statements that business valuation, lost profits, and divorce financial analyses require. Courts weigh education together with experience rather than in isolation: a doctorate does not qualify a witness to testify outside the methods they actually practice, and a master's-level economist with a record of applied damages work and testimony is routinely accepted. What matters is that the degree covered the tools the opinion uses and that the economist can explain them from first principles under cross-examination.",
@@ -230,4 +298,44 @@ export const credentials: Credential[] = [
 
 export function getCredential(slug: string): Credential | undefined {
   return credentials.find((c) => c.slug === slug);
+}
+
+/** The credential x state paragraph with the place tokens resolved. */
+export function credentialStateAngle(cred: Credential, stateName: string): string {
+  return cred.stateAngle
+    .replace(/\{place\}/g, placeName(stateName))
+    .replace(/\{placeAttr\}/g, placeAttr(stateName));
+}
+
+/**
+ * Title, H1, and meta description of a credential x state page, keyed on the
+ * credential's category so a role is never called a credential and a
+ * membership page can be read as an affiliation even out of context. The
+ * attributive slots ("District of Columbia Damages Cases") take placeAttr;
+ * the place slots ("in the District of Columbia") take placeName.
+ */
+export function credentialStateHeadings(cred: Credential, stateName: string): { title: string; h1: string; description: string } {
+  const place = placeName(stateName);
+  const attr = placeAttr(stateName);
+  const description = `What ${cred.whatItEstablishes}, how ${attr} courts weigh it, and how to retain a forensic economist there.`;
+  switch (cred.category) {
+    case "Professional Membership":
+      return {
+        title: `${cred.abbreviation} Membership and ${attr} Damages Testimony | ${ORG_NAME}`,
+        h1: `${cred.abbreviation} Membership and ${attr} Damages Testimony`,
+        description,
+      };
+    case "Academic Degree":
+      return {
+        title: `Graduate Economics Credentials in ${place} | ${ORG_NAME}`,
+        h1: `Graduate Economics Credentials for ${attr} Damages Cases`,
+        description,
+      };
+    default:
+      return {
+        title: `Forensic Economist Qualifications in ${place} | ${ORG_NAME}`,
+        h1: `Forensic Economist Qualifications for ${attr} Damages Cases`,
+        description,
+      };
+  }
 }

@@ -5,10 +5,15 @@ import { ORG_NAME } from "@/lib/brand";
 import { getGuideBySlug } from "@/data/knowledge";
 import NextSteps from "@/components/NextSteps";
 import AuthorByline from "@/components/AuthorByline";
+import FAQBlock from "@/components/FAQBlock";
 import SourcesBlock from "@/components/SourcesBlock";
 import { renderTextWithLinks } from "@/lib/richtext";
 import SchemaOrg from "@/components/SchemaOrg";
-import { graphSchema, organizationSchema, articleSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
+import { graphSchema, organizationSchema, articleSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
+
+// The H1 and the lead paragraph (.kw-lead) are the units an answer engine
+// should read aloud or quote; every editorial template marks the same pair.
+const SPEAKABLE = { speakable: { "@type": "SpeakableSpecification", cssSelector: ["h1", ".kw-lead"] } };
 
 export default function KnowledgeArticle() {
   const { slug } = useParams<{ slug: string }>();
@@ -17,8 +22,9 @@ export default function KnowledgeArticle() {
   usePageMeta(
     guide
       ? {
-          title: `${guide.title} | ${ORG_NAME}`,
-          description: guide.description,
+          // metaTitle carries the primary query where the short H1 leaves room.
+          title: `${guide.metaTitle ?? guide.title} | ${ORG_NAME}`,
+          description: guide.metaDescription,
           canonical: `${ORG_URL}/knowledge/${guide.slug}`,
         }
       : { title: `Knowledge Center | ${ORG_NAME}`, description: `Educational resources from ${ORG_NAME}`, canonical: `${ORG_URL}/knowledge` }
@@ -37,20 +43,27 @@ export default function KnowledgeArticle() {
 
   const guideUrl = `${ORG_URL}/knowledge/${guide.slug}`;
   const reviewedDate = guide.dateModified ?? "2026-05-03";
+  const publishedDate = guide.datePublished ?? reviewedDate;
+  const faqs = guide.faqs ?? [];
+  const keyPoints = guide.keyPoints ?? [];
 
   return (
     <>
       <SchemaOrg
         data={graphSchema([
           organizationSchema(),
-          articleSchema({
-            title: guide.title,
-            description: guide.description,
-            url: guideUrl,
-            dateModified: reviewedDate,
-            datePublished: reviewedDate,
-            authorSlug: guide.authorSlug,
-          }),
+          {
+            ...articleSchema({
+              title: guide.title,
+              description: guide.description,
+              url: guideUrl,
+              dateModified: reviewedDate,
+              datePublished: publishedDate,
+              authorSlug: guide.authorSlug,
+            }),
+            ...SPEAKABLE,
+          },
+          ...(faqs.length ? [faqPageSchema(faqs, guideUrl)] : []),
           breadcrumbSchema([
             { name: "Home", url: `${ORG_URL}/` },
             { name: "Knowledge", url: `${ORG_URL}/knowledge` },
@@ -93,7 +106,7 @@ export default function KnowledgeArticle() {
             <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-4">
               {guide.title}
             </h1>
-            <p className="text-lg text-neutral-300 leading-relaxed">{guide.description}</p>
+            <p className="kw-lead text-lg text-neutral-300 leading-relaxed">{guide.description}</p>
           </div>
         </div>
       </section>
@@ -104,7 +117,21 @@ export default function KnowledgeArticle() {
           <div className="lg:grid lg:grid-cols-[1fr_280px] lg:gap-12 items-start">
             {/* Article content */}
             <article className="prose prose-lg max-w-none">
-              <AuthorByline slug={guide.authorSlug} dateModified={reviewedDate} />
+              <AuthorByline slug={guide.authorSlug} datePublished={publishedDate} dateModified={reviewedDate} />
+
+              {keyPoints.length > 0 && (
+                <section aria-labelledby="key-points-heading" className="not-prose mb-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
+                  <h2 id="key-points-heading" className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3">
+                    Key points
+                  </h2>
+                  <ul className="list-disc ml-5 space-y-2 text-neutral-700 text-base">
+                    {keyPoints.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </section>
+              )}
+
               {guide.sections.map((section, idx) => {
                 const sectionId = `section-${idx}`;
                 return (
@@ -126,6 +153,8 @@ export default function KnowledgeArticle() {
                 );
               })}
 
+              <FAQBlock faqs={faqs} />
+
               <SourcesBlock sources={guide.sources ?? []} />
 
               <div className="mt-10">
@@ -139,16 +168,26 @@ export default function KnowledgeArticle() {
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
                   In This Guide
                 </h3>
-                <nav className="space-y-1">
-                  {guide.sections.map((section, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleScrollTo(`section-${idx}`)}
-                      className="block w-full text-left text-sm text-neutral-600 hover:text-teal px-2 py-1.5 rounded hover:bg-teal/5 transition-colors leading-snug"
-                    >
-                      {section.heading}
-                    </button>
-                  ))}
+                <nav aria-label="Guide sections" className="space-y-1">
+                  {guide.sections.map((section, idx) => {
+                    const sectionId = `section-${idx}`;
+                    return (
+                      // Fragment links so the sections are addressable without
+                      // JavaScript; the click handler only smooths the scroll.
+                      <a
+                        key={idx}
+                        href={`#${sectionId}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleScrollTo(sectionId);
+                          window.history.replaceState(null, "", `#${sectionId}`);
+                        }}
+                        className="block w-full text-left text-sm text-neutral-600 hover:text-teal px-2 py-1.5 rounded hover:bg-teal/5 transition-colors leading-snug"
+                      >
+                        {section.heading}
+                      </a>
+                    );
+                  })}
                 </nav>
 
                 <div className="mt-6 pt-6 border-t border-neutral-200">

@@ -127,3 +127,34 @@ describe("POST /api/contact end-to-end (no external services)", () => {
     expect(res.headers.get("location")).toBe("/about");
   });
 });
+
+describe("legacy 301 map (lib/legacy-redirects.server.mjs)", () => {
+  let server, base;
+  beforeAll(async () => {
+    server = createServer(mod.requestHandler);
+    await new Promise((r) => server.listen(0, "127.0.0.1", r));
+    base = `http://127.0.0.1:${server.address().port}`;
+  });
+  afterAll(() => new Promise((r) => server.close(r)));
+
+  it("301s an old service route to its pillar and leaves live routes alone", async () => {
+    const r = await fetch(`${base}/services/economic-loss-assessment`, { redirect: "manual" });
+    expect(r.status).toBe(301);
+    expect(r.headers.get("location")).toBe("/services/lost-earnings-and-earning-capacity");
+    expect((await fetch(`${base}/healthz`)).status).toBe(200);
+  });
+  it("301s an old bare state route into /locations", async () => {
+    const r = await fetch(`${base}/new-jersey`, { redirect: "manual" });
+    expect(r.status).toBe(301);
+    expect(r.headers.get("location")).toMatch(/^\/locations(\/new-jersey)?$/);
+  });
+  it("sends a sister-practice route off-site", async () => {
+    const r = await fetch(`${base}/services/vocational-evaluation/texas/houston`, { redirect: "manual" });
+    expect(r.status).toBe(301);
+    expect(r.headers.get("location")).toBe("https://kwvrs.com/");
+  });
+  it("does not redirect POST requests", async () => {
+    const r = await fetch(`${base}/experience`, { method: "POST", redirect: "manual" });
+    expect(r.status).not.toBe(301);
+  });
+});

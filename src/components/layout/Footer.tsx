@@ -86,7 +86,7 @@ export default function Footer() {
           {/* Column 1: Company Info */}
           <div>
             <Link to="/">
-              <img src="/images/logo.svg" alt={ORG_NAME} className="h-8 brightness-0 invert" />
+              <img src="/images/logo.svg" alt={ORG_NAME} width={600} height={257} className="h-8 w-auto brightness-0 invert" />
             </Link>
             <p className="mt-3 text-sm text-neutral-400 leading-relaxed">
               {ORG_NAME} - forensic economists preparing court-ready lost earnings, wrongful

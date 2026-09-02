@@ -15,7 +15,9 @@ import { refsToSources } from "./references";
  *
  * Copy rules: citation-free prose (no statute or rule cites), hyphens only,
  * no dollar figures, no invented statistics, and no claim that a named person
- * holds a membership or credential. `relevantServices` lists pillar slugs
+ * holds a membership or credential. `summaryShort`, `inShort`, and `steps`
+ * follow the same house style as the long fields and are guarded by
+ * caseTypes.test.ts. `relevantServices` lists pillar slugs
  * from services.ts; `relevantCredentials` uses the same label set as
  * services.ts (matched against credential slugs or abbreviations by the
  * templates). `sources` come from the registry in references.ts only.
@@ -37,7 +39,23 @@ export interface CaseType {
   slug: string;
   name: string;
   category: CaseTypeCategory;
+  /** Short SERP title stem ("Wrongful Death Economist"); the templates append
+   * the place and the brand, so keep it under 45 characters. */
+  titleBase: string;
+  /** ISO dates for the Article schema and the byline. `dateModified` moves
+   * whenever the entry's copy changes. */
+  datePublished: string;
+  dateModified: string;
   summary: string;
+  /** One- or two-sentence definition of the claim, rendered on the case-type x
+   * state pages in place of the hub's full summary and section prose. */
+  summaryShort: string;
+  /** Three one-line takeaways (components, records, how the number is built)
+   * rendered as the "In short" list under the hub lead. */
+  inShort: string[];
+  /** Four numbered steps (base, projection, offsets, present value) that make
+   * the "How the analysis is built" section liftable as a list. */
+  steps: string[];
   /** What the economic claim is made of and which records drive it. */
   lossComponents: string;
   /** Which components usually dominate the number and why. */
@@ -55,6 +73,22 @@ export const caseTypes: CaseType[] = [
     slug: "personal-injury",
     name: "Personal Injury",
     category: "personal-injury",
+    titleBase: "Personal Injury Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A personal injury economic claim consists of the earnings and fringe benefits the injury has taken away, the household work the person can no longer do, and the present value of the future care the record supports, each tied to the person's own records.",
+    inShort: [
+      "The claim consists of past and future lost earnings, lost fringe benefits, household services, and the present value of future care.",
+      "Tax, wage, benefit, and personnel records set the base; the medical and work-capacity opinions in the record set the post-injury path.",
+      "Each future stream is projected with stated growth and discounted to present value, with contested assumptions shown as ranges.",
+    ],
+    steps: [
+      "Establish the but-for earnings and fringe benefit base from the tax, wage, benefit, and personnel records, or from occupational data for a career still in training.",
+      "Project the base over a statistically expected worklife with a stated wage growth rate and compare it with the post-injury path the record supports.",
+      "Value household services from time-use data and local replacement rates, and price the future care in the life care plan item by item with medical cost growth.",
+      "Discount every future stream to present value at a stated rate and show the sensitivity of the total to the contested assumptions.",
+    ],
     summary:
       "Personal injury matters range from orthopedic injuries with a defined recovery to permanent impairments that end a career. The economic claim is built from the injured person's earnings history, the work the injury has taken away or reduced, the fringe benefits that came with that work, the household work the person can no longer do, and the cost of the future care the treating providers or a life care plan have identified. The economist's job is to state each of those components, tie it to the record, and reduce the future stream to a present value the court can use.",
     lossComponents:
@@ -98,6 +132,22 @@ export const caseTypes: CaseType[] = [
     slug: "wrongful-death",
     name: "Wrongful Death",
     category: "wrongful-death",
+    titleBase: "Wrongful Death Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A wrongful death economic claim measures what the decedent would have contributed to the household over an expected life: earnings and benefits net of personal consumption, household services, and support to each dependent, reduced to present value under the framework counsel identifies.",
+    inShort: [
+      "The claim consists of net lost earnings and benefits, the replacement value of household services, and support to each dependent over its period.",
+      "The decedent's tax and wage records, the household's composition and expenditures, and the services provided at home drive the number.",
+      "Personal consumption is deducted from published expenditure data, and every future stream is discounted to present value at a stated rate.",
+    ],
+    steps: [
+      "Establish the decedent's earnings and fringe benefit base from the tax, wage, and benefit records.",
+      "Project the base over a worklife expectancy with a stated wage growth rate.",
+      "Deduct personal consumption from published household expenditure data and add household services and support to each dependent over its period.",
+      "Discount every future stream to present value at a stated rate and show the sensitivity of the total to the contested assumptions.",
+    ],
     summary:
       "In a wrongful death matter the economic claim measures what the decedent would have contributed to the household over the rest of an expected life, not what the decedent would have earned in isolation. The analysis projects earnings and fringe benefits, deducts the share the decedent would have consumed personally, adds the value of household services and, where recoverable, other forms of support, and reduces the total to present value for the survivors or the estate as the governing framework requires.",
     lossComponents:
@@ -141,6 +191,22 @@ export const caseTypes: CaseType[] = [
     slug: "medical-malpractice",
     name: "Medical Malpractice",
     category: "med-mal",
+    titleBase: "Medical Malpractice Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A medical malpractice economic claim measures the earnings, benefits, household services, and care costs the injury added to the outcome the patient would have had with proper care, as the causation opinions in the record define it.",
+    inShort: [
+      "The loss is the difference between two paths: the outcome proper care would have produced and the outcome the injury produced.",
+      "The medical causation and apportionment opinions define the but-for path; the earnings, benefit, and care records define each component.",
+      "Each component is projected over the life or worklife expectancy the medical evidence supports and discounted to present value.",
+    ],
+    steps: [
+      "State the but-for path the causation opinions support: what the patient would have earned, for how long, and what care the underlying condition would have required regardless.",
+      "Build the injured path from actual post-injury earnings, the work-capacity opinions, and the incremental care plan.",
+      "Measure each component as the difference between the two paths, projected over the applicable life or worklife expectancy with stated growth.",
+      "Discount the streams to present value and present the loss under each apportionment or life expectancy scenario the physicians offer.",
+    ],
     summary:
       "Medical malpractice matters present the economic loss questions of a personal injury or wrongful death case with one added layer: the loss must be measured against the outcome the patient would have had with proper care, not against perfect health. The economist works from the medical causation opinions in the record to define the but-for path and then measures the earnings, benefits, household services, and care costs the injury has added to it.",
     lossComponents:
@@ -179,6 +245,22 @@ export const caseTypes: CaseType[] = [
     slug: "motor-vehicle-accident",
     name: "Motor Vehicle Accident",
     category: "personal-injury",
+    titleBase: "Motor Vehicle Accident Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A motor vehicle accident economic claim ranges from a documented period of lost pay to lifetime earnings, household services, and care losses after a catastrophic crash, and the analysis is scaled to the injury the record describes.",
+    inShort: [
+      "The claim consists of lost earnings during recovery, any future earnings gap, lost fringe benefits, household services, and the present value of future care.",
+      "Employer records on the period out of work, the earnings history, and the medical and work-capacity opinions drive the number.",
+      "Each future stream is projected with stated growth and discounted to present value, with alternative return-to-work scenarios shown.",
+    ],
+    steps: [
+      "Document the earnings history, the date the person left work, and any return to work at full or reduced capacity.",
+      "Project the but-for earnings over a worklife expectancy with a stated wage growth rate and compare it with the post-injury path.",
+      "Value fringe benefits from plan documents or published employer cost data, household services from time-use data, and future care from the life care plan.",
+      "Discount each stream to present value at a stated rate and present the alternative scenarios where the return-to-work date or capacity is disputed.",
+    ],
     summary:
       "Motor vehicle accident matters produce the full range of economic loss, from a few months of lost pay after an orthopedic injury to lifetime earnings and care losses after a catastrophic crash. The economist scales the analysis to the injury: a short past-loss calculation from pay records, or a full projection of lost earnings, benefits, household services, and future care costs to present value when the injury is permanent.",
     lossComponents:
@@ -217,6 +299,22 @@ export const caseTypes: CaseType[] = [
     slug: "traumatic-brain-injury",
     name: "Traumatic Brain Injury",
     category: "personal-injury",
+    titleBase: "Traumatic Brain Injury Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A traumatic brain injury economic claim measures the earnings, benefits, and household contributions the injury has taken away and reduces the care plan to present value, with the supervision hours and the residual work capacity stated so they can be tested.",
+    inShort: [
+      "The claim consists of lost earnings and earning capacity, lost fringe benefits, household services and family supervision, and the present value of the care plan.",
+      "The earnings history, the neuropsychological and work-capacity opinions, and a life care plan with frequencies and durations drive the number.",
+      "Future streams are discounted to present value, with the total shown under alternative supervision and work-capacity scenarios.",
+    ],
+    steps: [
+      "Establish the but-for earnings path from the person's history or, for a young person, from occupational data for the path they were on.",
+      "Draw the post-injury path from actual earnings and the work-capacity opinions in the record, and measure the earnings gap over the remaining worklife.",
+      "Value household services and family supervision from time-use data and local rates, and price the care plan item by item with medical cost growth.",
+      "Discount every future stream to present value at a stated rate and show the total under each supervision and work-capacity scenario.",
+    ],
     summary:
       "Traumatic brain injury matters carry some of the largest economic claims in personal injury litigation because cognitive and behavioral effects can end a career even when physical function returns. The economist's task is to measure the earnings, benefits, and household contributions the injury has taken away and to reduce the care costs in the life care plan to present value, with every assumption stated so it can be tested.",
     lossComponents:
@@ -260,6 +358,22 @@ export const caseTypes: CaseType[] = [
     slug: "spinal-cord-injury",
     name: "Spinal Cord Injury",
     category: "personal-injury",
+    titleBase: "Spinal Cord Injury Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A spinal cord injury economic claim brings together lost earnings and benefits, the household work the person can no longer do, and the present value of a lifetime care plan dominated by attendant care and equipment replacement cycles.",
+    inShort: [
+      "The claim consists of lost earnings and earning capacity, lost fringe benefits, household services, and the present value of the life care plan.",
+      "The earnings and benefit history, the work-capacity opinions, and a care plan with frequencies and replacement intervals drive the number.",
+      "Attendant care, equipment cycles, and modifications are priced with category-specific cost growth and discounted to present value.",
+    ],
+    steps: [
+      "Establish the but-for earnings path from the person's history and occupational data, and project it over a worklife expectancy with stated wage growth.",
+      "Compare that path with the post-injury path the work-capacity opinions support, whether no earnings, reduced earnings, or earnings after retraining.",
+      "Value fringe benefits and household services, and price the care plan item by item with the cost growth rate and replacement interval appropriate to each category.",
+      "Discount every future stream to present value at a stated rate and present home-based and facility-based care scenarios when the plan offers both.",
+    ],
     summary:
       "Spinal cord injury matters involve permanent loss of function that typically ends the person's prior occupation and creates lifetime care and equipment costs. The economic claim brings together lost earnings and benefits, the household work the person can no longer do, and the present value of the life care plan, and the economist's role is to build each component from the record and reduce it to a number the court can rely on.",
     lossComponents:
@@ -298,6 +412,22 @@ export const caseTypes: CaseType[] = [
     slug: "workers-compensation",
     name: "Workers' Compensation",
     category: "workers-comp",
+    titleBase: "Workers' Compensation Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A workers' compensation economic analysis values the future indemnity and medical benefits at issue in a settlement, measures the wage loss that determines a benefit, or quantifies the loss in a third-party action, each structured to the question the compensation system asks.",
+    inShort: [
+      "The analysis values future indemnity and medical benefits, measures wage loss or reduced earning capacity, or supports a third-party claim arising from the same injury.",
+      "Pre-injury wage records, the carrier's payment history, post-injury earnings, and the work-capacity opinions drive the number.",
+      "Indemnity streams are valued with stated mortality and discount assumptions, and the compensation payments are separated from what a civil claim adds.",
+    ],
+    steps: [
+      "Assemble the pre-injury wage base from the employer's records and tax documents.",
+      "Establish the post-injury earnings path from actual earnings or the work-capacity opinions, and measure the loss over the applicable worklife with wage growth.",
+      "Value future indemnity streams with stated mortality and discount assumptions, and grow and discount future medical by category when a treatment projection exists.",
+      "Separate the amounts the compensation system pays from the components a third-party claim adds, and reconcile the two so the same facts support both.",
+    ],
     summary:
       "Workers' compensation matters call for economic analysis at several points: valuing the future indemnity and medical benefits at issue in a settlement, measuring the economic loss in a third-party action arising from the same injury, and quantifying the wage loss that determines the benefit itself where loss of earning capacity is the measure. The economist brings the same earnings, benefits, and present value methods to each, structured to the question the compensation system actually asks.",
     lossComponents:
@@ -336,6 +466,22 @@ export const caseTypes: CaseType[] = [
     slug: "employment-discrimination",
     name: "Employment Discrimination",
     category: "employment",
+    titleBase: "Employment Discrimination Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "An employment discrimination economic claim measures the gap between the compensation the employee would have received absent the adverse action and the compensation actually received, as back pay, front pay, and lost benefits net of mitigation.",
+    inShort: [
+      "The claim consists of back pay, front pay, lost fringe benefits and equity, and in pay-disparity claims the shortfall against the comparators.",
+      "Payroll and personnel records, comparator compensation, post-action earnings, and the job-search record drive the number.",
+      "Mitigation is credited, front pay is shown at several durations, and future amounts are discounted to present value.",
+    ],
+    steps: [
+      "Reconstruct the but-for compensation path from the employee's history and the employer's pay practices, including raises, bonus patterns, and benefit accruals.",
+      "Compare that path with actual post-action earnings year by year, crediting mitigation from the employee's records or from local wage and unemployment duration data.",
+      "Project front pay over the period the record supports for reaching comparable employment, with the loss shown at alternative durations.",
+      "Separate back pay, front pay, and benefits, discount the future amounts to present value, and supply the schedule counsel needs for prejudgment interest.",
+    ],
     summary:
       "Employment discrimination matters measure the economic gap between where the employee's compensation would have been absent the adverse action and where it actually is, from the date of the action through a reasonable point in the future. The economist builds the back pay and front pay figures from the compensation records, accounts for what the employee has earned or could reasonably have earned in mitigation, and reduces the future component to present value.",
     lossComponents:
@@ -374,6 +520,22 @@ export const caseTypes: CaseType[] = [
     slug: "wrongful-termination",
     name: "Wrongful Termination",
     category: "employment",
+    titleBase: "Wrongful Termination Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A wrongful termination economic claim measures what the employee lost when the employment ended, as back pay, front pay, and lost benefits, and how much of that loss has been or should be replaced by other work.",
+    inShort: [
+      "The claim consists of back pay, front pay, lost fringe benefits, and any pension, deferred compensation, or equity forfeited at termination.",
+      "The employment agreement, payroll and benefit records, tax returns, and the record of the job search drive the number.",
+      "Replacement earnings are credited, the front pay period is shown at alternative durations, and future amounts are discounted to present value.",
+    ],
+    steps: [
+      "Build the but-for compensation path from the pay history and the employer's pay and promotion practices, including the benefit accruals that would have continued.",
+      "Compare it with the replacement earnings actually received, or with a reasonable job-search duration and replacement wage level drawn from local occupational data.",
+      "Calculate pension and deferred compensation losses from the plan terms and equity losses from the award schedule.",
+      "Discount the future components to present value at a stated rate and present back pay, front pay, and benefits separately.",
+    ],
     summary:
       "Wrongful termination matters ask what the employee lost when the employment ended and how much of that loss has been or should be replaced by other work. The economist measures the gap between the compensation the employee would have received had the employment continued and the compensation actually earned since, projects that gap over a reasonable period, and reduces the future portion to present value.",
     lossComponents:
@@ -412,6 +574,22 @@ export const caseTypes: CaseType[] = [
     slug: "commercial-contract-dispute",
     name: "Commercial Contract Dispute",
     category: "commercial",
+    titleBase: "Commercial Contract Dispute Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A commercial contract damages claim measures the profits a business lost, or the costs it incurred, because the other party did not perform, as the difference between the performed-contract path and what the business actually earned or could have earned by mitigating.",
+    inShort: [
+      "The claim consists of lost profits on the contract and on dependent business, reliance costs, and in some matters the diminished value of the business.",
+      "The contract, historical financial statements and tax returns, pre-dispute projections, and the cost structure drive the number.",
+      "Only the lost margin is claimed, mitigation revenue is credited, and future lost profits are discounted at a rate that reflects the risk of the stream.",
+    ],
+    steps: [
+      "Establish the but-for revenue from the contract terms, the pre-dispute projections, and the business's own history.",
+      "Identify the incremental costs that would have been incurred to earn that revenue so that only the lost margin is claimed.",
+      "Analyze actual results after the breach to separate the effect of the breach from market conditions and other causes, and credit mitigation revenue.",
+      "Bring past lost profits forward and discount future lost profits at a stated rate that reflects the risk of the earnings stream.",
+    ],
     summary:
       "Commercial contract disputes turn on the profits a business lost, or the costs it incurred, because the other party did not perform. The economist reconstructs what the business would have earned had the contract been performed, compares it with what the business actually earned or could have earned by mitigating, and presents the difference with the causation, timing, and discount assumptions stated.",
     lossComponents:
@@ -450,6 +628,22 @@ export const caseTypes: CaseType[] = [
     slug: "partnership-and-shareholder-dispute",
     name: "Partnership and Shareholder Dispute",
     category: "commercial",
+    titleBase: "Partnership and Shareholder Dispute Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A partnership or shareholder dispute turns on what an ownership interest is worth under the standard of value that applies and whether the business's earnings have been fairly shared, both answered from the agreements and the financial records.",
+    inShort: [
+      "The analysis consists of the value of the interest as of the relevant date, any shortfall against what the departing owner received, and profits diverted through compensation or related-party dealings.",
+      "The operating or shareholder agreement, financial statements and tax returns, the general ledger, and distribution records drive the number.",
+      "The interest is valued under the income, market, and asset approaches as the facts support, with any discounts explained.",
+    ],
+    steps: [
+      "Read the agreements to identify the valuation date, the standard of value, and any buyout formula.",
+      "Normalize the financial statements for owner compensation, related-party transactions, and non-recurring items.",
+      "Value the interest under the income, market, and asset approaches as the facts support, with the weighting and any discounts or premiums explained.",
+      "Trace any diverted profits through the ledger and bank records, quantify them by year, and show the effect of the principal assumptions.",
+    ],
     summary:
       "Partnership and shareholder disputes turn on what an ownership interest is worth and whether the business's earnings have been fairly shared. The economist values the interest under the standard of value that applies to the claim, analyzes the distributions, compensation, and related-party dealings in the financial records, and states the conclusions with the methods and assumptions laid out so they can be examined.",
     lossComponents:
@@ -488,6 +682,22 @@ export const caseTypes: CaseType[] = [
     slug: "divorce-and-marital-dissolution",
     name: "Divorce and Marital Dissolution",
     category: "family",
+    titleBase: "Divorce and Marital Dissolution Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A divorce or marital dissolution matter asks what the marital assets, including any business interest, are worth and what each spouse's income is or can reasonably be for support, both determined from the financial records rather than the tax return alone.",
+    inShort: [
+      "The analysis consists of a business or practice valuation, an income determination for support, the tracing of separate and marital property, and the present value of deferred assets.",
+      "Business and personal tax returns, financial statements and ledgers, bank and brokerage statements, and benefit records drive the number.",
+      "The valuation, the income determination, and the tracing are presented as separate sections so each can be examined on its own.",
+    ],
+    steps: [
+      "Normalize the business's financial statements for owner compensation, personal expenses, and non-recurring items.",
+      "Value the business under the income, market, and asset approaches as the facts support, addressing personal and enterprise goodwill where the framework requires the distinction.",
+      "Determine income for support from the same records, adding the cash flow available to the owner beyond reported salary.",
+      "Trace separate property through the account statements step by step and reduce deferred assets to present value with stated mortality and discount assumptions.",
+    ],
     summary:
       "Divorce and marital dissolution matters involve two economic questions: what the marital assets, including any business interest, are worth, and what each spouse's income is or can reasonably be for support purposes. The economist values the business, traces separate and marital property through the financial records, and determines income from the records rather than the tax return alone, with the methods stated so the conclusions can be examined.",
     lossComponents:
@@ -526,6 +736,22 @@ export const caseTypes: CaseType[] = [
     slug: "fraud-and-embezzlement",
     name: "Fraud and Embezzlement",
     category: "commercial",
+    titleBase: "Fraud and Embezzlement Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A fraud or embezzlement economic claim establishes how much was taken, over what period, by what mechanism, and where it went, and quantifies the loss in a form that supports a civil claim or a restitution figure.",
+    inShort: [
+      "The claim consists of the amounts diverted, the consequential losses the diversion caused, the cost of investigation, and the current value of assets the funds bought.",
+      "Bank records, the general ledger, payroll and vendor files, and third-party records that confirm or contradict the internal books drive the number.",
+      "Documented amounts, pattern-based estimates, and amounts that could not be determined are reported separately.",
+    ],
+    steps: [
+      "Map the scheme's mechanism from the records and identify each transaction that fits it.",
+      "Confirm the amounts against bank statements, cancelled checks, and third-party documents rather than the internal books alone.",
+      "Trace the diverted funds forward to the accounts and assets they reached, and quantify the consequential losses with the causal link explained.",
+      "Separate the amounts established from records, the amounts estimated from patterns, and the amounts that could not be determined.",
+    ],
     summary:
       "Fraud and embezzlement matters require the economist to establish how much was taken, over what period, by what mechanism, and where it went, and then to quantify the loss to the business or the victim in a form that supports a civil claim or a restitution figure. The analysis is built from the transaction record and states what was found, what could not be determined, and the basis for every amount.",
     lossComponents:
@@ -564,6 +790,22 @@ export const caseTypes: CaseType[] = [
     slug: "product-liability",
     name: "Product Liability",
     category: "personal-injury",
+    titleBase: "Product Liability Economist",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
+    summaryShort:
+      "A product liability economic claim measures lost earnings and benefits, household services, and the present value of future care, or the survivors' loss when the injury was fatal, built from the injured person's own path rather than from an occupation the product happened to involve.",
+    inShort: [
+      "The claim consists of lost earnings and earning capacity, lost fringe benefits, household services, and the present value of future care, or the survivors' loss in a fatal injury.",
+      "The earnings and benefit history, the medical and work-capacity opinions, and the care plan drive the number; for a child or homemaker, the educational path and household work replace wage records.",
+      "Every future stream is discounted to present value, and in multi-claimant matters one documented methodology is applied to each claimant's own record.",
+    ],
+    steps: [
+      "Establish the but-for path from the earnings history or, for a child, student, or homemaker, from the educational path, occupational data, or the household work performed.",
+      "Draw the post-injury path from actual earnings and the work-capacity opinions, and project both paths over the applicable worklife or life expectancy with growth.",
+      "Value household services from time-use data and local rates, and price future care from the life care plan with category-specific cost growth.",
+      "Discount every stream to present value at a stated rate and, where there are multiple claimants, apply one documented methodology to each record.",
+    ],
     summary:
       "Product liability matters present the same economic loss questions as other injury and death claims, with the added feature that the injured person is often a consumer or worker whose exposure to the product bears no relation to their occupation, so the earnings analysis must be built from that person's own path. The economist measures lost earnings and benefits, household services, and the present value of future care, or the survivors' loss when the injury was fatal, from the record.",
     lossComponents:

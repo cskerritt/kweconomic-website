@@ -94,6 +94,25 @@ describe("retired-surface CTAs point at /schedule-consultation or /contact", () 
   });
 });
 
+describe("layout chrome carried over from the 2026-09-02 audit", () => {
+  const headerSrc = readFileSync(join(here, "components/layout/Header.tsx"), "utf8");
+  const footerSrc = readFileSync(join(here, "components/layout/Footer.tsx"), "utf8");
+  const LOGO_WITH_SIZE = /<img[^>]*src="\/images\/logo\.svg"[^>]*width=\{600\}[^>]*height=\{257\}/s;
+
+  it("the mobile sticky bar asks for a consultation, never a quote, and lands on /schedule-consultation", () => {
+    expect(headerSrc).not.toMatch(/Get a Quote/i);
+    const bar = headerSrc.slice(headerSrc.indexOf("Mobile sticky bottom CTA"));
+    expect(bar).toContain('to="/schedule-consultation"');
+    expect(bar).toContain("Request a Consultation");
+    expect(bar).toContain('href={PHONE_HREF}');
+  });
+
+  it("the header and footer wordmarks declare their intrinsic size so the first paint reserves the box", () => {
+    expect(headerSrc).toMatch(LOGO_WITH_SIZE);
+    expect(footerSrc).toMatch(LOGO_WITH_SIZE);
+  });
+});
+
 describe("orphan-page guards carried over from the 2026-07-22 link audit", () => {
   const pillarSrc = readFileSync(join(here, "pages/ServicePillar.tsx"), "utf8");
   const footerSrc = readFileSync(join(here, "components/layout/Footer.tsx"), "utf8");

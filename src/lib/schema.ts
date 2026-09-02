@@ -6,10 +6,12 @@ import {
   ORG_STATE,
   ORG_COUNTRY,
   ORG_LOGO,
+  DEFAULT_OG_IMAGE,
   OFFICES,
   SAME_AS,
   KNOWS_ABOUT,
 } from "./brand";
+import { team } from "@/data/team";
 export { ORG_NAME, ORG_PHONE, ORG_CITY, ORG_STATE, ORG_COUNTRY, ORG_LOGO, OFFICES };
 export const ORG_URL = SITE_URL;
 export const ORG_ID = `${ORG_URL}/#org`;
@@ -25,6 +27,19 @@ const DEFAULT_OPENING_HOURS = [
 ];
 
 type JsonLd = Record<string, unknown>;
+
+// Strip the [[/route|anchor]] inline-link markers (see src/lib/richtext.tsx) down
+// to their anchor text, so structured-data text stays clean prose and no marker
+// syntax leaks into any JSON-LD node. Every builder that accepts editorial copy
+// (headline, description, FAQ answers, HowTo steps) runs its text through this.
+export function stripLinkMarkers(text: string): string {
+  return text.replace(/\[\[\/[^|\]]*\|([^\]]+)\]\]/g, "$1");
+}
+
+/** Drop the keys whose value is undefined so an optional field never serializes as null or "undefined". */
+function compact<T extends JsonLd>(node: T): T {
+  return Object.fromEntries(Object.entries(node).filter(([, v]) => v !== undefined)) as T;
+}
 
 export function organizationSchema(): JsonLd {
   return {
@@ -67,6 +82,13 @@ export function websiteSchema(): JsonLd {
   };
 }
 
+/**
+ * Service node. `slug` names the pillar (or pillar variant) path under
+ * /services; pages that are not a /services route (state hubs, city pages,
+ * service x state, case-type x state, credential x state) pass their own
+ * canonical `url` so the node's @id and url resolve to the page that carries
+ * it rather than to a synthetic /services/<slug> address that returns 404.
+ */
 export function serviceSchema(args: {
   slug: string;
   name: string;
@@ -74,15 +96,17 @@ export function serviceSchema(args: {
   areaServed?: JsonLd | string;
   offers?: JsonLd;
   dateModified?: string;
+  url?: string;
 }): JsonLd {
+  const pageUrl = args.url ?? `${ORG_URL}/services/${args.slug}`;
   return {
     "@type": "Service",
-    "@id": `${ORG_URL}/services/${args.slug}#service`,
-    name: args.name,
-    description: args.description,
+    "@id": `${pageUrl}#service`,
+    name: stripLinkMarkers(args.name),
+    description: stripLinkMarkers(args.description),
     provider: { "@id": ORG_ID },
     areaServed: args.areaServed ?? { "@type": "Country", name: "United States" },
-    url: `${ORG_URL}/services/${args.slug}`,
+    url: pageUrl,
     ...(args.offers ? { offers: args.offers } : {}),
     ...(args.dateModified ? { dateModified: args.dateModified } : {}),
   };
@@ -94,34 +118,39 @@ export function serviceSchema(args: {
  *
  * Do NOT use this on state/city pages where the firm has no physical presence.
  * For those, use {@link serviceSchema} with `areaServed` instead.
+ *
+ * Optional NAP fields (streetAddress, hasMap) are omitted from the node when
+ * the office record does not carry them, never emitted as a placeholder.
  */
 export function officeSchemas(): JsonLd[] {
-  return OFFICES.map((o) => ({
-    "@type": "ProfessionalService",
-    "@id": o.id,
-    name: o.name,
-    parentOrganization: { "@id": ORG_ID },
-    url: ORG_URL,
-    telephone: o.telephone,
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: o.streetAddress,
-      addressLocality: o.addressLocality,
-      addressRegion: o.addressRegion,
-      postalCode: o.postalCode,
-      addressCountry: o.addressCountry,
-    },
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: o.latitude,
-      longitude: o.longitude,
-    },
-    hasMap: o.hasMap,
-    openingHoursSpecification: DEFAULT_OPENING_HOURS,
-    priceRange: "$$$",
-    image: ORG_LOGO,
-    areaServed: { "@type": "Country", name: "United States" },
-  }));
+  return OFFICES.map((o) =>
+    compact({
+      "@type": "ProfessionalService",
+      "@id": o.id,
+      name: o.name,
+      parentOrganization: { "@id": ORG_ID },
+      url: ORG_URL,
+      telephone: o.telephone,
+      address: compact({
+        "@type": "PostalAddress",
+        streetAddress: o.streetAddress,
+        addressLocality: o.addressLocality,
+        addressRegion: o.addressRegion,
+        postalCode: o.postalCode,
+        addressCountry: o.addressCountry,
+      }),
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: o.latitude,
+        longitude: o.longitude,
+      },
+      hasMap: o.hasMap,
+      openingHoursSpecification: DEFAULT_OPENING_HOURS,
+      priceRange: "$$$",
+      image: ORG_LOGO,
+      areaServed: { "@type": "Country", name: "United States" },
+    }),
+  );
 }
 
 /**
@@ -148,22 +177,46 @@ export function breadcrumbSchema(items: { name: string; url: string }[]): JsonLd
   };
 }
 
-// Strip the [[/route|anchor]] inline-link markers (see src/lib/richtext.tsx) down
-// to their anchor text, so structured-data answer text stays clean prose and no
-// marker syntax leaks into the FAQPage JSON-LD.
-function stripLinkMarkers(text: string): string {
-  return text.replace(/\[\[\/[^|\]]*\|([^\]]+)\]\]/g, "$1");
-}
-
 export function faqPageSchema(faqs: { question: string; answer: string }[], pageUrl: string): JsonLd {
   return {
     "@type": "FAQPage",
     "@id": `${pageUrl}#faq`,
     mainEntity: faqs.map((f) => ({
       "@type": "Question",
-      name: f.question,
+      name: stripLinkMarkers(f.question),
       acceptedAnswer: { "@type": "Answer", text: stripLinkMarkers(f.answer) },
     })),
+  };
+}
+
+/**
+ * Inline author node for Article/BlogPosting. A named reviewer becomes a
+ * Person carrying the same @id as the /team/:slug profile node (so the two
+ * resolve to one entity) plus the name, job title, and profile URL a rich
+ * results validator needs on the page itself. No hasCredential here: the
+ * credential list belongs to the profile page's Person node only. Unnamed
+ * copy is authored by the organization.
+ */
+export function authorNode(authorSlug?: string): JsonLd {
+  const member = authorSlug ? team.find((m) => m.slug === authorSlug) : undefined;
+  if (!member) return { "@id": ORG_ID };
+  return {
+    "@type": "Person",
+    "@id": `${ORG_URL}/team/${member.slug}#person`,
+    name: member.name,
+    jobTitle: member.title,
+    url: `${ORG_URL}/team/${member.slug}`,
+  };
+}
+
+/** Inline publisher node: the organization by @id with the name and logo the Article rich result requires. */
+export function publisherNode(): JsonLd {
+  return {
+    "@type": "Organization",
+    "@id": ORG_ID,
+    name: ORG_NAME,
+    url: ORG_URL,
+    logo: { "@type": "ImageObject", url: ORG_LOGO },
   };
 }
 
@@ -179,17 +232,17 @@ export function articleSchema(args: {
   return {
     "@type": "Article",
     "@id": `${args.url}#article`,
-    headline: args.title,
-    description: args.description,
+    headline: stripLinkMarkers(args.title),
+    description: stripLinkMarkers(args.description),
     url: args.url,
     mainEntityOfPage: args.url,
-    image: args.image ?? ORG_LOGO,
+    // A representative image (the site share image by default), never the
+    // wordmark: the logo stays on publisher.logo.
+    image: args.image ?? DEFAULT_OG_IMAGE,
     ...(args.datePublished ? { datePublished: args.datePublished } : {}),
     ...(args.dateModified ? { dateModified: args.dateModified } : {}),
-    author: args.authorSlug
-      ? { "@id": `${ORG_URL}/team/${args.authorSlug}#person` }
-      : { "@id": ORG_ID },
-    publisher: { "@id": ORG_ID },
+    author: authorNode(args.authorSlug),
+    publisher: publisherNode(),
   };
 }
 
@@ -226,6 +279,7 @@ export function personSchema(args: {
     name: args.name,
     jobTitle: args.jobTitle,
     description: args.bio,
+    url: `${ORG_URL}/team/${args.slug}`,
     worksFor: { "@id": ORG_ID },
     hasCredential: args.credentials.map((c) => ({
       "@type": "EducationalOccupationalCredential",
@@ -259,7 +313,7 @@ export function credentialSchema(args: {
     "@id": `${ORG_URL}/credentials/${args.slug}#credential`,
     name: args.name,
     alternateName: args.abbreviation,
-    description: args.scope,
+    description: stripLinkMarkers(args.scope),
     credentialCategory: args.category,
     ...(args.issuer
       ? {
@@ -280,19 +334,71 @@ export function howToSchema(args: {
 }): JsonLd {
   return {
     "@type": "HowTo",
-    name: args.name,
-    description: args.description,
+    name: stripLinkMarkers(args.name),
+    description: stripLinkMarkers(args.description),
     step: args.steps.map((text, i) => ({
       "@type": "HowToStep",
       position: i + 1,
-      text,
+      text: stripLinkMarkers(text),
     })),
   };
 }
 
+/** ItemList of child pages for an index page (`${url}#list`). */
+export function itemListSchema(url: string, items: { name: string; url: string }[]): JsonLd {
+  return {
+    "@type": "ItemList",
+    "@id": `${url}#list`,
+    numberOfItems: items.length,
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      url: item.url,
+    })),
+  };
+}
+
+/**
+ * CollectionPage node for a hub: its own @id (`${url}#webpage`), the site and
+ * publisher it belongs to, and the ItemList of the pages it indexes as its
+ * main entity. The same shape the hub pages build inline, so the static shell
+ * and the hydrated page describe one entity.
+ */
+export function collectionPageSchema(args: {
+  url: string;
+  name: string;
+  description: string;
+  items: { name: string; url: string }[];
+}): JsonLd {
+  return {
+    "@type": "CollectionPage",
+    "@id": `${args.url}#webpage`,
+    url: args.url,
+    name: args.name,
+    description: stripLinkMarkers(args.description),
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": ORG_ID },
+    mainEntity: itemListSchema(args.url, args.items),
+  };
+}
+
+/** True when the node, or anything nested in it, points at the organization by @id. */
+function referencesOrg(node: JsonLd): boolean {
+  return JSON.stringify(node).includes(`"@id":"${ORG_ID}"`);
+}
+
+/**
+ * Wrap a page's nodes in one @graph. Every graph is self-contained: when a node
+ * refers to the organization by @id (author, publisher, provider, worksFor,
+ * about) and no node in the list carries that @id, the Organization node is
+ * prepended so the reference resolves on the page itself instead of dangling.
+ */
 export function graphSchema(entities: JsonLd[]): JsonLd {
+  const carriesOrg = entities.some((e) => e["@id"] === ORG_ID);
+  const needsOrg = !carriesOrg && entities.some(referencesOrg);
   return {
     "@context": "https://schema.org",
-    "@graph": entities,
+    "@graph": needsOrg ? [organizationSchema(), ...entities] : entities,
   };
 }

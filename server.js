@@ -9,6 +9,7 @@ import { verifyTurnstile, turnstileStartupState } from "./turnstile.server.mjs";
 import * as rawSubs from "./lib/raw-submissions.server.mjs";
 import { checkSpam } from "./lib/spam-heuristics.server.mjs";
 import { sendLeadEmail, DEFAULT_LEAD_RECIPIENTS } from "./lib/lead-mailer.server.mjs";
+import { resolveLegacyRedirect } from "./lib/legacy-redirects.server.mjs";
 import { ORG_NAME, SITE_URL } from "./lib/brand.server.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -275,9 +276,12 @@ const SECURITY_HEADERS = {
 };
 
 // Client-side-only routes: real React routes that are intentionally NOT
-// prerendered, served as the SPA shell with 200 + noindex. v1 of the LCP site
-// prerenders every route, so nothing qualifies; the hook stays so a future
-// link-only page can opt in without re-plumbing the fallback.
+// prerendered, served as the SPA shell with 200 + noindex. Nothing qualifies:
+// every route on this site has a static shell, and the two cross-sell service
+// slugs (vocational-evaluation, life-care-planning) are retired addresses that
+// the legacy 301 map sends to the sister practices, so they are deliberately
+// NOT registered here. The hook stays so a future link-only page can opt in
+// without re-plumbing the fallback.
 const CLIENT_ONLY_ROUTES = () => false;
 
 // Bounded so thousands of prerendered HTML pages can't accumulate unbounded
@@ -287,6 +291,21 @@ const gzipCache = new Map();
 
 const indexHtml = readFileSync(join(DIST, "index.html"));
 const indexHtmlGz = gzipSync(indexHtml);
+
+// Dedicated not-found shell (scripts/prerender.mjs writes dist/404.html with
+// the "Page Not Found" title, a noindex directive, no canonical, and no
+// JSON-LD), so an unknown URL is never answered with the home page's head. The
+// home shell stands in when a build (or the test stub) has not written it.
+const notFoundPath = join(DIST, "404.html");
+const notFoundHtml = existsSync(notFoundPath) ? readFileSync(notFoundPath) : indexHtml;
+const notFoundHtmlGz = existsSync(notFoundPath) ? gzipSync(notFoundHtml) : indexHtmlGz;
+
+// Whether a route has a prerendered shell in dist/ - the existence check the
+// legacy 301 map uses so a redirect never lands on a 404.
+function prerenderedRouteExists(pathname) {
+  const file = pathname === "/" ? join(DIST, "index.html") : join(DIST, pathname, "index.html");
+  return existsSync(file);
+}
 
 function getGzipped(filePath, content) {
   if (gzipCache.has(filePath)) {
@@ -350,14 +369,12 @@ export async function requestHandler(req, res) {
     return;
   }
 
+  const isRead = req.method === "GET" || req.method === "HEAD";
+
   // Canonicalize trailing slashes: /about/ -> /about (301, query preserved).
   // Prerendered pages would otherwise answer 200 on BOTH forms (duplicate
   // content). GET/HEAD only (redirecting a POST would drop its body).
-  if (
-    (req.method === "GET" || req.method === "HEAD") &&
-    url.pathname.length > 1 &&
-    url.pathname.endsWith("/")
-  ) {
+  if (isRead && url.pathname.length > 1 && url.pathname.endsWith("/")) {
     res.writeHead(301, {
       Location: url.pathname.replace(/\/+$/, "") + url.search,
       "Cache-Control": "no-cache",
@@ -365,6 +382,24 @@ export async function requestHandler(req, res) {
     });
     res.end();
     return;
+  }
+
+  // Legacy 301 map (lib/legacy-redirects.server.mjs): the retired
+  // kweconomics.com routes resolve to the closest page that actually has a
+  // shell in dist/, or to a sister practice for the work this site does not
+  // perform. Runs after host and trailing-slash canonicalization, GET/HEAD
+  // only, and never touches a live route (the map returns null for those).
+  if (isRead) {
+    const target = resolveLegacyRedirect(url.pathname, prerenderedRouteExists);
+    if (target) {
+      res.writeHead(301, {
+        Location: target.startsWith("https://") ? target : target + url.search,
+        "Cache-Control": "no-cache",
+        ...SECURITY_HEADERS,
+      });
+      res.end();
+      return;
+    }
   }
 
   // Handle CORS preflight for API routes
@@ -452,7 +487,7 @@ export async function requestHandler(req, res) {
   // Resolve a static file to serve. Order:
   //   1. Exact file at filePath (e.g., /favicon.svg, /assets/foo.js)
   //   2. Prerendered HTML at filePath/index.html (e.g., /about -> dist/about/index.html)
-  //   3. NOT FOUND - HTTP 404 with the SPA shell so React's NotFound renders
+  //   3. NOT FOUND - HTTP 404 with the not-found shell so React's NotFound renders
   // The prerendered-HTML lookup is critical: without it, every directory-style
   // route falls through to the SPA fallback and loses its per-page metadata,
   // schema, and content.
@@ -511,13 +546,16 @@ export async function requestHandler(req, res) {
     return;
   }
 
-  // SPA fallback - serve index.html with HTTP 404 for unknown routes so the
-  // React NotFound page renders with a proper status code (rather than the
-  // soft-404 a 200 would create). Reaching this branch means "route not found"
+  // Fallback - serve the not-found shell with HTTP 404 for unknown routes so
+  // the React NotFound page renders with a proper status code (rather than the
+  // soft-404 a 200 would create) and the head a crawler logs is the error
+  // page's, not the home page's. Reaching this branch means "route not found"
   // - except for a deliberately unprerendered client-only route, which gets
-  // 200 + noindex.
+  // the SPA shell with 200 + noindex.
   const clientOnly = CLIENT_ONLY_ROUTES(url.pathname);
   const status = clientOnly ? 200 : 404;
+  const body = clientOnly ? indexHtml : notFoundHtml;
+  const bodyGz = clientOnly ? indexHtmlGz : notFoundHtmlGz;
   const headers = {
     "Content-Type": "text/html",
     "Cache-Control": "no-cache",
@@ -531,12 +569,12 @@ export async function requestHandler(req, res) {
   if (acceptsGzip(req)) {
     headers["Content-Encoding"] = "gzip";
     res.writeHead(status, headers);
-    res.end(indexHtmlGz);
+    res.end(bodyGz);
     return;
   }
 
   res.writeHead(status, headers);
-  res.end(indexHtml);
+  res.end(body);
 }
 
 const server = createServer(requestHandler);

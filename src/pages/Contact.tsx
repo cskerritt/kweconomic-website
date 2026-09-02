@@ -4,7 +4,19 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { isEmail, isPhone } from "@/lib/validation";
 import { caseTypes } from "@/data/caseTypes";
-import { ORG_NAME, ORG_SHORT, ORG_EMAIL, ORG_PHONE, ORG_PHONE_VA, SITE_URL } from "@/lib/brand";
+import {
+  ORG_NAME,
+  ORG_SHORT,
+  ORG_EMAIL,
+  OFFICES,
+  ORG_PHONE,
+  ORG_PHONE_VA,
+  ORG_PHONE_DISPLAY,
+  ORG_PHONE_VA_DISPLAY,
+  SITE_URL,
+  telHref,
+} from "@/lib/brand";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
@@ -15,10 +27,11 @@ import {
   officeSchemas,
   breadcrumbSchema,
   ORG_URL,
+  ORG_ID,
+  WEBSITE_ID,
 } from "@/lib/schema";
 
-const PHONE_DISPLAY = "(201) 343-0700";
-const PHONE_VA_DISPLAY = "(804) 282-4199";
+const PAGE_URL = `${ORG_URL}/contact`;
 
 const INPUT =
   "w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent";
@@ -69,24 +82,43 @@ export default function Contact() {
   }
 
   usePageMeta({
-    title: `Contact Us | ${ORG_NAME}`,
+    title: `Contact a Forensic Economist | ${ORG_NAME}`,
     description:
-      `Contact ${ORG_NAME} to discuss a lost earnings, wrongful death, household services, business valuation, or forensic accounting analysis for your case. Offices in New Jersey and Virginia; response in 1 business day.`,
+      `Contact ${ORG_NAME} about a lost earnings, wrongful death, household services, or business damages analysis. Offices in NJ and VA; reply in 1 business day.`,
     canonical: `${SITE_URL}/contact`,
   });
 
   return (
     <>
+      {/* Contact is the page that prints the office NAP block, so the office
+          LocalBusiness nodes belong here; the ContactPage node ties the page
+          to the Organization and WebSite ids the rest of the graph uses. */}
       <SchemaOrg
         data={graphSchema([
           organizationSchema(),
           ...officeSchemas(),
+          {
+            "@type": "ContactPage",
+            "@id": `${PAGE_URL}#webpage`,
+            url: PAGE_URL,
+            name: "Contact a Forensic Economist",
+            isPartOf: { "@id": WEBSITE_ID },
+            about: { "@id": ORG_ID },
+          },
           breadcrumbSchema([
             { name: "Home", url: `${ORG_URL}/` },
-            { name: "Contact", url: `${ORG_URL}/contact` },
+            { name: "Contact", url: PAGE_URL },
           ]),
         ])}
       />
+
+      {/* Breadcrumb bar */}
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Contact", url: "/contact" }]} />
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-16 md:py-24">
         <div className="kw-aurora" aria-hidden="true" />
@@ -157,12 +189,16 @@ export default function Contact() {
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3 text-neutral-700">
                     <MapPin className="w-5 h-5 text-teal shrink-0 mt-0.5" />
-                    <span>Hackensack, New Jersey</span>
+                    <span>
+                      {OFFICES[0].streetAddress}
+                      <br />
+                      Hackensack, NJ {OFFICES[0].postalCode}
+                    </span>
                   </li>
                   <li className="flex items-center gap-3 text-neutral-700">
                     <Phone className="w-5 h-5 text-teal shrink-0" />
-                    <a href={`tel:${ORG_PHONE}`} className="hover:text-teal transition-colors font-medium">
-                      {PHONE_DISPLAY}
+                    <a href={telHref(ORG_PHONE)} className="hover:text-teal transition-colors font-medium">
+                      {ORG_PHONE_DISPLAY}
                     </a>
                   </li>
                   <li className="flex items-center gap-3 text-neutral-700">
@@ -186,8 +222,8 @@ export default function Contact() {
                   </li>
                   <li className="flex items-center gap-3 text-neutral-700">
                     <Phone className="w-5 h-5 text-teal shrink-0" />
-                    <a href={`tel:${ORG_PHONE_VA}`} className="hover:text-teal transition-colors font-medium">
-                      {PHONE_VA_DISPLAY}
+                    <a href={telHref(ORG_PHONE_VA)} className="hover:text-teal transition-colors font-medium">
+                      {ORG_PHONE_VA_DISPLAY}
                     </a>
                   </li>
                 </ul>
@@ -219,12 +255,12 @@ export default function Contact() {
             <div className="order-1 lg:order-2">
               <h2 className="font-serif text-2xl font-bold text-navy mb-3">Send Us a Message</h2>
               <a
-                href={`tel:${ORG_PHONE}`}
+                href={telHref(ORG_PHONE)}
                 className="flex items-center gap-3 mb-5 rounded-lg border border-teal/40 bg-teal/5 px-4 py-3 text-sm text-navy hover:bg-teal/10 transition-colors"
               >
                 <Phone className="w-5 h-5 text-teal shrink-0" />
                 <span>
-                  <strong className="text-teal-dark">Tap to call</strong> {PHONE_DISPLAY}
+                  <strong className="text-teal-dark">Tap to call</strong> {ORG_PHONE_DISPLAY}
                 </span>
               </a>
 

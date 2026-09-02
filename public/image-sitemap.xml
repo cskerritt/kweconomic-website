@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://kweconomics.com</loc>
-    <image:image><image:loc>https://kweconomics.com/images/hero-office-meeting.jpg</image:loc><image:title>KW Economics team consultation</image:title></image:image>
-  </url>
-  <url>
     <loc>https://kweconomics.com/about</loc>
     <image:image><image:loc>https://kweconomics.com/images/mentor-trainee.jpg</image:loc><image:title>KW Economics forensic economics consultation</image:title></image:image>
   </url>

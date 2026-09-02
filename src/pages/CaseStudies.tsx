@@ -2,8 +2,17 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Scale, FileCheck, Lock } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, SITE_URL } from "@/lib/brand";
+import AuthorByline from "@/components/AuthorByline";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
 import Reveal from "@/components/Reveal";
+import SchemaOrg from "@/components/SchemaOrg";
+import { graphSchema, organizationSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
+
+const PAGE_URL = `${ORG_URL}/case-studies`;
+// Date the narratives were last revised; printed in the byline and stamped on
+// the CollectionPage node. The static shell prints the same value.
+export const CASE_STUDIES_DATE_MODIFIED = "2026-08-28";
 
 // Illustrative, anonymized narratives. Each is a composite drawn from the
 // kinds of engagements a forensic economist handles; none describes a specific
@@ -55,18 +64,45 @@ const caseStudies = [
 ];
 
 export default function CaseStudies() {
-  // This overview complements the richer /case-types hub; canonicalize to it so
-  // the two "Case Types" pages don't compete in search. /case-types is the one
-  // surfaced in the nav.
+  // /case-studies is self-canonical and indexable (it is listed in
+  // sitemap-core.xml). It complements the /case-types hub, which is the page
+  // surfaced in the nav: that hub catalogs the case types, this page walks
+  // through how a damages figure is built in three of them.
   usePageMeta({
     title: `Illustrative Economic Damages Engagements | ${ORG_NAME}`,
     description:
-      `${ORG_NAME} prepares lost earnings, lost profits, and business valuation analyses for plaintiff and defense counsel. Three anonymized, illustrative engagements show how a damages figure is built.`,
+      `Three anonymized engagements show how ${ORG_NAME} builds a lost earnings, lost profits, or business valuation figure for plaintiff and defense counsel.`,
     canonical: `${SITE_URL}/case-studies`,
   });
 
   return (
     <>
+      <SchemaOrg
+        data={graphSchema([
+          organizationSchema(),
+          {
+            "@type": "CollectionPage",
+            "@id": `${PAGE_URL}#webpage`,
+            url: PAGE_URL,
+            name: "Illustrative Economic Damages Engagements",
+            dateModified: CASE_STUDIES_DATE_MODIFIED,
+            isPartOf: { "@id": WEBSITE_ID },
+            about: { "@id": ORG_ID },
+          },
+          breadcrumbSchema([
+            { name: "Home", url: `${ORG_URL}/` },
+            { name: "Case Studies", url: PAGE_URL },
+          ]),
+        ])}
+      />
+
+      {/* Breadcrumb bar */}
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Case Studies", url: "/case-studies" }]} />
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-16 md:py-24">
         <div className="kw-aurora" aria-hidden="true" />
@@ -93,6 +129,7 @@ export default function CaseStudies() {
       <section className="py-10 bg-neutral-50 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
+            <AuthorByline slug="christopher-skerritt" dateModified={CASE_STUDIES_DATE_MODIFIED} />
             <p className="text-neutral-700 leading-relaxed">
               Our work is retained by plaintiff attorneys, defense attorneys, insurers, and
               businesses. We do not advocate for either side - our role is to apply accepted

@@ -172,7 +172,17 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center">
-            <img src="/images/logo.svg" alt={ORG_NAME} className="h-10 brightness-0 invert" />
+            {/* Intrinsic 600x257 so the header reserves the wordmark's box before
+                the file arrives (no layout shift on first paint); w-auto keeps
+                the CSS height in charge of the rendered size. */}
+            <img
+              src="/images/logo.svg"
+              alt={ORG_NAME}
+              width={600}
+              height={257}
+              fetchPriority="high"
+              className="h-10 w-auto brightness-0 invert"
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-6">
@@ -241,7 +251,10 @@ export default function Header() {
         />
       )}
 
-      {/* Mobile sticky bottom CTA - persistent phone + quote button on small screens */}
+      {/* Mobile sticky bottom CTA - persistent phone + consultation button on
+          small screens. Same label and destination as the desktop CTA: the
+          practice confirms scope and fee after a conflict check, so the action
+          is a consultation request everywhere, never a quote. */}
       <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-2 border-t border-navy-dark bg-navy text-white shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
         <a
           href={PHONE_HREF}
@@ -251,10 +264,10 @@ export default function Header() {
           Call
         </a>
         <Link
-          to="/contact"
+          to="/schedule-consultation"
           className="flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-amber text-white hover:bg-amber-dark transition-colors"
         >
-          Get a Quote
+          Request a Consultation
         </Link>
       </div>
     </header>

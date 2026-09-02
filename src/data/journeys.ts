@@ -17,12 +17,23 @@ import { refsToSources } from "./references";
  * by other experts; the economist prices them. Keep the four stage banners
  * below: src/pages/off-brand-copy.test.mjs splits this file on them and
  * allows at most one sister-practice hand-off line per stage.
+ *
+ * Dates: `datePublished` is the day the entry first shipped and
+ * `dateModified` is a literal on each entry, not a shared constant. An edit
+ * to one entry bumps only that entry's `dateModified`; the visible byline,
+ * the Article schema, and (once wired) the sitemap lastmod all read it, so a
+ * family-wide bump on an unchanged page is a false freshness signal.
+ * `authorSlug` names the reviewer in src/data/team.ts.
  */
 export type JourneyStageSlug = "considering" | "retaining" | "preparing-deposition" | "trial";
 
 export interface JourneyStage {
   stage: JourneyStageSlug;
   caseTypeSlug: string;
+  /** Reviewer slug in src/data/team.ts (byline + Article author). */
+  authorSlug: string;
+  /** ISO date the entry first shipped. */
+  datePublished: string;
   intro: string;
   checklist: string[];
   questionsToAsk: string[];
@@ -31,17 +42,18 @@ export interface JourneyStage {
   pitfalls: string[];
   faqs: Faq[];
   sources: Source[];
-  dateModified?: string;
+  /** ISO date of the last edit to THIS entry. Bump it with the edit. */
+  dateModified: string;
 }
-
-const MODIFIED = "2026-08-27";
 
 export const journeys: JourneyStage[] = [
   // ── Considering stage ─────────────────────────────────────────
   {
     stage: "considering",
     caseTypeSlug: "personal-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A personal injury claim needs an economist once the loss runs past what the pay records show on their face. A few weeks of documented lost wages can be presented from the pay stubs alone. When the person has not returned to the prior job, has returned at reduced hours or pay, faces future treatment, or can no longer do the household work they did before, the projection, growth, and present value questions call for an economic analysis. The decision turns on the size and duration of the loss, not on the severity label attached to the injury.",
     checklist: [
@@ -80,13 +92,20 @@ export const journeys: JourneyStage[] = [
         answer:
           "Yes. A preliminary range can be built from tax returns and a description of the injury's effect on work. The full report needs the complete earnings and benefit records, and the post-injury path needs the medical or work-capacity opinions in the record. When no such opinion exists, that gap is coordinated with a vocational specialist rather than filled by the economist.",
       },
+      {
+        question: "What does a preliminary economic analysis cost relative to a full report?",
+        answer:
+          "A preliminary range is a limited engagement built from the tax returns and a description of the injury's effect on work, so it costs far less than a full report. The full report adds the records review, the projection of each component, the sensitivity tables, and the written opinion, and the engagement letter states the fee basis for each phase. Counsel can stop after the preliminary range if the loss does not justify going further.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "NAFE_ETHICS"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "wrongful-death",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Nearly every wrongful death claim with a working-age decedent or a decedent who supported a household justifies an economist, because the loss is a stream of future contributions that must be projected over an expected life and reduced to present value. The claim measures what the decedent would have provided to the survivors in earnings, benefits, and household work, less what the decedent would have consumed personally where the venue requires that deduction. Counsel considering an economist should first establish who the survivors are and what the decedent was contributing at the time of death.",
     checklist: [
@@ -120,13 +139,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Often, yes. A retired decedent may have provided household services, pension or Social Security income that ended or reduced at death, and financial support to survivors. Each of those is a future stream that must be projected over the remaining life expectancy and discounted to present value.",
       },
+      {
+        question: "How soon after the death should counsel involve the economist?",
+        answer:
+          "Early enough to capture the household's account of the decedent's work at home and financial support while the survivors can still describe it in detail. The earnings records can be gathered at any time, but the household services inventory depends on memories that fade, and the economist's questionnaire is easiest to complete in the first months. Retention itself can follow once the claim is framed.",
+      },
+      {
+        question: "Who decides which survivors' losses are included?",
+        answer:
+          "Counsel does, based on the framework the venue applies. The economist measures the loss for each survivor counsel identifies and presents the components separately, so a survivor or a component can be included or excluded without rebuilding the analysis. The economist does not opine on who is entitled to recover.",
+      },
     ],
     sources: refsToSources(["CDC_LIFE_TABLES", "BLS_CEX", "BLS_ATUS"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "medical-malpractice",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A medical malpractice claim needs an economist when the injury has changed what the patient can earn, created ongoing care costs, or ended the patient's ability to do household work. The added feature of these matters is the comparison: the loss is measured against the outcome the patient would have had with proper care, not against perfect health. Counsel considering an economist should be prepared to describe both paths, because the economist needs the causation opinions to define what the patient would have earned and needed regardless of the negligence.",
     checklist: [
@@ -160,13 +191,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because the loss is the difference between two paths, and the but-for path in a malpractice case is not full health but the outcome proper care would have produced. Without a medical opinion on that outcome, the economist cannot state what earnings, care, and life expectancy the patient would have had regardless of the negligence.",
       },
+      {
+        question: "Is the economic analysis different when the patient survived with a permanent injury rather than died?",
+        answer:
+          "The structure differs, not the method. For a surviving patient the components are lost earnings and earning capacity, fringe benefits, household services, and incremental future care, each measured as the difference between the two paths. For a death the analysis becomes a wrongful death loss to the survivors, still measured against the outcome proper care would have produced. Both use the causation opinions to define the but-for path.",
+      },
+      {
+        question: "Can a preliminary range be prepared before the causation opinions are written?",
+        answer:
+          "A limited one. The economist can establish the earnings base, the fringe benefit rate, and the household services baseline from the financial and household records, and can show what the loss would be under stated assumptions about the two outcomes. The figures are labeled as provisional, and the full report waits for the medical opinions that fix the but-for path.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "CDC_LIFE_TABLES", "NAFE_ETHICS"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "motor-vehicle-accident",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Motor vehicle accident claims span the full range of economic loss, and the need for an economist scales with the injury. A short absence from work with a documented return can be presented from the pay records. Once the person cannot return to the prior occupation, needs future surgery or treatment, or has lost the ability to do household work, the loss becomes a projection over a worklife and requires growth and present value assumptions that counsel should not be left to argue without an expert. The first step is to establish the work timeline: date of injury, date of any return, and the level of earnings on return.",
     checklist: [
@@ -200,13 +243,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Possibly. If the return is at lower pay, fewer hours, or in a job with less growth or fewer benefits, the gap between the prior path and the current path continues over the remaining worklife. The economist measures that gap; a return to work does not end the claim by itself.",
       },
+      {
+        question: "What drives the cost of the economic analysis in a motor vehicle case?",
+        answer:
+          "The number of components in scope and the condition of the records. A past-loss calculation from pay stubs and employer attendance records is a short engagement; a projection of future earnings, fringe benefits, household services, and a life care plan is a full report with sensitivity tables. Counsel can scope the engagement to the injury and expand it if the medical picture changes.",
+      },
+      {
+        question: "Does the economist need the police report or the medical records?",
+        answer:
+          "Not to start. The economist works from the earnings and benefit records, the employer's account of the absence and any return, and the medical or work-capacity opinions that describe what the person can do now. Liability documents are not part of the economic analysis, and treatment records matter only where they bear on work restrictions or on a future care projection.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ATUS"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "traumatic-brain-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Traumatic brain injury claims almost always justify an economist, because cognitive and behavioral effects can end a career even when physical function returns, and because the care and supervision costs can extend over a lifetime. The economic claim combines lost earnings and earning capacity, lost fringe benefits, the replacement cost of household services, and the present value of the future care documented in a life care plan or treating recommendations. Counsel considering an economist should understand that the size of the claim depends on inputs prepared by others: the medical and work-capacity opinions define the post-injury path, and the economist prices it.",
     checklist: [
@@ -240,13 +295,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "No. That opinion comes from the medical record or from vocational findings supplied by other experts. The economist takes the post-injury capacity as given, prices it with occupational earnings data, and measures the gap against the but-for path. Retaining the economist alone does not close that gap in the record.",
       },
+      {
+        question: "How long does it take to reach a preliminary view in a brain injury case?",
+        answer:
+          "Longer than in a straightforward injury case, because the post-injury path depends on neuropsychological and treating opinions that may not exist yet. The earnings base and the fringe benefit rate can be established from the financial records in the first weeks; the gap measurement waits for an opinion on what work the person can do. Counsel should expect a provisional range first and a full analysis after the medical picture settles.",
+      },
+      {
+        question: "Who supplies the supervision and care hours the economist prices?",
+        answer:
+          "The life care plan or the treating providers supply the care and supervision items, and the family's account documents the unpaid hours now being provided at home. The economist prices those hours at replacement rates, reconciles them with the household services claim so no hour is counted twice, and states the source of every input. The economist does not decide how much supervision the person needs.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_CPI_MEDICAL"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "spinal-cord-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Spinal cord injury claims justify an economist in nearly every case. The person's prior occupation has usually ended, attendant care and equipment recur for life, and the household work the person did before the injury now has to be replaced. Each of those components is a future stream with its own growth rate and duration, and the present value of the whole can only be built by an economist working from the medical, care, and earnings records. Counsel considering an economist should start by assembling the earnings history and identifying who will author the life care plan, because the plan's items and the person's post-injury work capacity are the inputs the economist prices.",
     checklist: [
@@ -280,13 +347,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "The present value of attendant care over the person's lifetime is usually the largest figure, followed by future lost earnings for a person injured early in a working life. Equipment, supplies, and modifications recur on replacement cycles and are sensitive to the cost growth rate applied. The economist values each on a consistent basis so the total can be examined item by item.",
       },
+      {
+        question: "Should the economist be retained before or after the life care plan is written?",
+        answer:
+          "The retention can come first, but the care component cannot be valued until the plan exists. The economist can build the earnings, benefit, and household services components from the financial records while the plan is being prepared, then price the plan item by item when it is delivered. What matters is that the plan's delivery date falls before the economic report's deadline.",
+      },
+      {
+        question: "How does life expectancy enter the analysis?",
+        answer:
+          "It sets the duration of the care stream and, with worklife, the length of the earnings loss. Where the medical opinions address the injury's effect on life expectancy, the economist applies the opinion in the record and shows the result under the general population tables as an alternative. The choice is stated so the fact finder can see how much of the total it moves.",
+      },
     ],
     sources: refsToSources(["BLS_CPI_MEDICAL", "CDC_LIFE_TABLES", "BLS_ECEC"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "workers-compensation",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Workers' compensation matters call for an economist at specific points rather than in every claim: valuing a stream of future indemnity or medical benefits for a settlement, measuring the economic loss in a third-party action arising from the same injury, and quantifying the wage loss where the benefit itself turns on loss of earning capacity. Counsel considering an economist should identify which of those questions the matter presents, because the analysis is structured to the question the compensation system actually asks and the records needed differ for each.",
     checklist: [
@@ -320,13 +399,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Usually not. The economist adds value when a long stream of future benefits is being settled, when a third-party claim adds components the compensation system does not pay, or when the benefit turns on a contested loss of earning capacity. In those settings a documented present value replaces an estimate.",
       },
+      {
+        question: "Who prepares the future medical projection in a compensation claim?",
+        answer:
+          "The treating providers, or a projection prepared by others from their recommendations. The economist takes the items, frequencies, and unit costs as given, applies medical cost growth, and reduces the stream to present value with the mortality and discount assumptions stated. The economist's testimony is confined to the valuation.",
+      },
+      {
+        question: "How quickly can the present value of a benefit stream be prepared for a settlement conference?",
+        answer:
+          "Quickly, once the carrier's payment history, the applicable benefit schedule, and the claimant's date of birth are in hand. The calculation is a defined stream with stated mortality and discount assumptions, so it moves faster than a full damages report. A third-party damages analysis follows the longer retention and records phases.",
+      },
     ],
-    sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "NAFE"]),
+    sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "CDC_LIFE_TABLES"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "employment-discrimination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "An employment discrimination claim needs an economist when the loss extends beyond a short, documented period of back pay. Once front pay is claimed, once the lost compensation includes bonuses, equity, or benefit accruals that must be reconstructed, or once mitigation is contested, the analysis requires a year-by-year comparison of the but-for compensation path and the actual path that counsel should not present without an expert. The first step is to assemble the employee's compensation history and the employer's pay practices, because the but-for path is built from both.",
     checklist: [
@@ -360,13 +451,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Back pay covers the period from the adverse action to the date of trial or analysis and is built from records of what the employee would have earned. Front pay covers the future period needed to reach comparable compensation and must be projected and discounted. Both are measured against the compensation the employee actually received or should reasonably have received from replacement work.",
       },
+      {
+        question: "When is an economist worth the cost in a discrimination claim?",
+        answer:
+          "When the loss extends past a short, documented period of back pay: when front pay is claimed, when bonuses, equity, or benefit accruals must be reconstructed, or when mitigation is contested. For a short back pay period built from pay stubs, counsel can present the figure without an expert. The engagement letter can scope a preliminary back pay figure first so the cost stays proportionate.",
+      },
+      {
+        question: "Does the economist need the employer's records before an analysis can begin?",
+        answer:
+          "A preliminary back pay figure can be built from the employee's own pay records and the last rate of pay. The but-for path beyond that, with raises, promotions, and bonuses, depends on the employer's compensation policies and comparator data, which usually come through discovery. Counsel should time the full report after those records are produced.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_ECEC"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "wrongful-termination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A wrongful termination claim needs an economist when the gap between the compensation the employee would have received and the compensation they have replaced runs into the future, or when the lost compensation includes pension accruals, retiree health coverage, or equity that cannot be read off a pay stub. For a long-tenured employee the benefit losses can rival the wage loss, and for an older employee the front pay period can be the largest and most contested component. Counsel considering an economist should first assemble the compensation history and the benefit plan documents that show what the employee was accruing.",
     checklist: [
@@ -400,13 +503,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "From the employee's age, occupation, tenure, and the time comparable work reasonably takes to find, supported by the job search record and by data on how long similar workers stay in a position. The economist states the period and the reason for it, and can show the number under alternative periods so the fact finder sees what the assumption moves.",
       },
+      {
+        question: "What makes a wrongful termination loss larger than the wage gap?",
+        answer:
+          "The benefit accruals that ended with the employment: defined benefit pension credits, retiree health eligibility, employer retirement contributions, and unvested equity. For a long-tenured employee those items can rival or exceed the wage loss, and they are valued from the plan documents rather than the pay stubs. Counsel considering an economist should gather the plan documents early because the employee usually does not hold them.",
+      },
+      {
+        question: "Can the economist address mitigation at this stage?",
+        answer:
+          "The economist can describe what the mitigation record needs to contain and can show how replacement earnings at different levels would change the loss. Whether the employee's search was reasonable is a question for the fact finder. Documenting the search from the start keeps the question from being answered by the opposing side's assumptions.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "TREASURY_YIELD"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "commercial-contract-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A commercial contract dispute needs an economist when the claimed loss is profits that would have been earned had the contract been performed, because that figure has to be reconstructed from the contract terms, the business's history, and the costs that would have been incurred to earn the revenue. A claim limited to a liquidated amount or an invoice may not require an expert. Once lost profits, lost related business, or the value of a destroyed business line are claimed, the but-for analysis and the incremental cost treatment call for an economist. Counsel should first gather the financial statements and the contract, because the analysis starts there.",
     checklist: [
@@ -440,13 +555,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "No. Lost profits measure the margin the business would have earned over a defined period; lost business value measures what the business or a business line was worth when it was destroyed. The two are alternative measures for the same harm in some matters and claiming both for the same period double counts. The economist identifies which measure fits the claim.",
       },
+      {
+        question: "How long does a preliminary lost profits range take?",
+        answer:
+          "A few weeks once the contract and the financial statements are available, because the economist has to identify the revenue tied to the contract and separate the costs that would have been incurred to earn it. A full report follows the records request for general ledger detail and management reports. The timeline depends more on the condition of the business's records than on the size of the claim.",
+      },
+      {
+        question: "Who decides which damages measure applies?",
+        answer:
+          "Counsel does, from the contract and the governing law; the economist measures the loss under the measure counsel identifies and can present alternatives where the pleadings preserve them. Lost profits, reliance costs, and the value of a destroyed business line are built from different records and cannot be added together for the same period. Fixing the measure before the engagement keeps the report aligned with the claim.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "TREASURY_YIELD", "AAEFE_JLE"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "partnership-and-shareholder-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A partnership or shareholder dispute needs an economist when the value of an ownership interest is at issue, when distributions or compensation are alleged to have been diverted, or when a buyout formula in the governing agreement has to be applied to normalized financial statements. The valuation date and the standard of value control the result, and the gap between fair value and fair market value can be substantial for a minority interest in a closely held company. Counsel considering an economist should start with the agreements, because they define the date, the standard, and any formula the analysis must follow.",
     checklist: [
@@ -480,13 +607,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because fair market value assumes a hypothetical sale between willing parties and may apply minority and marketability discounts, while a fair value standard in an oppression or dissenters' setting may exclude them. For a minority interest in a closely held company the difference can be a large share of the result. The economist identifies the standard the claim requires and states how it was applied.",
       },
+      {
+        question: "What drives the cost and timing of a valuation in a shareholder dispute?",
+        answer:
+          "The condition of the company's records, the number of years to be normalized, and whether the engagement includes a separate quantification of diverted distributions or excess compensation. A company with clean statements and few related-party items can be valued more quickly than one whose books need reconstruction. The engagement letter scopes the work in phases so counsel can see the cost of each.",
+      },
+      {
+        question: "Can the valuation date be changed after the analysis starts?",
+        answer:
+          "It can, but much of the work is date-specific: the financial statements normalized, the market data, and the rate applied all belong to the valuation date. A change after the analysis is under way means revisiting each of those, which adds time and cost. Fixing the date from the agreements and the claim before retention avoids that.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "FRE_702"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "divorce-and-marital-dissolution",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A divorce or marital dissolution matter needs an economist when a closely held business or professional practice must be valued, when a self-employed spouse's income for support purposes differs from the reported compensation, when separate and marital property must be traced through commingled accounts, or when a lifestyle analysis is needed to support or contest a support claim. Counsel considering an economist should gather the business records and the personal financial statements first, because the valuation, the income determination, and the tracing all start from them.",
     checklist: [
@@ -520,13 +659,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Not always, but most contested ones do. Where the parties agree on value or the interest is minor relative to the estate, a valuation may not be worth its cost. Where the business is the largest marital asset, where one spouse controls its records, or where income for support is in dispute, an independent valuation and income analysis usually decides the outcome.",
       },
+      {
+        question: "Can one economist be retained jointly by both spouses?",
+        answer:
+          "Yes, where counsel and the court agree. A joint neutral engagement produces one valuation and income analysis both sides can examine, which often reduces cost and narrows the dispute to specific adjustments. The engagement letter states that the economist reports to both parties and applies the same method regardless of who retained the expert.",
+      },
+      {
+        question: "How long does a business valuation in a divorce take?",
+        answer:
+          "A preliminary value range can follow within weeks of receiving the financial statements and tax returns. The full valuation depends on the general ledger detail, the owner compensation records, and the personal financial statements, and on whether tracing or a lifestyle analysis is also in scope. The records request, not the arithmetic, sets the schedule.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_OES"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "fraud-and-embezzlement",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A fraud or embezzlement matter needs an economist or forensic accountant as soon as the amount taken, the period it ran, and where the funds went have to be established from the records rather than from an admission. The direct loss is reconstructed transaction by transaction, the consequential losses such as lost profits or penalties are measured separately, and the diverted funds are traced forward to the accounts and assets that received them. Counsel considering an expert should preserve the bank records, general ledger, and supporting documents immediately, because the reconstruction depends on them and they are easiest to obtain early.",
     checklist: [
@@ -560,13 +711,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Quantifying the loss establishes how much was taken, when, and by what mechanism, and it supports a damages or restitution figure. Tracing follows the diverted funds forward to the accounts, purchases, and assets that received them, and it supports recovery. The two use the same records but answer different questions, and counsel should decide early whether both are needed.",
       },
+      {
+        question: "Who should be involved before the forensic accountant is retained?",
+        answer:
+          "Counsel, so that the engagement and the records the expert receives are structured with privilege and the possible criminal or insurance proceedings in mind. The victim entity's bookkeeper or controller may be needed to explain the accounting system, unless that person is a subject of the investigation. The bank and third-party records should be requested by counsel in parallel.",
+      },
+      {
+        question: "How is the cost of a loss reconstruction controlled?",
+        answer:
+          "By fixing the period and the suspected mechanisms at the outset and by phasing the work: a preliminary estimate from the bank records first, then the full transaction-level reconstruction, then tracing if recovery is realistic. Each phase is scoped in the engagement letter so counsel can weigh the next step against the amount at stake. The length of the scheme and the volume of transactions drive the schedule.",
+      },
     ],
     sources: refsToSources(["ACFE", "FRCP_26", "DAUBERT"]),
   },
   {
     stage: "considering",
     caseTypeSlug: "product-liability",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "A product liability claim needs an economist under the same conditions as any injury or death claim: when the loss extends into the future, when future care has been projected, or when household work the person did before the injury must be replaced. The distinctive feature is the claimant. Product cases often involve children, students, homemakers, and retirees, whose but-for earnings path cannot be read from a wage history and must be built from educational attainment, occupational earnings data, or the household work the person performed. Counsel considering an economist should be ready to describe the claimant's circumstances, not just the injury.",
     checklist: [
@@ -600,6 +763,16 @@ export const journeys: JourneyStage[] = [
         answer:
           "From the educational path the record supports, the earnings associated with that level of attainment in occupational and survey data, and a statistically expected worklife, compared against the path the injury leaves open. The economist states the attainment assumption and shows the result under alternatives so the fact finder sees what drives the figure.",
       },
+      {
+        question: "Does a claim for a homemaker or retiree need an economist?",
+        answer:
+          "Often, yes. A homemaker's loss is the replacement cost of the household work over the years it would have continued, and a retiree's loss can include household services, pension or Social Security income that ended, and support provided to others. Each is a future stream that must be projected and discounted, which is the economist's work whether or not the claimant earned wages.",
+      },
+      {
+        question: "How long does the analysis take when the claimant is a child?",
+        answer:
+          "Somewhat longer than for an adult with an earnings history, because the but-for path has to be built from school records, family history, and occupational earnings data by educational level rather than read from tax returns. The economist can state the attainment assumptions and show a preliminary range early; the full report follows the records request and any life care plan. The timing of the care projection usually controls the schedule.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "CENSUS_ACS", "BLS_ATUS"]),
   },
@@ -607,7 +780,9 @@ export const journeys: JourneyStage[] = [
   {
     stage: "retaining",
     caseTypeSlug: "personal-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a personal injury matter starts with a conflict check on the parties and counsel, then a written scope that names the components to be valued: past and future lost earnings, fringe benefits, household services, and the present value of future care if a life care plan or treating recommendations will supply it. The engagement letter should state the report deadline, the disclosure format, and which other experts will supply the post-injury work capacity and care inputs, so the economist can issue a records request that reaches every source at once.",
     checklist: [
@@ -642,13 +817,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "The parties and the conflict check, the components to be valued, the deadline and disclosure format, the fee schedule and retainer, who supplies the work-capacity and care inputs, and whether counsel will review a draft. A clear scope keeps the report aligned with the claim as pleaded.",
       },
+      {
+        question: "How is the economist's fee structured?",
+        answer:
+          "Most engagements bill hourly against a retainer, with the fee basis, the retainer, and the rates for analysis, deposition, and trial time stated in the engagement letter. The fee should not be tied to the outcome, and the letter should say so, because a contingent fee would be raised on cross-examination. Counsel can scope phases so the cost of the preliminary work is known before the full report is authorized.",
+      },
+      {
+        question: "When should the economist be retained relative to the disclosure deadline?",
+        answer:
+          "Early enough for the records request, the analysis, and the draft review to fit before the deadline, and after the other experts' schedules are known so their work-capacity and care opinions arrive first. The timeline on this page assumes the records come in promptly; employer and benefit plan records often take longer than the client's own documents. A late retention compresses every phase and shows in the report.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "FRCP_26"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "wrongful-death",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a wrongful death matter means defining the survivors whose loss is being measured, the framework the venue applies, and the components in scope: the decedent's net earnings and benefits, personal consumption, household services, and any financial support the decedent provided to specific survivors. Because the decedent cannot describe the household, the records request reaches further than in an injury case: employer files, benefit plan documents, and detailed information from the survivors about the decedent's work at home and the support the decedent gave.",
     checklist: [
@@ -683,13 +870,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because the household services and support components depend on what the decedent actually did and provided. Time-use data supply the starting point, but the survivors' account of the decedent's schedule, tasks, and contributions is what ties the projection to this household rather than an average one.",
       },
+      {
+        question: "What does the economist's records request include that counsel may not expect?",
+        answer:
+          "The decedent's employer personnel file and benefit plan documents, because employer-paid health coverage, pension accruals, and life insurance are part of the loss; the household's expenditure pattern, because it supports the consumption deduction; and a survivor questionnaire on the decedent's schedule and tasks at home. Each item ties to a component of the report.",
+      },
+      {
+        question: "How long does a wrongful death report take after retention?",
+        answer:
+          "About a week for the records request, then several weeks of analysis once the earnings records and the survivors' information arrive, then a draft and final report. The survivor questionnaire is usually the pacing item, because it depends on the family's availability. Counsel can shorten the schedule by circulating the questionnaire at retention.",
+      },
     ],
     sources: refsToSources(["BLS_ATUS", "BLS_CEX", "NCHS_LIFE_TABLES"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "medical-malpractice",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a medical malpractice matter requires coordinating the engagement with the causation and treating experts, because the economist's but-for path is defined by their opinion on the outcome proper care would have produced. The scope should state which components are claimed, whether the incremental future care will come from a life care plan or from treating recommendations, and how the pre-existing condition's own effect on earnings and life expectancy will be handled. The records request covers the earnings and benefit records and the medical opinions on both paths.",
     checklist: [
@@ -724,13 +923,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "A medical opinion on the outcome the patient would have had with proper care, including its effect on work and life expectancy, and a clear statement of which future care is incremental to the injury. Those inputs define the but-for path, and without them the report compares the injured path to full health, which overstates the loss.",
       },
+      {
+        question: "Which experts should be retained before the economist?",
+        answer:
+          "The causation and treating experts who will describe the outcome proper care would have produced, and whoever will author the incremental care projection. The economist's but-for path is built from those opinions, so the economic report is sequenced after them. Retaining the economist at the same time is fine as long as the report deadline is set after the medical opinions are due.",
+      },
+      {
+        question: "How is the engagement scoped when the pre-existing condition is disputed?",
+        answer:
+          "The engagement letter states that the report will present the loss under each apportionment position the medical opinions support, with the assumptions labeled. That scope adds sensitivity tables rather than a second report, and it keeps the economist out of the medical dispute. Counsel should identify the alternative positions at retention so the tables can be built once.",
+      },
     ],
     sources: refsToSources(["CDC_LIFE_TABLES", "BLS_CPI_MEDICAL", "NAFE_ETHICS"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "motor-vehicle-accident",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a motor vehicle accident matter follows the same steps as any injury claim: conflict check, written scope, and a records request that reaches the employer and benefit plans at once. The scope should match the injury. For a bounded loss the engagement may be limited to past wages and a short future period; for a catastrophic crash it covers lost earnings and earning capacity, fringe benefits, household services, and the present value of a life care plan. Counsel should also identify the sources of post-injury work capacity and future care so the economist is not asked to supply either.",
     checklist: [
@@ -764,13 +975,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Yes. Many engagements begin with a past loss and a preliminary future range, then expand to household services and future care when the medical picture settles. The engagement letter should allow for that, and the report deadline should leave room for the added components.",
       },
+      {
+        question: "What does the economist need from the employer?",
+        answer:
+          "The attendance and payroll records that show the dates out of work and any return, the personnel file entries on the person's position and pay progression, and the benefit plan summaries for retirement and health coverage. Those records anchor the past loss and the fringe benefit rate. A signed authorization at retention lets the request go out with the client's own documents.",
+      },
+      {
+        question: "How is the cost kept proportionate to a moderate injury claim?",
+        answer:
+          "By scoping the engagement to the components the injury supports and by phasing the work. A past-loss calculation and a bounded future period can be completed as a short engagement, and the letter can reserve the right to add household services and future care if the medical picture changes. The report states only what was valued, so a narrow scope does not read as an incomplete analysis.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ATUS"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "traumatic-brain-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a traumatic brain injury matter means building the engagement around the other experts' inputs. The post-injury earnings path comes from the neuropsychological and treating opinions and from vocational findings supplied by other experts; the future care comes from a life care plan; the household services and supervision hours come from the family's account and the plan. The economist's scope should name each input, its source, and its expected date, so the records request and the report deadline are sequenced correctly and the components reconcile with one another.",
     checklist: [
@@ -805,13 +1028,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "The economist revalues the affected items and issues a supplemental report. The engagement letter should anticipate at least one revision, and the report should tie every valued item to a plan line so the change can be traced.",
       },
+      {
+        question: "In what order should the experts' reports be scheduled?",
+        answer:
+          "The neuropsychological and treating opinions first, then the work-capacity opinion, then the life care plan, and the economic report last. Each of the economist's inputs comes from one of those, and a report issued before them rests on placeholders that will have to be revised. The engagement letter should record the expected date of each input.",
+      },
+      {
+        question: "What does the economist do if the life care plan and the family's account overlap?",
+        answer:
+          "Reconciles them before valuing either. Where the plan already prices attendant care or supervision for certain hours, the household services claim is limited to the tasks and hours outside those, and the report states how the reconciliation was made. The alternative, valuing both in full, invites a double-counting objection that can discredit the whole report.",
+      },
     ],
     sources: refsToSources(["BLS_OES", "BLS_CPI_MEDICAL", "SKOOG_CIECKA_KRUEGER_2011"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "spinal-cord-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a spinal cord injury matter centers on the life care plan and the earnings record. The plan supplies the attendant care, equipment, supplies, and modification items that usually form the largest component; the earnings and benefit records define the but-for path; and the medical opinions on work capacity and life expectancy set the post-injury path and the duration of each stream. The scope should state that the economist values the plan as authored, reconciles it with the household services claim, and applies growth and discount assumptions by category.",
     checklist: [
@@ -846,13 +1081,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "No. Plan authorship and medical judgment stay with the professional who wrote it. The economist reviews the plan for the information needed to value it: items, frequencies, durations, unit costs, and the basis for its life expectancy, and raises questions with the author when an item cannot be priced as written.",
       },
+      {
+        question: "What should the engagement letter say about the life care plan?",
+        answer:
+          "That the economist values the plan as authored, item by item, with growth and discount assumptions by category, and refers questions about an item's content to the plan's author. It should also state the plan's expected delivery date and provide for a supplemental valuation if the plan is revised. That language keeps the economist's role clear at deposition.",
+      },
+      {
+        question: "How long does the economic report take once the plan is delivered?",
+        answer:
+          "Several weeks of analysis for the plan's present value, the earnings and benefit components, and the household services reconciliation, then a draft and final report. The item count in the plan and the number of care categories with different growth rates set the pace. Counsel should send the earnings and benefit records earlier so those components are finished before the plan arrives.",
+      },
     ],
     sources: refsToSources(["BLS_CPI_MEDICAL", "CDC_LIFE_TABLES", "TREASURY_YIELD"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "workers-compensation",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a workers' compensation matter begins with naming the question: a present value of future benefits for settlement, an economic loss report for a third-party action, or a wage-loss analysis where the benefit turns on loss of earning capacity. The scope, the records, and the report format differ for each, and a third-party report must also separate what the compensation system pays from the components the civil claim adds so the lien and offset questions can be answered from the same numbers.",
     checklist: [
@@ -887,13 +1134,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Yes, and it is often efficient, because the same wage base and post-injury path support both. The report presents each measure on its own terms and reconciles them, so the same facts support the benefit determination and the civil damages figure without contradiction.",
       },
+      {
+        question: "What does the economist need to value a benefit stream for settlement?",
+        answer:
+          "The carrier's payment history for indemnity and medical benefits, the applicable benefit schedule and rate, the claimant's date of birth, and any settlement proposal on the table. With those the economist states the mortality table and discount rate applied and produces a present value that both sides can check. Wage records are needed only where the benefit rate itself is in dispute.",
+      },
+      {
+        question: "How is the engagement scoped when a third-party action is pending?",
+        answer:
+          "The letter names both questions: the compensation measure for the claim and the civil measure for the third-party action. The economist builds one wage base and one post-injury path, then presents each measure on its own terms with the benefits paid shown separately so counsel can address liens and offsets. The scope avoids netting the two before counsel has decided how they will be presented.",
+      },
     ],
-    sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "NAFE"]),
+    sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "CDC_LIFE_TABLES"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "employment-discrimination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in an employment discrimination matter involves a records request that reaches the employer as well as the employee, because the but-for compensation path is built from the employer's pay practices, raise schedules, bonus patterns, and benefit accruals, often illustrated by comparators. The scope should state the claims and damages periods at issue, whether front pay is claimed, and how mitigation will be documented, and it should set the report deadline against the discovery schedule so the employer's compensation records are in hand before the analysis begins.",
     checklist: [
@@ -927,13 +1186,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "The compensation policies and the pay histories of similarly situated employees, because they show the raises, promotions, bonuses, and benefit accruals the employee would have received. Without them the but-for path defaults to the last pay rate, which understates the loss for an employee whose compensation was rising.",
       },
+      {
+        question: "How long does a back pay and front pay report take?",
+        answer:
+          "A preliminary back pay figure can follow soon after the employee's pay records arrive. The full report waits for the employer's compensation policies and comparator data through discovery, then takes several weeks for the year-by-year comparison, the benefit valuation, and the sensitivity tables. The report is usually updated to the trial date, which the engagement letter should anticipate.",
+      },
+      {
+        question: "What should the engagement letter say about mitigation?",
+        answer:
+          "That the employee will keep a contemporaneous job search log and provide replacement pay records as they arise, and that the economist will credit replacement earnings actually received and show alternatives for any period the opposing side may contest. A documented search lets the report present mitigation from the record rather than from assumptions.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECI", "FRCP_26"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "wrongful-termination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a wrongful termination matter means scoping the engagement to the compensation the employee lost when the employment ended, including the benefit accruals that stopped, and to the replacement earnings that reduce it. The engagement letter should state the damages period, whether front pay and pension losses are claimed, and how the job search will be documented. The records request should reach the employer's pay and plan records early, because pension and retiree health losses for a long-tenured employee depend on plan terms the employee does not hold.",
     checklist: [
@@ -967,13 +1238,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By stating a reasonable period to find comparable work based on the employee's age, occupation, and local job market, and by applying replacement earnings from that point. The report shows the result under alternative periods and updates when the employee finds work.",
       },
+      {
+        question: "Why does the economist ask for the pension plan documents rather than the employee's benefit statement?",
+        answer:
+          "Because the benefit statement shows the accrued benefit at termination, while the plan documents contain the formula, the vesting schedule, and the early retirement provisions that determine what the employee would have received with continued service. The loss is the difference between the two benefit streams, and it cannot be valued without the formula. The employer holds the documents, so the request goes through discovery.",
+      },
+      {
+        question: "How is the damages period set in the engagement?",
+        answer:
+          "Counsel states the period the claim covers and whether front pay is sought; the economist supports the length of any front pay period with the employee's age, occupation, tenure, and the job market evidence, and shows the result under alternatives. Fixing the period at retention keeps the report and the pleadings aligned.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "TREASURY_YIELD"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "commercial-contract-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a commercial contract dispute requires a scope that names the damages measure the claim relies on: lost profits over a defined period, reliance costs, or the value of a destroyed business line. The engagement letter should state the damages period, the discount rate convention counsel expects the venue to accept, and the records the business will produce, including the general ledger detail that separates incremental costs from fixed costs. The conflict check should extend to affiliated companies and the counterparty's affiliates.",
     checklist: [
@@ -1008,13 +1291,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because the financial statements aggregate costs, and the lost profits analysis depends on which costs would have been incurred to earn the lost revenue. The ledger shows cost behavior by account and period, which supports the incremental cost treatment the opposing side will test.",
       },
+      {
+        question: "How long does a lost profits report take?",
+        answer:
+          "About a week for retention and the records request, then several weeks of analysis after the financial statements, general ledger detail, and pre-dispute projections arrive, then a draft and final report. The account-level cost analysis is the longest step, and it moves faster when the business exports the ledger detail rather than summaries. Post-breach results should be produced at the same time.",
+      },
+      {
+        question: "What does the engagement letter say about the discount rate?",
+        answer:
+          "That the economist will select a rate reflecting the risk the lost profits would have carried, state its basis, and show the result under the alternative conventions the venue may accept. Counsel should flag any convention the court has applied in similar matters. Agreeing on how the rate will be presented avoids a late dispute over the method.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "TREASURY_YIELD", "NAFE_JFE"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "partnership-and-shareholder-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a partnership or shareholder dispute means engaging a valuation that follows the agreements and the claim: the valuation date, the standard of value, any buyout formula, and the purpose of the valuation are stated in the engagement letter before the analysis starts. The records request covers several years of financial statements, tax returns, general ledger detail, owner compensation, and related-party transactions, because normalizing those items is what converts the company's books into the earnings a valuation can rely on.",
     checklist: [
@@ -1048,13 +1343,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "A statement of the interest valued, the date, the standard and premise of value, the purpose, the sources relied on, the normalization adjustments, the approaches applied and their reconciliation, and the conclusion. Each step is documented so the opposing valuation can be compared to it item by item.",
       },
+      {
+        question: "What should counsel confirm before the valuation engagement is signed?",
+        answer:
+          "The interest to be valued, the valuation date, the standard and premise of value the claim requires, and the purpose of the valuation, all drawn from the governing agreements and the pleadings. Each of those shapes the method, and a change after the analysis starts means redoing date-specific work. The engagement letter records them so the report can state them on its first page.",
+      },
+      {
+        question: "How long does a valuation take?",
+        answer:
+          "About a week for retention and the records request, then several weeks of analysis after the financial statements, general ledger detail, and owner compensation records arrive, then a draft and final report. Normalizing several years of statements and gathering market data for the rate are the longest steps. A company with related-party transactions to unwind takes longer than one with clean books.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "FRCP_26"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "divorce-and-marital-dissolution",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a divorce or marital dissolution matter involves a scope that may include a business valuation, an income determination for support, a tracing of separate and marital property, and a lifestyle analysis, each with its own records. The engagement letter should state which are included, the valuation date the framework requires, and whether the economist is retained by one party or jointly. The records request reaches the business's general ledger and the parties' personal financial statements, because the personal expenses run through the business affect both the valuation and the income figure.",
     checklist: [
@@ -1088,13 +1395,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because a personal financial statement submitted to a lender states the owner's income and the business's value as the owner represented them at the time. When those representations differ from the positions taken in the divorce, the economist can address the difference and the fact finder can weigh it.",
       },
+      {
+        question: "What changes when the economist is retained as a joint neutral?",
+        answer:
+          "The engagement letter names both parties, the records request goes to both, and the report is delivered to both at once. The method is the same as in a one-sided engagement, but the economist communicates through both counsel and does not consult privately with either side about strategy. Courts often give a joint report more weight, and it can narrow the dispute to a few adjustments.",
+      },
+      {
+        question: "How is the cost of a divorce engagement controlled?",
+        answer:
+          "By scoping the services separately: the valuation, the income determination, the tracing, and the lifestyle analysis each have their own records and can be authorized in stages. Tracing in particular grows with the number of accounts and years, so counsel should decide early whether the separate property claim justifies it. The engagement letter states the fee basis for each service.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_CPS"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "fraud-and-embezzlement",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist or forensic accountant in a fraud or embezzlement matter means agreeing on the period to be reconstructed, the mechanisms suspected, whether the funds are to be traced forward, and the form the result must take: a civil damages figure, a restitution figure, or both. The records request is broad and immediate, because bank records, the general ledger, and supporting documents are the reconstruction, and the engagement letter should address privilege and the chain of custody for records the expert receives.",
     checklist: [
@@ -1128,13 +1447,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By confirming every amount against records the individual could not alter: bank statements, cancelled checks, and third-party documents. The internal books are used to map the mechanism, but the loss figure rests on the external records so it withstands the argument that the books were manipulated.",
       },
+      {
+        question: "How does the engagement handle privilege and a possible criminal referral?",
+        answer:
+          "The expert is retained through counsel so the work product is prepared at counsel's direction, and the engagement letter addresses how records are received, logged, and stored. If a referral to law enforcement or an insurance claim is expected, counsel decides what is shared and when. The reconstruction is built so it can serve either proceeding without being redone.",
+      },
+      {
+        question: "How long does a reconstruction take?",
+        answer:
+          "About a week for retention and the records request, then several weeks of transaction-level work depending on the length of the scheme and the volume of activity, then a draft and final report. Bank records that arrive in electronic form move faster than paper statements, and the schedule lengthens for each account and year added. A preliminary estimate can be provided before the full schedule is complete.",
+      },
     ],
     sources: refsToSources(["ACFE", "FRCP_26", "FRE_702"]),
   },
   {
     stage: "retaining",
     caseTypeSlug: "product-liability",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Retaining an economist in a product liability matter follows the injury or death engagement pattern, with attention to the claimant's circumstances. For a child or student the scope covers lost earning capacity built from educational attainment and occupational data; for a homemaker or retiree it centers on household services and any lost income or support; for a worker it covers the full earnings, benefits, and household components. The scope should name the sources of post-injury capacity and future care, and the records request should reach the school, employer, or household as the claimant's situation requires.",
     checklist: [
@@ -1169,6 +1500,16 @@ export const journeys: JourneyStage[] = [
         answer:
           "From the household's composition, the claimant's pre-injury schedule and tasks, time-use data for comparable households, and local replacement wage rates for each category of work. The report shows hours, rates, and present value by category so the fact finder can see how the figure was built.",
       },
+      {
+        question: "What records replace the earnings history for a claimant without one?",
+        answer:
+          "For a child or student, school records, standardized testing, the family's educational history, and any training or work already begun; for a homemaker, the household's composition and a documented account of the claimant's tasks and schedule; for a retiree, the sources of income and support and the household work performed. The economist's records list is tailored to the claimant at retention.",
+      },
+      {
+        question: "How is the engagement coordinated with the other experts in a product case?",
+        answer:
+          "The scope names who supplies the post-injury capacity opinion, any life care plan, and any life expectancy opinion, and it sets the economic report deadline after those are due. Liability experts on the product itself are not part of the economic engagement. The engagement letter should provide for a supplemental valuation if the care projection changes.",
+      },
     ],
     sources: refsToSources(["BLS_ATUS", "CENSUS_ACS", "BLS_OES"]),
   },
@@ -1176,7 +1517,9 @@ export const journeys: JourneyStage[] = [
   {
     stage: "preparing-deposition",
     caseTypeSlug: "personal-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Preparing an economist for deposition in a personal injury matter means walking through the report the way opposing counsel will: the earnings base, the worklife assumption, the wage growth rate, the discount rate, the post-injury path, the fringe benefit rate, the household services hours and wage rates, and the growth rate applied to future care. Each assumption should be tied to a stated source and the report should show the result under alternatives, so the economist can explain what moves the number without conceding that the number is arbitrary. Counsel should also confirm that the economist's inputs match the current medical and work-capacity opinions.",
     checklist: [
@@ -1210,13 +1553,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "That the earnings base is inflated by an unusual year, that the worklife is too long, that wage growth is too high or the discount rate too low, that the post-injury path ignores what the person can do, and that household services or benefits are double counted. A report that states each assumption, sources it, and shows alternatives meets each attack on its own terms.",
       },
+      {
+        question: "What must be produced from the economist's file before the deposition?",
+        answer:
+          "Typically the report, the materials considered, the data sources relied on, the fee arrangement, and any list of prior testimony the disclosure rules require, subject to the protections counsel has confirmed for draft reports and attorney communications. The economist should keep the reliance file organized from the start so production is a copy rather than a reconstruction. Counsel reviews it before it goes out.",
+      },
+      {
+        question: "How much preparation time does the economist need?",
+        answer:
+          "One or two sessions in the two weeks before the deposition, after the report and the reliance file are final and the opposing report has been read. The sessions cover the assumptions most likely to be attacked, the sensitivity tables, and the sources of the inputs taken from other experts. Preparation that starts after a changed medical opinion is discovered is too late.",
+      },
     ],
     sources: refsToSources(["SKOOG_CIECKA_KRUEGER_2011", "TREASURY_YIELD", "FRCP_26"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "wrongful-death",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a wrongful death matter concentrates on the assumptions that scale the whole report: the personal consumption deduction, the worklife and life expectancy applied to the decedent, the wage growth and discount rates, and the hours and wage rates behind household services. Opposing counsel will test whether consumption was drawn from household expenditure data appropriate to the household's size and income, whether the decedent's earnings history supports the base, and whether the survivors' account of household services was documented rather than assumed. The economist should be ready to explain each choice and show the result under alternatives.",
     checklist: [
@@ -1250,13 +1605,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because it is subtracted from the entire earnings stream, so a small change in the percentage moves the whole figure. The economist supports the rate with household expenditure data matched to the household's size and income and explains why that match is appropriate, and the report shows the result under alternative rates.",
       },
+      {
+        question: "How does the economist handle a question about the decedent's health or habits?",
+        answer:
+          "By pointing to the life expectancy and worklife inputs in the report and their sources. Where the record contains a medical opinion on the decedent's life expectancy, the economist applied it; where it does not, the general population tables were used and the report says so. The economist does not offer a medical view of the decedent's health.",
+      },
+      {
+        question: "What if the survivors' account of household services changes at their own depositions?",
+        answer:
+          "The economist revises the hours and issues a supplemental calculation, and the preparation session should cover what the report would show under the revised account. The report ties the household services figure to the survivors' documented statements and time-use data, so a change traces to a specific input rather than undermining the method.",
+      },
     ],
     sources: refsToSources(["BLS_CEX", "NCHS_LIFE_TABLES", "SKOOG_CIECKA_KRUEGER_2011"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "medical-malpractice",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a medical malpractice matter turns on the two paths and the apportionment between them. Opposing counsel will press the economist on whether the but-for path reflects the outcome proper care would have produced rather than full health, whether the underlying condition's own effect on earnings and life expectancy was accounted for, and whether the future care valued is incremental to the injury. The economist should be able to point to the causation and treating opinions for each input, explain what was taken as given, and show the result under alternative apportionment assumptions.",
     checklist: [
@@ -1290,13 +1657,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By stating which opinion the report relies on and showing the result under the alternative. The economist does not resolve the medical dispute; the report makes the effect of each position visible so the fact finder can apply whichever it accepts.",
       },
+      {
+        question: "What should the economist produce as reliance materials in a malpractice case?",
+        answer:
+          "The causation and treating opinions relied on for the but-for path, the life care plan or treating recommendations with the incremental items identified, the earnings and benefit records, and the data sources for growth, discount, and life expectancy. Because the report rests on medical opinions, the file should show which opinion supports each input. Counsel reviews the production before it goes out.",
+      },
+      {
+        question: "When should the economist's deposition be scheduled?",
+        answer:
+          "After the causation and treating experts have been deposed, so the economist's inputs are settled and the questioning can focus on the valuation. A deposition taken before the medical opinions are final invites questions the economist can answer only conditionally, and a later supplemental report may reopen the examination.",
+      },
     ],
     sources: refsToSources(["CDC_LIFE_TABLES", "BLS_CPI_MEDICAL", "FRE_702"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "motor-vehicle-accident",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a motor vehicle accident matter follows the report's structure: the earnings history and the base drawn from it, the dates out of work and the return, the post-injury path and its source, the fringe benefit rate, household services, and the growth and discount assumptions applied to each stream. Opposing counsel will look for an earnings base inflated by overtime or an unusual year, a return to work the report treats as a permanent loss without a supporting opinion, and household services hours that exceed the time-use data. The economist should be ready to explain each choice from the record.",
     checklist: [
@@ -1330,13 +1709,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "The economist updates the post-injury path and issues a supplemental calculation. The engagement should anticipate updates, and the deposition preparation should cover what the report would show under the recovered earnings so the economist is not surprised by the question.",
       },
+      {
+        question: "How does the economist respond to a question about the person's own account of their limitations?",
+        answer:
+          "By distinguishing the inputs the report relies on from the inputs it does not. The post-injury path rests on the medical or work-capacity opinions and on actual post-injury earnings; the household services hours rest on the person's documented pre-injury role and time-use data. The economist can explain how the result changes if a different limitation is assumed, without adopting the person's self-assessment as an opinion.",
+      },
+      {
+        question: "What does the preparation session cover for a bounded past-loss claim?",
+        answer:
+          "The dates out of work and the employer records that support them, the pay rate applied, any overtime or second job in the base, and the treatment of benefits during the absence. The session is shorter than for a full projection, but the same rule applies: every number ties to a record the economist can identify on the spot.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ATUS", "TREASURY_YIELD"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "traumatic-brain-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a traumatic brain injury matter centers on the inputs the economist took from others and on how the components reconcile. Opposing counsel will ask where the post-injury work capacity came from, whether the earnings path for a young person rests on the record or on optimism, how attendant care and supervision hours in the life care plan relate to the household services claim, and which growth rate was applied to each care category. The economist should be able to name the source of every input, show that the components do not overlap, and explain the sensitivity of the total to the plan's largest items.",
     checklist: [
@@ -1370,13 +1761,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By identifying the medical or vocational finding the report relied on and stating that the economist priced it rather than formed it. The economist can explain how the result changes under a different capacity assumption, but the capacity opinion itself belongs to the experts who prepared it.",
       },
+      {
+        question: "Should the economist's deposition follow the neuropsychologist's and the plan author's?",
+        answer:
+          "Yes. The economist's inputs come from those witnesses, and if their opinions shift at deposition the economic report changes with them. Scheduling the economist last lets the preparation session address the testimony actually given rather than the reports alone, and it keeps the economist from being asked to defend opinions that belong to others.",
+      },
+      {
+        question: "What reliance materials matter most in a brain injury case?",
+        answer:
+          "The work-capacity and neuropsychological opinions, the life care plan with its item-level tables, the family's documentation of supervision and household hours, and the school or earnings records behind the but-for path. Because the components must reconcile, the file should also include the economist's worksheet showing how plan hours and household services were separated. That worksheet answers the double-counting question before it is asked.",
+      },
     ],
     sources: refsToSources(["BLS_OES", "BLS_CPI_MEDICAL", "KUMHO_TIRE"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "spinal-cord-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a spinal cord injury matter focuses on the present value of the life care plan and the assumptions that drive it: the growth rate for each care category, the discount rate, the life expectancy applied, the replacement cycles for equipment and modifications, and the reconciliation of attendant care with household services. Because the plan is usually the largest component, opposing counsel will test whether the economist valued the plan as authored, whether the growth rates are supported by the medical price data appropriate to each category, and whether the life expectancy follows the medical opinion or the general tables.",
     checklist: [
@@ -1410,13 +1813,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "As the difference between how fast the cost of an item is expected to rise and how much a dollar invested today would earn over the same period. When the two are stated by category and their sources are given, the fact finder can see that the present value is a calculation, not a judgment call.",
       },
+      {
+        question: "How should the economist answer a question about whether a plan item is medically necessary?",
+        answer:
+          "By stating that the item's inclusion is the plan author's judgment and that the economist valued it as written. The economist can explain the item's frequency, unit cost, growth rate, and present value, and can show the total without it if asked. Testimony about whether the person needs the item belongs to the plan's author and the treating providers.",
+      },
+      {
+        question: "What documents should be assembled for the deposition?",
+        answer:
+          "The final report with item-level present value tables, the life care plan and its cost basis, the medical opinions on life expectancy and work capacity, the price data behind each growth rate, the discount rate source, and the earnings and benefit records. Opposing counsel will usually go item by item through the largest plan categories, so the tables should be organized to follow the plan.",
+      },
     ],
     sources: refsToSources(["BLS_CPI_MEDICAL", "TREASURY_YIELD", "JONES_LAUGHLIN_PFEIFER"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "workers-compensation",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a workers' compensation matter depends on which question the report answers. For a benefit-stream present value the questions are the schedule applied, the mortality assumption, and the discount rate. For a third-party report they are the wage base, the post-injury path, the components the compensation system does not pay, and how paid benefits are presented. For a loss of earning capacity determination they are the pre-injury wage and the post-injury wage the record supports. The economist should be ready to keep the compensation measure and the civil measure separate and to explain how the same facts support both.",
     checklist: [
@@ -1450,13 +1865,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Only about how it was valued. The items, frequencies, and costs come from the providers or from a projection prepared by others; the economist applies cost growth and discounts the stream. The economist should identify the source of the projection and confine the testimony to the valuation.",
       },
+      {
+        question: "How should the economist prepare for questions about benefits already paid?",
+        answer:
+          "By presenting the carrier's payment history as a separate schedule and stating plainly that the report shows the gross loss and the benefits paid side by side without netting them. Whether and how the paid benefits offset the civil recovery is a question for counsel and the court. The economist's preparation covers where the figures come from and why they are kept separate.",
+      },
+      {
+        question: "What is different about preparing for a hearing rather than a deposition?",
+        answer:
+          "The questioning is usually shorter and goes directly to the schedule applied, the mortality and discount assumptions, and the wage figures, because the hearing officer knows the compensation system. The economist should be ready to state each assumption's source in a sentence and to produce the present value calculation on request. The preparation can be a single review of the schedule and the assumptions.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "CDC_LIFE_TABLES"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "employment-discrimination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in an employment discrimination matter concentrates on the but-for compensation path, the front pay period, and mitigation. Opposing counsel will test whether the raises, bonuses, and promotions in the but-for path are supported by the employer's practices and comparator data, whether the front pay period rests on evidence about the employee's age, occupation, and job market, and whether replacement earnings were measured from the actual job search rather than assumed. The economist should be able to show the back pay, front pay, and benefit components separately and the result under alternative front pay periods and mitigation assumptions.",
     checklist: [
@@ -1490,13 +1917,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By presenting the job search record and the replacement earnings actually received, and by showing the result under the alternative that the opposing side proposes. Whether the search was reasonable is a question for the fact finder; the economist's role is to make the effect of each position visible.",
       },
+      {
+        question: "How does the economist handle a question about the employee's performance?",
+        answer:
+          "By explaining that the but-for path assumes continued employment and applies the raises and promotions the employer's practices and the comparators support, and that the economist did not evaluate performance. If the opposing side contends the employee would have been terminated or passed over anyway, the report can show the loss under that assumption, but the assumption itself is for the fact finder.",
+      },
+      {
+        question: "What should be in the reliance file for a discrimination case?",
+        answer:
+          "The employee's pay history, the employer's compensation policies and comparator data, the benefit and equity plan documents, the job search log and replacement pay records, and the data sources for wage growth and discounting. The comparator selection should be documented, because opposing counsel will ask why those employees and not others. The file should show the criteria used.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_OES", "FRCP_26"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "wrongful-termination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a wrongful termination matter covers the compensation the employee lost, the benefit accruals that stopped, the front pay period, and the replacement earnings. Opposing counsel will press on the expected tenure behind the front pay period, on whether pension and retiree health losses were valued from the plan terms rather than estimated, and on the job search. The economist should be able to show each component separately, explain the tenure and job market evidence behind the front pay period, and present the result under the alternatives the opposing side is likely to propose.",
     checklist: [
@@ -1530,13 +1969,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because it sets how long the loss continues and there is no record of the future to check it against. The economist supports the period with the employee's age, occupation, tenure, and the time comparable work reasonably takes to find, and shows the total under alternative periods so the fact finder can see what the assumption moves.",
       },
+      {
+        question: "How does the economist answer a question about whether the employee could have been laid off anyway?",
+        answer:
+          "By explaining that the but-for path assumes continued employment for the period counsel identified and that the report shows the loss under shorter periods as alternatives. Whether a later layoff or plant closing would have ended the employment is a factual question for the fact finder, and the economist's tables let it apply whichever finding it makes.",
+      },
+      {
+        question: "When is the economist's deposition typically taken in a termination case?",
+        answer:
+          "After the employer's compensation and plan records have been produced and the employee has been deposed on the job search, so the mitigation record and the plan terms are settled. Taking it earlier invites a supplemental report when the plan documents arrive, which reopens the examination. Counsel should also confirm the back pay figure is current as of the deposition.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "TREASURY_YIELD"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "commercial-contract-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a commercial contract dispute focuses on the but-for revenue, the incremental cost treatment, the damages period, and the discount rate. Opposing counsel will test whether the revenue projection rests on the contract terms and the business's history or on the business's hopes, whether costs treated as fixed would in fact have been avoided, whether replaced revenue was credited, and whether the discount rate reflects the risk of the lost profits. The economist should be able to trace every figure to the ledger, the contract, or the pre-dispute projections and to show the result under alternative cost and period assumptions.",
     checklist: [
@@ -1570,13 +2021,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By showing, account by account, how each cost behaved with volume in the business's own records before the breach. Costs that moved with revenue are treated as incremental and deducted; costs that did not are not. The ledger analysis is the support, and the report shows the margin under alternative treatments.",
       },
+      {
+        question: "How does the economist prepare for questions about causation?",
+        answer:
+          "By separating the loss caused by the breach from the effects of other events in the same period: market conditions, the business's own decisions, or a lost customer unrelated to the contract. The report states what was attributed to the breach and why, and the preparation session covers how the result changes if part of the decline is assigned elsewhere. The economist does not opine on whether the breach occurred.",
+      },
+      {
+        question: "What should be produced from the economist's file?",
+        answer:
+          "The report, the revenue and cost schedules, the general ledger extracts and management reports relied on, the pre-dispute projections, the post-breach results, and the sources for the discount rate. Because the incremental cost treatment rests on the ledger, the account-level analysis should be in the file in the form the economist used it. Counsel confirms what the disclosure rules and any protective order require.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "TREASURY_YIELD", "GE_JOINER"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "partnership-and-shareholder-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a partnership or shareholder dispute covers the valuation report from the standard of value through the reconciliation of approaches. Opposing counsel will test the normalization adjustments, the capitalization or discount rate, the selection and adjustment of market comparables, the weighting of approaches, and any discounts for lack of control or marketability. The economist should be able to explain why the standard of value applied fits the claim, support each normalization adjustment from the records, and show the value under the alternative assumptions the opposing valuation adopts.",
     checklist: [
@@ -1610,13 +2073,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "The rate applied to the earnings stream and the normalization of owner compensation, because small changes in either move the value materially. The economist supports the rate from market data and the adjustments from the company's records, and the reconciliation shows how much of the gap between the two valuations each disagreement explains.",
       },
+      {
+        question: "How does the economist address a prior offer or transaction in the company's equity?",
+        answer:
+          "By explaining whether it was considered and how much weight it received: an arm's-length transaction near the valuation date is strong evidence of value, while an offer made under different circumstances, for a different interest, or years earlier is not. The report states the treatment, and the preparation session covers why the transaction supports or does not support the conclusion.",
+      },
+      {
+        question: "What should the reliance file contain for a valuation deposition?",
+        answer:
+          "The valuation report and its schedules, the normalized financial statements with each adjustment supported, the market data for the rate and for any comparables, the governing agreements, the prior valuations and transactions in the equity, and the management interview or site visit notes. Opposing counsel will work from the schedules, so they should reconcile to the report without a calculator.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "FRE_702"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "divorce-and-marital-dissolution",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a divorce or marital dissolution matter covers the business valuation, the income determination, and any tracing or lifestyle analysis. Opposing counsel will test the valuation date, the goodwill treatment, the normalization of owner compensation and personal expenses, the income figure for support, and the documents relied on for tracing separate property. The economist should be able to show how the personal expenses run through the business affected both the valuation and the income figure, and how each tracing step ties to an account statement.",
     checklist: [
@@ -1650,13 +2125,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By showing the cash flow the business generated for the owner beyond salary: distributions, personal expenses paid by the business, and retained earnings available to the owner. Each item is tied to the ledger or the tax return so the fact finder can see where the difference comes from.",
       },
+      {
+        question: "How does the economist respond when the owner spouse disputes the personal expense add-backs?",
+        answer:
+          "By pointing to the ledger entry, the supporting document, and the basis for treating each item as personal. Add-backs that rest on the ledger survive the question; those that rest on assumption do not, which is why the report lists each with its source. The preparation session should review every add-back the opposing side is likely to contest.",
+      },
+      {
+        question: "How is the tracing defended when statements are missing for some months?",
+        answer:
+          "By stating the gap, showing the balances on either side of it, and explaining the assumption used to bridge it and its effect on the result. A tracing that presents a gap openly holds up better than one that skips it, and the fact finder can decide how much weight the bridged period deserves. The economist should not present a bridged period as if it were documented.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "FRCP_26"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "fraud-and-embezzlement",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a fraud or embezzlement matter focuses on the reconstruction: how each transaction was identified as part of the scheme, how the amounts were confirmed against external records, how periods with missing records were handled, and how the traced funds were followed forward. Opposing counsel will test whether transactions were included on assumption rather than evidence, whether the consequential losses were caused by the diversion, and whether the chain of custody for the records is intact. The economist should be able to walk through the method transaction type by transaction type and separate what was proven from what was estimated.",
     checklist: [
@@ -1690,13 +2177,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "As a schedule where every line carries its source document and its transaction type, with proven and estimated amounts labeled separately. When opposing counsel can trace any line to a bank record, the argument shifts from whether the loss occurred to how much of the estimated portion should count.",
       },
+      {
+        question: "How does the expert prepare for questions about the inclusion criteria?",
+        answer:
+          "By being able to state, for each transaction type, the test used to include a transaction in the loss and the record that satisfied it: a payment to a vendor that did not exist, a payroll entry for a person who never worked, a deposit that never reached the entity's account. Transactions that met a pattern but lacked a supporting record are shown separately as estimated. The criteria are written into the report so they can be read into the record.",
+      },
+      {
+        question: "Who handles chain of custody questions?",
+        answer:
+          "The expert, for the records the expert received and logged, and counsel or the custodian for how the records were obtained. The engagement should have produced a log of what was received, when, from whom, and in what form, and the preparation session should confirm it is complete. A gap in the log is better disclosed than discovered.",
+      },
     ],
     sources: refsToSources(["ACFE", "FRE_702", "DAUBERT"]),
   },
   {
     stage: "preparing-deposition",
     caseTypeSlug: "product-liability",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Deposition preparation in a product liability matter follows the injury or death pattern with added attention to the claimant's but-for path. For a child or student, opposing counsel will test the educational attainment assumption and the occupational data used to price it; for a homemaker or retiree, the household services hours and wage rates; for a worker, the same earnings, benefits, and care assumptions as any injury claim. The economist should be able to support the attainment assumption from the family and school record, tie the household services to time-use data and the claimant's documented role, and show the result under alternatives.",
     checklist: [
@@ -1730,6 +2229,16 @@ export const journeys: JourneyStage[] = [
         answer:
           "By stating the attainment assumption and its basis in the family and school record, pricing it with earnings data by educational level, applying a worklife expectancy, and showing the result under alternative attainment levels. The sensitivity table lets the fact finder choose the path the evidence supports.",
       },
+      {
+        question: "How does the economist defend an educational attainment assumption for a child?",
+        answer:
+          "With the family's educational history, the child's school records where they exist, and the attainment data for children of similar background, and by showing the result under lower and higher attainment levels. The assumption is presented as a stated choice with its evidence, not as a prediction. Opposing counsel's alternative is usually already in the sensitivity table.",
+      },
+      {
+        question: "What reliance materials matter most in a product case?",
+        answer:
+          "The school, family, or household documentation behind the but-for path, the medical opinions on work restrictions and life expectancy, the life care plan or treating recommendations if care is claimed, the time-use data and local replacement rates for household services, and the earnings data by educational level. Because the claimant often has no wage history, the file should show every source the but-for path was built from.",
+      },
     ],
     sources: refsToSources(["CENSUS_ACS", "BLS_ATUS", "SKOOG_CIECKA_KRUEGER_2011"]),
   },
@@ -1737,7 +2246,9 @@ export const journeys: JourneyStage[] = [
   {
     stage: "trial",
     caseTypeSlug: "personal-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a personal injury matter has three jobs: to show the jury what the loss consists of, component by component; to explain present value in plain terms so the jury understands why a future loss is stated as a smaller number today; and to answer the opposing economist's report point by point. Demonstratives should follow the report's structure, from the earnings base to the post-injury path to the present value of each component, and every figure on a board should be traceable to a table in the report. Counsel should plan the direct examination so the assumptions the opposing side will attack are explained before cross rather than after.",
     checklist: [
@@ -1771,13 +2282,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "As the amount that, invested today at a stated rate, would grow to cover each year's loss as it comes due. A short example with a single future payment shows the idea, and the report's year-by-year table shows how the same arithmetic produces the total. The explanation is the same whether the number is large or small.",
       },
+      {
+        question: "In what order should the economist testify?",
+        answer:
+          "After the medical and work-capacity witnesses whose opinions define the post-injury path and, where a life care plan is claimed, after its author. That sequence puts the economist's inputs in evidence before the valuation is presented and keeps the economist from being asked to defend opinions that belong to others. Counsel should tell the economist which of those witnesses have testified and what they said.",
+      },
+      {
+        question: "How does the economist handle a cross-examination question about being paid by one side?",
+        answer:
+          "By stating the fee arrangement plainly: hourly, not contingent on the outcome, and the same method regardless of who retained the economist. The report's stated sources and sensitivity tables are the evidence of that, because they let the opposing side check every number. The question loses force when the economist has already shown the result under the other side's assumptions.",
+      },
     ],
     sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD", "FRE_702"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "wrongful-death",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a wrongful death matter asks the economist to translate a household's loss into a number the jury can follow: what the decedent earned and would have earned, what the decedent would have spent personally, what the decedent did in the home, and what each of those streams is worth today. Demonstratives should show the components separately and, where the framework requires it, by survivor. The opposing economist will usually differ on consumption, worklife, and household services, and the direct examination should explain those choices before cross so the jury hears the reasoning first.",
     checklist: [
@@ -1811,13 +2334,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By showing the tasks the decedent performed, the hours they took in a typical week based on the survivors' account and time-use data, the cost of hiring someone to do each, and how long the need continues. Presented that way the figure is a replacement cost the jury can check against its own experience.",
       },
+      {
+        question: "How should the economist testify when the framework separates the estate's claim from the survivors' claims?",
+        answer:
+          "By presenting the components on separate boards that match the framework: the survivors' lost support, services, and benefits on one, and any accumulation to the estate on another, with no figure appearing on both. The direct examination walks the jury through each board and states which claim it belongs to. Counsel and the court decide how the verdict form uses them.",
+      },
+      {
+        question: "What should the economist avoid saying about the decedent?",
+        answer:
+          "Anything that reads as a judgment about the decedent's worth as a person. The testimony is about earnings, consumption, household work, and support, each measured from records and data, and the consumption deduction should be explained as what the decedent would have spent on personal needs rather than as a reduction of the decedent's value. A measured tone serves the number better than advocacy.",
+      },
     ],
     sources: refsToSources(["BLS_CEX", "BLS_ATUS", "JONES_LAUGHLIN_PFEIFER"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "medical-malpractice",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a medical malpractice matter requires the economist to present the two paths clearly: what the patient would have earned and needed with proper care, what the patient will earn and need now, and the difference between them as a present value. Demonstratives should show both paths on the same chart so the jury sees that the loss is incremental, and the direct examination should identify which medical opinions each path relies on. The opposing economist will usually differ on apportionment and life expectancy, and the sensitivity tables let the jury see what each position moves.",
     checklist: [
@@ -1851,13 +2386,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "The sensitivity tables show the loss under the alternative outcome, so the jury can apply the medical conclusion it reaches to the economic figures. The economist presents both so the report remains useful whichever way the causation question is decided.",
       },
+      {
+        question: "How does the economist present the incremental care component to a jury?",
+        answer:
+          "By showing what the underlying condition would have required regardless and what the injury added, category by category, and then the present value of the added portion only. A board that lists both columns side by side makes the point that the claim is for the difference. The jury can then see why the report does not value the full life care plan.",
+      },
+      {
+        question: "What if the medical witnesses have not testified before the economist is called?",
+        answer:
+          "The economist's inputs would then lack a foundation in the trial record, and the testimony would rest on reports rather than evidence. Counsel should sequence the medical witnesses first, or, if the schedule cannot be changed, have the economist state the assumptions taken from each report so the jury can connect them to the later testimony. The preparation session should cover both possibilities.",
+      },
     ],
     sources: refsToSources(["CDC_LIFE_TABLES", "FRE_702", "KUMHO_TIRE"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "motor-vehicle-accident",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a motor vehicle accident matter scales with the claim. For a bounded loss the economist may need only a short direct examination on the past wages and a modest future period. For a catastrophic crash the testimony covers every component and the present value of each, with demonstratives showing the earnings gap by year, the household services replacement cost, and the life care plan's present value by category. In either case the jury needs to see where the numbers came from, and the opposing economist's differences should be explained on direct rather than discovered on cross.",
     checklist: [
@@ -1891,13 +2438,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Directly: the person is working, the work pays less or offers less than the prior path, and the loss is the difference over the remaining worklife. Showing the two paths on one chart makes the point without overstatement and takes the issue away from cross.",
       },
+      {
+        question: "How much of the testimony should be spent on present value in a moderate injury case?",
+        answer:
+          "Enough for the jury to understand why a future loss is stated as a smaller number today, and no more. A single example with one future payment usually does it, followed by the year-by-year table for the actual claim. In a bounded claim with a short future period the explanation can be brief, because the discount effect is small and the jury's attention belongs on the earnings gap.",
+      },
+      {
+        question: "How does the economist handle cross on an unusual earnings year?",
+        answer:
+          "By explaining why the base was set as it was, whether the unusual year was included, averaged, or excluded, and what the result looks like under the alternative. If the report already shows the base under more than one treatment, the question confirms the economist considered it rather than exposing an oversight. The preparation session should identify every year opposing counsel could call unusual.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "JONES_LAUGHLIN_PFEIFER"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "traumatic-brain-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a traumatic brain injury matter asks the economist to present a large claim built from other experts' inputs without appearing to vouch for those inputs. The direct examination should state plainly which findings the economist relied on for work capacity, supervision, and care, and then show the jury how each was priced: the earnings gap by year, the supervision and attendant care hours and rates, and the present value of the plan by category. Demonstratives that separate the components and show the sensitivity to the largest items give the jury a way to adjust the number if it accepts only part of the plan.",
     checklist: [
@@ -1931,13 +2490,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By explaining the worklife tables relied on, the age and education inputs, and what the shorter figure assumes about the person's but-for path. The side-by-side board shows the effect of the difference so the jury can weigh which assumption fits the evidence.",
       },
+      {
+        question: "How does the economist present a sensitivity board without weakening the report?",
+        answer:
+          "By framing it as the jury's tool: the report's figure rests on the plan and the work-capacity opinion as given, and the board shows how the total changes if the jury accepts only part of them. Presented that way the board shows that the economist did the arithmetic for every reasonable outcome, which supports the method rather than undercutting the number. The economist's own conclusion stays the report's figure.",
+      },
+      {
+        question: "How should the economist handle questions about the plan's medical content on cross?",
+        answer:
+          "By returning each such question to the plan's author and the treating witnesses, and answering only the valuation part: frequency, cost, growth rate, and present value. An economist who starts defending the medical content of the plan invites a motion to strike and loses credibility on the valuation. The preparation session should rehearse that boundary.",
+      },
     ],
     sources: refsToSources(["SKOOG_CIECKA_KRUEGER_2011", "BLS_CPI_MEDICAL", "FRE_702"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "spinal-cord-injury",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a spinal cord injury matter centers on the present value of lifetime care and the earnings loss, both of which the jury needs to see built up from parts. Demonstratives should show attendant care hours and rates by year, equipment replacement cycles, and the growth and discount pair applied to each category, so that the total is the visible result of arithmetic the jury has watched. The opposing economist typically differs on life expectancy, growth rates, and the discount rate; the direct examination should present those choices and their sources before cross, and the sensitivity board should show the total under the alternatives.",
     checklist: [
@@ -1971,13 +2542,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By stating its source, explaining that it is paired with a growth rate for each category, and showing the total under the opposing rate. When the jury sees that the economist has already computed the alternative, the question loses its force.",
       },
+      {
+        question: "How does the economist present attendant care so the jury can follow it?",
+        answer:
+          "As hours per day, a rate per hour, and the number of years, shown on one board and then carried to present value on the next. Jurors can check hours and rates against their own experience in a way they cannot check a lifetime total. Equipment and modifications are shown the same way, with the replacement cycle in place of the daily hours.",
+      },
+      {
+        question: "How should the economist testify about life expectancy?",
+        answer:
+          "By stating which figure the report applied, where it came from, and what the total would be under the alternative, without offering a medical view of the person's prognosis. If a medical witness gave a life expectancy opinion, the economist applied it; if not, the general tables were used and the report says so. The jury hears the effect of the choice, not the economist's opinion on it.",
+      },
     ],
     sources: refsToSources(["TREASURY_YIELD", "BLS_CPI_MEDICAL", "JONES_LAUGHLIN_PFEIFER"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "workers-compensation",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Testimony in a workers' compensation matter is more often before a hearing officer or in a third-party trial than before a jury on the compensation claim itself. For a benefit determination or settlement hearing the economist presents the wage base, the post-injury wage, and the present value of the benefit stream with its assumptions stated. For a third-party trial the testimony resembles any personal injury case, with the added need to present the benefits already paid separately so the court can apply the lien and offset rules. Demonstratives should keep the compensation measure and the civil measure on separate boards.",
     checklist: [
@@ -2011,13 +2594,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "In presentation more than substance. Before a hearing officer the testimony can go directly to the schedule, the assumptions, and the present value. Before a jury in a third-party trial the economist explains the components and present value in plain terms and keeps the compensation system's figures separate for the court.",
       },
+      {
+        question: "What should the economist bring to a compensation hearing?",
+        answer:
+          "The present value calculation with its schedule, mortality table, and discount rate sources, the carrier's payment history, the wage records behind the benefit rate, and a one-page summary of the assumptions. Hearing officers tend to work from the summary and ask about specific assumptions, so the supporting documents should be tabbed to answer those questions quickly.",
+      },
+      {
+        question: "How does the economist keep the third-party jury from confusing the two measures?",
+        answer:
+          "By never putting the compensation figures and the civil damages figures on the same board. The jury hears the components of the civil loss and their present value; the benefits paid appear on a separate schedule for the court, and the economist explains, if asked, that the court will decide how they are treated. The separation is also what keeps the economist's testimony consistent across both proceedings.",
+      },
     ],
-    sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "NAFE"]),
+    sources: refsToSources(["BLS_CPS", "TREASURY_YIELD", "CDC_LIFE_TABLES"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "employment-discrimination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in an employment discrimination matter asks the economist to show the jury two compensation paths year by year: what the employee would have earned and accrued, and what the employee actually earned and can reasonably expect to earn. Demonstratives should separate back pay, front pay, and benefits, show the mitigation earnings credited, and make the front pay period visible as a choice with a stated basis. The opposing economist typically differs on the but-for raises, the front pay period, and mitigation, and the direct examination should present those choices and the evidence behind them before cross.",
     checklist: [
@@ -2051,13 +2646,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "Because the court may decide them differently: back pay is a record-based figure to a date, front pay is a projection that may be decided by the court rather than the jury in some settings, and benefits have their own plan-based valuation. Separate boards let the fact finder apply its findings to each without recomputing the whole.",
       },
+      {
+        question: "How does the economist present mitigation without arguing the employee's case?",
+        answer:
+          "By showing the replacement earnings actually received, credited year by year against the but-for path, and the job search record that produced them. If the opposing side contends the employee should have earned more, the board shows the loss under that assumption as well. The jury decides whether the search was reasonable; the economist shows what each answer does to the number.",
+      },
+      {
+        question: "What happens if the court, not the jury, decides front pay?",
+        answer:
+          "The separate boards for back pay, front pay, and benefits let the jury's award and the court's determination rest on different components without recomputing either. The economist presents the front pay projection with its period and basis so the court has what it needs, and the back pay and benefit figures stand on their own for the jury. That is the main reason the components are kept apart.",
+      },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECI", "FRE_702"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "wrongful-termination",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a wrongful termination matter presents the compensation the employee lost, the benefit accruals that ended, the front pay period, and the replacement earnings, with each component on its own board. For a long-tenured employee the pension and retiree health losses need a plain-language explanation of what the employee was accruing and how the termination cut it off. The opposing economist typically argues for a shorter front pay period and higher replacement earnings; the direct examination should present the tenure and job market evidence behind the economist's period and show the total under the alternative.",
     checklist: [
@@ -2091,13 +2698,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By showing what the employee would have received at retirement under the plan's formula with continued service, what the employee will receive with service ending at termination, and the present value of the difference. A simple year-by-year board of the two benefit streams makes the loss concrete.",
       },
+      {
+        question: "How does the economist explain retiree health coverage to a jury?",
+        answer:
+          "As a benefit the employee would have qualified for at retirement with continued service, valued at the cost of replacing that coverage over the years it would have been provided, less any contribution the employee would have paid. A board showing the eligibility date the employee would have reached and the years of coverage lost makes the loss concrete. The plan terms are the source and should be cited on the board.",
+      },
+      {
+        question: "How does the economist handle cross on a replacement job that pays less?",
+        answer:
+          "By showing the replacement earnings credited in full, then the remaining gap in pay and benefits, and by stating the basis for projecting that gap forward: the difference in pay grade, benefits, and advancement between the two positions. If the opposing side contends the gap will close, the board shows the total under that assumption. The answer is the same arithmetic the jury has already seen.",
+      },
     ],
     sources: refsToSources(["BLS_ECEC", "TREASURY_YIELD", "JONES_LAUGHLIN_PFEIFER"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "commercial-contract-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a commercial contract dispute asks the economist to show the fact finder the but-for revenue, the incremental costs, the resulting lost margin, and the present value of the future portion, each traceable to the contract, the ledger, or the pre-dispute projections. Demonstratives should show revenue and margin by period, with replaced revenue credited, and a board should pair the discount rate with the risk it reflects. The opposing expert typically differs on but-for revenue, cost treatment, and the discount rate; the direct examination should explain each of those choices from the business's own records before cross.",
     checklist: [
@@ -2131,13 +2750,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "With the business's own pre-dispute record: its revenue trend, its margins, its customer base, and any projections it made before the dispute arose. The economist shows the but-for path under those facts and the total under the opposing expert's assumption, so the fact finder can decide which the evidence supports.",
       },
+      {
+        question: "How does the economist present lost profits to a judge rather than a jury?",
+        answer:
+          "With the same schedules in less narrative form: but-for revenue, incremental costs, lost margin by period, replaced revenue credited, and present value, each tied to a source document. Judges often want the schedules organized so findings can be made line by line and the alternative treatments visible. The demonstratives can be the report's schedules themselves.",
+      },
+      {
+        question: "What if the fact finder accepts liability but not the damages period claimed?",
+        answer:
+          "The schedules show the loss by period, so a shorter period can be read directly from them without a new calculation. The economist should say so on direct, because it tells the fact finder that the figure is not all or nothing. The preparation session should confirm the by-period totals are on the boards.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "TREASURY_YIELD", "AAEFE_JLE"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "partnership-and-shareholder-dispute",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a partnership or shareholder dispute presents a valuation to a fact finder who may not have seen one before. The economist explains the standard of value and why it fits the claim, walks through the normalization adjustments from the company's records, presents the approaches applied and their reconciliation, and addresses any discounts. Demonstratives should show the normalized earnings, the rate applied, and the resulting value, plus a reconciliation of the two valuations that shows how much of the gap each disagreement explains. The rebuttal of the opposing valuation should be organized by input, not by conclusion.",
     checklist: [
@@ -2171,13 +2802,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "A reconciliation board that starts from one valuation, changes one input at a time to the other valuation's assumption, and shows the value after each change. It tells the fact finder which disagreements matter and lets it decide each on the evidence rather than choosing between two totals.",
       },
+      {
+        question: "How does the economist explain normalization adjustments to a fact finder?",
+        answer:
+          "As corrections that show what the business earns for an owner, with each one tied to a record: the owner's compensation restated to what an outside manager would be paid, personal expenses removed, related-party rents put at market, and one-time items taken out. Each adjustment appears on the board with its source and its effect on earnings. Presented that way the adjustments read as method rather than opinion.",
+      },
+      {
+        question: "How does the economist handle a cross question about the size of the discount for lack of marketability?",
+        answer:
+          "By stating whether the standard of value for the claim permits the discount at all, and, if it does, the basis for the size applied and the value under the opposing figure. The reconciliation board already shows how much of the gap between the two valuations the discount explains. The economist should not defend a discount the standard excludes or abandon one it permits.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "FRE_702"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "divorce-and-marital-dissolution",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a divorce or marital dissolution matter is usually before a judge, and the economist's presentation should be organized so the court can adopt findings directly from it: the business value under the framework's date and goodwill treatment, the income available for support with each adjustment shown, the tracing of separate property step by step, and any lifestyle analysis by category. Demonstratives should let the court see each adjustment and its source, and the rebuttal of the opposing expert should be organized by input so the court can rule on each disagreement.",
     checklist: [
@@ -2211,13 +2854,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "As schedules where each line states the item, the adjustment, the source document, and the effect, followed by a conclusion that sums them. A court can adopt, modify, or reject each line with a finding, which is more useful than a single number the court must accept or reject whole.",
       },
+      {
+        question: "How does the economist testify about goodwill?",
+        answer:
+          "By explaining what part of the business's value depends on the owner spouse personally and what part would transfer to a buyer, showing the evidence for the split, and stating the value under the treatment the framework requires. Where the court's framework excludes personal goodwill from the marital estate, the board shows the enterprise value separately. The economist states the method and lets the court apply the law.",
+      },
+      {
+        question: "How should the lifestyle analysis be presented?",
+        answer:
+          "As spending by category over the marriage's recent years, drawn from bank and credit statements, with the source for each category and the total reconciled to the income available. The court can adopt or adjust each category, and the analysis ties to the income determination so the two do not contradict each other. Categories that rest on estimate are labeled.",
+      },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_OES"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "fraud-and-embezzlement",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a fraud or embezzlement matter presents the reconstruction as a chain from mechanism to record to amount. The economist explains how the scheme worked, shows representative transactions with their bank and third-party records, presents the loss schedule with proven and estimated portions labeled, and follows the traced funds forward. Demonstratives should let the fact finder see one transaction end to end before seeing the totals, and the consequential losses should be presented separately with the causal link explained. The rebuttal of the opposing expert should address inclusion criteria and the estimated portion, where the disagreement usually lies.",
     checklist: [
@@ -2251,13 +2906,25 @@ export const journeys: JourneyStage[] = [
         answer:
           "By labeling it, explaining the basis for the estimate, and showing the proven amount separately so the fact finder can award the proven portion with confidence and decide the estimated portion on its stated basis. Blending the two invites the argument that none of the total is proven.",
       },
+      {
+        question: "How does the expert explain tracing to a jury?",
+        answer:
+          "By following one diverted payment from the entity's account through each account it passed through to the asset it bought, on a single board with the bank records beside it. Once the jury has seen one path end to end, the summary of all traced funds is credible. The expert states which traced amounts are documented at every step and which rest on an assumption where records were unavailable.",
+      },
+      {
+        question: "How does the expert address consequential losses on cross?",
+        answer:
+          "By separating them from the direct loss and stating the causal basis for each: a penalty incurred because a payment was missed, a loan taken to cover a shortfall, a contract lost because funds were unavailable. Losses the entity would have incurred regardless are excluded and the report says why. The direct loss stands on the bank records whatever the fact finder decides about the consequential items.",
+      },
     ],
     sources: refsToSources(["ACFE", "FRE_702", "DAUBERT"]),
   },
   {
     stage: "trial",
     caseTypeSlug: "product-liability",
-    dateModified: MODIFIED,
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-08-27",
+    dateModified: "2026-09-02",
     intro:
       "Trial testimony in a product liability matter presents the loss for a claimant whose circumstances the jury must understand before the numbers make sense: a child whose earning capacity rests on an educational path, a homemaker whose loss is the work in the home, a retiree whose loss is support and services, or a worker with the full set of components. Demonstratives should begin with the claimant's but-for path and then show each component's build-up and present value. The opposing economist typically differs on the attainment assumption, the household services hours, or life expectancy, and the direct examination should present those choices with their evidence before cross.",
     checklist: [
@@ -2290,6 +2957,16 @@ export const journeys: JourneyStage[] = [
         question: "How does the economist present a child's lost earning capacity without speculating?",
         answer:
           "By stating the attainment assumption and its basis in the family and school record, pricing it with earnings data by educational level, and showing the result under alternative attainment levels on the same board. The jury sees the assumption, its support, and its effect, and can choose the path the evidence supports.",
+      },
+      {
+        question: "How does the economist testify about a homemaker's loss?",
+        answer:
+          "By showing the tasks, the hours per week the claimant performed them before the injury, the cost of hiring someone to do each, and the years the need continues, then carrying the total to present value. Jurors can weigh hours and rates against their own households. The board should also show the tasks the claimant can still do, because the loss is the difference.",
+      },
+      {
+        question: "In what order should the economist testify in a product case?",
+        answer:
+          "After the medical witnesses on work restrictions and life expectancy and, where care is claimed, after the plan's author, so every input the economist priced is already in evidence. For a child claimant, the school and family witnesses who support the attainment assumption should also precede the economist. The economist's direct then starts from evidence the jury has heard rather than from reports.",
       },
     ],
     sources: refsToSources(["CENSUS_ACS", "BLS_ATUS", "JONES_LAUGHLIN_PFEIFER"]),
