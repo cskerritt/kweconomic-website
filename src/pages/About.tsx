@@ -3,7 +3,6 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, ORG_SHORT, ORG_LEGAL, SITE_URL } from "@/lib/brand";
 import ContactCTA from "@/components/ContactCTA";
 import SchemaOrg from "@/components/SchemaOrg";
-import TestimonialSection from "@/components/TestimonialSection";
 import { Picture } from "@/components/Picture";
 import { organizationSchema } from "@/lib/schema";
 
@@ -140,9 +139,6 @@ export default function About() {
           </Link>
         </div>
       </section>
-
-      {/* Testimonials */}
-      <TestimonialSection indices={[0, 1, 2]} />
 
       {/* CTA */}
       <section className="py-16 md:py-24">

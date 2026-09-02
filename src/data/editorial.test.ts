@@ -6,7 +6,6 @@ import { knowledgeGuides as knowledge } from "./knowledge";
 import { insightPosts as insights } from "./insights";
 import { whitePapers } from "./whitePapers";
 import { faqs } from "./faqs";
-import { testimonials } from "./testimonials";
 import { homepageFaqs } from "./home-faqs.mjs";
 import { LEGACY_BRAND_PATTERN } from "@/lib/brand";
 
@@ -75,12 +74,11 @@ describe("economics editorial data", () => {
     expect(slugs(whitePapers)).toEqual(["business-valuation-standards-in-litigation", "daubert-ready-economic-damages-report"]);
     expect(whitePapers.every((w) => w.discipline === "Economic")).toBe(true);
   });
-  it("faqs and testimonials are economics-framed", () => {
+  it("faqs are economics-framed", () => {
     expect(faqs.length).toBeGreaterThanOrEqual(8);
-    expect(testimonials.length).toBeGreaterThanOrEqual(2);
     const home = homepageFaqs("KW Economics", "KW Economics");
     expect(home.length).toBeGreaterThanOrEqual(5);
-    const text = JSON.stringify([methods, guides, comparisons, knowledge, insights, whitePapers, faqs, testimonials, home]);
+    const text = JSON.stringify([methods, guides, comparisons, knowledge, insights, whitePapers, faqs, home]);
     expect(text).not.toMatch(LEGACY_BRAND_PATTERN);
     expect(text).not.toMatch(/[–—§]/);
     const vocabHits = text.match(VOCAB) ?? [];
@@ -94,7 +92,6 @@ describe("economics editorial data", () => {
       insights,
       whitePapers,
       faqs,
-      testimonials,
       home,
     ]);
     expect(outside.match(VOCAB) ?? []).toEqual([]);

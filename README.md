@@ -112,7 +112,6 @@ Service x State x City pages are prerendered for the top slice of each state's c
 | `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 2 insight posts, 2 email-gated white papers |
 | `journeys.ts` | 56 attorney journey stages (considering, retaining, preparing-deposition, trial x 14 case types) |
 | `faqs.ts`, `home-faqs.mjs` | 15-question site FAQ and the 6-question homepage FAQ (shared with the prerender and the FAQPage JSON-LD) |
-| `testimonials.ts` | 4 economics-referencing testimonials |
 | `references.ts` | 30-entry citation registry (NAFE ethics statement, Journal of Forensic Economics, BLS series, worklife tables, Treasury yields, AICPA SSVS No. 1, NACVA, federal rules); the only path for sources |
 | `regulations/state-regs.ts`, `courts/state-courts.ts` | Per-state expert-testimony rules and court systems |
 | `labor/*.ts` | State and metro labor context (never rendered as rates or wage figures in prose) |

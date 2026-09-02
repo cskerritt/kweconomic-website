@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Phone, FileCheck, Scale, MapPin } from "lucide-react";
+import { ArrowRight, Shield, Phone, FileCheck, Scale, MapPin, Check } from "lucide-react";
 import { pillarServices } from "@/data/services";
 import { states } from "@/data/states";
 import { homepageFaqs } from "@/data/home-faqs.mjs";
-import { testimonials } from "@/data/testimonials";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, ORG_SHORT, ORG_PHONE, ORG_PHONE_DISPLAY, SITE_URL, telHref } from "@/lib/brand";
 import ServiceCard from "@/components/ServiceCard";
@@ -11,7 +10,6 @@ import Reveal from "@/components/Reveal";
 import ContactCTA from "@/components/ContactCTA";
 import CrossSell from "@/components/CrossSell";
 import SchemaOrg from "@/components/SchemaOrg";
-import TestimonialSection from "@/components/TestimonialSection";
 import FAQBlock from "@/components/FAQBlock";
 import {
   graphSchema,
@@ -53,6 +51,44 @@ const KNOWLEDGE_RESOURCES = [
   { label: "Forensic Economist vs. Forensic Accountant", href: "/compare/forensic-economist-vs-forensic-accountant" },
 ];
 
+// The hero card: the four inputs every KW Economics report sets out on its own
+// schedule. It stands in the slot a pull-quote would occupy; attorney feedback
+// is not shown on the site (see src/pages/no-testimonials.render.test.tsx).
+const REPORT_STATES = [
+  { label: "Question asked", text: "The loss claim the analysis answers and the records it relies on." },
+  { label: "Earnings base", text: "Documented pre-injury or but-for earnings and fringe benefits." },
+  { label: "Growth and worklife", text: "Wage growth and the worklife horizon, each on its own schedule." },
+  { label: "Discount rate", text: "The rate that reduces future losses to present value, and its source." },
+];
+
+function ReportContentsCard({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={`bg-white text-navy rounded-lg shadow-2xl relative ${compact ? "p-5" : "p-8"}`}>
+      <p className="text-amber-dark text-xs font-semibold uppercase tracking-[0.18em] mb-2">Built to be examined</p>
+      <h2 className={`font-serif font-bold leading-snug mb-4 ${compact ? "text-xl" : "text-2xl"}`}>
+        What Every Report States
+      </h2>
+      <ul className={`space-y-3 ${compact ? "text-sm" : "text-base"}`}>
+        {REPORT_STATES.map((item) => (
+          <li key={item.label} className="flex gap-3">
+            <Check className="w-5 h-5 text-amber shrink-0 mt-0.5" aria-hidden="true" />
+            <span>
+              <span className="font-semibold">{item.label}.</span>{" "}
+              <span className="text-neutral-600">{item.text}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div className="border-t border-neutral-200 mt-5 pt-4 flex items-center justify-between text-xs">
+        <span className="text-neutral-500">Same schedules in every venue, plaintiff or defense.</span>
+        <Link to="/methods" className="text-amber-dark font-semibold uppercase tracking-wider hover:underline">
+          See the methods
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   usePageMeta({
     title: `Forensic Economics and Economic Damages Experts | ${ORG_NAME}`,
@@ -64,9 +100,6 @@ export default function Home() {
   // Damages lines only; rebuttal is a mode of every engagement, not a card.
   const coreServices = pillarServices().filter((s) => s.slug !== "expert-rebuttal-and-report-review");
 
-  // Representative retaining-attorney feedback (labeled as such on the card).
-  // Index 0 = the lost earnings quote used as the hero pull-quote.
-  const heroQuote = testimonials[0];
   const allStates = states.filter((s) => s.type === "state");
 
   return (
@@ -122,53 +155,15 @@ export default function Home() {
                 Or call {ORG_PHONE_DISPLAY}
               </a>
 
-              {/* Compact pull-quote for mobile/tablet (full card shows at lg+ in the right column) */}
-              <figure className="kw-enter kw-enter-4 lg:hidden mt-8 bg-white/95 text-navy rounded-lg p-5 shadow-xl relative">
-                <span
-                  aria-hidden="true"
-                  className="absolute top-2 left-4 font-serif text-5xl text-amber leading-none select-none"
-                >
-                  &ldquo;
-                </span>
-                <blockquote className="font-serif text-base leading-snug mb-3 mt-4 relative z-10">
-                  {heroQuote.quote}
-                </blockquote>
-                <figcaption className="border-t border-neutral-200 pt-3 text-xs">
-                  <span className="block font-semibold">{heroQuote.author}</span>
-                  <span className="block text-neutral-500 mt-0.5">
-                    {heroQuote.title} - {heroQuote.caseType}
-                  </span>
-                </figcaption>
-              </figure>
+              {/* Compact report card for mobile/tablet (full card shows at lg+ in the right column) */}
+              <div className="kw-enter kw-enter-4 lg:hidden mt-8">
+                <ReportContentsCard compact />
+              </div>
             </div>
 
-            {/* Right column: hero pull-quote */}
+            {/* Right column: report contents card */}
             <div className="hidden lg:block kw-enter kw-enter-2">
-              <figure className="bg-white text-navy rounded-lg p-8 shadow-2xl relative">
-                <span
-                  aria-hidden="true"
-                  className="absolute top-4 left-6 font-serif text-7xl text-amber leading-none select-none"
-                >
-                  &ldquo;
-                </span>
-                <blockquote className="font-serif text-xl md:text-2xl leading-snug mb-6 mt-6 relative z-10">
-                  {heroQuote.quote}
-                </blockquote>
-                <figcaption className="border-t border-neutral-200 pt-4 flex items-center justify-between">
-                  <span>
-                    <span className="block font-semibold text-sm">{heroQuote.author}</span>
-                    <span className="block text-xs text-neutral-500 mt-0.5">
-                      {heroQuote.title} - {heroQuote.caseType}
-                    </span>
-                  </span>
-                  <Link
-                    to="/case-types"
-                    className="text-xs text-amber-dark font-semibold uppercase tracking-wider hover:underline"
-                  >
-                    See case types
-                  </Link>
-                </figcaption>
-              </figure>
+              <ReportContentsCard />
             </div>
           </div>
         </div>
@@ -398,10 +393,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Representative feedback (index 0 is the hero pull-quote; it closes the
-          row so all three quotes render) */}
-      <TestimonialSection indices={[1, 2, 0]} />
 
       {/* Final CTA */}
       <section className="py-16 md:py-24">
