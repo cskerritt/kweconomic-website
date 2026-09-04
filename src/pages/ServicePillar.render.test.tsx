@@ -6,6 +6,7 @@ import { getCaseType } from "@/data/caseTypes";
 import { credentials } from "@/data/credentials";
 import { states } from "@/data/states";
 import { ORG_NAME } from "@/lib/brand";
+import { pillarTitle } from "@/lib/page-titles.mjs";
 import {
   renderRoute,
   visibleText,
@@ -52,7 +53,11 @@ describe("ServicePillar", () => {
       const text = visibleText(html);
 
       it("publishes the pillar title and the hand-authored meta description", () => {
-        expect(title).toBe(`${service.name} Expert | ${ORG_NAME}`);
+        // The shared builder: "<name> Expert" on the full name where it fits
+        // the 60-character tag, else on the pillar's titleName.
+        expect(title).toBe(pillarTitle(service, ORG_NAME));
+        const full = `${service.name} Expert | ${ORG_NAME}`;
+        expect(title).toBe(full.length <= 60 ? full : `${service.titleName ?? service.name} Expert | ${ORG_NAME}`);
         expect(description).toBe(service.metaDescription);
         expect(description.length).toBeGreaterThanOrEqual(140);
         expect(description.length).toBeLessThanOrEqual(160);
@@ -252,11 +257,16 @@ describe("ServicePillar", () => {
     expect(text).toContain("Fraud & Tracing for Fraud and Embezzlement");
   });
 
-  it("the pillar titles fit the length budget except where the service name itself is long", () => {
+  it("every pillar title fits the 60-character tag and keeps the pillar's keyword", () => {
     for (const service of pillarServices()) {
       const { title } = render(service.slug);
-      expect(title.length).toBeLessThanOrEqual(70);
+      expect(title.length, service.slug).toBeLessThanOrEqual(60);
+      expect(title, service.slug).toContain(service.shortName.split(" ")[0]);
     }
+    // The two pillars whose full name cannot fit carry a written titleName.
+    expect(render("lost-earnings-and-earning-capacity").title).toBe(`Lost Earnings and Earning Capacity Expert | ${ORG_NAME}`);
+    expect(render("life-care-plan-cost-projection").title).toBe(`Life Care Plan Cost Projection Expert | ${ORG_NAME}`);
+    expect(render("business-valuation").title).toBe(`Business Valuation Expert | ${ORG_NAME}`);
   });
 
   it("a non-pillar cross-sell renders the hand-off card, not the pillar body", () => {

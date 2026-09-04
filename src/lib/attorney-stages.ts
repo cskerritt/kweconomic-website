@@ -37,29 +37,17 @@ export const STAGE_LABELS: Record<string, string> = Object.fromEntries(
 export interface CaseTypeName {
   slug: string;
   name: string;
-  /** Optional short form on the entry itself; wins over CASE_TYPE_SHORT_NAMES. */
+  /**
+   * Short form of the name for the journey headings ("Auto Accident: Is an
+   * Economist Needed?"). Every CaseType entry carries one (src/data/caseTypes.ts,
+   * shared with the service x case-type pair titles); each must fit
+   * SHORT_NAME_MAX (journeys.test.ts checks).
+   */
   shortName?: string;
 }
 
-/**
- * Short forms for the case types whose full name would push a journey
- * <title> past TITLE_MAX. Keyed by case-type slug; a `shortName` on the
- * CaseType entry takes precedence when one exists. Every value, and every
- * full name without one, must fit SHORT_NAME_MAX (journeys.test.ts checks).
- */
-export const CASE_TYPE_SHORT_NAMES: Record<string, string> = {
-  "motor-vehicle-accident": "Auto Accident",
-  "traumatic-brain-injury": "Brain Injury",
-  "workers-compensation": "Workers' Comp",
-  "employment-discrimination": "Discrimination",
-  "commercial-contract-dispute": "Contract Dispute",
-  "partnership-and-shareholder-dispute": "Shareholder Dispute",
-  "divorce-and-marital-dissolution": "Divorce",
-  "fraud-and-embezzlement": "Fraud",
-};
-
 export function caseTypeShortName(caseType: CaseTypeName): string {
-  return caseType.shortName ?? CASE_TYPE_SHORT_NAMES[caseType.slug] ?? caseType.name;
+  return caseType.shortName ?? caseType.name;
 }
 
 /** Brand suffix every page <title> on the site carries. */
@@ -91,8 +79,8 @@ const STAGE_PHRASE_MAX = Math.max(...Object.values(JOURNEY_HEADINGS).map((build)
 
 /**
  * Longest case-type name a journey heading can carry and still fit TITLE_MAX
- * with the brand suffix. Every CASE_TYPE_SHORT_NAMES value and every full
- * name without a short form must fit it.
+ * with the brand suffix. Every CaseType shortName (and every full name that
+ * stands in for a missing one) must fit it.
  */
 export const SHORT_NAME_MAX = TITLE_MAX - TITLE_SUFFIX.length - STAGE_PHRASE_MAX;
 

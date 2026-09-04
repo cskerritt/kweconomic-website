@@ -38,9 +38,22 @@ export type CaseTypeCategory =
 export interface CaseType {
   slug: string;
   name: string;
+  /** Short form of the name for the length-budgeted titles: the attorney
+   * journey headings ("Auto Accident: Is an Economist Needed?"), the service
+   * x case-type pair titles ("Lost Earnings Expert for Auto Accident"), and
+   * the state tier's second stem where the full stem cannot fit beside the
+   * place ("Discrimination Economist in North Carolina"); at most 20
+   * characters (src/lib/attorney-stages.ts SHORT_NAME_MAX). Equals the name
+   * where the name already fits; otherwise a whole-word part of the name or
+   * a standard short form ("Auto Accident", "Workers' Comp"). */
+  shortName: string;
   category: CaseTypeCategory;
-  /** Short SERP title stem ("Wrongful Death Economist"); the templates append
-   * the place and the brand, so keep it under 45 characters. */
+  /** SERP title stem, always `${name} Economist` ("Wrongful Death
+   * Economist"): the hub appends the brand, so the full keyword stays on the
+   * hub, and the state tier appends the place (src/lib/page-titles.mjs
+   * caseTypeStateTitle, which falls back to `${shortName} Economist` and then
+   * to the state abbreviation only where no stem fits beside the full state
+   * name inside the 60-character tag); keep it at or under 45 characters. */
   titleBase: string;
   /** ISO dates for the Article schema and the byline. `dateModified` moves
    * whenever the entry's copy changes. */
@@ -72,6 +85,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "personal-injury",
     name: "Personal Injury",
+    shortName: "Personal Injury",
     category: "personal-injury",
     titleBase: "Personal Injury Economist",
     datePublished: "2026-08-27",
@@ -131,6 +145,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "wrongful-death",
     name: "Wrongful Death",
+    shortName: "Wrongful Death",
     category: "wrongful-death",
     titleBase: "Wrongful Death Economist",
     datePublished: "2026-08-27",
@@ -190,6 +205,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "medical-malpractice",
     name: "Medical Malpractice",
+    shortName: "Medical Malpractice",
     category: "med-mal",
     titleBase: "Medical Malpractice Economist",
     datePublished: "2026-08-27",
@@ -244,6 +260,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "motor-vehicle-accident",
     name: "Motor Vehicle Accident",
+    shortName: "Auto Accident",
     category: "personal-injury",
     titleBase: "Motor Vehicle Accident Economist",
     datePublished: "2026-08-27",
@@ -298,6 +315,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "traumatic-brain-injury",
     name: "Traumatic Brain Injury",
+    shortName: "Brain Injury",
     category: "personal-injury",
     titleBase: "Traumatic Brain Injury Economist",
     datePublished: "2026-08-27",
@@ -357,6 +375,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "spinal-cord-injury",
     name: "Spinal Cord Injury",
+    shortName: "Spinal Cord Injury",
     category: "personal-injury",
     titleBase: "Spinal Cord Injury Economist",
     datePublished: "2026-08-27",
@@ -411,6 +430,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "workers-compensation",
     name: "Workers' Compensation",
+    shortName: "Workers' Comp",
     category: "workers-comp",
     titleBase: "Workers' Compensation Economist",
     datePublished: "2026-08-27",
@@ -465,6 +485,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "employment-discrimination",
     name: "Employment Discrimination",
+    shortName: "Discrimination",
     category: "employment",
     titleBase: "Employment Discrimination Economist",
     datePublished: "2026-08-27",
@@ -519,6 +540,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "wrongful-termination",
     name: "Wrongful Termination",
+    shortName: "Wrongful Termination",
     category: "employment",
     titleBase: "Wrongful Termination Economist",
     datePublished: "2026-08-27",
@@ -573,6 +595,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "commercial-contract-dispute",
     name: "Commercial Contract Dispute",
+    shortName: "Contract Dispute",
     category: "commercial",
     titleBase: "Commercial Contract Dispute Economist",
     datePublished: "2026-08-27",
@@ -627,6 +650,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "partnership-and-shareholder-dispute",
     name: "Partnership and Shareholder Dispute",
+    shortName: "Shareholder Dispute",
     category: "commercial",
     titleBase: "Partnership and Shareholder Dispute Economist",
     datePublished: "2026-08-27",
@@ -681,6 +705,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "divorce-and-marital-dissolution",
     name: "Divorce and Marital Dissolution",
+    shortName: "Divorce",
     category: "family",
     titleBase: "Divorce and Marital Dissolution Economist",
     datePublished: "2026-08-27",
@@ -735,6 +760,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "fraud-and-embezzlement",
     name: "Fraud and Embezzlement",
+    shortName: "Fraud",
     category: "commercial",
     titleBase: "Fraud and Embezzlement Economist",
     datePublished: "2026-08-27",
@@ -789,6 +815,7 @@ export const caseTypes: CaseType[] = [
   {
     slug: "product-liability",
     name: "Product Liability",
+    shortName: "Product Liability",
     category: "personal-injury",
     titleBase: "Product Liability Economist",
     datePublished: "2026-08-27",

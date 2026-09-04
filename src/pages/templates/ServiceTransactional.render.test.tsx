@@ -29,7 +29,13 @@ describe("ServiceTransactional meta descriptions", () => {
       it(`/services/${service.slug}/${variant} reads as prose and answers the page's question`, () => {
         const { html, description, title } = renderVariant(service.slug, variant);
         expect(html).toContain("<h1");
-        expect(title).toContain(service.name);
+        // The H1 keeps the full name; the <title> takes the pillar's titleName
+        // where the full name would overrun the 60-character tag.
+        expect(html).toContain(`${service.name} ${variant[0].toUpperCase()}${variant.slice(1)}</h1>`);
+        const label = `${variant[0].toUpperCase()}${variant.slice(1)}`;
+        const full = `${service.name} ${label} | KW Economics`;
+        expect(title).toBe(full.length <= 60 ? full : `${service.titleName ?? service.name} ${label} | KW Economics`);
+        expect(title.length).toBeLessThanOrEqual(60);
         expect(description.length).toBeGreaterThanOrEqual(140);
         expect(description.length).toBeLessThanOrEqual(160);
         expect(description).toContain(proseName(service.shortName));

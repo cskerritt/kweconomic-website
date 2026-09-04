@@ -12,23 +12,19 @@ import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
+import { pairTitle } from "@/lib/page-titles.mjs";
 // Service.shortName is a heading label ("Fraud & Tracing"); the meta
 // description and the intro sentence render the work the pillar performs
 // through the shared helper ("fraud and tracing analysis"). The H1 and the
-// H2 keep the full service name as a proper noun; the title uses the short
-// name with any ampersand spelled out so it stays under the length budget.
+// H2 keep the full service name as a proper noun; the <title> comes from the
+// shared pairTitle builder (src/lib/page-titles.mjs, also used by
+// scripts/prerender.mjs): the heading label plus the case type's short name,
+// with "Expert" wherever it fits the 60-character tag, then without it, and
+// the pillar's titleShortName only where neither form of the label fits.
 import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import NotFound from "@/pages/NotFound";
 
 const LINK_CLASS = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
-
-/** Short name for titles: "Fraud & Tracing" -> "Fraud and Tracing". */
-const titleShortName = (s: PillarService) => s.shortName.replace(/\s*&\s*/g, " and ");
-
-/** Title tag: short name plus the case type (the H1 keeps the full service name). */
-function pairTitle(service: PillarService, caseType: CaseType): string {
-  return `${titleShortName(service)} Expert for ${caseType.name} | ${ORG_NAME}`;
-}
 
 /** Meta description: 126-158 characters on every declared pair (pinned by the render test). */
 function pairDescription(service: PillarService, caseType: CaseType): string {
@@ -54,7 +50,7 @@ export default function ServiceCaseType() {
   usePageMeta(
     service && caseType
       ? {
-          title: pairTitle(service, caseType),
+          title: pairTitle(service, caseType, ORG_NAME),
           description: pairDescription(service, caseType),
           canonical: url,
         }

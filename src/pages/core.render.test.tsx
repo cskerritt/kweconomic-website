@@ -382,9 +382,9 @@ describe("core page meta literals", () => {
     "CaseStudies.tsx", "ScheduleConsultation.tsx", "Privacy.tsx", "Terms.tsx",
   ];
   for (const file of CORE_FILES) {
-    it(`${file}: title <= 63 chars with the brand, description 70-160 chars, hyphens only`, () => {
+    it(`${file}: title <= 60 chars with the brand, description 70-160 chars, hyphens only`, () => {
       const { title, description } = pageMeta(file);
-      expect(title.length, title).toBeLessThanOrEqual(63);
+      expect(title.length, title).toBeLessThanOrEqual(60);
       expect(title, file).toContain(ORG_NAME);
       expect(description.length, description).toBeLessThanOrEqual(160);
       expect(description.length, description).toBeGreaterThanOrEqual(70);

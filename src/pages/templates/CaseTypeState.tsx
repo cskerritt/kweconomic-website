@@ -16,6 +16,7 @@ import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, serviceSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
+import { caseTypeStateTitle } from "@/lib/page-titles.mjs";
 import NotFound from "@/pages/NotFound";
 
 const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
@@ -55,7 +56,12 @@ export default function CaseTypeState() {
   usePageMeta(
     caseType && state
       ? {
-          title: `${caseType.titleBase} in ${placeName(state.name)} | ${ORG_NAME}`,
+          // Shared with scripts/prerender.mjs (wrapped in a template literal
+          // so the prerender parity guard can slot it): the titleBase plus
+          // the place, then "<shortName> Economist" where the full stem
+          // cannot fit beside the place, and the state abbreviation only
+          // where no stem fits beside the full place name in the tag.
+          title: `${caseTypeStateTitle(caseType, state, ORG_NAME)}`,
           description: `${caseType.name} economic damages in ${placeName(state.name)}: loss components, state damages rules and venues, and how the number is built.`,
           canonical: url,
         }

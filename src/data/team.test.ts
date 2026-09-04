@@ -43,20 +43,33 @@ describe("KW Economics team", () => {
   });
   // /team/:slug <title> (shared with the static shell through team-meta.mjs):
   // the person's role, never a credential, and the same string on both sides.
-  it("profile titles carry the role and drop the post-nominals and credentials", () => {
+  it("profile titles carry the role where it fits the 60-character tag and drop the post-nominals and credentials", () => {
     expect(bareName("Christopher Skerritt, M.Ed., MBA")).toBe("Christopher Skerritt");
     expect(bareName("Zachary Sperling")).toBe("Zachary Sperling");
     for (const m of team) {
       const title = profileTitle({ name: m.name, jobTitle: m.title, memoriam: m.memoriam, orgName: ORG_NAME });
-      // A compound role keeps its first half in the title (team-meta.mjs).
-      expect(title, m.slug).toBe(`${bareName(m.name)}, ${m.title.split(" / ")[0]} | ${ORG_NAME}`);
+      // A compound role keeps its first half in the title; a role that still
+      // cannot fit beside the name and the brand is dropped, never
+      // paraphrased (team-meta.mjs).
+      const withRole = `${bareName(m.name)}, ${m.title.split(" / ")[0]} | ${ORG_NAME}`;
+      expect(title, m.slug).toBe(withRole.length <= 60 ? withRole : `${bareName(m.name)} | ${ORG_NAME}`);
+      expect(title.startsWith(bareName(m.name)), m.slug).toBe(true);
+      expect(title.endsWith(` | ${ORG_NAME}`), m.slug).toBe(true);
       for (const c of m.credentials) expect(title, `${m.slug} title spells ${c}`).not.toContain(c);
       expect(title, m.slug).not.toMatch(/[\u2013\u2014]/);
-      expect(title.length, m.slug).toBeLessThanOrEqual(70);
+      expect(title.length, m.slug).toBeLessThanOrEqual(60);
     }
+    // "Christopher Skerritt, Chief of Economic Services | KW Economics" runs
+    // 63 characters, so the chief's profile carries the name alone.
     expect(
       profileTitle({ name: "Christopher Skerritt, M.Ed., MBA", jobTitle: "Chief of Economic Services", orgName: ORG_NAME }),
-    ).toBe(`Christopher Skerritt, Chief of Economic Services | ${ORG_NAME}`);
+    ).toBe(`Christopher Skerritt | ${ORG_NAME}`);
+    expect(
+      profileTitle({ name: "Zachary Sperling", jobTitle: "Economics Associate / Expert Liaison", orgName: ORG_NAME }),
+    ).toBe(`Zachary Sperling, Economics Associate | ${ORG_NAME}`);
+    expect(
+      profileTitle({ name: "Jane Roe, Ph.D.", jobTitle: "Economist", orgName: ORG_NAME }),
+    ).toBe(`Jane Roe, Economist | ${ORG_NAME}`);
     expect(
       profileTitle({ name: "Jane Roe, Ph.D.", jobTitle: "Economist", memoriam: true, orgName: ORG_NAME }),
     ).toBe(`Jane Roe | In Memoriam | ${ORG_NAME}`);

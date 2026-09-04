@@ -4,6 +4,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { pillarServices, servicesForCaseType } from "@/data/services";
 import { caseTypes } from "@/data/caseTypes";
 import { ORG_NAME } from "@/lib/brand";
+import { pairTitle } from "@/lib/page-titles.mjs";
 import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import {
   renderRoute,
@@ -58,12 +59,20 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
         const text = visibleText(html);
         const ct = caseType.name.toLowerCase();
         expect(html).toContain("<h1");
-        // The H1 keeps the full service name; the title uses the short name
-        // (measured 43-84 characters on the declared pairs, down from 58-109).
+        // The H1 keeps the full service name; the title comes from the shared
+        // pairTitle builder: the heading label (any ampersand spelled out)
+        // plus the case type's short name, with "Expert" wherever it fits the
+        // 60-character tag, then without it, and only then the same two forms
+        // on the shorter titleShortName where the data sets one.
         expect(text).toContain(`${service.name} for ${caseType.name} Cases`);
         expect(html).toMatch(/<h1[^>]*>[^<]*Cases<\/h1>/);
-        expect(title).toBe(`${service.shortName.replace(/\s*&\s*/g, " and ")} Expert for ${caseType.name} | ${ORG_NAME}`);
-        expect(title.length).toBeLessThanOrEqual(declared ? 85 : 90);
+        expect(title).toBe(pairTitle(service, caseType, ORG_NAME));
+        const labels = [service.shortName.replace(/\s*&\s*/g, " and "), ...(service.titleShortName ? [service.titleShortName] : [])];
+        const ladder = labels
+          .flatMap((label) => [`${label} Expert for ${caseType.shortName}`, `${label} for ${caseType.shortName}`])
+          .map((body) => `${body} | ${ORG_NAME}`);
+        expect(title).toBe(ladder.find((t) => t.length <= 60));
+        expect(title.length).toBeLessThanOrEqual(60);
         expect(title).not.toContain("&");
         const base = `${capFirst(work)} for ${ct} cases: how the loss is built, which records drive it, and testimony support.`;
         // "Either side." rides along only while the description fits the
@@ -165,7 +174,7 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
 
   it("prints the fraud and wrongful death pillars word for word", () => {
     const fraud = render("fraud-and-asset-tracing", "fraud-and-embezzlement");
-    expect(fraud.title).toBe("Fraud and Tracing Expert for Fraud and Embezzlement | KW Economics");
+    expect(fraud.title).toBe("Fraud and Tracing Expert for Fraud | KW Economics");
     expect(fraud.description).toBe(
       "Fraud and tracing analysis for fraud and embezzlement cases: how the loss is built, which records drive it, and testimony support. Either side.",
     );
@@ -173,7 +182,23 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
       "Fraud and tracing analysis applied to fraud and embezzlement litigation: methodology, deliverables, and case-specific considerations.",
     );
     const wd = render("wrongful-death-economic-loss", "traumatic-brain-injury");
-    expect(wd.title).toBe("Wrongful Death Expert for Traumatic Brain Injury | KW Economics");
+    expect(wd.title).toBe("Wrongful Death Expert for Brain Injury | KW Economics");
+    // Where "Expert" cannot fit beside a long label and case name it drops.
+    expect(render("business-valuation", "partnership-and-shareholder-dispute").title).toBe(
+      "Business Valuation for Shareholder Dispute | KW Economics",
+    );
+    expect(render("lost-earnings-and-earning-capacity", "personal-injury").title).toBe(
+      "Lost Earnings Expert for Personal Injury | KW Economics",
+    );
+    // The divorce pillar keeps its heading label wherever it fits (this pair
+    // is exactly 60 characters) and takes the shorter titleShortName only
+    // where neither form of the heading label can.
+    expect(render("divorce-and-marital-financial-analysis", "divorce-and-marital-dissolution").title).toBe(
+      "Divorce Financial Analysis Expert for Divorce | KW Economics",
+    );
+    expect(render("divorce-and-marital-financial-analysis", "partnership-and-shareholder-dispute").title).toBe(
+      "Divorce Analysis for Shareholder Dispute | KW Economics",
+    );
     expect(wd.description).toBe(
       "Wrongful death analysis for traumatic brain injury cases: how the loss is built, which records drive it, and testimony support. Either side.",
     );

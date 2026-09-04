@@ -18,6 +18,7 @@ import {
 } from "@/lib/schema";
 import { placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
+import { serviceStateTitle } from "@/lib/page-titles.mjs";
 // Service.shortName is a heading label; every sentence that names the work
 // goes through the shared helpers (proseName: "fraud and tracing testimony";
 // the hero and FAQ builders apply workPhrase themselves). Slots after
@@ -65,8 +66,13 @@ export default function ServiceState() {
       ? serviceStateDirectAnswer(ORG_NAME, service.shortName, state.name, getStateNarrative(state))
       : "";
   usePageMeta({
+    // Shared with scripts/prerender.mjs: the heading label with any ampersand
+    // spelled out ("Fraud and Tracing") beside the full place name, then the
+    // pillar's titleShortName where the label cannot fit, and the state
+    // abbreviation only where no label fits inside the 60-character tag.
+    // Headings keep shortName.
     title: service && state
-      ? `${service.shortName} in ${placeName(state.name)} | ${ORG_NAME}`
+      ? serviceStateTitle(service, state, ORG_NAME)
       : `Service | ${ORG_NAME}`,
     description: truncateAtWord(directAnswerForMeta),
     canonical: `${ORG_URL}/services/${serviceSlug ?? ""}/${stateSlug ?? ""}`,

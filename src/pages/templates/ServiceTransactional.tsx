@@ -8,6 +8,7 @@ import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, serviceSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
+import { variantTitle } from "@/lib/page-titles.mjs";
 // Service.shortName is a heading label ("Fraud & Tracing"); every sentence
 // that names the work goes through the shared prose helpers.
 import { capFirst, proseName, withArticle, workPhrase } from "@/lib/service-prose.mjs";
@@ -85,11 +86,13 @@ export default function ServiceTransactional({ variant }: { variant: Variant }) 
   const { serviceSlug = "" } = useParams();
   const s = pillarServices().find((x) => x.slug === serviceSlug);
   const url = s ? `${ORG_URL}/services/${s.slug}/${variant}` : "";
+  // The H1 and the Service node keep the full name; the <title> comes from the
+  // shared builder (titleName where the full name would overrun the tag).
   const title = s ? `${s.name} ${LABEL[variant]}` : "";
   usePageMeta(
     s
       ? {
-          title: `${title} | ${ORG_NAME}`,
+          title: variantTitle(s, LABEL[variant], ORG_NAME),
           description: variantDescription(s, variant),
           canonical: url,
         }

@@ -45,6 +45,17 @@ export interface Service {
   slug: string;
   name: string;
   shortName: string;
+  /** Name as it reads in the pillar hub "Expert" title and the cost/process/
+   * timeline titles (src/lib/page-titles.mjs), for a pillar whose `name` plus
+   * "Timeline" would overrun the 60-character tag; defaults to `name`. */
+  titleName?: string;
+  /** Shorter label the state, city, and service x case-type titles fall back
+   * to only where neither form of `shortName` (any ampersand spelled out)
+   * fits beside the place or case name inside the 60-character tag
+   * (src/lib/page-titles.mjs); at most 19 characters so it fits beside the
+   * longest city name, and it keeps the label's leading keyword. Headings,
+   * links, prose, and every title that fits keep `shortName`. */
+  titleShortName?: string;
   pillar: boolean; // false = cross-sell only, excluded from geo/case/cost enumeration
   description: string;
   icon: string;

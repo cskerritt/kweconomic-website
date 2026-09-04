@@ -6,6 +6,7 @@ import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { credentials, type Credential } from "@/data/credentials";
 import { states } from "@/data/states";
 import { ORG_NAME } from "@/lib/brand";
+import { pillarTitle } from "@/lib/page-titles.mjs";
 // Service.shortName is a heading label ("Fraud & Tracing"); the hero lead,
 // the credential sidebar, and the "by Case Type" intro render it as prose
 // through the shared helpers. Headings and link labels keep the short name.
@@ -70,7 +71,9 @@ export default function ServicePillar() {
   const service = entry && isPillarService(entry) ? entry : undefined;
 
   usePageMeta({
-    title: entry ? `${entry.name} Expert | ${ORG_NAME}` : `Service | ${ORG_NAME}`,
+    // Shared with scripts/prerender.mjs: "<name> Expert" on the pillar's
+    // titleName where the full name would overrun the 60-character tag.
+    title: entry ? pillarTitle(entry, ORG_NAME) : `Service | ${ORG_NAME}`,
     // The pillar meta description is the hand-authored metaDescription field
     // (140-160 characters, states the offer), never the hero paragraph.
     description: service?.metaDescription ?? entry?.description ?? "",

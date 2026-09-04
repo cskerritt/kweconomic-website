@@ -9,6 +9,7 @@ import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { credentials, getCredential } from "@/data/credentials";
 import { states } from "@/data/states";
 import { placeName } from "@/data/geo-prose.mjs";
+import { caseTypeStateTitle } from "@/lib/page-titles.mjs";
 import { stateRegulations, getRegulationsByState } from "@/data/regulations/state-regs";
 import { stateCourts, getCourtsByState, selectTrialCourts, courtSystemLabel } from "@/data/courts/state-courts";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
@@ -325,7 +326,11 @@ describe("CaseTypeState category gates", () => {
   it("the District keeps its article in place slots and drops it in attributive slots", () => {
     const { html, title } = render("/case-types/wrongful-death/district-of-columbia", STATE_ROUTE, CaseTypeState);
     const text = visibleText(html);
-    expect(title).toBe(`Wrongful Death Economist in the District of Columbia | ${ORG_NAME}`);
+    // The full place name plus the brand would run 67 characters, so the
+    // shared builder falls back to the abbreviation in the <title> alone;
+    // every heading and sentence slot below keeps the article.
+    expect(title).toBe(`Wrongful Death Economist in DC | ${ORG_NAME}`);
+    expect(title.length).toBeLessThanOrEqual(60);
     expect(h1Of(html)).toBe("Wrongful Death Economic Damages Expert in the District of Columbia");
     expect(text).toContain("built to the District of Columbia's damages rules and venues");
     expect(text).toContain("District of Columbia courts and expert standards");
@@ -357,8 +362,13 @@ describe("CaseTypeState sweep of every case type x jurisdiction", () => {
         const url = `${ORG_URL}/case-types/${ct.slug}/${st.slug}`;
         const { html, title, description } = render(`/case-types/${ct.slug}/${st.slug}`, STATE_ROUTE, CaseTypeState);
         const label = `${ct.slug}/${st.slug}`;
-        expect(title, label).toBe(`${ct.titleBase} in ${placeName(st.name)} | ${ORG_NAME}`);
-        expect(title.length, label).toBeLessThanOrEqual(90);
+        // The shared builder: the titleBase stem, or the short name plus
+        // Economist where the full stem cannot fit beside the place, with the
+        // full place name wherever it fits and the abbreviation only where
+        // no stem can.
+        expect(title, label).toBe(caseTypeStateTitle(ct, st, ORG_NAME));
+        expect([`${ct.titleBase} in `, `${ct.shortName} Economist in `].some((stem) => title.startsWith(stem)), label).toBe(true);
+        expect(title.length, label).toBeLessThanOrEqual(60);
         expect(description, label).toContain(`${ct.name} economic damages in ${placeName(st.name)}:`);
         expect(description.length, label).toBeLessThanOrEqual(160);
         const service = node(html, "Service")!;
@@ -427,7 +437,7 @@ describe("CredentialState /credentials/forensic-economist/new-york", () => {
   const ny = getRegulationsByState("new-york")!;
 
   it("publishes a category-keyed title, H1, and description", () => {
-    expect(title).toBe(`Forensic Economist Qualifications in New York | ${ORG_NAME}`);
+    expect(title).toBe(`Vetting a Forensic Economist in New York | ${ORG_NAME}`);
     expect(h1Of(html)).toBe("Forensic Economist Qualifications for New York Damages Cases");
     expect(description).toBe("What the forensic economist qualification establishes, how New York courts weigh it, and how to retain a forensic economist there.");
     expect(description.length).toBeLessThanOrEqual(160);
@@ -482,7 +492,7 @@ describe("CredentialState /credentials/forensic-economist/new-york", () => {
 describe("CredentialState membership and degree pages", () => {
   it("/credentials/nafe-member/texas reads as an affiliation, names nobody, and keeps the pinned strings", () => {
     const { html, title, description } = render("/credentials/nafe-member/texas", CRED_STATE_ROUTE, CredentialState);
-    expect(title).toBe(`NAFE Membership and Texas Damages Testimony | ${ORG_NAME}`);
+    expect(title).toBe(`What NAFE Membership Means in Texas | ${ORG_NAME}`);
     expect(h1Of(html)).toBe("NAFE Membership and Texas Damages Testimony");
     expect(description).toBe("What NAFE membership establishes, how Texas courts weigh it, and how to retain a forensic economist there.");
     expect(html).toContain('<section id="recognition"');
@@ -502,7 +512,9 @@ describe("CredentialState membership and degree pages", () => {
   it("/credentials/graduate-economics-degree/district-of-columbia keeps the District's article out of attributive slots", () => {
     const { html, title } = render("/credentials/graduate-economics-degree/district-of-columbia", CRED_STATE_ROUTE, CredentialState);
     const text = visibleText(html);
-    expect(title).toBe(`Graduate Economics Credentials in the District of Columbia | ${ORG_NAME}`);
+    // The full place name would overrun the tag, so the <title> alone takes
+    // the abbreviation; the H1 and every sentence slot keep the article.
+    expect(title).toBe(`Forensic Economist Degrees in DC | ${ORG_NAME}`);
     expect(h1Of(html)).toBe("Graduate Economics Credentials for District of Columbia Damages Cases");
     expect(text).toContain("Recognition and qualification in the District of Columbia");
     expect(text).toContain("How do District of Columbia courts qualify a forensic economist?");
@@ -525,7 +537,7 @@ describe("CredentialState sweep of every credential x jurisdiction", () => {
         const url = `${ORG_URL}/credentials/${cred.slug}/${st.slug}`;
         const { html, title, description } = render(`/credentials/${cred.slug}/${st.slug}`, CRED_STATE_ROUTE, CredentialState);
         const label = `${cred.slug}/${st.slug}`;
-        expect(title.length, label).toBeLessThanOrEqual(80);
+        expect(title.length, label).toBeLessThanOrEqual(60);
         expect(title, label).not.toContain("Credential in");
         expect(description.length, label).toBeLessThanOrEqual(160);
         const service = node(html, "Service")!;

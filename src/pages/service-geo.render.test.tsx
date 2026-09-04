@@ -19,6 +19,7 @@ import {
 } from "@/data/narratives";
 import { cityAttr, placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
+import { serviceStateTitle, serviceCityTitle, stateHubTitle } from "@/lib/page-titles.mjs";
 import { truncateAtWord } from "@/lib/text";
 import { proseName, workPhrase } from "@/lib/service-prose.mjs";
 import {
@@ -211,7 +212,12 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
           const hero = `${ORG_NAME} provides ${work} for matters venued in ${place}.`;
           expect(text).toContain(hero);
           expect(jsonLdBlocks(html)).toContain(hero);
-          expect(title).toBe(`${service.shortName} in ${place} | ${ORG_NAME}`);
+          // The shared builder: the heading label ("Fraud and Tracing") with
+          // the full place name wherever it fits the tag, the titleShortName
+          // where it cannot, and the abbreviation only where no label fits.
+          expect(title).toBe(serviceStateTitle(service, state, ORG_NAME));
+          expect(title.length).toBeLessThanOrEqual(60);
+          expect(title).not.toContain("&");
           // The description is the hero cut at a word, as on the city page and
           // in the static shells, so it names this pillar's subject and never
           // the generic "lost earnings, household services, and business
@@ -324,7 +330,10 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           const hero = `${ORG_NAME} provides ${work} for cases venued in ${cityName}, ${place}.`;
           expect(text).toContain(hero);
           expect(jsonLdBlocks(html)).toContain(hero);
-          expect(title).toBe(`${service.shortName} in ${cityName}, ${state.abbreviation} | ${ORG_NAME}`);
+          // The shared builder: the title label, the city, and the state
+          // abbreviation wherever it fits the tag.
+          expect(title).toBe(serviceCityTitle(service, { name: cityName }, state, ORG_NAME));
+          expect(title.length).toBeLessThanOrEqual(60);
           expect(description.startsWith(`${ORG_NAME} provides ${work} for cases venued in ${cityName}, `)).toBe(true);
           for (const seam of rawServiceSeams(service)) {
             expect(text).not.toMatch(seam);
@@ -545,7 +554,12 @@ describe("District of Columbia place name on the geo templates", () => {
       expect(text).not.toMatch(RAW_DC);
       expect(description).not.toMatch(RAW_DC);
       expect(description).not.toContain("the state's");
-      expect(title).toBe(`${service.shortName} in the District of Columbia | ${ORG_NAME}`);
+      // The <title> keeps the District's article wherever the full name fits
+      // the 60-character tag and falls back to "DC" where it cannot (the
+      // shared builder); every heading and sentence slot keeps the article.
+      const dc = getStateBySlug("district-of-columbia")!;
+      expect(title).toBe(serviceStateTitle(service, dc, ORG_NAME));
+      expect(title).toMatch(/ in (the District of Columbia|DC) \| KW Economics$/);
       expect(description).toContain(`for matters venued in the District of Columbia.`);
       // Attributive slot: "District of Columbia Cases", never "the District of Columbia Cases".
       expect(text).toContain(`How ${service.shortName} Work Is Built for District of Columbia Cases`);
@@ -586,7 +600,10 @@ describe("District of Columbia place name on the geo templates", () => {
     const text = visibleText(html);
     expect(text).not.toMatch(RAW_DC);
     expect(description).not.toMatch(RAW_DC);
-    expect(title).toBe(`Forensic Economists in the District of Columbia | ${ORG_NAME}`);
+    // "Forensic Economists in the District of Columbia | KW Economics" runs 62
+    // characters, so the <title> alone takes the abbreviation (shared builder).
+    expect(title).toBe(stateHubTitle(getStateBySlug("district-of-columbia")!, ORG_NAME));
+    expect(title).toBe(`Forensic Economists in DC | ${ORG_NAME}`);
     expect(description).toContain("Forensic economists for the District of Columbia:");
     for (const slot of [
       "Forensic Economists in the District of Columbia",

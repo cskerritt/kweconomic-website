@@ -17,6 +17,7 @@ import { getMetroLabor } from "@/data/labor/metro-labor";
 import { majorEmployers, cityAttr, placeName } from "@/data/geo-prose.mjs";
 import { caseTypes } from "@/data/caseTypes";
 import { ORG_NAME } from "@/lib/brand";
+import { cityHubTitle } from "@/lib/page-titles.mjs";
 import { getCourtsByState } from "@/data/courts/state-courts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { getLocalContent } from "@/data/local-content";
@@ -76,7 +77,9 @@ export default function CityPage() {
   usePageMeta(
     state && city && narrativeForMeta
       ? {
-          title: `Forensic Economists in ${city.name}, ${state.abbreviation} | ${ORG_NAME}`,
+          // Shared with scripts/prerender.mjs; the state abbreviation drops
+          // only where a long city name cannot fit the 60-character tag.
+          title: cityHubTitle(city, state, ORG_NAME),
           description: truncateAtWord(narrativeForMeta.directAnswer),
           canonical: cityUrl,
         }

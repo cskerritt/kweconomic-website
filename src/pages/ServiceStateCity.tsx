@@ -16,6 +16,7 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
+import { serviceCityTitle } from "@/lib/page-titles.mjs";
 import { cityAttr, placeName } from "@/data/geo-prose.mjs";
 import { proseName } from "@/lib/service-prose.mjs";
 import {
@@ -65,7 +66,11 @@ export default function ServiceStateCity() {
   usePageMeta(
     service && state && city
       ? {
-          title: `${service.shortName} in ${city.name}, ${state.abbreviation} | ${ORG_NAME}`,
+          // Shared with scripts/prerender.mjs: the heading label with the
+          // city and its state abbreviation, then the pillar's titleShortName
+          // beside both, and the abbreviation dropped only where no label
+          // fits beside it in the 60-character tag. Headings keep shortName.
+          title: serviceCityTitle(service, city, state, ORG_NAME),
           description: truncateAtWord(directAnswerForMeta),
           canonical: url,
         }

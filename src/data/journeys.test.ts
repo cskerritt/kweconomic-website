@@ -12,7 +12,6 @@ import {
   STAGE_SLUGS,
   STAGE_LABELS,
   STAGE_GUIDES,
-  CASE_TYPE_SHORT_NAMES,
   caseTypeShortName,
   journeyHeading,
   journeyTitle,
@@ -141,15 +140,19 @@ describe("attorney stage module", () => {
   it("short case-type names cover every long name and key real case types", () => {
     // 60-char title, 15-char brand suffix, 25-char longest stage phrase.
     expect(SHORT_NAME_MAX).toBe(20);
-    const slugs = new Set(caseTypes.map((c) => c.slug));
-    for (const [slug, short] of Object.entries(CASE_TYPE_SHORT_NAMES)) {
-      expect(slugs.has(slug), `short name for unknown case type ${slug}`).toBe(true);
-      expect(short.length, slug).toBeLessThanOrEqual(SHORT_NAME_MAX);
-      expect(short, slug).not.toMatch(DASHES);
-    }
+    // Every entry carries its short form on the data itself (caseTypes.ts
+    // shortName, shared with the service x case-type pair titles); the
+    // builders read it through caseTypeShortName.
     for (const c of caseTypes) {
-      expect(caseTypeShortName(c).length, `${c.slug} needs a short name`).toBeLessThanOrEqual(SHORT_NAME_MAX);
+      expect(c.shortName, `${c.slug} needs a short name`).toBeTruthy();
+      expect(c.shortName.length, c.slug).toBeLessThanOrEqual(SHORT_NAME_MAX);
+      expect(c.shortName, c.slug).not.toMatch(DASHES);
+      expect(caseTypeShortName(c), c.slug).toBe(c.shortName);
+      expect(caseTypeShortName({ slug: c.slug, name: c.name }), `${c.slug} without a short form`).toBe(c.name);
     }
+    expect(caseTypeShortName(caseTypes.find((c) => c.slug === "motor-vehicle-accident")!)).toBe("Auto Accident");
+    expect(caseTypeShortName(caseTypes.find((c) => c.slug === "partnership-and-shareholder-dispute")!)).toBe("Shareholder Dispute");
+    expect(caseTypeShortName(caseTypes.find((c) => c.slug === "personal-injury")!)).toBe("Personal Injury");
   });
 
   it("journey headings, titles, and descriptions fit the title and description bands on all 56 pages", () => {

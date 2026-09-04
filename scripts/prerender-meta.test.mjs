@@ -126,9 +126,10 @@ function templateMeta(file) {
 
 const TEMPLATED_ROUTES = {
   "`/case-types/${c.slug}`": "CaseTypeHub.tsx",
+  // The case-type x state tier and both credential tiers wrap their shared
+  // builder or authored field in a template literal (`${caseTypeStateTitle(...)}`,
+  // `${cred.metaTitle}`, `${headings.title}`) so they slot the same way.
   "`/case-types/${c.slug}/${s.slug}`": "CaseTypeState.tsx",
-  // Both credential tiers wrap their authored fields in template literals
-  // (`${cred.metaTitle}`, `${headings.title}`) so they slot the same way.
   "`/credentials/${c.slug}`": "CredentialHub.tsx",
   "`/credentials/${c.slug}/${s.slug}`": "CredentialState.tsx",
 };
@@ -278,16 +279,21 @@ describe("the family title/description builders are shared with the React templa
       "credentialStateHeadings(c, s.name)",
       "credentialStateAngle(c, s.name)",
       "variantDescription(s, variant)",
-      "pairTitle(s, c)",
+      "title: variantTitle(s, VARIANT_LABEL[variant], ORG_NAME)",
+      "title: pairTitle(s, c, ORG_NAME)",
       "pairDescription(s, c)",
       "profileTitleFor(t)",
       "title: `${c.titleBase} | ${ORG_NAME}`",
-      "title: `${c.titleBase} in ${placeName(s.name)} | ${ORG_NAME}`",
+      "title: `${caseTypeStateTitle(c, s, ORG_NAME)}`",
       "title: `${c.metaTitle}`",
       "description: `${c.metaDescription}`",
       "title: `${headings.title}`",
       "description: `${headings.description}`",
-      "title: `${svc.name} Expert | ${ORG_NAME}`",
+      "title: pillarTitle(svc, ORG_NAME)",
+      "title: stateHubTitle(state, ORG_NAME)",
+      "title: cityHubTitle(city, state, ORG_NAME)",
+      "title: serviceStateTitle(svc, state, ORG_NAME)",
+      "title: serviceCityTitle(svc, city, state, ORG_NAME)",
       "svc.metaDescription ?? svc.description",
       "guide.metaDescription ?? truncateAtWord(guide.tldr)",
       "title: `${m.name.endsWith(\"Methodology\") ? m.name : `${m.name} Method`} | ${ORG_NAME}`",
@@ -303,6 +309,31 @@ describe("the family title/description builders are shared with the React templa
     }
     // No mid-word slice remains anywhere in the shell descriptions.
     expect(prerenderSrc).not.toMatch(/\.slice\(0, 160\)/);
+  });
+
+  it("the geo, pillar, variant, pair, and case-type x state titles come from src/lib/page-titles.mjs on both sides", () => {
+    expect(prerenderSrc).toContain('from "../src/lib/page-titles.mjs"');
+    for (const [file, builder] of [
+      ["src/pages/StateHub.tsx", "stateHubTitle"],
+      ["src/pages/CityPage.tsx", "cityHubTitle"],
+      ["src/pages/ServiceState.tsx", "serviceStateTitle"],
+      ["src/pages/ServiceStateCity.tsx", "serviceCityTitle"],
+      ["src/pages/ServicePillar.tsx", "pillarTitle"],
+      ["src/pages/templates/ServiceTransactional.tsx", "variantTitle"],
+      ["src/pages/templates/ServiceCaseType.tsx", "pairTitle"],
+      ["src/pages/templates/CaseTypeState.tsx", "caseTypeStateTitle"],
+    ]) {
+      const src = read(file);
+      expect(src, file).toContain(`import { ${builder} } from "@/lib/page-titles.mjs";`);
+      // The builder feeds the usePageMeta title (directly, through a ternary,
+      // or wrapped in a template literal for the parity guard).
+      expect(src, file).toMatch(new RegExp(`title: [^;]*?${builder}\\(`));
+      expect(prerenderSrc, builder).toMatch(new RegExp(`title: \`?\\$?\\{?${builder}\\(`));
+    }
+    // The credential x state title and the profile title go through their
+    // own shared builders, which apply the same ceiling.
+    expect(read("src/data/credentials.ts")).toContain('import { placeTitle } from "@/lib/page-titles.mjs";');
+    expect(read("src/data/team-meta.mjs")).toContain('import { TITLE_MAX } from "../lib/page-titles.mjs";');
   });
 
   it("uses the hand-authored pillar FAQ, the declared case-type pairs, and the pair notes", () => {
@@ -390,31 +421,56 @@ function constOf(src, name) {
 // ---------------------------------------------------------------------------
 const DIST = join(ROOT, "dist");
 const HOUSE_RULE_BANNED = /CLCP|CNLCP|\bCRC\b|MSCC|[–—§]|\d+\+\s*(?:cases|years|firms|attorneys|clients|matters)\b/;
+// Longest <title> a shell may carry, measured on the raw tag the way a crawler
+// reads it (an escaped ampersand counts as five characters). The same ceiling
+// src/lib/page-titles.mjs applies at the source level.
+const TITLE_MAX = 60;
+
+/** Every shell under dist/ (index.html and 404.html) as { rel, html }. */
+function walkShells() {
+  const shells = [];
+  const walk = (dir, rel) => {
+    for (const entry of readdirSync(dir)) {
+      const p = join(dir, entry);
+      const r = rel ? `${rel}/${entry}` : entry;
+      if (statSync(p).isDirectory()) {
+        if (r.startsWith("assets")) continue;
+        walk(p, r);
+      } else if (entry === "index.html" || entry === "404.html") {
+        shells.push({ rel: r, html: readFileSync(p, "utf8") });
+      }
+    }
+  };
+  walk(DIST, "");
+  return shells;
+}
 
 describe.skipIf(!existsSync(join(DIST, "index.html")))("every shell in dist/ keeps the house rules (requires dist/)", () => {
+  const shells = walkShells();
+
+  it("walks the full route set", () => {
+    // Core + hubs + editorial + every geo, case-type, credential, service,
+    // and journey tier. A walk that saw only a few hundred files would mean
+    // the tiers were skipped again.
+    expect(shells.length).toBeGreaterThan(5000);
+  });
+
   it("no shell, city and service tiers included, carries CLCP/CNLCP/CRC/MSCC, an em or en dash, a section sign, or a count claim", () => {
     const offenders = [];
-    let walked = 0;
-    const walk = (dir, rel) => {
-      for (const entry of readdirSync(dir)) {
-        const p = join(dir, entry);
-        const r = rel ? `${rel}/${entry}` : entry;
-        if (statSync(p).isDirectory()) {
-          if (r.startsWith("assets")) continue;
-          walk(p, r);
-        } else if (entry === "index.html" || entry === "404.html") {
-          walked++;
-          const html = readFileSync(p, "utf8");
-          const m = html.slice(html.indexOf("<head>")).match(HOUSE_RULE_BANNED);
-          if (m) offenders.push(`${r}: ${JSON.stringify(m[0])}`);
-        }
-      }
-    };
-    walk(DIST, "");
-    // The full route set: core + hubs + editorial + every geo, case-type,
-    // credential, service, and journey tier. A walk that saw only a few
-    // hundred files would mean the tiers were skipped again.
-    expect(walked).toBeGreaterThan(5000);
+    for (const { rel, html } of shells) {
+      const m = html.slice(html.indexOf("<head>")).match(HOUSE_RULE_BANNED);
+      if (m) offenders.push(`${rel}: ${JSON.stringify(m[0])}`);
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it(`no shell <title>, city and service tiers included, runs past ${TITLE_MAX} characters as written`, () => {
+    const offenders = [];
+    for (const { rel, html } of shells) {
+      const title = html.match(/<title>([^<]*)<\/title>/)?.[1];
+      expect(title, `${rel} has a <title>`).toBeTruthy();
+      if (title.length > TITLE_MAX) offenders.push(`${rel}: "${title}" (${title.length})`);
+    }
     expect(offenders).toEqual([]);
   });
 });

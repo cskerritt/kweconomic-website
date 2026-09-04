@@ -24,6 +24,16 @@ import { createServer } from "vite";
 import { ORG_NAME, ORG_SHORT, ORG_PHONE, ORG_PHONE_DISPLAY, SITE_URL } from "./lib/site.mjs";
 import { homepageFaqs } from "../src/data/home-faqs.mjs";
 import * as geoProse from "../src/data/geo-prose.mjs";
+import {
+  stateHubTitle,
+  cityHubTitle,
+  serviceStateTitle,
+  serviceCityTitle,
+  caseTypeStateTitle,
+  pillarTitle,
+  variantTitle,
+  pairTitle,
+} from "../src/lib/page-titles.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -338,10 +348,8 @@ function variantDescription(s, variant) {
 }
 
 // Service x case-type pair pages (src/pages/templates/ServiceCaseType.tsx):
-// the title takes the short name with any ampersand spelled out; the
-// description names the work through the shared prose helper.
-const titleShortName = (s) => s.shortName.replace(/\s*&\s*/g, " and ");
-const pairTitle = (s, c) => `${titleShortName(s)} Expert for ${c.name} | ${ORG_NAME}`;
+// the title comes from the shared pairTitle builder (src/lib/page-titles.mjs);
+// the description names the work through the shared prose helper.
 const pairDescription = (s, c) => {
   const base = `${prose.capFirst(prose.workPhrase(s.shortName))} for ${c.name.toLowerCase()} cases: how the loss is built, which records drive it, and testimony support.`;
   // Mirrors ServiceCaseType.tsx: the audience tag rides along only inside the
@@ -736,7 +744,7 @@ const HOME_URL = `${BASE_URL}/`;
 const corePages = [
   {
     path: "/",
-    title: `Forensic Economics and Economic Damages Experts | ${ORG_NAME}`,
+    title: `Forensic Economics and Damages Experts | ${ORG_NAME}`,
     description:
       "Independent lost earnings, wrongful death, household services, employment, and business damages analyses for plaintiff and defense attorneys in all 50 states.",
     innerHtml:
@@ -1309,8 +1317,10 @@ for (const svc of serviceData) {
     path,
     buildPage({
       path,
-      // Match ServicePillar.tsx: "<name> Expert | <brand>" and the written metaDescription.
-      title: `${svc.name} Expert | ${ORG_NAME}`,
+      // Match ServicePillar.tsx: the shared pillarTitle builder ("<name> Expert
+      // | <brand>", titleName where the full name would overrun the tag) and
+      // the written metaDescription.
+      title: pillarTitle(svc, ORG_NAME),
       description,
       breadcrumbs: [{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: svc.name, path }],
       innerHtml:
@@ -1410,8 +1420,9 @@ for (const state of states) {
     path,
     buildPage({
       path,
-      // Match StateHub.tsx (placeName: "the District of Columbia").
-      title: `Forensic Economists in ${place} | ${ORG_NAME}`,
+      // Match StateHub.tsx: the shared stateHubTitle builder (placeName "the
+      // District of Columbia"; the abbreviation only where it cannot fit).
+      title: stateHubTitle(state, ORG_NAME),
       description: `Forensic economists for ${place}: lost earnings, wrongful death, household services, and business damages analyses, plaintiff and defense.`,
       breadcrumbs: [{ name: "Home", path: "/" }, { name: "Locations", path: "/locations" }, { name: state.name, path }],
       innerHtml,
@@ -1466,8 +1477,9 @@ for (const state of states) {
       path,
       buildPage({
         path,
-        // Match CityPage.tsx: the abbreviation, not the state name.
-        title: `Forensic Economists in ${city.name}, ${state.abbreviation} | ${ORG_NAME}`,
+        // Match CityPage.tsx: the shared cityHubTitle builder (the state
+        // abbreviation, dropped only where a long city name cannot fit).
+        title: cityHubTitle(city, state, ORG_NAME),
         description: truncateAtWord(narrative.directAnswer),
         breadcrumbs: [
           { name: "Home", path: "/" },
@@ -1544,9 +1556,10 @@ for (const svc of serviceData) {
       path,
       buildPage({
         path,
-        // Match ServiceState.tsx: the short name and the place name in the
-        // title; the description is the hero sentence cut at a word.
-        title: `${svc.shortName} in ${place} | ${ORG_NAME}`,
+        // Match ServiceState.tsx: the shared serviceStateTitle builder (the
+        // title label and the place name, the abbreviation only where the
+        // full name cannot fit); the description is the hero cut at a word.
+        title: serviceStateTitle(svc, state, ORG_NAME),
         description: truncateAtWord(directAnswer),
         breadcrumbs: [
           { name: "Home", path: "/" },
@@ -1610,8 +1623,9 @@ for (const svc of serviceData) {
         cityPath,
         buildPage({
           path: cityPath,
-          // Match ServiceStateCity.tsx: short name, city, state abbreviation.
-          title: `${svc.shortName} in ${city.name}, ${state.abbreviation} | ${ORG_NAME}`,
+          // Match ServiceStateCity.tsx: the shared serviceCityTitle builder
+          // (title label, city, state abbreviation where it fits).
+          title: serviceCityTitle(svc, city, state, ORG_NAME),
           description: truncateAtWord(cityDirect),
           breadcrumbs: [
             { name: "Home", path: "/" },
@@ -1903,8 +1917,10 @@ for (const [i, c] of caseTypes.entries()) {
           : "";
     writePage(path, buildPage({
       path: `/case-types/${c.slug}/${s.slug}`,
-      // Match CaseTypeState.tsx (title + description); pinned by scripts/prerender-meta.test.mjs.
-      title: `${c.titleBase} in ${placeName(s.name)} | ${ORG_NAME}`,
+      // Match CaseTypeState.tsx (the shared caseTypeStateTitle builder, wrapped
+      // in a template literal so the parity guard can slot it, + description);
+      // pinned by scripts/prerender-meta.test.mjs.
+      title: `${caseTypeStateTitle(c, s, ORG_NAME)}`,
       description: `${c.name} economic damages in ${placeName(s.name)}: loss components, state damages rules and venues, and how the number is built.`,
       breadcrumbs: [
         { name: "Home", path: "/" },
@@ -2258,8 +2274,9 @@ for (const s of serviceData) {
     const siblings = VARIANTS.filter((v) => v !== variant);
     writePage(path, buildPage({
       path,
-      // Match ServiceTransactional.tsx (title-cased variant, variantDescription()).
-      title: `${title} | ${ORG_NAME}`,
+      // Match ServiceTransactional.tsx: the shared variantTitle builder (the
+      // H1 and the Service node keep the full name) and variantDescription().
+      title: variantTitle(s, VARIANT_LABEL[variant], ORG_NAME),
       description,
       breadcrumbs: [
         { name: "Home", path: "/" },
@@ -2310,7 +2327,7 @@ for (const s of serviceData) {
     writePage(path, buildPage({
       path,
       // Match ServiceCaseType.tsx (pairTitle / pairDescription).
-      title: pairTitle(s, c),
+      title: pairTitle(s, c, ORG_NAME),
       description: pairDescription(s, c),
       breadcrumbs: [
         { name: "Home", path: "/" },

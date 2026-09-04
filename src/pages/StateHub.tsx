@@ -9,6 +9,7 @@ import {
   ORG_URL,
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
+import { stateHubTitle } from "@/lib/page-titles.mjs";
 import { placeName } from "@/data/geo-prose.mjs";
 import FAQBlock from "@/components/FAQBlock";
 import { geoSources, getStateNarrative } from "@/data/narratives";
@@ -49,7 +50,9 @@ export default function StateHub() {
   usePageMeta(
     state
       ? {
-          title: `Forensic Economists in ${placeName(state.name)} | ${ORG_NAME}`,
+          // Shared with scripts/prerender.mjs; the abbreviation stands in only
+          // where the full place name cannot fit the 60-character tag.
+          title: stateHubTitle(state, ORG_NAME),
           description: `Forensic economists for ${placeName(state.name)}: lost earnings, wrongful death, household services, and business damages analyses, plaintiff and defense.`,
           canonical: `${ORG_URL}/locations/${state.slug}`,
         }

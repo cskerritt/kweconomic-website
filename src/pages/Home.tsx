@@ -93,7 +93,7 @@ function ReportContentsCard() {
 
 export default function Home() {
   usePageMeta({
-    title: `Forensic Economics and Economic Damages Experts | ${ORG_NAME}`,
+    title: `Forensic Economics and Damages Experts | ${ORG_NAME}`,
     description:
       "Independent lost earnings, wrongful death, household services, employment, and business damages analyses for plaintiff and defense attorneys in all 50 states.",
     canonical: `${SITE_URL}/`,

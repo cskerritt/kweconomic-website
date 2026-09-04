@@ -3,6 +3,7 @@ import { refsToSources } from "./references";
 import { states } from "./states";
 import { placeName, placeAttr } from "./geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
+import { placeTitle } from "@/lib/page-titles.mjs";
 
 /**
  * KW Economics credentials.
@@ -312,28 +313,32 @@ export function credentialStateAngle(cred: Credential, stateName: string): strin
  * credential's category so a role is never called a credential and a
  * membership page can be read as an affiliation even out of context. The
  * attributive slots ("District of Columbia Damages Cases") take placeAttr;
- * the place slots ("in the District of Columbia") take placeName.
+ * the place slots ("in the District of Columbia") take placeName. The title
+ * goes through the shared placeTitle builder (src/lib/page-titles.mjs), which
+ * keeps the full place name wherever it fits the 60-character tag and falls
+ * back to the state abbreviation only where it cannot; the membership titles
+ * describe what the affiliation means and never that anyone holds it.
  */
 export function credentialStateHeadings(cred: Credential, stateName: string): { title: string; h1: string; description: string } {
-  const place = placeName(stateName);
   const attr = placeAttr(stateName);
+  const state = states.find((s) => s.name === stateName) ?? { name: stateName, abbreviation: attr };
   const description = `What ${cred.whatItEstablishes}, how ${attr} courts weigh it, and how to retain a forensic economist there.`;
   switch (cred.category) {
     case "Professional Membership":
       return {
-        title: `${cred.abbreviation} Membership and ${attr} Damages Testimony | ${ORG_NAME}`,
+        title: placeTitle(`What ${cred.abbreviation} Membership Means`, state, ORG_NAME),
         h1: `${cred.abbreviation} Membership and ${attr} Damages Testimony`,
         description,
       };
     case "Academic Degree":
       return {
-        title: `Graduate Economics Credentials in ${place} | ${ORG_NAME}`,
+        title: placeTitle("Forensic Economist Degrees", state, ORG_NAME),
         h1: `Graduate Economics Credentials for ${attr} Damages Cases`,
         description,
       };
     default:
       return {
-        title: `Forensic Economist Qualifications in ${place} | ${ORG_NAME}`,
+        title: placeTitle("Vetting a Forensic Economist", state, ORG_NAME),
         h1: `Forensic Economist Qualifications for ${attr} Damages Cases`,
         description,
       };

@@ -112,21 +112,40 @@ describe("credential hub SERP fields", () => {
 
 describe("credential x state headings", () => {
   it("are keyed on the category and take the attributive place form in attributive slots", () => {
+    // The District's full name plus the brand would overrun the 60-character
+    // tag, so the <title> alone takes the abbreviation (src/lib/page-titles.mjs
+    // placeTitle); the H1 and the description keep the full attributive name.
     expect(credentialStateHeadings(getCredential("forensic-economist")!, "District of Columbia")).toEqual({
-      title: `Forensic Economist Qualifications in the District of Columbia | ${ORG_NAME}`,
+      title: `Vetting a Forensic Economist in DC | ${ORG_NAME}`,
       h1: "Forensic Economist Qualifications for District of Columbia Damages Cases",
       description: "What the forensic economist qualification establishes, how District of Columbia courts weigh it, and how to retain a forensic economist there.",
     });
+    expect(credentialStateHeadings(getCredential("forensic-economist")!, "Texas").title).toBe(`Vetting a Forensic Economist in Texas | ${ORG_NAME}`);
     expect(credentialStateHeadings(getCredential("nafe-member")!, "Texas")).toEqual({
-      title: `NAFE Membership and Texas Damages Testimony | ${ORG_NAME}`,
+      title: `What NAFE Membership Means in Texas | ${ORG_NAME}`,
       h1: "NAFE Membership and Texas Damages Testimony",
       description: "What NAFE membership establishes, how Texas courts weigh it, and how to retain a forensic economist there.",
     });
     expect(credentialStateHeadings(getCredential("aaefe-member")!, "New Jersey").h1).toBe("AAEFE Membership and New Jersey Damages Testimony");
+    expect(credentialStateHeadings(getCredential("aaefe-member")!, "South Carolina").title).toBe(`What AAEFE Membership Means in South Carolina | ${ORG_NAME}`);
     const degree = credentialStateHeadings(getCredential("graduate-economics-degree")!, "New York");
-    expect(degree.title).toBe(`Graduate Economics Credentials in New York | ${ORG_NAME}`);
+    expect(degree.title).toBe(`Forensic Economist Degrees in New York | ${ORG_NAME}`);
     expect(degree.h1).toBe("Graduate Economics Credentials for New York Damages Cases");
     expect(degree.description).toBe("What graduate economics and MBA degrees establish, how New York courts weigh it, and how to retain a forensic economist there.");
+    // The full place name wherever it fits, territories included.
+    expect(credentialStateHeadings(getCredential("graduate-economics-degree")!, "American Samoa").title).toBe(
+      `Forensic Economist Degrees in American Samoa | ${ORG_NAME}`,
+    );
+  });
+
+  it("the membership titles describe the affiliation and never say that anyone holds it", () => {
+    for (const c of credentials.filter((c) => c.category === "Professional Membership")) {
+      for (const st of states) {
+        const { title } = credentialStateHeadings(c, st.name);
+        expect(title, `${c.slug}/${st.slug}`).toMatch(new RegExp(`^What ${c.abbreviation} Membership Means in `));
+        expect(title, `${c.slug}/${st.slug}`).not.toMatch(/member economist|our |holds?\b/i);
+      }
+    }
   });
 
   it("fit the SERP and read cleanly for every credential and every jurisdiction", () => {
@@ -134,7 +153,11 @@ describe("credential x state headings", () => {
       for (const st of states) {
         const h = credentialStateHeadings(c, st.name);
         const label = `${c.slug}/${st.slug}`;
-        expect(h.title.length, label).toBeLessThanOrEqual(80);
+        expect(h.title.length, label).toBeLessThanOrEqual(60);
+        // The abbreviation stands in only where the full place name cannot fit.
+        if (h.title.includes(` in ${st.abbreviation} |`)) {
+          expect(h.title.replace(` in ${st.abbreviation} |`, ` in ${st.name} |`).length, label).toBeGreaterThan(60);
+        }
         expect(h.title.endsWith(` | ${ORG_NAME}`), label).toBe(true);
         expect(h.title, label).not.toMatch(/Credential in/);
         expect(h.description.length, label).toBeLessThanOrEqual(160);
