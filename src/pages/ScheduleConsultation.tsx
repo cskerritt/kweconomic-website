@@ -8,6 +8,7 @@ import SchemaOrg from "@/components/SchemaOrg";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
 import { caseTypes } from "@/data/caseTypes";
+import { FORM_INTAKE_NOTE } from "@/data/consultation";
 import {
   ORG_NAME,
   ORG_EMAIL,
@@ -445,6 +446,9 @@ export default function ScheduleConsultation() {
                   All submissions are reviewed within one business day. No commitment is
                   required at this stage.
                 </p>
+                {/* Where the request goes (src/data/intake.ts, the same note
+                    the contact form and the privacy policy carry). */}
+                <p className="text-xs text-neutral-500 text-center">{FORM_INTAKE_NOTE}</p>
               </form>
             </div>
           </div>

@@ -126,6 +126,16 @@ describe("POST /api/contact end-to-end (no external services)", () => {
     expect(res.status).toBe(301);
     expect(res.headers.get("location")).toBe("/about");
   });
+
+  it("answers 410 Gone for a retired sitemap address with no file on disk (the news sitemap outside its window)", async () => {
+    for (const p of ["/news-sitemap.xml", "/old-sitemap.xml"]) {
+      const res = await fetch(`${base}${p}`, { redirect: "manual" });
+      expect(res.status, p).toBe(410);
+    }
+    // Not a sitemap: the ordinary not-found shell.
+    const res = await fetch(`${base}/nothing-here.xml`, { redirect: "manual" });
+    expect(res.status).toBe(404);
+  });
 });
 
 describe("legacy 301 map (lib/legacy-redirects.server.mjs)", () => {

@@ -5,8 +5,11 @@ import { pillarServices } from "@/data/services";
 import { getCaseType } from "@/data/caseTypes";
 import { credentials } from "@/data/credentials";
 import { states } from "@/data/states";
-import { ORG_NAME } from "@/lib/brand";
+import { retainableExperts } from "@/data/team";
+import { ORG_NAME, VOC_SERVICE_URL, LCP_SERVICE_URL } from "@/lib/brand";
 import { pillarTitle } from "@/lib/page-titles.mjs";
+import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
+import { ORG_URL } from "@/lib/schema";
 import {
   renderRoute,
   visibleText,
@@ -17,6 +20,7 @@ import {
   DOUBLED_WORD,
   MIS_ARTICLE,
 } from "@/test-utils/markup";
+import { expectServiceIdentity, serviceNodes } from "@/test-utils/jsonld";
 
 // Server renders of every pillar page. usePageMeta writes the <head> from an
 // effect that never runs under renderToStaticMarkup, so it is replaced with a
@@ -161,7 +165,10 @@ describe("ServicePillar", () => {
         expect(html).not.toContain("Relevant Credentials");
         expect(html).not.toMatch(BARE_TOKEN);
         expect(html).not.toMatch(FIRM_LEVEL_CLAIM);
-        expect(html).not.toMatch(/Skerritt|Sperling/);
+        // No person is attached to the credential list; the hero names the
+        // responsible economist separately (below), never beside a credential.
+        const sidebar = html.slice(html.indexOf("<aside"));
+        expect(sidebar).not.toMatch(/Skerritt|Sperling/);
         const linked = credentials.filter((c) =>
           service.relevantCredentials.some(
             (label) => label === c.slug || c.abbreviation.split("/").some((part) => normalize(part) === normalize(label)),
@@ -180,6 +187,54 @@ describe("ServicePillar", () => {
       it("has a consultation CTA with the phone number", () => {
         expect(html).toContain('href="/contact"');
         expect(html).toMatch(/href="tel:\+1\d+"/);
+      });
+
+      // Audit C02: the pillar pages named no responsible professional and
+      // stamped a review date on an editorial byline. The hero now names the
+      // economist who directs the work, linked to the profile with the CV, and
+      // the editorial byline labels its date "Updated".
+      it("names the responsible economist once in the hero, linked to the profile, and labels the editorial date Updated", () => {
+        const expert = retainableExperts()[0];
+        expect(html).toContain(`href="/team/${expert.slug}"`);
+        expect(text).toContain(`${capFirst(workPhrase(service.shortName))} at ${ORG_NAME} is directed by`);
+        expect(text).toContain(`${expert.title}, who is available to testify to it.`);
+        expect(html.match(new RegExp(`href="/team/${expert.slug}"`, "g"))?.length).toBe(1);
+        expect(html).toContain("<span> · Updated </span>");
+        expect(html).not.toContain("· Reviewed");
+      });
+
+      // Audit F08 / G01: an explained hand-off where the work depends on or
+      // borders a sister practice's discipline, linking its verified service page.
+      it("prints the explained hand-off exactly where the data carries one", () => {
+        if (service.handoff) {
+          expect(text).toContain(service.handoff.text);
+          expect(html).toContain(`href="${service.handoff.href}" rel="noopener"`);
+          expect(text).toContain(service.handoff.linkLabel);
+        } else {
+          expect(html).not.toContain(VOC_SERVICE_URL);
+          expect(html).not.toContain(LCP_SERVICE_URL);
+        }
+        expect(html).not.toContain("/services/vocational-evaluation");
+      });
+
+      // Audit F08: the 56-entry state directory came before the FAQ and the
+      // guides; the practical explanations now come first.
+      it("puts the FAQ and the guides before the state directory", () => {
+        const faqAt = html.indexOf(`Frequently asked: ${service.shortName.replace("&", "&amp;")}`);
+        const guidesAt = html.indexOf("Guides and methods for");
+        const directoryAt = html.indexOf(`${service.shortName.replace("&", "&amp;")} by State`);
+        expect(faqAt).toBeGreaterThan(0);
+        expect(guidesAt).toBeGreaterThan(faqAt);
+        expect(directoryAt).toBeGreaterThan(guidesAt);
+      });
+
+      it("nests no second main landmark: the layout's main is the page's one main (T07)", () => {
+        expect(html).not.toContain("<main");
+      });
+
+      it("identifies its one Service entity by the pillar's own /services address (T03)", () => {
+        expect(serviceNodes(html)).toHaveLength(1);
+        expectServiceIdentity(html, `${ORG_URL}/services/${service.slug}`);
       });
     });
   }
@@ -274,5 +329,6 @@ describe("ServicePillar", () => {
     expect(html).toContain("Offered through a sister practice");
     expect(html).not.toContain("by Case Type");
     expect(html).not.toContain("How an expert on this work is qualified");
+    expect(html).not.toContain("<main");
   });
 });

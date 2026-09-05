@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { placeName } from "@/data/geo-prose.mjs";
-import { caseTypes, getCaseType } from "@/data/caseTypes";
+import { caseTypes, getCaseType, caseTypeHubHeading, caseTypeHubDescription, caseTypeSectionHeadings } from "@/data/caseTypes";
 import { pillarServices } from "@/data/services";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import { credentials as allCredentials, type Credential } from "@/data/credentials";
@@ -17,6 +17,7 @@ import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, articleSchema, faqPageSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
+import { caseTypeHubTitle } from "@/lib/page-titles.mjs";
 import NotFound from "@/pages/NotFound";
 
 // Case types name credentials the way services.ts does (label set such as
@@ -39,8 +40,13 @@ export default function CaseTypeHub() {
   usePageMeta(
     caseType
       ? {
-          title: `${caseType.titleBase} | ${ORG_NAME}`,
-          description: `${caseType.name} economic damages: loss components, the records that drive them, and how the present value is built. Plaintiff and defense.`,
+          // Shared with scripts/prerender.mjs (wrapped in template literals so
+          // the prerender parity guard can slot them): the hub title stem and
+          // the description come from the case-type helpers, which read the
+          // entry's `framing` block where it carries one (the family-law
+          // matter) and the shared economic-damages strings otherwise.
+          title: `${caseTypeHubTitle(caseType, ORG_NAME)}`,
+          description: `${caseTypeHubDescription(caseType)}`,
           canonical: url,
         }
       : null,
@@ -56,13 +62,25 @@ export default function CaseTypeHub() {
   // first; the same named economist signs the work on every case-type page.
   const experts = retainableExperts();
   const author = experts[0];
-  const h1 = `${caseType.name} Economic Damages Analysis`;
+  // The H1 and the section headings take the entry's framing where it carries
+  // one (an income, valuation, and tracing assignment rather than a damages
+  // claim) and the shared damages framing otherwise; scripts/prerender.mjs
+  // reads the same helpers.
+  const h1 = caseTypeHubHeading(caseType);
+  const headings = caseTypeSectionHeadings(caseType);
 
-  const related = linkedServices.slice(0, 3).map((s) => ({
-    title: s.name,
-    href: `/services/${s.slug}/case/${caseType.slug}`,
-    description: `Applied to ${caseType.name.toLowerCase()} matters`,
-  }));
+  // "Related services" links the service x case pair pages, so only the linked
+  // services that declare this case type in services.ts (the pairs that exist;
+  // an undeclared pair redirects to the pillar). The "Service pages" list below
+  // keeps every relevant pillar.
+  const related = linkedServices
+    .filter((s) => s.caseTypes.includes(caseType.slug))
+    .slice(0, 3)
+    .map((s) => ({
+      title: s.name,
+      href: `/services/${s.slug}/case/${caseType.slug}`,
+      description: `Applied to ${caseType.name.toLowerCase()} matters`,
+    }));
 
   return (
     <article className="max-w-5xl mx-auto px-4 py-8">
@@ -85,15 +103,15 @@ export default function CaseTypeHub() {
       </section>
 
       <section id="loss-components" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">What the economic claim consists of</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">{headings.components}</h2>
         <p className="text-neutral-700">{caseType.lossComponents}</p>
       </section>
       <section id="damages-exposure" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">Where the damages concentrate</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">{headings.concentration}</h2>
         <p className="text-neutral-700">{caseType.damagesExposure}</p>
       </section>
       <section id="analysis" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">How the analysis is built</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">{headings.method}</h2>
         <p className="text-neutral-700">{caseType.economicImpact}</p>
         <ol className="list-decimal ml-5 text-neutral-700 space-y-1 mt-3">
           {caseType.steps.map((step) => (

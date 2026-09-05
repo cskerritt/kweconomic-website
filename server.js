@@ -10,6 +10,7 @@ import * as rawSubs from "./lib/raw-submissions.server.mjs";
 import { checkSpam } from "./lib/spam-heuristics.server.mjs";
 import { sendLeadEmail, DEFAULT_LEAD_RECIPIENTS } from "./lib/lead-mailer.server.mjs";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects.server.mjs";
+import { resolveUndeclaredPairRedirect } from "./lib/service-case-redirects.server.mjs";
 import { ORG_NAME, SITE_URL } from "./lib/brand.server.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -402,6 +403,25 @@ export async function requestHandler(req, res) {
     }
   }
 
+  // Service x case-type addresses the pillar does not declare have no shell
+  // (scripts/prerender.mjs writes only the declared pairs). A real pillar and
+  // a real case type 301 to the pillar page instead of answering 404 for the
+  // retired all-pairs grid (lib/service-case-redirects.server.mjs, the same
+  // shell-existence check the legacy map uses). GET/HEAD only, after the
+  // legacy map, and never for a pair that has a shell.
+  if (isRead) {
+    const pillar = resolveUndeclaredPairRedirect(url.pathname, prerenderedRouteExists);
+    if (pillar) {
+      res.writeHead(301, {
+        Location: pillar + url.search,
+        "Cache-Control": "no-cache",
+        ...SECURITY_HEADERS,
+      });
+      res.end();
+      return;
+    }
+  }
+
   // Handle CORS preflight for API routes
   if (req.method === "OPTIONS" && url.pathname.startsWith("/api/")) {
     res.writeHead(204, API_CORS_HEADERS);
@@ -543,6 +563,22 @@ export async function requestHandler(req, res) {
 
     res.writeHead(200, headers);
     res.end(content);
+    return;
+  }
+
+  // A sitemap address with no file on disk answers 410 Gone, not 404: the
+  // news sitemap (public/news-sitemap.xml) exists only while an insight post
+  // is inside the Google News window and was declared in robots.txt before
+  // that, so Search Console may hold it as a submitted sitemap; a 410 lets it
+  // retire the entry instead of reporting "Couldn't fetch" indefinitely. A
+  // sitemap file on disk is served above and never reaches this branch.
+  if (/^\/[a-z0-9-]*sitemap[a-z0-9-]*\.xml$/i.test(url.pathname)) {
+    res.writeHead(410, {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-cache",
+      ...SECURITY_HEADERS,
+    });
+    res.end("Gone");
     return;
   }
 

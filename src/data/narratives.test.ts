@@ -372,13 +372,13 @@ describe("pillar angles on the service x geo templates", () => {
       );
     }
     expect(serviceStateDirectAnswer(ORG_NAME, "Business Valuation", nj.name, getStateNarrative(nj))).toBe(
-      "KW Economics provides business valuation for matters venued in New Jersey. The business is valued from its own financial statements, tax returns, and governing agreements under the income, market, and asset approaches, with the standard of value, the valuation date, and any discounts for lack of control or marketability set by the matter and by New Jersey law as counsel confirms it. Every input is documented so the conclusion can be tested at deposition, and no wage or household data enters the number. Plaintiff and defense.",
+      "KW Economics provides business valuation for matters venued in New Jersey. The business is valued from its own financial statements, tax returns, and governing agreements under the income, market, and asset approaches, with the standard of value, the valuation date, and any discounts for lack of control or marketability set by the matter and by New Jersey law as counsel confirms it. Regional market data enters only where the normalization of the company's results or the market-approach comparables call for it, the same valuation methods apply in every New Jersey venue, and every input is documented so the conclusion can be tested at deposition. Plaintiff and defense.",
     );
     expect(serviceStateDirectAnswer(ORG_NAME, "Lost Earnings", tx.name, n)).toContain(
       "tests it against occupational wage data from the Bureau of Labor Statistics for the metropolitan or nonmetropolitan area of Texas where the plaintiff worked",
     );
     expect(serviceStateDirectAnswer(ORG_NAME, "Fraud & Tracing", tx.name, n)).toContain(
-      "No wage or market data drives the number; the entity's own records do.",
+      "The reconciliation and tracing are built the same way in every venue from the entity's own records; the Texas forum shapes discovery and the presentation of the schedules, and the report establishes what happened to the money without opining on intent.",
     );
   });
 
@@ -386,7 +386,7 @@ describe("pillar angles on the service x geo templates", () => {
     const hero = serviceCityDirectAnswer(ORG_NAME, "Business Valuation", tx.name, "Houston", c);
     expect(
       hero.startsWith(
-        "KW Economics provides business valuation for cases venued in Houston, Texas. For a business based in Houston, the Houston-area market for its goods and services, comparable transactions, and the company's own history each enter the analysis,",
+        "KW Economics provides business valuation for cases venued in Houston, Texas. For a business based in Houston, the valuation date and the standard of value are inputs that counsel defines for the matter, the company's own financial statements, tax returns, and governing agreements drive the income, market, and asset approaches, and Houston-area market conditions inform the normalization of its results and the market-approach comparables where local data exists.",
       ),
     ).toBe(true);
     const venue = c.blurb.slice(0, c.blurb.indexOf(". ") + 1);
@@ -396,7 +396,7 @@ describe("pillar angles on the service x geo templates", () => {
     // A city with no county carries no venue sentence and the hero still reads.
     const noCounty = getCityNarrative(tx, "Sample City", "sample-city");
     expect(serviceCityDirectAnswer(ORG_NAME, "Lost Profits", tx.name, "Sample City", noCounty)).toBe(
-      "KW Economics provides lost profits analysis for cases venued in Sample City, Texas. For a business operating in Sample City, the but-for path reflects the Sample City-area market the company sells into and its own financial history, and each claimed loss is tied to the conduct at issue and to the period over which it plausibly ran. Deposition and trial testimony are available for Sample City matters, in person or by remote appearance where the forum allows.",
+      "KW Economics provides lost profits analysis for cases venued in Sample City, Texas. For a business operating in Sample City, the but-for revenue path is built from the company's own financial history and from the Sample City-area market conditions and industry mix it sells into. The costs avoided by not earning that revenue are deducted, mitigation is credited, the period of loss is reasoned through rather than assumed, and each claimed loss is tied to the conduct at issue. Deposition and trial testimony are available for Sample City matters, in person or by remote appearance where the forum allows.",
     );
   });
 

@@ -5,7 +5,7 @@ import { guides } from "./guides";
 import { methods } from "./methods";
 import { comparisons } from "./comparisons";
 import { ICONS } from "@/lib/icons";
-import { VOC_SITE_URL, LCP_SITE_URL, LEGACY_BRAND_PATTERN } from "@/lib/brand";
+import { VOC_SITE_URL, LCP_SITE_URL, VOC_SERVICE_URL, LCP_SERVICE_URL, LEGACY_BRAND_PATTERN } from "@/lib/brand";
 import { DOUBLED_WORD, MIS_ARTICLE, excerpt } from "@/test-utils/markup";
 
 const PILLARS = ["lost-earnings-and-earning-capacity","wrongful-death-economic-loss","personal-injury-economic-damages","household-services-valuation","life-care-plan-cost-projection","employment-and-wage-loss-damages","business-valuation","lost-profits-and-commercial-damages","fraud-and-asset-tracing","divorce-and-marital-financial-analysis","expert-rebuttal-and-report-review"];
@@ -27,6 +27,7 @@ function pillarText(s: (typeof services)[number]): string[] {
     ...(s.process ?? []).flatMap((p) => [p.step, p.description]),
     ...(s.timeline ?? []).flatMap((t) => [t.phase, t.duration]),
     s.metaDescription ?? "",
+    s.handoff?.text ?? "", s.handoff?.linkLabel ?? "",
     ...(s.faqs ?? []).flatMap((f) => [f.question, f.answer]),
     ...(s.related ?? []).map((r) => r.title),
     ...Object.values(s.caseTypeNotes ?? {}).flatMap((n) => [n.summary, ...n.faqs.flatMap((f) => [f.question, f.answer])]),
@@ -39,13 +40,42 @@ describe("economics services taxonomy", () => {
     expect(pillarServices().map((s) => s.slug)).toEqual(PILLARS);
     expect(getAllServiceSlugs()).toEqual(PILLARS);
   });
-  it("vocational and life care planning are external cross-sells, not pillars", () => {
+  it("vocational and life care planning are external cross-sells, not pillars, linking the verified sister service pages", () => {
     const v = getServiceBySlug("vocational-evaluation");
     expect(v?.pillar).toBe(false);
-    expect(v?.externalUrl).toBe(`${VOC_SITE_URL}/services/vocational-evaluation`);
+    // The vocational site's /services/vocational-evaluation alias answers 404
+    // (checked 2026-09-05); the live canonical is /services/vocational-expert (brand.ts).
+    expect(v?.externalUrl).toBe(VOC_SERVICE_URL);
+    expect(v?.externalUrl).toBe(`${VOC_SITE_URL}/services/vocational-expert`);
     const l = getServiceBySlug("life-care-planning");
     expect(l?.pillar).toBe(false);
+    expect(l?.externalUrl).toBe(LCP_SERVICE_URL);
     expect(l?.externalUrl).toBe(`${LCP_SITE_URL}/services/life-care-planning`);
+  });
+  it("the explained hand-offs name the discipline, link a verified sister service page, and sit on the pillars whose work depends on one", () => {
+    const withHandoff = services.filter((s) => s.handoff).map((s) => s.slug).sort();
+    expect(withHandoff).toEqual([
+      "divorce-and-marital-financial-analysis",
+      "household-services-valuation",
+      "life-care-plan-cost-projection",
+      "lost-earnings-and-earning-capacity",
+    ]);
+    for (const s of services) {
+      if (!s.handoff) continue;
+      expect([VOC_SERVICE_URL, LCP_SERVICE_URL], s.slug).toContain(s.handoff.href);
+      expect(s.handoff.text, s.slug).toMatch(/affiliated (vocational|life care planning) practice/);
+      expect(s.handoff.text.length, s.slug).toBeGreaterThan(120);
+      expect(s.handoff.linkLabel, s.slug).toMatch(/at the affiliated practice$/);
+      expect(s.handoff.linkLabel, s.slug).not.toMatch(LEGACY_BRAND_PATTERN);
+      expect(excerpt(s.handoff.text, DOUBLED_WORD), s.slug).toBeUndefined();
+      expect(excerpt(s.handoff.text, MIS_ARTICLE), s.slug).toBeUndefined();
+    }
+    expect(getServiceBySlug("life-care-plan-cost-projection")!.handoff!.href).toBe(LCP_SERVICE_URL);
+    expect(getServiceBySlug("divorce-and-marital-financial-analysis")!.handoff!.text).toMatch(/vocational discipline/);
+    // The divorce pillar also answers the earning-capacity question in its FAQ.
+    expect(getServiceBySlug("divorce-and-marital-financial-analysis")!.faqs!.map((f) => f.question)).toContain(
+      "Who addresses what a spouse could earn in other work?",
+    );
   });
   it("has no LCP pillars", () => {
     for (const s of ["pediatric-life-care-planning","medical-cost-projection","medicare-set-aside","life-care-plan-rebuttal","forensic-economics"]) expect(getServiceBySlug(s)).toBeUndefined();

@@ -232,7 +232,6 @@ export default function CredentialState() {
         // the credential (spec 4.3 for the association pages). The page
         // canonical is the entity's @id and url (no /services/cred-* route).
         serviceSchema({
-          slug: `cred-${cred.slug}-${state.slug}`,
           url,
           name: `Forensic Economists for ${state.name} Damages Matters (${cred.abbreviation})`,
           description: `${ORG_NAME} provides forensic economists for ${state.name} damages matters. This page explains ${cred.name} (${cred.abbreviation}) and how ${attr} courts weigh it.`,

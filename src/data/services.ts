@@ -2,7 +2,7 @@ import type { Service } from "@/types";
 import type { Faq, Source } from "./types";
 import type { RelatedItem } from "@/components/RelatedContent";
 import { refsToSources } from "./references";
-import { VOC_SITE_URL, LCP_SITE_URL } from "@/lib/brand";
+import { VOC_SERVICE_URL, LCP_SERVICE_URL } from "@/lib/brand";
 
 /**
  * KW Economics service taxonomy.
@@ -42,6 +42,24 @@ export interface ServiceCaseTypeNote {
   faqs: Faq[];
 }
 
+/**
+ * The explained hand-off a pillar page prints under its lead where the work
+ * depends on, or borders, a sister practice's discipline (site audit
+ * 2026-09-05, F08 and G01: "the vocational input is described without a
+ * direct, explained handoff"). `text` says which question belongs to the
+ * other practice and what the economist does with its answer; `href` is the
+ * verified sister-site service page (src/lib/brand.ts VOC_SERVICE_URL,
+ * LCP_SERVICE_URL); `linkLabel` names the practice by discipline, never by
+ * brand. Rendered by ServicePillar.tsx and the pillar shell in
+ * scripts/prerender.mjs. Keys here are `text`, `linkLabel`, and `href` on
+ * purpose: the build scripts pair the first `slug:` and `name:` of each entry.
+ */
+export interface ServiceHandoff {
+  text: string;
+  linkLabel: string;
+  href: string;
+}
+
 /** Page-level content every pillar carries (see the file comment). */
 export interface PillarContent {
   /** Meta description of the pillar page (140-160 characters, states the offer and the audience). */
@@ -56,6 +74,8 @@ export interface PillarContent {
   sources: Source[];
   /** Pair notes keyed by case-type slug; keys are a subset of `caseTypes`. */
   caseTypeNotes: Record<string, ServiceCaseTypeNote>;
+  /** The explained hand-off to a sister practice, where the work depends on or borders its discipline. */
+  handoff?: ServiceHandoff;
 }
 
 /** A pillar service with its page content. */
@@ -128,6 +148,11 @@ export const services: ServiceEntry[] = [
       { title: "Lost Earnings vs. Lost Earning Capacity", href: "/compare/lost-earnings-vs-lost-earning-capacity", description: "Comparison" },
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "SKOOG_CIECKA_KRUEGER_2011", "TREASURY_YIELD", "NAFE_ETHICS"]),
+    handoff: {
+      text: "When the post-injury earnings path turns on what the injured person can still do and earn, that opinion is a vocational one: the affiliated vocational practice prepares it, and the economist builds the lost earnings analysis on it so the two reports reconcile at deposition and trial.",
+      linkLabel: "Vocational assessment at the affiliated practice",
+      href: VOC_SERVICE_URL,
+    },
     caseTypeNotes: {
       "personal-injury": {
         summary: "In a personal injury matter the lost earnings analysis is the core of the economic claim and often its largest component. The economist establishes the but-for earnings base from tax returns, wage statements, and personnel records, projects it over a worklife expectancy with wage growth, and compares it with the post-injury path drawn from actual earnings and the work-capacity opinions in the record. A short absence with a full return to the same job leaves a past loss that can be built from pay records; a permanent restriction that ends the prior occupation opens a future gap that runs across the remaining worklife and is discounted to present value with the rate stated.",
@@ -568,6 +593,15 @@ export const services: ServiceEntry[] = [
       { title: "Wrongful Death Damages, Explained", href: "/guides/wrongful-death-damages-explained", description: "Guide" },
     ],
     sources: refsToSources(["BLS_ATUS", "BLS_OES", "CENSUS_ACS", "NAFE_JFE"]),
+    // Assessment versus valuation: which tasks the person can no longer do is
+    // a functional and vocational question; pricing the lost hours is the
+    // economist's (audit F08: the two practices' household-services pages did
+    // not allocate the responsibility).
+    handoff: {
+      text: "Which household tasks the injured person can no longer perform, and for how long, is a functional question answered from the medical record or by the affiliated vocational practice; the economist's work is the valuation that follows: the hours, the replacement wage for each task, and the present value of the loss.",
+      linkLabel: "Vocational and functional assessment at the affiliated practice",
+      href: VOC_SERVICE_URL,
+    },
     caseTypeNotes: {
       "personal-injury": {
         summary: "In a personal injury claim the household services loss is measured from the difference between the household work the person did before the injury and what they can do now. The economist draws the pre-injury hours from national time-use data for a person of the same age, sex, employment status, and household composition, adjusted to the household's own account, apportions the loss by category using the medical restrictions in the record, and prices each category at the local wage for the occupation that would replace it. The loss is projected over the period of limitation, or over life expectancy where the limitation is permanent, and discounted to present value.",
@@ -739,6 +773,11 @@ export const services: ServiceEntry[] = [
       { title: "Forensic Economist vs. Life Care Planner", href: "/compare/economist-vs-life-care-planner", description: "Comparison" },
     ],
     sources: refsToSources(["BLS_CPI_MEDICAL", "CDC_LIFE_TABLES", "TREASURY_YIELD", "NAFE_JFE", "JONES_LAUGHLIN_PFEIFER"]),
+    handoff: {
+      text: "The life care plan itself is authored by the affiliated life care planning practice, which sets each item's frequency, duration, and unit cost from the medical record; the economist prices the finished plan to present value and does not alter its contents.",
+      linkLabel: "Life care plan authorship at the affiliated practice",
+      href: LCP_SERVICE_URL,
+    },
     caseTypeNotes: {
       "traumatic-brain-injury": {
         summary: "A brain injury life care plan is dominated by attendant care and supervision, therapy, medication, and case management over a lifetime, and its present value is highly sensitive to the daily hours of paid help the plan specifies and the life expectancy applied. The economist carries each item forward with the medical cost growth appropriate to its category, discounts the stream over the life expectancy the medical evidence supports, and presents the total under alternative supervision levels when the plan or the record offers more than one. Every valued item ties back to the plan so counsel and the plan's author can confirm that the valuation reconciles.",
@@ -1291,6 +1330,10 @@ export const services: ServiceEntry[] = [
         question: "Can the same economist value the business and determine income?",
         answer: "Yes, and it is usually efficient to do so because both analyses rest on the same normalized financial statements. The report presents the valuation and the income determination as separate sections so each can be examined and used on its own, and it can be prepared for one spouse, for both, or for the court.",
       },
+      {
+        question: "Who addresses what a spouse could earn in other work?",
+        answer: "The economist measures the income the records show: pay, business cash flow, and perquisites paid through a business. What a spouse who is not working, or is working below prior earnings, could reasonably earn is a question of employability and attainable occupations, a vocational discipline. The affiliated vocational practice prepares that opinion under its own engagement, and the economist applies it to the support calculation together with published wage data, so the two reports reconcile.",
+      },
     ],
     related: [
       { title: "Income Determination in Divorce", href: "/guides/income-determination-in-divorce", description: "Guide" },
@@ -1298,6 +1341,14 @@ export const services: ServiceEntry[] = [
       { title: "Fair Market Value vs. Fair Value", href: "/compare/fair-market-value-vs-fair-value", description: "Comparison" },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_CPS", "CENSUS_ACS"]),
+    // The referral boundary the case-type entry draws (caseTypes.ts
+    // divorce-and-marital-dissolution economicImpact), stated at the point of
+    // referral (audit F08).
+    handoff: {
+      text: "Where the question is what a spouse who is not working, or is working below prior earnings, could reasonably earn, employability and attainable occupations are a vocational discipline: the affiliated vocational practice prepares that opinion, and the economist applies it to the support calculation together with published wage data.",
+      linkLabel: "Vocational assessment at the affiliated practice",
+      href: VOC_SERVICE_URL,
+    },
     caseTypeNotes: {
       "divorce-and-marital-dissolution": {
         summary: "The divorce financial analysis addresses the matter's economic questions together: income available for support when a spouse is self-employed or compensated in ways that do not appear on a pay stub, the value of business interests in the marital estate, the marital standard of living documented from actual spending, and the tracing of separate versus marital funds. The economist builds each from the same set of tax returns, financial statements, and account records, presents each as its own section so it can be used independently, and writes the report so that either spouse or the court can examine the assumptions.",
@@ -1571,7 +1622,7 @@ export const services: ServiceEntry[] = [
     keywords: ["vocational assessment", "employability opinion", "post-injury earning capacity"],
     caseTypes: [],
     relevantCredentials: [],
-    externalUrl: `${VOC_SITE_URL}/services/vocational-evaluation`,
+    externalUrl: VOC_SERVICE_URL,
     cost: {
       range: "Vocational work is engaged through our sister vocational practice under its own engagement agreement; a written estimate is provided once the referral questions, the records to be reviewed, and whether testimony is expected are known.",
       drivers: [
@@ -1604,7 +1655,7 @@ export const services: ServiceEntry[] = [
     keywords: ["life care plan", "future medical cost projection", "life care plan authorship"],
     caseTypes: [],
     relevantCredentials: [],
-    externalUrl: `${LCP_SITE_URL}/services/life-care-planning`,
+    externalUrl: LCP_SERVICE_URL,
     cost: {
       range: "Plan authorship is engaged through our sister practice under its own engagement agreement; a written estimate is provided once the injury, the volume of medical records, and the scope of future care to be projected are known.",
       drivers: [
@@ -1653,6 +1704,31 @@ export function getServiceBySlug(slug: string): ServiceEntry | undefined {
  */
 export function servicesForCaseType(caseTypeSlug: string): PillarService[] {
   return pillarServices().filter((s) => s.caseTypes.includes(caseTypeSlug));
+}
+
+/** One declared service x case-type pair: the pillar, the case-type slug it declares, and the pair page's path. */
+export interface ServiceCaseTypePair {
+  service: PillarService;
+  caseTypeSlug: string;
+  path: string;
+}
+
+/**
+ * Every declared service x case-type pair, in canonical order (pillar order,
+ * then each pillar's own `caseTypes` order). This is the route set for
+ * /services/<service>/case/<case-type>: scripts/prerender.mjs writes a shell
+ * and scripts/generate-sitemap.mjs advertises a URL for exactly these pairs,
+ * and ServiceCaseType.tsx resolves only these. A pair a pillar does not
+ * declare is not a page; its address redirects to the pillar (server.js).
+ */
+export function serviceCaseTypePairs(): ServiceCaseTypePair[] {
+  return pillarServices().flatMap((service) =>
+    service.caseTypes.map((caseTypeSlug) => ({
+      service,
+      caseTypeSlug,
+      path: `/services/${service.slug}/case/${caseTypeSlug}`,
+    })),
+  );
 }
 
 /** Pillar slugs only - the set of /services/:slug routes that are prerendered and in the sitemap. */

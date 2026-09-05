@@ -10,8 +10,9 @@ import {
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
 import { stateHubTitle } from "@/lib/page-titles.mjs";
-import { placeName } from "@/data/geo-prose.mjs";
+import { placeAttr, placeName } from "@/data/geo-prose.mjs";
 import FAQBlock from "@/components/FAQBlock";
+import ResponsibilityLine from "@/components/ResponsibilityLine";
 import { geoSources, getStateNarrative } from "@/data/narratives";
 import { stateGeographicFaqs } from "@/data/geographicFaqs";
 import { getStateBySlug } from "@/data/states";
@@ -87,7 +88,7 @@ export default function StateHub() {
         data={graphSchema([
           organizationSchema(),
           serviceSchema({
-            slug: `state-${state.slug}`,
+            url: stateUrl,
             name: `Economic Damages Services in ${place}`,
             description: narrative.directAnswer,
             areaServed: { "@type": "AdministrativeArea", name: state.name },
@@ -147,6 +148,9 @@ export default function StateHub() {
                 <p className="text-neutral-600">
                   Our forensic economists prepare lost earnings, wrongful death, household services, employment, and business damages analyses and rebuttals for {state.name} litigation. Each projection is anchored to the plaintiff's own records and to {state.name} wage data, and written to the jurisdiction's expert evidence standards.
                 </p>
+                {/* The professional responsible for the work, linked to the
+                    profile that carries the CV (C02). */}
+                <ResponsibilityLine subject={`Analyses for ${placeAttr(state.name)} matters`} className="text-neutral-600 mt-3" />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {coreServices.map((service) => (

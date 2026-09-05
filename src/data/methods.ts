@@ -38,15 +38,16 @@ export const methods: Methodology[] = [
     name: "Present Value and Discounting",
     authorSlug: "christopher-skerritt",
     datePublished: "2026-08-27",
-    dateModified: "2026-09-02",
-    metaDescription: "Present value converts projected future losses into one sum at a discount rate tied to low-risk yields, matched to the horizon and consistent with growth.",
+    dateModified: "2026-09-05",
+    metaDescription: "Present value reduces future losses to one sum: personal-loss streams discounted at low-risk yields, lost-profits streams at a rate reflecting their risk.",
     summary:
-      "Present value converts a projected stream of future losses into the single sum that, invested today at a stated rate, would replace those losses as they come due. The economist selects a discount rate matched to the horizon, states how it interacts with the growth rate applied to the loss stream, and shows the arithmetic so the result can be reproduced.",
+      "Present value converts a projected stream of future losses into the single sum that, invested today at a stated rate, would replace those losses as they come due. The economist selects a discount rate matched to the horizon and to the kind of stream being valued, states how it interacts with the growth rate applied to the loss stream, and shows the arithmetic so the result can be reproduced.",
     whenUsed:
       "Every damages report that projects losses beyond the trial date reduces them to present value: future [[/services/lost-earnings-and-earning-capacity|lost earnings]], lost [[/services/household-services-valuation|household services]], the cost of a [[/services/life-care-plan-cost-projection|life care plan]], lost financial support in a [[/case-types/wrongful-death|wrongful death]] claim, and future [[/services/lost-profits-and-commercial-damages|lost profits]]. The step is required because an award is paid once, in present dollars, while the losses it replaces would have been received over many years.",
     steps: [
       "Build the year-by-year nominal loss stream from the underlying projection (earnings, benefits, services, care costs, or profits) over the horizon the analysis supports",
-      "Select a discount rate tied to yields on low-risk instruments whose maturities match the horizon, and state the source and the date of the yield data",
+      "For a personal-loss stream (earnings, fringe benefits, household services, lost support, and care costs), select a discount rate tied to yields on low-risk instruments whose maturities match the horizon, because the award replaces amounts the person would have received with reasonable certainty, and state the source and the date of the yield data",
+      "For a commercial lost-profits stream, select a rate that reflects the risk of the projected profits, built up from a low-risk base rate plus the equity, size, and company-specific premia the published cost-of-capital data support, or drawn from the company's weighted average cost of capital, so that a projection carrying business risk is not valued as if it were certain, and state the basis for the rate",
       "State the growth rate already applied to the stream and confirm that growth and discount assumptions were drawn on a consistent basis, either both nominal or both real",
       "Discount each year's loss back to the valuation date and sum the results, keeping past losses (carried forward to the trial date) separate from future losses (discounted back to it)",
       "Report the present value alongside the undiscounted total and a sensitivity table showing the result across a reasonable range of rates",
@@ -56,10 +57,11 @@ export const methods: Methodology[] = [
       "Daily Treasury par yield curve rates and historical Treasury yield series",
       "BLS Consumer Price Index for the inflation component of nominal rates",
       "BLS Employment Cost Index and wage series for the growth side of the net rate",
+      "Published equity risk premium, size premium, and cost-of-capital data for the rate applied to a lost-profits stream",
       "The loss stream from the underlying analysis: the earnings projection, the household services schedule, the life care plan cost tables, or the lost profits model",
     ],
     limitations:
-      "The present value of a long stream is sensitive to the spread between the growth and discount rates, and small changes compound over decades. A rate chosen from a short window of unusual market conditions can overstate or understate the result, so the report should say which period the rates were drawn from and why. Present value does not resolve disputes about the underlying stream: if the earnings projection or the [[/methods/worklife-expectancy|worklife horizon]] is wrong, discounting a wrong stream correctly still yields a wrong number.",
+      "The present value of a long stream is sensitive to the spread between the growth and discount rates, and small changes compound over decades. A rate chosen from a short window of unusual market conditions can overstate or understate the result, so the report should say which period the rates were drawn from and why. Present value does not resolve disputes about the underlying stream: if the earnings projection or the [[/methods/worklife-expectancy|worklife horizon]] is wrong, discounting a wrong stream correctly still yields a wrong number. The rate convention also has to match the stream: a low-risk yield applied to a commercial lost-profits projection treats an uncertain profit stream as if it were as certain as wages and overstates the loss, while a risk-adjusted rate applied to a personal earnings stream understates it, so the report says which convention it follows and why.",
     admissibilityHistory:
       "Reduction of future losses to present value is a long-accepted step in federal and state courts, and the Supreme Court has treated the choice among discounting approaches as a matter for the trier of fact provided the economist explains the assumptions. Challenges usually target inputs rather than the method: an unexplained rate, a growth rate inconsistent with the discount rate, or a failure to follow a venue's stated convention. Some jurisdictions direct a total-offset approach by case law, under which growth and discounting are assumed to cancel; the [[/compare/net-vs-gross-discount-rate|net versus gross discount rate]] comparison explains the alternatives.",
     relevantServices: [
@@ -77,7 +79,7 @@ export const methods: Methodology[] = [
       {
         question: "Is the discount rate the same for lost earnings and for future medical costs?",
         answer:
-          "The discount rate reflects the return on the invested award and does not change with the type of loss. What changes is the growth rate applied to each stream: wages, household replacement costs, and medical costs grow at different rates, so the net rate differs by category even when the discount rate is the same.",
+          "Within a personal-loss claim, yes: the discount rate reflects the return on the safely invested award and does not change between the earnings, household services, and medical cost streams. What changes is the growth rate applied to each stream, since wages, household replacement costs, and medical costs grow at different rates, so the net rate differs by category even when the discount rate is the same. A commercial lost-profits stream is the exception: it is discounted at a rate that reflects the risk of the projected profits rather than at the low-risk yield.",
       },
       {
         question: "Does the economist discount past losses?",

@@ -5,7 +5,7 @@ import CaseTypeState from "./templates/CaseTypeState";
 import CredentialHub from "./templates/CredentialHub";
 import CredentialState from "./templates/CredentialState";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { caseTypes, getCaseType } from "@/data/caseTypes";
+import { caseTypes, getCaseType, caseTypeHubDescription, caseTypeStateDescription } from "@/data/caseTypes";
 import { credentials, getCredential } from "@/data/credentials";
 import { states } from "@/data/states";
 import { placeName } from "@/data/geo-prose.mjs";
@@ -136,7 +136,10 @@ describe("CaseTypeHub across all 14 case types", () => {
       expect(section(html, "experts")).not.toContain("zachary-sperling");
       expect(title.length).toBeLessThanOrEqual(60);
       expect(description.length).toBeLessThanOrEqual(160);
-      expect(description).toMatch(/Plaintiff and defense\.$/);
+      // The shared damages description ends "Plaintiff and defense."; a framing
+      // entry (the family-law matter) publishes its own (CaseTypeFraming.render.test.tsx).
+      expect(description).toBe(caseTypeHubDescription(ct));
+      if (!ct.framing) expect(description).toMatch(/Plaintiff and defense\.$/);
       expect(section(html, "in-short").match(/<li>/g)).toHaveLength(3);
       expect(section(html, "analysis").match(/<li>/g)).toHaveLength(4);
       expect(node(html, "Article")?.dateModified).toBe(ct.dateModified);
@@ -365,11 +368,13 @@ describe("CaseTypeState sweep of every case type x jurisdiction", () => {
         // The shared builder: the titleBase stem, or the short name plus
         // Economist where the full stem cannot fit beside the place, with the
         // full place name wherever it fits and the abbreviation only where
-        // no stem can.
+        // no stem can; a framing entry supplies its own stems.
         expect(title, label).toBe(caseTypeStateTitle(ct, st, ORG_NAME));
-        expect([`${ct.titleBase} in `, `${ct.shortName} Economist in `].some((stem) => title.startsWith(stem)), label).toBe(true);
+        const stems = ct.framing?.stateTitleStems ?? [ct.titleBase, `${ct.shortName} Economist`];
+        expect(stems.some((stem) => title.startsWith(`${stem} in `)), label).toBe(true);
         expect(title.length, label).toBeLessThanOrEqual(60);
-        expect(description, label).toContain(`${ct.name} economic damages in ${placeName(st.name)}:`);
+        expect(description, label).toBe(caseTypeStateDescription(ct, placeName(st.name)));
+        if (!ct.framing) expect(description, label).toContain(`${ct.name} economic damages in ${placeName(st.name)}:`);
         expect(description.length, label).toBeLessThanOrEqual(160);
         const service = node(html, "Service")!;
         expect(service["@id"], label).toBe(`${url}#service`);

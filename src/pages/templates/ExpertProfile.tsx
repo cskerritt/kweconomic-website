@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowRight, MapPin } from "lucide-react";
 import { team } from "@/data/team";
-import { bareName, profileTitle } from "@/data/team-meta.mjs";
+import { bareName, isDegreeCredential, profileTitle } from "@/data/team-meta.mjs";
 import { states } from "@/data/states";
 import { practiceAreasFor } from "@/lib/practice-areas";
 import { initialsOf } from "@/lib/initials";
@@ -43,6 +43,11 @@ export default function ExpertProfile() {
 
   const practiceAreas = practiceAreasFor(m);
   const jurisdictions = m.statesServed.map((a) => STATE_NAMES[a] ?? a);
+  // Credentials from another discipline (team.ts lists them as background);
+  // the chips print them all and the caption below says which are which, so
+  // a reader is not left to guess what qualifies the economics work (site
+  // audit 2026-09-05, F08 /team/christopher-skerritt).
+  const backgroundCredentials = m.credentials.filter((c) => !isDegreeCredential(c));
 
   return (
     <>
@@ -104,14 +109,20 @@ export default function ExpertProfile() {
                   ))}
                 </div>
               )}
+              {backgroundCredentials.length > 0 && (
+                <p className="text-xs text-neutral-300 mt-2">
+                  Background credentials from related disciplines: {backgroundCredentials.join(", ")}. The work the
+                  practice is retained for is forensic economics.
+                </p>
+              )}
 
+              {/* The label is visible, not screen-reader only, so a sighted
+                  reader can tell what the list is (the same label the static
+                  shell prints); the biography says what "served" means. */}
               {!m.memoriam && jurisdictions.length > 0 && (
                 <p className="flex items-center gap-2 text-sm text-neutral-300 mt-5">
                   <MapPin className="w-4 h-4 shrink-0 text-amber-light" aria-hidden="true" />
-                  <span>
-                    <span className="sr-only">Jurisdictions served: </span>
-                    {jurisdictions.join(", ")}
-                  </span>
+                  <span>Jurisdictions served: {jurisdictions.join(", ")}</span>
                 </p>
               )}
             </div>

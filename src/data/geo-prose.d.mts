@@ -24,9 +24,16 @@ export interface StateNarrativeInput {
 export interface StateNarrativeOutput {
   directAnswer: string;
   economicContext: string;
+  /** The tort forum and the workers' compensation forum (state hub, personal-loss and rebuttal pillars). */
   legalContext: string;
+  /** The commercial pillars' variant: the claims they support, appeals, and the federal forum; no compensation forum. */
+  legalContextCommercial: string;
+  /** The family-financial pillar's variant: the matrimonial part and the appellate court. */
+  legalContextFamily: string;
 }
 export function buildStateNarrative(input: StateNarrativeInput): StateNarrativeOutput;
+/** The legal-context paragraph a service x state page prints for the pillar (by serviceGeoCategory). Takes the raw Service.shortName. */
+export function serviceStateLegalContext(serviceShortName: string | undefined, n: StateNarrativeOutput): string;
 
 export interface CityNarrativeInput {
   orgName: string;
@@ -40,9 +47,38 @@ export interface CityNarrativeInput {
 }
 export interface CityNarrativeOutput {
   directAnswer: string;
+  /** The place sentence alone (which area's data an analysis uses where it uses local data at all); the service x city place paragraph is built from it. */
+  anchor: string;
   blurb: string;
+  /** "Civil claims arising in <city> are typically heard in ..." ("" when the city carries no county). */
+  venue: string;
+  /** The matrimonial form of `venue`, taken by the family-financial pillar ("" when the city carries no county). */
+  familyVenue: string;
 }
 export function buildCityNarrative(input: CityNarrativeInput): CityNarrativeOutput;
+/** The place paragraph a service x city page prints under its hero: the anchor sentence and the pillar's sides sentence. Takes the raw Service.shortName. */
+export function serviceCityPlaceParagraph(serviceShortName: string | undefined, n: Pick<CityNarrativeOutput, "anchor">): string;
+
+/** The kind of analysis a pillar performs; decides how local data enters its geo prose and sidebar panel. */
+export type GeoServiceCategory = "personal-loss" | "commercial" | "family-financial" | "rebuttal";
+/** One pillar's geo angles (see the SERVICE_GEO comment in geo-prose.mjs for each slot). */
+export interface ServiceGeoAngle {
+  category: GeoServiceCategory;
+  state: (place: string, attr: string) => string;
+  city: (cityName: string, cityA: string, place: string) => string;
+  records: string;
+  engagement?: (records: string) => string;
+  coverage?: (attr: string) => string;
+  deliverables?: (orgName: string) => string;
+  cityFaq?: (cityName: string, cityA: string, place: string) => Faq;
+  context?: (place: string, attr: string) => string;
+}
+/** Per-pillar angles keyed by Service.shortName exactly as written in services.ts. */
+export const SERVICE_GEO: Record<string, ServiceGeoAngle>;
+/** Category of a Service.shortName; no service, or one without an entry, reads as personal-loss. */
+export function serviceGeoCategory(serviceShortName?: string): GeoServiceCategory;
+/** Caption of the geo sidebar's economic-context panel for the pillar (the shared earnings caption when no service is given). */
+export function economicContextCaption(serviceShortName: string | undefined, areaName: string): string;
 
 /** The two names a service x geo template needs: the full name (proper noun in
  * the engagement question) and the short name (rendered as the work phrase). */

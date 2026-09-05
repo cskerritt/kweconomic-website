@@ -4,6 +4,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { isEmail, isPhone } from "@/lib/validation";
 import { caseTypes } from "@/data/caseTypes";
+import { INTAKE_DISCLOSURE } from "@/data/intake";
 import {
   ORG_NAME,
   ORG_SHORT,
@@ -284,7 +285,8 @@ export default function Contact() {
                   </li>
                 </ol>
                 <p className="text-xs text-neutral-500 mt-3 italic">
-                  Communications with {ORG_SHORT} prior to retention are treated as confidential consulting-expert work product.
+                  Communications with {ORG_SHORT} prior to retention are handled confidentially; work-product
+                  protection depends on the terms of the retention and the rules of the forum.
                 </p>
               </div>
 
@@ -398,10 +400,12 @@ export default function Contact() {
                   />
                 </div>
 
+                {/* Where the inquiry goes (src/data/intake.ts, shared with
+                    /schedule-consultation, /about, the privacy policy, and the
+                    static shell), so the form agrees with the actual routing
+                    to the shared intake inbox (audit F06, F08 /contact). */}
                 <p className="text-xs text-neutral-600 leading-relaxed bg-neutral-50 border border-neutral-200 rounded-md p-3">
-                  <strong>Response within 1 business day.</strong> Your information is used to
-                  perform a conflict check and scope the engagement. We do not share inquiries
-                  with third parties.
+                  <strong>Response within 1 business day.</strong> {INTAKE_DISCLOSURE}
                 </p>
 
                 <Turnstile onToken={setTurnstileToken} />

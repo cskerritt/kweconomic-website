@@ -6,6 +6,8 @@ import {
   sitemapReadyCitySlugs,
 } from "./contentReadiness";
 import { newJerseyCities } from "./cities/new-jersey";
+import { newYorkCities } from "./cities/new-york";
+import { texasCities } from "./cities/texas";
 
 // Synthetic orderings exercise the policy; c0..c14 have no metro labor data.
 const plain = Array.from({ length: 15 }, (_, i) => `c${i}`);
@@ -64,5 +66,47 @@ describe("real data invariants", () => {
   it("constants stay coherent", () => {
     expect(SERVICE_CITY_SITEMAP_TOP).toBeGreaterThan(0);
     expect(SERVICE_CITY_SITEMAP_TOP).toBeLessThanOrEqual(SERVICE_CITY_PRERENDER_TOP);
+  });
+
+  // T08 decision (site audit 2026-09-05): the crawl-budget gate stays on all
+  // three KW sites. Five cities per state are always advertised, the rest of
+  // the ten prerendered cities only with metro labor data. Widening is a
+  // deliberate change to SERVICE_CITY_SITEMAP_TOP (with the services child
+  // ceiling in scripts/sitemap-index.test.mjs), made on Search Console
+  // evidence, not a drift this test lets through.
+  it("T08: the gate is pinned at 5 advertised of 10 prerendered cities per state", () => {
+    expect(SERVICE_CITY_PRERENDER_TOP).toBe(10);
+    expect(SERVICE_CITY_SITEMAP_TOP).toBe(5);
+  });
+
+  it("T08: the combos the audit listed as linked but unadvertised are gated by this function, inside the prerender window", () => {
+    const nj = newJerseyCities.map((c) => c.slug);
+    const ny = newYorkCities.map((c) => c.slug);
+    const tx = texasCities.map((c) => c.slug);
+    // Rank 5-9 cities without metro labor data: prerendered and linked from
+    // the Service x State "Cities" grid, not in the sitemap.
+    const gated: Array<[string, string, string[]]> = [
+      ["new-jersey", "camden", nj],
+      ["new-jersey", "morristown", nj],
+      ["new-york", "rochester", ny],
+      ["texas", "el-paso", tx],
+      ["texas", "plano", tx],
+    ];
+    for (const [state, city, ordered] of gated) {
+      const rank = ordered.indexOf(city);
+      expect(rank, `${state}/${city} is in the prerender window past the top slice`).toBeGreaterThanOrEqual(SERVICE_CITY_SITEMAP_TOP);
+      expect(rank, `${state}/${city} is prerendered`).toBeLessThan(SERVICE_CITY_PRERENDER_TOP);
+      expect(isServiceCitySitemapReady(state, city, ordered), `${state}/${city} is gated`).toBe(false);
+    }
+    // The metro-labor exception still advertises the prerendered metro cities
+    // past the top slice (Hackensack HQ, Buffalo, Albany).
+    for (const [state, city, ordered] of [
+      ["new-jersey", "hackensack", nj],
+      ["new-york", "buffalo", ny],
+      ["new-york", "albany", ny],
+    ] as Array<[string, string, string[]]>) {
+      expect(ordered.indexOf(city)).toBeGreaterThanOrEqual(SERVICE_CITY_SITEMAP_TOP);
+      expect(isServiceCitySitemapReady(state, city, ordered), `${state}/${city} is ready`).toBe(true);
+    }
   });
 });

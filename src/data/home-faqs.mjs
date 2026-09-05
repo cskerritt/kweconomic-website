@@ -13,7 +13,7 @@ export function homepageFaqs(orgName, orgShort) {
     },
     {
       question: `Does ${orgShort} work for plaintiff and defense?`,
-      answer: `Yes. ${orgName} accepts retentions from plaintiff and defense counsel. The method does not change with the retaining party: the same data sources, the same discounting conventions, and the same disclosure of assumptions. That consistency is what allows the opinion to hold up under cross-examination and under any admissibility standard.`,
+      answer: `Yes. ${orgName} accepts retentions from plaintiff and defense counsel. The method does not change with the retaining party: the same data sources, the same discounting conventions, and the same documentation of every assumption, so either side can recompute the figure from the report. Whether an opinion is admitted is a matter-specific question the court decides under the standard that governs the forum; a fully stated method is what lets that question be examined on the record rather than argued in the abstract.`,
     },
     {
       question: "What records does the economist need?",

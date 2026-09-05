@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, ORG_PHONE_DISPLAY, SITE_URL } from "@/lib/brand";
+import { INTAKE_DISCLOSURE } from "@/data/intake";
 
 const DOMAIN = SITE_URL.replace(/^https?:\/\//, "");
 const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
@@ -28,6 +29,8 @@ If you engage ${ORG_SHORT} as an expert or consulting firm, information relevant
   {
     heading: "Information Sharing",
     content: `${ORG_NAME} does not sell, rent, or disclose your personal information to third parties for marketing or commercial purposes. We may share information with service providers who assist in operating our website or communications (such as email hosting or analytics providers), subject to appropriate confidentiality agreements.
+
+${INTAKE_DISCLOSURE} Inquiry details may be shared with one of those affiliated practices when a matter calls for its discipline, under the same confidentiality, and each practice that takes part in an engagement is retained under its own engagement agreement.
 
 We may disclose information when required to do so by law, in response to a lawful court order or subpoena, or in connection with a legal proceeding to which we are a party. We may also disclose information where we believe in good faith that disclosure is necessary to protect the safety of any person or to address fraud, security, or technical issues.
 

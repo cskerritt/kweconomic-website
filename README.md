@@ -60,7 +60,7 @@ Railway service creation and the DNS cutover are separate follow-ups on Chris's 
 
 ## Page inventory
 
-From `npm run build` at this commit (8,613 prerendered `index.html` shells):
+From `npm run build` at this commit (8,519 prerendered `index.html` shells):
 
 | Family | Pages |
 |---|---|
@@ -77,36 +77,37 @@ From `npm run build` at this commit (8,613 prerendered `index.html` shells):
 | Case-type x State | 784 |
 | Credential x State | 224 |
 | Service variant (cost/process/timeline) | 33 |
-| Service x Case-type | 154 |
+| Service x Case-type (declared pairs only) | 60 |
 | Attorney journey (4 stage indexes + 4 x 14) | 60 |
 | White paper (hub + 2) | 3 |
-| **Total** | **8,613** |
+| **Total** | **8,519** |
 
-Sitemap index `public/sitemap.xml` (5 children + image sitemap; news sitemap advertised via robots.txt), `<loc>` counts:
+Sitemap index `public/sitemap.xml` (5 children + image sitemap; `news-sitemap.xml` is generated, listed in the index, and declared in robots.txt only while an insight post is inside the two-day Google News window), `<loc>` counts:
 
 | File | URLs |
 |---|---|
 | `sitemap-core.xml` | 114 |
-| `sitemap-services.xml` | 3,840 (hub 1 + 11 pillars + 33 variants + 154 service x case + 616 service x state + 3,025 gated city combos; the test ceiling is 4,000, see build notes) |
+| `sitemap-services.xml` | 3,746 (hub 1 + 11 pillars + 33 variants + 60 declared service x case pairs + 616 service x state + 3,025 gated city combos; the test ceiling is 4,000, see build notes) |
 | `sitemap-locations.xml` | 859 |
 | `sitemap-case-types.xml` | 799 |
 | `sitemap-credentials.xml` | 229 |
 | `image-sitemap.xml` | 7 |
-| `news-sitemap.xml` | 2 |
+| `news-sitemap.xml` | 0 today (written only for posts published in the last two days) |
 
-Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 5,797 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`); `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404. `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.
+Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 5,797 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`; 3,025 combos). T08 decision (2026-09-05): the gate stays, on all three KW sites. The 2,772 gated combos the audit listed are prerendered, linked from the Service x State "Cities" grid, self-canonical, and indexable; they are simply not advertised until Search Console evidence supports widening (see "Facts to confirm"). `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404, pins the gate constants, and, after a build, checks that the only shells the sitemap leaves out are the gated combos. Service x case-type pages exist only for the pairs a pillar declares in `services.ts` (`serviceCaseTypePairs()`); an undeclared pair's address 301s to the pillar (`lib/service-case-redirects.server.mjs`). `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.
 
 ## Content model (`src/data`)
 
 | File | Holds |
 |---|---|
-| `services.ts` | 13 service entries; 11 `pillar: true` get routes, sitemap entries, and shells; `vocational-evaluation` and `life-care-planning` are `pillar: false` cross-sells with an `externalUrl` to the sister practice. Every entry carries `cost`, `process` (4+ steps), `timeline` (3+ phases), `keywords` |
-| `caseTypes.ts` | 14 case types with `lossComponents`, `damagesExposure`, `economicImpact`, related pillars, FAQs, sources |
+| `services.ts` | 13 service entries; 11 `pillar: true` get routes, sitemap entries, and shells; `vocational-evaluation` and `life-care-planning` are `pillar: false` cross-sells with an `externalUrl` to the sister practice's verified service page (`VOC_SERVICE_URL`, `LCP_SERVICE_URL` in `brand.ts`). Every entry carries `cost`, `process` (4+ steps), `timeline` (3+ phases), `keywords`; the lost earnings, household services, life care plan costing, and divorce pillars carry a `handoff` (the explained referral to the sister practice, rendered under the pillar hero) |
+| `caseTypes.ts` | 14 case types with `lossComponents`, `damagesExposure`, `economicImpact`, related pillars, FAQs, sources; the divorce entry carries a `framing` block (title stems, H1s, descriptions, lead, section headings, framework paragraph) that the hub and state templates and the shells read through the `caseType*` helpers in place of the shared economic-damages strings |
+| `intake.ts` | Where an inquiry goes (the shared intake inbox) and the /about sister-practices section; one module for the contact form, the consultation form, /about, the privacy policy, and their shells |
 | `credentials.ts` | 4 credentials (`forensic-economist`, `nafe-member`, `aaefe-member`, `graduate-economics-degree`); membership pages carry `expertSlugs: []` and describe the association, never the roster |
-| `team.ts` | 2 members: Christopher Skerritt (leadership, senior expert tier) and Zachary Sperling (support); background credentials listed as background |
+| `team.ts` | 2 members: Christopher Skerritt (leadership, senior expert tier) and Zachary Sperling (support); background credentials listed as background; `analysisResponsibility()` builds the "directed by" line the pillar, service x geo, and place pages print (`ResponsibilityLine.tsx` + the shells) |
 | `states.ts` | 56 states, DC, and territories: slug, region, courts and regulation pointers |
 | `cities/*.ts` | One file per state (56) listing that state's metros (802 total); `cities/index.ts` aggregates |
-| `contentReadiness.ts` | Prerender vs. sitemap gating constants for service x state x city |
+| `contentReadiness.ts` | Prerender vs. sitemap gating constants for service x state x city (`SERVICE_CITY_PRERENDER_TOP = 10`; `SERVICE_CITY_SITEMAP_TOP = 5` plus metro-labor cities); the gate is current policy by the T08 decision of 2026-09-05, see "Facts to confirm" |
 | `local-content.ts` | 10 hand-written local essays for first-hand markets: the New York, Virginia, and Massachusetts state pages plus New York City, Brooklyn, Newark, Hackensack, Jersey City, Los Angeles, and Houston |
 | `geo-prose.mjs` | Templated state/city prose (wage levels, cost of living, local labor markets, venue) shared by the React pages and `scripts/prerender.mjs`; `geo-prose.d.mts` types it |
 | `geographicFaqs.ts`, `narratives.ts` | Thin React wrappers over `geo-prose.mjs`; `narratives.parity.test.mjs` pins the two sides |
@@ -130,7 +131,10 @@ Spec section 12, tracked here until Chris confirms each:
 - [ ] kweconomics.com mailbox and Resend-verified sender: `ORG_EMAIL`, `LEAD_FROM`, and `LEAD_RECIPIENTS` all default to `info@kwvrs.com`; move them once the mailbox exists and the domain is verified in Resend.
 - [ ] NAFE/AAEFE membership status for Chris and Zach: the membership pages (`credentials.ts`, `expertSlugs: []`) describe the associations and name no member; `llms.txt` says the same. Add slugs to `expertSlugs` only once membership is confirmed.
 - [ ] Zach's title and states served: `team.ts` carries "Economics Associate / Expert Liaison" and NJ, NY from the kwvrs.com roster.
-- [ ] Whether the firm markets business valuation and forensic accounting (fraud/tracing, divorce) under this brand and who signs those reports (valuation credentials): `business-valuation`, `lost-profits-and-commercial-damages`, `fraud-and-asset-tracing`, and `divorce-and-marital-financial-analysis` are live pillars with no named signer.
+- [ ] Whether the firm markets business valuation and forensic accounting (fraud/tracing, divorce) under this brand and who signs those reports (valuation credentials): `business-valuation`, `lost-profits-and-commercial-damages`, `fraud-and-asset-tracing`, and `divorce-and-marital-financial-analysis` are live pillars. Since the 2026-09-05 audit (C02) every pillar, service x geo, and place page prints "<work> is directed by Christopher Skerritt, M.Ed., MBA, Chief of Economic Services, who is available to testify to it" (`team.ts analysisResponsibility()`), the fact /about and the associate's profile already state; confirm it holds for the valuation and tracing pillars and whether a valuation or accounting designation should be named or its absence stated.
+- [ ] Counsel review of the inquiry-routing wording (audit F06): the contact form, the consultation form, /about, and the privacy policy's "Information Sharing" section now all say inquiries reach an intake inbox shared with the affiliated vocational and life care planning practices and are not shared outside that family (`src/data/intake.ts`); the previous form note ("We do not share inquiries with third parties") described routing that did not match `ORG_EMAIL`. Confirm the wording and whether the privacy policy's effective date should move.
+- [ ] The jurisdictions list on `/team/christopher-skerritt`: the biography now says the states are those in which he has served retaining counsel (experience, not licensure); confirm, and reconcile the credential subset shown here with the kwvrs.com and kwlcp.com profiles (all three resolve; not compared line by line).
+- [ ] T08 (audit, P1), decision 2026-09-05: the crawl-budget gate stays (`SERVICE_CITY_SITEMAP_TOP = 5`, `SERVICE_CITY_PRERENDER_TOP = 10`, the same on all three KW sites). The 2,772 service x city combos the audit listed stay prerendered, internally linked, self-canonical, and indexable; they are not advertised in the sitemap. Widening = set `SERVICE_CITY_SITEMAP_TOP` to 10 in `src/data/contentReadiness.ts` and raise the services child ceiling in `scripts/sitemap-index.test.mjs` to 7,000 in the same change. Evidence needed first: Search Console page-indexing coverage and impressions for gated vs advertised combos over 4-6 weeks after deploy.
 - [ ] Office NAP unchanged: `OFFICES` in `brand.ts` carries the Hackensack, NJ and Richmond, VA records from kwlcp.
 - [ ] GA4 + Turnstile keys: `VITE_GA_MEASUREMENT_ID`, `VITE_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` are empty; new keys, none carried from a sister site.
 - [ ] Final wordmark: `public/images/logo.svg` / `logo.png` is a text lockup, not final art; favicons are navy and gold.
@@ -139,7 +143,8 @@ Spec section 12, tracked here until Chris confirms each:
 ## Build notes and decisions (Task 11)
 
 - `CANONICAL_HOST` stays environment-driven (`process.env.CANONICAL_HOST || ""`), the same as both sister sites, with `kweconomics.com` documented as the production value and echoed in the startup log. A hard-coded default would 301 the Railway staging URL to a domain that does not point at it yet, and would break the local Docker smoke (which passes `-e CANONICAL_HOST=`) and the server tests.
-- The `sitemap-services.xml` crawl-budget ceiling in `scripts/sitemap-index.test.mjs` is 4,000 (kwlcp pinned 3,600 for 10 pillars). With 11 pillars and the unchanged gate (`SERVICE_CITY_SITEMAP_TOP = 5` plus metro-labor cities) the child holds 3,840 URLs, so the ceiling is pinned just above the real count, as the twin sites do. Tightening it means narrowing the gate, which is a Chris call.
+- The `sitemap-services.xml` crawl-budget ceiling in `scripts/sitemap-index.test.mjs` is 4,000 (kwlcp pinned 3,600 for 10 pillars). With 11 pillars, the 60 declared pairs, and the gate kept (`SERVICE_CITY_SITEMAP_TOP = 5` plus metro-labor cities; the T08 decision of 2026-09-05, see "Facts to confirm") the child holds 3,746 URLs, so the ceiling is pinned just above the real count, as the twin sites do. Widening the gate to the whole prerender window would add the 2,772 gated combos (6,518 in the child) and must raise the ceiling to 7,000 in the same change. Every child also stays under the sitemaps.org limits (50,000 URLs / 50 MB).
+- 2026-09-05 audit repairs, both render paths: the divorce case type's `framing` block reaches the title, H1, description, lead, section headings, framework block, local FAQ, and Service node (F08, 57 pages); the commercial and family-financial service x state shells print a category-specific legal context (no tort or workers' compensation forum) and their city shells a place paragraph without the hub's "economic damages analyses" opener (F09); the editorial byline labels its date "Updated" and a named byline alone says "Reviewed", and the pillar, service x geo, and place pages name the directing economist with a profile link (C02); the cost/process/timeline pages and the attorney stage indexes carry a References block, the stage indexes the shared reviewer byline (C04); the sister hand-off links point at the verified `kwvrs.com/services/vocational-expert` (the `/services/vocational-evaluation` alias answers 404); `server.js` answers 410 for a sitemap address with no file on disk (the retired news sitemap).
 - The four editorial shells with a named reviewer (`/knowledge/*`, `/insights/*`) print the byline "Christopher Skerritt, M.Ed., MBA, CRC, CLCP, MSCC", exactly as the React `AuthorByline` does (top three `team.ts` credentials not already in the name). The prerender mirrors the hydrated page on purpose; if the economics site should not surface CRC/CLCP/MSCC in bylines, the fix is to trim or reorder `credentials` in `team.ts`, not the shell.
 - `package.json` `name` is still `kwlcp-website` (lockfile-coupled metadata; no runtime effect).
 

@@ -259,7 +259,11 @@ describe("the shell byline mirrors AuthorByline.tsx", () => {
     expect(prerenderSrc).toContain("`${member.name}, ${member.title}`");
     expect(prerenderSrc).toContain('By <a href="${linkTo}">');
     expect(prerenderSrc).toContain("Published ${time(datePublished)}");
-    expect(prerenderSrc).toContain("Reviewed ${time(reviewed)}");
+    // "Reviewed" only beside a named reviewer; the editorial byline labels the
+    // revision date "Updated" (audit C02), on both sides.
+    expect(bylineSrc).toContain('const dateLabel = member ? "Reviewed" : "Updated";');
+    expect(prerenderSrc).toContain('const dateLabel = member ? "Reviewed" : "Updated";');
+    expect(prerenderSrc).toContain("${dateLabel} ${time(reviewed)}");
     expect(prerenderSrc).not.toContain("Reviewed by");
     expect(prerenderSrc).not.toContain("Last updated");
     expect(prerenderSrc).not.toMatch(/credentialsText/);
@@ -283,8 +287,17 @@ describe("the family title/description builders are shared with the React templa
       "title: pairTitle(s, c, ORG_NAME)",
       "pairDescription(s, c)",
       "profileTitleFor(t)",
-      "title: `${c.titleBase} | ${ORG_NAME}`",
+      // The case-type tiers read the entry's framing through the shared
+      // helpers (src/data/caseTypes.ts) on both sides (audit F08).
+      "title: `${caseTypeHubTitle(c, ORG_NAME)}`",
+      "description: `${caseTypeHubDescription(c)}`",
       "title: `${caseTypeStateTitle(c, s, ORG_NAME)}`",
+      "description: `${caseTypeStateDescription(c, placeName(s.name))}`",
+      "caseTypeHubHeading(c)",
+      "caseTypeStateHeading(c, place)",
+      "caseTypeStateLead(c, ORG_NAME, place)",
+      "caseTypeStateFrameworkQuestion(c, place)",
+      "caseTypeStateServiceDescription(c, place)",
       "title: `${c.metaTitle}`",
       "description: `${c.metaDescription}`",
       "title: `${headings.title}`",
@@ -445,7 +458,9 @@ function walkShells() {
   return shells;
 }
 
-describe.skipIf(!existsSync(join(DIST, "index.html")))("every shell in dist/ keeps the house rules (requires dist/)", () => {
+// Gated on dist/404.html, the prerender's own marker (the server-contact test
+// stubs dist/index.html when the suite runs without a build).
+describe.skipIf(!existsSync(join(DIST, "404.html")))("every shell in dist/ keeps the house rules (requires dist/)", () => {
   const shells = walkShells();
 
   it("walks the full route set", () => {

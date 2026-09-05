@@ -1,6 +1,18 @@
 import { placeName } from "@/data/geo-prose.mjs";
 import { useParams, Link } from "react-router-dom";
-import { caseTypes, getCaseType, type CaseTypeCategory } from "@/data/caseTypes";
+import {
+  caseTypes,
+  getCaseType,
+  caseTypeStateHeading,
+  caseTypeStateDescription,
+  caseTypeStateLead,
+  caseTypeStateStepsIntro,
+  caseTypeStateFramework,
+  caseTypeStateFrameworkQuestion,
+  caseTypeStateServiceDescription,
+  caseTypeSectionHeadings,
+  type CaseTypeCategory,
+} from "@/data/caseTypes";
 import { states } from "@/data/states";
 import { pillarServices } from "@/data/services";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
@@ -61,8 +73,11 @@ export default function CaseTypeState() {
           // the place, then "<shortName> Economist" where the full stem
           // cannot fit beside the place, and the state abbreviation only
           // where no stem fits beside the full place name in the tag.
+          // The description helper reads the entry's `framing` block where it
+          // carries one (the family-law matter) and the shared
+          // economic-damages sentence otherwise.
           title: `${caseTypeStateTitle(caseType, state, ORG_NAME)}`,
-          description: `${caseType.name} economic damages in ${placeName(state.name)}: loss components, state damages rules and venues, and how the number is built.`,
+          description: `${caseTypeStateDescription(caseType, placeName(state.name))}`,
           canonical: url,
         }
       : null,
@@ -80,8 +95,16 @@ export default function CaseTypeState() {
   const regulations = getRegulationsByState(state.slug);
   const trialCourts = courts ? selectTrialCourts(courts, COURT_SELECTION[caseType.category] ?? "general") : [];
   const federalVenues = courts?.federalDistricts ?? [];
-  const frameworkText = regulations ? (isInjury ? regulations.damagesContext : regulations.generalContext) : "";
-  const h1 = `${caseType.name} Economic Damages Expert in ${place}`;
+  // The framework paragraph: the state module's damages text (tort for the
+  // injury and death categories, fault-interest-caps otherwise), or the
+  // entry's own framing paragraph for a matter that is not a damages claim.
+  const frameworkText = regulations
+    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext)
+    : "";
+  // The H1, lead, headings, and framework question read the entry's `framing`
+  // block where it carries one; scripts/prerender.mjs reads the same helpers.
+  const h1 = caseTypeStateHeading(caseType, place);
+  const headings = caseTypeSectionHeadings(caseType);
   const courtList = listNames(trialCourts.map((c) => `the ${c.name} (${c.description})`));
 
   // Two FAQs that exist only for this case type in this state; the hub's own
@@ -110,7 +133,7 @@ export default function CaseTypeState() {
     ...(regulations
       ? [
           {
-            question: `How does ${place}'s damages framework shape the economic analysis?`,
+            question: caseTypeStateFrameworkQuestion(caseType, place),
             answer: `${frameworkText} ${regulations.expertStandard}`,
           },
         ]
@@ -127,9 +150,7 @@ export default function CaseTypeState() {
       ]} />
       <h1 className="font-serif text-4xl text-navy mb-4">{h1}</h1>
       <AuthorByline slug={author?.slug} datePublished={caseType.datePublished} dateModified={caseType.dateModified} />
-      <p className="text-lg text-neutral-700 mb-6">
-        {ORG_NAME} prepares economic damages analyses for {lower} cases venued in {place}: the components the loss claim consists of, the records that drive them, and a present value built to {place}&#x27;s damages rules and venues. Plaintiff and defense.
-      </p>
+      <p className="text-lg text-neutral-700 mb-6">{caseTypeStateLead(caseType, ORG_NAME, place)}</p>
 
       <section id="definition" className="mb-8">
         <p className="text-neutral-700">
@@ -181,7 +202,7 @@ export default function CaseTypeState() {
           )}
           {regulations && (
             <div>
-              <h3 className="font-semibold text-navy mb-1">Damages framework</h3>
+              <h3 className="font-semibold text-navy mb-1">{headings.framework}</h3>
               <p className="text-neutral-700">{frameworkText}</p>
             </div>
           )}
@@ -189,10 +210,8 @@ export default function CaseTypeState() {
       )}
 
       <section id="analysis" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">How the analysis is built</h2>
-        <p className="text-neutral-700 mb-2">
-          The same four steps apply to a {lower} case venued in {place}; the damages framework above decides which components enter the total.
-        </p>
+        <h2 className="font-serif text-2xl text-navy mb-2">{headings.method}</h2>
+        <p className="text-neutral-700 mb-2">{caseTypeStateStepsIntro(caseType, place)}</p>
         <ol className="list-decimal ml-5 text-neutral-700 space-y-1">
           {caseType.steps.map((step) => (
             <li key={step}>{step}</li>
@@ -282,10 +301,9 @@ export default function CaseTypeState() {
         // The page canonical is the Service entity's @id and url (no
         // /services/<case-type>/<state> route exists).
         serviceSchema({
-          slug: `${caseType.slug}/${state.slug}`,
           url,
           name: h1,
-          description: `Economic damages analysis for ${lower} matters in ${place}.`,
+          description: caseTypeStateServiceDescription(caseType, place),
           areaServed: { "@type": state.type === "state" ? "State" : "AdministrativeArea", name: state.name },
           dateModified: caseType.dateModified,
         }),

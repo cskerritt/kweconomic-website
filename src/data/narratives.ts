@@ -39,7 +39,12 @@ import {
 import type { Source } from "./types";
 import type { City, Service, State } from "../types";
 
-export { serviceStateDirectAnswer, serviceCityDirectAnswer } from "./geo-prose.mjs";
+export {
+  serviceStateDirectAnswer,
+  serviceCityDirectAnswer,
+  serviceStateLegalContext,
+  serviceCityPlaceParagraph,
+} from "./geo-prose.mjs";
 
 export type StateNarrative = StateNarrativeOutput;
 export type CityNarrative = CityNarrativeOutput;

@@ -7,14 +7,16 @@
  *   public/image-sitemap.xml  - <image:image> entries for pages with meaningful
  *                               imagery (team headshots from team.ts, plus the
  *                               curated office photos used on core pages).
- *   public/news-sitemap.xml   - <news:news> entries for /insights/* posts.
- *
- * Note on the news sitemap: the Google News sitemap convention expects articles
- * published within the last 2 days, and Search Console may warn on older items.
- * The insights posts are evergreen, so this sitemap primarily helps general
- * and AI crawlers discover /insights/* URLs with typed publication metadata; it is
- * not intended to drive Google News inclusion. It is regenerated every build, so
- * if dated/timely posts are added they are advertised automatically.
+ *   public/news-sitemap.xml   - <news:news> entries for the /insights/* posts
+ *                               published within the last two days, the only
+ *                               articles a Google News sitemap may list
+ *                               (scripts/lib/news-sitemap.mjs). When no post
+ *                               qualifies the file is not written, a stale
+ *                               copy is removed, and neither the sitemap
+ *                               index nor robots.txt refers to it; older posts
+ *                               stay in sitemap-core.xml with their real
+ *                               lastmod. A post dated today is picked up by
+ *                               the next build automatically.
  *
  * Runs before `vite build` so the generated files are copied from public/ to dist/.
  * Loading strategy matches scripts/generate-llms.mjs (bare Vite server + ssrLoadModule).
@@ -23,10 +25,17 @@
  */
 
 import { createServer } from "vite";
-import { writeFileSync } from "fs";
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { SITE_URL as BASE, ORG_NAME } from "./lib/site.mjs";
+import {
+  NEWS_SITEMAP_FILE,
+  recentNewsPosts,
+  renderNewsSitemap,
+  syncIndexNewsSitemap,
+  syncRobotsNewsSitemap,
+} from "./lib/news-sitemap.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
@@ -118,37 +127,35 @@ ${imageEntries}
 </urlset>
 `;
 
-  // ----------------------------------------------------------------------
-  // news-sitemap.xml
-  // ----------------------------------------------------------------------
-  const newsEntries = insightPosts
-    .map((post) => {
-      return `  <url>
-    <loc>${abs(`/insights/${post.slug}`)}</loc>
-    <news:news>
-      <news:publication>
-        <news:name>${xmlEscape(PUBLICATION_NAME)}</news:name>
-        <news:language>en</news:language>
-      </news:publication>
-      <news:publication_date>${post.publishedDate}</news:publication_date>
-      <news:title>${xmlEscape(post.title)}</news:title>
-    </news:news>
-  </url>`;
-    })
-    .join("\n");
-
-  const newsSitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-${newsEntries}
-</urlset>
-`;
-
   writeFileSync(join(PUBLIC, "image-sitemap.xml"), imageSitemap);
-  writeFileSync(join(PUBLIC, "news-sitemap.xml"), newsSitemap);
+
+  // ----------------------------------------------------------------------
+  // news-sitemap.xml: only the posts inside the two-day Google News window.
+  // The file exists exactly when a post qualifies, and the sitemap index
+  // (written by generate-sitemap.mjs under the same rule earlier in the
+  // build) and robots.txt are reconciled to the file actually on disk.
+  // ----------------------------------------------------------------------
+  const newsPosts = recentNewsPosts(insightPosts, new Date());
+  const includeNews = newsPosts.length > 0;
+  const newsPath = join(PUBLIC, NEWS_SITEMAP_FILE);
+  if (includeNews) {
+    writeFileSync(newsPath, renderNewsSitemap(newsPosts, { base: BASE, publicationName: PUBLICATION_NAME }));
+  } else if (existsSync(newsPath)) {
+    unlinkSync(newsPath);
+  }
+  const indexPath = join(PUBLIC, "sitemap.xml");
+  if (existsSync(indexPath)) {
+    writeFileSync(indexPath, syncIndexNewsSitemap(readFileSync(indexPath, "utf8"), includeNews, BASE));
+  }
+  const robotsPath = join(PUBLIC, "robots.txt");
+  writeFileSync(robotsPath, syncRobotsNewsSitemap(readFileSync(robotsPath, "utf8"), includeNews, BASE));
 
   const imageCount = imageUrls.reduce((n, u) => n + u.images.length, 0);
   console.log(
-    `Generated image-sitemap.xml (${imageUrls.length} URLs, ${imageCount} images) and news-sitemap.xml (${insightPosts.length} posts)`
+    `Generated image-sitemap.xml (${imageUrls.length} URLs, ${imageCount} images); ` +
+      (includeNews
+        ? `${NEWS_SITEMAP_FILE} lists ${newsPosts.length} post(s) published in the last two days`
+        : `${NEWS_SITEMAP_FILE} not written (no insight post published in the last two days; index and robots.txt do not reference it)`)
   );
 }
 

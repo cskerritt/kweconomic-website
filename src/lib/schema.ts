@@ -83,30 +83,33 @@ export function websiteSchema(): JsonLd {
 }
 
 /**
- * Service node. `slug` names the pillar (or pillar variant) path under
- * /services; pages that are not a /services route (state hubs, city pages,
- * service x state, case-type x state, credential x state) pass their own
- * canonical `url` so the node's @id and url resolve to the page that carries
- * it rather than to a synthetic /services/<slug> address that returns 404.
+ * Service node. `url` is the canonical URL of the page that carries the node:
+ * the node's url is that address and its @id is `${url}#service`, so the
+ * entity always resolves to a page that exists. There is no slug-derived
+ * fallback. The pillar page passes its own /services/<slug> address; the
+ * state hubs, city pages, service x state and service x city pages, the
+ * service x case-type and cost/process/timeline pages, and the case-type x
+ * state and credential x state pages each pass the URL they publish as their
+ * canonical. A synthetic /services/<alias> address (state-*, city-*, cred-*,
+ * or a pillar slug hyphen-joined to a place), which answered 404, cannot be
+ * built here any more.
  */
 export function serviceSchema(args: {
-  slug: string;
+  url: string;
   name: string;
   description: string;
   areaServed?: JsonLd | string;
   offers?: JsonLd;
   dateModified?: string;
-  url?: string;
 }): JsonLd {
-  const pageUrl = args.url ?? `${ORG_URL}/services/${args.slug}`;
   return {
     "@type": "Service",
-    "@id": `${pageUrl}#service`,
+    "@id": `${args.url}#service`,
     name: stripLinkMarkers(args.name),
     description: stripLinkMarkers(args.description),
     provider: { "@id": ORG_ID },
     areaServed: args.areaServed ?? { "@type": "Country", name: "United States" },
-    url: pageUrl,
+    url: args.url,
     ...(args.offers ? { offers: args.offers } : {}),
     ...(args.dateModified ? { dateModified: args.dateModified } : {}),
   };

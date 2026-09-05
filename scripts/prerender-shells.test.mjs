@@ -19,7 +19,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
@@ -32,12 +32,35 @@ import { guides } from "@/data/guides";
 import { comparisons } from "@/data/comparisons";
 import { methods } from "@/data/methods";
 import { states } from "@/data/states";
-import { pillarServices } from "@/data/services";
+import { pillarServices, serviceCaseTypePairs } from "@/data/services";
 import { knowledgeGuides } from "@/data/knowledge";
 import { insightPosts } from "@/data/insights";
 import { whitePapers } from "@/data/whitePapers";
 import { team } from "@/data/team";
+import {
+  PRIVACY_EFFECTIVE_DATE,
+  TERMS_EFFECTIVE_DATE,
+  privacyIntro,
+  privacySections,
+  termsIntro,
+  termsSections,
+} from "@/data/legal-policies";
+import {
+  AFTER_HOURS_NOTE,
+  CONSULTATION_LEAD,
+  FORM_FOOTNOTE,
+  FORM_INTAKE_NOTE,
+  INFO_TO_HAVE_READY_INTRO,
+  OFFICE_HOURS,
+  consultationFormFields,
+  consultationOffices,
+  infoToHaveReady,
+  whatToExpect,
+} from "@/data/consultation";
+import { FAMILY_SECTION, FAMILY_SECTION_TEXT, INTAKE_DISCLOSURE } from "@/data/intake";
+import { retainableExperts } from "@/data/team";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
+import { SYNTHETIC_SERVICE_ALIAS } from "@/test-utils/jsonld";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Team from "@/pages/Team";
@@ -92,8 +115,14 @@ vi.mock("@/hooks/use-state-cities", async () => {
 });
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const DIST = join(ROOT, "dist");
-const hasDist = existsSync(join(DIST, "index.html"));
+// PRERENDER_DIST points these checks at a scratch prerender output (the same
+// override scripts/prerender.mjs takes); the build gate uses dist/.
+const DIST = process.env.PRERENDER_DIST ? resolve(process.env.PRERENDER_DIST) : join(ROOT, "dist");
+// Gate on the prerender's own marker: scripts/prerender.mjs writes dist/404.html
+// after the route set, while `vite build` alone and the 40-byte dist/index.html
+// stub test/server-contact.test.mjs provisions never do, so a stub cannot
+// un-gate these checks in a shared worktree.
+const hasDist = existsSync(join(DIST, "404.html"));
 const shellPath = (route) => (route === "/" ? join(DIST, "index.html") : join(DIST, route, "index.html"));
 const readShell = (route) => readFileSync(shellPath(route), "utf8");
 const canonicalOf = (route) => (route === "/" ? `${SITE_URL}/` : `${SITE_URL}${route}`);
@@ -164,7 +193,7 @@ const ROUTES = [
   { route: "/services/lost-earnings-and-earning-capacity/process", pattern: "/services/:serviceSlug/process", Page: ServiceTransactional, props: { variant: "process" } },
   { route: "/services/lost-earnings-and-earning-capacity/timeline", pattern: "/services/:serviceSlug/timeline", Page: ServiceTransactional, props: { variant: "timeline" } },
   { route: "/services/lost-earnings-and-earning-capacity/case/personal-injury", pattern: "/services/:serviceSlug/case/:typeSlug", Page: ServiceCaseType },
-  { route: "/services/business-valuation/case/personal-injury", pattern: "/services/:serviceSlug/case/:typeSlug", Page: ServiceCaseType },
+  { route: "/services/business-valuation/case/partnership-and-shareholder-dispute", pattern: "/services/:serviceSlug/case/:typeSlug", Page: ServiceCaseType },
   { route: "/locations/new-jersey", pattern: "/locations/:stateSlug", Page: StateHub },
   { route: "/locations/district-of-columbia", pattern: "/locations/:stateSlug", Page: StateHub },
   { route: "/locations/new-jersey/hackensack", pattern: "/locations/:stateSlug/:citySlug", Page: CityPage },
@@ -174,6 +203,12 @@ const ROUTES = [
   { route: "/case-types/wrongful-death/new-jersey", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
   { route: "/case-types/wrongful-death/district-of-columbia", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
   { route: "/case-types/commercial-contract-dispute/texas", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  // The one case type with a framing block (audit F08): the shell must carry
+  // the family-law title, description, H1, and FAQ question the page does.
+  { route: "/case-types/divorce-and-marital-dissolution", pattern: "/case-types/:slug", Page: CaseTypeHub },
+  { route: "/case-types/divorce-and-marital-dissolution/alabama", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  { route: "/services/business-valuation/new-jersey", pattern: "/services/:serviceSlug/:stateSlug", Page: ServiceState },
+  { route: "/services/divorce-and-marital-financial-analysis/new-jersey/hackensack", pattern: "/services/:serviceSlug/:stateSlug/:citySlug", Page: ServiceStateCity },
   { route: "/credentials/forensic-economist", pattern: "/credentials/:slug", Page: CredentialHub },
   { route: "/credentials/forensic-economist/new-jersey", pattern: "/credentials/:credSlug/:stateSlug", Page: CredentialState },
   { route: "/credentials/nafe-member/district-of-columbia", pattern: "/credentials/:credSlug/:stateSlug", Page: CredentialState },
@@ -202,18 +237,19 @@ function findMatch(shellNodes, node) {
 
 /**
  * Every field of the hydrated node must appear with the same value on the shell
- * node. A Service node whose React url is a slug-derived /services path (the
- * geo templates still derive it) is matched on type and name instead, and the
- * shell's url must be the page canonical.
+ * node. A Service node on either side identifies the page: its url is the page
+ * canonical and its @id is `${canonical}#service` (src/lib/schema.ts takes the
+ * page URL and derives nothing from a slug), so the two sides can never
+ * disagree on the entity's address (2026-09-05 audit, T03).
  */
 function expectNodeParity(reactNode, shellNode, canonical) {
-  const synthetic = reactNode["@type"] === "Service" && reactNode.url !== canonical;
   for (const [key, value] of Object.entries(reactNode)) {
     if (IGNORED_KEYS.has(key)) continue;
-    if (synthetic && (key === "@id" || key === "url")) continue;
     expect(shellNode[key], `${canonical}: ${reactNode["@type"]}.${key}`).toEqual(value);
   }
-  if (synthetic) {
+  if (reactNode["@type"] === "Service") {
+    expect(reactNode.url, `${canonical}: hydrated Service url`).toBe(canonical);
+    expect(reactNode["@id"], `${canonical}: hydrated Service @id`).toBe(`${canonical}#service`);
     expect(shellNode.url, `${canonical}: shell Service url`).toBe(canonical);
     expect(shellNode["@id"], `${canonical}: shell Service @id`).toBe(`${canonical}#service`);
   }
@@ -404,6 +440,337 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
     for (const route of sample) {
       const shell = readShell(route);
       expect(`${titleOf(shell)} ${descriptionOf(shell)}`, route).toContain(ORG_NAME);
+    }
+  });
+});
+
+// The five shells the 2026-09-05 site audit found thin (T01: an H1 and a
+// paragraph or two before JavaScript). Each must carry the page's substance:
+// the policy sections, the consultation process and the form's field labels,
+// the paper abstracts, and the profile biography. "Body text" is the root
+// content minus the breadcrumb and the nav link rows.
+const THIN_SHELLS = ["/privacy", "/terms", "/schedule-consultation", "/white-papers", "/team/zachary-sperling"];
+const rootOf = (html) => html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? "";
+const bodyTextOf = (html) => textOf(rootOf(html).replace(/<nav[\s>][\s\S]*?<\/nav>/g, " "));
+const wordCount = (text) => text.split(/\s+/).filter(Boolean).length;
+const h2TextsOf = (html) => [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map((m) => textOf(m[1]));
+const expectText = (haystack, needle, label) => expect(haystack, label).toContain(decode(needle));
+const paragraphsOf = (content) => content.split("\n\n").map((p) => p.trim()).filter(Boolean);
+
+describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (requires dist/)", () => {
+  it("each carries at least 120 words of body text outside the breadcrumb and nav rows", () => {
+    for (const route of THIN_SHELLS) {
+      expect(wordCount(bodyTextOf(readShell(route))), route).toBeGreaterThanOrEqual(120);
+    }
+  });
+
+  it("/privacy and /terms render the effective date, the opening paragraph, and every section's heading and paragraphs", () => {
+    for (const [route, intro, sections, date] of [
+      ["/privacy", privacyIntro, privacySections, PRIVACY_EFFECTIVE_DATE],
+      ["/terms", termsIntro, termsSections, TERMS_EFFECTIVE_DATE],
+    ]) {
+      const shell = readShell(route);
+      const text = bodyTextOf(shell);
+      expect(shell, route).toContain(`<time datetime="${date.iso}">${date.label}</time>`);
+      expectText(text, intro, route);
+      const h2s = h2TextsOf(shell);
+      for (const s of sections) {
+        expect(h2s, `${route}: <h2>${s.heading}`).toContain(decode(s.heading));
+        for (const p of paragraphsOf(s.content)) expectText(text, p, `${route}: ${s.heading}`);
+      }
+    }
+  });
+
+  it("/schedule-consultation renders the process steps, the preparation list, the form's field labels and choices, and the offices", () => {
+    const shell = readShell("/schedule-consultation");
+    const text = bodyTextOf(shell);
+    expectText(text, CONSULTATION_LEAD, "lead");
+    for (const s of whatToExpect) {
+      expectText(text, s.heading, s.heading);
+      expectText(text, s.body, s.heading);
+    }
+    expectText(text, INFO_TO_HAVE_READY_INTRO, "preparation intro");
+    for (const item of infoToHaveReady) expectText(text, item, item);
+    for (const f of consultationFormFields) {
+      expectText(text, f.label, f.label);
+      for (const o of f.options ?? []) expectText(text, o, `${f.label}: ${o}`);
+    }
+    expectText(text, FORM_FOOTNOTE, "footnote");
+    for (const o of consultationOffices) {
+      expectText(text, o.heading, o.heading);
+      expectText(text, o.location, o.heading);
+      expect(shell, o.heading).toContain(`href="tel:${o.phone.replace(/-/g, "")}"`);
+      if (o.email) expect(shell, o.heading).toContain(`href="mailto:${o.email}"`);
+    }
+    for (const h of OFFICE_HOURS) expectText(text, `${h.days}: ${h.hours}`, h.days);
+    expectText(text, AFTER_HOURS_NOTE, "after hours");
+  });
+
+  it("/white-papers lists every paper with its title, subtitle, abstract, publication date, and link", () => {
+    const shell = readShell("/white-papers");
+    const text = bodyTextOf(shell);
+    const links = hrefs(shell);
+    for (const w of whitePapers) {
+      expectText(text, w.title, w.slug);
+      expectText(text, w.subtitle, w.slug);
+      expectText(text, w.summary, w.slug);
+      expect(links, w.slug).toContain(`/white-papers/${w.slug}`);
+      expect(shell, w.slug).toContain(`<time datetime="${w.datePublished}">`);
+    }
+  });
+
+  it("/team/zachary-sperling renders the title, the jurisdictions, every paragraph of the biography, and the specialties", () => {
+    const m = team.find((t) => t.slug === "zachary-sperling");
+    const shell = readShell("/team/zachary-sperling");
+    const text = bodyTextOf(shell);
+    expectText(text, m.title, "title");
+    expectText(text, "Jurisdictions served:", "jurisdictions");
+    const bio = m.fullBio ?? m.bio;
+    expect(wordCount(bio), "biography length").toBeGreaterThanOrEqual(120);
+    for (const p of paragraphsOf(bio)) expectText(text, p, "biography paragraph");
+    for (const s of m.specialties) expectText(text, s, s);
+  });
+});
+
+// The shared copy modules (src/data/legal-policies.ts, src/data/consultation.ts)
+// duplicate text the React pages still hold locally; until the pages import
+// from them this block, which needs no dist/, renders each page and pins every
+// heading, paragraph, step, item, label, and office line to the module, so the
+// shells and the hydrated pages cannot drift apart.
+describe("shared copy modules match the React pages", () => {
+  it("src/data/legal-policies.ts matches Privacy.tsx and Terms.tsx section for section", () => {
+    for (const [route, Page, intro, sections, date] of [
+      ["/privacy", Privacy, privacyIntro, privacySections, PRIVACY_EFFECTIVE_DATE],
+      ["/terms", Terms, termsIntro, termsSections, TERMS_EFFECTIVE_DATE],
+    ]) {
+      const { html } = render(route, route, Page);
+      const text = textOf(html);
+      // renderToStaticMarkup keeps the JSX attribute casing (dateTime).
+      expect(html, route).toMatch(new RegExp(`<time datetime="${date.iso}">${date.label}</time>`, "i"));
+      expectText(text, intro, route);
+      expect(h2TextsOf(html), route).toEqual(sections.map((s) => decode(s.heading)));
+      for (const s of sections) {
+        for (const p of paragraphsOf(s.content)) expectText(text, p, `${route}: ${s.heading}`);
+      }
+    }
+  });
+
+  // Audit F06 / F08: where an inquiry goes is one module (src/data/intake.ts)
+  // on the contact form, the consultation form, /about, and the privacy
+  // policy, and the /about sister-practices section is the same module, so the
+  // React copy and the shells (checked against dist/ below) cannot drift.
+  it("src/data/intake.ts matches About.tsx, Contact.tsx, ScheduleConsultation.tsx, and the privacy policy", () => {
+    const about = textOf(render("/about", "/about", About).html);
+    expect(about).toContain(FAMILY_SECTION.heading);
+    for (const s of FAMILY_SECTION_TEXT) expectText(about, s.trim(), `about: ${s.slice(0, 40)}`);
+    const contact = textOf(render("/contact", "/contact", Contact).html);
+    expectText(contact, INTAKE_DISCLOSURE, "contact");
+    expect(contact).not.toContain("We do not share inquiries with third parties");
+    const schedule = textOf(render("/schedule-consultation", "/schedule-consultation", ScheduleConsultation).html);
+    expectText(schedule, FORM_INTAKE_NOTE, "schedule");
+    expect(FORM_INTAKE_NOTE).toBe(INTAKE_DISCLOSURE);
+    expect(privacySections.find((s) => s.heading === "Information Sharing")?.content).toContain(INTAKE_DISCLOSURE);
+  });
+
+  it("src/data/consultation.ts matches ScheduleConsultation.tsx", () => {
+    const { html } = render("/schedule-consultation", "/schedule-consultation", ScheduleConsultation);
+    const text = textOf(html);
+    expectText(text, CONSULTATION_LEAD, "lead");
+    expectText(text, FORM_INTAKE_NOTE, "intake note");
+    for (const s of whatToExpect) {
+      expectText(text, s.heading, s.heading);
+      expectText(text, s.body, s.heading);
+    }
+    expectText(text, INFO_TO_HAVE_READY_INTRO, "preparation intro");
+    for (const item of infoToHaveReady) expectText(text, item, item);
+    for (const f of consultationFormFields) {
+      expectText(text, f.label, f.label);
+      for (const o of f.options ?? []) expectText(text, o, `${f.label}: ${o}`);
+    }
+    expectText(text, FORM_FOOTNOTE, "footnote");
+    for (const o of consultationOffices) {
+      expectText(text, o.heading, o.heading);
+      expectText(text, o.location, o.heading);
+      expectText(text, o.phoneDisplay, o.heading);
+      if (o.email) expectText(text, o.email, o.heading);
+    }
+    for (const h of OFFICE_HOURS) {
+      expectText(text, h.days, h.days);
+      expectText(text, h.hours, h.days);
+    }
+    expectText(text, AFTER_HOURS_NOTE, "after hours");
+  });
+});
+
+// 2026-09-05 audit, T03 and T06/T09: every shell's Service entity is the page
+// itself, and the service x case-type tier on disk is exactly the declared
+// pairs (serviceCaseTypePairs()); the undeclared pairs of the former all-pairs
+// grid have no shell and server.js 301s their addresses to the pillar.
+describe.skipIf(!hasDist)("service entities and the service x case-type tier (requires dist/)", () => {
+  const canonicalHrefOf = (html) => html.match(/<link rel="canonical" href="([^"]+)" \/>/)?.[1];
+
+  it("every shell's Service node has the page canonical as url and canonical#service as @id, and no shell names a synthetic /services alias", () => {
+    const offenders = [];
+    let serviceShells = 0;
+    const walk = (dir, rel) => {
+      for (const entry of readdirSync(dir)) {
+        const p = join(dir, entry);
+        const r = rel ? `${rel}/${entry}` : entry;
+        if (statSync(p).isDirectory()) {
+          if (r.startsWith("assets")) continue;
+          walk(p, r);
+        } else if (entry === "index.html") {
+          const html = readFileSync(p, "utf8");
+          const canonical = canonicalHrefOf(html);
+          for (const m of ldScripts(html)) {
+            if (SYNTHETIC_SERVICE_ALIAS.test(m[2])) offenders.push(`${r}: synthetic alias ${m[2].match(SYNTHETIC_SERVICE_ALIAS)[0]}`);
+          }
+          for (const node of nodesOf(html)) {
+            if (node["@type"] !== "Service") continue;
+            serviceShells++;
+            if (node.url !== canonical) offenders.push(`${r}: Service url ${node.url} != ${canonical}`);
+            if (node["@id"] !== `${canonical}#service`) offenders.push(`${r}: Service @id ${node["@id"]}`);
+          }
+        }
+      }
+    };
+    walk(DIST, "");
+    expect(offenders).toEqual([]);
+    // The pillars, variants, pairs, state hubs, cities, service x state,
+    // service x city, case-type x state, and credential x state tiers all
+    // carry one; a walk that finds none has read the wrong tree.
+    expect(serviceShells).toBeGreaterThan(1000);
+  });
+
+  it("the service x case-type tier on disk is exactly the declared pairs", () => {
+    const found = [];
+    const servicesDir = join(DIST, "services");
+    for (const svc of readdirSync(servicesDir)) {
+      const caseDir = join(servicesDir, svc, "case");
+      if (!existsSync(caseDir) || !statSync(caseDir).isDirectory()) continue;
+      for (const ct of readdirSync(caseDir)) {
+        if (existsSync(join(caseDir, ct, "index.html"))) found.push(`/services/${svc}/case/${ct}`);
+      }
+    }
+    expect(found.sort()).toEqual(serviceCaseTypePairs().map((p) => p.path).sort());
+    for (const undeclared of [
+      "/services/business-valuation/case/medical-malpractice",
+      "/services/business-valuation/case/personal-injury",
+      "/services/divorce-and-marital-financial-analysis/case/personal-injury",
+    ]) {
+      expect(existsSync(shellPath(undeclared)), `${undeclared} has a shell`).toBe(false);
+    }
+  });
+
+  it("every declared pair shell links back to its pillar and its case-type hub", () => {
+    for (const { service, caseTypeSlug, path } of serviceCaseTypePairs()) {
+      const found = hrefs(readShell(path));
+      expect(found.has(`/services/${service.slug}`), `${path} links its pillar`).toBe(true);
+      expect(found.has(`/case-types/${caseTypeSlug}`), `${path} links its case-type hub`).toBe(true);
+    }
+  });
+});
+
+// 2026-09-05 audit repairs, checked on the built shells: F09 (no tort or
+// compensation forum and no "economic damages analyses" opener on the
+// commercial and family-financial pillars' 224 state and 2,108 city shells),
+// F08 (the divorce hub and its 56 state shells carry the family-law framing),
+// F06 (the shared intake copy on /about, /contact, and
+// /schedule-consultation, and no paragraph on the consultation shell the page
+// does not render), C02 (the responsible economist linked from the pillar,
+// service x geo, and place shells; "Updated" on the editorial byline), and
+// C04 (References on the variant and stage-index shells).
+describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires dist/)", () => {
+  const COMMERCIAL_AND_FAMILY = [
+    "business-valuation",
+    "lost-profits-and-commercial-damages",
+    "fraud-and-asset-tracing",
+    "divorce-and-marital-financial-analysis",
+  ];
+  const expert = retainableExperts()[0];
+
+  it("F09: no commercial or family-financial service x state shell names the tort or workers' compensation forum", () => {
+    const offenders = [];
+    for (const pillar of COMMERCIAL_AND_FAMILY) {
+      for (const st of states) {
+        const shell = readShell(`/services/${pillar}/${st.slug}`);
+        if (/orkers' compensation|wage-loss benefits/.test(decode(shell))) offenders.push(`${pillar}/${st.slug}: compensation forum`);
+        if (shell.includes("personal injury, wrongful death, employment, and commercial damages claims")) offenders.push(`${pillar}/${st.slug}: tort forum`);
+      }
+    }
+    expect(offenders).toEqual([]);
+  });
+
+  it("F09: no commercial or family-financial service x city shell opens its place paragraph with the economic damages sentence", () => {
+    const offenders = [];
+    let shells = 0;
+    for (const pillar of COMMERCIAL_AND_FAMILY) {
+      for (const st of states) {
+        const dir = join(DIST, "services", pillar, st.slug);
+        if (!existsSync(dir)) continue;
+        for (const entry of readdirSync(dir)) {
+          const file = join(dir, entry, "index.html");
+          if (!statSync(join(dir, entry)).isDirectory() || !existsSync(file)) continue;
+          shells++;
+          if (readFileSync(file, "utf8").includes("prepares economic damages analyses for cases venued")) offenders.push(`${pillar}/${st.slug}/${entry}`);
+        }
+      }
+    }
+    expect(shells).toBeGreaterThan(2000);
+    expect(offenders).toEqual([]);
+  });
+
+  it("F08: the divorce hub and every divorce state shell carry the family-law title, H1, and description", () => {
+    const hub = readShell("/case-types/divorce-and-marital-dissolution");
+    expect(titleOf(hub)).toBe(`Divorce Financial Analysis | ${ORG_NAME}`);
+    expect(h1Of(hub)).toBe("Financial Analysis for Divorce and Marital Dissolution");
+    expect(textOf(hub)).not.toMatch(/Economic Damages Analysis|Where the damages concentrate|What the economic claim consists of/);
+    for (const st of states) {
+      const shell = readShell(`/case-types/divorce-and-marital-dissolution/${st.slug}`);
+      expect(titleOf(shell), st.slug).toMatch(/^Divorce Financial Expert in /);
+      expect(h1Of(shell), st.slug).toMatch(/^Financial Analysis for Divorce and Marital Dissolution in /);
+      expect(descriptionOf(shell), st.slug).toMatch(/^Income analysis, business valuation, and funds tracing for divorce and marital dissolution in /);
+      expect(textOf(shell), st.slug).not.toMatch(/Economic Damages Expert|economic damages in|Damages framework|damages framework/);
+    }
+  });
+
+  it("F06: the about, contact, and consultation shells print the shared intake copy and nothing the pages do not", () => {
+    const about = bodyTextOf(readShell("/about"));
+    expect(about).toContain(FAMILY_SECTION.heading);
+    for (const s of FAMILY_SECTION_TEXT) expectText(about, s.trim(), `about: ${s.slice(0, 40)}`);
+    expectText(bodyTextOf(readShell("/contact")), INTAKE_DISCLOSURE, "contact");
+    const schedule = bodyTextOf(readShell("/schedule-consultation"));
+    expectText(schedule, FORM_INTAKE_NOTE, "schedule");
+    expect(schedule).not.toContain("discuss your case requirements");
+  });
+
+  it("C02: the pillar, service x geo, and place shells link the responsible economist, and the editorial byline says Updated", () => {
+    for (const route of [
+      "/services/business-valuation",
+      "/services/fraud-and-asset-tracing/texas",
+      "/services/business-valuation/new-jersey/hackensack",
+      "/locations/new-jersey",
+      "/locations/new-jersey/hackensack",
+    ]) {
+      const shell = readShell(route);
+      expect(hrefs(shell).has(`/team/${expert.slug}`), `${route} links the profile`).toBe(true);
+      expect(textOf(shell), route).toContain(`${expert.title}, who is available to testify to`);
+    }
+    const pillar = readShell("/services/business-valuation");
+    expect(pillar).toMatch(/By <a href="\/team">KW Economics Editorial Team<\/a> &middot; Updated <time/);
+    expect(pillar).not.toContain("Reviewed <time");
+  });
+
+  it("C04: the variant and stage-index shells carry a References block; the stage index names its reviewer", () => {
+    for (const variant of ["cost", "process", "timeline"]) {
+      const shell = readShell(`/services/business-valuation/${variant}`);
+      expect(shell, variant).toContain("<h2>References</h2>");
+      expect(shell, variant).toMatch(/<a href="https:\/\/[^"]+" rel="noopener">/);
+    }
+    for (const stage of ATTORNEY_STAGES) {
+      const shell = readShell(`/attorneys/${stage.slug}`);
+      expect(shell, stage.slug).toContain("<h2>References</h2>");
+      expect(hrefs(shell).has(`/team/${expert.slug}`), `${stage.slug} names its reviewer`).toBe(true);
     }
   });
 });
