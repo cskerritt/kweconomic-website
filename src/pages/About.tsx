@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { ORG_NAME, ORG_SHORT, ORG_LEGAL, SITE_URL } from "@/lib/brand";
+import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, SITE_URL, VOC_SITE_URL, LCP_SITE_URL } from "@/lib/brand";
+import { FAMILY_SECTION } from "@/data/intake";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
+import CrossSell from "@/components/CrossSell";
 import SchemaOrg from "@/components/SchemaOrg";
 import { Picture } from "@/components/Picture";
 import { graphSchema, organizationSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
@@ -16,6 +18,11 @@ const VALUES = [
 
 const PAGE_URL = `${ORG_URL}/about`;
 const LINK = "text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+// The sister practices are named only through the brand constants (the
+// visible label is the host of each link, as Footer.tsx does) and through the
+// CrossSell card, the one component allowed to spell their names
+// (src/brand-strings.test.mjs).
+const hostOf = (url: string) => new URL(url).host;
 
 export default function About() {
   usePageMeta({
@@ -164,6 +171,48 @@ export default function About() {
           </div>
         </div>
       </section>
+
+      {/* Sister practices and the combined-engagement handoff. The copy lives
+          in src/data/intake.ts, shared with the static shell in
+          scripts/prerender.mjs so both render paths print the same words; its
+          facts come from the two pillar: false entries in src/data/services.ts
+          (each sister practice engages and bills under its own agreement and
+          the practices coordinate so the opinions reconcile) and from brand.ts
+          and the lead mailer (the shared intake inbox). */}
+      <section id="family-of-practices" aria-labelledby="family-heading" className="py-16 md:py-24 border-t border-neutral-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <h2 id="family-heading" className="font-serif text-3xl md:text-4xl font-bold text-navy mb-6">
+              {FAMILY_SECTION.heading}
+            </h2>
+            <div className="space-y-4 text-neutral-700 leading-relaxed">
+              <p>
+                {FAMILY_SECTION.intro[0]}
+                <a href={VOC_SITE_URL} rel="noopener" className={LINK}>{hostOf(VOC_SITE_URL)}</a>
+                {FAMILY_SECTION.intro[1]}
+                <a href={LCP_SITE_URL} rel="noopener" className={LINK}>{hostOf(LCP_SITE_URL)}</a>
+                {FAMILY_SECTION.intro[2]}
+              </p>
+              <ul className="list-disc ml-5 space-y-2">
+                {FAMILY_SECTION.bullets.map((b) => (
+                  <li key={b.lead}>
+                    <span className="font-semibold text-navy">{b.lead}</span>
+                    {b.text}
+                  </li>
+                ))}
+              </ul>
+              <p>
+                {FAMILY_SECTION.intake[0]}
+                <Link to="/contact" className={LINK}>{FAMILY_SECTION.contactFormLabel}</Link>
+                {FAMILY_SECTION.intake[1]}
+                <a href={`mailto:${ORG_EMAIL}`} className={LINK}>{ORG_EMAIL}</a>
+                {FAMILY_SECTION.intake[2]}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <CrossSell />
 
       {/* Leadership Teaser */}
       <section className="py-16 bg-neutral-50 border-y border-neutral-200">

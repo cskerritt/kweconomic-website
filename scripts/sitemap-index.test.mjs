@@ -2,10 +2,10 @@
 //
 // Pins the COMMITTED sitemap artifacts (public/sitemap.xml + children) to the
 // generator's contract (`npm run build` regenerates them, so these tests catch
-// drift between the committed files, the contentReadiness gate, and the
-// prerender route list).
+// drift between the committed files, the contentReadiness gate, the
+// news-sitemap window, and the prerender route list).
 import { describe, expect, it } from "vitest";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import {
@@ -13,7 +13,17 @@ import {
   SERVICE_CITY_SITEMAP_TOP,
   sitemapReadyCitySlugs,
 } from "../src/data/contentReadiness.ts";
+import { serviceCaseTypePairs } from "../src/data/services.ts";
 import { collectSitemapPageUrls, extractLocs } from "./lib/sitemap-urls.mjs";
+import {
+  NEWS_SITEMAP_FILE,
+  NEWS_WINDOW_DAYS,
+  isRecentNews,
+  recentNewsPosts,
+  renderNewsSitemap,
+  syncIndexNewsSitemap,
+  syncRobotsNewsSitemap,
+} from "./lib/news-sitemap.mjs";
 import { pillarServiceSlugs, serviceEntries } from "./lib/service-slugs.mjs";
 import { SITE_URL as BASE } from "./lib/site.mjs";
 
@@ -83,26 +93,35 @@ const pathOf = (loc) => {
   return loc.slice(BASE.length) || "/";
 };
 
+// news-sitemap.xml exists only while an insight post is inside the two-day
+// Google News window (scripts/lib/news-sitemap.mjs); the index and robots.txt
+// refer to it exactly when the file exists.
+const hasNewsSitemap = existsSync(join(PUBLIC, NEWS_SITEMAP_FILE));
+const EXPECTED_INDEX_CHILDREN = [
+  ...SECTION_FILES,
+  "image-sitemap.xml",
+  ...(hasNewsSitemap ? [NEWS_SITEMAP_FILE] : []),
+];
+
 describe("sitemap.xml is a sitemap index", () => {
-  it("references exactly the five section children plus the image sitemap", () => {
+  it("references exactly the five section children, the image sitemap, and the news sitemap only while it exists", () => {
     expect(indexXml).toContain("<sitemapindex");
     expect(indexXml).not.toContain("<urlset");
-    expect(extractLocs(indexXml)).toEqual(
-      [...SECTION_FILES, "image-sitemap.xml"].map((f) => `${BASE}/${f}`),
-    );
+    expect(extractLocs(indexXml)).toEqual(EXPECTED_INDEX_CHILDREN.map((f) => `${BASE}/${f}`));
   });
 
   it("every referenced child exists in public/ (files on disk win over server.js's legacy *sitemap*.xml 410)", () => {
-    for (const f of [...SECTION_FILES, "image-sitemap.xml"]) {
+    for (const loc of extractLocs(indexXml)) {
+      const f = loc.slice(`${BASE}/`.length);
       expect(existsSync(join(PUBLIC, f)), `${f} missing from public/`).toBe(true);
     }
   });
 
-  it("robots.txt still declares the index at the submitted path", () => {
+  it("robots.txt declares the index at the submitted path and the image sitemap, and the news sitemap only while it exists", () => {
     const robots = readFileSync(join(PUBLIC, "robots.txt"), "utf8");
     expect(robots).toContain(`Sitemap: ${BASE}/sitemap.xml`);
     expect(robots).toContain(`Sitemap: ${BASE}/image-sitemap.xml`);
-    expect(robots).toContain(`Sitemap: ${BASE}/news-sitemap.xml`);
+    expect(robots.includes(`Sitemap: ${BASE}/${NEWS_SITEMAP_FILE}`)).toBe(hasNewsSitemap);
   });
 });
 
@@ -142,6 +161,23 @@ describe("child sitemaps partition the URL set by path prefix", () => {
   });
 });
 
+// T08 decision (audit 2026-09-05): the crawl-budget gate stays. The combos it
+// holds back are prerendered (scripts/prerender.mjs) and linked from the
+// Service x State "Cities" grid (src/lib/geo-links.ts) but not advertised;
+// they sit entirely inside the prerender window. The dist/ check at the bottom
+// of this file confirms each one has a shell and that nothing else is missing
+// from the sitemap.
+const gatedCombos = states
+  .flatMap((st) => {
+    const ordered = citiesByState[st] || [];
+    const ready = new Set(sitemapReadyCitySlugs(st, ordered));
+    return ordered
+      .slice(0, SERVICE_CITY_PRERENDER_TOP)
+      .filter((c) => !ready.has(c))
+      .flatMap((c) => genericServices.map((svc) => `/services/${svc}/${st}/${c}`));
+  })
+  .sort();
+
 describe("service x state x city sitemap gating (contentReadiness)", () => {
   const stateSet = new Set(states);
   const serviceSet = new Set(genericServices);
@@ -180,12 +216,41 @@ describe("service x state x city sitemap gating (contentReadiness)", () => {
     }
   });
 
+  it("T08: the gate holds back a non-empty set of prerendered combos, none of them advertised", () => {
+    expect(SERVICE_CITY_SITEMAP_TOP).toBe(5);
+    expect(gatedCombos.length).toBeGreaterThan(0);
+    const advertised = new Set(actualCombos);
+    for (const p of gatedCombos) expect(advertised.has(p), `${p} is gated but advertised`).toBe(false);
+    // The audit's examples: rank 5-9 cities without metro labor data.
+    expect(gatedCombos).toContain("/services/lost-earnings-and-earning-capacity/texas/el-paso");
+    expect(gatedCombos).toContain("/services/wrongful-death-economic-loss/new-jersey/camden");
+    // The metro-labor exception still advertises Hackensack (HQ) past the top slice.
+    expect(advertised.has("/services/lost-earnings-and-earning-capacity/new-jersey/hackensack")).toBe(true);
+    expect(gatedCombos).not.toContain("/services/lost-earnings-and-earning-capacity/new-jersey/hackensack");
+  });
+
+  it("every child sitemap stays inside the sitemaps.org limits (50,000 URLs, 50 MB uncompressed)", () => {
+    for (const f of EXPECTED_INDEX_CHILDREN) {
+      expect(statSync(join(PUBLIC, f)).size, `${f} bytes`).toBeLessThanOrEqual(50 * 1024 * 1024);
+    }
+    for (const f of SECTION_FILES) {
+      expect(childUrls[f].length, `${f} URLs`).toBeLessThanOrEqual(50000);
+    }
+  });
+
   it("keeps the services section within the crawl-budget target", () => {
-    // 11 pillars x 56 states = 616, plus the gated city combos (11 x ~275 =
-    // ~3,025), the /services hub, and the pillar/cost/process/timeline/case
-    // pages (11 + 33 + 154 = 198): ~3,840. The ceiling is pinned just above
-    // that so a widened gate (or a leaked cross-sell) fails the build; the
-    // twin sites pin theirs the same way (kwvrs 2,600; kwlcp 3,600).
+    // 11 pillars x 56 states = 616, plus the gated city combos (11 x 275 =
+    // 3,025: the first SERVICE_CITY_SITEMAP_TOP cities per state and the
+    // prerendered metro-labor cities), the /services hub, the
+    // pillar/cost/process/timeline pages (11 + 33), and the 60 declared
+    // service x case pairs: 3,746. The ceiling is pinned just above that so a
+    // widened gate (or a leaked cross-sell) fails the build; the twin sites
+    // pin theirs the same way (kwvrs 2,600; kwlcp 3,600).
+    // T08 decision (audit 2026-09-05): the gate stays. Widening it to the
+    // whole prerender window (SERVICE_CITY_SITEMAP_TOP = 10) adds the 2,772
+    // gated combos (6,518 in this child) and must raise this ceiling to 7,000
+    // in the same change, on Search Console evidence only (README, "Facts to
+    // confirm").
     const total = childUrls["sitemap-services.xml"].length;
     expect(total).toBeGreaterThanOrEqual(1500);
     expect(total).toBeLessThanOrEqual(4000);
@@ -197,6 +262,135 @@ describe("service x state x city sitemap gating (contentReadiness)", () => {
       `const SERVICE_CITY_TOP = ${SERVICE_CITY_PRERENDER_TOP};`,
     );
     expect(SERVICE_CITY_SITEMAP_TOP).toBeLessThanOrEqual(SERVICE_CITY_PRERENDER_TOP);
+  });
+});
+
+describe("news sitemap: the Google News two-day window (scripts/lib/news-sitemap.mjs)", () => {
+  const NOW = new Date("2026-09-05T15:00:00Z");
+
+  it("a post dated today or yesterday (UTC) is news; two days ago, future-dated, or malformed is not", () => {
+    expect(NEWS_WINDOW_DAYS).toBe(2);
+    expect(isRecentNews("2026-09-05", NOW)).toBe(true);
+    expect(isRecentNews("2026-09-04", NOW)).toBe(true);
+    expect(isRecentNews("2026-09-03", NOW)).toBe(false);
+    expect(isRecentNews("2026-09-06", NOW)).toBe(false);
+    expect(isRecentNews("2026-9-5", NOW)).toBe(false);
+    expect(isRecentNews(undefined, NOW)).toBe(false);
+    // Boundary: exactly 48 hours after the publication midnight is out.
+    expect(isRecentNews("2026-09-03", new Date("2026-09-05T00:00:00Z"))).toBe(false);
+    expect(isRecentNews("2026-09-03", new Date("2026-09-04T23:59:59Z"))).toBe(true);
+  });
+
+  it("recentNewsPosts keeps only the posts in the window, in the order given", () => {
+    const posts = [
+      { slug: "old", publishedDate: "2025-02-18" },
+      { slug: "today", publishedDate: "2026-09-05" },
+      { slug: "yesterday", publishedDate: "2026-09-04" },
+      { slug: "last-week", publishedDate: "2026-08-27" },
+    ];
+    expect(recentNewsPosts(posts, NOW).map((p) => p.slug)).toEqual(["today", "yesterday"]);
+    expect(recentNewsPosts(posts, new Date("2026-10-01T00:00:00Z"))).toEqual([]);
+  });
+
+  it("renders one <news:news> entry per post with the publication name, language, date, and escaped title", () => {
+    const xml = renderNewsSitemap(
+      [{ slug: "a-post", title: 'Daubert & "Frye"', publishedDate: "2026-09-05" }],
+      { base: BASE, publicationName: "KW Economics Insights" },
+    );
+    expect(xml).toContain('xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"');
+    expect(xml).toContain(`<loc>${BASE}/insights/a-post</loc>`);
+    expect(xml).toContain("<news:name>KW Economics Insights</news:name>");
+    expect(xml).toContain("<news:language>en</news:language>");
+    expect(xml).toContain("<news:publication_date>2026-09-05</news:publication_date>");
+    expect(xml).toContain("<news:title>Daubert &amp; &quot;Frye&quot;</news:title>");
+    expect((xml.match(/<url>/g) ?? []).length).toBe(1);
+  });
+
+  it("syncIndexNewsSitemap lists the news child last, exactly once, and removes it again", () => {
+    const base = `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <sitemap><loc>${BASE}/sitemap-core.xml</loc></sitemap>\n  <sitemap><loc>${BASE}/image-sitemap.xml</loc></sitemap>\n</sitemapindex>\n`;
+    const withNews = syncIndexNewsSitemap(base, true, BASE);
+    expect(extractLocs(withNews)).toEqual([
+      `${BASE}/sitemap-core.xml`,
+      `${BASE}/image-sitemap.xml`,
+      `${BASE}/${NEWS_SITEMAP_FILE}`,
+    ]);
+    expect(syncIndexNewsSitemap(withNews, true, BASE)).toBe(withNews);
+    expect(syncIndexNewsSitemap(withNews, false, BASE)).toBe(base);
+    expect(syncIndexNewsSitemap(base, false, BASE)).toBe(base);
+  });
+
+  it("syncRobotsNewsSitemap declares the news sitemap after the other Sitemap lines, exactly once, and removes it again", () => {
+    const base = `User-agent: *\nAllow: /\n\n# Sitemap\nSitemap: ${BASE}/sitemap.xml\nSitemap: ${BASE}/image-sitemap.xml\n\nLlms: ${BASE}/llms.txt\n`;
+    const withNews = syncRobotsNewsSitemap(base, true, BASE);
+    expect(withNews).toContain(`Sitemap: ${BASE}/image-sitemap.xml\nSitemap: ${BASE}/${NEWS_SITEMAP_FILE}\n\nLlms:`);
+    expect(syncRobotsNewsSitemap(withNews, true, BASE)).toBe(withNews);
+    expect(syncRobotsNewsSitemap(withNews, false, BASE)).toBe(base);
+    expect(syncRobotsNewsSitemap(base, false, BASE)).toBe(base);
+    // A robots.txt with no Sitemap line gets one before the trailing newline.
+    expect(syncRobotsNewsSitemap("User-agent: *\nAllow: /\n", true, BASE)).toBe(
+      `User-agent: *\nAllow: /\nSitemap: ${BASE}/${NEWS_SITEMAP_FILE}\n`,
+    );
+  });
+
+  it("the committed news sitemap, when present, lists only insight posts that the ordinary sitemap also carries, with their recorded publication dates", () => {
+    if (!hasNewsSitemap) return;
+    const xml = readFileSync(join(PUBLIC, NEWS_SITEMAP_FILE), "utf8");
+    const locs = extractLocs(xml);
+    expect(locs.length).toBeGreaterThan(0);
+    for (const loc of locs) {
+      expect(loc.startsWith(`${BASE}/insights/`), loc).toBe(true);
+      expect(childUrls["sitemap-core.xml"], loc).toContain(loc);
+    }
+    const recorded = new Set(
+      [...readFileSync(join(SRC_DATA, "insights.ts"), "utf-8").matchAll(/publishedDate: "(\d{4}-\d{2}-\d{2})"/g)].map((m) => m[1]),
+    );
+    for (const m of xml.matchAll(/<news:publication_date>([^<]+)<\/news:publication_date>/g)) {
+      expect(recorded.has(m[1]), `publication_date ${m[1]} is not a date any post records`).toBe(true);
+    }
+  });
+
+  it("insight posts stay in the ordinary sitemap whether or not they are news", () => {
+    const slugs = extractSlugs("insights.ts");
+    expect(slugs.length).toBeGreaterThan(0);
+    for (const slug of slugs) {
+      expect(childUrls["sitemap-core.xml"]).toContain(`${BASE}/insights/${slug}`);
+    }
+  });
+});
+
+// 2026-09-05 audit, T06/T09: the all-pairs grid (every pillar x every case
+// type) advertised 91 pages nothing linked. Only the pairs a pillar declares
+// are pages now, and the generator enumerates them from the same helper the
+// prerender uses (serviceCaseTypePairs()).
+describe("service x case-type pairs: only the declared pairs are advertised", () => {
+  const PAIR_PATH = /^\/services\/[a-z0-9-]+\/case\/[a-z0-9-]+$/;
+  const advertised = childUrls["sitemap-services.xml"].map(pathOf).filter((p) => PAIR_PATH.test(p)).sort();
+  const declared = serviceCaseTypePairs().map((p) => p.path);
+
+  it("the services child carries exactly serviceCaseTypePairs()", () => {
+    expect(advertised).toEqual([...declared].sort());
+    expect(new Set(advertised).size).toBe(declared.length);
+  });
+
+  it("never advertises an undeclared pillar x case-type pair", () => {
+    const declaredSet = new Set(declared);
+    const undeclared = genericServices
+      .flatMap((s) => caseTypes.map((c) => `/services/${s}/case/${c}`))
+      .filter((p) => !declaredSet.has(p));
+    expect(undeclared.length).toBe(genericServices.length * caseTypes.length - declaredSet.size);
+    for (const p of undeclared) expect(advertised, p).not.toContain(p);
+    for (const p of [
+      "/services/business-valuation/case/medical-malpractice",
+      "/services/divorce-and-marital-financial-analysis/case/personal-injury",
+    ]) {
+      expect(undeclared).toContain(p);
+    }
+  });
+
+  it("no pair URL appears in any other child", () => {
+    for (const f of SECTION_FILES.filter((f) => f !== "sitemap-services.xml")) {
+      expect(childUrls[f].map(pathOf).filter((p) => PAIR_PATH.test(p)), f).toEqual([]);
+    }
   });
 });
 
@@ -434,7 +628,9 @@ describe("scripts/lib/service-slugs.mjs object-boundary split", () => {
 
 // Full-coverage check against the built site. dist/ is gitignored and only
 // exists after `npm run build`; the build gate is where this must hold.
-describe.skipIf(!existsSync(join(ROOT, "dist", "index.html")))(
+// Gated on dist/404.html, the prerender's own marker (the server-contact test
+// stubs dist/index.html when the suite runs without a build).
+describe.skipIf(!existsSync(join(ROOT, "dist", "404.html")))(
   "every sitemap URL resolves to a prerendered page (requires dist/)",
   () => {
     it("dist/<route>/index.html exists for every advertised URL", () => {
@@ -446,6 +642,32 @@ describe.skipIf(!existsSync(join(ROOT, "dist", "index.html")))(
         return !existsSync(file);
       });
       expect(missing).toEqual([]);
+    });
+
+    // The inverse direction. A prerendered shell may be missing from the
+    // sitemap for exactly one reason: it is a service x state x city combo the
+    // contentReadiness gate holds back (T08 decision, 2026-09-05: linked and
+    // indexable, not advertised). Any other unadvertised shell is a generator
+    // or prerender drift; any gated combo without a shell is a prerender drift.
+    it("T08: every prerendered shell is either advertised or a readiness-gated service x state x city combo", () => {
+      const advertised = new Set(collectSitemapPageUrls(join(PUBLIC, "sitemap.xml")).map(pathOf));
+      const shells = [];
+      const walk = (dir, rel) => {
+        for (const entry of readdirSync(dir)) {
+          const p = join(dir, entry);
+          const r = rel ? `${rel}/${entry}` : entry;
+          if (statSync(p).isDirectory()) {
+            if (r.startsWith("assets")) continue;
+            walk(p, r);
+          } else if (entry === "index.html") {
+            shells.push(rel ? `/${rel}` : "/");
+          }
+        }
+      };
+      walk(join(ROOT, "dist"), "");
+      expect(shells.length).toBeGreaterThan(advertised.size);
+      const unadvertised = shells.filter((r) => !advertised.has(r)).sort();
+      expect(unadvertised).toEqual(gatedCombos);
     });
   },
 );

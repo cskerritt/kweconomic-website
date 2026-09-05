@@ -4,6 +4,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import AuthorByline from "@/components/AuthorByline";
 import ContactCTA from "@/components/ContactCTA";
 import RelatedContent from "@/components/RelatedContent";
+import SourcesBlock from "@/components/SourcesBlock";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, organizationSchema, serviceSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -213,11 +214,16 @@ export default function ServiceTransactional({ variant }: { variant: Variant }) 
       </div>
 
       <RelatedContent items={s.related.slice(0, 3)} heading="Guides and methods" />
+      {/* The pillar's standards and data sources, through the registry, so the
+          billing, process, and timeline claims sit beside their primary
+          evidence (site audit 2026-09-05, C04). Mirrored by the variant shells
+          in scripts/prerender.mjs. */}
+      <SourcesBlock sources={s.sources} />
 
       <SchemaOrg data={graphSchema([
         organizationSchema(),
         serviceSchema({
-          slug: `${s.slug}/${variant}`,
+          url,
           name: title,
           description: variantDescription(s, variant),
           dateModified: s.dateModified,

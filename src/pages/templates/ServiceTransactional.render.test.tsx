@@ -4,6 +4,8 @@ import ServiceTransactional from "./ServiceTransactional";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { pillarServices } from "@/data/services";
 import { proseName } from "@/lib/service-prose.mjs";
+import { ORG_URL } from "@/lib/schema";
+import { expectServiceIdentity } from "@/test-utils/jsonld";
 import { renderRoute, visibleText, jsonLdBlocks, DOUBLED_WORD, MIS_ARTICLE, excerpt } from "@/test-utils/markup";
 
 // The cost / process / timeline pages publish a one-sentence meta description
@@ -44,6 +46,10 @@ describe("ServiceTransactional meta descriptions", () => {
         expect(excerpt(description, MIS_ARTICLE)).toBeUndefined();
         // The description answers, it does not describe the page.
         expect(description).toMatch(/^(What .* costs:|How .* engagement runs:|How long .* takes:)/);
+      });
+
+      it(`/services/${service.slug}/${variant} identifies its Service entity by the page's own URL (T03)`, () => {
+        expectServiceIdentity(renderVariant(service.slug, variant).html, `${ORG_URL}/services/${service.slug}/${variant}`);
       });
     }
   }
@@ -97,6 +103,13 @@ describe("ServiceTransactional body", () => {
             expect(html).toContain(`href="/services/${service.slug}/${v}"`);
           }
           for (const r of service.related.slice(0, 3)) expect(html).toContain(`href="${r.href}"`);
+        });
+
+        it(`${variant}: carries the pillar's References block beside its billing, process, and timeline claims (C04)`, () => {
+          expect(html).toContain('id="sources-heading"');
+          expect(service.sources.length).toBeGreaterThanOrEqual(3);
+          for (const s of service.sources) expect(html).toContain(`href="${s.url}"`);
+          expect(html).toMatch(/href="https:\/\/[^"]+" target="_blank" rel="noopener"/);
         });
 
         it(`${variant}: JSON-LD carries the Organization node the Service provider points at, plus dateModified`, () => {

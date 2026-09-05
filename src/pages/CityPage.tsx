@@ -33,6 +33,7 @@ import CityServiceLinks from "@/components/CityServiceLinks";
 import RelatedServices from "@/components/RelatedServices";
 import FAQBlock from "@/components/FAQBlock";
 import SourcesBlock from "@/components/SourcesBlock";
+import ResponsibilityLine from "@/components/ResponsibilityLine";
 import { ArrowRight } from "lucide-react";
 import type { City, State } from "@/types";
 
@@ -110,7 +111,7 @@ export default function CityPage() {
         data={graphSchema([
           organizationSchema(),
           serviceSchema({
-            slug: `city-${state.slug}-${city.slug}`,
+            url: cityUrl,
             name: `Economic Damages Services in ${city.name}, ${state.abbreviation}`,
             description: narrative.directAnswer,
             areaServed: { "@type": "City", name: `${city.name}, ${state.abbreviation}` },
@@ -160,9 +161,11 @@ export default function CityPage() {
           {/* Main column (2/3) */}
           <div className="lg:col-span-2 space-y-12">
 
-            {/* Intro */}
+            {/* Intro, then the professional responsible for the work, linked
+                to the profile that carries the CV (C02). */}
             <section>
-              <p className="text-neutral-700 text-lg leading-relaxed">{cityIntro}</p>
+              <p className="text-neutral-700 text-lg leading-relaxed mb-4">{cityIntro}</p>
+              <ResponsibilityLine subject={`Analyses for ${cityAttr(city.name)} matters`} />
             </section>
 
             {/* Services: city-level service pages where they exist, state-level otherwise */}

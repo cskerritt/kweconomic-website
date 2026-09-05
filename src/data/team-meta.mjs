@@ -10,6 +10,18 @@
 import { TITLE_MAX } from "../lib/page-titles.mjs";
 
 /**
+ * Degree post-nominals ("M.Ed.", "MBA", "Ph.D."), the only credentials a
+ * byline or a static shell prints. Every other entry in a member's
+ * `credentials` (team.ts) is a background credential from another discipline,
+ * which the profile labels as such (ExpertProfile.tsx) and the shells omit
+ * (scripts/prerender.mjs degreeCredentials).
+ */
+export const DEGREE_CREDENTIAL = /^(Ph\.?D\.?|M\.?B\.?A\.?|M\.?Ed\.?|M\.?A\.?|M\.?S\.?|J\.?D\.?|D\.?B\.?A\.?|Ed\.?D\.?)$/i;
+
+/** @param {string} credential */
+export const isDegreeCredential = (credential) => DEGREE_CREDENTIAL.test(credential);
+
+/**
  * Display name without post-nominals: "Jane Roe, Ph.D., MBA" -> "Jane Roe".
  * @param {string} name
  * @returns {string}

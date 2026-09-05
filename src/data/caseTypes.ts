@@ -35,6 +35,59 @@ export type CaseTypeCategory =
   | "commercial"
   | "family";
 
+/**
+ * Page framing for a matter that is not a damages claim. The case-type hub
+ * and state templates (src/pages/templates/CaseTypeHub.tsx, CaseTypeState.tsx)
+ * and the static shells (scripts/prerender.mjs) describe every case type in
+ * economic-damages terms: "<name> Economic Damages Analysis", "What the
+ * economic claim consists of", "Where the damages concentrate". A family-law
+ * matter is an income, valuation, and tracing assignment, so its entry sets
+ * these strings, and both render paths read them through the helpers at the
+ * bottom of this file (caseTypeHubHeading, caseTypeStateDescription, ...) and
+ * through src/lib/page-titles.mjs for the <title> stems, in place of the
+ * shared damages framing wherever an entry carries them (site audit
+ * 2026-09-05, F08). `{place}` and `{org}` are slots the helpers fill with the
+ * place name (src/data/geo-prose.mjs placeName) and the organization name.
+ */
+export interface CaseTypeFraming {
+  /** Hub <title> stem in place of titleBase ("Divorce Financial Analysis");
+   * the shared builder appends the brand (src/lib/page-titles.mjs
+   * caseTypeHubTitle). */
+  titleStem: string;
+  /** State-tier <title> stems, longest first, in place of titleBase and
+   * "<shortName> Economist"; each is tried beside the full place name before
+   * any takes the state abbreviation (caseTypeTitleStems). Kept distinct from
+   * the service pillar's title labels so no two routes share a title. */
+  stateTitleStems: string[];
+  /** Hub H1 in place of `${name} Economic Damages Analysis`. */
+  hubHeading: string;
+  /** Hub meta description: a complete sentence of 110-160 characters. */
+  hubDescription: string;
+  /** State-tier H1 stem; the template renders `${stateHeadingStem} in ${place}`. */
+  stateHeadingStem: string;
+  /** State-tier meta description with a `{place}` slot; fits 160 characters
+   * beside the longest place name. Also the state page's Service node
+   * description. */
+  stateDescription: string;
+  /** State-tier lead paragraph with `{org}` and `{place}` slots. */
+  stateLead: string;
+  /** State-tier sentence that introduces the numbered steps, with a `{place}`
+   * slot, in place of "the damages framework above decides which components
+   * enter the total". */
+  stateStepsIntro: string;
+  /** State-tier framework paragraph with a `{place}` slot, in place of the
+   * state's generalContext (fault, interest, and caps), which describes a
+   * damages claim. */
+  stateFramework: string;
+  /** The local FAQ question over stateFramework, with a `{place}` slot, in
+   * place of "How does {place}'s damages framework shape the economic
+   * analysis?". */
+  stateFrameworkQuestion: string;
+  /** Section headings over lossComponents, damagesExposure, economicImpact,
+   * and the state framework block. */
+  sections: { components: string; concentration: string; method: string; framework: string };
+}
+
 export interface CaseType {
   slug: string;
   name: string;
@@ -79,6 +132,9 @@ export interface CaseType {
   relevantCredentials: string[];
   faqs: Faq[];
   sources: Source[];
+  /** Set only where the shared economic-damages framing misdescribes the
+   * matter (family law); entries without it keep the templates' defaults. */
+  framing?: CaseTypeFraming;
 }
 
 export const caseTypes: CaseType[] = [
@@ -709,35 +765,74 @@ export const caseTypes: CaseType[] = [
     category: "family",
     titleBase: "Divorce and Marital Dissolution Economist",
     datePublished: "2026-08-27",
-    dateModified: "2026-09-02",
+    dateModified: "2026-09-05",
+    // A family-law matter is an income, valuation, and tracing assignment, not
+    // a damages claim; these strings replace the shared damages framing on the
+    // hub and state pages (see CaseTypeFraming).
+    framing: {
+      // The audit's proposed metadata (kwe-brief.md, "Pages with proposed
+      // metadata changes"): "Divorce Financial Analysis | KW Economics" and
+      // "Financial Analysis for Divorce and Marital Dissolution [in <place>]".
+      // The state-tier title stem is "Divorce Financial Expert" rather than
+      // the proposed "Divorce Financial Analysis" because the service pillar's
+      // state pages (/services/divorce-and-marital-financial-analysis/<state>)
+      // already carry "Divorce Financial Analysis in <place>", and no two
+      // routes may advertise the same title (src/lib/page-titles.test.ts).
+      titleStem: "Divorce Financial Analysis",
+      stateTitleStems: ["Divorce Financial Expert"],
+      hubHeading: "Financial Analysis for Divorce and Marital Dissolution",
+      hubDescription:
+        "Income analysis, business valuation, and funds tracing for divorce and marital dissolution: the records that drive each figure and how the analysis is built.",
+      stateHeadingStem: "Financial Analysis for Divorce and Marital Dissolution",
+      stateDescription:
+        "Income analysis, business valuation, and funds tracing for divorce and marital dissolution in {place}: records, methods, and expert support.",
+      stateLead:
+        "{org} prepares financial analyses for divorce and marital dissolution matters venued in {place}: income available for support, the value of business interests in the marital estate, and the tracing of separate and marital funds, each presented so that either spouse or the court can examine the figures.",
+      stateStepsIntro:
+        "The same four steps apply to a divorce and marital dissolution matter venued in {place}; the governing framework in {place} decides how each finding is applied.",
+      stateFramework:
+        "Whether {place} divides marital property equitably or as community property, which valuation date applies, how income available for support is defined, and how the goodwill of a professional practice is treated are questions of law that counsel confirms; the report presents each finding so it can be applied under either party's position.",
+      stateFrameworkQuestion: "How does {place}'s family-law framework shape the financial analysis?",
+      sections: {
+        components: "What the financial analysis consists of",
+        concentration: "Which figures move the result",
+        method: "How the analysis is built",
+        framework: "Legal framework",
+      },
+    },
     summaryShort:
-      "A divorce or marital dissolution matter asks what the marital assets, including any business interest, are worth and what each spouse's income is or can reasonably be for support, both determined from the financial records rather than the tax return alone.",
+      "A divorce or marital dissolution matter asks what income each spouse has available for support, what the marital assets, including any business interest, are worth for the division of the estate, and which assets are separate rather than marital. Each is answered from the business books, tax returns, and account histories rather than from the tax return alone.",
     inShort: [
-      "The analysis consists of a business or practice valuation, an income determination for support, the tracing of separate and marital property, and the present value of deferred assets.",
-      "Business and personal tax returns, financial statements and ledgers, bank and brokerage statements, and benefit records drive the number.",
-      "The valuation, the income determination, and the tracing are presented as separate sections so each can be examined on its own.",
+      "The analysis consists of income available for support, a valuation of any business or professional practice for the division of the marital estate, the tracing of separate and marital property, and the present value of pensions and deferred compensation.",
+      "Personal and business tax returns, financial statements and general ledgers, bank, brokerage, and retirement account statements, and compensation records drive each figure.",
+      "Cash flow is normalized for owner compensation, personal expenses, and non-recurring items so the income figure and the valuation rest on the same adjusted statements and reconcile.",
     ],
     steps: [
-      "Normalize the business's financial statements for owner compensation, personal expenses, and non-recurring items.",
-      "Value the business under the income, market, and asset approaches as the facts support, addressing personal and enterprise goodwill where the framework requires the distinction.",
-      "Determine income for support from the same records, adding the cash flow available to the owner beyond reported salary.",
-      "Trace separate property through the account statements step by step and reduce deferred assets to present value with stated mortality and discount assumptions.",
+      "Normalize the business's cash flow for owner compensation, personal expenses paid through the business, related-party dealings, and non-recurring items, listing each adjustment with its source.",
+      "Value the business or practice as of the date the governing framework requires, under the income, market, and asset approaches as the facts support, and address personal and enterprise goodwill where the framework distinguishes them.",
+      "Determine each spouse's income available for support from the same normalized statements, including distributions, perquisites, and cash flow retained in the business beyond reported salary.",
+      "Trace separate property through the account statements step by step, classify commingled funds under the framework counsel identifies, and reduce pensions and deferred compensation to present value with the assumptions stated.",
     ],
     summary:
-      "Divorce and marital dissolution matters involve two economic questions: what the marital assets, including any business interest, are worth, and what each spouse's income is or can reasonably be for support purposes. The economist values the business, traces separate and marital property through the financial records, and determines income from the records rather than the tax return alone, with the methods stated so the conclusions can be examined.",
+      "Divorce and marital dissolution matters turn on financial questions rather than a damages claim: what income each spouse has available for support, what the business interests and other assets in the marital estate are worth for the division of the estate, and which assets are separate property. The economist normalizes the business's cash flow, values the business, determines income from the records rather than the tax return alone, and traces separate and marital funds through the accounts, presenting each analysis so that either spouse or the court can examine it.",
     lossComponents:
-      "The analysis consists of a valuation of any closely held business or professional practice as of the date the governing framework requires, the determination of each spouse's income for support, including cash flow available from a business beyond reported compensation, the tracing of separate property contributions and marital funds through accounts and transactions, and, where relevant, the present value of pensions, deferred compensation, and other assets that pay out over time. The drivers are business and personal tax returns, financial statements and general ledgers, bank and brokerage statements, compensation and benefit records, and account histories long enough to trace the funds at issue.",
+      "The analysis consists of the determination of each spouse's income available for support, including the cash flow a self-employed spouse draws from a business beyond reported compensation; a valuation of any closely held business or professional practice as of the date the governing framework requires; the tracing of separate property contributions and marital funds through accounts, real estate, and investments; a lifestyle analysis where the marital standard of living is at issue; and the present value of pensions, deferred compensation, and other assets that pay out over time. The drivers are personal and business tax returns, financial statements and general ledgers, bank, brokerage, and retirement account statements, compensation and benefit records, and account histories long enough to follow the funds at issue.",
     damagesExposure:
-      "The business valuation is usually the largest and most contested figure, and the choice of valuation date, the treatment of personal goodwill, and the normalization of owner compensation move it materially. Income determination for a self-employed spouse can differ substantially from the reported figure once personal expenses paid by the business and retained cash flow are considered. Tracing outcomes depend on the completeness of the account records and on how the governing framework treats commingled funds.",
+      "The business valuation is usually the largest and most contested figure in the marital estate, and the valuation date, the standard of value, the treatment of personal and enterprise goodwill, and the normalization of owner compensation each move it materially. Income available for support for a self-employed spouse can differ substantially from the reported figure once personal expenses paid by the business and cash flow retained in it are considered, and the owner compensation adjustment has to be carried consistently into the valuation and the income determination, because the same stream of earnings appears in both. Tracing outcomes depend on the completeness of the account records and on how the governing framework, whether equitable distribution or community property, treats commingled funds and the appreciation of separate assets during the marriage.",
     economicImpact:
-      "The economist normalizes the business's financial statements for owner compensation, personal expenses, and non-recurring items, then values the business using the income, market, and asset approaches as the facts support, addressing personal and enterprise goodwill where the framework requires the distinction. Income for support is determined from the same records, adding the cash flow available to the owner beyond reported salary. Separate property is traced through account statements from the date of the contribution to the current holding, with each step documented. Deferred assets are reduced to present value with the mortality and discount assumptions stated. The report presents the valuation, the income determination, and the tracing as separate sections so each can be examined and used on its own.",
+      "The economist starts from the business's financial statements and normalizes them for owner compensation, personal expenses paid through the business, related-party dealings, and non-recurring items, listing each adjustment with its source. The business or practice is then valued as of the date the governing framework requires, under the income, market, and asset approaches as the facts support, with personal and enterprise goodwill addressed where the framework distinguishes them. Income available for support is determined from the same normalized statements, adding distributions, perquisites, and cash flow retained in the business beyond reported salary, so the valuation and the income figure reconcile. Separate property is traced through the account statements from the date of contribution to the current holding, with each step documented and commingled funds classified under the framework counsel identifies. Pensions and deferred compensation are reduced to present value with the mortality and discount assumptions stated. Where the question is what a spouse who is not working, or is working below prior earnings, could reasonably earn, employability and attainable occupations are a vocational discipline: the affiliated vocational practice prepares that opinion, and the economist applies it to the support calculation together with published wage data. The report presents the valuation, the income determination, and the tracing as separate sections so each can be examined and used on its own by either spouse or the court.",
     relevantServices: ["divorce-and-marital-financial-analysis", "business-valuation", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"],
     relevantCredentials: ["Forensic Economist", "MBA", "NAFE"],
     faqs: [
       {
-        question: "How is a self-employed spouse's income determined?",
+        question: "Why can income for support differ from the income on the tax return?",
         answer:
-          "From the business's books and bank records rather than the tax return alone. The economist identifies compensation, distributions, personal expenses paid by the business, and cash flow retained in the business, and states the income available for support with each element shown.",
+          "Because a tax return reports taxable income after the deductions and elections the business took, not the cash flow the owner actually had available. The economist rebuilds the figure from the business's books and bank records: salary, distributions, personal expenses paid through the business, depreciation and other non-cash deductions, and cash retained in the business, and states the income available for support with each element shown so the other side can test it.",
+      },
+      {
+        question: "How do the business valuation and the income determination fit together?",
+        answer:
+          "Both rest on the same normalized financial statements. The valuation restates owner compensation to a market level and treats the excess as earnings of the business; the income determination counts what the owner actually receives, including that excess. The report shows how the two figures relate so the court can decide how the governing framework treats an income stream that appears both in the value of the business and in the support calculation.",
       },
       {
         question: "What is the difference between personal and enterprise goodwill?",
@@ -750,12 +845,17 @@ export const caseTypes: CaseType[] = [
           "Often, if the account statements are available. The economist follows the separate contribution through each account and transaction and documents the path. Where the records run out, the report states the point at which tracing could not continue rather than assuming a result.",
       },
       {
+        question: "What if a spouse's earning capacity, rather than actual income, is at issue?",
+        answer:
+          "Whether a spouse who is not working, or is working below prior earnings, could reasonably earn more is a question of employability and attainable occupations, which is a vocational discipline rather than an economic one. The affiliated vocational practice prepares that opinion, and the economist applies it to the support calculation with published wage data for the occupations and the area, so the income scenario rests on a stated foundation rather than an assumption.",
+      },
+      {
         question: "Can the economist serve as a joint or court-appointed expert?",
         answer:
           "Yes. The methods and reporting are the same whether the engagement is for one spouse, both, or the court, and the report is written so that either side can examine the assumptions.",
       },
     ],
-    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_CPS", "BLS_OES", "CENSUS_ACS"]),
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD", "BLS_CPS", "BLS_OES", "CENSUS_ACS"]),
   },
   {
     slug: "fraud-and-embezzlement",
@@ -871,4 +971,92 @@ export const caseTypes: CaseType[] = [
 
 export function getCaseType(slug: string): CaseType | undefined {
   return caseTypes.find((c) => c.slug === slug);
+}
+
+// ---------------------------------------------------------------------------
+// Page strings shared by the case-type templates (CaseTypeHub.tsx,
+// CaseTypeState.tsx) and the static shells (scripts/prerender.mjs loads this
+// module through vite). Each returns the entry's `framing` string where the
+// entry carries one and the shared economic-damages string otherwise, so the
+// two render paths cannot disagree on which framing a case type takes.
+// `place` is the place name as geo-prose.mjs placeName() spells it ("the
+// District of Columbia"); `orgName` is the brand.
+// ---------------------------------------------------------------------------
+
+/** Fill the `{org}` and `{place}` slots of a framing string. */
+const fillSlots = (s: string, slots: { org?: string; place?: string }): string =>
+  s.replace(/\{org\}/g, slots.org ?? "").replace(/\{place\}/g, slots.place ?? "");
+
+/** Hub H1. */
+export function caseTypeHubHeading(c: CaseType): string {
+  return c.framing?.hubHeading ?? `${c.name} Economic Damages Analysis`;
+}
+
+/** Hub meta description. */
+export function caseTypeHubDescription(c: CaseType): string {
+  return (
+    c.framing?.hubDescription ??
+    `${c.name} economic damages: loss components, the records that drive them, and how the present value is built. Plaintiff and defense.`
+  );
+}
+
+/** State-tier H1. */
+export function caseTypeStateHeading(c: CaseType, place: string): string {
+  return c.framing ? `${c.framing.stateHeadingStem} in ${place}` : `${c.name} Economic Damages Expert in ${place}`;
+}
+
+/** State-tier meta description. */
+export function caseTypeStateDescription(c: CaseType, place: string): string {
+  return c.framing
+    ? fillSlots(c.framing.stateDescription, { place })
+    : `${c.name} economic damages in ${place}: loss components, state damages rules and venues, and how the number is built.`;
+}
+
+/** State-tier lead paragraph under the H1. */
+export function caseTypeStateLead(c: CaseType, orgName: string, place: string): string {
+  return c.framing
+    ? fillSlots(c.framing.stateLead, { org: orgName, place })
+    : `${orgName} prepares economic damages analyses for ${c.name.toLowerCase()} cases venued in ${place}: the components the loss claim consists of, the records that drive them, and a present value built to ${place}'s damages rules and venues. Plaintiff and defense.`;
+}
+
+/** State-tier sentence that introduces the numbered steps. */
+export function caseTypeStateStepsIntro(c: CaseType, place: string): string {
+  return c.framing
+    ? fillSlots(c.framing.stateStepsIntro, { place })
+    : `The same four steps apply to a ${c.name.toLowerCase()} case venued in ${place}; the damages framework above decides which components enter the total.`;
+}
+
+/**
+ * State-tier framework paragraph: the entry's own where it carries one, else
+ * the state module's text the caller selected (damagesContext for the injury
+ * and death categories, generalContext otherwise).
+ */
+export function caseTypeStateFramework(c: CaseType, place: string, stateFrameworkText: string): string {
+  return c.framing ? fillSlots(c.framing.stateFramework, { place }) : stateFrameworkText;
+}
+
+/** The local FAQ question over the framework paragraph. */
+export function caseTypeStateFrameworkQuestion(c: CaseType, place: string): string {
+  return c.framing
+    ? fillSlots(c.framing.stateFrameworkQuestion, { place })
+    : `How does ${place}'s damages framework shape the economic analysis?`;
+}
+
+/** The state page's Service node description. */
+export function caseTypeStateServiceDescription(c: CaseType, place: string): string {
+  return c.framing
+    ? fillSlots(c.framing.stateDescription, { place })
+    : `Economic damages analysis for ${c.name.toLowerCase()} matters in ${place}.`;
+}
+
+/** Section headings over lossComponents, damagesExposure, economicImpact, and the framework block. */
+export function caseTypeSectionHeadings(c: CaseType): CaseTypeFraming["sections"] {
+  return (
+    c.framing?.sections ?? {
+      components: "What the economic claim consists of",
+      concentration: "Where the damages concentrate",
+      method: "How the analysis is built",
+      framework: "Damages framework",
+    }
+  );
 }

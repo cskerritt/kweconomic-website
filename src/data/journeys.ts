@@ -2976,3 +2976,41 @@ export const journeys: JourneyStage[] = [
 export function getJourney(stage: string, caseTypeSlug: string): JourneyStage | undefined {
   return journeys.find((j) => j.stage === stage && j.caseTypeSlug === caseTypeSlug);
 }
+
+/**
+ * The byline of a stage index page (/attorneys/<stage>): the reviewer the
+ * stage's guides share, with the family's first publication date and its
+ * latest revision. Undefined for an unknown stage or where the guides name
+ * more than one reviewer, so the index never attributes the whole family to
+ * one person the data does not support (site audit 2026-09-05, C02).
+ */
+export function stageReviewer(stage: string): { authorSlug: string; datePublished: string; dateModified: string } | undefined {
+  const entries = journeys.filter((j) => j.stage === stage);
+  if (!entries.length) return undefined;
+  const slugs = new Set(entries.map((j) => j.authorSlug));
+  if (slugs.size !== 1) return undefined;
+  return {
+    authorSlug: entries[0].authorSlug,
+    datePublished: entries.map((j) => j.datePublished).sort()[0],
+    dateModified: entries.map((j) => j.dateModified).sort().at(-1)!,
+  };
+}
+
+/**
+ * The union of a stage's guide sources, de-duplicated by URL in first-seen
+ * order, for the stage index page's References block (site audit 2026-09-05,
+ * C04: the index linked no primary evidence). Every entry already comes from
+ * the registry (references.ts) through the guides.
+ */
+export function stageSources(stage: string): Source[] {
+  const seen = new Set<string>();
+  const out: Source[] = [];
+  for (const j of journeys.filter((x) => x.stage === stage)) {
+    for (const s of j.sources) {
+      if (seen.has(s.url)) continue;
+      seen.add(s.url);
+      out.push(s);
+    }
+  }
+  return out;
+}

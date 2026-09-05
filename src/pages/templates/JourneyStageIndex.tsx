@@ -1,8 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import { caseTypes } from "@/data/caseTypes";
+import { stageReviewer, stageSources } from "@/data/journeys";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import AuthorByline from "@/components/AuthorByline";
 import NextSteps from "@/components/NextSteps";
 import SchemaOrg from "@/components/SchemaOrg";
+import SourcesBlock from "@/components/SourcesBlock";
 import {
   graphSchema,
   organizationSchema,
@@ -56,6 +59,14 @@ export default function JourneyStageIndex() {
     name: journeyHeading(stage, c),
     url: `${ORG_URL}/attorneys/${stage}/${c.slug}`,
   }));
+  // The reviewer the stage's fourteen guides share (journeys.ts authorSlug),
+  // with the family's first publication date and latest revision, and the
+  // union of the guides' registry sources, so the index names the responsible
+  // professional and links the evidence its guides rest on (site audit
+  // 2026-09-05, C02 and C04). Mirrored by the stage shell in
+  // scripts/prerender.mjs.
+  const reviewer = stageReviewer(stage);
+  const sources = stageSources(stage);
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
@@ -68,6 +79,7 @@ export default function JourneyStageIndex() {
       />
       <p className="text-amber-dark text-sm font-semibold uppercase tracking-wider mb-2">{stageLabel}</p>
       <h1 className="font-serif text-4xl text-navy mb-4">{heading}</h1>
+      {reviewer && <AuthorByline slug={reviewer.authorSlug} datePublished={reviewer.datePublished} dateModified={reviewer.dateModified} />}
       <p className="text-lg text-neutral-700 mb-8 max-w-3xl">{stageIndexIntro(stage)}</p>
 
       <ul className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-10">
@@ -105,6 +117,7 @@ export default function JourneyStageIndex() {
       </section>
 
       <NextSteps />
+      <SourcesBlock sources={sources} />
 
       <SchemaOrg
         data={graphSchema([

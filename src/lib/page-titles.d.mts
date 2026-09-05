@@ -17,6 +17,8 @@ export interface TitleCaseType {
   titleBase: string;
   /** Short form of the name for the pair titles and the state tier's second stem; defaults to name. */
   shortName?: string;
+  /** A matter that is not a damages claim supplies its own hub stem and state-tier stems (src/data/caseTypes.ts CaseTypeFraming). */
+  framing?: { titleStem?: string; stateTitleStems?: readonly string[] };
 }
 export interface TitleService {
   name: string;
@@ -41,8 +43,10 @@ export function cityTitle(label: string | readonly string[], city: TitleCity, st
 export function serviceTitleLabels(service: TitleService): string[];
 /** The full name, then titleName where the data sets one. */
 export function serviceTitleNames(service: TitleService): string[];
-/** titleBase, then "<shortName> Economist" where it differs. */
+/** titleBase, then "<shortName> Economist" where it differs; a framing block's stateTitleStems instead where the entry carries one. */
 export function caseTypeTitleStems(caseType: TitleCaseType): string[];
+/** /case-types/<case>: titleBase (or the framing block's titleStem) plus the brand. */
+export function caseTypeHubTitle(caseType: TitleCaseType, orgName: string): string;
 
 export function stateHubTitle(state: TitleState, orgName: string): string;
 export function cityHubTitle(city: TitleCity, state: TitleState, orgName: string): string;

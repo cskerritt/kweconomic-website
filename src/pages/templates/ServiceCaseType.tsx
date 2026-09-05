@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, Navigate } from "react-router-dom";
 import { pillarServices, servicesForCaseType, type PillarService } from "@/data/services";
 import { getCaseType, type CaseType } from "@/data/caseTypes";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
@@ -31,7 +31,7 @@ function pairDescription(service: PillarService, caseType: CaseType): string {
   const work = workPhrase(service.shortName);
   const base = `${capFirst(work)} for ${caseType.name.toLowerCase()} cases: how the loss is built, which records drive it, and testimony support.`;
   // The audience tag rides along only while the description stays inside the
-  // 160-character SERP window (four undeclared pairs would otherwise run long).
+  // 160-character SERP window.
   return base.length + " Either side.".length <= 160 ? `${base} Either side.` : base;
 }
 
@@ -39,16 +39,22 @@ export default function ServiceCaseType() {
   const { serviceSlug = "", typeSlug = "" } = useParams();
   const service = pillarServices().find((s) => s.slug === serviceSlug);
   const caseType = getCaseType(typeSlug);
+  // Only the pairs a pillar declares in services.ts are pages: the set
+  // serviceCaseTypePairs() enumerates for the prerender and the sitemap, and
+  // the set ServicePillar links. An undeclared pair is sent to the pillar, the
+  // same 301 server.js answers for its address, so this route never renders a
+  // page that nothing links to.
+  const declared = Boolean(service && caseType && service.caseTypes.includes(caseType.slug));
   const work = service ? workPhrase(service.shortName) : "";
 
   const url =
-    service && caseType
+    service && caseType && declared
       ? `${ORG_URL}/services/${service.slug}/case/${caseType.slug}`
       : "";
   const heading =
     service && caseType ? `${service.name} for ${caseType.name} Cases` : "";
   usePageMeta(
-    service && caseType
+    service && caseType && declared
       ? {
           title: pairTitle(service, caseType, ORG_NAME),
           description: pairDescription(service, caseType),
@@ -58,11 +64,12 @@ export default function ServiceCaseType() {
   );
 
   if (!service || !caseType) return <NotFound />;
+  if (!declared) return <Navigate to={`/services/${service.slug}`} replace />;
 
-  // Pair-specific copy exists only for the pairs the pillar declares in
-  // services.ts (caseTypeNotes). Undeclared pairs render the shared sections
-  // without a FAQ block or FAQPage markup, so the case-type hub stays the
-  // FAQ owner and no FAQPage is duplicated across the grid.
+  // The pair note (services.ts caseTypeNotes, keyed by case-type slug) carries
+  // the pair's summary and its two FAQs. Every declared pair has one; the
+  // guard keeps a note-less pair rendering the shared sections with no FAQ
+  // block or FAQPage markup, so the case-type hub stays the FAQ owner.
   const note = service.caseTypeNotes[caseType.slug];
   const siblings = servicesForCaseType(caseType.slug).filter((s) => s.slug !== service.slug);
   const finalStep = service.process?.at(-1);
@@ -155,7 +162,7 @@ export default function ServiceCaseType() {
       <SchemaOrg data={graphSchema([
         organizationSchema(),
         serviceSchema({
-          slug: `${service.slug}/case/${caseType.slug}`,
+          url,
           name: heading,
           description: pairDescription(service, caseType),
           dateModified: service.dateModified,

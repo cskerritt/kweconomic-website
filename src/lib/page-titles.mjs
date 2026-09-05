@@ -109,14 +109,29 @@ export function serviceTitleNames(service) {
 /**
  * The case-type stems the state tier may carry, longest first: the titleBase
  * ("Employment Discrimination Economist", the hub's own title) and, where
- * the data sets a shorter name, "<shortName> Economist".
- * @param {{ name: string; titleBase: string; shortName?: string }} caseType
+ * the data sets a shorter name, "<shortName> Economist". A case type whose
+ * entry carries a `framing` block (a matter that is not a damages claim,
+ * src/data/caseTypes.ts CaseTypeFraming) supplies its own stems instead
+ * ("Divorce Financial Expert").
+ * @param {{ name: string; titleBase: string; shortName?: string; framing?: { stateTitleStems?: readonly string[] } }} caseType
  * @returns {string[]}
  */
 export function caseTypeTitleStems(caseType) {
+  const framed = caseType.framing?.stateTitleStems;
+  if (framed && framed.length) return forms([...framed]);
   const short = caseType.shortName ?? caseType.name;
   return forms([caseType.titleBase, `${short} Economist`]);
 }
+
+/**
+ * /case-types/<case>: the hub's own stem plus the brand. The titleBase
+ * ("Wrongful Death Economist"), or the framing block's titleStem where the
+ * entry carries one ("Divorce Financial Analysis").
+ * @param {{ titleBase: string; framing?: { titleStem?: string } }} caseType
+ * @param {string} orgName
+ * @returns {string}
+ */
+export const caseTypeHubTitle = (caseType, orgName) => fitTitle(orgName, caseType.framing?.titleStem ?? caseType.titleBase);
 
 /** /locations/<state> */
 export const stateHubTitle = (state, orgName) => placeTitle("Forensic Economists", state, orgName);

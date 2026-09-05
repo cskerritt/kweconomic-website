@@ -31,6 +31,15 @@ export const DEFAULT_OG_IMAGE_ALT = `${ORG_NAME} forensic economics and economic
 export const VOC_SITE_URL = "https://kwvrs.com";
 export const LCP_SITE_URL = "https://kwlcp.com";
 export const SAME_AS = [VOC_SITE_URL, LCP_SITE_URL] as const;
+// The sister-site service pages this site hands off to. Verified live on
+// 2026-09-05 (curl): kwvrs.com/services/vocational-expert 200 and
+// kwlcp.com/services/life-care-planning 200; kwvrs.com/services/vocational-
+// evaluation, the alias the hand-off cards once linked, answers 404 with no
+// redirect. Every outbound hand-off (CrossSell.tsx, the pillar: false entries
+// and the pillar hand-off notes in services.ts) reads these constants, so a
+// sister-site rename is a one-line change here and never a silent 404.
+export const VOC_SERVICE_URL = `${VOC_SITE_URL}/services/vocational-expert`;
+export const LCP_SERVICE_URL = `${LCP_SITE_URL}/services/life-care-planning`;
 
 /** Human-readable phone, e.g. "+1-201-343-0700" -> "(201) 343-0700". */
 export function formatPhone(e164: string): string {

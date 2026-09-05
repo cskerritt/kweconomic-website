@@ -6,6 +6,7 @@ import StateHub from "./StateHub";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { pillarServices } from "@/data/services";
 import { getStateBySlug } from "@/data/states";
+import { retainableExperts } from "@/data/team";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import { newJerseyCities } from "@/data/cities/new-jersey";
 import { texasCities } from "@/data/cities/texas";
@@ -19,9 +20,10 @@ import {
 } from "@/data/narratives";
 import { cityAttr, placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
+import { ORG_URL } from "@/lib/schema";
 import { serviceStateTitle, serviceCityTitle, stateHubTitle } from "@/lib/page-titles.mjs";
 import { truncateAtWord } from "@/lib/text";
-import { proseName, workPhrase } from "@/lib/service-prose.mjs";
+import { capFirst, proseName, workPhrase } from "@/lib/service-prose.mjs";
 import {
   renderRoute,
   visibleText,
@@ -32,6 +34,7 @@ import {
   DOUBLED_WORD,
   MIS_ARTICLE,
 } from "@/test-utils/markup";
+import { expectServiceIdentity } from "@/test-utils/jsonld";
 
 // Server renders of the service x state, service x city, and state hub pages.
 //
@@ -168,6 +171,17 @@ const TORT_FRAMEWORK_PILLARS = new Set([
 ]);
 // The pillars whose second city FAQ asks about wage levels and cost of living.
 const WAGE_FAQ_PILLARS = new Set([...TORT_FRAMEWORK_PILLARS, "employment-and-wage-loss-damages"]);
+// The commercial and family-financial pillars (audit F09): no tort forum, no
+// workers' compensation forum, and no "economic damages analyses" opener may
+// reach their geo pages.
+const COMMERCIAL_AND_FAMILY = new Set([
+  "business-valuation",
+  "lost-profits-and-commercial-damages",
+  "fraud-and-asset-tracing",
+  "divorce-and-marital-financial-analysis",
+]);
+const SHARED_DAMAGES_LEAK = /Workers' compensation claims|wage-loss benefits|personal injury, wrongful death, employment, and commercial damages claims|prepares economic damages analyses/;
+const EXPERT = retainableExperts()[0];
 
 // The credential x state page each chip label links to (services.ts labels ->
 // credentials.ts slugs). PhD and MBA both resolve to the graduate-degree page.
@@ -253,6 +267,25 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
           }
         });
 
+        it("prints the legal context for the pillar's category and names the responsible economist (F09, C02)", () => {
+          // Hero paragraphs in order: the eyebrow, the direct answer, the legal context.
+          const legal = paragraphs(html)[2] ?? "";
+          if (COMMERCIAL_AND_FAMILY.has(service.slug)) {
+            expect(text).not.toMatch(SHARED_DAMAGES_LEAK);
+            if (service.slug === "divorce-and-marital-financial-analysis") {
+              expect(legal).toMatch(/^Matrimonial matters in .* are heard in the family or domestic relations part of the trial courts/);
+            } else {
+              expect(legal).toContain("primary trial-level forum for the shareholder, partnership, contract, and fraud claims these analyses support.");
+            }
+          } else {
+            expect(legal).toContain("primary trial-level forum for the personal injury, wrongful death, employment, and commercial damages claims");
+            expect(legal).toContain("Workers' compensation claims");
+          }
+          expect(html).toContain(`href="/team/${EXPERT.slug}"`);
+          expect(text).toContain(`${capFirst(work)} for ${placeAttr(state.name)} matters is directed by`);
+          expect(text).toContain(`${EXPERT.title}, who is available to testify to it.`);
+        });
+
         it("answers the disclosure FAQ instead of restating the question, in the visible block and the FAQPage JSON-LD", () => {
           const question = `When is expert disclosure due for a case venued in ${place}?`;
           expect(faqText(html)).toContain(question);
@@ -261,6 +294,10 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
             `Expert disclosure in ${place} is scheduled case by case: in the ${placeAttr(state.name)} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework,`,
           );
           expect(faqText(html)).not.toContain("Disclosure timing is typically set by the scheduling order in the case.");
+        });
+
+        it("identifies the Service entity by the page's own URL, never a hyphen-joined service and state alias", () => {
+          expectServiceIdentity(html, `${ORG_URL}/services/${service.slug}/${stateSlug}`);
         });
 
         it("links each credential chip to its credential x state page, renders a References block, and nests no second main landmark", () => {
@@ -349,11 +386,26 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           for (const s of faqLdStrings(html)) for (const seam of rawServiceSeams(service)) expect(s).not.toMatch(seam);
         });
 
+        it("prints the place paragraph without the hub's economic damages opener and names the responsible economist (F09, C02)", () => {
+          // Hero paragraphs in order: the eyebrow, the direct answer, the place paragraph.
+          const place = paragraphs(html)[2] ?? "";
+          expect(place).not.toContain("prepares economic damages analyses for cases venued");
+          expect(place).toMatch(/ (Plaintiff and defense|The report can be prepared for one spouse, for both, or for the court)\.$/);
+          if (COMMERCIAL_AND_FAMILY.has(service.slug)) expect(text).not.toMatch(SHARED_DAMAGES_LEAK);
+          if (service.slug === "divorce-and-marital-financial-analysis") expect(place).toMatch(/for one spouse, for both, or for the court\.$/);
+          expect(html).toContain(`href="/team/${EXPERT.slug}"`);
+          expect(text).toContain(`${capFirst(work)} for ${cityAttr(cityName)} matters is directed by`);
+        });
+
         it("names the work in the nearby-cities cross-link sentence and the local-context paragraph", () => {
           expect(text).toContain(`We also provide ${work} in these ${state.name} communities.`);
           expect(text).toContain(
             `requirements that affect ${proseName(service.shortName)} engagements in ${place}.`,
           );
+        });
+
+        it("identifies the Service entity by the page's own URL, never a hyphen-joined service, state, and city alias", () => {
+          expectServiceIdentity(html, `${ORG_URL}/services/${service.slug}/${stateSlug}/${citySlug}`);
         });
 
         it("reads the city name attributively where it modifies a noun and as written elsewhere", () => {
@@ -483,7 +535,7 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
     const bvCity = render("/services/business-valuation/new-jersey/hackensack", CITY_ROUTE, ServiceStateCity);
     const bvCityText = visibleText(bvCity.html);
     expect(bvCityText).toContain(
-      "KW Economics provides business valuation for cases venued in Hackensack, New Jersey. For a business based in Hackensack, the Hackensack-area market for its goods and services, comparable transactions, and the company's own history each enter the analysis,",
+      "KW Economics provides business valuation for cases venued in Hackensack, New Jersey. For a business based in Hackensack, the valuation date and the standard of value are inputs that counsel defines for the matter, the company's own financial statements, tax returns, and governing agreements drive the income, market, and asset approaches, and Hackensack-area market conditions inform the normalization of its results and the market-approach comparables where local data exists.",
     );
     expect(bvCityText).toContain("Civil claims arising in Hackensack are typically heard in the Superior Court, Law Division sitting in Bergen County.");
     expect(bvCityText).toContain("How Business Valuation Work Is Built for Hackensack Cases");
@@ -657,6 +709,19 @@ describe("StateHub credentials section", () => {
       );
       expect(visibleText(html)).not.toMatch(CERTIFICATION_CLAIM);
       expect(visibleText(html)).not.toMatch(FIRM_LEVEL_CLAIM);
+    });
+
+    it(`/locations/${stateSlug} identifies the Service entity by the page's own URL, never /services/state-${stateSlug}`, () => {
+      const { html } = render(`/locations/${stateSlug}`, HUB_ROUTE, StateHub);
+      expectServiceIdentity(html, `${ORG_URL}/locations/${stateSlug}`);
+    });
+
+    it(`/locations/${stateSlug} names the responsible economist in the main column, linked to the profile (C02)`, () => {
+      const { html } = render(`/locations/${stateSlug}`, HUB_ROUTE, StateHub);
+      const state = getStateBySlug(stateSlug)!;
+      expect(html).toContain(`href="/team/${EXPERT.slug}"`);
+      expect(visibleText(html)).toContain(`Analyses for ${placeAttr(state.name)} matters are directed by`);
+      expect(visibleText(html)).toContain(`${EXPERT.title}, who is available to testify to them.`);
     });
   }
 });

@@ -5,7 +5,7 @@ import { MemoryRouter, Routes, Route } from "react-router-dom";
 import JourneyStage from "./templates/JourneyStage";
 import JourneyStageIndex from "./templates/JourneyStageIndex";
 import AttorneysHubPage from "./hubs/AttorneysHubPage";
-import { journeys, getJourney } from "@/data/journeys";
+import { journeys, getJourney, stageReviewer, stageSources } from "@/data/journeys";
 import { caseTypes, getCaseType } from "@/data/caseTypes";
 import { guides } from "@/data/guides";
 import { pillarServices } from "@/data/services";
@@ -222,6 +222,32 @@ describe("JourneyStageIndex /attorneys/<stage>", () => {
     const missing = render("/attorneys/not-a-stage", INDEX_ROUTE, JourneyStageIndex);
     expect(missing).not.toContain('href="/attorneys/not-a-stage/');
     expect(missing).not.toContain("by Case Type");
+  });
+
+  // Audit C02 / C04: the four stage indexes named no reviewer and linked no
+  // primary evidence. Each now carries the byline of the reviewer its guides
+  // share (journeys.ts authorSlug, first publication to latest revision) and a
+  // References block built from the union of the guides' registry sources.
+  it("carries the guides' shared reviewer byline and a References block from their sources, on every stage", () => {
+    for (const s of ATTORNEY_STAGES) {
+      const page = render(`/attorneys/${s.slug}`, INDEX_ROUTE, JourneyStageIndex);
+      const reviewer = stageReviewer(s.slug)!;
+      expect(reviewer, s.slug).toBeDefined();
+      expect(reviewer.authorSlug, s.slug).toBe("christopher-skerritt");
+      expect(page, s.slug).toMatch(/<span>By <\/span><a [^>]*href="\/team\/christopher-skerritt"/);
+      expect(page, s.slug).toContain(`<time dateTime="${reviewer.datePublished}">`);
+      expect(page, s.slug).not.toContain("Editorial Team");
+      expect(withoutJsonLd(page), s.slug).not.toMatch(CREDENTIAL_SUFFIX);
+      const sources = stageSources(s.slug);
+      expect(sources.length, s.slug).toBeGreaterThanOrEqual(3);
+      expect(new Set(sources.map((x) => x.url)).size, s.slug).toBe(sources.length);
+      expect(page, s.slug).toContain("References</h2>");
+      for (const src of sources) expect(page, `${s.slug} cites ${src.url}`).toContain(`href="${src.url}"`);
+      // The dates span the stage's guides.
+      const dates = journeys.filter((j) => j.stage === s.slug);
+      expect(reviewer.datePublished).toBe(dates.map((j) => j.datePublished).sort()[0]);
+      expect(reviewer.dateModified).toBe(dates.map((j) => j.dateModified).sort().at(-1));
+    }
   });
 });
 

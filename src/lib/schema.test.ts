@@ -113,7 +113,7 @@ describe("graphSchema resolves the organization reference on the page itself", (
   });
 
   it("resolves a Service provider reference the same way (state and case-type tiers)", () => {
-    const g = graphOf(graphSchema([serviceSchema({ slug: "x", name: "X", description: "y" })]));
+    const g = graphOf(graphSchema([serviceSchema({ url: `${ORG_URL}/services/x`, name: "X", description: "y" })]));
     expect(g[0]["@id"]).toBe(ORG_ID);
     expect(g[1]["@type"]).toBe("Service");
   });
@@ -200,7 +200,7 @@ describe("inline-link markers never reach structured data", () => {
   });
 
   it("serviceSchema, credentialSchema, collectionPageSchema, and faqPageSchema strip their copy", () => {
-    const s = serviceSchema({ slug: "x", name: MARKER_TEXT, description: MARKER_TEXT });
+    const s = serviceSchema({ url: `${ORG_URL}/services/x`, name: MARKER_TEXT, description: MARKER_TEXT });
     expect(s.name).toBe(PLAIN_TEXT);
     expect(s.description).toBe(PLAIN_TEXT);
     const c = credentialSchema({ slug: "x", name: "X", abbreviation: "X", category: "Academic Degree", scope: MARKER_TEXT });
@@ -218,7 +218,7 @@ describe("inline-link markers never reach structured data", () => {
 describe("serviceSchema with offers and dateModified", () => {
   it("includes offers when provided", () => {
     const s = serviceSchema({
-      slug: "pre-litigation",
+      url: `${ORG_URL}/services/pre-litigation`,
       name: "Pre-Litigation Services",
       description: "Lower-cost productized expert services.",
       offers: {
@@ -236,7 +236,7 @@ describe("serviceSchema with offers and dateModified", () => {
 
   it("includes dateModified when provided", () => {
     const s = serviceSchema({
-      slug: "pre-litigation",
+      url: `${ORG_URL}/services/pre-litigation`,
       name: "Pre-Litigation Services",
       description: "x",
       dateModified: "2026-05-02",
@@ -245,25 +245,48 @@ describe("serviceSchema with offers and dateModified", () => {
   });
 
   it("omits offers when not provided (no regression)", () => {
-    const s = serviceSchema({ slug: "x", name: "X", description: "y" });
+    const s = serviceSchema({ url: `${ORG_URL}/services/x`, name: "X", description: "y" });
     expect(s["offers"]).toBeUndefined();
   });
 });
 
+// T03 (2026-09-05 audit): the builder used to derive url and @id from a
+// composite slug (/services/state-new-jersey, /services/city-new-jersey-
+// hackensack, /services/lost-earnings-and-earning-capacity-new-jersey), an
+// address that answered 404 on 7,271 pages. It now takes the page's own
+// canonical URL and nothing else names the address.
 describe("serviceSchema entity identity", () => {
-  it("derives @id and url from the pillar slug by default (a real /services route)", () => {
-    const s = serviceSchema({ slug: "business-valuation", name: "Business Valuation", description: "x" });
-    expect(s.url).toBe(`${ORG_URL}/services/business-valuation`);
-    expect(s["@id"]).toBe(`${ORG_URL}/services/business-valuation#service`);
+  it("takes the pillar page's own /services address and derives @id from it", () => {
+    const url = `${ORG_URL}/services/business-valuation`;
+    const s = serviceSchema({ url, name: "Business Valuation", description: "x" });
+    expect(s.url).toBe(url);
+    expect(s["@id"]).toBe(`${url}#service`);
     expect(s.provider).toEqual({ "@id": ORG_ID });
   });
 
-  it("takes the page's own canonical URL when given one, so a state or city page never points at a synthetic /services path", () => {
-    const url = `${ORG_URL}/locations/new-jersey`;
-    const s = serviceSchema({ slug: "state-new-jersey", name: "Economic Damages Services in New Jersey", description: "x", url });
-    expect(s.url).toBe(url);
-    expect(s["@id"]).toBe(`${url}#service`);
-    expect(JSON.stringify(s)).not.toContain("/services/state-");
+  it("takes the page's own canonical URL on every other tier, so no page points at a synthetic /services path", () => {
+    for (const url of [
+      `${ORG_URL}/locations/new-jersey`,
+      `${ORG_URL}/locations/new-jersey/hackensack`,
+      `${ORG_URL}/services/business-valuation/new-jersey`,
+      `${ORG_URL}/services/business-valuation/new-jersey/hackensack`,
+      `${ORG_URL}/services/business-valuation/case/divorce-and-marital-dissolution`,
+      `${ORG_URL}/services/business-valuation/cost`,
+      `${ORG_URL}/case-types/wrongful-death/new-jersey`,
+      `${ORG_URL}/credentials/nafe-member/new-jersey`,
+    ]) {
+      const s = serviceSchema({ url, name: "Economic Damages Services", description: "x" });
+      expect(s.url, url).toBe(url);
+      expect(s["@id"], url).toBe(`${url}#service`);
+      expect(JSON.stringify(s), url).not.toMatch(/\/services\/(state-|city-|cred-)|business-valuation-new-jersey/);
+    }
+  });
+
+  it("has no slug-derived fallback: url is required and a slug alone names no address", () => {
+    // @ts-expect-error url is required; a composite slug can no longer build a Service address
+    const s = serviceSchema({ slug: "state-new-jersey", name: "X", description: "x" });
+    expect(s.url).toBeUndefined();
+    expect(JSON.stringify(s)).not.toContain("/services/");
   });
 });
 

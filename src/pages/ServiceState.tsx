@@ -30,8 +30,11 @@ import {
   geoSources,
   getStateNarrative,
   serviceStateDirectAnswer,
+  serviceStateLegalContext,
   serviceStateVenueParagraph,
 } from "@/data/narratives";
+import ResponsibilityLine from "@/components/ResponsibilityLine";
+import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import { serviceStateGeographicFaqs } from "@/data/geographicFaqs";
 import { getCaseType } from "@/data/caseTypes";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
@@ -120,7 +123,7 @@ export default function ServiceState() {
         data={graphSchema([
           organizationSchema(),
           serviceSchema({
-            slug: `${service.slug}-${state.slug}`,
+            url,
             name: `${service.name} in ${place}`,
             description: directAnswer,
             areaServed: { "@type": "AdministrativeArea", name: state.name },
@@ -164,8 +167,11 @@ export default function ServiceState() {
               <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-3xl mb-3">
                 {directAnswer}
               </p>
+              {/* The legal context for this pillar's category: the commercial
+                  and family-financial pillars never print the workers'
+                  compensation forum, which hears no claim of theirs (F09). */}
               <p className="kw-enter kw-enter-2 text-base text-neutral-500 max-w-3xl mb-7">
-                {narrative.legalContext}
+                {serviceStateLegalContext(service.shortName, narrative)}
               </p>
               <div className="kw-enter kw-enter-3 flex flex-wrap gap-3">
                 <Link
@@ -214,6 +220,9 @@ export default function ServiceState() {
                   </p>
                 )
               )}
+              {/* The professional responsible for this work, linked to the
+                  profile that carries the CV (C02). */}
+              <ResponsibilityLine subject={`${capFirst(workPhrase(service.shortName))} for ${placeAttr(state.name)} matters`} plural={false} />
             </Reveal>
 
             {/* Case type badges */}
@@ -310,12 +319,15 @@ export default function ServiceState() {
           {/* Sidebar - 1/3 */}
           <aside className="mt-10 lg:mt-0 space-y-6">
 
-            {/* Economic context */}
+            {/* Economic context, captioned for this pillar's own work (the
+                widget drops the wage-loss forum on the commercial and
+                family-financial pillars). */}
             <Reveal variant="up">
               <EconomicContextWidget
                 areaName={state.name}
                 population={state.population}
                 compensationForum={regulations?.compensationForum}
+                serviceShortName={service.shortName}
               />
             </Reveal>
 

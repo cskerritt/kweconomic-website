@@ -25,7 +25,10 @@ import {
   getCityNarrative,
   serviceCityContextParagraph,
   serviceCityDirectAnswer,
+  serviceCityPlaceParagraph,
 } from "@/data/narratives";
+import ResponsibilityLine from "@/components/ResponsibilityLine";
+import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import { serviceCityGeographicFaqs } from "@/data/geographicFaqs";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import ContactCTA from "@/components/ContactCTA";
@@ -103,7 +106,7 @@ export default function ServiceStateCity() {
         data={graphSchema([
           organizationSchema(),
           serviceSchema({
-            slug: `${service.slug}-${state.slug}-${city.slug}`,
+            url,
             name: `${service.name} in ${city.name}, ${state.abbreviation}`,
             description: directAnswer,
             areaServed: { "@type": "City", name: `${city.name}, ${state.abbreviation}` },
@@ -149,8 +152,12 @@ export default function ServiceStateCity() {
               <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-3xl mb-3">
                 {directAnswer}
               </p>
+              {/* The place paragraph: which area's data an analysis uses where
+                  it uses local data at all. The hero above already names the
+                  pillar's work, so the hub's "prepares economic damages
+                  analyses" opener never prints here (F09). */}
               <p className="kw-enter kw-enter-2 text-base text-neutral-500 max-w-3xl mb-7">
-                {narrative.directAnswer}
+                {serviceCityPlaceParagraph(service.shortName, narrative)}
               </p>
               <div className="kw-enter kw-enter-3 flex flex-wrap gap-3">
                 <Link
@@ -190,9 +197,12 @@ export default function ServiceStateCity() {
               <p className="text-neutral-700 leading-relaxed mb-4">
                 {service.description}
               </p>
-              <p className="text-neutral-700 leading-relaxed">
+              <p className="text-neutral-700 leading-relaxed mb-4">
                 {serviceCityContextParagraph(service, state, city)}
               </p>
+              {/* The professional responsible for this work, linked to the
+                  profile that carries the CV (C02). */}
+              <ResponsibilityLine subject={`${capFirst(workPhrase(service.shortName))} for ${cityA} matters`} plural={false} />
             </Reveal>
 
             {/* Case types */}

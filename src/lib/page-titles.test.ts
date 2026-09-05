@@ -37,6 +37,7 @@ import {
   cityTitle,
   stateHubTitle,
   cityHubTitle,
+  caseTypeHubTitle,
   caseTypeStateTitle,
   serviceStateTitle,
   serviceCityTitle,
@@ -107,7 +108,8 @@ function allTitles(): Map<string, string> {
     for (const c of caseTypes) add(`/case-types/${c.slug}/${st.slug}`, caseTypeStateTitle(c, st, ORG_NAME));
     for (const cred of credentials) add(`/credentials/${cred.slug}/${st.slug}`, credentialStateHeadings(cred, st.name).title);
   }
-  for (const c of caseTypes) add(`/case-types/${c.slug}`, `${c.titleBase}${SUFFIX}`);
+  // The hub stem is titleBase, or the framing block's own stem (the family-law matter).
+  for (const c of caseTypes) add(`/case-types/${c.slug}`, caseTypeHubTitle(c, ORG_NAME));
   for (const cred of credentials) add(`/credentials/${cred.slug}`, cred.metaTitle);
   for (const m of team) {
     add(`/team/${m.slug}`, profileTitle({ name: m.name, jobTitle: m.title, memoriam: m.memoriam, orgName: ORG_NAME }));

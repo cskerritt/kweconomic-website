@@ -9,6 +9,8 @@ import { getCourtsByState } from "@/data/courts/state-courts";
 import { REFERENCES } from "@/data/references";
 import { ORG_NAME } from "@/lib/brand";
 import { renderRoute, visibleText } from "@/test-utils/markup";
+import { expectServiceIdentity } from "@/test-utils/jsonld";
+import { ORG_URL } from "@/lib/schema";
 
 // Server renders of the four geographic templates for what every renderer
 // (a crawler, a static markup pass, a visitor without JS) sees on first paint:
@@ -124,6 +126,20 @@ describe("every geo template carries a References block and no nested main landm
       expect(html).not.toContain("<main");
     }
   });
+});
+
+// T03 (2026-09-05 audit): the browser-added Service entity on every geo
+// template used to derive its url and @id from a composite slug
+// (/services/state-new-jersey, /services/city-new-jersey-hackensack,
+// /services/lost-earnings-and-earning-capacity-new-jersey), addresses that
+// answered 404. The builder now takes the page's own canonical URL.
+describe("the Service entity on every geo template is the page itself", () => {
+  for (const { label, path, route, Page } of PAGES) {
+    it(`${label} (${path}): Service url is the page canonical and @id is canonical#service`, () => {
+      const { html } = render(path, route, Page);
+      expectServiceIdentity(html, `${ORG_URL}${path}`);
+    });
+  }
 });
 
 describe("CityPage H1 and meta", () => {

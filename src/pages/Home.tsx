@@ -22,13 +22,13 @@ const HOMEPAGE_FAQS = homepageFaqs(ORG_NAME, ORG_SHORT);
 
 const HOW_WE_WORK = [
   { icon: Shield, title: "Objective Analysis", text: "Plaintiff and defense engagements accepted. The analysis follows the records and the published data." },
-  { icon: FileCheck, title: "Transparent Assumptions", text: "Every report states its earnings base, growth rate, worklife horizon, discount rate, and data sources so the other side can recompute the figure." },
+  { icon: FileCheck, title: "Transparent Assumptions", text: "Every report states its base figures, its growth or projection assumptions, its discount rate, the standard of value where a business is valued, and its data sources so the other side can recompute the figure." },
   { icon: Scale, title: "Established Methods", text: "Present value, worklife expectancy, and valuation methods drawn from the forensic economics literature and applied the same way in every venue." },
   { icon: MapPin, title: "Nationwide Practice", text: "Engagements in all 50 states, the District of Columbia, and U.S. territories, with state and metro wage, cost of living, and damages-rule context." },
 ];
 
 const CASE_TYPE_ENTRIES = [
-  { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Lost earnings, wrongful death, household services, employment, and commercial damages matters" },
+  { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Lost earnings, wrongful death, household services, employment, commercial damages, business valuation, and marital financial matters" },
   { label: "Rebut an Opposing Report", href: "/services/expert-rebuttal-and-report-review", blurb: "Review of an opposing economist's inputs, methods, and arithmetic against the record" },
   { label: "Browse Case Types", href: "/case-types", blurb: "Personal injury, wrongful death, employment, commercial, and family law matters, with the loss components each one raises" },
   { label: "General Inquiry", href: "/contact", blurb: "Anything else - we respond in 1 business day" },
@@ -50,14 +50,16 @@ const KNOWLEDGE_RESOURCES = [
   { label: "Forensic Economist vs. Forensic Accountant", href: "/compare/forensic-economist-vs-forensic-accountant" },
 ];
 
-// The hero card: the four inputs every KW Economics report sets out on its own
-// schedule. It stands in the slot a pull-quote would occupy; attorney feedback
-// is not shown on the site (see src/pages/no-testimonials.render.test.tsx).
+// The hero card: the inputs every KW Economics report sets out on its own
+// schedule, across the earnings, valuation, and tracing lanes alike. It stands
+// in the slot a pull-quote would occupy; attorney feedback is not shown on the
+// site (see src/pages/no-testimonials.render.test.tsx).
 const REPORT_STATES = [
-  { label: "Question asked", text: "The loss claim the analysis answers and the records it relies on." },
-  { label: "Earnings base", text: "Documented pre-injury or but-for earnings and fringe benefits." },
-  { label: "Growth and worklife", text: "Wage growth and the worklife horizon, each on its own schedule." },
-  { label: "Discount rate", text: "The rate that reduces future losses to present value, and its source." },
+  { label: "Question asked", text: "The loss, value, or tracing question the analysis answers and the records it relies on." },
+  { label: "Base figures", text: "Documented earnings and benefits, or the normalized cash flow and standard of value for a business interest." },
+  { label: "Projection assumptions", text: "Wage growth and the worklife horizon, or the loss period and market data behind a profit projection, each on its own schedule." },
+  { label: "Discount rate", text: "The rate that reduces future amounts to present value, matched to the stream it discounts, and its source." },
+  { label: "Tie-out to the record", text: "Each schedule traces to the tax return, ledger, or account statement it came from, and a tracing states where the records end." },
 ];
 
 // Rendered once: compact below the hero copy on small screens, full size in

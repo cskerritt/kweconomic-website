@@ -5,12 +5,19 @@
 // byte-identical copy. Inputs are plain data; the callers do the data joins.
 //
 // Content rules (economics framing): local wage levels, the cost of living,
-// and the local industry mix are context for how an earnings or
-// household-services analysis is built, never a claim about a party. No
-// invented statistics: the prose never prints unemployment rates, wage
-// figures, or dollar amounts. Population and MSA name are allowed; employer
-// names are allowed as context only. Citation-free: no statutes, rule
-// numbers, damage caps, or case law. Hyphens only (no em/en dashes).
+// and the local industry mix are context for how an analysis is built, never
+// a claim about a party, and they enter a pillar's prose only where that
+// pillar's work uses them: the personal-loss pillars measure earnings and
+// household services against local wage data, the commercial pillars read
+// the local market only through normalization, comparables, and the but-for
+// projection, fraud and tracing uses none of it, and the matrimonial pillar
+// measures actual income (see SERVICE_GEO and its `category` field). The
+// place-level paragraphs the templates share across every pillar (the state
+// and city narratives) are written so they hold for all of them. No invented
+// statistics: the prose never prints unemployment rates, wage figures, or
+// dollar amounts. Population and MSA name are allowed; employer names are
+// allowed as context only. Citation-free: no statutes, rule numbers, damage
+// caps, or case law. Hyphens only (no em/en dashes).
 //
 // Service.shortName is a heading label ("Fraud & Tracing"); the service x
 // state / city templates render it through the shared prose helpers
@@ -149,35 +156,81 @@ export function buildStateNarrative(input) {
     `Fringe benefits, worklife expectancy, wage growth, and the discount rate are each documented with their source so every figure in the projection can be traced and tested at deposition.`,
   ].join(" ");
 
-  const legalParts = [];
   const forum = trialCourtName ?? "general-jurisdiction trial court";
-  legalParts.push(
-    `${forumPhrase(stateName, forum)} is the primary trial-level forum for the personal injury, wrongful death, employment, and commercial damages claims these analyses support.`,
-  );
-  if (compensationForum) {
-    legalParts.push(
-      `Workers' compensation claims, where the dispute is over wage-loss benefits rather than tort damages, are administered by the ${compensationForum}.`,
-    );
-  }
   // "the District of Columbia" already carries its article.
   const placeThe = place.startsWith("the ") ? place : `the ${place}`;
-  if (supremeCourt) legalParts.push(`Final appeals in ${placeThe} court system run to the ${supremeCourt}.`);
-  if (federalDistrictCount > 0) {
-    legalParts.push(
-      `${capFirst(place)} is served by ${federalDistrictCount} federal district court${federalDistrictCount === 1 ? "" : "s"}, where the same analyses are offered under the federal expert-disclosure framework.`,
-    );
-  }
-  const legalContext = legalParts.join(" ");
+  const appeals = supremeCourt ? `Final appeals in ${placeThe} court system run to the ${supremeCourt}.` : "";
+  const federal =
+    federalDistrictCount > 0
+      ? `${capFirst(place)} is served by ${federalDistrictCount} federal district court${federalDistrictCount === 1 ? "" : "s"}, where the same analyses are offered under the federal expert-disclosure framework.`
+      : "";
+  // The shared legal context (state hub, personal-loss and rebuttal pillars):
+  // the tort forum and the workers' compensation forum.
+  const legalContext = [
+    `${forumPhrase(stateName, forum)} is the primary trial-level forum for the personal injury, wrongful death, employment, and commercial damages claims these analyses support.`,
+    compensationForum
+      ? `Workers' compensation claims, where the dispute is over wage-loss benefits rather than tort damages, are administered by the ${compensationForum}.`
+      : "",
+    appeals,
+    federal,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  // The commercial pillars (valuation, lost profits, fraud and tracing) name
+  // the claims they support and never the compensation forum, which hears no
+  // claim of theirs; the family-financial pillar names the matrimonial part
+  // and stops at the appellate sentence (no federal forum hears a divorce).
+  // serviceStateLegalContext() picks by pillar category (audit F09).
+  const legalContextCommercial = [
+    `${forumPhrase(stateName, forum)} is the primary trial-level forum for the shareholder, partnership, contract, and fraud claims these analyses support.`,
+    appeals,
+    federal,
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const legalContextFamily = [
+    `Matrimonial matters in ${place} are heard in the family or domestic relations part of the trial courts, where income available for support, the value of a business interest, and the character of an asset as separate or marital are decided.`,
+    appeals,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-  return { directAnswer, economicContext, legalContext };
+  return { directAnswer, economicContext, legalContext, legalContextCommercial, legalContextFamily };
 }
 
 /**
- * City narrative.
+ * The legal-context paragraph a service x state page prints under its hero
+ * (ServiceState.tsx + prerender): the shared tort-and-compensation paragraph
+ * on the personal-loss and rebuttal pillars, the commercial variant on the
+ * valuation, lost profits, and fraud pillars, and the matrimonial variant on
+ * the family-financial pillar. Takes the raw Service.shortName.
+ * @param {string | undefined} serviceShortName
+ * @param {{ legalContext: string, legalContextCommercial: string, legalContextFamily: string }} stateNarrative
+ * @returns {string}
+ */
+export function serviceStateLegalContext(serviceShortName, stateNarrative) {
+  const category = serviceGeoCategory(serviceShortName);
+  if (category === "commercial") return stateNarrative.legalContextCommercial;
+  if (category === "family-financial") return stateNarrative.legalContextFamily;
+  return stateNarrative.legalContext;
+}
+
+/**
+ * City narrative. The city page renders the whole of it (`directAnswer`,
+ * whose first sentence names the economic damages analyses the hub covers,
+ * then `blurb`). The service x city template (every pillar, both render
+ * paths) renders serviceCityPlaceParagraph() as its place paragraph under the
+ * pillar's own hero, which is the `anchor` sentence alone with the sides
+ * sentence: the hero already names the pillar's work, so the shared "prepares
+ * economic damages analyses" opener never prints under a valuation, tracing,
+ * or matrimonial hero (audit F09). The anchor is written to hold for every
+ * pillar: it says which area's data an analysis uses where it uses local data
+ * at all, never that earnings or household services are being measured. The
+ * hero also takes `venue` or `familyVenue`.
  * @param {{ orgName: string, stateName: string, cityName: string, county?: string,
  *   msaName?: string, employers?: string[], hasMetroData?: boolean,
  *   trialCourtName?: string }} input
- * @returns {{ directAnswer: string, blurb: string }}
+ * @returns {{ directAnswer: string, anchor: string, blurb: string, venue: string, familyVenue: string }}
  */
 export function buildCityNarrative(input) {
   const {
@@ -195,11 +248,11 @@ export function buildCityNarrative(input) {
   const cityA = cityAttr(cityName);
   let anchor;
   if (named.length > 0) {
-    anchor = `Earnings histories in ${cityName} are shaped by employers such as ${listNames(named)}, and the analysis measures each loss against the wage and benefit structure of the plaintiff's own occupation and employer rather than against a citywide average.`;
+    anchor = `Employers such as ${listNames(named)} shape the ${cityA} labor market, and where an analysis turns on local economic conditions it measures them against ${cityA}-area data and the records of the person or business at issue rather than against a citywide average.`;
   } else if (msaName) {
-    anchor = `${cityName} sits in the ${msaName} metropolitan area, and wage data for that area, rather than a statewide average, anchors the earnings and household-services components of the analysis.`;
+    anchor = `${cityName} sits in the ${msaName} metropolitan area, and where an analysis calls for local economic data, the figures for that area, rather than a statewide average, are the ones used.`;
   } else {
-    anchor = `For ${cityName}, the analysis uses wage data for the metropolitan or nonmetropolitan area that covers ${county ?? cityName} rather than a statewide average, so the earnings and household-services components reflect the plaintiff's own market.`;
+    anchor = `For ${cityName}, local economic data, where an analysis calls for it, comes from the metropolitan or nonmetropolitan area that covers ${county ?? cityName} rather than from a statewide average, so each local figure reflects the market at issue rather than the state as a whole.`;
   }
   const directAnswer = [
     `${orgName} prepares economic damages analyses for cases venued in ${cityName}, ${placeName(stateName)}.`,
@@ -210,16 +263,31 @@ export function buildCityNarrative(input) {
   const blurbParts = [];
   // The venue sentence is also returned on its own (`venue`, "" when the city
   // carries no county) so serviceCityDirectAnswer() can place it after the
-  // pillar's own angle instead of re-parsing the blurb.
+  // pillar's own angle instead of re-parsing the blurb. `familyVenue` is the
+  // matrimonial form the family-financial pillar takes instead: the courts
+  // data names the general-jurisdiction court, and several states hear
+  // divorce in a separate family court, so that sentence names the family or
+  // domestic relations part of the county's trial courts rather than the
+  // civil court by name.
   let venue = "";
+  let familyVenue = "";
   if (county) {
     // When the court's own name already names the county ("Superior Court of
     // the District of Columbia"), the "sitting in" clause would only repeat it.
     let court;
-    if (!trialCourtName) court = `the trial court sitting in ${county}`;
-    else if (trialCourtName.includes(county)) court = `the ${trialCourtName}`;
-    else court = `the ${trialCourtName} sitting in ${county}`;
+    let familyCourt;
+    if (!trialCourtName) {
+      court = `the trial court sitting in ${county}`;
+      familyCourt = `the family or domestic relations part of the trial courts sitting in ${county}`;
+    } else if (trialCourtName.includes(county)) {
+      court = `the ${trialCourtName}`;
+      familyCourt = `the family or domestic relations part of the ${trialCourtName}`;
+    } else {
+      court = `the ${trialCourtName} sitting in ${county}`;
+      familyCourt = `the family or domestic relations part of the trial courts sitting in ${county}`;
+    }
     venue = `Civil claims arising in ${cityName} are typically heard in ${court}.`;
+    familyVenue = `Matrimonial matters in ${cityName} are typically heard in ${familyCourt}.`;
     blurbParts.push(venue);
   }
   blurbParts.push(
@@ -232,7 +300,29 @@ export function buildCityNarrative(input) {
   );
   const blurb = blurbParts.join(" ");
 
-  return { directAnswer, blurb, venue };
+  return { directAnswer, anchor, blurb, venue, familyVenue };
+}
+
+/**
+ * The place paragraph a service x city page prints under its hero
+ * (ServiceStateCity.tsx + prerender): the city narrative's anchor sentence
+ * (which area's data an analysis uses, where it uses local data at all) and
+ * the sides sentence. The hero above it already names the pillar's work, so
+ * this paragraph never opens with the hub's "prepares economic damages
+ * analyses" sentence (audit F09: that sentence printed under every valuation,
+ * tracing, and matrimonial hero). The family-financial pillar closes with the
+ * matrimonial sides sentence its FAQ uses; every other pillar keeps
+ * "Plaintiff and defense." Takes the raw Service.shortName.
+ * @param {string | undefined} serviceShortName
+ * @param {{ anchor: string }} cityNarrative
+ * @returns {string}
+ */
+export function serviceCityPlaceParagraph(serviceShortName, cityNarrative) {
+  const sides =
+    serviceGeoCategory(serviceShortName) === "family-financial"
+      ? "The report can be prepared for one spouse, for both, or for the court."
+      : "Plaintiff and defense.";
+  return `${cityNarrative.anchor} ${sides}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -258,16 +348,38 @@ export function buildCityNarrative(input) {
 // life-care pillar may say "life care plan" but never names the plan's author
 // by discipline. Hyphens only; no figures, statutes, or rates.
 //
+// category: the kind of analysis, which decides how, if at all, local wage,
+//   price, and market data enter the pillar's prose and its sidebar panel:
+//   "personal-loss" (earnings and household services measured against local
+//   wage data), "commercial" (valuation, lost profits, fraud and tracing: the
+//   local market enters only through normalization, comparables, and the
+//   but-for projection, and not at all in a tracing), "family-financial"
+//   (actual income, business cash flow, tracing; the matrimonial forum), and
+//   "rebuttal". serviceGeoCategory() reads it; the EconomicContextWidget
+//   drops the workers' compensation forum outside personal-loss and rebuttal.
 // state(place, attr): one or two sentences after the hero's first sentence.
-// city(cityName, cityA, place): one sentence after the city hero's first.
-// records: the records list in the engagement FAQ (or `engagement` for a
-//   pillar whose engagement is not a damages report).
+// city(cityName, cityA, place): one or two sentences after the city hero's
+//   first. The hero then takes the city narrative's venue sentence: the
+//   civil one on every pillar but the family-financial one, which takes the
+//   matrimonial sentence.
+// records: the records list in the engagement FAQ.
+// engagement(records): replaces the shared engagement answer on the pillars
+//   whose engagement is not a damages report.
+// coverage(attr): replaces the shared tail of the coverage answer ("built
+//   from the records that drive the claim and from data for the <attr>
+//   market") where market data is not what the pillar builds from.
+// deliverables(orgName): replaces the shared deliverables answer of the city
+//   FAQ where "economic damages reports" would misname the work product.
 // cityFaq(cityName, cityA, place): replaces the city FAQ's wage-levels
 //   question on the pillars where wage levels are not the subject.
+// context(place, attr): the sidebar panel's caption on the service x state
+//   page (EconomicContextWidget), saying how local data enters this pillar's
+//   number; the personal-loss pillars share the default earnings caption.
 // ---------------------------------------------------------------------------
 
 export const SERVICE_GEO = {
   "Lost Earnings": {
+    category: "personal-loss",
     state: (place) =>
       `The projection starts from the plaintiff's own earnings history, tests it against occupational wage data from the Bureau of Labor Statistics for the metropolitan or nonmetropolitan area of ${place} where the plaintiff worked, carries it over a documented worklife expectancy with wage growth, and discounts it to present value. Fringe benefits are valued from the employer's plan documents or from published employer-cost data, and any post-injury earning capacity is offset against the but-for path rather than assumed away.`,
     city: (cityName, cityA) =>
@@ -276,6 +388,7 @@ export const SERVICE_GEO = {
       "tax returns, wage statements, personnel and benefit plan records, and the medical or work-capacity opinions that define the post-injury earnings path",
   },
   "Wrongful Death": {
+    category: "personal-loss",
     state: (place, attr) =>
       `The decedent's earnings and fringe benefits are projected over a documented worklife expectancy, reduced by the decedent's own personal consumption where the ${attr} measure of damages calls for it, and combined with the replacement cost of the household services the decedent would have provided. Each stream is discounted to present value, and the report keeps the components separate so counsel can include or remove any of them as ${attr} law requires.`,
     city: (cityName, cityA) =>
@@ -283,6 +396,7 @@ export const SERVICE_GEO = {
     records: "the decedent's tax returns, pay and benefit records, and the household's composition and routine",
   },
   "Personal Injury": {
+    category: "personal-loss",
     state: (place) =>
       `One report carries every economic component of the injury claim: lost earnings and fringe benefits measured against the plaintiff's own records and wage data for the area of ${place} where the plaintiff worked, lost household services priced at local replacement rates, and the present value of future medical and care costs supplied by the treating providers or a life care plan, all reduced with consistent growth, discount, and life expectancy assumptions.`,
     city: (cityName, cityA) =>
@@ -290,6 +404,7 @@ export const SERVICE_GEO = {
     records: "tax returns, pay and benefit records, and the treating providers' or life care plan's statement of future care",
   },
   "Household Services": {
+    category: "personal-loss",
     state: (place) =>
       `The hours the injured or deceased person devoted to meal preparation, cleaning, home and vehicle maintenance, shopping, and the care of others are drawn from national time-use data adjusted to the household's own composition and routine, priced at the wage a replacement worker earns for each task in the area of ${place} where the household lives, carried over the relevant life or worklife expectancy, and discounted to present value.`,
     city: (cityName, cityA) =>
@@ -297,6 +412,7 @@ export const SERVICE_GEO = {
     records: "the household's composition, the person's pre-injury routine, and any records of paid help",
   },
   "Life Care Plan Costing": {
+    category: "personal-loss",
     state: (place) =>
       `The plan's items, frequencies, durations, and unit costs are carried forward with medical cost growth appropriate to each category, discounted over the applicable life expectancy, and presented item by item so counsel and the trier of fact in ${place} can follow each line from the plan to its present value. Authorship of the plan stays with its author; the economist's role is the translation of the plan into a damages figure.`,
     city: (cityName, cityA) =>
@@ -304,6 +420,7 @@ export const SERVICE_GEO = {
     records: "the life care plan itself, its unit-cost sources, and the life expectancy opinion it rests on",
   },
   "Employment Damages": {
+    category: "personal-loss",
     state: (place) =>
       `Back pay is reconstructed from the employee's own pay and benefit records, including the raises, bonuses, and benefit accruals the position carried, and front pay is projected over a documented period and discounted to present value. Interim earnings and mitigation are measured against wage data for the employee's occupation in the area of ${place} where the employee worked, and the report presents each element so it can be adjusted to the remedies available under the governing law.`,
     city: (cityName, cityA) =>
@@ -311,50 +428,81 @@ export const SERVICE_GEO = {
     records: "pay stubs, W-2s, the personnel file, benefit plan documents, and the record of interim earnings",
   },
   "Business Valuation": {
+    category: "commercial",
     state: (place, attr) =>
-      `The business is valued from its own financial statements, tax returns, and governing agreements under the income, market, and asset approaches, with the standard of value, the valuation date, and any discounts for lack of control or marketability set by the matter and by ${attr} law as counsel confirms it. Every input is documented so the conclusion can be tested at deposition, and no wage or household data enters the number.`,
+      `The business is valued from its own financial statements, tax returns, and governing agreements under the income, market, and asset approaches, with the standard of value, the valuation date, and any discounts for lack of control or marketability set by the matter and by ${attr} law as counsel confirms it. Regional market data enters only where the normalization of the company's results or the market-approach comparables call for it, the same valuation methods apply in every ${attr} venue, and every input is documented so the conclusion can be tested at deposition.`,
     city: (cityName, cityA) =>
-      `For a business based in ${cityName}, the ${cityA}-area market for its goods and services, comparable transactions, and the company's own history each enter the analysis, and every input is documented so the value can be tested at deposition.`,
+      `For a business based in ${cityName}, the valuation date and the standard of value are inputs that counsel defines for the matter, the company's own financial statements, tax returns, and governing agreements drive the income, market, and asset approaches, and ${cityA}-area market conditions inform the normalization of its results and the market-approach comparables where local data exists. The same valuation methods apply in every venue, and every input is documented so the value can be tested at deposition.`,
     records: "financial statements, tax returns, the general ledger, and the governing agreements",
+    engagement: (records) =>
+      `A complete engagement typically includes a records request tailored to the interest being valued (${records}), confirmation with counsel of the valuation date, the standard of value, and the purpose of the valuation, normalization of the financial statements, application of the income, market, and asset approaches as the facts support, a report that documents each input and reconciles the indications of value, review and rebuttal of any opposing valuation report, and deposition and trial testimony when required. Scope and turnaround are calibrated to the case posture and the governing disclosure framework.`,
+    deliverables: (orgName) =>
+      `${orgName} provides full valuation reports, preliminary estimates of value for settlement evaluation, reviews and rebuttals of opposing valuation reports, and deposition and trial testimony, sized to both trial-track and settlement matters. The appropriate deliverable depends on case posture.`,
     cityFaq: (cityName, cityA) => ({
       question: `What data does a valuation of a business based in ${cityName} rest on?`,
       answer: `The company's own financial statements, tax returns, general ledger, and governing agreements come first. The ${cityA}-area market for its goods and services, comparable transactions, and the cost of capital for a business of its size and risk enter the income and market approaches, and every input is documented so the value can be traced and tested at deposition.`,
     }),
+    context: (place, attr) =>
+      `Valuation inputs come from the company's own records and its governing agreements. ${attr}-area market data enters only through the normalization of the company's results and the market-approach comparables where local data exists; the source behind each input is documented in the report.`,
   },
   "Lost Profits": {
+    category: "commercial",
     state: (place, attr) =>
-      `The but-for revenue and cost path is built from the company's own financial history, its market, and the terms of the disputed relationship, each claimed loss is linked to the conduct at issue, mitigation is addressed, and the period of loss is reasoned through rather than assumed. Historical figures are restated for price level where the record spans several years, and future losses are discounted to present value at a documented rate built up from the risk-free yield curve and the risk of the profit stream, with the components kept separate so counsel can apply the damages rules that govern the ${attr} matter.`,
+      `The but-for revenue path is built from the company's own financial history, the ${attr} market and industry mix it sells into, and the terms of the disputed relationship; the costs the company avoided by not earning that revenue are deducted, each claimed loss is linked to the conduct at issue, mitigation is credited, and the period of loss is reasoned through rather than assumed. Historical figures are restated for price level where the record spans several years, and future losses are discounted to present value at a documented rate built up from the risk-free yield curve and the risk of the profit stream, with the components kept separate so counsel can apply the damages rules that govern the ${attr} matter.`,
     city: (cityName, cityA) =>
-      `For a business operating in ${cityName}, the but-for path reflects the ${cityA}-area market the company sells into and its own financial history, and each claimed loss is tied to the conduct at issue and to the period over which it plausibly ran.`,
+      `For a business operating in ${cityName}, the but-for revenue path is built from the company's own financial history and from the ${cityA}-area market conditions and industry mix it sells into. The costs avoided by not earning that revenue are deducted, mitigation is credited, the period of loss is reasoned through rather than assumed, and each claimed loss is tied to the conduct at issue.`,
     records: "financial statements, budgets and forecasts, the disputed contract, and the company's customer and cost records",
+    engagement: (records) =>
+      `A complete engagement typically includes a records request tailored to the claim (${records}), a review of the record and the pleadings, a written statement of assumptions, a report that presents the but-for revenue path, the avoided costs, the mitigation offset, and the period of loss with the present value of any future loss, review and rebuttal of any opposing damages model, and deposition and trial testimony when required. Scope and turnaround are calibrated to the case posture and the governing disclosure framework.`,
+    deliverables: (orgName) =>
+      `${orgName} provides full lost profits and commercial damages reports, preliminary damages estimates for settlement evaluation, reviews and rebuttals of opposing damages models, and deposition and trial testimony, sized to both trial-track and settlement matters. The appropriate deliverable depends on case posture.`,
     cityFaq: (cityName, cityA) => ({
       question: `How is the but-for revenue path built for a business in ${cityName}?`,
-      answer: `From the company's own financial history, the ${cityA}-area market it sells into, and the terms of the disputed relationship. Each claimed loss is linked to the conduct at issue, mitigation is addressed, and the period of loss is reasoned through rather than assumed, with the source behind every figure documented so the damages figure can be traced and tested.`,
+      answer: `From the company's own financial history, the ${cityA}-area market conditions and industry mix it sells into, and the terms of the disputed relationship. The costs avoided by not earning the lost revenue are deducted, each claimed loss is linked to the conduct at issue, mitigation is credited, and the period of loss is reasoned through rather than assumed, with the source behind every figure documented so the damages figure can be traced and tested.`,
     }),
+    context: (place, attr) =>
+      `The but-for projection rests on the company's own financial history. ${attr}-area market conditions and industry mix enter it where the company sells into that market, and the avoided costs, the mitigation offset, and the period of loss are documented alongside it with their sources.`,
   },
   "Fraud & Tracing": {
-    state: (place) =>
-      `The work reconstructs the flow of funds through bank, ledger, and payment records, traces diverted assets to where they came to rest, and quantifies the loss for each scheme identified, with the evidence trail documented so it can support a civil claim in ${place}, an insurance recovery, or a referral to authorities. No wage or market data drives the number; the entity's own records do.`,
+    category: "commercial",
+    state: (place, attr) =>
+      `The work reconstructs the flow of funds through bank, ledger, and payment records, traces diverted assets to where they came to rest, and quantifies the loss for each scheme identified, with the evidence trail documented so it can support a civil claim in ${place}, an insurance recovery, or a referral to authorities. The reconciliation and tracing are built the same way in every venue from the entity's own records; the ${attr} forum shapes discovery and the presentation of the schedules, and the report establishes what happened to the money without opining on intent.`,
     city: (cityName) =>
-      `For an entity based in ${cityName}, the tracing runs through its own bank, ledger, and payment records and through the accounts the funds moved into, and each transfer is documented to its source so the loss for each scheme can be tested at deposition.`,
+      `For an entity based in ${cityName}, the records reconciliation and the funds-flow tracing are venue-independent: they run through the entity's own bank, ledger, and payment records and the accounts the funds moved into, and each transfer is documented to its source so the loss for each scheme can be tested at deposition. The local forum governs discovery and how the schedules are presented, and the report establishes what happened to the money without opining on intent.`,
     records: "bank statements, the general ledger, payment records, and the account records the funds moved into",
+    engagement: (records) =>
+      `A fraud and tracing engagement typically includes a records request (${records}), reconstruction of the funds flow and identification of the transactions that fall outside authorized activity, tracing of the diverted funds to where they came to rest, tracing schedules with the supporting documents indexed to each transaction and the loss quantified by scheme and period, and deposition and trial testimony when required. Scope and turnaround are calibrated to the transaction volume, the case posture, and the governing disclosure framework.`,
+    coverage: () =>
+      "with the analysis sized to the engagement scope and built from the entity's own bank, ledger, and payment records and the accounts the funds moved into.",
+    deliverables: (orgName) =>
+      `${orgName} provides tracing schedules with the supporting documents indexed to each transaction, loss quantifications by scheme and period, reports written to support a civil claim, an insurance recovery, or a referral, reviews and rebuttals of opposing accounting analyses, and deposition and trial testimony. The appropriate deliverable depends on case posture.`,
     cityFaq: (cityName) => ({
       question: `What records drive a fraud and tracing engagement for an entity based in ${cityName}?`,
-      answer: `Bank statements, the general ledger, payment records, and the account records the diverted funds moved into. The tracing follows each transfer from its source to where the funds came to rest, quantifies the loss for each scheme identified, and documents the evidence trail so it can support a civil claim, an insurance recovery, or a referral.`,
+      answer: `Bank statements, the general ledger, payment records, and the account records the diverted funds moved into. The tracing follows each transfer from its source to where the funds came to rest, quantifies the loss for each scheme identified, and documents the evidence trail so it can support a civil claim, an insurance recovery, or a referral. Whether the conduct was fraudulent is a question for the fact finder, and the report does not reach it.`,
     }),
+    context: (place) =>
+      `The tracing figure rests entirely on the entity's own bank, ledger, and payment records and is built the same way in every venue; ${place} enters as the forum for discovery and presentation, not as a data source.`,
   },
   "Divorce Financial Analysis": {
+    category: "family-financial",
     state: (place, attr) =>
-      `Income available for support is determined from the spouse's own tax, business, and pay records when compensation does not appear on a pay stub, business interests in the marital estate are valued under the standard of value and the valuation date that ${attr} matrimonial practice applies, and separate and marital funds are traced through accounts and assets. Each finding is presented so it can be applied under either party's position.`,
+      `Income available for support is determined from the spouse's own tax, business, and pay records, including business cash flow and perquisites that never reach a pay stub, business interests in the marital estate are valued under the standard of value and the valuation date that ${attr} matrimonial practice applies, and separate and marital funds are traced through accounts and assets. The analysis measures the income the records show; what a spouse could earn in other work is a question for a vocational specialist rather than for the income analysis. Each finding is presented so it can be applied under either party's position.`,
     city: (cityName, cityA) =>
-      `For a matrimonial matter in ${cityName}, a spouse's earning capacity is tested against wage data for the spouse's occupation in the ${cityA} area, a marital business is valued from its own records and the local market it serves, and the lifestyle analysis documents the marital standard of living from the household's own spending.`,
+      `For a matrimonial matter in ${cityName}, the income analysis measures what a spouse actually receives in pay, business cash flow, and perquisites paid through a business, a marital business is valued from its own records and the ${cityA}-area market it serves, and separate and marital funds are traced through accounts and assets to their source. What a spouse could earn in other work is a question for a vocational specialist rather than for the income analysis.`,
     records: "tax returns, business financial statements, account statements, and the household's spending records",
+    engagement: (records) =>
+      `A matrimonial engagement typically includes a records request tailored to the questions at issue (${records}), reconstruction of income available for support from the business's books, bank records, and tax returns together, valuation of any business interest under the applicable standard of value, a lifestyle analysis where counsel asks for one, tracing of separate and marital funds through the account history, a report organized by question with schedules that tie to source documents, and deposition, settlement conference, and trial testimony when required. The report can be prepared for one spouse, for both, or for the court.`,
+    deliverables: (orgName) =>
+      `${orgName} provides income determinations for support, business valuations, lifestyle analyses, and tracing schedules as separate report sections that can be used on their own, reviews and rebuttals of opposing financial analyses, settlement conference support, and deposition and trial testimony, prepared for one spouse, for both, or for the court. The appropriate deliverable depends on the questions at issue and the case posture.`,
     cityFaq: (cityName) => ({
       question: `How are income and business value determined in a matrimonial matter venued in ${cityName}?`,
-      answer: `Income available for support is determined from the spouse's own tax, business, and pay records, a business interest in the marital estate is valued from its own financial statements and the local market it serves, and separate and marital funds are traced through accounts and assets. Each finding is presented so it can be applied under either party's position.`,
+      answer: `Income available for support is determined from the spouse's own tax, business, and pay records, including business cash flow that never reaches a pay stub, a business interest in the marital estate is valued from its own financial statements and the local market it serves, and separate and marital funds are traced through accounts and assets. Each finding is presented so it can be applied under either party's position.`,
     }),
+    context: (place, attr) =>
+      `Income available for support is measured from the spouse's own tax, business, and account records, a marital business from its own statements and the ${attr}-area market it serves, and separate and marital funds by tracing; the source behind each figure is documented in the report.`,
   },
   Rebuttal: {
+    category: "rebuttal",
     state: (place, attr) =>
       `The review tests the opposing report's assumptions, data sources, discount rate, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic against the record and the published data, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The critique is written to the reliability standard the ${attr} forum applies to expert opinion and to its disclosure practice.`,
     city: (cityName, cityA) =>
@@ -366,8 +514,42 @@ export const SERVICE_GEO = {
       question: `What does a rebuttal of an opposing economic report cover for a case venued in ${cityName}?`,
       answer: `The assumptions, data sources, discount rate, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, each checked against the record and the published data. The critique identifies the errors that matter and quantifies how the conclusion changes when they are corrected.`,
     }),
+    context: (place) =>
+      `The review checks the opposing report's inputs, whatever the loss stream, against the record and against the published data for ${place}, and states where the two analyses part ways and by how much.`,
   },
 };
+
+/**
+ * The kind of analysis a pillar performs (see the SERVICE_GEO `category`
+ * field): "personal-loss", "commercial", "family-financial", or "rebuttal".
+ * A short name without an entry, or none at all (the state hub and city
+ * pages), reads as personal-loss, the framing the shared narratives carry.
+ * @param {string | undefined} serviceShortName
+ * @returns {"personal-loss" | "commercial" | "family-financial" | "rebuttal"}
+ */
+export function serviceGeoCategory(serviceShortName) {
+  return (serviceShortName && SERVICE_GEO[serviceShortName]?.category) || "personal-loss";
+}
+
+/**
+ * Caption of the geo sidebar's economic-context panel (EconomicContextWidget):
+ * how, if at all, local data enters the number the page is about. The
+ * personal-loss pillars and the hub pages (no service) share the earnings
+ * caption; the commercial, family-financial, and rebuttal pillars carry their
+ * own. `areaName` is a state or city name as the data spells it; it is read
+ * as a place after a preposition ("the District of Columbia") and bare in the
+ * attributive slot ("District of Columbia-area", "Bronx-area").
+ * @param {string | undefined} serviceShortName
+ * @param {string} areaName
+ * @returns {string}
+ */
+export function economicContextCaption(serviceShortName, areaName) {
+  const angle = serviceShortName ? SERVICE_GEO[serviceShortName] : undefined;
+  const place = placeName(areaName);
+  const attr = cityAttr(placeAttr(areaName));
+  if (angle?.context) return angle.context(place, attr);
+  return `Earnings and household-services figures are measured against ${attr}-area wage data and the plaintiff's own records; the source behind each figure is documented in the report.`;
+}
 
 /** The sentence a short name without a SERVICE_GEO entry renders on the city
  * hero (the state hero falls back to the state narrative's economic context). */
@@ -388,9 +570,10 @@ export function serviceStateDirectAnswer(orgName, serviceShortName, stateName, s
 
 /** Service x City hero sentence (ServiceStateCity.tsx + prerender). Same
  * work-phrase rule as the state sentence; then the pillar's angle for the
- * city, the city narrative's venue sentence, and testimony availability. The
- * angle comes before the venue so the first 160 characters (the shells' meta
- * description) name the subject of the page. */
+ * city, the city narrative's venue sentence (the matrimonial one on the
+ * family-financial pillar, the civil one everywhere else), and testimony
+ * availability. The angle comes before the venue so the first 160 characters
+ * (the shells' meta description) name the subject of the page. */
 export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, cityName, cityNarrative) {
   const place = placeName(stateName);
   const cityA = cityAttr(cityName);
@@ -399,7 +582,9 @@ export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, ci
     `${orgName} provides ${workPhrase(serviceShortName)} for cases venued in ${cityName}, ${place}.`,
     angle ? angle.city(cityName, cityA, place) : defaultCityAngle(cityA),
   ];
-  if (cityNarrative.venue) parts.push(cityNarrative.venue);
+  const venue =
+    angle?.category === "family-financial" ? cityNarrative.familyVenue || cityNarrative.venue : cityNarrative.venue;
+  if (venue) parts.push(venue);
   parts.push(
     `Deposition and trial testimony are available for ${cityA} matters, in person or by remote appearance where the forum allows.`,
   );
@@ -470,12 +655,15 @@ export function serviceStateGeographicFaqs(orgName, service, stateName) {
   const angle = SERVICE_GEO[service.shortName];
   const records = angle?.records ?? "tax returns, pay and benefit records, and business financial statements as applicable";
   const engagement = angle?.engagement
-    ? angle.engagement()
+    ? angle.engagement(records)
     : `A complete engagement typically includes a records request tailored to the claim (${records}), a review of the record and the pleadings, a written statement of assumptions, a report that presents each loss component and its present value, review and rebuttal of any opposing report, and deposition and trial testimony when required. Scope and turnaround are calibrated to the case posture and the governing disclosure framework.`;
+  const coverage = angle?.coverage
+    ? angle.coverage(attr)
+    : `with the analysis sized to the engagement scope and built from the records that drive the claim and from data for the ${attr} market rather than from national averages.`;
   return [
     {
       question: `Does ${orgName} provide ${work} in ${place}?`,
-      answer: `Yes. ${orgName} provides ${work} for attorneys handling matters venued in ${place}, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the records that drive the claim and from data for the ${attr} market rather than from national averages.`,
+      answer: `Yes. ${orgName} provides ${work} for attorneys handling matters venued in ${place}, for plaintiff and defense counsel, ${coverage}`,
     },
     {
       question: `What does ${indefiniteArticle(svc)} ${svc} engagement look like for a case venued in ${place}?`,
@@ -521,7 +709,9 @@ export function serviceCityGeographicFaqs(orgName, service, stateName, cityName)
     second,
     {
       question: `What deliverables are available for a case venued in ${cityName}?`,
-      answer: `${orgName} provides full economic damages reports, preliminary damages estimates for settlement evaluation, reviews and rebuttals of opposing economic reports, and deposition and trial testimony, sized to both trial-track and settlement matters. The appropriate deliverable depends on case posture.`,
+      answer: angle?.deliverables
+        ? angle.deliverables(orgName)
+        : `${orgName} provides full economic damages reports, preliminary damages estimates for settlement evaluation, reviews and rebuttals of opposing economic reports, and deposition and trial testimony, sized to both trial-track and settlement matters. The appropriate deliverable depends on case posture.`,
     },
   ];
 }

@@ -26,6 +26,17 @@ import { getMetroLabor } from "./labor/metro-labor";
  * Everything past the prerender cut is never ready: only prerendered combos
  * may ride the sitemap (a sitemap URL must resolve to a static dist/ page).
  *
+ * T08 decision (site audit 2026-09-05). The audit listed the 2,772 combo pages
+ * the "Cities" grid links but the sitemap leaves out and asked whether to
+ * advertise them all. Decision, for all three KW sites: the gate stays. Those
+ * pages remain prerendered, internally linked, self-canonical, and indexable;
+ * they are unadvertised until Search Console evidence supports widening.
+ * Widening = set SERVICE_CITY_SITEMAP_TOP to SERVICE_CITY_PRERENDER_TOP (10)
+ * and raise the services child ceiling in scripts/sitemap-index.test.mjs
+ * (4,000 to 7,000) in the same change. Evidence needed first: Search Console
+ * page-indexing coverage and impressions for gated vs advertised combos over
+ * 4-6 weeks (README, "Facts to confirm").
+ *
  * Consumed by scripts/generate-sitemap.mjs (via vite ssrLoadModule, like
  * scripts/generate-llms.mjs loads data modules). Not imported by the app
  * bundle - keep it that way, or the eager import graph grows.
@@ -40,7 +51,8 @@ export const SERVICE_CITY_PRERENDER_TOP = 10;
 
 /**
  * File-order rank (0-based) below which a prerendered combo city is always
- * sitemap-ready, regardless of metro labor coverage.
+ * sitemap-ready, regardless of metro labor coverage. Kept at 5 by the T08
+ * decision above; contentReadiness.test.ts pins it.
  */
 export const SERVICE_CITY_SITEMAP_TOP = 5;
 

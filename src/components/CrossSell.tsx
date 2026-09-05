@@ -1,19 +1,20 @@
 import { Briefcase, HeartPulse } from "lucide-react";
-import { VOC_SITE_URL, LCP_SITE_URL } from "@/lib/brand";
+import { VOC_SERVICE_URL, LCP_SERVICE_URL } from "@/lib/brand";
 
 // The only component allowed to name the sister practices and their domains:
 // it hands vocational and life care planning work to the practices that
-// perform it. Links are plain follow links (no nofollow) - same ownership group.
+// perform it. Links are plain follow links (no nofollow) - same ownership
+// group. The hrefs are the verified sister-site service pages (brand.ts).
 const SISTER = [
   {
     name: "Vocational Evaluation",
-    href: `${VOC_SITE_URL}/services/vocational-evaluation`,
+    href: VOC_SERVICE_URL,
     blurb: "Employability, earning capacity foundations, and vocational rehabilitation opinions from Kincaid Wolstein Vocational and Rehabilitation Services (KWVRS).",
     Icon: Briefcase,
   },
   {
     name: "Life Care Planning",
-    href: `${LCP_SITE_URL}/services/life-care-planning`,
+    href: LCP_SERVICE_URL,
     blurb: "Physician-informed life care plans and medical cost projections from KW Life Care Planning, priced to present value by our economists.",
     Icon: HeartPulse,
   },

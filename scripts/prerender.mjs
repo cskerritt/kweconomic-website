@@ -15,13 +15,16 @@
  * shell's graph (tagged data-prerender="ld") once the page hydrates.
  *
  * Run: node scripts/prerender.mjs
+ * PRERENDER_DIST=<dir> reads the template from <dir>/index.html and writes
+ * every page under <dir>, for a scratch run that leaves dist/ alone (the same
+ * override the sister sites' prerender scripts take).
  */
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "fs";
-import { dirname, join } from "path";
+import { dirname, join, resolve } from "path";
 import { fileURLToPath } from "url";
 import { createServer } from "vite";
-import { ORG_NAME, ORG_SHORT, ORG_PHONE, ORG_PHONE_DISPLAY, SITE_URL } from "./lib/site.mjs";
+import { ORG_NAME, ORG_SHORT, ORG_PHONE, ORG_PHONE_DISPLAY, SITE_URL, VOC_SITE_URL, LCP_SITE_URL } from "./lib/site.mjs";
 import { homepageFaqs } from "../src/data/home-faqs.mjs";
 import * as geoProse from "../src/data/geo-prose.mjs";
 import {
@@ -30,6 +33,7 @@ import {
   serviceStateTitle,
   serviceCityTitle,
   caseTypeStateTitle,
+  caseTypeHubTitle,
   pillarTitle,
   variantTitle,
   pairTitle,
@@ -37,7 +41,9 @@ import {
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
-const DIST = join(ROOT, "dist");
+// PRERENDER_DIST redirects the template read and every write to a scratch
+// directory, so the pages can be generated without touching dist/.
+const DIST = process.env.PRERENDER_DIST ? resolve(process.env.PRERENDER_DIST) : join(ROOT, "dist");
 const SRC = join(ROOT, "src");
 // Brand identity comes from scripts/lib/site.mjs (mirror of src/lib/brand.ts).
 const BASE_URL = SITE_URL;
@@ -66,8 +72,20 @@ const [
   { truncateAtWord },
   prose,
   stages,
-  { pillarServices, servicesForCaseType },
-  { caseTypes },
+  { pillarServices, servicesForCaseType, serviceCaseTypePairs },
+  {
+    caseTypes,
+    caseTypeHubHeading,
+    caseTypeHubDescription,
+    caseTypeStateHeading,
+    caseTypeStateDescription,
+    caseTypeStateLead,
+    caseTypeStateStepsIntro,
+    caseTypeStateFramework,
+    caseTypeStateFrameworkQuestion,
+    caseTypeStateServiceDescription,
+    caseTypeSectionHeadings,
+  },
   { credentials, credentialStateHeadings, credentialStateAngle },
   { methods },
   { guides },
@@ -75,9 +93,9 @@ const [
   { knowledgeGuides },
   { insightPosts, insightBlocks },
   { whitePapers },
-  { journeys },
+  { journeys, stageReviewer, stageSources },
   faqsModule,
-  { team, activeTeam, retainableExperts },
+  { team, activeTeam, retainableExperts, analysisResponsibility },
   { states },
   narratives,
   geoFaqs,
@@ -141,6 +159,15 @@ for (const state of states) {
   const mod = await loadOptional(`/src/data/cities/${state.slug}.ts`);
   cityDataByState[state.slug] = mod ? (Object.values(mod)[0] ?? []) : [];
 }
+// Shared copy of the legal pages and the consultation page (site audit T01):
+// the /privacy, /terms, and /schedule-consultation shells render the same
+// sections, steps, and field labels the React pages do.
+const legalPolicies = await load("/src/data/legal-policies.ts");
+const consultation = await load("/src/data/consultation.ts");
+// Where an inquiry goes (the shared intake inbox) and the /about section on
+// the sister practices: one module for About.tsx, Contact.tsx,
+// ScheduleConsultation.tsx, the privacy policy, and these shells (audit F06).
+const intake = await load("/src/data/intake.ts");
 await viteServer.close();
 
 const ORG_LEGAL = brand.ORG_LEGAL;
@@ -260,13 +287,29 @@ function renderBylineHtml(authorSlug, datePublished, dateModified) {
   const displayName = member ? `${member.name}, ${member.title}` : `${ORG_NAME} Editorial Team`;
   const linkTo = member ? `/team/${member.slug}` : "/team";
   const reviewed = dateModified && dateModified !== datePublished ? dateModified : undefined;
+  // "Reviewed" is a claim about a named person; the editorial byline labels
+  // the revision date "Updated" (AuthorByline.tsx; audit C02).
+  const dateLabel = member ? "Reviewed" : "Updated";
   const time = (d) => `<time datetime="${esc(d)}">${esc(d)}</time>`;
   return (
     `<p class="byline">By <a href="${linkTo}">${esc(displayName)}</a>` +
     (datePublished ? ` &middot; Published ${time(datePublished)}` : "") +
-    (reviewed ? ` &middot; Reviewed ${time(reviewed)}` : "") +
+    (reviewed ? ` &middot; ${dateLabel} ${time(reviewed)}` : "") +
     `</p>`
   );
+}
+
+/**
+ * "<subject> is directed by <name>, <title>, who is available to testify to
+ * it." The professional responsible for the page's work, linked to the
+ * profile that carries the CV, from src/data/team.ts analysisResponsibility()
+ * exactly as the ResponsibilityLine component prints it (audit C02). Empty
+ * when the roster has no retainable expert.
+ */
+function responsibilityHtml(subject, plural = true) {
+  const line = analysisResponsibility(subject, plural);
+  if (!line) return "";
+  return `<p>${esc(line.lead)}<a href="/team/${line.expert.slug}">${esc(line.expert.name)}</a>${esc(line.tail)}</p>`;
 }
 
 /** Visible breadcrumb trail: [{ name, path }], last item current. */
@@ -692,10 +735,12 @@ function personNode(m) {
 // module-local array is read out of the page source (title, caseTypeSlug,
 // context, approach[], result are single-line double-quoted strings), as is
 // the revision date the page's byline and CollectionPage node carry.
-// Section headings of the legal pages (src/pages/Privacy.tsx, Terms.tsx keep
-// their copy in a module-local SECTIONS array).
-const legalHeadings = (file) =>
-  [...readFileSync(join(SRC, "pages", file), "utf-8").matchAll(/^\s*heading: "([^"]+)"/gm)].map((m) => m[1]);
+// The legal pages (src/pages/Privacy.tsx, Terms.tsx): the effective-date line
+// and every policy section, heading with its paragraphs, from the shared copy
+// in src/data/legal-policies.ts.
+const effectiveDateHtml = (d) => `<p>Effective Date: <time datetime="${esc(d.iso)}">${esc(d.label)}</time></p>`;
+const legalSectionsHtml = (sections) =>
+  sections.map((s) => `<section>${h2(s.heading)}${paragraphs(s.content)}</section>`).join("");
 const CASE_STUDIES_DATE_MODIFIED =
   sharedCaseStudies?.CASE_STUDIES_DATE_MODIFIED ??
   readFileSync(join(SRC, "pages", "CaseStudies.tsx"), "utf-8").match(/CASE_STUDIES_DATE_MODIFIED = "(\d{4}-\d{2}-\d{2})"/)?.[1];
@@ -751,11 +796,14 @@ const corePages = [
       `<h1>Economic Damages Analysis Built on Transparent Methods</h1>` +
       `<p>${ORG_NAME} delivers independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
       `<p>Engagements accepted in all 50 states, the District of Columbia, and U.S. territories. Headquarters in Hackensack, NJ with a Richmond, VA office. <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>.</p>` +
+      // Mirrors Home.tsx REPORT_STATES: the inputs every report sets out, across
+      // the earnings, valuation, and tracing lanes alike.
       `<section>${h2("What Every Report States")}${ul([
-        "Question asked. The loss claim the analysis answers and the records it relies on.",
-        "Earnings base. Documented pre-injury or but-for earnings and fringe benefits.",
-        "Growth and worklife. Wage growth and the worklife horizon, each on its own schedule.",
-        "Discount rate. The rate that reduces future losses to present value, and its source.",
+        "Question asked. The loss, value, or tracing question the analysis answers and the records it relies on.",
+        "Base figures. Documented earnings and benefits, or the normalized cash flow and standard of value for a business interest.",
+        "Projection assumptions. Wage growth and the worklife horizon, or the loss period and market data behind a profit projection, each on its own schedule.",
+        "Discount rate. The rate that reduces future amounts to present value, matched to the stream it discounts, and its source.",
+        "Tie-out to the record. Each schedule traces to the tax return, ledger, or account statement it came from, and a tracing states where the records end.",
       ])}<p>Same schedules in every venue, plaintiff or defense. <a href="/methods">See the methods</a>.</p></section>` +
       `<section>${h2("Services")}${linkList(serviceData.map((s) => ({ href: `/services/${s.slug}`, label: s.name })))}</section>` +
       `<section>${h2("Nationwide coverage")}${linkList(stateLinks((s) => `/locations/${s.slug}`))}</section>` +
@@ -786,6 +834,15 @@ const corePages = [
       `<p>Every analysis is built from the records in the case and from published data: tax returns, wage and benefit records, and financial statements on one side, and government wage, price, and worklife series, market yield data, and the forensic economics literature on the other. The report states each assumption in plain language and presents the loss under alternative scenarios where the record supports more than one reading of the facts, so the other side can recompute the figure from the report alone.</p>` +
       `<p>${ORG_SHORT} accepts plaintiff and defense engagements equally. Opinions follow the evidence. With offices in Hackensack, NJ and Richmond, VA, ${ORG_SHORT} accepts engagements in all 50 states, the District of Columbia, and U.S. territories.</p>` +
       `<p>The <a href="/services">service descriptions</a> set out each analysis the practice prepares, the <a href="/case-studies">illustrative engagements</a> show how a damages figure is built, the <a href="/resources/faq">attorney FAQ</a> answers the questions that come up at retention, and the <a href="/credentials">credentials</a> page describes what qualifies a forensic economist to testify.</p></section>` +
+      // Mirrors the About.tsx "Sister Practices" section word for word: the
+      // copy comes from src/data/intake.ts (FAMILY_SECTION), the sister
+      // practices are named only through the brand constants (link label =
+      // host), and the handoff facts come from the two pillar: false entries
+      // in services.ts and the shared intake inbox (brand.ts, lead mailer).
+      `<section id="family-of-practices">${h2(intake.FAMILY_SECTION.heading)}` +
+      `<p>${esc(intake.FAMILY_SECTION.intro[0])}<a href="${VOC_SITE_URL}" rel="noopener">${hostOf(VOC_SITE_URL)}</a>${esc(intake.FAMILY_SECTION.intro[1])}<a href="${LCP_SITE_URL}" rel="noopener">${hostOf(LCP_SITE_URL)}</a>${esc(intake.FAMILY_SECTION.intro[2])}</p>` +
+      `<ul>${intake.FAMILY_SECTION.bullets.map((b) => `<li><strong>${esc(b.lead)}</strong>${esc(b.text)}</li>`).join("")}</ul>` +
+      `<p>${esc(intake.FAMILY_SECTION.intake[0])}<a href="/contact">${esc(intake.FAMILY_SECTION.contactFormLabel)}</a>${esc(intake.FAMILY_SECTION.intake[1])}<a href="mailto:${esc(brand.ORG_EMAIL)}">${esc(brand.ORG_EMAIL)}</a>${esc(intake.FAMILY_SECTION.intake[2])}</p></section>` +
       `<section>${h2("Our Economists")}<p>The practice is led by a Chief of Economic Services who directs every analysis and is available to testify to it, supported by an economics associate who coordinates each engagement with counsel.</p>${linkList(activeTeam.map((m) => ({ href: `/team/${m.slug}`, label: m.name, blurb: m.title })))}</section>` +
       navLinks([{ href: "/team", label: "Our Team" }, { href: "/services", label: "Services" }, { href: "/contact", label: "Contact" }]),
     jsonLd: [
@@ -825,7 +882,10 @@ const corePages = [
     innerHtml:
       `<h1>Contact ${ORG_NAME}</h1><p>Ready to discuss your case? Tell us about the loss claim, the records you have, and your deadlines. A member of the team responds within one business day.</p>` +
       `<section>${h2("Our Offices")}${h3("New Jersey - Headquarters")}<p>${esc(brand.OFFICES[0].streetAddress)}, Hackensack, NJ ${brand.OFFICES[0].postalCode}. <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>. <a href="mailto:${esc(brand.ORG_EMAIL)}">${esc(brand.ORG_EMAIL)}</a></p>${h3("Virginia - Richmond Office")}<p>Richmond, Virginia. <a href="tel:${brand.ORG_PHONE_VA.replace(/-/g, "")}">${esc(brand.ORG_PHONE_VA_DISPLAY)}</a></p><p>Office hours Monday to Friday, 9:00 AM to 5:00 PM ET.</p></section>` +
-      `<section>${h2("What happens next")}${ol(["Conflict check within 1 business day.", "Scope and fee confirmed in writing for the analysis you need.", "Engagement letter and records-request checklist."])}<p><a href="/schedule-consultation">Schedule a consultation</a> to discuss the loss claim, the records you have, and your deadlines. We confirm scope, timeline, and fee before any work begins.</p></section>` +
+      `<section>${h2("What happens next")}${ol(["Conflict check within 1 business day.", "Scope and fee confirmed in writing for the analysis you need.", "Engagement letter and records-request checklist."])}<p><a href="/schedule-consultation">Schedule a consultation</a> to discuss the loss claim, the records you have, and your deadlines. We confirm scope, timeline, and fee before any work begins.</p>` +
+      // Mirrors the note under the Contact.tsx form: where the inquiry goes
+      // (src/data/intake.ts; audit F06, F08 /contact).
+      `<p>${esc(intake.INTAKE_DISCLOSURE)}</p></section>` +
       navLinks([{ href: "/services", label: "Services" }, { href: "/locations", label: "Locations" }, { href: "/about", label: "About" }]),
     jsonLd: [
       schema.organizationSchema(),
@@ -997,7 +1057,7 @@ const phase2Pages = [
       `<section>${h2("Built to be defensible")}<p>Whatever the loss, the analysis is held to the same standard - so each figure holds up under examination, not just on paper.</p>${ul([
         "Same method, either side. The methodology is identical whether plaintiff or defense commissions the work. An analysis that only holds up for the retaining party does not survive cross-examination.",
         "Records, assumptions, arithmetic. Every figure traces to a record in the case or a published data source, states the assumption behind it, and can be recomputed by the other side from the report alone.",
-        "Conflict-checked and confidential. Every matter opens with a conflict check, and pre-retention communications are treated as confidential consulting-expert work product until an engagement is in place.",
+        "Conflict-checked and confidential. Every matter opens with a conflict check. Pre-retention communications are handled confidentially; whether they are protected as consulting-expert work product depends on the terms of the retention and the rules of the forum, which counsel confirms at engagement.",
       ])}</section>` +
       caseStudyEntries()
         .map(
@@ -1028,8 +1088,34 @@ const phase2Pages = [
       `Contact ${ORG_NAME} to discuss your case and schedule an economic damages consultation with a forensic economist. Response within one business day.`,
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }, { name: "Schedule a Consultation", path: "/schedule-consultation" }],
     cta: false,
+    // Mirrors ScheduleConsultation.tsx through src/data/consultation.ts: the
+    // hero lead, the four "What to Expect" steps, the preparation list, the
+    // request form's field labels and choices, and the office details, so a
+    // non-JS reader learns what the consultation involves and how to request
+    // one. The form itself is client-side; the shell offers the phone and the
+    // contact page as the working paths.
     innerHtml:
-      `<h1>Schedule a Consultation</h1><p>Contact ${ORG_NAME} to discuss your case requirements and schedule an economic damages consultation with a forensic economist. Tell us about the loss claim, the records you have, and your deadlines; we confirm scope, timeline, and fee before any work begins.</p><p>Call <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a> or use the <a href="/contact">contact form</a>.</p>` +
+      // The lead is the page's own hero paragraph (src/data/consultation.ts);
+      // the shell prints no paragraph the hydrated page does not.
+      `<h1>Schedule a Consultation</h1>${para(consultation.CONSULTATION_LEAD)}` +
+      `<section>${h2("What to Expect")}<ol>${consultation.whatToExpect
+        .map((s) => `<li><strong>${esc(s.heading)}:</strong> ${esc(s.body)}</li>`)
+        .join("")}</ol></section>` +
+      `<section>${h2("Information to Have Ready")}${para(consultation.INFO_TO_HAVE_READY_INTRO)}${ul(consultation.infoToHaveReady)}</section>` +
+      `<section>${h2("Request a Consultation")}<p>The request form asks for the following. Fields marked required must be completed before the form is submitted.</p>` +
+      `<ul>${consultation.consultationFormFields
+        .map((f) => `<li>${esc(f.label)}${f.required ? " (required)" : ""}${f.options ? `: ${esc(f.options.join(", "))}` : ""}</li>`)
+        .join("")}</ul>` +
+      `<p>The form is sent with the "${esc(consultation.FORM_SUBMIT_LABEL)}" button. ${esc(consultation.FORM_FOOTNOTE)}</p><p>${esc(consultation.FORM_INTAKE_NOTE)}</p></section>` +
+      `<section>${h2("Our Offices")}${consultation.consultationOffices
+        .map(
+          (o) =>
+            `<h3>${esc(o.heading)}</h3><p>${esc(o.location)}. Phone: <a href="tel:${o.phone.replace(/-/g, "")}">${esc(o.phoneDisplay)}</a>.` +
+            (o.email ? ` Email: <a href="mailto:${esc(o.email)}">${esc(o.email)}</a>.` : "") +
+            `</p>`,
+        )
+        .join("")}` +
+      `<h3>Office Hours</h3><p>${consultation.OFFICE_HOURS.map((h) => `${esc(h.days)}: ${esc(h.hours)}`).join(". ")}. ${esc(consultation.AFTER_HOURS_NOTE)}</p></section>` +
       navLinks([{ href: "/services", label: "Services" }, { href: "/contact", label: "Contact" }]),
     jsonLd: [
       schema.organizationSchema(),
@@ -1050,9 +1136,14 @@ const phase2Pages = [
       `How ${ORG_NAME} handles information submitted through this site: contact and consultation forms, analytics cookies, disclosure limits, and data security.`,
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "Privacy Policy", path: "/privacy" }],
     cta: false,
+    // The full policy (Privacy.tsx via src/data/legal-policies.ts): effective
+    // date, the opening paragraph, and every section's heading and paragraphs.
     innerHtml:
-      `<h1>Privacy Policy</h1><p>This privacy policy describes how ${ORG_NAME} collects, uses, and protects information submitted through ${DOMAIN}.</p>` +
-      `<section>${h2("What this policy covers")}${ul(legalHeadings("Privacy.tsx"))}</section>`,
+      `<h1>Privacy Policy</h1>` +
+      effectiveDateHtml(legalPolicies.PRIVACY_EFFECTIVE_DATE) +
+      para(legalPolicies.privacyIntro) +
+      legalSectionsHtml(legalPolicies.privacySections) +
+      navLinks([{ href: "/terms", label: "Terms of Service" }, { href: "/contact", label: "Contact Us" }]),
     jsonLd: [],
   },
   {
@@ -1062,9 +1153,14 @@ const phase2Pages = [
       `Terms of use for the ${ORG_NAME} website: informational content only, no expert relationship until an engagement letter is signed, and New Jersey law.`,
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "Terms of Service", path: "/terms" }],
     cta: false,
+    // The full terms (Terms.tsx via src/data/legal-policies.ts): effective
+    // date, the opening paragraph, and every section's heading and paragraphs.
     innerHtml:
-      `<h1>Terms of Service</h1><p>Please read these Terms of Service carefully before using ${DOMAIN}. By accessing or using this Site, you agree to be bound by these Terms.</p>` +
-      `<section>${h2("What these terms cover")}${ul(legalHeadings("Terms.tsx"))}</section>`,
+      `<h1>Terms of Service</h1>` +
+      effectiveDateHtml(legalPolicies.TERMS_EFFECTIVE_DATE) +
+      para(legalPolicies.termsIntro) +
+      legalSectionsHtml(legalPolicies.termsSections) +
+      navLinks([{ href: "/privacy", label: "Privacy Policy" }, { href: "/contact", label: "Contact Us" }]),
     jsonLd: [],
   },
 ];
@@ -1328,17 +1424,26 @@ for (const svc of serviceData) {
         renderBylineHtml(undefined, undefined, svc.dateModified) +
         para(svc.description) +
         `<p>${ORG_NAME} prepares ${esc(work)} for plaintiff and defense counsel nationwide; the method is the same whichever side retains the economist.</p>` +
+        // Mirrors ServicePillar.tsx: the professional responsible for the work
+        // (C02) and, where the pillar carries one, the explained hand-off to
+        // the sister practice whose discipline the work depends on (F08, G01).
+        responsibilityHtml(`${prose.capFirst(work)} at ${ORG_NAME}`, false) +
+        (svc.handoff
+          ? `<p>${esc(svc.handoff.text)} <a href="${esc(svc.handoff.href)}" rel="noopener">${esc(svc.handoff.linkLabel)}</a>.</p>`
+          : "") +
         (declaredCaseTypes.length
           ? `<section>${h2("Case Types")}${linkList(declaredCaseTypes.map((c) => ({ href: `/case-types/${c.slug}`, label: c.name })))}</section>`
           : "") +
         `<section>${h2(`${svc.shortName} by Case Type`)}<p>How ${esc(work)} applies to the specific demands of each case type: methodology, deliverables, and what counsel should expect.</p>${linkList(
           declaredCaseTypes.map((c) => ({ href: `/services/${svc.slug}/case/${c.slug}`, label: `${svc.shortName} for ${c.name}` })),
         )}</section>` +
+        // The FAQ and the guides come before the 56-entry state directory, as
+        // on the hydrated page (audit F08).
+        renderFaqHtml(faqs, `Frequently asked: ${svc.shortName}`) +
+        relatedHtml(svc.related ?? [], `Guides and methods for ${name}`) +
         `<section>${h2(`${svc.shortName} by State`)}${linkList(
           states.map((s) => ({ href: `/services/${svc.slug}/${s.slug}`, label: s.name, blurb: s.abbreviation })),
         )}</section>` +
-        renderFaqHtml(faqs, `Frequently asked: ${svc.shortName}`) +
-        relatedHtml(svc.related ?? [], `Guides and methods for ${name}`) +
         sourcesHtml(svc.sources) +
         (linkedCredentials.length
           ? `<section>${h2("How an expert on this work is qualified")}<p>No state licenses forensic economists. Qualification to testify on ${esc(work)} is decided case by case on education, method, and testimony history; these pages explain what each credential establishes and what it does not.</p>${linkList(
@@ -1352,7 +1457,7 @@ for (const svc of serviceData) {
       ctaContext: svc.shortName,
       jsonLd: [
         schema.organizationSchema(),
-        schema.serviceSchema({ slug: svc.slug, name: svc.name, description, dateModified: svc.dateModified }),
+        schema.serviceSchema({ url, name: svc.name, description, dateModified: svc.dateModified }),
         buildFaqJsonLd(faqs, url),
       ],
     }),
@@ -1401,7 +1506,7 @@ for (const state of states) {
     `<h1>Forensic Economists in ${esc(place)}</h1>` +
     para(narrative.directAnswer) +
     para(narrative.economicContext) +
-    `<section>${h2(`Expert Services in ${place}`)}<p>Our forensic economists prepare lost earnings, wrongful death, household services, employment, and business damages analyses and rebuttals for ${esc(state.name)} litigation. Each projection is anchored to the plaintiff's own records and to ${esc(state.name)} wage data, and written to the jurisdiction's expert evidence standards.</p>${linkList(
+    `<section>${h2(`Expert Services in ${place}`)}<p>Our forensic economists prepare lost earnings, wrongful death, household services, employment, and business damages analyses and rebuttals for ${esc(state.name)} litigation. Each projection is anchored to the plaintiff's own records and to ${esc(state.name)} wage data, and written to the jurisdiction's expert evidence standards.</p>${responsibilityHtml(`Analyses for ${placeAttr(state.name)} matters`)}${linkList(
       serviceData.map((s) => ({ href: `/services/${s.slug}/${state.slug}`, label: `${s.shortName} in ${place}` })),
     )}</section>` +
     (cities.length
@@ -1430,7 +1535,6 @@ for (const state of states) {
       jsonLd: [
         schema.organizationSchema(),
         schema.serviceSchema({
-          slug: `state-${state.slug}`,
           url,
           name: `Economic Damages Services in ${place}`,
           description: narrative.directAnswer,
@@ -1464,6 +1568,8 @@ for (const state of states) {
       para(narrative.directAnswer) +
       para(narrative.blurb) +
       para(cityIntro(city, state)) +
+      // Mirrors CityPage.tsx: the professional responsible for the work (C02).
+      responsibilityHtml(`Analyses for ${cityAttr(city.name)} matters`) +
       `<section>${h2(`Services in ${city.name}`)}${linkList(serviceLinksHere)}</section>` +
       `<section>${h2(`About ${city.name}`)}<p>County: ${esc(city.county)}.${city.msaName ? ` Metropolitan area: ${esc(city.msaName)}.` : ""}${city.isStateCapital ? ` State capital of ${esc(state.name)}.` : ""}</p></section>` +
       `<section>${h2(`Where ${state.name} Damages Claims Are Litigated`)}<p>Economic damages reports for ${esc(city.name)} cases are prepared for ${esc(state.name)}'s civil and compensation forums, its expert evidence standards, and the damages rules that decide which loss components are recoverable.</p>${damagesFrameworkHtml(state)}</section>` +
@@ -1492,7 +1598,6 @@ for (const state of states) {
         jsonLd: [
           schema.organizationSchema(),
           schema.serviceSchema({
-            slug: `city-${state.slug}-${city.slug}`,
             url,
             name: `Economic Damages Services in ${city.name}, ${state.abbreviation}`,
             description: narrative.directAnswer,
@@ -1524,16 +1629,27 @@ for (const svc of serviceData) {
     const place = placeName(state.name);
     const directAnswer = narratives.serviceStateDirectAnswer(ORG_NAME, svc.shortName, state.name, narrative);
     const regs = getRegulationsByState(state.slug);
+    // Mirrors ServiceState.tsx: the pillar's own venue paragraph
+    // (src/data/narratives.ts serviceStateVenueParagraph) on the pillars whose
+    // framework is not the tort framework (employment, the commercial pillars,
+    // divorce, rebuttal); the tort pillars print the state's damages context
+    // and its workers' compensation forum (2026-09-05 audit, F09).
+    const venueParagraph = narratives.serviceStateVenueParagraph(svc, state);
     const topCities = geoLinks.serviceCityCities(cityDataByState[state.slug] ?? []);
     const innerHtml =
       `<h1>${esc(svc.shortName)} in ${esc(place)}</h1>` +
       para(directAnswer) +
-      para(narrative.legalContext) +
+      // Mirrors ServiceState.tsx: the legal context for this pillar's category
+      // (the commercial and family-financial pillars never print the workers'
+      // compensation forum, which hears no claim of theirs; audit F09).
+      para(narratives.serviceStateLegalContext(svc.shortName, narrative)) +
       `<section>${h2(`${svc.shortName} in ${place}`)}${para(svc.description)}${
-        regs
-          ? `<p>${esc(regs.damagesContext)} Outside the civil courts, wage-loss disputes in workers' compensation matters proceed before the ${esc(regs.compensationForum)}.</p>`
-          : ""
-      }</section>` +
+        venueParagraph
+          ? `<p>${esc(venueParagraph)}</p>`
+          : regs
+            ? `<p>${esc(regs.damagesContext)} Outside the civil courts, wage-loss disputes in workers' compensation matters proceed before the ${esc(regs.compensationForum)}.</p>`
+            : ""
+      }${responsibilityHtml(`${prose.capFirst(work)} for ${placeAttr(state.name)} matters`, false)}</section>` +
       (serviceCaseTypes.length
         ? `<section>${h2("Case Types")}${linkList(serviceCaseTypes.map((c) => ({ href: `/case-types/${c.slug}/${state.slug}`, label: c.name })))}</section>`
         : "") +
@@ -1572,7 +1688,6 @@ for (const svc of serviceData) {
         jsonLd: [
           schema.organizationSchema(),
           schema.serviceSchema({
-            slug: `${svc.slug}-${state.slug}`,
             url,
             name: `${svc.name} in ${place}`,
             description: directAnswer,
@@ -1598,8 +1713,18 @@ for (const svc of serviceData) {
       const cityInner =
         `<h1>${esc(svc.shortName)} in ${esc(city.name)}, ${esc(state.abbreviation)}</h1>` +
         para(cityDirect) +
-        para(cityNarr.directAnswer) +
-        `<section>${h2(`${svc.shortName} in ${city.name}`)}${para(svc.description)}<p>${ORG_NAME} serves counsel throughout ${esc(city.name)} and the surrounding ${esc(city.county || state.name)} area. Our economists measure earnings, fringe benefits, and household services against wage data for the ${esc(cityA)} area and the plaintiff's own records, and are familiar with the court system and disclosure requirements that affect ${esc(prose.proseName(svc.shortName))} engagements in ${esc(place)}.</p></section>` +
+        // Mirrors ServiceStateCity.tsx: the place paragraph is the city
+        // narrative's anchor sentence with the sides sentence; the hero above
+        // already names the pillar's work, so the hub's "prepares economic
+        // damages analyses" opener never prints under a valuation, tracing,
+        // or matrimonial hero (2026-09-05 audit, F09).
+        para(narratives.serviceCityPlaceParagraph(svc.shortName, cityNarr)) +
+        // Mirrors ServiceStateCity.tsx: the pillar's own context paragraph
+        // (src/data/narratives.ts serviceCityContextParagraph) names what this
+        // pillar measures and against what; the earnings-and-wage-data sentence
+        // belongs to the personal-loss pillars only (2026-09-05 audit, F09).
+        // Then the professional responsible for the work (C02).
+        `<section>${h2(`${svc.shortName} in ${city.name}`)}${para(svc.description)}<p>${esc(narratives.serviceCityContextParagraph(svc, state, city))}</p>${responsibilityHtml(`${prose.capFirst(work)} for ${cityA} matters`, false)}</section>` +
         (serviceCaseTypes.length
           ? `<section>${h2("Case Types")}${linkList(serviceCaseTypes.map((c) => ({ href: `/case-types/${c.slug}/${state.slug}`, label: c.name })))}</section>`
           : "") +
@@ -1639,7 +1764,6 @@ for (const svc of serviceData) {
           jsonLd: [
             schema.organizationSchema(),
             schema.serviceSchema({
-              slug: `${svc.slug}-${state.slug}-${city.slug}`,
               url: cityUrl,
               name: `${svc.name} in ${city.name}, ${state.abbreviation}`,
               description: cityDirect,
@@ -1815,22 +1939,33 @@ for (const [i, c] of caseTypes.entries()) {
   const prev = caseTypes[i - 1];
   const next = caseTypes[i + 1];
   const linkedServices = serviceData.filter((s) => c.relevantServices.includes(s.slug));
+  // "Related services" links the service x case pair pages, so only the linked
+  // services that declare this case type in services.ts (the pairs that exist;
+  // an undeclared pair 301s to the pillar). Mirrors CaseTypeHub.tsx.
+  const pairServices = linkedServices.filter((s) => s.caseTypes.includes(c.slug)).slice(0, 3);
   const linkedCredentials = credentials.filter((cred) => credentialMatches(cred, c.relevantCredentials));
-  const hubH1 = `${c.name} Economic Damages Analysis`;
+  // The H1, title stem, description, and section headings come from the
+  // case-type helpers CaseTypeHub.tsx reads: the entry's `framing` block where
+  // it carries one (the family-law matter is an income, valuation, and tracing
+  // assignment, not a damages claim; audit F08) and the shared damages
+  // framing otherwise.
+  const hubH1 = caseTypeHubHeading(c);
+  const hubHeadings = caseTypeSectionHeadings(c);
   writePage(`/case-types/${c.slug}`, buildPage({
     path: `/case-types/${c.slug}`,
-    // Match CaseTypeHub.tsx (title + description); pinned by scripts/prerender-meta.test.mjs.
-    title: `${c.titleBase} | ${ORG_NAME}`,
-    description: `${c.name} economic damages: loss components, the records that drive them, and how the present value is built. Plaintiff and defense.`,
+    // Match CaseTypeHub.tsx (title + description, both through the shared
+    // helpers); pinned by scripts/prerender-meta.test.mjs.
+    title: `${caseTypeHubTitle(c, ORG_NAME)}`,
+    description: `${caseTypeHubDescription(c)}`,
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "Case Types", path: "/case-types" }, { name: c.name, path: `/case-types/${c.slug}` }],
     innerHtml:
       `<h1>${esc(hubH1)}</h1>` +
       renderBylineHtml(caseTypeAuthor?.slug, c.datePublished, c.dateModified) +
       lead(c.summary) +
       `<section id="in-short"><p><strong>In short</strong></p>${ul(c.inShort ?? [])}</section>` +
-      `<section id="loss-components">${h2("What the economic claim consists of")}${para(c.lossComponents)}</section>` +
-      `<section id="damages-exposure">${h2("Where the damages concentrate")}${para(c.damagesExposure)}</section>` +
-      `<section id="analysis">${h2("How the analysis is built")}${para(c.economicImpact)}${ol(c.steps ?? [])}</section>` +
+      `<section id="loss-components">${h2(hubHeadings.components)}${para(c.lossComponents)}</section>` +
+      `<section id="damages-exposure">${h2(hubHeadings.concentration)}${para(c.damagesExposure)}</section>` +
+      `<section id="analysis">${h2(hubHeadings.method)}${para(c.economicImpact)}${ol(c.steps ?? [])}</section>` +
       (linkedCredentials.length
         ? `<section id="credentials">${h2("Relevant credentials")}${linkList(linkedCredentials.map((cred) => ({ href: `/credentials/${cred.slug}`, label: `${cred.name} (${cred.abbreviation})` })))}</section>`
         : "") +
@@ -1842,9 +1977,11 @@ for (const [i, c] of caseTypes.entries()) {
         ATTORNEY_STAGES.map((stage) => ({ href: `/attorneys/${stage.slug}/${c.slug}`, label: stage.label, blurb: `${c.name} cases` })),
       )}</section>` +
       renderFaqHtml(c.faqs) +
+      (pairServices.length
+        ? `<section>${h2("Related services")}${linkList(pairServices.map((s) => ({ href: `/services/${s.slug}/case/${c.slug}`, label: s.name, blurb: `Applied to ${lower} matters` })))}</section>`
+        : "") +
       (linkedServices.length
-        ? `<section>${h2("Related services")}${linkList(linkedServices.slice(0, 3).map((s) => ({ href: `/services/${s.slug}/case/${c.slug}`, label: s.name, blurb: `Applied to ${lower} matters` })))}</section>` +
-          `<section id="service-pages">${h2("Service pages")}${linkList(linkedServices.map((s) => ({ href: `/services/${s.slug}`, label: s.name })))}</section>`
+        ? `<section id="service-pages">${h2("Service pages")}${linkList(linkedServices.map((s) => ({ href: `/services/${s.slug}`, label: s.name })))}</section>`
         : "") +
       sourcesHtml(c.sources) +
       navLinks([
@@ -1878,8 +2015,14 @@ for (const [i, c] of caseTypes.entries()) {
     const regulations = getRegulationsByState(s.slug);
     const trialCourts = courts ? selectTrialCourts(courts, COURT_SELECTION[c.category] ?? "general") : [];
     const federalVenues = courts?.federalDistricts ?? [];
-    const frameworkText = regulations ? (isInjury ? regulations.damagesContext : regulations.generalContext) : "";
-    const h1 = `${c.name} Economic Damages Expert in ${place}`;
+    // Mirrors CaseTypeState.tsx: the state module's damages text (tort for the
+    // injury and death categories, fault-interest-caps otherwise), or the
+    // entry's own framing paragraph for a matter that is not a damages claim.
+    const frameworkText = regulations
+      ? caseTypeStateFramework(c, place, isInjury ? regulations.damagesContext : regulations.generalContext)
+      : "";
+    const h1 = caseTypeStateHeading(c, place);
+    const stateHeadings = caseTypeSectionHeadings(c);
     // Two FAQs that exist only for this case type in this state; the hub's own
     // FAQs are linked, not repeated, so the FAQPage node is not a duplicate.
     const localFaqs = [
@@ -1903,7 +2046,7 @@ for (const [i, c] of caseTypes.entries()) {
       ...(regulations
         ? [
             {
-              question: `How does ${place}'s damages framework shape the economic analysis?`,
+              question: caseTypeStateFrameworkQuestion(c, place),
               answer: `${frameworkText} ${regulations.expertStandard}`,
             },
           ]
@@ -1921,7 +2064,7 @@ for (const [i, c] of caseTypes.entries()) {
       // in a template literal so the parity guard can slot it, + description);
       // pinned by scripts/prerender-meta.test.mjs.
       title: `${caseTypeStateTitle(c, s, ORG_NAME)}`,
-      description: `${c.name} economic damages in ${placeName(s.name)}: loss components, state damages rules and venues, and how the number is built.`,
+      description: `${caseTypeStateDescription(c, placeName(s.name))}`,
       breadcrumbs: [
         { name: "Home", path: "/" },
         { name: "Case Types", path: "/case-types" },
@@ -1931,16 +2074,16 @@ for (const [i, c] of caseTypes.entries()) {
       innerHtml:
         `<h1>${esc(h1)}</h1>` +
         renderBylineHtml(caseTypeAuthor?.slug, c.datePublished, c.dateModified) +
-        `<p>${ORG_NAME} prepares economic damages analyses for ${esc(lower)} cases venued in ${esc(place)}: the components the loss claim consists of, the records that drive them, and a present value built to ${esc(place)}'s damages rules and venues. Plaintiff and defense.</p>` +
+        para(caseTypeStateLead(c, ORG_NAME, place)) +
         `<section id="definition"><p>${esc(c.summaryShort ?? c.summary)} <a href="/case-types/${c.slug}">Read the full ${esc(lower)} analysis guide</a>.</p></section>` +
         (courts || regulations
           ? `<section id="jurisdictional-notes">${h2(`${s.name} courts and expert standards`)}` +
             (regulations ? para(regulations.expertStandard) : "") +
             (courts ? courtVenuesHtml(courts, trialCourts, "Where these cases are heard") + compensationHtml : "") +
-            (regulations ? `${h3("Damages framework")}${para(frameworkText)}` : "") +
+            (regulations ? `${h3(stateHeadings.framework)}${para(frameworkText)}` : "") +
             `</section>`
           : "") +
-        `<section id="analysis">${h2("How the analysis is built")}<p>The same four steps apply to a ${esc(lower)} case venued in ${esc(place)}; the damages framework above decides which components enter the total.</p>${ol(c.steps ?? [])}</section>` +
+        `<section id="analysis">${h2(stateHeadings.method)}${para(caseTypeStateStepsIntro(c, place))}${ol(c.steps ?? [])}</section>` +
         (expertsInState.length
           ? `<section id="experts">${h2(`Experts serving ${place}`)}${linkList(expertsInState.slice(0, 6).map((m) => ({ href: `/team/${m.slug}`, label: m.name, blurb: m.title })))}</section>`
           : "") +
@@ -1961,10 +2104,9 @@ for (const [i, c] of caseTypes.entries()) {
         // The page canonical is the Service entity's @id and url (no
         // /services/<case-type>/<state> route exists).
         schema.serviceSchema({
-          slug: `${c.slug}/${s.slug}`,
           url,
           name: h1,
-          description: `Economic damages analysis for ${lower} matters in ${place}.`,
+          description: caseTypeStateServiceDescription(c, place),
           areaServed: { "@type": s.type === "state" ? "State" : "AdministrativeArea", name: s.name },
           dateModified: c.dateModified,
         }),
@@ -2094,7 +2236,6 @@ for (const [i, c] of credentials.entries()) {
         // economics work in the state, not a claim that its economists hold
         // the credential. The page canonical is the entity's @id and url.
         schema.serviceSchema({
-          slug: `cred-${c.slug}-${s.slug}`,
           url,
           name: `Forensic Economists for ${s.name} Damages Matters (${abbr})`,
           description: `${ORG_NAME} provides forensic economists for ${s.name} damages matters. This page explains ${c.name} (${abbr}) and how ${attr} courts weigh it.`,
@@ -2222,6 +2363,10 @@ for (const t of team) {
     cta: !memoriam,
     innerHtml:
       `<h1>${esc(t.name)}</h1><p>${esc(t.title)}</p>` +
+      // Degree credentials only, the rule the bylines and the Person nodes
+      // apply: background certifications from another discipline stay off the
+      // economics shells (scripts/prerender-shells.test.mjs scans for them).
+      (degreeCredentials(t).length ? `<p>Credentials: ${esc(degreeCredentials(t).join(", "))}</p>` : "") +
       (!memoriam && jurisdictions.length ? `<p>Jurisdictions served: ${esc(jurisdictions.join(", "))}</p>` : "") +
       `<section>${h2("Biography", "bio")}${paragraphs(t.fullBio || t.bio)}</section>` +
       ((t.specialties ?? []).length ? `<section>${h2("Areas of Expertise", "expertise")}${ul(t.specialties)}</section>` : "") +
@@ -2295,6 +2440,9 @@ for (const s of serviceData) {
         ])}</section>` +
         `<p><a href="/schedule-consultation">Schedule a consultation</a></p>` +
         relatedHtml(related, "Guides and methods") +
+        // Mirrors ServiceTransactional.tsx: the pillar's standards and data
+        // sources beside the billing, process, and timeline claims (C04).
+        sourcesHtml(s.sources) +
         navLinks([
           { href: `/services/${s.slug}`, label: s.name },
           { href: "/services", label: "All Services" },
@@ -2304,7 +2452,7 @@ for (const s of serviceData) {
       jsonLd: [
         schema.organizationSchema(),
         schema.serviceSchema({
-          slug: `${s.slug}/${variant}`,
+          url: abs(path),
           name: title,
           description,
           dateModified: s.dateModified,
@@ -2313,15 +2461,20 @@ for (const s of serviceData) {
     }));
     serviceVariantPages++;
   }
-  for (const c of caseTypes) {
+  // Only the pairs the pillar declares in services.ts (serviceCaseTypePairs(),
+  // the set the sitemap advertises and ServicePillar.tsx links). An undeclared
+  // pair is not a page: ServiceCaseType.tsx sends it to the pillar and
+  // server.js 301s its address the same way, so no shell is written for it.
+  const declaredPairs = serviceCaseTypePairs().filter((p) => p.service.slug === s.slug);
+  for (const c of declaredPairs.map((p) => caseTypeBySlug[p.caseTypeSlug]).filter(Boolean)) {
     const path = `/services/${s.slug}/case/${c.slug}`;
     const url = abs(path);
     const heading = `${s.name} for ${c.name} Cases`;
     const lower = c.name.toLowerCase();
-    // Pair-specific copy exists only for the pairs the pillar declares in
-    // services.ts (caseTypeNotes). Undeclared pairs render the shared
-    // sections without a FAQ block or FAQPage markup, so the case-type hub
-    // stays the FAQ owner.
+    // The pair note (services.ts caseTypeNotes, keyed by case-type slug)
+    // carries the pair's summary and its two FAQs; a declared pair without a
+    // note falls back to the shared sections with no FAQ block or FAQPage
+    // markup, so the case-type hub stays the FAQ owner.
     const note = s.caseTypeNotes?.[c.slug];
     const siblings = servicesForCaseType(c.slug).filter((x) => x.slug !== s.slug);
     writePage(path, buildPage({
@@ -2365,7 +2518,7 @@ for (const s of serviceData) {
       jsonLd: [
         schema.organizationSchema(),
         schema.serviceSchema({
-          slug: `${s.slug}/case/${c.slug}`,
+          url,
           name: heading,
           description: pairDescription(s, c),
           dateModified: s.dateModified,
@@ -2389,6 +2542,9 @@ for (const stage of STAGE_SLUGS) {
   const stageUrl = abs(stagePath);
   const heading = stageIndexHeading(stage);
   const items = caseTypes.map((c) => ({ name: journeyHeading(stage, c), url: abs(`/attorneys/${stage}/${c.slug}`) }));
+  // Mirrors JourneyStageIndex.tsx: the reviewer the stage's guides share and
+  // the union of their registry sources (audit C02 / C04).
+  const stageBy = stageReviewer(stage);
   writePage(stagePath, buildPage({
     path: stagePath,
     // Match JourneyStageIndex.tsx (stageIndexTitle / stageIndexDescription).
@@ -2398,12 +2554,14 @@ for (const stage of STAGE_SLUGS) {
     innerHtml:
       `<p>${esc(label)}</p>` +
       `<h1>${esc(heading)}</h1>` +
+      (stageBy ? renderBylineHtml(stageBy.authorSlug, stageBy.datePublished, stageBy.dateModified) : "") +
       para(stageIndexIntro(stage)) +
       `<section>${linkList(caseTypes.map((c) => ({ href: `/attorneys/${stage}/${c.slug}`, label: c.name })))}</section>` +
       `<section id="other-stages">${h2("Other stages")}${linkList([
         ...ATTORNEY_STAGES.filter((s) => s.slug !== stage).map((s) => ({ href: `/attorneys/${s.slug}`, label: stageIndexHeading(s.slug) })),
         { href: "/attorneys", label: "Browse all attorney resources" },
       ])}</section>` +
+      sourcesHtml(stageSources(stage)) +
       navLinks([{ href: "/attorneys", label: "Attorney resources" }, { href: "/case-types", label: "Case types" }, { href: "/contact", label: "Contact" }]),
     // Index-page structured data as JourneyStageIndex.tsx builds it: the
     // CollectionPage whose main entity is the ItemList of the stage's journey
@@ -2586,10 +2744,22 @@ writePage(
     innerHtml:
       `<h1>White papers on defensible expert methodology</h1>` +
       `<p>Detailed, objective treatments of how ${ORG_NAME} builds damages analyses and valuations that can be examined and tested. Written for attorneys who want to understand the method, not just the conclusion.</p>` +
-      `<section>${h2("Papers")}<ul>${whitePapers
-        .map((w) => `<li><a href="/white-papers/${w.slug}">${esc(w.title)}</a> - ${esc(w.subtitle)}</li>`)
-        .join("")}</ul></section>` +
-      libraryNav("/white-papers"),
+      // Each paper as the hub card (title, subtitle, discipline, reading time,
+      // as WhitePapersHub.tsx shows them) plus its abstract, the paper's own
+      // always-visible summary, so a non-JS reader can choose a paper here.
+      `<section>${h2("Available white papers")}${whitePapers
+        .map(
+          (w) =>
+            `<article><h3><a href="/white-papers/${w.slug}">${esc(w.title)}</a></h3>` +
+            `<p><em>${esc(w.subtitle)}</em></p>` +
+            `<p>${esc(w.discipline)} &middot; ${esc(w.readingTime)} &middot; Published <time datetime="${esc(w.datePublished)}">${esc(w.datePublished)}</time>` +
+            (w.dateModified && w.dateModified !== w.datePublished
+              ? ` &middot; Reviewed <time datetime="${esc(w.dateModified)}">${esc(w.dateModified)}</time>`
+              : "") +
+            `</p>${para(w.summary)}<p><a href="/white-papers/${w.slug}">Read white paper</a></p></article>`,
+        )
+        .join("")}</section>` +
+      `<section>${h2("More from the library")}${libraryNav("/white-papers")}</section>`,
     jsonLd: [
       schema.organizationSchema(),
       schema.websiteSchema(),

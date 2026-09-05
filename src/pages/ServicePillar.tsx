@@ -10,10 +10,11 @@ import { pillarTitle } from "@/lib/page-titles.mjs";
 // Service.shortName is a heading label ("Fraud & Tracing"); the hero lead,
 // the credential sidebar, and the "by Case Type" intro render it as prose
 // through the shared helpers. Headings and link labels keep the short name.
-import { proseName, workPhrase } from "@/lib/service-prose.mjs";
+import { capFirst, proseName, workPhrase } from "@/lib/service-prose.mjs";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import AuthorByline from "@/components/AuthorByline";
+import ResponsibilityLine from "@/components/ResponsibilityLine";
 import ContactCTA from "@/components/ContactCTA";
 import LocationCard from "@/components/LocationCard";
 import FAQBlock from "@/components/FAQBlock";
@@ -106,7 +107,7 @@ export default function ServicePillar() {
         data={graphSchema([
           organizationSchema(),
           serviceSchema({
-            slug: service.slug,
+            url: serviceUrl,
             name: service.name,
             description: service.metaDescription,
             dateModified: service.dateModified,
@@ -139,9 +140,27 @@ export default function ServicePillar() {
           <p className="text-lg text-neutral-600 max-w-3xl mb-4">
             {service.description}
           </p>
-          <p className="text-neutral-600 max-w-3xl mb-6">
+          <p className="text-neutral-600 max-w-3xl mb-4">
             {ORG_NAME} prepares {work} for plaintiff and defense counsel nationwide; the method is the same whichever side retains the economist.
           </p>
+          {/* The professional responsible for the work, linked to the profile
+              that carries the CV (C02), and, where the work depends on or
+              borders a sister practice's discipline, the explained hand-off
+              to the practice that performs it (F08, G01). */}
+          <ResponsibilityLine subject={`${capFirst(work)} at ${ORG_NAME}`} plural={false} className="text-neutral-600 max-w-3xl mb-4" />
+          {service.handoff && (
+            <p className="text-neutral-600 max-w-3xl mb-6">
+              {service.handoff.text}{" "}
+              <a
+                href={service.handoff.href}
+                rel="noopener"
+                className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+              >
+                {service.handoff.linkLabel}
+              </a>
+              .
+            </p>
+          )}
           <div className="flex flex-wrap gap-3">
             <Link
               to="/contact"
@@ -168,8 +187,9 @@ export default function ServicePillar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="lg:grid lg:grid-cols-3 lg:gap-10">
 
-          {/* Main content - 2/3 */}
-          <main className="lg:col-span-2 space-y-10">
+          {/* Main content - 2/3. A div, not a nested main element: the
+              layout's main landmark (id="main-content") is the page's one. */}
+          <div className="lg:col-span-2 space-y-10">
 
             {/* Case Types */}
             <section>
@@ -220,6 +240,14 @@ export default function ServicePillar() {
               </div>
             </section>
 
+            {/* Hand-authored, service-specific FAQ (services.ts `faqs`);
+                the same sentences feed the FAQPage JSON-LD above. The FAQ and
+                the guides come before the 56-entry state directory so the
+                practical explanations are not buried under it (audit F08). */}
+            <FAQBlock faqs={service.faqs} title={`Frequently asked: ${service.shortName}`} />
+
+            <RelatedContent items={service.related} heading={`Guides and methods for ${name}`} />
+
             {/* State Directory: all 56 entries (50 states, DC, 5 territories). */}
             <section>
               <h2 className="font-serif text-2xl font-bold text-navy mb-6">
@@ -250,16 +278,10 @@ export default function ServicePillar() {
               </div>
             </section>
 
-            {/* Hand-authored, service-specific FAQ (services.ts `faqs`);
-                the same sentences feed the FAQPage JSON-LD above. */}
-            <FAQBlock faqs={service.faqs} title={`Frequently asked: ${service.shortName}`} />
-
-            <RelatedContent items={service.related} heading={`Guides and methods for ${name}`} />
-
             <ContactCTA context={service.shortName} />
 
             <SourcesBlock sources={service.sources} />
-          </main>
+          </div>
 
           {/* Sidebar - 1/3 */}
           <aside className="mt-10 lg:mt-0 space-y-8">

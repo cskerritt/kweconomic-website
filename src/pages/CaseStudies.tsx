@@ -181,9 +181,10 @@ export default function CaseStudies() {
                 <Lock className="w-6 h-6 text-amber-dark mb-3" />
                 <h3 className="font-serif text-lg font-bold text-navy mb-2">Conflict-checked and confidential</h3>
                 <p className="text-sm text-neutral-600">
-                  Every matter opens with a conflict check, and pre-retention
-                  communications are treated as confidential consulting-expert work
-                  product until an engagement is in place.
+                  Every matter opens with a conflict check. Pre-retention communications
+                  are handled confidentially; whether they are protected as consulting-expert
+                  work product depends on the terms of the retention and the rules of the
+                  forum, which counsel confirms at engagement.
                 </p>
               </div>
             </Reveal>

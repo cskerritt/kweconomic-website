@@ -6,6 +6,8 @@ import { caseTypes } from "@/data/caseTypes";
 import { ORG_NAME } from "@/lib/brand";
 import { pairTitle } from "@/lib/page-titles.mjs";
 import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
+import { ORG_URL } from "@/lib/schema";
+import { expectServiceIdentity } from "@/test-utils/jsonld";
 import {
   renderRoute,
   visibleText,
@@ -17,18 +19,21 @@ import {
   excerpt,
 } from "@/test-utils/markup";
 
-// The service x case-type pages (11 pillars x 14 case types) publish a meta
-// description and an intro sentence templated from Service.shortName. The
-// short name is a heading label ("Fraud & Tracing", "Wrongful Death"), so
-// both sentences render the work the pillar performs (workPhrase) instead of
-// dropping the label into the sentence. usePageMeta writes from an effect
-// that never runs under renderToStaticMarkup, so it is replaced with a spy
-// and the description each page would publish is read back from the call.
+// The service x case-type pages (the pairs each pillar declares in
+// services.ts, serviceCaseTypePairs()) publish a meta description and an
+// intro sentence templated from Service.shortName. The short name is a
+// heading label ("Fraud & Tracing", "Wrongful Death"), so both sentences
+// render the work the pillar performs (workPhrase) instead of dropping the
+// label into the sentence. usePageMeta writes from an effect that never runs
+// under renderToStaticMarkup, so it is replaced with a spy and the
+// description each page would publish is read back from the call.
 //
-// Only the pairs a pillar declares in services.ts (caseTypeNotes) carry
-// pair-specific copy and a FAQ block with FAQPage JSON-LD; the undeclared
-// pairs of the all-pairs grid render the shared sections with no FAQ, so the
-// case-type hub stays the FAQ owner.
+// Only a declared pair is a page: it carries its pair note (caseTypeNotes)
+// and a FAQ block with FAQPage JSON-LD, and its Service node identifies the
+// page's own URL. An undeclared pair of the former all-pairs grid publishes
+// no meta and renders nothing (the route sends it to the pillar, as server.js
+// 301s its address), so no page exists that nothing links to (2026-09-05
+// audit, T06/T09).
 vi.mock("@/hooks/use-page-meta", () => ({ usePageMeta: vi.fn() }));
 
 const ROUTE = "/services/:serviceSlug/case/:typeSlug";
@@ -53,7 +58,19 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
     const work = workPhrase(service.shortName);
     for (const caseType of caseTypes) {
       const declared = service.caseTypes.includes(caseType.slug);
-      it(`/services/${service.slug}/case/${caseType.slug} (${declared ? "declared" : "undeclared"}) names the work as prose`, () => {
+      if (!declared) {
+        it(`/services/${service.slug}/case/${caseType.slug} is not a page: an undeclared pair publishes no meta and renders nothing`, () => {
+          const { html, title, description } = render(service.slug, caseType.slug);
+          expect(vi.mocked(usePageMeta).mock.calls.at(-1)?.[0]).toBeNull();
+          expect(title).toBe("");
+          expect(description).toBe("");
+          expect(html).not.toContain("<h1");
+          expect(html).not.toContain('<section id="application"');
+          expect(jsonLdBlocks(html)).toBe("");
+        });
+        continue;
+      }
+      it(`/services/${service.slug}/case/${caseType.slug} names the work as prose`, () => {
         const { html, title, description } = render(service.slug, caseType.slug);
         const intro = introSentence(html);
         const text = visibleText(html);
@@ -76,7 +93,7 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
         expect(title).not.toContain("&");
         const base = `${capFirst(work)} for ${ct} cases: how the loss is built, which records drive it, and testimony support.`;
         // "Either side." rides along only while the description fits the
-        // 160-character window; the four long undeclared pairs drop it.
+        // 160-character window.
         expect(description).toBe(base.length + " Either side.".length <= 160 ? `${base} Either side.` : base);
         expect(description.length).toBeGreaterThanOrEqual(120);
         expect(description.length).toBeLessThanOrEqual(160);
@@ -138,37 +155,33 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
         expect(ld).toContain('"@type":"BreadcrumbList"');
       });
 
-      if (declared) {
-        it(`/services/${service.slug}/case/${caseType.slug} carries its pair note and two pair-specific FAQs with FAQPage markup`, () => {
-          const { html } = render(service.slug, caseType.slug);
-          const note = service.caseTypeNotes[caseType.slug];
-          const text = visibleText(html);
-          expect(note).toBeDefined();
-          expect(text).toContain(note.summary);
-          const visibleFaq = faqText(html);
-          const ld = faqLdStrings(html);
-          expect(ld.length).toBe(note.faqs.length * 2);
-          for (const f of note.faqs) {
-            expect(visibleFaq).toContain(f.question);
-            expect(visibleFaq).toContain(f.answer);
-            expect(ld).toContain(f.question);
-          }
-          // Pair FAQs are not the hub's FAQs.
-          for (const f of caseType.faqs) expect(ld).not.toContain(f.question);
-          for (const s of [text, jsonLdBlocks(html)]) {
-            expect(excerpt(s, DOUBLED_WORD)).toBeUndefined();
-            expect(excerpt(s, MIS_ARTICLE)).toBeUndefined();
-            expect(s).not.toMatch(/[–—]/);
-          }
-          expect(visibleFaq).not.toContain("&");
-        });
-      } else {
-        it(`/services/${service.slug}/case/${caseType.slug} emits no FAQ block and no FAQPage markup`, () => {
-          const { html } = render(service.slug, caseType.slug);
-          expect(html).not.toContain("<details");
-          expect(jsonLdBlocks(html)).not.toMatch(/"@type":\s*"FAQPage"/);
-        });
-      }
+      it(`/services/${service.slug}/case/${caseType.slug} carries its pair note and two pair-specific FAQs with FAQPage markup`, () => {
+        const { html } = render(service.slug, caseType.slug);
+        const note = service.caseTypeNotes[caseType.slug];
+        const text = visibleText(html);
+        expect(note).toBeDefined();
+        expect(text).toContain(note.summary);
+        const visibleFaq = faqText(html);
+        const ld = faqLdStrings(html);
+        expect(ld.length).toBe(note.faqs.length * 2);
+        for (const f of note.faqs) {
+          expect(visibleFaq).toContain(f.question);
+          expect(visibleFaq).toContain(f.answer);
+          expect(ld).toContain(f.question);
+        }
+        // Pair FAQs are not the hub's FAQs.
+        for (const f of caseType.faqs) expect(ld).not.toContain(f.question);
+        for (const s of [text, jsonLdBlocks(html)]) {
+          expect(excerpt(s, DOUBLED_WORD)).toBeUndefined();
+          expect(excerpt(s, MIS_ARTICLE)).toBeUndefined();
+          expect(s).not.toMatch(/[–—]/);
+        }
+        expect(visibleFaq).not.toContain("&");
+      });
+
+      it(`/services/${service.slug}/case/${caseType.slug} identifies its Service entity by the page's own URL (T03)`, () => {
+        expectServiceIdentity(render(service.slug, caseType.slug).html, `${ORG_URL}/services/${service.slug}/case/${caseType.slug}`);
+      });
     }
   }
 
@@ -181,8 +194,10 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
     expect(introSentence(fraud.html)).toBe(
       "Fraud and tracing analysis applied to fraud and embezzlement litigation: methodology, deliverables, and case-specific considerations.",
     );
-    const wd = render("wrongful-death-economic-loss", "traumatic-brain-injury");
-    expect(wd.title).toBe("Wrongful Death Expert for Brain Injury | KW Economics");
+    // A declared wrongful death pair (the pillar declares medical malpractice,
+    // not brain injury); the pair title fills the 60-character tag exactly.
+    const wd = render("wrongful-death-economic-loss", "medical-malpractice");
+    expect(wd.title).toBe("Wrongful Death Expert for Medical Malpractice | KW Economics");
     // Where "Expert" cannot fit beside a long label and case name it drops.
     expect(render("business-valuation", "partnership-and-shareholder-dispute").title).toBe(
       "Business Valuation for Shareholder Dispute | KW Economics",
@@ -191,25 +206,39 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
       "Lost Earnings Expert for Personal Injury | KW Economics",
     );
     // The divorce pillar keeps its heading label wherever it fits (this pair
-    // is exactly 60 characters) and takes the shorter titleShortName only
-    // where neither form of the heading label can.
+    // is exactly 60 characters). Its titleShortName fallback is reached by no
+    // declared pair; src/lib/page-titles.test.ts pins that rung of the ladder.
     expect(render("divorce-and-marital-financial-analysis", "divorce-and-marital-dissolution").title).toBe(
       "Divorce Financial Analysis Expert for Divorce | KW Economics",
     );
-    expect(render("divorce-and-marital-financial-analysis", "partnership-and-shareholder-dispute").title).toBe(
-      "Divorce Analysis for Shareholder Dispute | KW Economics",
-    );
     expect(wd.description).toBe(
-      "Wrongful death analysis for traumatic brain injury cases: how the loss is built, which records drive it, and testimony support. Either side.",
+      "Wrongful death analysis for medical malpractice cases: how the loss is built, which records drive it, and testimony support. Either side.",
     );
     expect(introSentence(wd.html)).toBe(
-      "Wrongful death analysis applied to traumatic brain injury litigation: methodology, deliverables, and case-specific considerations.",
+      "Wrongful death analysis applied to medical malpractice litigation: methodology, deliverables, and case-specific considerations.",
     );
   });
 
   it("an unknown pair renders the 404", () => {
     const { html } = render("business-valuation", "no-such-type");
     expect(html).not.toContain('<section id="application"');
+  });
+
+  it("an undeclared pair the audit found unreachable is not a page, while its declared neighbour still renders", () => {
+    for (const [serviceSlug, typeSlug] of [
+      ["business-valuation", "medical-malpractice"],
+      ["divorce-and-marital-financial-analysis", "personal-injury"],
+      ["lost-earnings-and-earning-capacity", "employment-discrimination"],
+    ] as const) {
+      const { html, title } = render(serviceSlug, typeSlug);
+      expect(title, `${serviceSlug}/${typeSlug}`).toBe("");
+      expect(html, `${serviceSlug}/${typeSlug}`).not.toContain("<h1");
+      expect(jsonLdBlocks(html), `${serviceSlug}/${typeSlug}`).toBe("");
+    }
+    const declared = render("business-valuation", "divorce-and-marital-dissolution");
+    expect(declared.html).toContain('<section id="application"');
+    expect(declared.title).toBe("Business Valuation Expert for Divorce | KW Economics");
+    expectServiceIdentity(declared.html, `${ORG_URL}/services/business-valuation/case/divorce-and-marital-dissolution`);
   });
 });
 
