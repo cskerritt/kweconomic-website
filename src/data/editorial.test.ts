@@ -100,6 +100,7 @@ describe("economics editorial data", () => {
       "household-services-methodology",
       "lost-profits-but-for-analysis",
       "mitigation-and-offsets",
+      "personal-consumption-tables",
       "present-value-and-discounting",
       "wage-growth-and-earnings-projection",
       "worklife-expectancy",
@@ -110,9 +111,11 @@ describe("economics editorial data", () => {
       "collateral-source-rule-explained",
       "expert-witness-disclosure-rules",
       "federal-vs-state-court-daubert",
+      "fringe-benefits-in-a-lost-earnings-claim",
       "household-services-in-personal-injury",
       "how-lost-earnings-are-calculated",
       "how-to-rebut-an-economic-damages-report",
+      "how-worklife-expectancy-is-chosen",
       "income-determination-in-divorce",
       "lost-profits-vs-lost-business-value",
       "present-value-explained-for-attorneys",
@@ -122,6 +125,7 @@ describe("economics editorial data", () => {
     ]));
   it("comparisons", () =>
     expect(slugs(comparisons)).toEqual([
+      "back-pay-vs-front-pay",
       "economist-vs-life-care-planner",
       "fair-market-value-vs-fair-value",
       "forensic-economist-vs-forensic-accountant",
@@ -133,8 +137,9 @@ describe("economics editorial data", () => {
     ]));
   it("knowledge, insights, white papers", () => {
     expect(slugs(knowledge)).toEqual(["expert-witness-testimony-guide", "guide-to-economic-damages"]);
-    expect(insights.length).toBeGreaterThanOrEqual(2);
+    expect(insights.length).toBeGreaterThanOrEqual(3);
     expect(slugs(insights)).toContain("components-of-an-economic-damages-report");
+    expect(slugs(insights)).toContain("what-a-w-2-adds-to-a-lost-earnings-claim");
     expect(slugs(whitePapers)).toEqual(["business-valuation-standards-in-litigation", "daubert-ready-economic-damages-report"]);
     expect(whitePapers.every((w) => w.discipline === "Economic")).toBe(true);
   });
@@ -194,7 +199,8 @@ describe("author and date signals on every editorial page", () => {
       ...knowledge.map((k) => ({ page: `knowledge/${k.slug}`, ...k })),
       ...whitePapers.map((w) => ({ page: `white-papers/${w.slug}`, ...w })),
     ];
-    expect(dated.length).toBe(8 + 13 + 8 + 2 + 2);
+    // 9 methods, 15 guides, 9 comparisons, 2 knowledge guides, 2 white papers (wave 1 added one, two, and one).
+    expect(dated.length).toBe(9 + 15 + 9 + 2 + 2);
     for (const x of dated) {
       expect(ROSTER, `${x.page} authorSlug`).toContain(x.authorSlug);
       expect(x.datePublished, `${x.page} datePublished`).toMatch(ISO_DATE);
@@ -215,7 +221,7 @@ describe("author and date signals on every editorial page", () => {
 describe("titles and meta descriptions are written for the SERP", () => {
   it("every editorial <title> is 40-60 characters with the brand suffix", () => {
     const titles = pageTitles();
-    expect(titles.length).toBe(8 + 13 + 8 + 2 + 2 + 2);
+    expect(titles.length).toBe(9 + 15 + 9 + 2 + 3 + 2);
     for (const { page, title } of titles) {
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeLessThanOrEqual(60);
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeGreaterThanOrEqual(40);
@@ -232,7 +238,7 @@ describe("titles and meta descriptions are written for the SERP", () => {
   });
   it("every meta description is a complete written sentence of 110-160 characters (no auto-cut, no markers)", () => {
     const descs = metaDescriptions();
-    expect(descs.length).toBe(8 + 13 + 8 + 2 + 2 + 2);
+    expect(descs.length).toBe(9 + 15 + 9 + 2 + 3 + 2);
     for (const { page, text } of descs) {
       expect(text.length, `${page} (${text.length})`).toBeLessThanOrEqual(160);
       expect(text.length, `${page} (${text.length})`).toBeGreaterThanOrEqual(110);
@@ -367,6 +373,15 @@ describe("insight posts", () => {
       "Summary and sensitivity analysis",
       "Where the disputes actually are",
     ]);
+    expect(byId["what-a-w-2-adds-to-a-lost-earnings-claim"]).toEqual([
+      "The wage figure is three figures",
+      "Deferrals show what the person chose to save",
+      "The health coverage box hints at a benefit the form does not value",
+      "Several years of forms make a history",
+      "What the form cannot tell you",
+      "Where the disputes start",
+      "What to produce with it",
+    ]);
     expect(byId["daubert-vs-frye-expert-testimony-standards"]).toEqual([
       "Two framework families",
       "The reliability framework",
@@ -392,9 +407,11 @@ describe("insight posts", () => {
       expect(rel.length, p.slug).toBeGreaterThanOrEqual(1);
       expect(rel.map((r) => r.slug), p.slug).not.toContain(p.slug);
     }
-    // The two launch posts sit in different categories, so the fallback is what fills the block.
+    // The three posts sit in different categories (Legal, Economics, Records),
+    // so the fallback is what fills the block: the other posts, in file order.
     expect(getRelatedPosts("components-of-an-economic-damages-report", "Economics").map((r) => r.slug)).toEqual([
       "daubert-vs-frye-expert-testimony-standards",
+      "what-a-w-2-adds-to-a-lost-earnings-claim",
     ]);
   });
   it("the admissibility post and its companion guide name Daubert and Frye", () => {

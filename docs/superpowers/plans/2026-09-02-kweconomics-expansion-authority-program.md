@@ -630,7 +630,7 @@ Add `federalDistrictPages` to `total` and a `console.log(`  Federal district pag
 
 `scripts/sitemap-index.test.mjs`: add `it("advertises every federal district page")` asserting `childUrls["sitemap-locations.xml"].filter((u) => u.includes("/jurisdictions/federal/")).length` equals the district count read from `state-courts.ts`.
 
-- [ ] **Step 8: Gate and commit**
+- [x] **Step 8: Gate and commit** (wave 1, 2026-09-07: `Federal district pages: 94`; the shell block loads `federal-districts.ts` through the vite loader instead of the regex over `state-courts.ts`, and the meta pair is pinned in `prerender-meta.test.mjs`)
 
 Run the full gate. Expected build log line `Federal district pages: 94` (or 95 if a territory district is listed). Commit:
 
@@ -866,13 +866,13 @@ Run: `npx vitest run src/data src/citations.routes.test.mjs scripts/prerender-me
 
 **Backlog (strike as used):**
 
-Guides: how worklife expectancy is chosen; fringe benefits in a lost earnings claim; personal consumption in wrongful death; valuing a homemaker's services; mitigation in employment cases; front pay versus reinstatement; lost profits for a new business; goodwill in a divorce valuation; discounts for lack of marketability; tracing commingled funds; reading an opposing economist's report; what an economic damages report costs and why; when to retain an economist in a medical malpractice case; economic damages for a minor plaintiff; damages for an undocumented worker; damages for a self-employed plaintiff; life expectancy adjustments after injury; hedonic damages and why they are not an economic calculation; prejudgment interest in damages; taxes in lost earnings claims.
+Guides: ~~how worklife expectancy is chosen~~ (wave 1); ~~fringe benefits in a lost earnings claim~~ (wave 1); personal consumption in wrongful death; valuing a homemaker's services; mitigation in employment cases; front pay versus reinstatement; lost profits for a new business; goodwill in a divorce valuation; discounts for lack of marketability; tracing commingled funds; reading an opposing economist's report; what an economic damages report costs and why; when to retain an economist in a medical malpractice case; economic damages for a minor plaintiff; damages for an undocumented worker; damages for a self-employed plaintiff; life expectancy adjustments after injury; hedonic damages and why they are not an economic calculation; prejudgment interest in damages; taxes in lost earnings claims.
 
-Methods: personal consumption tables; earnings growth rate selection; the total offset method; the below-market discount rate; the age-earnings profile; capitalization of earnings; the discounted cash flow method for valuation; the yardstick and before-and-after methods for lost profits; net discount rate sensitivity; life expectancy tables.
+Methods: ~~personal consumption tables~~ (wave 1); earnings growth rate selection; the total offset method; the below-market discount rate; the age-earnings profile; capitalization of earnings; the discounted cash flow method for valuation; the yardstick and before-and-after methods for lost profits; net discount rate sensitivity; life expectancy tables.
 
-Comparisons: back pay versus front pay; lost earnings versus lost earning capacity in workers' compensation; lost profits versus diminished business value; fair value versus fair market value in shareholder disputes; economist versus forensic accountant on lost profits; gross versus net earnings; present value versus total offset; nominal versus real discount rates; wrongful death versus survival damages; income approach versus market approach.
+Comparisons: ~~back pay versus front pay~~ (wave 1); lost earnings versus lost earning capacity in workers' compensation; lost profits versus diminished business value; fair value versus fair market value in shareholder disputes; economist versus forensic accountant on lost profits; gross versus net earnings; present value versus total offset; nominal versus real discount rates; wrongful death versus survival damages; income approach versus market approach.
 
-Insights (one record each): W-2s, tax returns, pay stubs, union contracts, benefit summaries, business tax returns, general ledgers, bank statements, QuickBooks exports, personnel files.
+Insights (one record each): ~~W-2s~~ (wave 1), tax returns, pay stubs, union contracts, benefit summaries, business tax returns, general ledgers, bank statements, QuickBooks exports, personnel files.
 
 ---
 
@@ -881,7 +881,7 @@ Insights (one record each): W-2s, tax returns, pay stubs, union contracts, benef
 The routine takes the first unchecked wave whose date has passed. Tick it in the PR that ships it.
 
 - [x] Wave 0 (2026-09-02, local session): Task 0 legacy 301 map.
-- [ ] Wave 1 (not before 2026-09-07): Task 1 federal district pages + editorial batch 1 (guides 1-2, method 1, comparison 1, insight 1).
+- [x] Wave 1 (not before 2026-09-07): Task 1 federal district pages + editorial batch 1 (guides 1-2, method 1, comparison 1, insight 1). Shipped 2026-09-07 (94 district pages; how worklife expectancy is chosen, fringe benefits in a lost earnings claim, personal consumption tables, back pay versus front pay, W-2s).
 - [ ] Wave 2 (not before 2026-09-14): Task 2 scaffold + release batch A + editorial batch 2.
 - [ ] Wave 3 (not before 2026-09-21): release batch B + editorial batch 3.
 - [ ] Wave 4 (not before 2026-09-28): release batch C + editorial batch 4.

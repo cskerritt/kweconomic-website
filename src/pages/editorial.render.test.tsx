@@ -69,9 +69,10 @@ const pages: Rendered[] = [
   ...whitePapers.map((w) => ({ page: "white-papers", slug: w.slug, html: render(`/white-papers/${w.slug}`, "/white-papers/:slug", WhitePaper), datePublished: w.datePublished, dateModified: w.dateModified })),
 ];
 
-describe("every editorial page (35 renders across six templates)", () => {
-  it("renders all 35 pages", () => {
-    expect(pages.length).toBe(13 + 8 + 8 + 2 + 2 + 2);
+describe("every editorial page (40 renders across six templates)", () => {
+  it("renders all 40 pages", () => {
+    // 15 guides, 9 comparisons, 9 methods, 2 knowledge guides, 3 insight posts, 2 white papers.
+    expect(pages.length).toBe(15 + 9 + 9 + 2 + 3 + 2);
     for (const p of pages) expect(p.html.length, `${p.page}/${p.slug}`).toBeGreaterThan(2000);
   });
 

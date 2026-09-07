@@ -45,6 +45,7 @@ Allow: /
 # adds and removes that line)
 Sitemap: https://kweconomics.com/sitemap.xml
 Sitemap: https://kweconomics.com/image-sitemap.xml
+Sitemap: https://kweconomics.com/news-sitemap.xml
 
 # LLMs.txt for AI ingestion / answer-engine discovery
 Llms: https://kweconomics.com/llms.txt

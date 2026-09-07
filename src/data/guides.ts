@@ -967,6 +967,155 @@ export const guides: Guide[] = [
       { title: "Components of an Economic Damages Report", href: "/insights/components-of-an-economic-damages-report" },
     ],
   },
+  {
+    slug: "how-worklife-expectancy-is-chosen",
+    title: "How Worklife Expectancy Is Chosen in a Lost Earnings Claim",
+    metaTitle: "How Worklife Expectancy Is Chosen",
+    metaDescription: "The economist reads the worklife horizon from published tables by age, sex, education, and labor force status, then explains any departure the record supports.",
+    tldr:
+      "Worklife expectancy is the number of years a person is expected to remain in the labor force from a given age, and it sets the horizon of a lost earnings projection. The economist reads it from published worklife tables for the person's age, sex, education, and labor force status, decides whether to apply it as a single figure or year by year, adjusts it only where the record supports an adjustment, and states the choice so that the other side can test it. This guide explains each of those decisions and where opposing reports go wrong.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-07",
+    dateModified: "2026-09-07",
+    sections: [
+      {
+        id: "what-it-measures",
+        heading: "What worklife expectancy measures",
+        bodyHtml:
+          "<p>Worklife expectancy is the expected number of additional years a person will spend in the labor force, employed or looking for work, over the rest of a lifetime. It is not an age. A person of forty with a worklife expectancy of twenty-two years is not expected to work to sixty-two and then stop; the figure is an average over many possible paths, some of which end early through illness, caregiving, or discouragement, and some of which run well past a conventional retirement age. The <a href=\"/methods/worklife-expectancy\">worklife expectancy method</a> page describes the tables in more detail.</p><p>The figure matters because it bounds the loss. In a <a href=\"/services/lost-earnings-and-earning-capacity\">lost earnings and earning capacity</a> claim, every year of projected earnings, and the fringe benefits that ride on them, runs only as far as the horizon. A horizon two years too long or two years too short moves the present value by a proportionate share of the future loss, which on a long projection is a large number, so the choice is examined closely on both sides.</p>",
+      },
+      {
+        id: "the-tables",
+        heading: "Where the figure comes from",
+        bodyHtml:
+          "<p>Forensic economists read worklife expectancy from published tables built from the labor force transition data the Current Population Survey collects. The tables observe how often people of each age move between working, looking for work, and being out of the labor force, and from those transition rates compute the expected years of activity remaining at each age. The most widely used tables are stratified by sex, by highest level of education completed, and by whether the person was active or inactive in the labor force at the starting age.</p><p>The report identifies the table, its edition, and the row it read, because the tables are revised as new survey years are added and because the row depends on facts the record has to establish: the person's age on the valuation date, the education completed at that date, and the labor force status immediately before the event. A report that gives a worklife figure without naming the table and the row cannot be checked, and an opposing economist will say so.</p>",
+      },
+      {
+        id: "reading-the-row",
+        heading: "Reading the right row",
+        bodyHtml:
+          "<p>Three facts fix the row. Age is the person's age at the valuation date, not at the event, because the projection starts at the valuation date and the past loss is tabulated separately. Education is the highest level completed, and the categories in the tables are broad, so a degree in progress at the time of the event is an argument about the record rather than a different row. Labor force status is the one most often disputed: a person who was working is read from the active table, a person who was between jobs is read from the active table if the record shows continued job search and from the inactive table if it does not, and the report says which and why.</p><p>Sex is a table variable because the underlying transition rates differ, and the report uses the row the tables provide. Where counsel prefers a projection that does not distinguish by sex, the economist can present the pooled figure alongside the sex-specific one and explain the difference, so the trier of fact sees what the choice does to the number.</p>",
+      },
+      {
+        id: "fixed-horizon-or-year-by-year",
+        heading: "A fixed horizon or a year-by-year probability",
+        bodyHtml:
+          "<p>The expected years can be applied in two ways. The simpler way treats the figure as a fixed horizon: earnings run at full value from the valuation date for that many years and then stop. The more complete way applies the probability of being active in each future year to that year's earnings, so the projection tapers rather than ending abruptly, and earnings in the later years are weighted by the smaller chance the person would still have been working. Both methods are published and both are used; they produce similar totals on a long horizon and can differ on a short one, and the report should say which it applied.</p><p>Whichever way the horizon is applied, it is applied to both streams. The but-for earnings and the post-event earnings run over the same horizon, and the fringe benefits that accrue with each stream stop when the stream stops, so the two sides of the comparison are measured over the same years. The <a href=\"/guides/how-lost-earnings-are-calculated\">lost earnings guide</a> shows where the horizon enters the schedules.</p>",
+      },
+      {
+        id: "when-the-record-moves-the-horizon",
+        heading: "When the record supports a different horizon",
+        bodyHtml:
+          "<p>The tables describe a population average, and the record can support a departure. A documented retirement plan, a mandatory retirement age in the occupation, a pension that vests at a stated age, or a medical opinion that the person will leave the labor force earlier than the population would are the usual examples. The economist can adopt the record's horizon, present the loss under both horizons, or apply the table and note the departure; what the economist does not do is move the horizon without a document behind the move.</p><p>A physically demanding occupation is the argument most often made against the table, and it cuts both ways: the tables already reflect the early exits of people in demanding jobs, and a specific finding about this person's body belongs to the medical witness, not the economist. A person's stated intention to work to seventy is evidence, and the report can present the loss under that assumption, but the report says it is the person's intention and shows the table figure beside it.</p>",
+      },
+      {
+        id: "where-reports-go-wrong",
+        heading: "Where opposing reports go wrong",
+        bodyHtml:
+          "<p>The recurring errors are a retirement age with no basis in the record in place of a table figure, a table applied to the wrong row because the labor force status was assumed rather than established, a horizon that runs earnings to life expectancy as if the person would never have stopped working, an edition of the tables that has been superseded, and a horizon applied to one stream but not the other. Each is visible on the face of the report, and each is a line of cross-examination. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions to ask.</p><p>A horizon question is also a venue question. In a <a href=\"/case-types/wrongful-death/new-jersey\">New Jersey wrongful death claim</a>, for example, the decedent's earnings run over worklife while support and household services run over life expectancy, and a report that runs everything to one horizon has mixed the two. The report presents the horizons separately and states the source of each.</p>",
+      },
+      {
+        id: "how-it-is-presented",
+        heading: "How the choice is presented",
+        bodyHtml:
+          "<p>A sound report states the table, the edition, the row, the resulting expected years, the way the figure was applied, and any departure the record supported, and it shows the present value under the alternative horizon where the horizon is contested. That presentation lets the trier of fact see what the choice does to the number and lets counsel on either side test the choice against the record rather than against the economist's assertion. The <a href=\"/methods/wage-growth-and-earnings-projection\">earnings projection</a> page describes the growth rate that runs over the horizon, and the <a href=\"/methods/present-value-and-discounting\">present value</a> page describes how the horizon and the discount rate interact.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Why does the worklife horizon end before life expectancy?",
+        answer:
+          "Because people leave the labor force before they die. Worklife expectancy counts only the years a person is expected to be working or looking for work; life expectancy counts every remaining year. Earnings run over the first horizon, while support to survivors and household services run over the second.",
+      },
+      {
+        question: "Can the economist use the plaintiff's stated plan to work to seventy?",
+        answer:
+          "The report can present the loss under that assumption, labeled as the person's stated intention, with the table figure shown beside it. The economist does not substitute the intention for the table without a document such as a pension election or an employer agreement that supports it.",
+      },
+      {
+        question: "Does the worklife horizon apply to fringe benefits and household services?",
+        answer:
+          "Fringe benefits stop when the earnings stop, so they run over the worklife horizon. Household services do not depend on employment and run over life expectancy from the current life tables, and the report keeps the two horizons separate.",
+      },
+    ],
+    sources: refsToSources(["SKOOG_CIECKA_KRUEGER_2011", "BLS_CPS", "NCHS_LIFE_TABLES"]),
+    related: [
+      { title: "Worklife Expectancy", href: "/methods/worklife-expectancy" },
+      { title: "Lost Earnings and Earning Capacity Analysis", href: "/services/lost-earnings-and-earning-capacity" },
+      { title: "How Lost Earnings Are Calculated", href: "/guides/how-lost-earnings-are-calculated" },
+    ],
+  },
+  {
+    slug: "fringe-benefits-in-a-lost-earnings-claim",
+    title: "Fringe Benefits in a Lost Earnings Claim",
+    metaDescription: "Fringe benefits add employer-paid health, retirement, and leave costs to a lost earnings claim, valued from plan documents or from published employer cost data.",
+    tldr:
+      "Compensation is wages plus the benefits the employer pays for, and a lost earnings claim that stops at wages understates the loss. Fringe benefits are the employer's cost of health coverage, retirement contributions, legally required payroll contributions, and paid leave, valued from the person's own plan documents where they exist and from published employer cost data where they do not, added to both the but-for and the post-event streams, and carried over the worklife horizon. This guide explains what counts, where the value comes from, and the double-counting errors that show up in opposing reports.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-07",
+    dateModified: "2026-09-07",
+    sections: [
+      {
+        id: "what-counts",
+        heading: "What counts as a fringe benefit",
+        bodyHtml:
+          "<p>A fringe benefit, for damages purposes, is compensation the employer pays for that does not arrive as wages. The categories are the employer's share of health, dental, and vision premiums; employer contributions to a retirement plan, whether a defined contribution match or the funding of a defined benefit pension; the employer's legally required contributions for Social Security, Medicare, unemployment insurance, and workers' compensation coverage; paid leave, where it is not already inside the wage figure; and, less often, employer-paid life and disability insurance. Bonuses, overtime, and commissions are wages and belong in the earnings base, not here. The <a href=\"/methods/fringe-benefits-valuation\">fringe benefits method</a> page sets out the valuation step by step.</p><p>The loss of a benefit is measured at the employer's cost, because that is what the person received and what a replacement would cost. A health plan is valued at the employer's premium share, not at the medical care the plan paid for, and a retirement match is valued at the contribution, not at the balance it would have grown into, since growth on the contribution is captured when the stream is discounted.</p>",
+      },
+      {
+        id: "where-the-value-comes-from",
+        heading: "Where the value comes from",
+        bodyHtml:
+          "<p>The person's own records come first. A benefits statement, a summary plan description, a pay stub that shows the employer's premium share, a retirement plan statement that shows the match, and a union contract that fixes the benefit package establish what this employer paid for this person, and the report values each benefit from them. Where the records are incomplete, the economist asks for them before falling back on averages, because a published average applied where plan documents were available is the most common criticism of a benefit figure.</p><p>Published employer cost data fills the gaps. The Bureau of Labor Statistics measures what employers pay per hour for each benefit category by industry, occupation group, region, and establishment size, so a person whose employer offered benefits but whose plan documents were not produced can be valued from the category that matches the job. The report says which series, which category, and which release it used, and it uses the same source on both streams so the comparison is consistent.</p>",
+      },
+      {
+        id: "legally-required-and-discretionary",
+        heading: "Legally required and discretionary benefits",
+        bodyHtml:
+          "<p>The employer's legally required contributions are included because they are part of what the employment was worth, but they are handled carefully. The Social Security contribution funds a retirement benefit the person may still receive in part, so the report either includes the contribution and stops the earnings stream at worklife, or projects the retirement benefit the lost earnings would have produced, and never both. The unemployment insurance and workers' compensation contributions are small and are included at the published rate. Discretionary benefits, health coverage and retirement contributions above all, are the larger part of the figure and depend on the employer, which is why the records matter more than the averages.</p>",
+      },
+      {
+        id: "benefits-after-the-event",
+        heading: "Benefits in the post-event stream",
+        bodyHtml:
+          "<p>The post-event stream carries benefits on the same basis. A person who has returned to work with a new employer receives that employer's benefits, valued from the new plan documents or the matching published category, and the loss is the difference year by year. A person who kept coverage under the old employer's plan for a period after the event has no health benefit loss for that period. A person who has not returned to work has no post-event benefits, and the whole benefit stream is lost over the horizon the medical and capacity evidence supports. The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> page describes how the two streams are netted.</p><p>In an <a href=\"/services/employment-and-wage-loss-damages\">employment matter</a>, the benefit loss often exceeds the wage loss in the early years, because a terminated employee who finds work quickly may find it without comparable health coverage or a retirement match, and the report shows the benefit line separately so the trier of fact can see it.</p>",
+      },
+      {
+        id: "the-double-counting-errors",
+        heading: "The double-counting errors",
+        bodyHtml:
+          "<p>Three errors recur. The first is a percentage add-on applied to a wage figure that already included the benefit, usually paid leave that was inside the annual salary or a bonus that was inside the earnings base. The second is a published average applied where plan documents were available, or applied to a job category that does not match the work. The third is a benefit valued twice through different doors: the employer's Social Security contribution and a projected Social Security retirement benefit, or a pension contribution and the pension it would have funded. The report avoids each by listing the benefits, naming the source for each, and stating where each stream starts and stops.</p><p>The mirror-image error is omission. A report that projects wages alone, or that treats health coverage as a collateral source rather than as compensation, understates the loss by the employer's cost of the benefits, and a defense report that omits benefits from the post-event stream overstates it. The <a href=\"/guides/collateral-source-rule-explained\">collateral source guide</a> explains why an employer-paid benefit is compensation and not a collateral payment.</p>",
+      },
+      {
+        id: "records-to-gather",
+        heading: "Records to gather",
+        bodyHtml:
+          "<p>Counsel can shorten the analysis by producing the benefit records early: the summary plan description and the most recent benefits statement; year-end pay stubs, which show the employer's premium share and the retirement match; retirement plan statements; the union contract or employee handbook that fixes the benefit package; and, for the post-event stream, the same documents from the new employer. Where the employer will not produce them, a subpoena for the plan documents is worth the effort, because the difference between a documented benefit figure and an estimated one is the difference between a figure that is examined on the merits and one that is attacked at the threshold. The <a href=\"/guides/how-lost-earnings-are-calculated\">lost earnings guide</a> places the benefit schedule among the others, and the <a href=\"/case-types/personal-injury/texas\">Texas personal injury page</a> shows how the schedule reads in one venue.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is health insurance valued at the premium or at the employer's share?",
+        answer:
+          "At the employer's share. The employee's share was already deducted from the wages in the earnings base, so counting it again would double the benefit. Where the pay stubs do not separate the two, the summary plan description or the employer's benefits statement usually does.",
+      },
+      {
+        question: "What happens to the benefit claim when the plaintiff keeps working for the same employer?",
+        answer:
+          "The benefit loss is limited to whatever changed: fewer hours that reduced the retirement match, a move to a part-time class that lost health coverage, or a lower wage that lowered a percentage-based contribution. The report values the benefits on both sides from the same plan and shows the difference year by year.",
+      },
+      {
+        question: "Are stock options and bonuses fringe benefits?",
+        answer:
+          "No. Bonuses and commissions are wages and belong in the earnings base, where the record decides whether they are carried forward. Stock options and other equity compensation are valued separately, from the grant documents and the vesting schedule, and are not run through the benefit percentage.",
+      },
+    ],
+    sources: refsToSources(["BLS_ECEC", "BLS_ECI", "BLS_CPS"]),
+    related: [
+      { title: "Fringe Benefits Valuation", href: "/methods/fringe-benefits-valuation" },
+      { title: "Lost Earnings and Earning Capacity Analysis", href: "/services/lost-earnings-and-earning-capacity" },
+      { title: "Employment and Wage Loss Damages", href: "/services/employment-and-wage-loss-damages" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

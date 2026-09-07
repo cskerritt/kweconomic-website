@@ -60,39 +60,40 @@ Railway service creation and the DNS cutover are separate follow-ups on Chris's 
 
 ## Page inventory
 
-From `npm run build` at this commit (8,519 prerendered `index.html` shells):
+From `npm run build` at this commit (8,618 prerendered `index.html` shells):
 
 | Family | Pages |
 |---|---|
-| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 48 |
+| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 49 |
 | Service pillar pages | 11 |
 | Knowledge guides | 2 |
-| Insight posts | 2 |
-| Guide pages | 13 |
-| Comparison pages | 8 |
+| Insight posts | 3 |
+| Guide pages | 15 |
+| Comparison pages | 9 |
 | State pages | 56 |
 | City pages | 802 |
 | Service x State | 616 |
 | Service x State x City | 5,797 |
 | Case-type x State | 784 |
 | Credential x State | 224 |
+| Federal district court pages (`/jurisdictions/federal/<district>`) | 94 |
 | Service variant (cost/process/timeline) | 33 |
 | Service x Case-type (declared pairs only) | 60 |
 | Attorney journey (4 stage indexes + 4 x 14) | 60 |
 | White paper (hub + 2) | 3 |
-| **Total** | **8,519** |
+| **Total** | **8,618** |
 
 Sitemap index `public/sitemap.xml` (5 children + image sitemap; `news-sitemap.xml` is generated, listed in the index, and declared in robots.txt only while an insight post is inside the two-day Google News window), `<loc>` counts:
 
 | File | URLs |
 |---|---|
-| `sitemap-core.xml` | 114 |
+| `sitemap-core.xml` | 118 |
 | `sitemap-services.xml` | 3,746 (hub 1 + 11 pillars + 33 variants + 60 declared service x case pairs + 616 service x state + 3,025 gated city combos; the test ceiling is 4,000, see build notes) |
-| `sitemap-locations.xml` | 859 |
+| `sitemap-locations.xml` | 954 (the `/locations` subtree plus the `/jurisdictions` hub and the 94 federal district pages) |
 | `sitemap-case-types.xml` | 799 |
 | `sitemap-credentials.xml` | 229 |
 | `image-sitemap.xml` | 7 |
-| `news-sitemap.xml` | 0 today (written only for posts published in the last two days) |
+| `news-sitemap.xml` | written only for posts published in the last two days (1 at the 2026-09-07 build; the next build after the window removes it) |
 
 Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 5,797 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`; 3,025 combos). T08 decision (2026-09-05): the gate stays, on all three KW sites. The 2,772 gated combos the audit listed are prerendered, linked from the Service x State "Cities" grid, self-canonical, and indexable; they are simply not advertised until Search Console evidence supports widening (see "Facts to confirm"). `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404, pins the gate constants, and, after a build, checks that the only shells the sitemap leaves out are the gated combos. Service x case-type pages exist only for the pairs a pillar declares in `services.ts` (`serviceCaseTypePairs()`); an undeclared pair's address 301s to the pillar (`lib/service-case-redirects.server.mjs`). `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.
 
@@ -111,14 +112,15 @@ Service x State x City pages are prerendered for the top slice of each state's c
 | `local-content.ts` | 10 hand-written local essays for first-hand markets: the New York, Virginia, and Massachusetts state pages plus New York City, Brooklyn, Newark, Hackensack, Jersey City, Los Angeles, and Houston |
 | `geo-prose.mjs` | Templated state/city prose (wage levels, cost of living, local labor markets, venue) shared by the React pages and `scripts/prerender.mjs`; `geo-prose.d.mts` types it |
 | `geographicFaqs.ts`, `narratives.ts` | Thin React wrappers over `geo-prose.mjs`; `narratives.parity.test.mjs` pins the two sides |
-| `methods.ts` | 8 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets) |
-| `guides.ts` | 13 attorney guides |
-| `comparisons.ts` | 8 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner) |
-| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 2 insight posts, 2 email-gated white papers |
+| `methods.ts` | 9 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets, personal consumption deduction) |
+| `guides.ts` | 15 attorney guides |
+| `comparisons.ts` | 9 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner, back pay vs. front pay) |
+| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 3 insight posts (Legal, Economics, Records), 2 email-gated white papers |
 | `journeys.ts` | 56 attorney journey stages (considering, retaining, preparing-deposition, trial x 14 case types) |
 | `faqs.ts`, `home-faqs.mjs` | 15-question site FAQ and the 6-question homepage FAQ (shared with the prerender and the FAQPage JSON-LD) |
 | `references.ts` | 30-entry citation registry (NAFE ethics statement, Journal of Forensic Economics, BLS series, worklife tables, Treasury yields, AICPA SSVS No. 1, NACVA, federal rules); the only path for sources |
 | `regulations/state-regs.ts`, `courts/state-courts.ts` | Per-state expert-testimony rules and court systems |
+| `courts/federal-districts.ts` | The 94 federal district courts derived from `state-courts.ts` (slug, reporter abbreviation, state, circuit); `FederalDistrict.tsx` renders one page each under `/jurisdictions/federal/`, the jurisdictions hub groups them by circuit, and the prerender and sitemap load the same module |
 | `labor/*.ts` | State and metro labor context (never rendered as rates or wage figures in prose) |
 | `types.ts` | Shared TS types |
 
@@ -147,6 +149,10 @@ Spec section 12, tracked here until Chris confirms each:
 - 2026-09-05 audit repairs, both render paths: the divorce case type's `framing` block reaches the title, H1, description, lead, section headings, framework block, local FAQ, and Service node (F08, 57 pages); the commercial and family-financial service x state shells print a category-specific legal context (no tort or workers' compensation forum) and their city shells a place paragraph without the hub's "economic damages analyses" opener (F09); the editorial byline labels its date "Updated" and a named byline alone says "Reviewed", and the pillar, service x geo, and place pages name the directing economist with a profile link (C02); the cost/process/timeline pages and the attorney stage indexes carry a References block, the stage indexes the shared reviewer byline (C04); the sister hand-off links point at the verified `kwvrs.com/services/vocational-expert` (the `/services/vocational-evaluation` alias answers 404); `server.js` answers 410 for a sitemap address with no file on disk (the retired news sitemap).
 - The four editorial shells with a named reviewer (`/knowledge/*`, `/insights/*`) print the byline "Christopher Skerritt, M.Ed., MBA, CRC, CLCP, MSCC", exactly as the React `AuthorByline` does (top three `team.ts` credentials not already in the name). The prerender mirrors the hydrated page on purpose; if the economics site should not surface CRC/CLCP/MSCC in bylines, the fix is to trim or reorder `credentials` in `team.ts`, not the shell.
 - `package.json` `name` is still `kwlcp-website` (lockfile-coupled metadata; no runtime effect).
+
+## Expansion program (weekly waves)
+
+`docs/superpowers/specs/2026-09-02-kweconomics-expansion-authority-program-design.md` and the plan beside it drive one auto-merged wave per week (a cloud routine, Mondays 10:00 UTC). Wave 1 (2026-09-07) added the federal district court family and the first editorial batch. Every editorial piece cites the registry only; a new `references.ts` entry is added only when its URL can be live-verified from the build environment (the cloud egress policy blocks irs.gov, eeoc.gov, law.cornell.edu, and uscourts.gov, so wave 1 reused existing entries instead).
 
 ## Related repos
 
