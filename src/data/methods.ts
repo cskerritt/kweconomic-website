@@ -433,6 +433,55 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["BLS_CEX", "RESTATEMENT_TORTS_920A", "BLS_CPS"]),
   },
+  {
+    slug: "personal-consumption-tables",
+    name: "Personal Consumption Deduction",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-07",
+    dateModified: "2026-09-07",
+    metaDescription: "The personal consumption deduction removes the share of income a decedent would have spent on personal needs, read from expenditure tables by household size.",
+    summary:
+      "A decedent would have spent part of the household's income on personal needs, and the survivors' loss of support excludes that share. The personal consumption deduction is the percentage of income the decedent would have consumed personally, read from published tables built on household expenditure data and stratified by household size and income, applied to the projected earnings in a wrongful death claim, and stated with its source so the percentage can be tested.",
+    whenUsed:
+      "The deduction is taken whenever a claim measures the support survivors lost rather than the decedent's own earnings: the earnings component of a [[/services/wrongful-death-economic-loss|wrongful death economic loss]] analysis, the lost financial support in a [[/case-types/wrongful-death|wrongful death]] case whatever its cause, and the survivors' share of a self-employed decedent's income once the owner's labor has been separated from the return on the business. A survival claim that measures the decedent's own lost earnings between injury and death may not take it, and the [[/guides/wrongful-death-damages-explained|wrongful death guide]] explains which components each framework recovers.",
+    steps: [
+      "Establish the household on the date of death: the number of members, their ages, and the household's total income from all earners, from the tax returns and the family's account",
+      "Select the published personal consumption table that matches the decedent's role, and read the percentage for a household of that size at that income level; the tables report consumption as a share of the decedent's own income or of household income, and the report says which basis it used",
+      "Decide what the percentage is applied to: the decedent's projected earnings and benefits alone, or the decedent's earnings within the household's combined income, and keep the basis consistent with the table",
+      "Apply the percentage year by year to the projected earnings, adjusting it where the household's composition changes over the projection, for example when a child reaches majority and the household becomes smaller",
+      "Leave household services, retirement income shared with a spouse, and the value of guidance and care outside the deduction unless the governing framework directs otherwise, and say so",
+      "Present the net support figure alongside the gross earnings figure and the percentage, with a sensitivity line for the alternative percentage the other side is likely to argue",
+    ],
+    dataSources: [
+      "Published personal consumption tables derived from the BLS Consumer Expenditure Surveys, stratified by household size and income",
+      "The household's tax returns, for the income level and the number of earners",
+      "The family's account of household composition on the date of death and the ages of dependents",
+      "Current United States life tables, for the horizon over which support to a spouse runs",
+    ],
+    limitations:
+      "The tables describe how an average household of a given size and income divides its spending, not how this household did. A decedent with unusual personal expenses, or one who spent very little on personal needs, is an argument from the record, and the report presents the table figure and explains any departure rather than substituting an undocumented percentage. The percentage also depends on the basis: a share of the decedent's own income and a share of the household's combined income are different numbers, and applying one basis's percentage to the other basis's income is the most common error in the deduction. Because the percentage scales the entire earnings figure, a difference of a few points moves the total materially, so the [[/methods/present-value-and-discounting|present value]] schedule should show the result under the contested alternatives.",
+    admissibilityHistory:
+      "Courts have long recognized that the survivors' loss of support is the decedent's income less what the decedent would have consumed, and a wrongful death projection with no deduction is a recurring ground for challenge. Disputes concern the size of the percentage, the table and edition used, whether the basis matched the income it was applied to, and whether household services were wrongly reduced along with earnings. A report that names the table, states the household size and income it read, and shows the alternative percentage is positioned to be examined on the merits, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions an opposing economist will ask.",
+    relevantServices: ["wrongful-death-economic-loss", "lost-earnings-and-earning-capacity", "expert-rebuttal-and-report-review"],
+    faqs: [
+      {
+        question: "Is personal consumption deducted from household services too?",
+        answer:
+          "No. Household services are valued at the cost of replacing the work the decedent did for others in the household, and the decedent's own consumption of those services is already excluded by the way the hours are counted. The deduction applies to the earnings the decedent would have shared, not to the services.",
+      },
+      {
+        question: "Why is the deduction a smaller percentage for a larger household?",
+        answer:
+          "Because the same income is spread across more people. Expenditure data show that each member's personal share of household spending falls as the household grows, and that the share also falls as income rises, since a larger part of a high income is saved or spent on the household as a whole. The tables reflect both patterns.",
+      },
+      {
+        question: "Does the deduction change when the decedent was the household's only earner?",
+        answer:
+          "The basis changes, not the principle. With one earner the decedent's income and the household's income are the same figure, so the percentage is read from the table on that basis. With two earners the decedent's consumption is a share of the combined income, and the report either uses a table built on that basis or converts the percentage before applying it.",
+      },
+    ],
+    sources: refsToSources(["BLS_CEX", "BLS_CPS", "NCHS_LIFE_TABLES"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

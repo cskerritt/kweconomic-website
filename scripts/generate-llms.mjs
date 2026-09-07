@@ -157,6 +157,7 @@ async function main() {
     { ATTORNEY_STAGES, stageIndexIntro },
     prose,
     sharedServiceFaqs,
+    { federalDistricts },
   ] = await Promise.all([
     load("/src/data/services.ts"),
     load("/src/data/team.ts"),
@@ -174,6 +175,7 @@ async function main() {
     load("/src/lib/attorney-stages.ts"),
     load("/src/lib/service-prose.mjs"),
     loadOptional("/src/data/service-faqs.mjs"),
+    load("/src/data/courts/federal-districts.ts"),
   ]);
 
   await server.close();
@@ -527,6 +529,7 @@ async function main() {
     if (!inRegion.length) continue;
     p(`${REGION_LABELS[region]}: ${joinList(inRegion)}`);
   }
+  p(`Federal district courts: one page per district at ${SITE}/jurisdictions/federal/<district> (${federalDistricts.length} districts, grouped by circuit on the jurisdictions hub), each covering how the damages report, the expert disclosure, and the deposition are prepared for federal practice.`);
 
   h2("Office Locations");
   li(`Headquarters: ${HQ}`);

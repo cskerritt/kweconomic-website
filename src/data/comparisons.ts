@@ -498,6 +498,64 @@ export const comparisons: Comparison[] = [
       { title: "Life Care Plans (sister practice)", href: "/services/life-care-planning", description: "Plan authorship from the life care planning practice." },
     ],
   },
+  {
+    slug: "back-pay-vs-front-pay",
+    title: "Back Pay vs. Front Pay in Employment Cases",
+    answer:
+      "Back pay measures earnings lost from the adverse action to the judgment; front pay measures the loss after judgment where reinstatement is not ordered.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-07",
+    dateModified: "2026-09-07",
+    a: {
+      label: "Back Pay",
+      summary:
+        "The wages and benefits the employee would have received from the termination, demotion, or failure to hire up to the date of judgment, less what the employee actually earned in the interim. It is a historical figure built from pay records on both sides, and the [[/services/employment-and-wage-loss-damages|employment damages]] analysis tabulates it year by year in the dollars of each year.",
+      url: "/services/employment-and-wage-loss-damages",
+    },
+    b: {
+      label: "Front Pay",
+      summary:
+        "The wages and benefits the employee will lose after judgment because reinstatement is not ordered or is not practical: the projected gap between the position lost and the position the employee holds or can be expected to hold, over a stated period, reduced to [[/methods/present-value-and-discounting|present value]].",
+      url: "/services/employment-and-wage-loss-damages",
+    },
+    rows: [
+      { dimension: "Period measured", a: "From the adverse action to the judgment", b: "From the judgment forward, over a period the court or the record supports" },
+      { dimension: "Records that drive it", a: "Pay and benefit records from the former employer and every interim employer", b: "The same records, plus the evidence on how long the gap would persist" },
+      { dimension: "Interim earnings", a: "Deducted year by year from what was lost", b: "Projected and deducted over the front pay period" },
+      { dimension: "Present value", a: "Not discounted; past sums are stated as of the years they were lost, with interest where the framework allows", b: "Discounted to the judgment date at a rate tied to low-risk yields" },
+      { dimension: "Relationship to reinstatement", a: "Available whether or not reinstatement is ordered", b: "An alternative to reinstatement, ordered where reinstatement is not feasible" },
+      { dimension: "Who decides", a: "Usually the trier of fact, on the economist's schedules", b: "Often the court, as an equitable remedy, with the economist supplying the calculation" },
+    ],
+    whenUseA:
+      "Every employment damages claim carries a back pay figure, because the loss from the adverse action to trial is a matter of record: what the position paid, what the employee earned instead, and the benefits on each side. The economist builds it from pay stubs, tax returns, and benefit statements, applies the raises and promotions the record supports, and separates it from any future loss so the trier of fact can award each on its own footing. The [[/methods/mitigation-and-offsets|mitigation and offsets]] page describes how interim earnings are handled.",
+    whenUseB:
+      "Front pay enters when the employee will not be returning to the position. The economist projects the earnings and benefits of the position lost and of the position the employee has or can be expected to obtain, over a period the record supports, and discounts the difference. The period is the contested input: the evidence on how long it would take to reach comparable pay, the employee's age and the [[/methods/worklife-expectancy|worklife horizon]], and the framework's view of how far a front pay award may run all bear on it, and the report presents the figure under more than one period where the period is disputed.",
+    overlap:
+      "Both measures compare the same two streams, the compensation of the position lost and the compensation the employee earned or can earn instead, and both rest on the same records. The dividing line is the judgment date: back pay looks backward from it and front pay forward. A report that presents the two on one schedule, with the past portion in the dollars of each year and the future portion discounted, lets counsel argue reinstatement, front pay, or neither without rebuilding the numbers, and the [[/compare/lost-earnings-vs-lost-earning-capacity|lost earnings versus earning capacity]] comparison explains how the same distinction runs in an injury claim.",
+    faqs: [
+      {
+        question: "Is front pay a substitute for reinstatement?",
+        answer:
+          "In most frameworks it is the remedy ordered when reinstatement is not feasible, for example where the position no longer exists or the working relationship has broken down. The economist calculates the figure; whether front pay or reinstatement is ordered is a question for the court.",
+      },
+      {
+        question: "Does the interim earnings offset apply to front pay as well as back pay?",
+        answer:
+          "Yes, but as a projection rather than a record. For back pay the offset is the interim earnings actually received, taken from pay records. For front pay the offset is the earnings the employee is expected to receive over the period, projected from the current position or from the evidence on the positions available.",
+      },
+      {
+        question: "Who decides how long the front pay period runs?",
+        answer:
+          "The length of the period is usually for the court, drawing on the evidence about how long the loss would persist. The economist's role is to show what the figure is under each period the parties advance, and to state the horizon beyond which the projection has no support in the record.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_ECI"]),
+    related: [
+      { title: "Employment and Wage Loss Damages", href: "/services/employment-and-wage-loss-damages", description: "Back pay, front pay, and benefits in employment claims." },
+      { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets", description: "How interim earnings and other offsets are applied." },
+      { title: "Lost Earnings vs. Lost Earning Capacity", href: "/compare/lost-earnings-vs-lost-earning-capacity", description: "The parallel distinction in an injury claim." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

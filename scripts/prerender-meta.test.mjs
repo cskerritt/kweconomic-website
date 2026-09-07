@@ -132,6 +132,9 @@ const TEMPLATED_ROUTES = {
   "`/case-types/${c.slug}/${s.slug}`": "CaseTypeState.tsx",
   "`/credentials/${c.slug}`": "CredentialHub.tsx",
   "`/credentials/${c.slug}/${s.slug}`": "CredentialState.tsx",
+  // Federal district pages (wave 1): the abbreviation slots into the title
+  // and description on both sides.
+  "`/jurisdictions/federal/${d.slug}`": "FederalDistrict.tsx",
 };
 
 describe("prerender shells mirror the templated case-type and credential page meta", () => {

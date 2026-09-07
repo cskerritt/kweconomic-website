@@ -12,6 +12,7 @@
  *                                     declared service x case, service x state,
  *                                     gated service x state x city)
  *   public/sitemap-locations.xml    - /locations subtree (hub, states, cities)
+ *                                     plus /jurisdictions (hub, federal districts)
  *   public/sitemap-case-types.xml   - /case-types subtree
  *   public/sitemap-credentials.xml  - /credentials subtree
  *
@@ -74,7 +75,7 @@ async function loadDataModules() {
     appType: "custom",
   });
   const load = (p) => server.ssrLoadModule(p);
-  const [readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services] =
+  const [readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services, federal] =
     await Promise.all([
       load("/src/data/contentReadiness.ts"),
       load("/src/data/insights.ts"),
@@ -86,9 +87,10 @@ async function loadDataModules() {
       load("/src/data/journeys.ts"),
       load("/src/data/faqs.ts"),
       load("/src/data/services.ts"),
+      load("/src/data/courts/federal-districts.ts"),
     ]);
   await server.close();
-  return { readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services };
+  return { readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services, federal };
 }
 
 const states = extractSlugs("states.ts");
@@ -198,6 +200,11 @@ states.forEach((st) => {
   });
 });
 
+// Federal district court pages (wave 1, 2026-09-07): one per federalDistricts
+// row in state-courts.ts, from the module scripts/prerender.mjs writes them
+// from. They ride the locations child with the /jurisdictions hub (sectionOf).
+for (const d of data.federal.federalDistricts) urls.add(`/jurisdictions/federal/${d.slug}`);
+
 // Attorney journey pages: 4 stage index pages + 4 stages x 14 case types
 ["considering", "retaining", "preparing-deposition", "trial"].forEach((stage) => {
   urls.add(`/attorneys/${stage}`);
@@ -247,6 +254,9 @@ function priorityFor(u) {
 function sectionOf(u) {
   if (u === "/services" || u.startsWith("/services/")) return "services";
   if (u === "/locations" || u.startsWith("/locations/")) return "locations";
+  // The jurisdictions hub and the federal district pages are venue pages;
+  // they sit in the locations child (spec 4.3).
+  if (u === "/jurisdictions" || u.startsWith("/jurisdictions/")) return "locations";
   if (u === "/case-types" || u.startsWith("/case-types/")) return "case-types";
   if (u === "/credentials" || u.startsWith("/credentials/")) return "credentials";
   return "core";

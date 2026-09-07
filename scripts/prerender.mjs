@@ -101,6 +101,8 @@ const [
   geoFaqs,
   { getRegulationsByState },
   { getCourtsByState, selectTrialCourts, courtSystemLabel },
+  { federalDistricts, districtsByCircuit, siblingDistricts, federalCourtName, FEDERAL_SERVICE_SLUGS },
+  { refsToSources },
   { getLocalContent },
   geoLinks,
   teamMeta,
@@ -129,6 +131,8 @@ const [
   load("/src/data/geographicFaqs.ts"),
   load("/src/data/regulations/state-regs.ts"),
   load("/src/data/courts/state-courts.ts"),
+  load("/src/data/courts/federal-districts.ts"),
+  load("/src/data/references.ts"),
   load("/src/data/local-content.ts"),
   load("/src/lib/geo-links.ts"),
   loadOptional("/src/data/team-meta.mjs"),
@@ -1797,12 +1801,14 @@ const hubLead = {
     "Stage-by-stage guides for retaining, preparing, and using a forensic economist across each major case type: what the loss claim consists of, which records drive it, and how the number is defended. Pick the stage the matter is at, or start from the case type; each guide lists the actions to take, the records to gather, the pitfalls to avoid, and the questions counsel most often ask at that stage.",
 };
 
-const FEDERAL_CIRCUITS = [
-  "First Circuit", "Second Circuit", "Third Circuit", "Fourth Circuit",
-  "Fifth Circuit", "Sixth Circuit", "Seventh Circuit", "Eighth Circuit",
-  "Ninth Circuit", "Tenth Circuit", "Eleventh Circuit", "D.C. Circuit",
-  "Federal Circuit",
-];
+// Federal district courts grouped by circuit (JurisdictionsHubPage.tsx renders
+// the same list from districtsByCircuit()); each links its district page.
+const federalDistrictsHtml = () =>
+  Object.entries(districtsByCircuit())
+    .map(([circuit, districts]) =>
+      `${h3(`${circuit} Circuit`)}${linkList(districts.map((d) => ({ href: `/jurisdictions/federal/${d.slug}`, label: d.name, blurb: d.abbreviation })))}`,
+    )
+    .join("");
 
 const hubPage = ({ path, title, description, h1, crumb, lead, listHeading, items, extra = "", nav, collectionName }) => ({
   path,
@@ -1898,7 +1904,7 @@ const newHubPages = [
     lead: hubLead.jurisdictions,
     listHeading: "States and Territories",
     items: stateLinks((s) => `/locations/${s.slug}`),
-    extra: `<section>${h2("Federal Circuits")}${ul(FEDERAL_CIRCUITS)}</section><p>The <a href="/locations">directory of forensic economists by state</a> lists the same states by region.</p>`,
+    extra: `<section>${h2("Federal District Courts by Circuit")}<p>Each district page explains how the economic damages report, the expert disclosure, and the deposition are prepared for federal practice, and sets out the state damages framework a diversity matter carries into the federal court.</p>${federalDistrictsHtml()}</section><p>The <a href="/locations">directory of forensic economists by state</a> lists the same states by region.</p>`,
     nav: navLinks([{ href: "/locations", label: "Locations" }, { href: "/services", label: "Services" }, { href: "/contact", label: "Contact" }]),
   }),
   hubPage({
@@ -2247,6 +2253,81 @@ for (const [i, c] of credentials.entries()) {
     }));
     credentialStatePages++;
   }
+}
+
+// Federal district court pages (src/pages/templates/FederalDistrict.tsx; wave 1,
+// 2026-09-07). One shell per federalDistricts row in state-courts.ts, from the
+// same module the template reads (src/data/courts/federal-districts.ts).
+// Title, description, H1, lead, section order, FAQs, and JSON-LD mirror the
+// template; scripts/prerender-meta.test.mjs pins the meta pair.
+const federalServices = serviceData.filter((svc) => FEDERAL_SERVICE_SLUGS.includes(svc.slug));
+const federalAuthor = retainableExperts()[0];
+let federalDistrictPages = 0;
+for (const d of federalDistricts) {
+  const s = states.find((st) => st.slug === d.stateSlug);
+  if (!s) throw new Error(`prerender: federal district ${d.slug} names an unknown state ${d.stateSlug}`);
+  const path = `/jurisdictions/federal/${d.slug}`;
+  const url = abs(path);
+  const place = placeName(s.name);
+  const attr = placeAttr(s.name);
+  const regulation = getRegulationsByState(s.slug);
+  const siblings = siblingDistricts(d);
+  const h1 = `Economic Damages Expert for the ${d.name}`;
+  const leadText = `${ORG_NAME} prepares economic damages reports and testimony for civil matters in ${federalCourtName(d.name)} (${d.abbreviation}), a federal trial court in the ${d.circuit} Circuit covering ${place}. The economist's method does not change with the venue; what changes is the form and timing of the written disclosure, and the report is built to meet it.`;
+  const faqs = [
+    {
+      question: `What does an economic damages report for the ${d.name} contain?`,
+      answer: `A complete statement of every opinion and the basis for it, the facts and data considered, the exhibits that support the figures, the economist's qualifications and publications, a list of prior testimony, and the compensation arrangement, in the form federal practice requires of a retained expert. ${ORG_NAME} writes every report to that standard whatever the venue, so the same document serves in the ${d.abbreviation} and in the ${attr} courts.`,
+    },
+    {
+      question: `Does ${ORG_NAME} accept engagements in the ${d.name}?`,
+      answer: `Yes. Engagements are accepted in every federal district, including the ${d.name}. The economist prepares the report to the disclosure deadline in the scheduling order, sits for deposition, and testifies at trial where the case requires it, for plaintiff or defense counsel.`,
+    },
+    {
+      question: `How does a report for the ${d.abbreviation} differ from one for the ${attr} courts?`,
+      answer: `The economic method is the same. Federal practice fixes the content of the written disclosure and the timing of the expert exchange, and reliability challenges are decided by the court before trial, so the report states every assumption and its source in a form that can be examined on the papers. In a diversity matter the measure of damages still follows ${place} law.`,
+    },
+  ];
+  writePage(path, buildPage({
+    path: `/jurisdictions/federal/${d.slug}`,
+    // Match FederalDistrict.tsx: the abbreviation in the title, the practice
+    // description, and the H1 naming the district.
+    title: `Economic Damages Expert, ${d.abbreviation} | ${ORG_NAME}`,
+    description: `Forensic economist for the ${d.abbreviation}: how the damages report, expert disclosure, and deposition are prepared for federal practice. Plaintiff and defense.`,
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "Jurisdictions", path: "/jurisdictions" },
+      { name: d.name, path },
+    ],
+    innerHtml:
+      `<h1>${esc(h1)}</h1>` +
+      renderBylineHtml(federalAuthor?.slug) +
+      `<p>${esc(leadText)}</p>` +
+      `<section id="federal-practice">${h2("How the report is prepared for federal practice")}<p>A retained economist's written report in federal court sets out every opinion and the basis for it, lists the records and data considered, attaches the exhibits that support the figures, and states the economist's qualifications, publications, prior testimony, and compensation. The court decides reliability challenges before trial, so the report states its earnings base, growth rate, worklife horizon, and discount rate with sources so that each input can be examined on the papers.</p><p>Expert disclosures are exchanged on the schedule the court's scheduling order sets, with rebuttal reports on a shorter clock, so the retention date decides whether the economist has the tax returns, pay records, and the other experts' opinions in hand before the report is due. A deposition of the economist follows the report and tests it line by line, which is why the report is written to stand on its own.</p></section>` +
+      (regulation
+        ? `<section id="state-framework">${h2(`${s.name} damages framework in diversity matters`)}<p>In a diversity matter the court applies ${esc(attr)} substantive law to the measure of damages, while the admissibility of the economist's testimony is decided under the federal rules of evidence.</p>${para(regulation.damagesContext)}</section>`
+        : "") +
+      `<section id="services">${h2("Work most often retained in federal matters")}${linkList(federalServices.map((svc) => ({ href: `/services/${svc.slug}`, label: svc.name })))}</section>` +
+      `<section id="case-types">${h2(`${s.name} case types`)}${linkList(caseTypes.map((c) => ({ href: `/case-types/${c.slug}/${s.slug}`, label: c.name })))}</section>` +
+      `<section id="related">${h2("Related venues")}${linkList([
+        { href: `/locations/${s.slug}`, label: `${s.name} state courts and economists` },
+        ...siblings.map((x) => ({ href: `/jurisdictions/federal/${x.slug}`, label: x.name })),
+        { href: "/jurisdictions", label: "All jurisdictions" },
+      ])}</section>` +
+      renderFaqHtml(faqs, `Frequently asked: economic damages in the ${d.abbreviation}`) +
+      sourcesHtml(refsToSources(["FRCP_26", "FRE_702"])),
+    ctaContext: `matters in the ${d.abbreviation}`,
+    jsonLd: [
+      schema.serviceSchema({
+        url,
+        name: h1,
+        description: `${ORG_NAME} prepares economic damages reports and testimony for civil matters in the ${d.name}, covering ${place}.`,
+        areaServed: { "@type": s.type === "state" ? "State" : "AdministrativeArea", name: s.name },
+      }),
+      buildFaqJsonLd(faqs, url),
+    ],
+  }));
+  federalDistrictPages++;
 }
 
 // Methods
@@ -2818,6 +2899,7 @@ const total =
   serviceStateCityPages +
   caseTypeStatePages +
   credentialStatePages +
+  federalDistrictPages +
   serviceVariantPages +
   serviceCaseTypePages +
   journeyPages +
@@ -2838,6 +2920,7 @@ console.log(`  Service x State pages: ${counts.serviceState}`);
 console.log(`  Service x State x City pages: ${serviceStateCityPages}`);
 console.log(`  Case-type x State pages: ${caseTypeStatePages}`);
 console.log(`  Credential x State pages: ${credentialStatePages}`);
+console.log(`  Federal district pages: ${federalDistrictPages}`);
 console.log(`  Service variant pages: ${serviceVariantPages}`);
 console.log(`  Service x Case-type pages: ${serviceCaseTypePages}`);
 console.log(`  Attorney journey pages: ${journeyPages}`);

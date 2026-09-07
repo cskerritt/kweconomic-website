@@ -14,6 +14,7 @@ import {
   sitemapReadyCitySlugs,
 } from "../src/data/contentReadiness.ts";
 import { serviceCaseTypePairs } from "../src/data/services.ts";
+import { federalDistricts } from "../src/data/courts/federal-districts.ts";
 import { collectSitemapPageUrls, extractLocs } from "./lib/sitemap-urls.mjs";
 import {
   NEWS_SITEMAP_FILE,
@@ -126,27 +127,28 @@ describe("sitemap.xml is a sitemap index", () => {
 });
 
 describe("child sitemaps partition the URL set by path prefix", () => {
+  // The locations child carries the venue pages: /locations and, since wave 1
+  // (2026-09-07), the /jurisdictions hub and the federal district pages.
   const prefixOf = {
-    "sitemap-services.xml": "/services",
-    "sitemap-locations.xml": "/locations",
-    "sitemap-case-types.xml": "/case-types",
-    "sitemap-credentials.xml": "/credentials",
+    "sitemap-services.xml": ["/services"],
+    "sitemap-locations.xml": ["/locations", "/jurisdictions"],
+    "sitemap-case-types.xml": ["/case-types"],
+    "sitemap-credentials.xml": ["/credentials"],
   };
+  const inSubtree = (p, prefixes) => prefixes.some((prefix) => p === prefix || p.startsWith(`${prefix}/`));
 
   it("each sectioned child holds only its own subtree", () => {
-    for (const [file, prefix] of Object.entries(prefixOf)) {
-      const bad = childUrls[file]
-        .map(pathOf)
-        .filter((p) => p !== prefix && !p.startsWith(`${prefix}/`));
+    for (const [file, prefixes] of Object.entries(prefixOf)) {
+      const bad = childUrls[file].map(pathOf).filter((p) => !inSubtree(p, prefixes));
       expect(bad, `${file} holds foreign URLs`).toEqual([]);
     }
   });
 
   it("the core child holds none of the sectioned subtrees", () => {
-    const sectioned = Object.values(prefixOf);
+    const sectioned = Object.values(prefixOf).flat();
     const bad = childUrls["sitemap-core.xml"]
       .map(pathOf)
-      .filter((p) => sectioned.some((s) => p === s || p.startsWith(`${s}/`)));
+      .filter((p) => inSubtree(p, sectioned));
     expect(bad).toEqual([]);
   });
 
@@ -395,15 +397,28 @@ describe("service x case-type pairs: only the declared pairs are advertised", ()
 });
 
 describe("ungated sections stay complete", () => {
-  it("locations child lists the hub, every state, and every city", () => {
+  it("locations child lists the hub, every state, every city, the jurisdictions hub, and every federal district", () => {
     const expected = [
       "/locations",
       ...states.map((st) => `/locations/${st}`),
       ...states.flatMap((st) =>
         (citiesByState[st] || []).map((c) => `/locations/${st}/${c}`),
       ),
+      "/jurisdictions",
+      ...federalDistricts.map((d) => `/jurisdictions/federal/${d.slug}`),
     ].sort();
     expect(childUrls["sitemap-locations.xml"].map(pathOf).sort()).toEqual(expected);
+  });
+
+  it("advertises every federal district page, one per federalDistricts row in state-courts.ts", () => {
+    const rows = readFileSync(join(SRC_DATA, "courts", "state-courts.ts"), "utf-8").match(/abbreviation:\s*"/g) ?? [];
+    expect(rows.length).toBe(94);
+    expect(federalDistricts.length).toBe(rows.length);
+    const advertised = childUrls["sitemap-locations.xml"].map(pathOf).filter((u) => u.startsWith("/jurisdictions/federal/"));
+    expect(advertised.length).toBe(rows.length);
+    expect(new Set(advertised).size).toBe(rows.length);
+    expect(advertised).toContain("/jurisdictions/federal/district-of-new-jersey");
+    expect(childUrls["sitemap-core.xml"].map(pathOf)).not.toContain("/jurisdictions");
   });
 
   it("case-types child lists the hub, every case type, and every case type x state", () => {

@@ -128,7 +128,13 @@ describe("POST /api/contact end-to-end (no external services)", () => {
   });
 
   it("answers 410 Gone for a retired sitemap address with no file on disk (the news sitemap outside its window)", async () => {
-    for (const p of ["/news-sitemap.xml", "/old-sitemap.xml"]) {
+    // news-sitemap.xml exists on disk only while an insight post is inside
+    // the two-day Google News window (scripts/lib/news-sitemap.mjs): served
+    // then, 410 otherwise. A retired sitemap address is always 410.
+    const newsOnDisk = existsSync(join(dirname(distIndex), "news-sitemap.xml"));
+    const news = await fetch(`${base}/news-sitemap.xml`, { redirect: "manual" });
+    expect(news.status, `/news-sitemap.xml (${newsOnDisk ? "on disk" : "absent"})`).toBe(newsOnDisk ? 200 : 410);
+    for (const p of ["/old-sitemap.xml"]) {
       const res = await fetch(`${base}${p}`, { redirect: "manual" });
       expect(res.status, p).toBe(410);
     }

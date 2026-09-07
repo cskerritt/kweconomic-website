@@ -143,6 +143,53 @@ The last component is the summary and the sensitivity analysis. The summary show
 
 Most disputes between opposing economists come down to a few of these inputs, not to the framework. Reading a report in this order, and asking for the source of each input as you go, narrows the disagreement to the schedules that actually differ, which is where deposition and trial preparation should concentrate. The [[/services/expert-rebuttal-and-report-review|rebuttal service]] applies this review to an opposing report.`,
   },
+  {
+    slug: "what-a-w-2-adds-to-a-lost-earnings-claim",
+    sources: refsToSources(["BLS_CPS", "BLS_ECEC"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-09-07",
+    title: "What a W-2 Adds to a Lost Earnings Claim",
+    metaDescription:
+      "A W-2 fixes an employee's gross wages, retirement deferrals, and health coverage cost for one year; the economist uses it to set and check the earnings base.",
+    excerpt:
+      "The W-2 is the first record an economist asks for in a lost earnings claim, because it fixes what an employer actually paid a person in a year, and it says more than the wage figure most readers stop at. This post explains what each box adds to the earnings base, what the form cannot tell you, and which records fill the gaps.",
+    category: "Records",
+    publishedDate: "2026-09-07",
+    related: [
+      link("How Lost Earnings Are Calculated", "/guides/how-lost-earnings-are-calculated", "Where the earnings base sits in the full calculation."),
+      link("Fringe Benefits Valuation", "/methods/fringe-benefits-valuation", "Valuing the employer contributions a W-2 only hints at."),
+      link("Lost Earnings and Earning Capacity Analysis", "/services/lost-earnings-and-earning-capacity", "The analysis the W-2 feeds."),
+    ],
+    content: `A W-2 is the annual wage and tax statement an employer issues to each employee and files with the government, and in a [[/services/lost-earnings-and-earning-capacity|lost earnings claim]] it is the first record the economist reads. It fixes, for one calendar year, what the employer paid the person in wages, what was withheld, what the person deferred into a retirement plan, and, in several of its boxes, what the employer contributed toward benefits. A run of W-2s across the years before an injury or a termination is the backbone of the earnings base, and the boxes beyond the wage figure are where the form earns its place.
+
+## The wage figure is three figures
+
+The form reports wages three ways, and they differ. The wage figure subject to income tax excludes what the person deferred into a retirement plan and what was paid for health coverage through a pre-tax arrangement. The Social Security wage figure includes the retirement deferral but is capped at the annual wage base, so for a higher earner it understates the year. The Medicare wage figure includes the deferral and has no cap, which makes it the closest of the three to gross compensation. The economist starts from the Medicare figure, adds back the pre-tax health premiums the form does not show, and reconciles the result to the pay stubs, so the earnings base is gross pay and not a tax concept.
+
+## Deferrals show what the person chose to save
+
+The coded entries at the foot of the form report elective deferrals into a retirement plan, and the amount says two things. It is part of the wages the person earned, so it belongs in the earnings base even though the taxable wage figure leaves it out. It is also evidence of the plan itself: an employee deferring into a plan usually had an employer match, and the [[/methods/fringe-benefits-valuation|fringe benefits valuation]] treats the match as compensation lost. The form does not report the match, so the deferral is the prompt to ask for the plan statement that does.
+
+## The health coverage box hints at a benefit the form does not value
+
+Many employers report the total cost of employer-sponsored health coverage on the form, and the figure combines the employer's share and the employee's share. It confirms that the person had coverage and roughly what the plan cost, which is enough to know that a benefit loss exists, but not enough to value it, because the loss is the employer's share alone. The pay stubs or the benefits statement separate the two, and the economist uses the form's figure to check that the separated figures add up rather than as the value itself.
+
+## Several years of forms make a history
+
+One form is a snapshot; five or more are a history. Read together, the wage figures show the growth in the person's own earnings, which the economist compares with published wage growth for the occupation to decide whether the person was tracking the market, outpacing it through promotion, or falling behind it. They show whether overtime and bonuses were a regular feature or a single year's event, since a year with unusual overtime stands out against its neighbors. They show job changes, because each employer issues its own form, and a year with two forms marks a transition the record should explain. The [[/methods/wage-growth-and-earnings-projection|earnings projection]] rests on this history.
+
+## What the form cannot tell you
+
+The form reports totals, not hours or rates. It cannot say whether a wage figure reflects full-time work at a modest rate or part-time work at a high one, and it cannot show a mid-year raise, so the hourly rate and the schedule come from the pay stubs and the employer's records. It says nothing about self-employment income, which arrives on other forms and is analyzed differently because it mixes labor income with the return on a business. It reports the employer's health coverage cost without splitting it, and it does not report the retirement match, paid leave, or the employer's legally required contributions at all. Each gap has a record that fills it, and the W-2 is the map to those records.
+
+## Where the disputes start
+
+Opposing economists rarely disagree about what a W-2 says; they disagree about which figure to use and which years to include. A report built on the taxable wage figure understates the base by the retirement deferral and the pre-tax premiums. A report that projects from the highest year rather than from a representative run overstates it. A report that carries a discontinued bonus forward, or drops a bonus the record shows was routine, has made a choice the forms alone cannot defend, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] describes how the choice is tested.
+
+## What to produce with it
+
+The forms are most useful with their companions: the year-end pay stub for each year, which shows the hours, the rate, the employer's premium share, and the retirement match; the retirement plan statement; the benefits statement or summary plan description; and the tax returns, which carry the self-employment and investment income the form omits. Producing the set together lets the economist build the earnings base in one pass and reconcile every figure, and it removes the most common reason a damages report is revised after deposition, which is a record that arrived late. The [[/guides/how-lost-earnings-are-calculated|lost earnings guide]] shows where each record enters the schedules.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {
@@ -159,7 +206,7 @@ export function getRelatedPosts(slug: string, category: string): InsightPost[] {
   return same.length ? same : insightPosts.filter((p) => p.slug !== slug).slice(0, 3);
 }
 
-export const insightCategories = ["All", "Legal", "Economics"];
+export const insightCategories = ["All", "Legal", "Economics", "Records"];
 
 /**
  * Human-readable publication date for an ISO `YYYY-MM-DD` string, e.g.
