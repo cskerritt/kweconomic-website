@@ -18,6 +18,7 @@ import type { City } from "@/types";
 import { caseTypes } from "@/data/caseTypes";
 import { credentials, credentialStateHeadings } from "@/data/credentials";
 import { states } from "@/data/states";
+import { federalDistricts } from "@/data/courts/federal-districts";
 import { pillarServices } from "@/data/services";
 import { team } from "@/data/team";
 import { guides } from "@/data/guides";
@@ -114,6 +115,9 @@ function allTitles(): Map<string, string> {
   for (const m of team) {
     add(`/team/${m.slug}`, profileTitle({ name: m.name, jobTitle: m.title, memoriam: m.memoriam, orgName: ORG_NAME }));
   }
+  // Federal district pages: the reporter abbreviation beside the fixed stem
+  // (FederalDistrict.tsx and the prerender block carry the same literal).
+  for (const d of federalDistricts) add(`/jurisdictions/federal/${d.slug}`, `Economic Damages Expert, ${d.abbreviation}${SUFFIX}`);
   for (const stage of ATTORNEY_STAGES) {
     add(`/attorneys/${stage.slug}`, stageIndexTitle(stage.slug));
     for (const c of caseTypes) add(`/attorneys/${stage.slug}/${c.slug}`, journeyTitle(stage.slug, c));

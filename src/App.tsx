@@ -52,6 +52,7 @@ const GuidesHubPage = lazy(() => import("@/pages/hubs/GuidesHubPage"));
 const ComparisonsHubPage = lazy(() => import("@/pages/hubs/ComparisonsHubPage"));
 const MethodsHubPage = lazy(() => import("@/pages/hubs/MethodsHubPage"));
 const JurisdictionsHubPage = lazy(() => import("@/pages/hubs/JurisdictionsHubPage"));
+const FederalDistrict = lazy(() => import("@/pages/templates/FederalDistrict"));
 const AttorneysHubPage = lazy(() => import("@/pages/hubs/AttorneysHubPage"));
 
 /** Re-keys on pathname so routed content replays a subtle fade-up on each navigation. */
@@ -136,6 +137,8 @@ export default function App() {
         <Route path="/compare" element={<ComparisonsHubPage />} />
         <Route path="/methods" element={<MethodsHubPage />} />
         <Route path="/jurisdictions" element={<JurisdictionsHubPage />} />
+        {/* One page per federal district court (wave 1, 2026-09-07). */}
+        <Route path="/jurisdictions/federal/:districtSlug" element={<FederalDistrict />} />
         <Route path="/attorneys" element={<AttorneysHubPage />} />
 
         {/* New landing-page templates */}

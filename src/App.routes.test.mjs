@@ -37,6 +37,7 @@ describe("KW Economics route set (spec §5)", () => {
       "/case-types/:typeSlug/:stateSlug", "/credentials/:slug", "/credentials/:credSlug/:stateSlug",
       "/guides/:slug", "/compare/:slug", "/methods/:slug", "/attorneys/:stage",
       "/attorneys/:stage/:caseTypeSlug", "/knowledge/:slug", "/insights/:slug", "/white-papers/:slug",
+      "/jurisdictions/federal/:districtSlug",
     ]) {
       expect(registeredPaths, `missing route ${p}`).toContain(p);
     }
