@@ -15,6 +15,7 @@ import {
 } from "../src/data/contentReadiness.ts";
 import { serviceCaseTypePairs } from "../src/data/services.ts";
 import { federalDistricts } from "../src/data/courts/federal-districts.ts";
+import { releasedStates, serviceCaseStatePath, STATE_BATCHES } from "../src/data/serviceCaseTypeStates.ts";
 import { collectSitemapPageUrls, extractLocs } from "./lib/sitemap-urls.mjs";
 import {
   NEWS_SITEMAP_FILE,
@@ -56,6 +57,7 @@ const CROSS_SELL_PATH = new RegExp(`/services/(${CROSS_SELLS.join("|")})(/|$)`);
 const SECTION_FILES = [
   "sitemap-core.xml",
   "sitemap-services.xml",
+  "sitemap-service-case-types.xml",
   "sitemap-locations.xml",
   "sitemap-case-types.xml",
   "sitemap-credentials.xml",
@@ -105,7 +107,7 @@ const EXPECTED_INDEX_CHILDREN = [
 ];
 
 describe("sitemap.xml is a sitemap index", () => {
-  it("references exactly the five section children, the image sitemap, and the news sitemap only while it exists", () => {
+  it("references exactly the six section children, the image sitemap, and the news sitemap only while it exists", () => {
     expect(indexXml).toContain("<sitemapindex");
     expect(indexXml).not.toContain("<urlset");
     expect(extractLocs(indexXml)).toEqual(EXPECTED_INDEX_CHILDREN.map((f) => `${BASE}/${f}`));
@@ -131,6 +133,9 @@ describe("child sitemaps partition the URL set by path prefix", () => {
   // (2026-09-07), the /jurisdictions hub and the federal district pages.
   const prefixOf = {
     "sitemap-services.xml": ["/services"],
+    // The service x case type x state tier (wave 2) sits under /services but
+    // in its own child; the describe block below pins it to that child alone.
+    "sitemap-service-case-types.xml": ["/services"],
     "sitemap-locations.xml": ["/locations", "/jurisdictions"],
     "sitemap-case-types.xml": ["/case-types"],
     "sitemap-credentials.xml": ["/credentials"],
@@ -392,6 +397,54 @@ describe("service x case-type pairs: only the declared pairs are advertised", ()
   it("no pair URL appears in any other child", () => {
     for (const f of SECTION_FILES.filter((f) => f !== "sitemap-services.xml")) {
       expect(childUrls[f].map(pathOf).filter((p) => PAIR_PATH.test(p)), f).toEqual([]);
+    }
+  });
+});
+
+// Wave 2 (2026-09-14): the service x case type x state family. One URL per
+// declared pair per released state batch (src/data/serviceCaseTypeStates.ts),
+// in its own child so the services child's ceiling is untouched. The ceiling
+// here is pinned for the full rollout: 60 declared pairs x 56 states = 3,360
+// (the plan's 3,300 assumed 56 pairs; services.ts declares 60), so a fifth
+// batch or a widened pair set fails the build.
+describe("service x case type x state pages ride their own child (wave 2)", () => {
+  const FILE = "sitemap-service-case-types.xml";
+  const STATE_PAIR_PATH = /^\/services\/([a-z0-9-]+)\/case\/([a-z0-9-]+)\/([a-z0-9-]+)$/;
+  const advertised = (childUrls[FILE] ?? []).map(pathOf).sort();
+  const released = releasedStates();
+  const expected = serviceCaseTypePairs()
+    .flatMap((p) => released.map((st) => serviceCaseStatePath(p.service.slug, p.caseTypeSlug, st)))
+    .sort();
+
+  it("carries exactly the declared pairs in the released states", () => {
+    expect(released.length).toBeGreaterThanOrEqual(14);
+    expect(advertised).toEqual(expected);
+    expect(advertised.length).toBe(serviceCaseTypePairs().length * released.length);
+    expect(advertised).toContain("/services/lost-earnings-and-earning-capacity/case/personal-injury/california");
+  });
+
+  it("stays inside the family's crawl-budget ceiling", () => {
+    expect(advertised.length).toBeLessThanOrEqual(3400);
+  });
+
+  it("every URL is a state pair path in a released state, and no unreleased state or undeclared pair leaks", () => {
+    const declared = new Set(serviceCaseTypePairs().map((p) => p.path));
+    const releasedSet = new Set(released);
+    for (const u of advertised) {
+      const m = STATE_PAIR_PATH.exec(u);
+      expect(m, u).toBeTruthy();
+      expect(declared.has(`/services/${m[1]}/case/${m[2]}`), u).toBe(true);
+      expect(releasedSet.has(m[3]), u).toBe(true);
+    }
+    const unreleased = STATE_BATCHES.filter((b) => !b.released).flatMap((b) => b.states);
+    for (const st of unreleased) {
+      expect(advertised.some((u) => u.endsWith(`/${st}`)), `${st} advertised before its batch shipped`).toBe(false);
+    }
+  });
+
+  it("no state pair URL appears in any other child", () => {
+    for (const f of SECTION_FILES.filter((f) => f !== FILE)) {
+      expect(childUrls[f].map(pathOf).filter((p) => STATE_PAIR_PATH.test(p)), f).toEqual([]);
     }
   });
 });

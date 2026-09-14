@@ -2,6 +2,7 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap><loc>https://kweconomics.com/sitemap-core.xml</loc></sitemap>
   <sitemap><loc>https://kweconomics.com/sitemap-services.xml</loc></sitemap>
+  <sitemap><loc>https://kweconomics.com/sitemap-service-case-types.xml</loc></sitemap>
   <sitemap><loc>https://kweconomics.com/sitemap-locations.xml</loc></sitemap>
   <sitemap><loc>https://kweconomics.com/sitemap-case-types.xml</loc></sitemap>
   <sitemap><loc>https://kweconomics.com/sitemap-credentials.xml</loc></sitemap>

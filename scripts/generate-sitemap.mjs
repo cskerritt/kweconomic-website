@@ -11,6 +11,10 @@
  *   public/sitemap-services.xml     - /services subtree (pillars, variants,
  *                                     declared service x case, service x state,
  *                                     gated service x state x city)
+ *   public/sitemap-service-case-types.xml
+ *                                   - service x case type x state (the declared
+ *                                     pairs in the released state batches,
+ *                                     src/data/serviceCaseTypeStates.ts)
  *   public/sitemap-locations.xml    - /locations subtree (hub, states, cities)
  *                                     plus /jurisdictions (hub, federal districts)
  *   public/sitemap-case-types.xml   - /case-types subtree
@@ -75,7 +79,7 @@ async function loadDataModules() {
     appType: "custom",
   });
   const load = (p) => server.ssrLoadModule(p);
-  const [readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services, federal] =
+  const [readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services, federal, serviceCaseStates] =
     await Promise.all([
       load("/src/data/contentReadiness.ts"),
       load("/src/data/insights.ts"),
@@ -88,9 +92,10 @@ async function loadDataModules() {
       load("/src/data/faqs.ts"),
       load("/src/data/services.ts"),
       load("/src/data/courts/federal-districts.ts"),
+      load("/src/data/serviceCaseTypeStates.ts"),
     ]);
   await server.close();
-  return { readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services, federal };
+  return { readiness, insights, guides, comparisons, knowledge, whitePapers, methods, journeys, faqs, services, federal, serviceCaseStates };
 }
 
 const states = extractSlugs("states.ts");
@@ -156,6 +161,15 @@ caseTypes.forEach((c) => {
 // An undeclared pair has no shell and server.js 301s its address to the
 // pillar, so it is never advertised.
 for (const { path } of data.services.serviceCaseTypePairs()) urls.add(path);
+// Service x case type x state (wave 2, 2026-09-14): every declared pair in
+// every RELEASED state batch (src/data/serviceCaseTypeStates.ts), the set
+// scripts/prerender.mjs writes shells for. They ride their own child
+// (sitemap-service-case-types.xml) so the services child's crawl-budget
+// ceiling is untouched.
+const releasedStateSlugs = data.serviceCaseStates.releasedStates();
+for (const { service, caseTypeSlug } of data.services.serviceCaseTypePairs()) {
+  for (const st of releasedStateSlugs) urls.add(data.serviceCaseStates.serviceCaseStatePath(service.slug, caseTypeSlug, st));
+}
 credentials.forEach((c) => {
   urls.add(`/credentials/${c}`);
   states.forEach((st) => urls.add(`/credentials/${c}/${st}`));
@@ -233,7 +247,10 @@ for (const s of data.services.pillarServices()) {
   if (!s.dateModified) continue;
   setDate(`/services/${s.slug}`, s.dateModified);
   for (const v of ["cost", "process", "timeline"]) setDate(`/services/${s.slug}/${v}`, s.dateModified);
-  for (const ct of s.caseTypes ?? []) setDate(`/services/${s.slug}/case/${ct}`, s.dateModified);
+  for (const ct of s.caseTypes ?? []) {
+    setDate(`/services/${s.slug}/case/${ct}`, s.dateModified);
+    for (const st of releasedStateSlugs) setDate(data.serviceCaseStates.serviceCaseStatePath(s.slug, ct, st), s.dateModified);
+  }
 }
 
 // PSA retainer intake forms: the unified /contact/intake form replaced the
@@ -252,6 +269,9 @@ function priorityFor(u) {
 // ---------------------------------------------------------------------------
 
 function sectionOf(u) {
+  // The service x case type x state tier has its own child (before the
+  // /services rule, which would otherwise claim it).
+  if (/^\/services\/[^/]+\/case\/[^/]+\/[^/]+$/.test(u)) return "service-case-types";
   if (u === "/services" || u.startsWith("/services/")) return "services";
   if (u === "/locations" || u.startsWith("/locations/")) return "locations";
   // The jurisdictions hub and the federal district pages are venue pages;
@@ -263,7 +283,7 @@ function sectionOf(u) {
 }
 
 // Order here is the order in the index file.
-const SECTIONS = ["core", "services", "locations", "case-types", "credentials"];
+const SECTIONS = ["core", "services", "service-case-types", "locations", "case-types", "credentials"];
 const childFileFor = (section) => `sitemap-${section}.xml`;
 
 function renderUrlEntry(u) {

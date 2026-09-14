@@ -14,7 +14,8 @@ import {
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
-import { pillarServices } from "@/data/services";
+import { pillarServices, servicesForCaseType } from "@/data/services";
+import { isReleased, serviceCaseStatePath } from "@/data/serviceCaseTypeStates";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import { retainableExperts } from "@/data/team";
 import { getCourtsByState, selectTrialCourts, courtSystemLabel, type CourtSelection } from "@/data/courts/state-courts";
@@ -263,6 +264,25 @@ export default function CaseTypeState() {
                 </Link>
               </li>
             ))}
+        </ul>
+      </section>
+
+      {/* The pillars that declare this case type, each at its own state page
+          where the state's batch has shipped (src/data/serviceCaseTypeStates.ts)
+          and at the pair page otherwise. */}
+      <section id="services-in-state" className="mb-6">
+        <h2 className="font-serif text-2xl text-navy mb-2">Services for {lower} cases in {place}</h2>
+        <ul className="list-disc ml-5 text-neutral-700 space-y-1">
+          {servicesForCaseType(caseType.slug).map((s) => (
+            <li key={s.slug}>
+              <Link
+                to={isReleased(s.slug, caseType.slug, state.slug) ? serviceCaseStatePath(s.slug, caseType.slug, state.slug) : `/services/${s.slug}/case/${caseType.slug}`}
+                className={LINK}
+              >
+                {s.name} for {lower} cases{isReleased(s.slug, caseType.slug, state.slug) ? ` in ${place}` : ""}
+              </Link>
+            </li>
+          ))}
         </ul>
       </section>
 

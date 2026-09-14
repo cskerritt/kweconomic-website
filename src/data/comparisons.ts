@@ -556,6 +556,65 @@ export const comparisons: Comparison[] = [
       { title: "Lost Earnings vs. Lost Earning Capacity", href: "/compare/lost-earnings-vs-lost-earning-capacity", description: "The parallel distinction in an injury claim." },
     ],
   },
+  {
+    slug: "lost-earnings-vs-earning-capacity-in-workers-compensation",
+    title: "Lost Earnings vs. Earning Capacity in Workers' Compensation",
+    metaTitle: "Lost Earnings vs. Capacity in Workers' Comp",
+    answer:
+      "In a work injury, lost earnings are the wages not actually received; lost earning capacity is the reduced ability to earn that a compensation benefit replaces.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-14",
+    dateModified: "2026-09-14",
+    a: {
+      label: "Lost Earnings",
+      summary:
+        "The wages and benefits the injured worker did not receive because of the work injury, measured from the pre-injury pay records against what the worker earned afterward, week by week for the past and year by year for the future. It is the measure a third-party action arising from the same injury uses, and the [[/services/lost-earnings-and-earning-capacity|lost earnings analysis]] builds it from the employer's records, the carrier's payment history, and the post-injury earnings.",
+      url: "/services/lost-earnings-and-earning-capacity",
+    },
+    b: {
+      label: "Lost Earning Capacity",
+      summary:
+        "The reduction in what the worker is able to earn, given the physical restrictions in the medical record, whether or not the worker is currently earning less. It is the measure the compensation system uses in the jurisdictions that pay a benefit for reduced capacity, expressed as a percentage or a weekly dollar figure, and the economist compares the pre-injury wage with the wage the restrictions leave available in the local labor market.",
+      url: "/services/lost-earnings-and-earning-capacity",
+    },
+    rows: [
+      { dimension: "What it measures", a: "Wages and benefits actually not received", b: "The reduced ability to earn, whether or not it has yet produced a lower wage" },
+      { dimension: "Who uses it", a: "The civil claim against a third party, and the indemnity computation where benefits are tied to actual wage loss", b: "The compensation forum, in jurisdictions that measure the benefit by the loss of capacity" },
+      { dimension: "Records that drive it", a: "Pre-injury pay records, the carrier's payment history, and post-injury pay stubs and tax returns", b: "The pre-injury wage, the work restrictions in the medical record, and the wages of the work those restrictions leave available" },
+      { dimension: "Form of the result", a: "A dollar schedule, past and future, with the future reduced to present value", b: "A percentage or a weekly figure in the form the compensation system requires" },
+      { dimension: "Effect of a return to work", a: "Post-injury earnings are deducted year by year", b: "A return to lighter work is evidence of the remaining capacity, not the end of the reduction" },
+      { dimension: "Present value", a: "Applied to the future portion at a rate tied to low-risk yields", b: "Applied only where the system values a future indemnity stream, for example in a settlement" },
+    ],
+    whenUseA:
+      "Lost earnings is the measure whenever the question is what the worker actually lost: the third-party action against a manufacturer, a property owner, or a driver arising from the same injury, and the settlement valuation where the indemnity stream is tied to actual wage loss. The economist assembles the pre-injury wage base, subtracts what the worker earned after the injury, projects the gap over the worklife horizon with a stated growth rate, and identifies the indemnity benefits already paid so lien and offset questions can be answered from the same numbers. The [[/methods/mitigation-and-offsets|mitigation and offsets]] page describes how the post-injury earnings and the benefits are handled.",
+    whenUseB:
+      "Lost earning capacity is the measure where the compensation system pays for the reduction in the worker's ability to earn, which several jurisdictions do for a permanent partial disability. The economist takes the pre-injury wage from the employer's records, reads the restrictions from the medical record, identifies the wage the work within those restrictions pays in the local labor market from published occupational wage data, and expresses the difference in the form the system requires. The figure does not depend on whether the worker has found the lighter work yet, and the [[/case-types/workers-compensation|workers' compensation case type]] page sets the measure inside the wider claim.",
+    overlap:
+      "Both measures start from the same pre-injury wage base and the same restrictions, and in a worker who has returned to the best work the restrictions allow they converge, because the actual post-injury wage is then the capacity wage. They diverge when the worker is earning less than the restrictions would allow, or more, and when the forum asks a different question: the compensation system wants the reduction in capacity in its own form, and the civil court wants the dollars lost. A report that presents the pre-injury wage, the capacity wage, and the actual post-injury earnings on one schedule lets counsel answer either question from the same facts, and the [[/compare/lost-earnings-vs-lost-earning-capacity|lost earnings versus lost earning capacity]] comparison explains how the same distinction runs outside the compensation system.",
+    faqs: [
+      {
+        question: "Which measure applies to the third-party action arising from a work injury?",
+        answer:
+          "Lost earnings, in the ordinary civil form: the difference between the but-for earnings and the actual post-injury earnings, past and future, with the future reduced to present value. The compensation benefits already paid are identified separately so counsel can address the lien and any offset under the governing framework.",
+      },
+      {
+        question: "Can the two measures give different numbers from the same wage records?",
+        answer:
+          "Yes, and the gap is informative. A worker earning less than the restrictions allow shows a lost earnings figure larger than the capacity reduction; a worker who has out-earned the capacity wage shows the reverse. The report presents both so the forum can see which question it is answering.",
+      },
+      {
+        question: "Does a return to lighter work end the earning capacity claim?",
+        answer:
+          "No. The return is evidence of what the worker can do, and the wage of the lighter work is compared with the pre-injury wage to measure the reduction that remains. The capacity claim ends only where the worker can again earn what the pre-injury job paid within the restrictions the medical record sets.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_OES"]),
+    related: [
+      { title: "Lost Earnings and Earning Capacity Analysis", href: "/services/lost-earnings-and-earning-capacity", description: "The analysis both measures come from." },
+      { title: "Workers' Compensation", href: "/case-types/workers-compensation", description: "Where each measure sits inside the claim." },
+      { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets", description: "How post-injury earnings and paid benefits are handled." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

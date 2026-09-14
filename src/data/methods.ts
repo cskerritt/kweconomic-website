@@ -482,6 +482,56 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["BLS_CEX", "BLS_CPS", "NCHS_LIFE_TABLES"]),
   },
+  {
+    slug: "earnings-growth-rate-selection",
+    name: "Earnings Growth Rate Selection",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-14",
+    dateModified: "2026-09-14",
+    metaDescription: "The growth rate carrying an earnings base forward is chosen from published wage series and the person's career stage, in the same terms as the discount rate.",
+    summary:
+      "The growth rate is the annual percentage by which the economist carries a documented earnings base forward over the projection, and it has three possible components: general wage inflation, which every worker's pay tends to follow; the real gain that comes with experience early in a career; and any documented step, such as a promotion or a licensing milestone, specific to the person. The rate is drawn from published wage series and the person's record, stated in the same nominal or real terms as the discount rate, and shown year by year so the assumption can be tested.",
+    whenUsed:
+      "A growth rate enters every projection that runs more than a year into the future: the but-for and post-event streams in a [[/services/lost-earnings-and-earning-capacity|lost earnings and earning capacity]] analysis, the decedent's earnings in a [[/services/wrongful-death-economic-loss|wrongful death]] claim, the front pay period in an [[/services/employment-and-wage-loss-damages|employment matter]], and the replacement wages behind a household services figure. The [[/methods/wage-growth-and-earnings-projection|earnings projection]] page describes the projection as a whole; this page concerns the one input that compounds across every year of it.",
+    steps: [
+      "Fix the earnings base first, from several years of tax returns and pay records, so the growth rate is applied to a representative figure rather than to a single high or low year",
+      "Decide the terms: a nominal rate that includes expected inflation paired with a nominal discount rate, or a real rate paired with a real discount rate, and never one of each",
+      "Read the general component from a long-run published wage series for the economy or for the person's industry, using a window long enough to average out a single unusual period of inflation",
+      "Add a career-stage component only where the person was early in a career, from age-earnings profiles for the person's education and occupation, and taper it as the person approaches the age at which earnings in that occupation plateau",
+      "Add a person-specific step only where a document supports it: a signed offer, a collective bargaining schedule, a licensing exam passed, or an employer's written promotion path",
+      "Apply the same general rate to the post-event stream so the two sides of the comparison are measured on one footing, and show the loss under an alternative rate where the rate is contested",
+    ],
+    dataSources: [
+      "BLS Employment Cost Index, for the growth of wages and salaries by industry and occupation group over long windows",
+      "BLS Current Population Survey earnings series, for the growth of median weekly earnings by age, sex, and education",
+      "BLS Consumer Price Index, for the inflation component that separates a nominal rate from a real rate",
+      "Census American Community Survey earnings by age, education, and occupation, for the age-earnings profile behind the career-stage component",
+      "The person's own pay history and any employer schedule, offer, or union contract that documents a specific step",
+    ],
+    limitations:
+      "The rate compounds, so a small difference sustained over a long horizon becomes a large difference in the present value, and a rate drawn from a short or unusual window can carry a period of high or low inflation across decades where it does not belong. The person's own past raises are evidence of career stage but not of the future: a run of promotions early in a career says the person was on the rising part of the profile, not that the rise would continue at that pace. The growth rate is also inseparable from the [[/methods/present-value-and-discounting|discount rate]]: it is the gap between the two, the net rate, that moves the present value, so the report states the pair together and the [[/compare/net-vs-gross-discount-rate|net versus gross discount rate]] comparison explains why either one read alone can mislead.",
+    admissibilityHistory:
+      "Growth rates drawn from published wage series and stated alongside the discount rate are routinely admitted. Challenges follow a rate that embeds an undocumented promotion path, a rate inconsistent in its terms with the discount rate, a career-stage gain applied to a person past the age at which the occupation's earnings level off, or a but-for stream grown at one rate and a post-event stream grown at another. A report that names the series, the window, the components, and the terms, and that shows the loss under the alternative rate the other side is likely to argue, is positioned to be examined on the merits, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions an opposing economist will ask.",
+    relevantServices: ["lost-earnings-and-earning-capacity", "wrongful-death-economic-loss", "employment-and-wage-loss-damages", "expert-rebuttal-and-report-review"],
+    faqs: [
+      {
+        question: "Should the growth rate include inflation?",
+        answer:
+          "Either way is sound, so long as the discount rate is stated in the same terms. A nominal growth rate that includes expected inflation is paired with a nominal discount rate drawn from market yields; a real growth rate that excludes it is paired with a real discount rate. Mixing the two overstates or understates the present value by the whole inflation component.",
+      },
+      {
+        question: "Why not project from the person's own past raises?",
+        answer:
+          "Because past raises describe where the person was on the age-earnings profile, not where the profile goes next. A young worker's rapid early gains reflect the steep part of the curve, and carrying that pace across a full career would project earnings no occupation delivers. The report uses the person's history to place the person on the profile and the published series to carry the profile forward.",
+      },
+      {
+        question: "Is the growth rate the same for every year of the projection?",
+        answer:
+          "Usually not. The general component is constant, but the career-stage component tapers as the person approaches the age at which earnings in the occupation level off, and a documented step enters in the year the document dates it. The schedule shows the rate applied in each year so the taper is visible.",
+      },
+    ],
+    sources: refsToSources(["BLS_ECI", "BLS_CPS", "BLS_CPI", "CENSUS_ACS"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

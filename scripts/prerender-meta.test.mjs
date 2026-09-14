@@ -135,6 +135,9 @@ const TEMPLATED_ROUTES = {
   // Federal district pages (wave 1): the abbreviation slots into the title
   // and description on both sides.
   "`/jurisdictions/federal/${d.slug}`": "FederalDistrict.tsx",
+  // Service x case type x state (wave 2): both sides wrap the shared
+  // serviceCaseStateTitle / serviceCaseStateDescription builders.
+  "`/services/${s.slug}/case/${c.slug}/${st.slug}`": "ServiceCaseTypeState.tsx",
 };
 
 describe("prerender shells mirror the templated case-type and credential page meta", () => {
@@ -289,6 +292,8 @@ describe("the family title/description builders are shared with the React templa
       "title: variantTitle(s, VARIANT_LABEL[variant], ORG_NAME)",
       "title: pairTitle(s, c, ORG_NAME)",
       "pairDescription(s, c)",
+      "title: `${serviceCaseStateTitle(s, c, st, ORG_NAME)}`",
+      "description: `${serviceCaseStateDescription(s, c, placeName(st.name))}`",
       "profileTitleFor(t)",
       // The case-type tiers read the entry's framing through the shared
       // helpers (src/data/caseTypes.ts) on both sides (audit F08).
@@ -338,6 +343,7 @@ describe("the family title/description builders are shared with the React templa
       ["src/pages/templates/ServiceTransactional.tsx", "variantTitle"],
       ["src/pages/templates/ServiceCaseType.tsx", "pairTitle"],
       ["src/pages/templates/CaseTypeState.tsx", "caseTypeStateTitle"],
+      ["src/pages/templates/ServiceCaseTypeState.tsx", "serviceCaseStateTitle"],
     ]) {
       const src = read(file);
       expect(src, file).toContain(`import { ${builder} } from "@/lib/page-titles.mjs";`);
