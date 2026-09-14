@@ -190,6 +190,53 @@ Opposing economists rarely disagree about what a W-2 says; they disagree about w
 
 The forms are most useful with their companions: the year-end pay stub for each year, which shows the hours, the rate, the employer's premium share, and the retirement match; the retirement plan statement; the benefits statement or summary plan description; and the tax returns, which carry the self-employment and investment income the form omits. Producing the set together lets the economist build the earnings base in one pass and reconcile every figure, and it removes the most common reason a damages report is revised after deposition, which is a record that arrived late. The [[/guides/how-lost-earnings-are-calculated|lost earnings guide]] shows where each record enters the schedules.`,
   },
+  {
+    slug: "what-tax-returns-add-to-a-lost-earnings-claim",
+    sources: refsToSources(["BLS_CPS", "BLS_ECI"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-09-14",
+    title: "What Tax Returns Add to a Lost Earnings Claim",
+    metaDescription:
+      "A tax return shows every income source in a year, the self-employment income no wage form reports, and the other earners; here is how the economist reads it.",
+    excerpt:
+      "The tax return is the one record that shows all of a person's income in a year, from every employer and every business, alongside the income of a spouse and the deductions that reveal how a business was run. This post explains what each part of the return adds to the earnings base, where it misleads, and which records it points to next.",
+    category: "Records",
+    publishedDate: "2026-09-14",
+    related: [
+      link("How Lost Earnings Are Calculated", "/guides/how-lost-earnings-are-calculated", "Where the earnings base sits in the full calculation."),
+      link("Wage Growth and Earnings Projection", "/methods/wage-growth-and-earnings-projection", "Carrying the base the returns establish forward."),
+      link("Lost Earnings and Earning Capacity Analysis", "/services/lost-earnings-and-earning-capacity", "The analysis the returns feed."),
+    ],
+    content: `A tax return is the annual statement of everything a person, or a married couple filing together, reported as income, and in a [[/services/lost-earnings-and-earning-capacity|lost earnings claim]] it is the record the economist reads second, right after the wage forms. The wage form reports one employer's payments; the return reports them all, and it reports the income no wage form ever shows: the earnings of a business the person owned, the rent and the interest the household received, the pension already being drawn, and the earnings of the other spouse. A run of returns across the years before an injury, a death, or a termination is the frame the rest of the records fit into.
+
+## Every source of income in one place
+
+The first page of the return lists income by type: wages, interest, dividends, business income, capital gains, retirement distributions, rental income, unemployment compensation, and the rest. For the earnings base the economist wants the labor income, the money the person earned by working, and the return separates it from the income the household's assets produced. That separation matters because an injury or a death ends the labor income and leaves the asset income in place, so a base that quietly included dividends or rent would overstate the loss. The return also confirms that no employer was missed: a year with wages from three employers shows three wage forms should be in the file, and a gap between the wage line and the forms produced means a record is missing.
+
+## Self-employment income comes only from the return
+
+For a person who owned a business, the return is not one record among several but the primary one, because no employer issued a wage form. The business schedule reports gross receipts, each category of expense, and the net profit, and the economist reads all three. Gross receipts show the scale of the business and its trend. The expense lines show how the business was run: a large vehicle deduction, a home office, depreciation on equipment, and payments to family members are each a fact about what the net profit means. The net profit itself mixes two things, the value of the owner's own labor and the return on the money and equipment invested in the business, and only the first is lost earnings. The [[/guides/how-lost-earnings-are-calculated|lost earnings guide]] describes how the owner's labor is separated from the return on the business, and the return supplies the figures that separation starts from.
+
+## Several years of returns make a history
+
+One return is a snapshot and a run of them is a history. Read together, the labor income lines show the growth of the person's own earnings, which the economist compares with the published growth of wages for the occupation to see whether the person tracked the market, outpaced it, or fell behind. They show whether a business was growing, stable, or declining before the event, which is the single most contested question in a self-employed claim, because the projection carries the trend forward and a defense report will argue the trend was already turning. They show the years a business had losses and the years it had none, and they show a change in filing status, a move, or a new dependent, each of which dates a change in the household the projection has to reflect. The [[/methods/wage-growth-and-earnings-projection|earnings projection]] rests on this history.
+
+## Income of the spouse and the household
+
+A joint return reports the other spouse's income alongside the person's own, and it is relevant in two ways. In a wrongful death claim the household's total income sets the row the personal consumption tables are read from, so the spouse's earnings change the deduction even though they are not part of the loss. In an injury claim the spouse's earnings are not deducted, but a change in them after the event, a spouse who left work to provide care or one who took a second job to replace the lost income, is a fact the report notes and, where the framework recognizes it, values. The return also shows dependents, which fix the household's size on the date of the event and, with their ages, date the changes to come.
+
+## What the return cannot tell you
+
+The return reports what was taxable, not what was earned. Retirement deferrals, pre-tax health premiums, and other salary reductions leave the wage line before it reaches the return, so the wage line understates gross pay and the wage form's Medicare figure is the better base. Fringe benefits do not appear on the return at all, and the [[/methods/fringe-benefits-valuation|fringe benefits valuation]] draws on plan documents and published employer cost data instead. Cash income that was not reported is not on the return, and a claim that argues the person earned more than was reported has a problem the economist cannot solve with a projection. The business schedule shows expenses as the tax rules define them, so a depreciation deduction is a tax concept rather than a cash outlay, and the economist adjusts it before reading the net profit as the owner's income.
+
+## Where the disputes start
+
+Opposing economists rarely disagree about what the returns say; they disagree about which years to use and what to do with a trend. A report built on the best year of a run overstates the base, and one built on the worst year understates it, so a representative run of years is the usual answer and the choice of years is the usual argument. A self-employed claim divides on whether the business trend was rising or falling on the date of the event and on how much of the net profit was the owner's labor. A report that reads the returns selectively, ignores a loss year, or treats the whole net profit as lost earnings is exposed on each point, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] describes how the choice is tested.
+
+## What to produce with it
+
+Complete returns with every schedule, for several years before the event and for every year since, are the request. The wage forms reconcile to the wage line; the business schedule reconciles to the business's own books, the general ledger, and the bank statements; the depreciation schedule explains the deduction; and the filing status and the dependents fix the household. Producing the set together lets the economist build the earnings base in one pass, separate the labor income from the rest, and reconcile every figure to a second record, which is what keeps a damages report from being revised after deposition when a late schedule changes a number.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {

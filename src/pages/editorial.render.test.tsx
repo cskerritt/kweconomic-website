@@ -15,7 +15,7 @@ import { guides } from "@/data/guides";
 import { methods } from "@/data/methods";
 import { comparisons } from "@/data/comparisons";
 import { knowledgeGuides } from "@/data/knowledge";
-import { insightPosts, insightHeadings } from "@/data/insights";
+import { insightPosts, insightHeadings, getRelatedPosts } from "@/data/insights";
 import { whitePapers } from "@/data/whitePapers";
 import { getServiceBySlug } from "@/data/services";
 import { LEGACY_BRAND_PATTERN } from "@/lib/brand";
@@ -69,10 +69,10 @@ const pages: Rendered[] = [
   ...whitePapers.map((w) => ({ page: "white-papers", slug: w.slug, html: render(`/white-papers/${w.slug}`, "/white-papers/:slug", WhitePaper), datePublished: w.datePublished, dateModified: w.dateModified })),
 ];
 
-describe("every editorial page (40 renders across six templates)", () => {
-  it("renders all 40 pages", () => {
-    // 15 guides, 9 comparisons, 9 methods, 2 knowledge guides, 3 insight posts, 2 white papers.
-    expect(pages.length).toBe(15 + 9 + 9 + 2 + 3 + 2);
+describe("every editorial page (45 renders across six templates)", () => {
+  it("renders all 45 pages", () => {
+    // 17 guides, 10 comparisons, 10 methods, 2 knowledge guides, 4 insight posts, 2 white papers.
+    expect(pages.length).toBe(17 + 10 + 10 + 2 + 4 + 2);
     for (const p of pages) expect(p.html.length, `${p.page}/${p.slug}`).toBeGreaterThan(2000);
   });
 
@@ -206,11 +206,14 @@ describe("insight posts are sectioned, dated, and cross-linked", () => {
       expect(html).toContain(`>${expected}</time>`);
       expect(html).toContain("Related reading");
       for (const r of post.related ?? []) expect(html).toContain(`href="${r.href}"`);
-      // The sidebar falls back to the other post when no post shares the category.
+      // The sidebar lists the same-category posts, and falls back to the other
+      // posts when none shares the category (getRelatedPosts); it is never
+      // empty and never lists the post itself.
       expect(html).toContain("Related Articles");
-      for (const other of insightPosts.filter((p) => p.slug !== post.slug)) {
-        expect(html).toContain(`href="/insights/${other.slug}"`);
-      }
+      const sidebar = getRelatedPosts(post.slug, post.category);
+      expect(sidebar.length).toBeGreaterThanOrEqual(1);
+      for (const other of sidebar) expect(html).toContain(`href="/insights/${other.slug}"`);
+      expect(html.match(/href="\/insights\/[a-z0-9-]+"/g)!.filter((h) => h === `href="/insights/${post.slug}"`)).toEqual([]);
       // Body prose keeps its inline links.
       expect(html).toMatch(/href="\/methods\/[a-z-]+"/);
     });

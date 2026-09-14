@@ -33,6 +33,7 @@ const Comparison = lazy(() => import("@/pages/templates/Comparison"));
 const CaseTypeHub = lazy(() => import("@/pages/templates/CaseTypeHub"));
 const CaseTypeState = lazy(() => import("@/pages/templates/CaseTypeState"));
 const ServiceCaseType = lazy(() => import("@/pages/templates/ServiceCaseType"));
+const ServiceCaseTypeState = lazy(() => import("@/pages/templates/ServiceCaseTypeState"));
 const CredentialHub = lazy(() => import("@/pages/templates/CredentialHub"));
 const CredentialState = lazy(() => import("@/pages/templates/CredentialState"));
 const ExpertProfile = lazy(() => import("@/pages/templates/ExpertProfile"));
@@ -147,6 +148,10 @@ export default function App() {
         <Route path="/case-types/:slug" element={<CaseTypeHub />} />
         <Route path="/case-types/:typeSlug/:stateSlug" element={<CaseTypeState />} />
         <Route path="/services/:serviceSlug/case/:typeSlug" element={<ServiceCaseType />} />
+        {/* Service x case type x state (wave 2, 2026-09-14): the declared pair
+            composed with the state's courts and damages framework; released
+            one state batch per wave (src/data/serviceCaseTypeStates.ts). */}
+        <Route path="/services/:serviceSlug/case/:typeSlug/:stateSlug" element={<ServiceCaseTypeState />} />
         <Route path="/credentials/:slug" element={<CredentialHub />} />
         <Route path="/credentials/:credSlug/:stateSlug" element={<CredentialState />} />
         <Route path="/team/:slug" element={<ExpertProfile />} />

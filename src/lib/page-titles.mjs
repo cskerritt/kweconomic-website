@@ -173,3 +173,27 @@ export function pairTitle(service, caseType, orgName) {
     ...serviceTitleLabels(service).flatMap((label) => [`${label} Expert for ${subject}`, `${label} for ${subject}`]),
   );
 }
+
+/**
+ * /services/<pillar>/case/<case>/<state>: "<label> for <case short name> in
+ * <place>". Every label is tried beside the full place name, then beside the
+ * state abbreviation, and where neither fits the compact "<label>: <case>,
+ * <ST>" form closes the ladder (the longest label and case pair, Life Care
+ * Plan Cost for Spinal Cord Injury, needs it). The (label, case, state)
+ * triple keeps every title on the tier distinct from every other route.
+ * @param {{ shortName: string; titleShortName?: string }} service
+ * @param {{ name: string; shortName?: string }} caseType
+ * @param {{ name: string; abbreviation: string }} state
+ * @param {string} orgName
+ * @returns {string}
+ */
+export function serviceCaseStateTitle(service, caseType, state, orgName) {
+  const subject = caseType.shortName ?? caseType.name;
+  const labels = serviceTitleLabels(service);
+  const places = [placeName(state.name), state.abbreviation];
+  return fitTitle(
+    orgName,
+    ...places.flatMap((place) => labels.map((label) => `${label} for ${subject} in ${place}`)),
+    ...labels.map((label) => `${label}: ${subject}, ${state.abbreviation}`),
+  );
+}

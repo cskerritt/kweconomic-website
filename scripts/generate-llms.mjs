@@ -158,6 +158,7 @@ async function main() {
     prose,
     sharedServiceFaqs,
     { federalDistricts },
+    { releasedStates },
   ] = await Promise.all([
     load("/src/data/services.ts"),
     load("/src/data/team.ts"),
@@ -176,9 +177,12 @@ async function main() {
     load("/src/lib/service-prose.mjs"),
     loadOptional("/src/data/service-faqs.mjs"),
     load("/src/data/courts/federal-districts.ts"),
+    load("/src/data/serviceCaseTypeStates.ts"),
   ]);
 
   await server.close();
+  // The service x case type x state tier (wave 2): released state batches only.
+  const releasedStateSlugs = releasedStates();
 
   // Indexable service lines only (the eleven pillars). The two `pillar: false`
   // entries are hand-offs to the sister practices, not services of this site.
@@ -374,6 +378,9 @@ async function main() {
     p(s.description);
     if (s.caseTypes && s.caseTypes.length) {
       p(`Common case types: ${expandCaseTypes(s.caseTypes)}`);
+      if (releasedStateSlugs.length) {
+        p(`Case-type pages by state: ${SITE}/services/${s.slug}/case/<case-type>/<state> (each pairs the case type with the state's courts, expert standard, and damages framework; ${releasedStateSlugs.length} states published so far)`);
+      }
     }
     p(`Fees and process: ${SITE}/services/${s.slug}/cost, ${SITE}/services/${s.slug}/process, ${SITE}/services/${s.slug}/timeline`);
     if (s.process && s.process.length) {

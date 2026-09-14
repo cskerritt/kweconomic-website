@@ -29,6 +29,7 @@ States served: New Jersey, New York
 Page: https://kweconomics.com/services/lost-earnings-and-earning-capacity
 Past and future lost earnings and fringe benefits for a person whose injury has removed them from work or reduced what they can earn. The analysis builds from the earnings history, projects the but-for path over the person's expected worklife with wage growth, and discounts the future stream to present value. When the person can still work in a reduced capacity, the loss is framed as diminished earning capacity, with the post-injury path drawn from a vocational opinion or the treating record and offset against the but-for projection.
 Common case types: Personal Injury, Motor Vehicle Accident, Traumatic Brain Injury, Spinal Cord Injury, Medical Malpractice, Workers' Compensation, Product Liability, Wrongful Death
+Case-type pages by state: https://kweconomics.com/services/lost-earnings-and-earning-capacity/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/lost-earnings-and-earning-capacity/cost, https://kweconomics.com/services/lost-earnings-and-earning-capacity/process, https://kweconomics.com/services/lost-earnings-and-earning-capacity/timeline
 Engagement process:
 1. Retention and conflict check: We confirm the parties and counsel for conflicts, define the damages questions to be answered, establish the retainer, and agree on the report deadline and any disclosure dates.
@@ -62,6 +63,7 @@ A: Retention and the records request take about a week, the analysis two to four
 Page: https://kweconomics.com/services/wrongful-death-economic-loss
 The economic loss to survivors when a wage earner or homemaker dies: the decedent's lost earnings and fringe benefits net of personal consumption, the household services the decedent would have provided, and the financial support that would have flowed to dependents. Which elements are recoverable, and whether the loss is measured to the estate or to the survivors, vary by state, so the analysis is structured to the framework counsel identifies and every assumption is stated so it can be examined.
 Common case types: Wrongful Death, Medical Malpractice, Motor Vehicle Accident, Product Liability
+Case-type pages by state: https://kweconomics.com/services/wrongful-death-economic-loss/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/wrongful-death-economic-loss/cost, https://kweconomics.com/services/wrongful-death-economic-loss/process, https://kweconomics.com/services/wrongful-death-economic-loss/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify the survivors and the damages framework that applies in the venue, establish the retainer, and set the report deadline.
@@ -95,6 +97,7 @@ A: The framework counsel identifies determines which components are recoverable 
 Page: https://kweconomics.com/services/personal-injury-economic-damages
 An integrated economic damages report for an injured person: lost earnings and fringe benefits, lost household services, and the present value of future medical and care costs supplied by treating providers or a life care plan. One report carries every economic component to a single present value with consistent growth, discount, and life expectancy assumptions, so counsel can present the damages as a whole and the jury sees one set of numbers.
 Common case types: Personal Injury, Motor Vehicle Accident, Traumatic Brain Injury, Spinal Cord Injury, Medical Malpractice, Product Liability, Workers' Compensation
+Case-type pages by state: https://kweconomics.com/services/personal-injury-economic-damages/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/personal-injury-economic-damages/cost, https://kweconomics.com/services/personal-injury-economic-damages/process, https://kweconomics.com/services/personal-injury-economic-damages/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify which economic components are claimed and which other experts supply the underlying facts, establish the retainer, and set the report deadline.
@@ -128,6 +131,7 @@ A: Yes, and it usually should. Where the return-to-work date, the post-injury ca
 Page: https://kweconomics.com/services/household-services-valuation
 Replacement-cost valuation of the household production an injured or deceased person can no longer provide: meal preparation, cleaning, home and vehicle maintenance, shopping, child care, and care of other household members. The hours are drawn from national time-use data adjusted to the person's household composition and pre-injury role, and each category is priced at the local wage for the occupation that would replace it, then projected and discounted over the period of loss.
 Common case types: Personal Injury, Wrongful Death, Traumatic Brain Injury, Spinal Cord Injury, Motor Vehicle Accident, Medical Malpractice, Workers' Compensation, Product Liability
+Case-type pages by state: https://kweconomics.com/services/household-services-valuation/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/household-services-valuation/cost, https://kweconomics.com/services/household-services-valuation/process, https://kweconomics.com/services/household-services-valuation/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, establish whether the claim is a stand-alone valuation or a component of a larger damages report, establish the retainer, and set the deadline.
@@ -161,6 +165,7 @@ A: It can, and the report checks for it. Attendant care hours in a plan may alre
 Page: https://kweconomics.com/services/life-care-plan-cost-projection
 Reduction of a life care plan's line items to a single present value. The plan's items, frequencies, durations, and unit costs are carried forward with medical cost growth appropriate to each category, then discounted over the applicable life expectancy. Plan authorship stays with the life care planner; our role is the economic translation of the plan into a damages figure that reconciles with the plan and can be examined item by item.
 Common case types: Traumatic Brain Injury, Spinal Cord Injury, Medical Malpractice, Personal Injury, Product Liability, Motor Vehicle Accident
+Case-type pages by state: https://kweconomics.com/services/life-care-plan-cost-projection/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/life-care-plan-cost-projection/cost, https://kweconomics.com/services/life-care-plan-cost-projection/process, https://kweconomics.com/services/life-care-plan-cost-projection/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify the plan or plans to be valued and the venue's discounting conventions, establish the retainer, and set the deadline.
@@ -194,6 +199,7 @@ A: Yes. When two plans are in the record, the economist values each on the same 
 Page: https://kweconomics.com/services/employment-and-wage-loss-damages
 Back pay, front pay, and lost benefits in discrimination, retaliation, wrongful termination, and wage-and-hour matters. The analysis reconstructs what the employee would have earned in the position, including raises, bonuses, and benefit accruals, measures actual interim earnings, and evaluates mitigation and the period over which front pay is reasonable. In wage-and-hour matters the same records drive an hours and pay reconstruction for the individual claim or the class.
 Common case types: Employment Discrimination, Wrongful Termination
+Case-type pages by state: https://kweconomics.com/services/employment-and-wage-loss-damages/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/employment-and-wage-loss-damages/cost, https://kweconomics.com/services/employment-and-wage-loss-damages/process, https://kweconomics.com/services/employment-and-wage-loss-damages/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify the claims and the damages periods at issue, establish the retainer, and set the deadline.
@@ -227,6 +233,7 @@ A: Rebuilding the hours worked and the pay owed from timekeeping data, schedules
 Page: https://kweconomics.com/services/business-valuation
 Valuation of closely held businesses and ownership interests for shareholder and partnership disputes, divorce, estate and gift matters, and buy-sell disagreements. The work applies the income, market, and asset approaches under the standard of value that governs the matter, addresses discounts for lack of control and marketability where they apply, and documents every input so the conclusion can be tested on cross-examination.
 Common case types: Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Commercial Contract Dispute
+Case-type pages by state: https://kweconomics.com/services/business-valuation/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/business-valuation/cost, https://kweconomics.com/services/business-valuation/process, https://kweconomics.com/services/business-valuation/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify the interest to be valued, the valuation date, the standard of value, and the purpose, establish the retainer, and set the deadline.
@@ -260,6 +267,7 @@ A: By documenting every input. The report ties each normalizing adjustment to a 
 Page: https://kweconomics.com/services/lost-profits-and-commercial-damages
 Lost profits and related commercial damages for contract, business-tort, and business-interruption matters. The analysis builds the but-for revenue and cost path from the company's own history, its market, and the terms of the disputed relationship, links each claimed loss to the conduct at issue, addresses mitigation, and reasons through the period of loss so the damages figure answers the causation question as well as the amount.
 Common case types: Commercial Contract Dispute, Partnership and Shareholder Dispute, Fraud and Embezzlement
+Case-type pages by state: https://kweconomics.com/services/lost-profits-and-commercial-damages/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/lost-profits-and-commercial-damages/cost, https://kweconomics.com/services/lost-profits-and-commercial-damages/process, https://kweconomics.com/services/lost-profits-and-commercial-damages/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify the conduct at issue and the theory of loss, establish the retainer, and set the deadline.
@@ -293,6 +301,7 @@ A: Each claimed loss is linked to the conduct at issue and separated from losses
 Page: https://kweconomics.com/services/fraud-and-asset-tracing
 Forensic accounting for embezzlement, misappropriation, and financial statement irregularities. The work reconstructs the flow of funds through bank, ledger, and payment records, traces diverted assets to where they came to rest, quantifies the loss for each scheme identified, and documents the evidence trail so it can support a civil claim, an insurance recovery, or a referral to authorities.
 Common case types: Fraud and Embezzlement, Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Commercial Contract Dispute
+Case-type pages by state: https://kweconomics.com/services/fraud-and-asset-tracing/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/fraud-and-asset-tracing/cost, https://kweconomics.com/services/fraud-and-asset-tracing/process, https://kweconomics.com/services/fraud-and-asset-tracing/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify the suspected conduct, the entities involved, and the period at issue, establish the retainer, and agree on the sequence of work.
@@ -326,6 +335,7 @@ A: No. The report establishes what happened to the money, how, in what amounts, 
 Page: https://kweconomics.com/services/divorce-and-marital-financial-analysis
 Financial analysis for matrimonial matters: determination of income available for support when a spouse is self-employed or compensated in ways that do not appear on a pay stub, valuation of business interests in the marital estate, lifestyle analysis that documents the marital standard of living, and tracing of separate versus marital funds through accounts and assets. Each analysis is written so counsel can present it directly and the other side can test it.
 Common case types: Divorce and Marital Dissolution
+Case-type pages by state: https://kweconomics.com/services/divorce-and-marital-financial-analysis/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/divorce-and-marital-financial-analysis/cost, https://kweconomics.com/services/divorce-and-marital-financial-analysis/process, https://kweconomics.com/services/divorce-and-marital-financial-analysis/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify which financial questions are at issue and the relevant dates, establish the retainer, and set the deadline.
@@ -361,6 +371,7 @@ A: The economist measures the income the records show: pay, business cash flow, 
 Page: https://kweconomics.com/services/expert-rebuttal-and-report-review
 Critique of an opposing economic damages, valuation, or forensic accounting report for plaintiff or defense counsel. The review tests the assumptions, data sources, discount rates, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The result supports cross-examination, a rebuttal report, or a motion directed at the reliability of the opinion.
 Common case types: Personal Injury, Wrongful Death, Medical Malpractice, Motor Vehicle Accident, Traumatic Brain Injury, Spinal Cord Injury, Workers' Compensation, Employment Discrimination, Wrongful Termination, Commercial Contract Dispute, Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Fraud and Embezzlement, Product Liability
+Case-type pages by state: https://kweconomics.com/services/expert-rebuttal-and-report-review/case// (each pairs the case type with the state's courts, expert standard, and damages framework; 14 states published so far)
 Fees and process: https://kweconomics.com/services/expert-rebuttal-and-report-review/cost, https://kweconomics.com/services/expert-rebuttal-and-report-review/process, https://kweconomics.com/services/expert-rebuttal-and-report-review/timeline
 Engagement process:
 1. Retention and conflict check: We confirm conflicts, identify the reports and experts under review and the form of work product counsel needs, establish the retainer, and set the deadline.
@@ -808,6 +819,24 @@ Q: Why is the deduction a smaller percentage for a larger household?
 A: Because the same income is spread across more people. Expenditure data show that each member's personal share of household spending falls as the household grows, and that the share also falls as income rises, since a larger part of a high income is saved or spent on the household as a whole. The tables reflect both patterns.
 Q: Does the deduction change when the decedent was the household's only earner?
 A: The basis changes, not the principle. With one earner the decedent's income and the household's income are the same figure, so the percentage is read from the table on that basis. With two earners the decedent's consumption is a share of the combined income, and the report either uses a table built on that basis or converts the percentage before applying it.
+### Earnings Growth Rate Selection
+URL: https://kweconomics.com/methods/earnings-growth-rate-selection
+The growth rate is the annual percentage by which the economist carries a documented earnings base forward over the projection, and it has three possible components: general wage inflation, which every worker's pay tends to follow; the real gain that comes with experience early in a career; and any documented step, such as a promotion or a licensing milestone, specific to the person. The rate is drawn from published wage series and the person's record, stated in the same nominal or real terms as the discount rate, and shown year by year so the assumption can be tested.
+When used: A growth rate enters every projection that runs more than a year into the future: the but-for and post-event streams in a lost earnings and earning capacity analysis, the decedent's earnings in a wrongful death claim, the front pay period in an employment matter, and the replacement wages behind a household services figure. The earnings projection page describes the projection as a whole; this page concerns the one input that compounds across every year of it.
+Steps:
+1. Fix the earnings base first, from several years of tax returns and pay records, so the growth rate is applied to a representative figure rather than to a single high or low year
+2. Decide the terms: a nominal rate that includes expected inflation paired with a nominal discount rate, or a real rate paired with a real discount rate, and never one of each
+3. Read the general component from a long-run published wage series for the economy or for the person's industry, using a window long enough to average out a single unusual period of inflation
+4. Add a career-stage component only where the person was early in a career, from age-earnings profiles for the person's education and occupation, and taper it as the person approaches the age at which earnings in that occupation plateau
+5. Add a person-specific step only where a document supports it: a signed offer, a collective bargaining schedule, a licensing exam passed, or an employer's written promotion path
+6. Apply the same general rate to the post-event stream so the two sides of the comparison are measured on one footing, and show the loss under an alternative rate where the rate is contested
+Limitations: The rate compounds, so a small difference sustained over a long horizon becomes a large difference in the present value, and a rate drawn from a short or unusual window can carry a period of high or low inflation across decades where it does not belong. The person's own past raises are evidence of career stage but not of the future: a run of promotions early in a career says the person was on the rising part of the profile, not that the rise would continue at that pace. The growth rate is also inseparable from the discount rate: it is the gap between the two, the net rate, that moves the present value, so the report states the pair together and the net versus gross discount rate comparison explains why either one read alone can mislead.
+Q: Should the growth rate include inflation?
+A: Either way is sound, so long as the discount rate is stated in the same terms. A nominal growth rate that includes expected inflation is paired with a nominal discount rate drawn from market yields; a real growth rate that excludes it is paired with a real discount rate. Mixing the two overstates or understates the present value by the whole inflation component.
+Q: Why not project from the person's own past raises?
+A: Because past raises describe where the person was on the age-earnings profile, not where the profile goes next. A young worker's rapid early gains reflect the steep part of the curve, and carrying that pace across a full career would project earnings no occupation delivers. The report uses the person's history to place the person on the profile and the published series to carry the profile forward.
+Q: Is the growth rate the same for every year of the projection?
+A: Usually not. The general component is constant, but the career-stage component tapers as the person approaches the age at which earnings in the occupation level off, and a documented step enters in the year the document dates it. The schedule shows the rate applied in each year so the taper is visible.
 ## Guides for Attorneys
 ### What Is a Forensic Economist?
 URL: https://kweconomics.com/guides/what-is-a-forensic-economist
@@ -959,6 +988,26 @@ Q: What happens to the benefit claim when the plaintiff keeps working for the sa
 A: The benefit loss is limited to whatever changed: fewer hours that reduced the retirement match, a move to a part-time class that lost health coverage, or a lower wage that lowered a percentage-based contribution. The report values the benefits on both sides from the same plan and shows the difference year by year.
 Q: Are stock options and bonuses fringe benefits?
 A: No. Bonuses and commissions are wages and belong in the earnings base, where the record decides whether they are carried forward. Stock options and other equity compensation are valued separately, from the grant documents and the vesting schedule, and are not run through the benefit percentage.
+### Personal Consumption in a Wrongful Death Claim
+URL: https://kweconomics.com/guides/personal-consumption-in-wrongful-death
+A wrongful death claim compensates the survivors for the support they lost, not for everything the decedent would have earned, and part of every earner's income goes to the earner's own needs. The personal consumption deduction is the share of income the decedent would have spent on food, clothing, transportation, and the other costs of one person, removed from the projected earnings so that what remains is the support the household actually lost. This guide explains where the percentage comes from, what it is applied to, how it changes over the projection, and where opposing reports go wrong with it.
+Sections: Why the deduction exists; Where the percentage comes from; What the percentage is applied to; How the percentage changes over the projection; What the record supplies; Where opposing reports go wrong
+Q: Does the personal consumption deduction apply to a decedent's retirement income?
+A: Where the claim includes support from retirement income to a surviving spouse, the deduction applies to that stream as well, read for a two-person retired household rather than for the household on the date of death. The report changes the percentage at the retirement date and carries the support over the joint life expectancy.
+Q: What records fix the consumption percentage?
+A: The tax returns, for the household's income and the number of earners; the family's account of who lived in the household and depended on the decedent, with the ages of the children; and the published table the percentage is read from. Receipts and bank statements are rarely needed unless the household's spending departed from the pattern the table assumes in a way the report has to explain.
+Q: Can the percentage change during the projection?
+A: It should. The household gets smaller as children reach majority and the income basis changes at retirement, and each change moves the row the table is read from. A report that fixes one percentage on the date of death and carries it across the whole horizon has ignored the changes the record already dates.
+### Valuing a Homemaker's Services in an Economic Damages Claim
+URL: https://kweconomics.com/guides/valuing-a-homemakers-services
+A person whose work was the household rather than the labor market has an economic loss when an injury or a death ends that work, and the loss is measured the same way an employer's payroll is: by the hours of work removed and what it costs to replace them. The economist establishes the hours a homemaker spent on each category of household work from the family's account and published time-use data, prices each category at the local wage for the occupation that does that work, and carries the value over the years the work would have continued, adjusting as the household changes. This guide explains each step and the arguments that recur on both sides.
+Sections: Why a homemaker's loss is an economic loss; Counting the hours; Pricing the hours; What changes after the event; The horizon and the changing household; The arguments that recur
+Q: Is a homemaker's loss measured by what the person could have earned in a job?
+A: Not as the primary measure. The household lost services, and the services are valued at what it costs to replace them, category by category, from local wage data for the occupations that do the work. A foregone professional wage can be presented alongside where the record supports it, but it measures a different thing and the report keeps the two apart.
+Q: Do the childcare hours run for the whole horizon?
+A: No. Childcare hours are dated to the ages of the children in the record and fall as each child grows, ending when the youngest reaches the age at which the time-use data show the care ending. The other categories continue over life expectancy and taper in the later years.
+Q: Why does the report use the time-use row for a person who was not employed?
+A: Because the hours a person spends on the household depend heavily on whether that person also holds a job, and the survey reports the two groups separately. A full-time homemaker's hours are read from the row for a person who was not employed; reading the population average would understate the loss before any other question was reached.
 ## Comparisons
 ### Forensic Economist vs. Forensic Accountant
 URL: https://kweconomics.com/compare/forensic-economist-vs-forensic-accountant
@@ -1068,6 +1117,18 @@ Q: Does the interim earnings offset apply to front pay as well as back pay?
 A: Yes, but as a projection rather than a record. For back pay the offset is the interim earnings actually received, taken from pay records. For front pay the offset is the earnings the employee is expected to receive over the period, projected from the current position or from the evidence on the positions available.
 Q: Who decides how long the front pay period runs?
 A: The length of the period is usually for the court, drawing on the evidence about how long the loss would persist. The economist's role is to show what the figure is under each period the parties advance, and to state the horizon beyond which the projection has no support in the record.
+### Lost Earnings vs. Earning Capacity in Workers' Compensation
+URL: https://kweconomics.com/compare/lost-earnings-vs-earning-capacity-in-workers-compensation
+Lost Earnings compared with Lost Earning Capacity.
+When Lost Earnings applies: Lost earnings is the measure whenever the question is what the worker actually lost: the third-party action against a manufacturer, a property owner, or a driver arising from the same injury, and the settlement valuation where the indemnity stream is tied to actual wage loss. The economist assembles the pre-injury wage base, subtracts what the worker earned after the injury, projects the gap over the worklife horizon with a stated growth rate, and identifies the indemnity benefits already paid so lien and offset questions can be answered from the same numbers. The mitigation and offsets page describes how the post-injury earnings and the benefits are handled.
+When Lost Earning Capacity applies: Lost earning capacity is the measure where the compensation system pays for the reduction in the worker's ability to earn, which several jurisdictions do for a permanent partial disability. The economist takes the pre-injury wage from the employer's records, reads the restrictions from the medical record, identifies the wage the work within those restrictions pays in the local labor market from published occupational wage data, and expresses the difference in the form the system requires. The figure does not depend on whether the worker has found the lighter work yet, and the workers' compensation case type page sets the measure inside the wider claim.
+Where they overlap: Both measures start from the same pre-injury wage base and the same restrictions, and in a worker who has returned to the best work the restrictions allow they converge, because the actual post-injury wage is then the capacity wage. They diverge when the worker is earning less than the restrictions would allow, or more, and when the forum asks a different question: the compensation system wants the reduction in capacity in its own form, and the civil court wants the dollars lost. A report that presents the pre-injury wage, the capacity wage, and the actual post-injury earnings on one schedule lets counsel answer either question from the same facts, and the lost earnings versus lost earning capacity comparison explains how the same distinction runs outside the compensation system.
+Q: Which measure applies to the third-party action arising from a work injury?
+A: Lost earnings, in the ordinary civil form: the difference between the but-for earnings and the actual post-injury earnings, past and future, with the future reduced to present value. The compensation benefits already paid are identified separately so counsel can address the lien and any offset under the governing framework.
+Q: Can the two measures give different numbers from the same wage records?
+A: Yes, and the gap is informative. A worker earning less than the restrictions allow shows a lost earnings figure larger than the capacity reduction; a worker who has out-earned the capacity wage shows the reverse. The report presents both so the forum can see which question it is answering.
+Q: Does a return to lighter work end the earning capacity claim?
+A: No. The return is evidence of what the worker can do, and the wage of the lighter work is compared with the pre-injury wage to measure the reduction that remains. The capacity claim ends only where the worker can again earn what the pre-injury job paid within the restrictions the medical record sets.
 ## Knowledge Center
 ### Guide to Economic Damages
 URL: https://kweconomics.com/knowledge/guide-to-economic-damages
@@ -1090,6 +1151,10 @@ An economic damages report is a set of schedules connected by stated assumptions
 URL: https://kweconomics.com/insights/what-a-w-2-adds-to-a-lost-earnings-claim
 Published: 2026-09-07
 The W-2 is the first record an economist asks for in a lost earnings claim, because it fixes what an employer actually paid a person in a year, and it says more than the wage figure most readers stop at. This post explains what each box adds to the earnings base, what the form cannot tell you, and which records fill the gaps.
+### What Tax Returns Add to a Lost Earnings Claim
+URL: https://kweconomics.com/insights/what-tax-returns-add-to-a-lost-earnings-claim
+Published: 2026-09-14
+The tax return is the one record that shows all of a person's income in a year, from every employer and every business, alongside the income of a spouse and the deductions that reveal how a business was run. This post explains what each part of the return adds to the earnings base, where it misleads, and which records it points to next.
 ## White Papers
 ### Building a Daubert-Ready Economic Damages Report
 URL: https://kweconomics.com/white-papers/daubert-ready-economic-damages-report

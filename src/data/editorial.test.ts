@@ -96,6 +96,7 @@ describe("economics editorial data", () => {
   it("methods", () =>
     expect(slugs(methods)).toEqual([
       "business-valuation-approaches",
+      "earnings-growth-rate-selection",
       "fringe-benefits-valuation",
       "household-services-methodology",
       "lost-profits-but-for-analysis",
@@ -118,7 +119,9 @@ describe("economics editorial data", () => {
       "how-worklife-expectancy-is-chosen",
       "income-determination-in-divorce",
       "lost-profits-vs-lost-business-value",
+      "personal-consumption-in-wrongful-death",
       "present-value-explained-for-attorneys",
+      "valuing-a-homemakers-services",
       "what-is-a-forensic-economist",
       "when-do-you-need-an-economic-expert",
       "wrongful-death-damages-explained",
@@ -130,6 +133,7 @@ describe("economics editorial data", () => {
       "fair-market-value-vs-fair-value",
       "forensic-economist-vs-forensic-accountant",
       "forensic-economist-vs-vocational-expert",
+      "lost-earnings-vs-earning-capacity-in-workers-compensation",
       "lost-earnings-vs-lost-earning-capacity",
       "lost-profits-vs-business-valuation",
       "net-vs-gross-discount-rate",
@@ -140,6 +144,7 @@ describe("economics editorial data", () => {
     expect(insights.length).toBeGreaterThanOrEqual(3);
     expect(slugs(insights)).toContain("components-of-an-economic-damages-report");
     expect(slugs(insights)).toContain("what-a-w-2-adds-to-a-lost-earnings-claim");
+    expect(slugs(insights)).toContain("what-tax-returns-add-to-a-lost-earnings-claim");
     expect(slugs(whitePapers)).toEqual(["business-valuation-standards-in-litigation", "daubert-ready-economic-damages-report"]);
     expect(whitePapers.every((w) => w.discipline === "Economic")).toBe(true);
   });
@@ -199,8 +204,8 @@ describe("author and date signals on every editorial page", () => {
       ...knowledge.map((k) => ({ page: `knowledge/${k.slug}`, ...k })),
       ...whitePapers.map((w) => ({ page: `white-papers/${w.slug}`, ...w })),
     ];
-    // 9 methods, 15 guides, 9 comparisons, 2 knowledge guides, 2 white papers (wave 1 added one, two, and one).
-    expect(dated.length).toBe(9 + 15 + 9 + 2 + 2);
+    // 10 methods, 17 guides, 10 comparisons, 2 knowledge guides, 2 white papers (waves 1 and 2 each added one, two, and one).
+    expect(dated.length).toBe(10 + 17 + 10 + 2 + 2);
     for (const x of dated) {
       expect(ROSTER, `${x.page} authorSlug`).toContain(x.authorSlug);
       expect(x.datePublished, `${x.page} datePublished`).toMatch(ISO_DATE);
@@ -221,7 +226,7 @@ describe("author and date signals on every editorial page", () => {
 describe("titles and meta descriptions are written for the SERP", () => {
   it("every editorial <title> is 40-60 characters with the brand suffix", () => {
     const titles = pageTitles();
-    expect(titles.length).toBe(9 + 15 + 9 + 2 + 3 + 2);
+    expect(titles.length).toBe(10 + 17 + 10 + 2 + 4 + 2);
     for (const { page, title } of titles) {
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeLessThanOrEqual(60);
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeGreaterThanOrEqual(40);
@@ -238,7 +243,7 @@ describe("titles and meta descriptions are written for the SERP", () => {
   });
   it("every meta description is a complete written sentence of 110-160 characters (no auto-cut, no markers)", () => {
     const descs = metaDescriptions();
-    expect(descs.length).toBe(9 + 15 + 9 + 2 + 3 + 2);
+    expect(descs.length).toBe(10 + 17 + 10 + 2 + 4 + 2);
     for (const { page, text } of descs) {
       expect(text.length, `${page} (${text.length})`).toBeLessThanOrEqual(160);
       expect(text.length, `${page} (${text.length})`).toBeGreaterThanOrEqual(110);
@@ -407,11 +412,16 @@ describe("insight posts", () => {
       expect(rel.length, p.slug).toBeGreaterThanOrEqual(1);
       expect(rel.map((r) => r.slug), p.slug).not.toContain(p.slug);
     }
-    // The three posts sit in different categories (Legal, Economics, Records),
-    // so the fallback is what fills the block: the other posts, in file order.
+    // The Economics post has no category sibling, so the fallback is what
+    // fills its block: the other posts, in file order. The two Records posts
+    // (wave 1 and wave 2) are each other's same-category match.
     expect(getRelatedPosts("components-of-an-economic-damages-report", "Economics").map((r) => r.slug)).toEqual([
       "daubert-vs-frye-expert-testimony-standards",
       "what-a-w-2-adds-to-a-lost-earnings-claim",
+      "what-tax-returns-add-to-a-lost-earnings-claim",
+    ]);
+    expect(getRelatedPosts("what-a-w-2-adds-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
+      "what-tax-returns-add-to-a-lost-earnings-claim",
     ]);
   });
   it("the admissibility post and its companion guide name Daubert and Frye", () => {

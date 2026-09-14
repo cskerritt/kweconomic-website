@@ -1116,6 +1116,150 @@ export const guides: Guide[] = [
       { title: "Employment and Wage Loss Damages", href: "/services/employment-and-wage-loss-damages" },
     ],
   },
+  {
+    slug: "personal-consumption-in-wrongful-death",
+    title: "Personal Consumption in a Wrongful Death Claim",
+    metaTitle: "Personal Consumption in Wrongful Death",
+    metaDescription: "In a wrongful death claim the economist deducts the share of income the decedent would have spent personally, read from expenditure tables by household size.",
+    tldr:
+      "A wrongful death claim compensates the survivors for the support they lost, not for everything the decedent would have earned, and part of every earner's income goes to the earner's own needs. The personal consumption deduction is the share of income the decedent would have spent on food, clothing, transportation, and the other costs of one person, removed from the projected earnings so that what remains is the support the household actually lost. This guide explains where the percentage comes from, what it is applied to, how it changes over the projection, and where opposing reports go wrong with it.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-14",
+    dateModified: "2026-09-14",
+    sections: [
+      {
+        id: "why-the-deduction-exists",
+        heading: "Why the deduction exists",
+        bodyHtml:
+          "<p>A living earner spends part of every paycheck on himself or herself: the food eaten alone, the clothing worn, the share of the car and the phone and the insurance that served one person, the meals out and the hobbies. When that person dies, the survivors lose the income the decedent would have brought home, but they also stop bearing the cost of the decedent's own consumption, and a claim that ignored the second fact would compensate the household for money it never would have kept. The <a href=\"/services/wrongful-death-economic-loss\">wrongful death economic loss</a> analysis therefore measures support: the projected earnings less the share the decedent would have consumed personally.</p><p>The deduction is a feature of the survivors' claim, not of every death case. Where the governing framework measures the decedent's own lost earnings, as a survival action does for the period between injury and death, or measures the loss to the estate rather than to dependents, the deduction may not apply or may apply differently, and the <a href=\"/guides/wrongful-death-damages-explained\">wrongful death guide</a> describes how the two frameworks divide the components. Counsel confirms which measure governs; the economist builds the figure to that measure.</p>",
+      },
+      {
+        id: "where-the-percentage-comes-from",
+        heading: "Where the percentage comes from",
+        bodyHtml:
+          "<p>The percentage is not a guess and not a flat rule of thumb. Forensic economists read it from published personal consumption tables built on the household expenditure data the Bureau of Labor Statistics collects, which record how households of different sizes and income levels divide their spending among members. The tables report, for a household of a given size and income, the share of income a member would have consumed personally, and they distinguish the decedent's role, since an adult earner and a dependent child consume differently. The <a href=\"/methods/personal-consumption-tables\">personal consumption method</a> page describes the tables and the steps in detail.</p><p>Two patterns in the data explain most of what the tables say. The share falls as the household grows, because the same income supports more people and each member's personal slice is smaller. The share also falls as income rises, because a larger part of a high income is saved, spent on the home, or spent on the family as a whole rather than on one member's needs. A single earner with no dependents sits at the high end of the range; an earner in a large household with a modest income sits at the low end. The report names the table, the edition, and the row it read so the percentage can be checked.</p>",
+      },
+      {
+        id: "what-it-is-applied-to",
+        heading: "What the percentage is applied to",
+        bodyHtml:
+          "<p>The tables express consumption as a share of a defined income, and the report has to apply the percentage to the same definition. Some tables state consumption as a share of the decedent's own earnings; others state it as a share of the household's combined income, which matters when a surviving spouse also earned. Applying a household-basis percentage to the decedent's earnings alone, or the reverse, is the single most common error in the deduction, and it can move the figure by a wide margin in either direction. The report says which basis the table uses and shows the conversion where one is needed.</p><p>The deduction runs against earnings and the benefits that arrive as cash or as cash-equivalent, and it stops there. Household services are valued at the cost of replacing the work the decedent did for others, so the decedent's own share is already excluded by the way the hours are counted, and reducing that component again would deduct the same thing twice. Employer contributions to a retirement plan are a closer question: where the plan would have funded a pension the surviving spouse would have shared, the report treats the contribution as support, and where it would have funded the decedent's own retirement consumption, the deduction reaches it. The report states the treatment rather than leaving it implicit.</p>",
+      },
+      {
+        id: "how-it-changes-over-time",
+        heading: "How the percentage changes over the projection",
+        bodyHtml:
+          "<p>The household on the date of death is not the household of twenty years later. Children reach majority and leave, which makes the household smaller and the decedent's personal share larger; a spouse retires, which changes the income basis; and the decedent's own earnings grow, which moves the household along the income dimension of the table. A careful report applies the percentage year by year, changing it at the points where the household's composition would have changed, rather than fixing one figure on the date of death and carrying it across the whole horizon.</p><p>The horizon itself has two parts. Earnings, and the consumption deducted from them, run over the decedent's worklife expectancy, the years the decedent would have been working. Support to a surviving spouse from retirement income runs over the joint life expectancy of the two, and the consumption deduction applied to it reflects a two-person retired household. The <a href=\"/guides/how-worklife-expectancy-is-chosen\">worklife guide</a> explains the first horizon, and the current life tables supply the second.</p>",
+      },
+      {
+        id: "what-the-record-supplies",
+        heading: "What the record supplies",
+        bodyHtml:
+          "<p>The tables need three facts from the record: the household's size on the date of death, the ages of the dependents so the changes in size can be dated, and the household's income from all earners, which the tax returns establish. The family's own account of who lived in the household and who depended on the decedent fills in what the returns do not show. Where the household's spending was unusual in a way the record documents, for example a decedent who paid the costs of a dependent parent living elsewhere, or one whose employer covered the costs a table would count as personal, the report presents the table figure and explains the departure rather than substituting an undocumented percentage.</p><p>The state's framework also enters here. In a <a href=\"/case-types/wrongful-death/new-jersey\">New Jersey wrongful death claim</a>, for instance, the survivors' pecuniary loss is read to include the value of lost household services, advice, and guidance alongside support, and the report keeps the consumption deduction on the support component and away from the others. Counsel confirms which components the venue recognizes; the economist builds each on its own footing so the trier of fact can award them separately.</p>",
+      },
+      {
+        id: "where-reports-go-wrong",
+        heading: "Where opposing reports go wrong",
+        bodyHtml:
+          "<p>The recurring errors are a flat percentage with no table behind it; a percentage read from the right table but the wrong household size, usually because dependents were counted on one date and never updated; a basis mismatch between the table and the income the percentage was applied to; a deduction taken against household services or against a survivor's own earnings; and a projection with no deduction at all, which overstates the survivors' loss by the decedent's own share and is a reliable ground for challenge. Each is visible on the face of the report, and the <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions that expose them.</p><p>Because the percentage scales the entire earnings figure, a difference of a few points moves the total materially, so a sound report shows the present value under the percentage it adopted and under the alternative the other side is likely to argue. That presentation lets the trier of fact see what the choice does to the number, and it lets counsel on either side test the choice against the record rather than against the economist's assertion. The <a href=\"/methods/present-value-and-discounting\">present value</a> page describes the schedule on which the alternatives are shown.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does the personal consumption deduction apply to a decedent's retirement income?",
+        answer:
+          "Where the claim includes support from retirement income to a surviving spouse, the deduction applies to that stream as well, read for a two-person retired household rather than for the household on the date of death. The report changes the percentage at the retirement date and carries the support over the joint life expectancy.",
+      },
+      {
+        question: "What records fix the consumption percentage?",
+        answer:
+          "The tax returns, for the household's income and the number of earners; the family's account of who lived in the household and depended on the decedent, with the ages of the children; and the published table the percentage is read from. Receipts and bank statements are rarely needed unless the household's spending departed from the pattern the table assumes in a way the report has to explain.",
+      },
+      {
+        question: "Can the percentage change during the projection?",
+        answer:
+          "It should. The household gets smaller as children reach majority and the income basis changes at retirement, and each change moves the row the table is read from. A report that fixes one percentage on the date of death and carries it across the whole horizon has ignored the changes the record already dates.",
+      },
+    ],
+    sources: refsToSources(["BLS_CEX", "NCHS_LIFE_TABLES", "BLS_CPS"]),
+    related: [
+      { title: "Personal Consumption Deduction", href: "/methods/personal-consumption-tables" },
+      { title: "Wrongful Death Economic Loss", href: "/services/wrongful-death-economic-loss" },
+      { title: "Wrongful Death Damages Explained", href: "/guides/wrongful-death-damages-explained" },
+    ],
+  },
+  {
+    slug: "valuing-a-homemakers-services",
+    title: "Valuing a Homemaker's Services in an Economic Damages Claim",
+    metaTitle: "Valuing a Homemaker's Services",
+    metaDescription: "A homemaker's lost services are valued at the cost of replacing the hours of household work, from time-use data and local wages, over the years it would run.",
+    tldr:
+      "A person whose work was the household rather than the labor market has an economic loss when an injury or a death ends that work, and the loss is measured the same way an employer's payroll is: by the hours of work removed and what it costs to replace them. The economist establishes the hours a homemaker spent on each category of household work from the family's account and published time-use data, prices each category at the local wage for the occupation that does that work, and carries the value over the years the work would have continued, adjusting as the household changes. This guide explains each step and the arguments that recur on both sides.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-14",
+    dateModified: "2026-09-14",
+    sections: [
+      {
+        id: "the-loss-is-real",
+        heading: "Why a homemaker's loss is an economic loss",
+        bodyHtml:
+          "<p>A household runs on work. Meals are cooked, children are cared for and driven, the house is cleaned and repaired, the yard is kept, the bills are paid, the shopping is done, and the family's affairs are managed. When one member does most of that work full time, the household receives a stream of services that has a market value, because every one of those tasks is also sold by someone for a wage. An injury that ends the homemaker's ability to do the work, or a death that removes the homemaker from the household, imposes a cost the household did not bear before: the work is done by others who could have been doing something else, is bought from outside, or goes undone. The <a href=\"/services/household-services-valuation\">household services valuation</a> measures that cost.</p><p>The loss does not depend on a paycheck. A homemaker with no earnings history has no lost earnings claim, but the services claim stands on its own and is often the largest component of the household's economic loss. The <a href=\"/guides/household-services-in-personal-injury\">household services guide</a> describes the component in an injury case generally; this guide concerns the person for whom the household was the whole of the work.</p>",
+      },
+      {
+        id: "counting-the-hours",
+        heading: "Counting the hours",
+        bodyHtml:
+          "<p>The first input is the hours the homemaker spent on household work before the event, by category: meal preparation and cleanup, housekeeping and laundry, care of children or of an adult who needs it, shopping and errands, home and vehicle maintenance, yard work, household management, and travel connected to any of them. The family's own account supplies the household's pattern, and published time-use data supply the hours a person of the homemaker's sex, age, employment status, and household composition typically spends on each category. The two are read together: the survey figures keep the account within the range the data support, and the account explains where this household differed from the average and why.</p><p>A full-time homemaker's hours are high, and the time-use data confirm it, because a person who is not employed spends many more hours on the household than one who is. The report uses the row for a person who was not employed, not the row for the population as a whole, and it says so, because reading the wrong row understates the loss from the start. The <a href=\"/methods/household-services-methodology\">household services method</a> page sets out the categories and the survey the hours come from.</p>",
+      },
+      {
+        id: "pricing-the-hours",
+        heading: "Pricing the hours",
+        bodyHtml:
+          "<p>Each category is priced at what it costs to hire someone to do that work in the household's area: a cook's wage for meal preparation, a housekeeper's for cleaning and laundry, a childcare worker's for the care of children, a home health aide's for the care of an adult, a maintenance worker's for repairs, and so on. The wages come from the published occupational wage series for the metropolitan area or the state, and the report names the occupation and the series it used for each category. This is the replacement cost approach, and it values the work at what the household would have to pay to receive it, not at what the homemaker might have earned in some other job.</p><p>The alternative approach, valuing the hours at the wage the homemaker gave up by staying home, is sometimes argued for a person with a professional history, and it can produce a larger or a smaller figure. The economist can present it where the record supports a specific foregone wage, but the replacement cost figure is the one that measures what the household lost, and the report keeps the two apart. A generalist wage, a single blended rate for all categories, is a simpler alternative the report can show for comparison; it understates the categories that command a skilled wage and overstates the routine ones.</p>",
+      },
+      {
+        id: "after-the-event",
+        heading: "What changes after the event",
+        bodyHtml:
+          "<p>In a death case the entire stream is lost, and the question is how long it would have run. In an injury case the homemaker may still do some of the work, and the loss is the difference between the pre-event hours and what the person can now do, category by category. The medical evidence describes the physical and cognitive limits; the economist applies them to the categories, since a back injury may end yard work and heavy cleaning while leaving meal planning and household management intact. A person who can do a task slowly, or with help, or only on good days has a partial loss in that category, and the report states the reduction it applied and where the figure came from.</p><p>The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> page describes how the post-event hours are treated. What the household has actually paid for help since the event is evidence of the loss and of the going rate, but it is not the ceiling, because a household that has gone without help has lost the services all the same.</p>",
+      },
+      {
+        id: "the-horizon-and-the-household",
+        heading: "The horizon and the changing household",
+        bodyHtml:
+          "<p>Household work does not stop at a retirement age, so the horizon is life expectancy from the current life tables rather than a worklife horizon, reduced in the later years by the decline in hours that the time-use data show for older people. The hours also change with the household. Childcare hours fall as children grow and end when they leave; the hours of a person caring for an aging parent end with the parent; a couple's housekeeping hours in an empty house are fewer than a family's. The report dates each change from the ages in the record and applies the hours that fit each period rather than freezing the household on the date of the event.</p><p>The value is then carried year by year, grown at the rate the replacement wages are expected to grow, and reduced to present value at a rate tied to low-risk yields, so the same conventions govern this component as the earnings component. The <a href=\"/methods/present-value-and-discounting\">present value</a> page explains the discounting, and a <a href=\"/case-types/wrongful-death/texas\">Texas wrongful death page</a> shows how the component sits inside a survivors' claim in one venue.</p>",
+      },
+      {
+        id: "recurring-arguments",
+        heading: "The arguments that recur",
+        bodyHtml:
+          "<p>Defense reports commonly argue that the hours are overstated, that the household has adapted so the work is being done, that the family has not hired anyone, or that a general laborer's wage should price every category. Plaintiff reports commonly overstate the hours by counting time the homemaker spent on personal activities, price routine tasks at a skilled wage, or run childcare hours past the age at which children need care. The reply to each is the same: the hours come from the family's account checked against the survey data for a person in the homemaker's circumstances, the categories are priced at the occupation that does the work, and the horizon follows the household as the record dates it. A report built that way can show the figure under the other side's assumptions as well as its own, which is the most persuasive answer to any of the arguments. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> collects the questions.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a homemaker's loss measured by what the person could have earned in a job?",
+        answer:
+          "Not as the primary measure. The household lost services, and the services are valued at what it costs to replace them, category by category, from local wage data for the occupations that do the work. A foregone professional wage can be presented alongside where the record supports it, but it measures a different thing and the report keeps the two apart.",
+      },
+      {
+        question: "Do the childcare hours run for the whole horizon?",
+        answer:
+          "No. Childcare hours are dated to the ages of the children in the record and fall as each child grows, ending when the youngest reaches the age at which the time-use data show the care ending. The other categories continue over life expectancy and taper in the later years.",
+      },
+      {
+        question: "Why does the report use the time-use row for a person who was not employed?",
+        answer:
+          "Because the hours a person spends on the household depend heavily on whether that person also holds a job, and the survey reports the two groups separately. A full-time homemaker's hours are read from the row for a person who was not employed; reading the population average would understate the loss before any other question was reached.",
+      },
+    ],
+    sources: refsToSources(["BLS_ATUS", "BLS_OES", "NCHS_LIFE_TABLES"]),
+    related: [
+      { title: "Household Services Methodology", href: "/methods/household-services-methodology" },
+      { title: "Household Services Valuation", href: "/services/household-services-valuation" },
+      { title: "Household Services in Personal Injury", href: "/guides/household-services-in-personal-injury" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

@@ -64,3 +64,36 @@ export function withArticle(phrase) {
 export function capFirst(text) {
   return `${text.charAt(0).toUpperCase()}${text.slice(1)}`;
 }
+
+/** Longest meta description the SERP window shows in full. */
+const DESCRIPTION_MAX = 160;
+
+/**
+ * Meta description of a service x case type x state page
+ * (src/pages/templates/ServiceCaseTypeState.tsx and the shell block in
+ * scripts/prerender.mjs): the work the pillar performs, the matter, the
+ * place, and what the page covers. A matter that is not a damages claim (a
+ * case type carrying a `framing` block, the family-law matter) names the
+ * financial questions instead of a loss claim. The audience tag rides along
+ * and the tail shortens only where the sentence would run past the window.
+ * @param {{ shortName: string }} service
+ * @param {{ name: string; framing?: object }} caseType
+ * @param {string} place the place name as geo-prose.mjs placeName() spells it
+ * @returns {string}
+ */
+export function serviceCaseStateDescription(service, caseType, place) {
+  const stem = `${capFirst(workPhrase(service.shortName))} for ${caseType.name.toLowerCase()} cases in ${place}`;
+  const tails = caseType.framing
+    ? [
+        "the financial questions, the records that answer them, and the state framework.",
+        "the financial questions, their records, and the state framework.",
+        "financial questions, records, and state framework.",
+      ]
+    : [
+        "the loss claim, the records that drive it, and the state damages framework.",
+        "the loss claim, its records, and the state framework.",
+        "loss claim, records, and state framework.",
+      ];
+  const candidates = tails.flatMap((tail) => [`${stem}: ${tail} Plaintiff and defense.`, `${stem}: ${tail}`]);
+  return candidates.find((c) => c.length <= DESCRIPTION_MAX) ?? candidates[candidates.length - 1];
+}

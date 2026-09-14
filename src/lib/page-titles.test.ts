@@ -19,7 +19,7 @@ import { caseTypes } from "@/data/caseTypes";
 import { credentials, credentialStateHeadings } from "@/data/credentials";
 import { states } from "@/data/states";
 import { federalDistricts } from "@/data/courts/federal-districts";
-import { pillarServices } from "@/data/services";
+import { pillarServices, serviceCaseTypePairs } from "@/data/services";
 import { team } from "@/data/team";
 import { guides } from "@/data/guides";
 import { comparisons } from "@/data/comparisons";
@@ -45,6 +45,7 @@ import {
   pillarTitle,
   variantTitle,
   pairTitle,
+  serviceCaseStateTitle,
   serviceTitleLabels,
   serviceTitleNames,
 } from "./page-titles.mjs";
@@ -118,6 +119,13 @@ function allTitles(): Map<string, string> {
   // Federal district pages: the reporter abbreviation beside the fixed stem
   // (FederalDistrict.tsx and the prerender block carry the same literal).
   for (const d of federalDistricts) add(`/jurisdictions/federal/${d.slug}`, `Economic Damages Expert, ${d.abbreviation}${SUFFIX}`);
+  // Service x case type x state (wave 2): the prerender emits the released
+  // batches; the app renders every declared pair in every state, so every
+  // state is checked.
+  for (const { service, caseTypeSlug } of serviceCaseTypePairs()) {
+    const c = caseTypes.find((x) => x.slug === caseTypeSlug)!;
+    for (const st of states) add(`/services/${service.slug}/case/${c.slug}/${st.slug}`, serviceCaseStateTitle(service, c, st, ORG_NAME));
+  }
   for (const stage of ATTORNEY_STAGES) {
     add(`/attorneys/${stage.slug}`, stageIndexTitle(stage.slug));
     for (const c of caseTypes) add(`/attorneys/${stage.slug}/${c.slug}`, journeyTitle(stage.slug, c));

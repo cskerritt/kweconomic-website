@@ -767,7 +767,9 @@ Compose from `ServiceCaseType.tsx` and `CaseTypeState.tsx`: params `serviceSlug`
 
 `scripts/generate-sitemap.mjs`: add the same URLs; `sectionOf`: `if (/^\/services\/[^/]+\/case\/[^/]+\/[^/]+$/.test(u)) return "service-case-types";` placed BEFORE the `/services` rule; add `"service-case-types"` to `SECTIONS`. `scripts/sitemap-index.test.mjs`: add `sitemap-service-case-types.xml` to `SECTION_FILES`; assert its count equals `declaredPairs().length * releasedStates().length` and is `<= 3300`; keep the services ceiling at 4,000 (the new family lives in its own file).
 
-- [ ] **Step 6: Per-wave release step**
+- [x] **Steps 1-5: scaffold** (wave 2, 2026-09-14: `src/data/serviceCaseTypeStates.ts` reads the pairs from `serviceCaseTypePairs()` (60, not 56) and spells the Virgin Islands `us-virgin-islands` as states.ts does; the shell block loads the module through the vite loader; the sitemap child ceiling is 3,400)
+
+- [ ] **Step 6: Per-wave release step** (batch A released in wave 2; B, C, D follow)
 
 In the wave that ships batch N: set `released: true` on that batch, run the gate, confirm the build log shows `Service x Case-type x State pages: <56 x released states>`, commit `feat(wave-N): release service x case type x state batch <ID> (<14 states>)`.
 
@@ -866,13 +868,13 @@ Run: `npx vitest run src/data src/citations.routes.test.mjs scripts/prerender-me
 
 **Backlog (strike as used):**
 
-Guides: ~~how worklife expectancy is chosen~~ (wave 1); ~~fringe benefits in a lost earnings claim~~ (wave 1); personal consumption in wrongful death; valuing a homemaker's services; mitigation in employment cases; front pay versus reinstatement; lost profits for a new business; goodwill in a divorce valuation; discounts for lack of marketability; tracing commingled funds; reading an opposing economist's report; what an economic damages report costs and why; when to retain an economist in a medical malpractice case; economic damages for a minor plaintiff; damages for an undocumented worker; damages for a self-employed plaintiff; life expectancy adjustments after injury; hedonic damages and why they are not an economic calculation; prejudgment interest in damages; taxes in lost earnings claims.
+Guides: ~~how worklife expectancy is chosen~~ (wave 1); ~~fringe benefits in a lost earnings claim~~ (wave 1); ~~personal consumption in wrongful death~~ (wave 2); ~~valuing a homemaker's services~~ (wave 2); mitigation in employment cases; front pay versus reinstatement; lost profits for a new business; goodwill in a divorce valuation; discounts for lack of marketability; tracing commingled funds; reading an opposing economist's report; what an economic damages report costs and why; when to retain an economist in a medical malpractice case; economic damages for a minor plaintiff; damages for an undocumented worker; damages for a self-employed plaintiff; life expectancy adjustments after injury; hedonic damages and why they are not an economic calculation; prejudgment interest in damages; taxes in lost earnings claims.
 
-Methods: ~~personal consumption tables~~ (wave 1); earnings growth rate selection; the total offset method; the below-market discount rate; the age-earnings profile; capitalization of earnings; the discounted cash flow method for valuation; the yardstick and before-and-after methods for lost profits; net discount rate sensitivity; life expectancy tables.
+Methods: ~~personal consumption tables~~ (wave 1); ~~earnings growth rate selection~~ (wave 2); the total offset method; the below-market discount rate; the age-earnings profile; capitalization of earnings; the discounted cash flow method for valuation; the yardstick and before-and-after methods for lost profits; net discount rate sensitivity; life expectancy tables.
 
-Comparisons: ~~back pay versus front pay~~ (wave 1); lost earnings versus lost earning capacity in workers' compensation; lost profits versus diminished business value; fair value versus fair market value in shareholder disputes; economist versus forensic accountant on lost profits; gross versus net earnings; present value versus total offset; nominal versus real discount rates; wrongful death versus survival damages; income approach versus market approach.
+Comparisons: ~~back pay versus front pay~~ (wave 1); ~~lost earnings versus lost earning capacity in workers' compensation~~ (wave 2); lost profits versus diminished business value; fair value versus fair market value in shareholder disputes; economist versus forensic accountant on lost profits; gross versus net earnings; present value versus total offset; nominal versus real discount rates; wrongful death versus survival damages; income approach versus market approach.
 
-Insights (one record each): ~~W-2s~~ (wave 1), tax returns, pay stubs, union contracts, benefit summaries, business tax returns, general ledgers, bank statements, QuickBooks exports, personnel files.
+Insights (one record each): ~~W-2s~~ (wave 1), ~~tax returns~~ (wave 2), pay stubs, union contracts, benefit summaries, business tax returns, general ledgers, bank statements, QuickBooks exports, personnel files.
 
 ---
 
@@ -882,7 +884,7 @@ The routine takes the first unchecked wave whose date has passed. Tick it in the
 
 - [x] Wave 0 (2026-09-02, local session): Task 0 legacy 301 map.
 - [x] Wave 1 (not before 2026-09-07): Task 1 federal district pages + editorial batch 1 (guides 1-2, method 1, comparison 1, insight 1). Shipped 2026-09-07 (94 district pages; how worklife expectancy is chosen, fringe benefits in a lost earnings claim, personal consumption tables, back pay versus front pay, W-2s).
-- [ ] Wave 2 (not before 2026-09-14): Task 2 scaffold + release batch A + editorial batch 2.
+- [x] Wave 2 (not before 2026-09-14): Task 2 scaffold + release batch A + editorial batch 2. Shipped 2026-09-14 (`/services/<service>/case/<case-type>/<state>` scaffold, 60 declared pairs x batch A's 14 states = 840 pages in `sitemap-service-case-types.xml`, ceiling pinned at 3,400 for the full 60 x 56 rollout since services.ts declares 60 pairs, not 56; the title comes from `serviceCaseStateTitle` in `page-titles.mjs` and the H1 keeps the full service and case-type names; personal consumption in wrongful death, valuing a homemaker's services, earnings growth rate selection, lost earnings versus earning capacity in workers' compensation, tax returns).
 - [ ] Wave 3 (not before 2026-09-21): release batch B + editorial batch 3.
 - [ ] Wave 4 (not before 2026-09-28): release batch C + editorial batch 4.
 - [ ] Wave 5 (not before 2026-10-05): release batch D + editorial batch 5.

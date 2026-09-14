@@ -1019,11 +1019,14 @@ export function caseTypeStateLead(c: CaseType, orgName: string, place: string): 
     : `${orgName} prepares economic damages analyses for ${c.name.toLowerCase()} cases venued in ${place}: the components the loss claim consists of, the records that drive them, and a present value built to ${place}'s damages rules and venues. Plaintiff and defense.`;
 }
 
+/** "a"/"an" by first letter ("an employment discrimination case"). */
+const withArticle = (phrase: string): string => `${/^[aeiou]/i.test(phrase) ? "an" : "a"} ${phrase}`;
+
 /** State-tier sentence that introduces the numbered steps. */
 export function caseTypeStateStepsIntro(c: CaseType, place: string): string {
   return c.framing
     ? fillSlots(c.framing.stateStepsIntro, { place })
-    : `The same four steps apply to a ${c.name.toLowerCase()} case venued in ${place}; the damages framework above decides which components enter the total.`;
+    : `The same four steps apply to ${withArticle(c.name.toLowerCase())} case venued in ${place}; the damages framework above decides which components enter the total.`;
 }
 
 /**

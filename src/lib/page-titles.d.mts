@@ -56,3 +56,5 @@ export function serviceCityTitle(service: TitleService, city: TitleCity, state: 
 export function pillarTitle(service: TitleService, orgName: string): string;
 export function variantTitle(service: TitleService, variantLabel: string, orgName: string): string;
 export function pairTitle(service: TitleService, caseType: TitleCaseType, orgName: string): string;
+/** /services/<pillar>/case/<case>/<state>: "<label> for <case short name> in <place>", abbreviating and then compacting only where the full form cannot fit. */
+export function serviceCaseStateTitle(service: TitleService, caseType: TitleCaseType, state: TitleState, orgName: string): string;

@@ -1,6 +1,8 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { pillarServices, servicesForCaseType, type PillarService } from "@/data/services";
 import { getCaseType, type CaseType } from "@/data/caseTypes";
+import { states } from "@/data/states";
+import { releasedStates, serviceCaseStatePath } from "@/data/serviceCaseTypeStates";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
@@ -73,6 +75,11 @@ export default function ServiceCaseType() {
   const note = service.caseTypeNotes[caseType.slug];
   const siblings = servicesForCaseType(caseType.slug).filter((s) => s.slug !== service.slug);
   const finalStep = service.process?.at(-1);
+  // The state tier of this pair (wave 2): only the states whose batch has
+  // shipped are pages, so only those are linked.
+  const stateTier = releasedStates()
+    .map((slug) => states.find((s) => s.slug === slug))
+    .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
   return (
     <article className="max-w-4xl mx-auto px-4 py-8">
@@ -101,6 +108,24 @@ export default function ServiceCaseType() {
         <section id="deliverables" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">Typical deliverables</h2>
           <p className="text-neutral-700">{finalStep.description}</p>
+        </section>
+      )}
+
+      {stateTier.length > 0 && (
+        <section id="by-state" className="mb-6">
+          <h2 className="font-serif text-2xl text-navy mb-2">{service.shortName} for {caseType.name} by state</h2>
+          <p className="text-neutral-700 mb-2">
+            Each state page adds the courts, the expert standard, and the damages framework the report is built around in that venue.
+          </p>
+          <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+            {stateTier.map((s) => (
+              <li key={s.slug}>
+                <Link to={serviceCaseStatePath(service.slug, caseType.slug, s.slug)} className="text-navy hover:text-amber-dark hover:underline">
+                  {s.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </section>
       )}
 
