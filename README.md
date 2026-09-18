@@ -44,6 +44,16 @@ Build args `VITE_TURNSTILE_SITE_KEY` and `VITE_GA_MEASUREMENT_ID` default to emp
 
 `lib/legacy-redirects.server.mjs` is the 301 map from the retired kweconomics.com routes (the previous site's 22,418 sitemap URLs: 21 old service slugs by state and city, bare `/<state>` and `/<state>/<city>` pages, `/experience`, `/calculators`, `/tools`, `/blog`, and the keyword prefixes such as `/lost-earnings/*`). Old service and geo routes resolve to the closest pillar, state, or city page that actually has a prerendered shell in `dist/` (checked at request time, so a redirect never lands on a 404); vocational and life-care-planning routes go to the sister sites. The map runs after host and trailing-slash canonicalization, GET/HEAD only. `lib/legacy-redirects.server.test.mjs` pins every rule and replays `test/fixtures/legacy-sitemap-sample.txt` (307 URLs sampled from the old sitemap).
 
+## Privacy requests
+
+Handle a privacy request (access / correct / delete). The public policy (`/privacy`, `src/data/legal-policies.ts`) promises a reply within 45 days.
+
+1. Requests arrive at `info@kwvrs.com` (`ORG_EMAIL` in `src/lib/brand.ts`, the address the policy prints). Owner: Chris Skerritt. Log the date received; the 45 days run from it.
+2. Verify identity by replying to the address on file for that person. Do not act on a request from an address that does not match the record.
+3. Where to search for this site: `data/submissions.jsonl` on the Railway service (one JSON line per form submission; match on `email`, `name`, `phone`), the Supabase `raw_submissions` table if durable capture is ever enabled (`lib/raw-submissions.server.mjs`; it is off in production today, `/healthz` reports `durableCapture: false`), the Resend logs for the lead notice and the consultation acknowledgement (`lib/lead-mailer.server.mjs`), and the `LEAD_RECIPIENTS` mailbox the notices land in. Anything that became an engagement lives in the practice systems, outside this repo; the kwvrs-site engineering guide has that procedure.
+4. Do NOT delete anything tied to an engagement, an active or reasonably anticipated litigation matter, conflict-check history, or billing records. A request from an evaluee about a case file is routed through the retaining attorney.
+5. Reply with what we hold, what was corrected or deleted, and what was kept and why.
+
 ## Deployment
 
 Railway, Dockerfile builder (`railway.json`): multi-stage `node:22-alpine` image runs the full `npm run build` then copies `dist/` (which already contains `public/`), `server.js`, `validation.server.mjs`, `turnstile.server.mjs`, and `lib/` into the runtime stage (never `scripts/` or `src/`, which is why the runtime brand literals live in `lib/brand.server.mjs`). Healthcheck `GET /healthz` returns JSON with the mail/turnstile/durable-capture readiness flags. Standing rule: `docker build && docker run` locally before pushing to `main`:
