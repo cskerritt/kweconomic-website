@@ -255,17 +255,18 @@ const SECURITY_HEADERS = {
   // Railway serves the site over HTTPS only; browsers ignore HSTS on plain
   // HTTP (local Docker testing), so this is a no-op outside production.
   "Strict-Transport-Security": "max-age=31536000",
-  // Defense-in-depth CSP. The site is a prerendered SPA: the only external origins
-  // are Google Fonts (stylesheet + font files) and Cloudflare Turnstile (script +
-  // challenge iframe), and the only inline JS is the tiny `js`-class bootstrap +
+  // Defense-in-depth CSP. The site is a prerendered SPA: fonts are self-hosted
+  // (public/fonts/), so the only external origins are Cloudflare Turnstile (script +
+  // challenge iframe) and Google Analytics, both dormant until their build args
+  // are set, and the only inline JS is the tiny `js`-class bootstrap +
   // per-page JSON-LD - so script/style allow 'unsafe-inline' (a nonce-per-page
   // scheme isn't workable for the static prerender). object-src/base-uri/
   // form-action/frame-ancestors are locked down to blunt injection + clickjacking.
   "Content-Security-Policy": [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "font-src 'self' https://fonts.gstatic.com",
+    "style-src 'self' 'unsafe-inline'",
+    "font-src 'self'",
     "img-src 'self' data: https:",
     "connect-src 'self' https://challenges.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com",
     "frame-src https://challenges.cloudflare.com",
@@ -531,7 +532,10 @@ export async function requestHandler(req, res) {
 
     // Cache control
     let cacheControl;
-    if (url.pathname.startsWith("/assets/")) {
+    // /assets/ is content-hashed by Vite. /fonts/ holds the self-hosted woff2
+    // files: not hashed, but a font file is never edited in place (a new font
+    // build gets a new file name), so both are safe to cache for a year.
+    if (url.pathname.startsWith("/assets/") || (url.pathname.startsWith("/fonts/") && resolvedExt === ".woff2")) {
       cacheControl = "public, max-age=31536000, immutable";
     } else if (resolvedExt === ".html") {
       // no-cache (revalidate before use) rather than no-store, so prerendered
