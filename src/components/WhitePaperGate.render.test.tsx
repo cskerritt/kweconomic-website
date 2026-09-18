@@ -16,8 +16,9 @@ const html = renderToStaticMarkup(
 describe("WhitePaperGate render", () => {
   it("states the follow-up use of the email address", () => {
     expect(html).toContain(
-      "We will email you the paper and may follow up about our services. You can tell us to stop at any time.",
+      "We may follow up by email about this paper and our services. You can tell us to stop at any time.",
     );
+    expect(html).not.toContain("We will email you the paper");
     expect(html).not.toContain("We will only use this to follow up about your inquiry.");
   });
 

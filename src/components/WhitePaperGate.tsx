@@ -109,8 +109,8 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
             </h3>
             <p className="text-sm text-neutral-600 mb-5">
               Enter your details to unlock the full {paper.readingTime.replace(" read", "")} paper and a
-              print-ready version. We will email you the paper and may follow up about our services.
-              You can tell us to stop at any time.
+              print-ready version. We may follow up by email about this paper and our services. You
+              can tell us to stop at any time.
             </p>
             <form onSubmit={handleSubmit} className="space-y-3">
               <input
