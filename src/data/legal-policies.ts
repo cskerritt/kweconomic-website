@@ -150,7 +150,10 @@ Case-related information submitted through our forms or provided in connection w
     },
     {
       heading: "Retention",
-      content: `We keep inquiry and engagement records for as long as needed for the purposes described above, including conflict checking, professional and legal record-keeping obligations, and resolving disputes. You can ask us to delete an inquiry that did not become an engagement.`,
+      // The two periods are SPAM_RETENTION_DAYS / RAW_RETENTION_DAYS in
+      // lib/submission-retention.server.mjs; the purge only deletes when
+      // SUBMISSION_PURGE_MODE=delete is set on the server. Keep them in step.
+      content: `The website keeps a raw copy of each form submission as a safety net. We delete those copies after two years, and we delete submissions flagged as spam after 90 days. Records of inquiries and engagements in our practice systems are kept for as long as needed for the purposes described in this policy, including conflict checking, professional and legal record-keeping obligations, and resolving disputes. You can ask us to delete an inquiry that did not become an engagement.`,
     },
     {
       heading: "Privacy Rights and Requests",
