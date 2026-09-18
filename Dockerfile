@@ -21,12 +21,14 @@ COPY . .
 # service variable (forwarded as a --build-arg) BEFORE the first deploy, or the
 # widget is omitted from the bundle. Beware Docker layer caching: a build cached
 # with an empty key keeps the widget tree-shaken out until a no-cache rebuild.
+# Enabling Turnstile or GA changes what /privacy renders (src/data/legal-policies.ts reads both flags) - no other action needed.
 ARG VITE_TURNSTILE_SITE_KEY=""
 ENV VITE_TURNSTILE_SITE_KEY=$VITE_TURNSTILE_SITE_KEY
 
 # Public GA4 measurement id (like the Turnstile SITE key, it ships in client JS).
 # Empty default keeps analytics DORMANT; set this build-arg (Railway service var)
 # to the KW Economics property's G-XXXX id to activate site-wide analytics.
+# Enabling GA or Turnstile changes what /privacy renders (src/data/legal-policies.ts reads both flags) - no other action needed.
 ARG VITE_GA_MEASUREMENT_ID=""
 ENV VITE_GA_MEASUREMENT_ID=$VITE_GA_MEASUREMENT_ID
 
