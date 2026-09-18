@@ -8,7 +8,8 @@ import SchemaOrg from "@/components/SchemaOrg";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
 import { caseTypes } from "@/data/caseTypes";
-import { FORM_INTAKE_NOTE } from "@/data/consultation";
+import IntakeDisclosure from "@/components/IntakeDisclosure";
+import PrivacyNotice from "@/components/PrivacyNotice";
 import {
   ORG_NAME,
   ORG_EMAIL,
@@ -79,8 +80,9 @@ export default function ScheduleConsultation() {
     const raw = new FormData(form);
     const firstName = (raw.get("first-name") as string) || "";
     const lastName = (raw.get("last-name") as string) || "";
-    // Posts to the server handler, which records the lead and forwards it to
-    // the intake workflow (Supabase case + Asana task + team notification).
+    // Posts to the server handler, which records the lead (the jsonl breadcrumb,
+    // plus raw_submissions when that store is configured) and emails it to the
+    // intake inbox. This site has no workflow forward (server.js persistRawSubmission).
     const data = {
       name: `${firstName} ${lastName}`.trim(),
       email: raw.get("email"),
@@ -441,14 +443,16 @@ export default function ScheduleConsultation() {
                 >
                   {status === "sending" ? "Submitting..." : "Submit Consultation Request"}
                 </button>
+                <PrivacyNotice className="text-center" />
 
                 <p className="text-xs text-neutral-500 text-center">
                   All submissions are reviewed within one business day. No commitment is
                   required at this stage.
                 </p>
-                {/* Where the request goes (src/data/intake.ts, the same note
-                    the contact form and the privacy policy carry). */}
-                <p className="text-xs text-neutral-500 text-center">{FORM_INTAKE_NOTE}</p>
+                {/* Where the request goes (src/data/intake.ts; FORM_INTAKE_NOTE in
+                    src/data/consultation.ts is the same string, and the contact
+                    form carries the same note). */}
+                <p className="text-xs text-neutral-500 text-center"><IntakeDisclosure /></p>
               </form>
             </div>
           </div>

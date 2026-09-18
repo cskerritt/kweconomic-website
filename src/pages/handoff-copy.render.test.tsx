@@ -7,9 +7,9 @@ import Privacy from "./Privacy";
 import ScheduleConsultation from "./ScheduleConsultation";
 import { renderRoute, visibleText } from "@/test-utils/markup";
 import { homepageFaqs } from "@/data/home-faqs.mjs";
-import { FAMILY_SECTION, FAMILY_SECTION_TEXT, INTAKE_DISCLOSURE } from "@/data/intake";
+import { FAMILY_SECTION, FAMILY_SECTION_TEXT, INTAKE_DISCLOSURE, INTAKE_POLICY_LINK_TEXT, INTAKE_ROUTING } from "@/data/intake";
 import { FORM_INTAKE_NOTE } from "@/data/consultation";
-import { privacySections } from "@/data/legal-policies";
+import { PRIVACY_SHARING_HEADING, privacySections } from "@/data/legal-policies";
 import { ORG_NAME, ORG_SHORT, ORG_EMAIL, VOC_SITE_URL, LCP_SITE_URL, VOC_SERVICE_URL, LCP_SERVICE_URL, LEGACY_BRAND_PATTERN } from "@/lib/brand";
 
 // Site audit 2026-09-05, tasks F12 / F06 / F08: the homepage FAQ promised an
@@ -142,27 +142,40 @@ describe("/about: sister practices and the combined-engagement handoff (F08, G01
 // affiliated practices share, and /about then described that shared intake.
 // One module (src/data/intake.ts) now feeds the contact form, the
 // consultation form, /about, and the privacy policy, so the four agree.
+// The forms render the note's closing "Privacy Policy" as a link, and
+// visibleText() puts a delimiter at every tag, so the note is matched up to the
+// link and the link itself is checked in the markup.
+const NOTE_BEFORE_LINK = INTAKE_DISCLOSURE.slice(0, INTAKE_DISCLOSURE.lastIndexOf(INTAKE_POLICY_LINK_TEXT)).trim();
+const POLICY_LINK = /<a[^>]*href="\/privacy"[^>]*>Privacy Policy<\/a>/;
+
 describe("inquiry routing: the contact form, the consultation form, /about, and the privacy policy agree (F06)", () => {
   it("the contact form discloses the shared intake inbox and no longer disclaims third-party sharing", () => {
     const text = visibleText(withoutJsonLd(renderRoute("/contact", "/contact", Contact)));
-    expect(text).toContain(INTAKE_DISCLOSURE);
+    expect(text).toContain(NOTE_BEFORE_LINK);
     expect(text).not.toMatch(/We do not share inquiries with third parties/);
+    // 2026-09-18: nor the later "not shared outside that family" claim, which
+    // the hosting and email vendors made untrue; the note links the policy.
+    expect(text).not.toMatch(/not shared outside/);
+    expect(text).toMatch(/We do not sell inquiries or share them for marketing\./);
+    expect(renderRoute("/contact", "/contact", Contact)).toMatch(POLICY_LINK);
     expect(text).toContain(ORG_EMAIL);
   });
 
   it("the consultation form carries the same note", () => {
     const text = visibleText(withoutJsonLd(renderRoute("/schedule-consultation", "/schedule-consultation", ScheduleConsultation)));
     expect(FORM_INTAKE_NOTE).toBe(INTAKE_DISCLOSURE);
-    expect(text).toContain(FORM_INTAKE_NOTE);
+    expect(text).toContain(NOTE_BEFORE_LINK);
+    expect(renderRoute("/schedule-consultation", "/schedule-consultation", ScheduleConsultation)).toMatch(POLICY_LINK);
   });
 
-  it("the privacy policy's Information Sharing section states the same routing, in the shared module and on the page", () => {
-    const sharing = privacySections.find((s) => s.heading === "Information Sharing")!;
-    expect(sharing.content).toContain(INTAKE_DISCLOSURE);
+  it("the privacy policy's sharing section states the same routing, in the shared module and on the page", () => {
+    const sharing = privacySections.find((s) => s.heading === PRIVACY_SHARING_HEADING)!;
+    expect(INTAKE_DISCLOSURE.startsWith(INTAKE_ROUTING)).toBe(true);
+    expect(sharing.content).toContain(INTAKE_ROUTING);
     expect(sharing.content).toMatch(/shared with one of those affiliated practices when a matter calls for its discipline/);
     expect(sharing.content).toMatch(/retained under its own engagement agreement/);
     const text = visibleText(renderRoute("/privacy", "/privacy", Privacy));
-    expect(text).toContain(INTAKE_DISCLOSURE);
+    expect(text).toContain(INTAKE_ROUTING);
   });
 
   it("/about describes the same intake and names no routing the other pages do not", () => {

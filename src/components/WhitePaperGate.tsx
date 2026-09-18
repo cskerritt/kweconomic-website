@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Lock, Download, Check } from "lucide-react";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
+import PrivacyNotice from "@/components/PrivacyNotice";
 import { ORG_PHONE, ORG_PHONE_DISPLAY, telHref } from "@/lib/brand";
 import type { WhitePaper } from "@/data/whitePapers";
 
@@ -142,6 +143,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
                   </>
                 )}
               </button>
+              <PrivacyNotice />
               {status === "error" && (
                 <p className="text-sm text-red-600">
                   Something went wrong. Please try again or call{" "}
