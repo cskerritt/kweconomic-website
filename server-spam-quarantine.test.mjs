@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createServer } from "node:http";
 import { once } from "node:events";
-import { mkdirSync, existsSync, writeFileSync } from "node:fs";
+import { mkdirSync, existsSync, writeFileSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -41,7 +42,7 @@ if (!existsSync(distIndex)) {
   writeFileSync(distIndex, "<!doctype html><title>test shell</title>");
 }
 
-const { requestHandler } = await import("./server.js");
+const { requestHandler, saveSubmission } = await import("./server.js");
 const rawSubs = await import("./lib/raw-submissions.server.mjs");
 const { sendLeadEmail } = await import("./lib/lead-mailer.server.mjs");
 
@@ -170,5 +171,31 @@ describe("server anti-spam quarantine branch", () => {
     const inserted = rawSubs.insertRawSubmission.mock.calls[0][0];
     expect(inserted.payload._spam.reasons).toEqual(["honeypot"]);
     expect(sendLeadEmail).not.toHaveBeenCalled();
+  });
+});
+
+// The retention purge (lib/submission-retention.server.mjs) keys on the
+// breadcrumb's `timestamp` and `_spam` fields, so the server-set values must
+// win over anything a request body carries.
+describe("saveSubmission breadcrumb", () => {
+  it("writes one JSON line whose type and timestamp are server-set", () => {
+    const dir = mkdtempSync(join(tmpdir(), "save-submission-"));
+    const file = join(dir, "submissions.jsonl");
+    try {
+      const before = Date.now();
+      saveSubmission("contact", { name: "A", type: "forged", timestamp: "1990-01-01T00:00:00.000Z" }, file);
+      saveSubmission("whitepaper", { email: "b@example.com", _spam: { reasons: ["honeypot"], at: "x" } }, file);
+      const lines = readFileSync(file, "utf8").split("\n");
+      expect(lines).toHaveLength(3);
+      expect(lines[2]).toBe("");
+      const first = JSON.parse(lines[0]);
+      expect(first.type).toBe("contact");
+      expect(Date.parse(first.timestamp)).toBeGreaterThanOrEqual(before);
+      const second = JSON.parse(lines[1]);
+      expect(second._spam.reasons).toEqual(["honeypot"]);
+      expect(second.type).toBe("whitepaper");
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

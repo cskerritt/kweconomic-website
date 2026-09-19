@@ -9,6 +9,7 @@ import { verifyTurnstile, turnstileStartupState } from "./turnstile.server.mjs";
 import * as rawSubs from "./lib/raw-submissions.server.mjs";
 import { checkSpam } from "./lib/spam-heuristics.server.mjs";
 import { sendLeadEmail, DEFAULT_LEAD_RECIPIENTS } from "./lib/lead-mailer.server.mjs";
+import { SUBMISSIONS_FILE, resolveMode, scheduleRetention } from "./lib/submission-retention.server.mjs";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects.server.mjs";
 import { resolveUndeclaredPairRedirect } from "./lib/service-case-redirects.server.mjs";
 import { ORG_NAME, SITE_URL } from "./lib/brand.server.mjs";
@@ -111,11 +112,18 @@ function rateLimited(req, max = RATE_LIMIT_MAX) {
 // email. A write failure here (e.g. a root-owned Railway volume mounted at
 // /app/data while the container runs as the non-root `node` user) must NEVER
 // abort the submission, so it is caught and logged, not thrown.
-function saveSubmission(type, data) {
-  const entry = { type, timestamp: new Date().toISOString(), ...data };
+//
+// RETENTION: lib/submission-retention.server.mjs purges this file by the
+// `timestamp` and `_spam` fields, so the server-set `type` / `timestamp` are
+// spread LAST (a request body cannot backdate or retag its own record). The
+// append stays SYNCHRONOUS on purpose: the purge is synchronous too, so the
+// two can never interleave. Do not switch to async appendFile without putting
+// both behind one lock. `file` is injectable for unit testing.
+export function saveSubmission(type, data, file = SUBMISSIONS_FILE) {
+  const entry = { ...data, type, timestamp: new Date().toISOString() };
   try {
     appendFileSync(
-      join(__dirname, "data", "submissions.jsonl"),
+      file,
       JSON.stringify(entry) + "\n"
     );
   } catch (err) {
@@ -643,7 +651,16 @@ if (!process.env.VITEST) {
         : "lead email DISABLED (RESEND_API_KEY unset) - leads land only in raw_submissions + data/submissions.jsonl",
     );
     console.log(rawSubs.enabled ? "durable capture: configured" : "durable capture disabled: PUBLIC_SUPABASE_* unset");
+    console.log(
+      `retention purge: mode=${resolveMode()} (first pass in ~60 s, then every 24 h; set SUBMISSION_PURGE_MODE=delete to delete)`,
+    );
   });
+
+  // Retention purge of the raw submission copies (jsonl breadcrumb + optional
+  // raw_submissions). Report-only unless SUBMISSION_PURGE_MODE=delete. Timers
+  // are unref()'d and every pass is fail-soft, so it can never block a request
+  // or hold the process open during shutdown.
+  scheduleRetention();
 
   // Graceful shutdown: Railway sends SIGTERM on every redeploy. Stop accepting
   // new connections and let in-flight requests finish before exiting.

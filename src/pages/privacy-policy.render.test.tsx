@@ -114,6 +114,17 @@ describe("privacy policy: substance that holds in every build", () => {
     }
   });
 
+  // The periods are pinned against the purge module's constants in
+  // lib/submission-retention.server.test.mjs.
+  it("retention: states the two purge periods for the raw website copies", () => {
+    const expected =
+      "The website keeps a raw copy of each form submission as a safety net. We delete those copies after two years, and we delete submissions flagged as spam after 90 days. Records of inquiries and engagements in our practice systems are kept for as long as needed for the purposes described in this policy, including conflict checking, professional and legal record-keeping obligations, and resolving disputes. You can ask us to delete an inquiry that did not become an engagement.";
+    for (const flags of EVERY) {
+      expect(buildPrivacySections(flags).find((s) => s.heading === "Retention")?.content).toBe(expected);
+      expect(textFor(flags)).toContain(expected);
+    }
+  });
+
   it("states what the code does: IP and user-agent stored with a submission, no first-party cookies, the local-storage flags, no sale", () => {
     for (const flags of EVERY) {
       const text = allText(flags);
