@@ -39,6 +39,8 @@ import { whitePapers } from "@/data/whitePapers";
 import { team } from "@/data/team";
 import {
   PRIVACY_EFFECTIVE_DATE,
+  PRIVACY_LAST_REVISED,
+  PRIVACY_SHARING_HEADING,
   TERMS_EFFECTIVE_DATE,
   privacyIntro,
   privacySections,
@@ -57,7 +59,7 @@ import {
   infoToHaveReady,
   whatToExpect,
 } from "@/data/consultation";
-import { FAMILY_SECTION, FAMILY_SECTION_TEXT, INTAKE_DISCLOSURE } from "@/data/intake";
+import { FAMILY_SECTION, FAMILY_SECTION_TEXT, INTAKE_DISCLOSURE, INTAKE_ROUTING } from "@/data/intake";
 import { retainableExperts } from "@/data/team";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import { SYNTHETIC_SERVICE_ALIAS } from "@/test-utils/jsonld";
@@ -472,6 +474,9 @@ describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (r
       const shell = readShell(route);
       const text = bodyTextOf(shell);
       expect(shell, route).toContain(`<time datetime="${date.iso}">${date.label}</time>`);
+      if (route === "/privacy") {
+        expect(shell, route).toContain(`Last revised: <time datetime="${PRIVACY_LAST_REVISED.iso}">${PRIVACY_LAST_REVISED.label}</time>`);
+      }
       expectText(text, intro, route);
       const h2s = h2TextsOf(shell);
       for (const s of sections) {
@@ -569,7 +574,10 @@ describe("shared copy modules match the React pages", () => {
     const schedule = textOf(render("/schedule-consultation", "/schedule-consultation", ScheduleConsultation).html);
     expectText(schedule, FORM_INTAKE_NOTE, "schedule");
     expect(FORM_INTAKE_NOTE).toBe(INTAKE_DISCLOSURE);
-    expect(privacySections.find((s) => s.heading === "Information Sharing")?.content).toContain(INTAKE_DISCLOSURE);
+    // The policy carries the routing sentence; the forms' note adds the pointer to the policy itself.
+    expect(INTAKE_DISCLOSURE.startsWith(INTAKE_ROUTING)).toBe(true);
+    expect(INTAKE_DISCLOSURE).not.toMatch(/not shared outside/);
+    expect(privacySections.find((s) => s.heading === PRIVACY_SHARING_HEADING)?.content).toContain(INTAKE_ROUTING);
   });
 
   it("src/data/consultation.ts matches ScheduleConsultation.tsx", () => {

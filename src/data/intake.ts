@@ -22,9 +22,20 @@ import { ORG_NAME, ORG_SHORT } from "@/lib/brand";
  * names through CrossSell.tsx, the one component allowed to spell them.
  */
 
-/** The note under the contact and consultation forms, and in the privacy policy's "Information Sharing" section. */
-export const INTAKE_DISCLOSURE =
-  "Inquiries are received at an intake inbox shared with our affiliated vocational and life care planning practices and are used to run the conflict check and scope the engagement; they are not shared outside that family of practices.";
+/** Where an inquiry goes: the sentence the privacy policy's sharing section opens its routing paragraph with. */
+export const INTAKE_ROUTING =
+  "Inquiries are received at an intake inbox shared with our affiliated vocational and life care planning practices and are used to run the conflict check and scope the engagement.";
+
+/** The words of INTAKE_DISCLOSURE that the forms render as a link to /privacy. */
+export const INTAKE_POLICY_LINK_TEXT = "Privacy Policy";
+
+/**
+ * The note under the contact and consultation forms. Until 2026-09-18 it ended
+ * "they are not shared outside that family of practices", which the hosting
+ * and email vendors that carry every inquiry made untrue; it now says what is
+ * not done (sale, marketing sharing) and points to the policy's provider list.
+ */
+export const INTAKE_DISCLOSURE = `${INTAKE_ROUTING} We do not sell inquiries or share them for marketing. Outside that family of practices, they are handled only by the service providers that run this site and our email, as described in our ${INTAKE_POLICY_LINK_TEXT}.`;
 
 /** The /about section on the sister practices and the combined engagement. Slots are marked by the array breaks: intro[0] <voc host link> intro[1] <lcp host link> intro[2]; intake[0] <contact form link> intake[1] <email link> intake[2]. */
 export const FAMILY_SECTION = {

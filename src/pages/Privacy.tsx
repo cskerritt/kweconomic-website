@@ -1,85 +1,31 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, ORG_PHONE_DISPLAY, SITE_URL } from "@/lib/brand";
-import { INTAKE_DISCLOSURE } from "@/data/intake";
+import { ORG_NAME, SITE_URL } from "@/lib/brand";
+import AnalyticsOptOut from "@/components/AnalyticsOptOut";
+import {
+  PRIVACY_BUILD_FLAGS,
+  PRIVACY_CHOICES_HEADING,
+  PRIVACY_EFFECTIVE_DATE,
+  PRIVACY_LAST_REVISED,
+  buildPrivacySections,
+  privacyIntro,
+  type PrivacyFlags,
+} from "@/data/legal-policies";
 
-const DOMAIN = SITE_URL.replace(/^https?:\/\//, "");
-const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
-// The effective date of the policy is Chris's call (README "Facts to confirm");
-// it is printed as machine-readable <time> so a crawler can read it either way.
-const EFFECTIVE_DATE = { iso: "2025-01-01", label: "January 1, 2025" };
+// The policy text lives in src/data/legal-policies.ts (shared with the
+// prerendered shell). The effective date of the policy is Chris's call (README
+// "Facts to confirm"); it is printed as machine-readable <time> so a crawler can
+// read it either way. The sections that depend on the build - Google Analytics,
+// Cloudflare Turnstile - follow the real build flags; `flags` exists so the
+// tests can render both branches.
+const EFFECTIVE_DATE = PRIVACY_EFFECTIVE_DATE;
 
-const sections = [
-  {
-    heading: "Information We Collect",
-    content: `When you visit the ${ORG_NAME} website, we may collect certain information automatically through standard web server logs and analytics tools. This information may include your IP address, browser type, operating system, referring URL, pages visited, and the date and time of your visit. This data is collected in aggregate and is used solely to understand how visitors interact with the site.
-
-When you voluntarily submit information through our contact form or consultation request form, we collect the information you provide - which may include your name, email address, phone number, firm or organization name, and details about the matter you wish to discuss. We use this information to respond to your inquiry and, if you become a client, to manage the engagement.
-
-We do not collect payment information through this website. We do not purchase or use third-party data to supplement the information you provide directly.`,
-  },
-  {
-    heading: "How We Use Your Information",
-    content: `Information collected through contact and inquiry forms is used to respond to your request and evaluate whether ${ORG_SHORT} can assist with your matter. We do not use contact form submissions for marketing purposes without your separate consent. We do not sell, rent, or trade your personal information to third parties.
-
-Aggregate, non-identifying website analytics data is used internally to improve site performance and content. This data does not identify individual visitors and is not shared outside of our organization.
-
-If you engage ${ORG_SHORT} as an expert or consulting firm, information relevant to the engagement will be used in connection with that professional relationship in accordance with applicable professional obligations.`,
-  },
-  {
-    heading: "Information Sharing",
-    content: `${ORG_NAME} does not sell, rent, or disclose your personal information to third parties for marketing or commercial purposes. We may share information with service providers who assist in operating our website or communications (such as email hosting or analytics providers), subject to appropriate confidentiality agreements.
-
-${INTAKE_DISCLOSURE} Inquiry details may be shared with one of those affiliated practices when a matter calls for its discipline, under the same confidentiality, and each practice that takes part in an engagement is retained under its own engagement agreement.
-
-We may disclose information when required to do so by law, in response to a lawful court order or subpoena, or in connection with a legal proceeding to which we are a party. We may also disclose information where we believe in good faith that disclosure is necessary to protect the safety of any person or to address fraud, security, or technical issues.
-
-Case-related information submitted through our forms or provided in connection with a potential engagement is treated as confidential and will not be disclosed to adverse parties or unrelated third parties.`,
-  },
-  {
-    heading: "Cookies and Tracking Technologies",
-    content: `This website may use cookies - small data files placed on your browser - to support site functionality and analytics. Session cookies are used to enable basic site navigation and expire when you close your browser. Persistent cookies may be used by analytics services to track aggregate usage patterns over time.
-
-You may configure your browser to refuse cookies or to alert you when cookies are being sent. If you disable cookies, some features of the site may not function as intended. We do not use cookies to track individual users across third-party websites.
-
-We may use a third-party web analytics service (such as Google Analytics) to collect aggregate information about site usage. These services operate under their own privacy policies, which we encourage you to review. We configure analytics services to anonymize IP addresses where technically feasible.`,
-  },
-  {
-    heading: "Data Security",
-    content: `We implement reasonable technical and organizational measures to protect the information you provide from unauthorized access, disclosure, alteration, or destruction. Our website uses HTTPS encryption for all data transmission.
-
-No method of transmission over the internet is completely secure. While we take reasonable precautions, we cannot guarantee that information transmitted to or stored on our systems is immune from unauthorized access. You assume some risk when submitting information via any online form.
-
-If you have reason to believe that your interaction with us has been compromised, please contact us at ${ORG_EMAIL} so we can investigate.`,
-  },
-  {
-    heading: "Third-Party Links",
-    content: `This website may contain links to third-party websites, including the websites of our affiliated vocational and life care planning practices. We are not responsible for the privacy practices or content of those sites. This Privacy Policy applies only to ${DOMAIN}. We encourage you to review the privacy policies of any third-party sites you visit.`,
-  },
-  {
-    heading: "Children's Privacy",
-    content: `This website is intended for use by legal professionals and adults with litigation-related inquiries. We do not knowingly collect personal information from children under the age of 13. If we learn that we have inadvertently collected personal information from a child under 13, we will delete that information promptly. If you believe we have collected information from a child, please contact us at ${ORG_EMAIL}.`,
-  },
-  {
-    heading: "Changes to This Policy",
-    content: `We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. When we make material changes, we will update the effective date shown at the top of this page. We encourage you to review this page periodically. Your continued use of the website after changes are posted constitutes acceptance of the revised policy.`,
-  },
-  {
-    heading: "Contact Us",
-    content: `If you have questions or concerns about this Privacy Policy or our information practices, please contact us at:
-
-${ORG_NAME}
-Hackensack, New Jersey
-Phone: ${PHONE_DISPLAY}
-Email: ${ORG_EMAIL}`,
-  },
-];
-
-export default function Privacy() {
+export default function Privacy({ flags = PRIVACY_BUILD_FLAGS }: { flags?: PrivacyFlags }) {
+  const sections = buildPrivacySections(flags);
   usePageMeta({
     title: `Privacy Policy | ${ORG_NAME}`,
     description:
-      `How ${ORG_NAME} handles information submitted through this site: contact and consultation forms, analytics cookies, disclosure limits, and data security.`,
+      `How ${ORG_NAME} handles information submitted through this site: contact and consultation forms, cookies, service providers, your choices, and data security.`,
     canonical: `${SITE_URL}/privacy`,
   });
 
@@ -95,6 +41,9 @@ export default function Privacy() {
             <p className="text-sm text-neutral-500 font-mono">
               Effective Date: <time dateTime={EFFECTIVE_DATE.iso}>{EFFECTIVE_DATE.label}</time>
             </p>
+            <p className="text-sm text-neutral-500 font-mono mt-1">
+              Last revised: <time dateTime={PRIVACY_LAST_REVISED.iso}>{PRIVACY_LAST_REVISED.label}</time>
+            </p>
           </div>
         </div>
       </section>
@@ -103,9 +52,7 @@ export default function Privacy() {
       <section className="py-12 md:py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-neutral-700 leading-relaxed mb-10 text-base md:text-lg">
-            {ORG_LEGAL}, doing business as {ORG_NAME} ("{ORG_SHORT}," "we," "us," or "our"),
-            operates the website located at {DOMAIN}. This Privacy Policy explains how we collect,
-            use, and protect information in connection with your use of this website.
+            {privacyIntro}
           </p>
 
           <div className="space-y-10">
@@ -118,6 +65,8 @@ export default function Privacy() {
                       {para.trim()}
                     </p>
                   ))}
+                  {/* The opt-out control exists only in a build that loads analytics. */}
+                  {sec.heading === PRIVACY_CHOICES_HEADING && flags.analytics && <AnalyticsOptOut />}
                 </div>
               </div>
             ))}

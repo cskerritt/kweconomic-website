@@ -7,6 +7,12 @@ import { useEffect, useRef } from "react";
 const SITE_KEY = import.meta.env.VITE_TURNSTILE_SITE_KEY as string | undefined;
 const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
+/** True when this build carries a Turnstile site key, i.e. the widget loads on form pages. /privacy reads this. */
+// eslint-disable-next-line react-refresh/only-export-components -- a build-flag reader, kept beside the SITE_KEY it reads
+export function isTurnstileConfigured(): boolean {
+  return !!SITE_KEY;
+}
+
 type TurnstileApi = {
   render: (
     el: HTMLElement,

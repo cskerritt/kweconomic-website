@@ -1,5 +1,7 @@
 import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, ORG_PHONE_DISPLAY, SITE_URL } from "@/lib/brand";
-import { INTAKE_DISCLOSURE } from "./intake";
+import { isAnalyticsConfigured } from "@/lib/analytics";
+import { isTurnstileConfigured } from "@/components/Turnstile";
+import { INTAKE_ROUTING } from "./intake";
 
 /**
  * Copy of the two legal pages, shared with scripts/prerender.mjs so the static
@@ -10,9 +12,10 @@ import { INTAKE_DISCLOSURE } from "./intake";
  * The section arrays below are the ones src/pages/Privacy.tsx and
  * src/pages/Terms.tsx render: same headings, same paragraphs, paragraphs
  * within a section separated by a blank line exactly as the pages split them.
- * Until the pages import from here they hold a local copy of this text, and
- * scripts/prerender-shells.test.mjs pins the two copies together by rendering
- * each page and checking every heading and paragraph against this module.
+ * Privacy.tsx imports its sections from here; Terms.tsx still holds a local
+ * copy of its text, and scripts/prerender-shells.test.mjs pins the copies
+ * together by rendering each page and checking every heading and paragraph
+ * against this module.
  *
  * Contact details resolve from src/lib/brand.ts, as they do on the pages.
  */
@@ -36,78 +39,174 @@ const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
 // The effective dates are Chris's call (README "Facts to confirm"); the pages
 // print them as machine-readable <time> so a crawler can read them either way.
 export const PRIVACY_EFFECTIVE_DATE: EffectiveDate = { iso: "2025-01-01", label: "January 1, 2025" };
+/** When the privacy policy text last changed (printed under the effective date). */
+export const PRIVACY_LAST_REVISED: EffectiveDate = { iso: "2026-09-18", label: "September 18, 2026" };
 export const TERMS_EFFECTIVE_DATE: EffectiveDate = { iso: "2025-01-01", label: "January 1, 2025" };
 
 /** The paragraph /privacy opens with, before the sections. */
 export const privacyIntro = `${ORG_LEGAL}, doing business as ${ORG_NAME} ("${ORG_SHORT}," "we," "us," or "our"), operates the website located at ${DOMAIN}. This Privacy Policy explains how we collect, use, and protect information in connection with your use of this website.`;
 
-export const privacySections: LegalSection[] = [
-  {
-    heading: "Information We Collect",
-    content: `When you visit the ${ORG_NAME} website, we may collect certain information automatically through standard web server logs and analytics tools. This information may include your IP address, browser type, operating system, referring URL, pages visited, and the date and time of your visit. This data is collected in aggregate and is used solely to understand how visitors interact with the site.
+// ---------------------------------------------------------------------------
+// Privacy policy (rewritten 2026-09-18, DRAFT FOR COUNSEL). Every statement
+// below describes what the code in this repository does. The two statements
+// that vary with the build - Google Analytics and Cloudflare Turnstile - are
+// rendered from the real build flags (isAnalyticsConfigured in
+// src/lib/analytics.ts, isTurnstileConfigured in src/components/Turnstile.tsx),
+// so the page cannot drift from behaviour: a build with no GA id says the site
+// uses no analytics cookies, and setting the id changes the text with it. The
+// prerender loads this module under the same build env, so the static shell
+// agrees with the hydrated page.
+// ---------------------------------------------------------------------------
 
-When you voluntarily submit information through our contact form or consultation request form, we collect the information you provide - which may include your name, email address, phone number, firm or organization name, and details about the matter you wish to discuss. We use this information to respond to your inquiry and, if you become a client, to manage the engagement.
+/** The build switches the policy text depends on. */
+export interface PrivacyFlags {
+  /** Google Analytics 4 is compiled in (a valid VITE_GA_MEASUREMENT_ID). */
+  analytics: boolean;
+  /** Cloudflare Turnstile is compiled in (VITE_TURNSTILE_SITE_KEY set). */
+  turnstile: boolean;
+}
 
-We do not collect payment information through this website. We do not purchase or use third-party data to supplement the information you provide directly.`,
-  },
-  {
-    heading: "How We Use Your Information",
-    content: `Information collected through contact and inquiry forms is used to respond to your request and evaluate whether ${ORG_SHORT} can assist with your matter. We do not use contact form submissions for marketing purposes without your separate consent. We do not sell, rent, or trade your personal information to third parties.
+/** The section that carries the on-page analytics opt-out control (src/components/AnalyticsOptOut.tsx). */
+export const PRIVACY_CHOICES_HEADING = "Your Choices: Global Privacy Control, Do Not Track, and Opt-Out";
+/** The section that states where an inquiry goes (src/data/intake.ts) and who else handles it. */
+export const PRIVACY_SHARING_HEADING = "Service Providers and Information Sharing";
 
-Aggregate, non-identifying website analytics data is used internally to improve site performance and content. This data does not identify individual visitors and is not shared outside of our organization.
+/** The policy sections for a given build. Pure, so both branches of each flag are testable. */
+export function buildPrivacySections(flags: PrivacyFlags): LegalSection[] {
+  const cookiesAnalytics = flags.analytics
+    ? `This site uses Google Analytics 4 to measure which pages are visited. Google Analytics sets first-party cookies on your browser (named _ga and _ga_ followed by our property identifier, lasting up to two years) that hold a random browser identifier. Google processes this information as our service provider. Advertising features, Google signals, and ad personalization are switched off. Analytics is not loaded for browsers that send a Global Privacy Control or Do Not Track signal, or after you use the opt-out control below.`
+    : `This site does not currently use analytics or advertising cookies.`;
+  const cookiesTurnstile = flags.turnstile
+    ? `Cloudflare Turnstile loads on pages with forms to block automated spam. Cloudflare receives your IP address and browser signals to tell people from automated traffic, and it may set its own strictly necessary cookies or browser storage to do so.`
+    : null;
+  const choices = flags.analytics
+    ? `We do not load analytics for browsers that send a Global Privacy Control (GPC) or Do Not Track (DNT) signal. No action is needed beyond turning the signal on in your browser.
+
+You can also turn analytics off for this browser with the control below. The choice is stored in your browser, so it applies to this browser only and is forgotten if you clear the site's storage.
+
+You can configure your browser to refuse or delete cookies. This site works the same without them.`
+    : `We do not track visitors across sites, so Global Privacy Control (GPC) and Do Not Track (DNT) signals do not change how the site behaves; if analytics is later enabled it is not loaded for browsers sending them.
+
+You can configure your browser to refuse or delete cookies. This site works the same without them.`;
+  // Providers are named only when they are live. The optional Supabase copy of
+  // each submission (lib/raw-submissions.server.mjs) is OFF in production
+  // (/healthz durableCapture:false): a Supabase line must be added to the
+  // provider list below BEFORE that store is enabled.
+  const providerExtras = [
+    flags.turnstile ? "spam protection (Cloudflare)" : null,
+    flags.analytics ? "website analytics (Google)" : null,
+  ].filter((x): x is string => x !== null);
+
+  return [
+    {
+      heading: "Information You Give Us",
+      content: `This site has three forms. The contact form collects your name, email address, phone number, firm, case type, and your message. The consultation request form collects your name, email address, phone number, firm, case type, jurisdiction, preferred language, preferred contact method, and a description of the matter. The white paper form collects your name and email address and records which paper you unlocked.
+
+The message and description fields are free text, and what is written there can include information about other people - typically the person whose losses are being evaluated - including injury, medical, employment, and financial details supplied by the retaining attorney or firm. We use that information only for conflict checks, scoping, and performing the engagement.
+
+We do not collect payment information through this website, and we do not purchase third-party data to supplement what you provide.`,
+    },
+    {
+      heading: "Information Collected Automatically",
+      content: `Our web server and hosting provider keep standard request logs, which include IP address, the page requested, and the date and time of the request.
+
+When you submit a form, we store the IP address and browser user-agent with that submission for spam and abuse prevention. The server also keeps a short-lived, in-memory count of form submissions per IP address to limit automated abuse; it is not written to disk.`,
+    },
+    {
+      heading: "Cookies and Similar Technologies",
+      content: [
+        `The site itself sets no cookies.`,
+        cookiesAnalytics,
+        `The site uses your browser's local storage for two things: a flag remembering that you unlocked a white paper, which holds no identifier, and your analytics opt-out preference if you set one.`,
+        cookiesTurnstile,
+        `This site has no advertising pixels, no session recording, and no cross-site tracking.`,
+      ]
+        .filter((x): x is string => x !== null)
+        .join("\n\n"),
+    },
+    {
+      heading: PRIVACY_CHOICES_HEADING,
+      content: choices,
+    },
+    {
+      heading: "How We Use Information",
+      content: `We use the information described above to respond to inquiries, run conflict checks, scope and perform engagements, bill for our work, keep the site secure and free of spam, and measure how the site is used.
+
+If you request a white paper or otherwise ask to hear from us, we may contact you about our services. You can tell us to stop at any time by replying to the message or emailing ${ORG_EMAIL}. We do not use case details for marketing.
+
+We do not sell personal information, and we do not share it for cross-context behavioral advertising.
 
 If you engage ${ORG_SHORT} as an expert or consulting firm, information relevant to the engagement will be used in connection with that professional relationship in accordance with applicable professional obligations.`,
-  },
-  {
-    heading: "Information Sharing",
-    content: `${ORG_NAME} does not sell, rent, or disclose your personal information to third parties for marketing or commercial purposes. We may share information with service providers who assist in operating our website or communications (such as email hosting or analytics providers), subject to appropriate confidentiality agreements.
+    },
+    {
+      heading: PRIVACY_SHARING_HEADING,
+      content: `We disclose information to vendors that operate this site and our practice systems on our behalf: website hosting, including storage of form submissions (Railway), email delivery (Resend), and our business email provider${providerExtras.length ? `, ${providerExtras.join(", ")}` : ""}. These providers are permitted to use the information only to provide services to us.
 
-${INTAKE_DISCLOSURE} Inquiry details may be shared with one of those affiliated practices when a matter calls for its discipline, under the same confidentiality, and each practice that takes part in an engagement is retained under its own engagement agreement.
+${INTAKE_ROUTING} Inquiry details may be shared with one of those affiliated practices when a matter calls for its discipline, under the same confidentiality, and each practice that takes part in an engagement is retained under its own engagement agreement.
 
 We may disclose information when required to do so by law, in response to a lawful court order or subpoena, or in connection with a legal proceeding to which we are a party. We may also disclose information where we believe in good faith that disclosure is necessary to protect the safety of any person or to address fraud, security, or technical issues.
 
 Case-related information submitted through our forms or provided in connection with a potential engagement is treated as confidential and will not be disclosed to adverse parties or unrelated third parties.`,
-  },
-  {
-    heading: "Cookies and Tracking Technologies",
-    content: `This website may use cookies - small data files placed on your browser - to support site functionality and analytics. Session cookies are used to enable basic site navigation and expire when you close your browser. Persistent cookies may be used by analytics services to track aggregate usage patterns over time.
+    },
+    {
+      heading: "Retention",
+      content: `We keep inquiry and engagement records for as long as needed for the purposes described above, including conflict checking, professional and legal record-keeping obligations, and resolving disputes. You can ask us to delete an inquiry that did not become an engagement.`,
+    },
+    {
+      heading: "Privacy Rights and Requests",
+      content: `Anyone may email ${ORG_EMAIL} to ask what information we hold about them, to correct it, or to delete it. We respond within 45 days, and we will not discriminate against you for making a request. Some records must be kept, for example where they relate to active litigation or where the law requires us to retain them.
 
-You may configure your browser to refuse cookies or to alert you when cookies are being sent. If you disable cookies, some features of the site may not function as intended. We do not use cookies to track individual users across third-party websites.
-
-We may use a third-party web analytics service (such as Google Analytics) to collect aggregate information about site usage. These services operate under their own privacy policies, which we encourage you to review. We configure analytics services to anonymize IP addresses where technically feasible.`,
-  },
-  {
-    heading: "Data Security",
-    content: `We implement reasonable technical and organizational measures to protect the information you provide from unauthorized access, disclosure, alteration, or destruction. Our website uses HTTPS encryption for all data transmission.
+Where information about a person being evaluated was supplied by a retaining attorney in a legal matter, we may need to direct the request through that attorney.`,
+    },
+    {
+      heading: "Health Information",
+      content: `${ORG_SHORT} is not a health-care provider. Injury and medical information we receive arrives as part of a legal matter, and it is handled under the confidentiality terms of the engagement.`,
+    },
+    {
+      heading: "Visitors Outside the United States",
+      content: `This site is operated in, and directed to, the United States. Information you submit is processed in the United States.`,
+    },
+    {
+      heading: "Data Security",
+      content: `We implement reasonable technical and organizational measures to protect the information you provide from unauthorized access, disclosure, alteration, or destruction. Our website uses HTTPS encryption for all data transmission.
 
 No method of transmission over the internet is completely secure. While we take reasonable precautions, we cannot guarantee that information transmitted to or stored on our systems is immune from unauthorized access. You assume some risk when submitting information via any online form.
 
 If you have reason to believe that your interaction with us has been compromised, please contact us at ${ORG_EMAIL} so we can investigate.`,
-  },
-  {
-    heading: "Third-Party Links",
-    content: `This website may contain links to third-party websites, including the websites of our affiliated vocational and life care planning practices. We are not responsible for the privacy practices or content of those sites. This Privacy Policy applies only to ${DOMAIN}. We encourage you to review the privacy policies of any third-party sites you visit.`,
-  },
-  {
-    heading: "Children's Privacy",
-    content: `This website is intended for use by legal professionals and adults with litigation-related inquiries. We do not knowingly collect personal information from children under the age of 13. If we learn that we have inadvertently collected personal information from a child under 13, we will delete that information promptly. If you believe we have collected information from a child, please contact us at ${ORG_EMAIL}.`,
-  },
-  {
-    heading: "Changes to This Policy",
-    content: `We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. When we make material changes, we will update the effective date shown at the top of this page. We encourage you to review this page periodically. Your continued use of the website after changes are posted constitutes acceptance of the revised policy.`,
-  },
-  {
-    heading: "Contact Us",
-    content: `If you have questions or concerns about this Privacy Policy or our information practices, please contact us at:
+    },
+    {
+      heading: "Third-Party Links",
+      content: `This website may contain links to third-party websites, including the websites of our affiliated vocational and life care planning practices. We are not responsible for the privacy practices or content of those sites. This Privacy Policy applies only to ${DOMAIN}. We encourage you to review the privacy policies of any third-party sites you visit.`,
+    },
+    {
+      heading: "Children's Privacy",
+      content: `This website is intended for use by legal professionals and adults with litigation-related inquiries. We do not knowingly collect personal information from children under the age of 13. If we learn that we have inadvertently collected personal information from a child under 13, we will delete that information promptly. If you believe we have collected information from a child, please contact us at ${ORG_EMAIL}.`,
+    },
+    {
+      heading: "Changes to This Policy",
+      content: `We may update this Privacy Policy from time to time to reflect changes in our practices or applicable law. When we make material changes, we will update the last revised date shown at the top of this page. We encourage you to review this page periodically. Your continued use of the website after changes are posted constitutes acceptance of the revised policy.`,
+    },
+    {
+      heading: "Contact Us",
+      content: `If you have questions or concerns about this Privacy Policy or our information practices, please contact us at:
 
 ${ORG_NAME}
 Hackensack, New Jersey
 Phone: ${PHONE_DISPLAY}
 Email: ${ORG_EMAIL}`,
-  },
-];
+    },
+  ];
+}
 
-/** The paragraph /terms opens with, before the sections. */
+/** The flags of this build (read once; Vite inlines both values at build time). */
+export const PRIVACY_BUILD_FLAGS: PrivacyFlags = {
+  analytics: isAnalyticsConfigured(),
+  turnstile: isTurnstileConfigured(),
+};
+
+/** The policy as this build renders it: what Privacy.tsx shows by default and what the prerendered shell prints. */
+export const privacySections: LegalSection[] = buildPrivacySections(PRIVACY_BUILD_FLAGS);
+
 export const termsIntro = `Please read these Terms of Service carefully before using ${DOMAIN}. By accessing or using this Site, you agree to be bound by these Terms.`;
 
 export const termsSections: LegalSection[] = [

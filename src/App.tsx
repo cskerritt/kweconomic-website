@@ -76,7 +76,7 @@ function ScrollToTop() {
   return null;
 }
 
-/** Loads GA4 once (only if VITE_GA_MEASUREMENT_ID is set) and reports an SPA page_view per navigation. */
+/** Loads GA4 once (only if VITE_GA_MEASUREMENT_ID is set, and never for a GPC/DNT browser or after an opt-out: src/lib/analytics.ts) and reports an SPA page_view per navigation. */
 function AnalyticsTracker() {
   const { pathname } = useLocation();
   useEffect(() => {

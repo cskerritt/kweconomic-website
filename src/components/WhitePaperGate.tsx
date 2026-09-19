@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Lock, Download, Check } from "lucide-react";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
+import PrivacyNotice from "@/components/PrivacyNotice";
 import { ORG_PHONE, ORG_PHONE_DISPLAY, telHref } from "@/lib/brand";
 import type { WhitePaper } from "@/data/whitePapers";
 
@@ -108,7 +109,8 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
             </h3>
             <p className="text-sm text-neutral-600 mb-5">
               Enter your details to unlock the full {paper.readingTime.replace(" read", "")} paper and a
-              print-ready version. We will only use this to follow up about your inquiry.
+              print-ready version. We may follow up by email about this paper and our services. You
+              can tell us to stop at any time.
             </p>
             <form onSubmit={handleSubmit} className="space-y-3">
               <input
@@ -142,6 +144,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
                   </>
                 )}
               </button>
+              <PrivacyNotice />
               {status === "error" && (
                 <p className="text-sm text-red-600">
                   Something went wrong. Please try again or call{" "}

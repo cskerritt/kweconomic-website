@@ -4,7 +4,8 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { isEmail, isPhone } from "@/lib/validation";
 import { caseTypes } from "@/data/caseTypes";
-import { INTAKE_DISCLOSURE } from "@/data/intake";
+import IntakeDisclosure from "@/components/IntakeDisclosure";
+import PrivacyNotice from "@/components/PrivacyNotice";
 import {
   ORG_NAME,
   ORG_SHORT,
@@ -405,7 +406,7 @@ export default function Contact() {
                     static shell), so the form agrees with the actual routing
                     to the shared intake inbox (audit F06, F08 /contact). */}
                 <p className="text-xs text-neutral-600 leading-relaxed bg-neutral-50 border border-neutral-200 rounded-md p-3">
-                  <strong>Response within 1 business day.</strong> {INTAKE_DISCLOSURE}
+                  <strong>Response within 1 business day.</strong> <IntakeDisclosure />
                 </p>
 
                 <Turnstile onToken={setTurnstileToken} />
@@ -418,6 +419,7 @@ export default function Contact() {
                 >
                   {status === "sending" ? "Sending..." : "Send Message - Reply in 1 Business Day"}
                 </button>
+                <PrivacyNotice className="text-center" />
               </form>
             </div>
           </div>

@@ -330,6 +330,11 @@ function breadcrumbHtml(items) {
 }
 
 /** The consultation line every shell carries: a contact path a non-JS reader can act on. */
+// Static legal links appended to every shell body by buildPage (the labels are
+// the ones src/components/layout/Footer.tsx prints in its bottom bar).
+const LEGAL_FOOTER_HTML =
+  `<footer><nav aria-label="Legal"><a href="/privacy">Privacy Policy</a> <a href="/terms">Terms of Service</a></nav></footer>`;
+
 function ctaHtml(context) {
   const tel = `<a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>`;
   return `<p><a href="/contact">Request a consultation</a>${context ? ` on ${esc(context)}` : ""} or call ${tel}. Plaintiff and defense counsel.</p>`;
@@ -536,6 +541,9 @@ function buildPage({
     nodes.push(schema.breadcrumbSchema(breadcrumbs.map((b) => ({ name: b.name, url: abs(b.path) }))));
   }
   if (cta) body += ctaHtml(ctaContext);
+  // The React footer renders client-side only, so every shell ends with the two
+  // legal links: /privacy and /terms are reachable from any page without JavaScript.
+  body += LEGAL_FOOTER_HTML;
   // The root reset in pristineTemplate() stops at the first </div>; the shell
   // body therefore never contains a div.
   if (/<div[\s>]/i.test(body)) throw new Error(`prerender: shell body for ${path} must not contain <div>`);
@@ -746,6 +754,11 @@ function personNode(m) {
 // and every policy section, heading with its paragraphs, from the shared copy
 // in src/data/legal-policies.ts.
 const effectiveDateHtml = (d) => `<p>Effective Date: <time datetime="${esc(d.iso)}">${esc(d.label)}</time></p>`;
+// The intake note under both forms, with its closing words linked to /privacy as
+// Contact.tsx and ScheduleConsultation.tsx render them.
+const intakeDisclosureHtml = (text) =>
+  esc(text).replace(esc(intake.INTAKE_POLICY_LINK_TEXT), `<a href="/privacy">${esc(intake.INTAKE_POLICY_LINK_TEXT)}</a>`);
+const lastRevisedHtml = (d) => `<p>Last revised: <time datetime="${esc(d.iso)}">${esc(d.label)}</time></p>`;
 const legalSectionsHtml = (sections) =>
   sections.map((s) => `<section>${h2(s.heading)}${paragraphs(s.content)}</section>`).join("");
 const CASE_STUDIES_DATE_MODIFIED =
@@ -892,7 +905,7 @@ const corePages = [
       `<section>${h2("What happens next")}${ol(["Conflict check within 1 business day.", "Scope and fee confirmed in writing for the analysis you need.", "Engagement letter and records-request checklist."])}<p><a href="/schedule-consultation">Schedule a consultation</a> to discuss the loss claim, the records you have, and your deadlines. We confirm scope, timeline, and fee before any work begins.</p>` +
       // Mirrors the note under the Contact.tsx form: where the inquiry goes
       // (src/data/intake.ts; audit F06, F08 /contact).
-      `<p>${esc(intake.INTAKE_DISCLOSURE)}</p></section>` +
+      `<p>${intakeDisclosureHtml(intake.INTAKE_DISCLOSURE)}</p></section>` +
       navLinks([{ href: "/services", label: "Services" }, { href: "/locations", label: "Locations" }, { href: "/about", label: "About" }]),
     jsonLd: [
       schema.organizationSchema(),
@@ -1113,7 +1126,7 @@ const phase2Pages = [
       `<ul>${consultation.consultationFormFields
         .map((f) => `<li>${esc(f.label)}${f.required ? " (required)" : ""}${f.options ? `: ${esc(f.options.join(", "))}` : ""}</li>`)
         .join("")}</ul>` +
-      `<p>The form is sent with the "${esc(consultation.FORM_SUBMIT_LABEL)}" button. ${esc(consultation.FORM_FOOTNOTE)}</p><p>${esc(consultation.FORM_INTAKE_NOTE)}</p></section>` +
+      `<p>The form is sent with the "${esc(consultation.FORM_SUBMIT_LABEL)}" button. ${esc(consultation.FORM_FOOTNOTE)}</p><p>${intakeDisclosureHtml(consultation.FORM_INTAKE_NOTE)}</p></section>` +
       `<section>${h2("Our Offices")}${consultation.consultationOffices
         .map(
           (o) =>
@@ -1140,7 +1153,7 @@ const phase2Pages = [
     path: "/privacy",
     title: `Privacy Policy | ${ORG_NAME}`,
     description:
-      `How ${ORG_NAME} handles information submitted through this site: contact and consultation forms, analytics cookies, disclosure limits, and data security.`,
+      `How ${ORG_NAME} handles information submitted through this site: contact and consultation forms, cookies, service providers, your choices, and data security.`,
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "Privacy Policy", path: "/privacy" }],
     cta: false,
     // The full policy (Privacy.tsx via src/data/legal-policies.ts): effective
@@ -1148,6 +1161,7 @@ const phase2Pages = [
     innerHtml:
       `<h1>Privacy Policy</h1>` +
       effectiveDateHtml(legalPolicies.PRIVACY_EFFECTIVE_DATE) +
+      lastRevisedHtml(legalPolicies.PRIVACY_LAST_REVISED) +
       para(legalPolicies.privacyIntro) +
       legalSectionsHtml(legalPolicies.privacySections) +
       navLinks([{ href: "/terms", label: "Terms of Service" }, { href: "/contact", label: "Contact Us" }]),
