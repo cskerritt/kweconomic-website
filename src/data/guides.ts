@@ -1260,6 +1260,144 @@ export const guides: Guide[] = [
       { title: "Household Services in Personal Injury", href: "/guides/household-services-in-personal-injury" },
     ],
   },
+  {
+    slug: "mitigation-in-employment-cases",
+    title: "Mitigation in Employment Cases: How the Economist Measures It",
+    metaTitle: "Mitigation in Employment Cases",
+    metaDescription: "In an employment claim the economist nets what the employee earned or could have earned after the termination against the pay lost, and shows each version.",
+    tldr:
+      "Mitigation in an employment case is the principle that a terminated or demoted employee's damages are reduced by what the employee earned, or with reasonable effort could have earned, after the adverse action. Whether the employee's efforts were reasonable is a question for the trier of fact; what the interim earnings were, what comparable work paid, and how the answer changes the loss are questions for the economist. This guide explains which earnings are netted, how a lower-paying or self-employed replacement is handled, what the defense's failure-to-mitigate argument looks like in numbers, and how the report presents the loss under each version so counsel on either side can argue the facts.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-21",
+    dateModified: "2026-09-21",
+    sections: [
+      {
+        id: "what-mitigation-means-here",
+        heading: "What mitigation means in an employment claim",
+        bodyHtml:
+          "<p>An employee who loses a job is expected to look for another one, and the damages for the lost job are measured net of what the search produced or should have produced. The principle divides into two questions that different people answer. Whether the employee made reasonable efforts, whether a particular position was comparable enough that turning it down was unreasonable, and who bears the burden of proving either point are legal questions for counsel and the trier of fact, and the answers differ by venue and by the statute the claim is brought under. What the employee actually earned after the termination, what the positions the parties point to actually paid, and what the loss is under each answer are economic questions, and the <a href=\"/services/employment-and-wage-loss-damages\">employment and wage loss damages</a> analysis answers them without taking a side on the legal ones.</p><p>The economist's discipline is to keep the two apart on the page. The report never states that the employee mitigated or failed to; it states the interim earnings the records show, the earnings the alternative positions would have produced, and the back pay and front pay figures under each, so that whichever finding the trier of fact makes, the number that follows from it is already on the schedule. The <a href=\"/methods/mitigation-and-offsets\">mitigation and offsets</a> method page describes the general mechanics; this guide concerns the employment setting, where the offset is usually the largest single deduction in the claim.</p>",
+      },
+      {
+        id: "which-earnings-are-netted",
+        heading: "Which earnings are netted",
+        bodyHtml:
+          "<p>The offset is earnings from replacement employment: the wages, bonuses, and benefits of the jobs the employee held after the termination, taken from the pay records and tax returns for each year of the loss period and matched year by year against the pay of the position lost. Earnings the employee would have had anyway, such as a second job held before the termination and continued afterward, are not an offset, because they do not replace the lost pay; the report identifies them and leaves them out. Earnings from a job the employee took only because the lost position was gone are the offset the principle contemplates, and they are deducted in full.</p><p>Some receipts are not earnings and are handled separately. Unemployment compensation, severance, and benefits paid under a plan are treated differently from venue to venue and statute to statute, and whether each reduces the award is a legal question the economist does not decide. The report lists each receipt on its own line with its dates and amounts so counsel can apply the rule that governs, and the <a href=\"/guides/collateral-source-rule-explained\">collateral source guide</a> explains why the answer is not the economist's to give.</p>",
+      },
+      {
+        id: "lower-paying-and-self-employed-work",
+        heading: "Lower-paying and self-employed replacement work",
+        bodyHtml:
+          "<p>A replacement job that pays less than the position lost does not end the claim; it reduces it. The loss in each year is the pay of the lost position less the pay of the replacement, and the gap may narrow as the employee gains seniority in the new job or widen as the raises the old position would have carried outpace the new one. The report projects both streams on their own growth paths, from the old employer's pay scale and the new employer's, and the difference is the continuing loss. A job that pays more than the lost position ends the loss in the year the crossover occurs, and the report shows the year.</p><p>An employee who went into business rather than back to work presents a harder measurement. The business's net income is the offset, but only after the owner's labor has been separated from the return on the money and equipment put into it, and only after start-up losses in the early years have been treated consistently with the rest of the schedule. The <a href=\"/insights/what-tax-returns-add-to-a-lost-earnings-claim\">tax returns post</a> describes how the business schedule is read; the report states whether the early losses were counted against the interim earnings and why.</p>",
+      },
+      {
+        id: "the-failure-to-mitigate-argument",
+        heading: "The failure-to-mitigate argument in numbers",
+        bodyHtml:
+          "<p>A defense that the employee did not look hard enough, or turned down comparable work, is an argument about what the interim earnings should have been rather than what they were. In most frameworks the employer carries the burden of showing that comparable positions were available and that the employee did not reasonably pursue them, and the argument arrives with evidence: postings, offers, or the wages of the occupation in the local labor market. The economist's task is to turn that evidence into an alternative interim earnings stream, from the wages the positions actually paid, and to compute the back pay and front pay that result. The report then shows the loss under the actual interim earnings and under the constructive ones, and the trier of fact chooses between them.</p><p>The constructive stream has a start date as well as a wage. An argument that comparable work was available is an argument about when the employee could have started it, and the loss between the termination and that date is unaffected by the argument. The report dates the constructive stream from the evidence, applies the wages the record supports, and grows it on the same terms as the actual one, so the only difference between the two schedules is the point in dispute.</p>",
+      },
+      {
+        id: "benefits-during-the-gap",
+        heading: "Benefits during the gap",
+        bodyHtml:
+          "<p>The lost position carried benefits, and the replacement job may carry fewer or none. Health coverage is the usual gap: an employee who paid for continuation coverage or bought a policy has a documented cost, and one who went without has lost a benefit whose value the employer's cost data establish. Retirement contributions the old employer would have made, and the vesting or accrual the termination interrupted, are a loss even where the replacement job has a plan of its own, because the two are netted, not ignored. The <a href=\"/methods/fringe-benefits-valuation\">fringe benefits valuation</a> page sets out how each benefit is priced; in the employment setting the point is that the benefit side of the lost position and the benefit side of the replacement are netted with the same care as the wages.</p>",
+      },
+      {
+        id: "on-the-schedule",
+        heading: "How the schedule presents it",
+        bodyHtml:
+          "<p>The back pay schedule runs year by year from the termination to the date of trial, with the lost position's pay and benefits in one column, the interim earnings and benefits in the next, and the difference in the third, in the dollars of each year. The front pay schedule continues from the trial date over the period the record supports, with both streams projected and the difference discounted to present value, and the <a href=\"/compare/back-pay-vs-front-pay\">back pay versus front pay</a> comparison explains the divide. Where the failure-to-mitigate argument is live, a second pair of schedules substitutes the constructive interim earnings, and a summary page shows the four totals side by side. Counsel in a <a href=\"/case-types/wrongful-termination/new-york\">New York wrongful termination matter</a>, or in any venue, can then argue the legal question with the economic consequence of each answer already in evidence.</p><p>Opposing reports go wrong in predictable ways: an offset that includes earnings the employee would have had anyway, a replacement stream frozen at its starting wage while the lost position's stream grows, a constructive earnings figure with no start date, unemployment compensation deducted in a venue that does not allow it, and a benefit gap ignored because the replacement job had a plan. Each is visible on the schedule, and the <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions that expose them.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Are unemployment benefits deducted from an employment award?",
+        answer:
+          "That depends on the venue and the statute, and the economist does not decide it. The report lists the unemployment compensation received, with dates and amounts, on its own line, so counsel can apply the governing rule and the trier of fact can see the figure with and without the deduction.",
+      },
+      {
+        question: "Does a lower-paying replacement job end the back pay claim?",
+        answer:
+          "No. It reduces the loss to the difference between the two positions in each year. The report projects the lost position's pay and the replacement's pay on their own growth paths, and the loss continues until the replacement catches up, which the schedule shows as the crossover year, or until the period the framework allows has run.",
+      },
+      {
+        question: "What does the economist do with a claim that the employee stopped looking for work?",
+        answer:
+          "The economist builds a second interim earnings stream from the wages of the work the employer says was available, dated from when the evidence says it could have started, and computes the loss under that stream beside the loss under the actual earnings. Whether the employee's search was reasonable is left to the trier of fact.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_OES", "BLS_ECEC"]),
+    related: [
+      { title: "Employment and Wage Loss Damages", href: "/services/employment-and-wage-loss-damages" },
+      { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets" },
+      { title: "Back Pay vs. Front Pay", href: "/compare/back-pay-vs-front-pay" },
+    ],
+  },
+  {
+    slug: "front-pay-vs-reinstatement",
+    title: "Front Pay vs. Reinstatement: What the Economist Calculates",
+    metaTitle: "Front Pay vs. Reinstatement",
+    metaDescription: "Reinstatement restores the position and ends most of the future loss; front pay replaces it with a discounted projection over the period the record supports.",
+    tldr:
+      "When an employee wins an employment claim, the future loss can be remedied by putting the employee back in the position, by ordering front pay in its place, or by neither. Reinstatement ends the future wage loss on the day it takes effect but can leave a residual loss in seniority, pension accrual, and the gap before the return. Front pay is the discounted difference between the position lost and the employee's expected earnings without it, over a period the court fixes from the evidence. The choice between them belongs to the court; the economist's job is to calculate what each is worth so the choice is made with the numbers in view. This guide explains the inputs to the front pay figure, the residual loss that survives reinstatement, and how the report presents both.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-21",
+    dateModified: "2026-09-21",
+    sections: [
+      {
+        id: "two-remedies-for-one-loss",
+        heading: "Two remedies for the same future loss",
+        bodyHtml:
+          "<p>Back pay compensates the loss up to the trial; the loss after the trial is remedied in one of two ways. Reinstatement returns the employee to the position, or to one equivalent to it, and from that day the employee earns the pay the claim was built on, so the future wage loss ends. Front pay is the substitute ordered where reinstatement is not workable: the position has been eliminated, the relationship between the parties has broken down, or the employee has moved on and a return would be impractical. It is the projected difference between what the position would have paid and what the employee will earn without it, over a stated period, reduced to present value. The <a href=\"/compare/back-pay-vs-front-pay\">back pay versus front pay</a> comparison sets the two halves of the claim side by side; this guide concerns the choice between the two future remedies and what each is worth.</p><p>In most frameworks that choice is the court's, made as a matter of equity rather than by the jury, and the <a href=\"/services/employment-and-wage-loss-damages\">employment and wage loss damages</a> analysis supplies the figures for both so the court can weigh them. The economist does not recommend one remedy over the other; the report shows the value of each on the record's facts.</p>",
+      },
+      {
+        id: "the-front-pay-inputs",
+        heading: "What goes into the front pay figure",
+        bodyHtml:
+          "<p>Front pay is built from four inputs. The first is the pay of the position lost, projected forward from the employer's own pay scale, with the raises, step increases, and bonuses the record shows the employee would have received. The second is the pay of the position the employee holds or can be expected to hold instead, projected on its own path from the new employer's records or, where the employee has not yet found work, from the wages of the occupation in the local labor market. The third is the benefits on each side, netted as the <a href=\"/methods/fringe-benefits-valuation\">fringe benefits</a> page describes. The fourth is the period over which the difference runs, and it is the input that decides the size of the figure.</p><p>The period is not the employee's remaining worklife by default. It is the time the record shows the employee will need to reach earnings comparable to the position lost: a matter of a few years for a younger employee in an occupation with an active market, longer for an older employee in a specialized field, and potentially the full <a href=\"/methods/worklife-expectancy\">worklife horizon</a> where the evidence shows the gap will never close. The report presents the figure under each period the parties advance, with the year-by-year schedule behind each, and states the horizon beyond which the projection has no support in the record.</p>",
+      },
+      {
+        id: "what-reinstatement-leaves",
+        heading: "The loss that survives reinstatement",
+        bodyHtml:
+          "<p>Reinstatement is often described as ending the future loss, and for wages it does. Three components can survive it. The first is the gap between the judgment and the day the employee actually returns, which is measured like back pay in the dollars of the period. The second is seniority: an employee returned to the position without the seniority the intervening years would have carried may face a lower place in a layoff order, a slower path to the next step, or a smaller share of overtime, and where the framework does not restore seniority the difference is a continuing loss the report projects. The third is retirement: contributions the employer did not make and years of service that did not accrue reduce the pension or the account balance at retirement, and even where the employee is returned to the plan, the missed years are a loss unless the order restores them.</p><p>The report values each residual separately, so that a reinstatement order that restores seniority and plan service leaves only the return gap, while one that does not leaves all three. Counsel drafting the terms of a proposed order can see what each term is worth, which is the practical reason to have the calculation in hand before the remedy is argued.</p>",
+      },
+      {
+        id: "when-the-employee-has-moved-on",
+        heading: "When the employee has moved on",
+        bodyHtml:
+          "<p>An employee who has found comparable work, relocated, or retrained is unlikely to be reinstated and may not want to be, and the front pay calculation then turns on the new position. Where the new job pays as much as the old one, front pay is small or nil and the report says so; where it pays less, the schedule projects the gap and its closing. Where the employee left the labor force after the termination, the report addresses the question the framework asks, which is whether the departure was caused by the termination or chosen independently, by showing the front pay figure under each answer. The <a href=\"/guides/mitigation-in-employment-cases\">mitigation guide</a> explains how the replacement earnings are established, and the same records drive the front pay projection.</p>",
+      },
+      {
+        id: "presenting-both",
+        heading: "Presenting both remedies",
+        bodyHtml:
+          "<p>The report carries a front pay schedule under each period the parties advance and a reinstatement schedule showing the residual components, with a summary that puts the totals on one page. The present value of the front pay figures is taken at the judgment date at a rate tied to low-risk yields, as the <a href=\"/methods/present-value-and-discounting\">present value</a> page describes, and the reinstatement residuals are discounted the same way where they run into the future. A court weighing the remedies in an <a href=\"/case-types/employment-discrimination/illinois\">Illinois employment discrimination matter</a>, or in any venue, then has the cost of each option in comparable terms.</p><p>The recurring errors on the front pay side are a period equal to the remaining worklife with no evidence that the gap would persist that long, a replacement stream that never grows, benefits ignored on the replacement side, and a figure that is not discounted. On the reinstatement side the error is the assumption that the loss ends entirely on the day of return, with the seniority and pension residuals left out. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions that test each.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is there any economic loss left after an employee is reinstated?",
+        answer:
+          "Often some. The wage loss ends on the day of return, but the gap between the judgment and that day, any seniority the intervening years would have carried, and the retirement contributions and years of service that were missed can each remain unless the order restores them. The report values each on its own line so the terms of the order can address them.",
+      },
+      {
+        question: "Does front pay run to retirement age?",
+        answer:
+          "Only where the evidence shows the gap between the lost position and the employee's alternative would never close. The period is the time the record supports for reaching comparable earnings, and the report presents the figure under each period the parties advance, with the worklife horizon as the outer limit rather than the default.",
+      },
+      {
+        question: "How does a pension change the front pay and reinstatement figures?",
+        answer:
+          "On the front pay side the lost contributions or accruals are projected over the period and netted against any plan the replacement job provides. On the reinstatement side the missed years of service are a residual loss unless the order restores them, valued as the difference in the benefit at retirement, and the report shows the figure both ways.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS", "BLS_ECEC", "TREASURY_YIELD"]),
+    related: [
+      { title: "Employment and Wage Loss Damages", href: "/services/employment-and-wage-loss-damages" },
+      { title: "Back Pay vs. Front Pay", href: "/compare/back-pay-vs-front-pay" },
+      { title: "Mitigation in Employment Cases", href: "/guides/mitigation-in-employment-cases" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

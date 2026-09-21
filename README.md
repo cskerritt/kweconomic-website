@@ -79,16 +79,16 @@ Railway service creation and the DNS cutover are separate follow-ups on Chris's 
 
 ## Page inventory
 
-From `npm run build` at this commit (9,463 prerendered `index.html` shells):
+From `npm run build` at this commit (10,308 prerendered `index.html` shells):
 
 | Family | Pages |
 |---|---|
-| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 50 |
+| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 51 |
 | Service pillar pages | 11 |
 | Knowledge guides | 2 |
-| Insight posts | 4 |
-| Guide pages | 17 |
-| Comparison pages | 10 |
+| Insight posts | 5 |
+| Guide pages | 19 |
+| Comparison pages | 11 |
 | State pages | 56 |
 | City pages | 802 |
 | Service x State | 616 |
@@ -98,23 +98,23 @@ From `npm run build` at this commit (9,463 prerendered `index.html` shells):
 | Federal district court pages (`/jurisdictions/federal/<district>`) | 94 |
 | Service variant (cost/process/timeline) | 33 |
 | Service x Case-type (declared pairs only) | 60 |
-| Service x Case-type x State (`/services/<pillar>/case/<case-type>/<state>`, declared pairs x released state batches) | 840 |
+| Service x Case-type x State (`/services/<pillar>/case/<case-type>/<state>`, declared pairs x released state batches) | 1,680 |
 | Attorney journey (4 stage indexes + 4 x 14) | 60 |
 | White paper (hub + 2) | 3 |
-| **Total** | **9,463** |
+| **Total** | **10,308** |
 
 Sitemap index `public/sitemap.xml` (6 children + image sitemap; `news-sitemap.xml` is generated, listed in the index, and declared in robots.txt only while an insight post is inside the two-day Google News window), `<loc>` counts:
 
 | File | URLs |
 |---|---|
-| `sitemap-core.xml` | 123 |
+| `sitemap-core.xml` | 128 |
 | `sitemap-services.xml` | 3,746 (hub 1 + 11 pillars + 33 variants + 60 declared service x case pairs + 616 service x state + 3,025 gated city combos; the test ceiling is 4,000, see build notes) |
-| `sitemap-service-case-types.xml` | 840 (60 declared service x case-type pairs x the 14 released states of batch A; `src/data/serviceCaseTypeStates.ts`; the test ceiling is 3,400 for the full 60 x 56 rollout) |
+| `sitemap-service-case-types.xml` | 1,680 (60 declared service x case-type pairs x the 28 released states of batches A and B; `src/data/serviceCaseTypeStates.ts`; the test ceiling is 3,400 for the full 60 x 56 rollout) |
 | `sitemap-locations.xml` | 954 (the `/locations` subtree plus the `/jurisdictions` hub and the 94 federal district pages) |
 | `sitemap-case-types.xml` | 799 |
 | `sitemap-credentials.xml` | 229 |
 | `image-sitemap.xml` | 7 |
-| `news-sitemap.xml` | written only for posts published in the last two days (1 at the 2026-09-14 build; the next build after the window removes it) |
+| `news-sitemap.xml` | written only for posts published in the last two days (1 at the 2026-09-21 build; the next build after the window removes it) |
 
 Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 5,797 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`; 3,025 combos). T08 decision (2026-09-05): the gate stays, on all three KW sites. The 2,772 gated combos the audit listed are prerendered, linked from the Service x State "Cities" grid, self-canonical, and indexable; they are simply not advertised until Search Console evidence supports widening (see "Facts to confirm"). `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404, pins the gate constants, and, after a build, checks that the only shells the sitemap leaves out are the gated combos. Service x case-type pages exist only for the pairs a pillar declares in `services.ts` (`serviceCaseTypePairs()`); an undeclared pair's address 301s to the pillar (`lib/service-case-redirects.server.mjs`). `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.
 
@@ -133,10 +133,10 @@ Service x State x City pages are prerendered for the top slice of each state's c
 | `local-content.ts` | 10 hand-written local essays for first-hand markets: the New York, Virginia, and Massachusetts state pages plus New York City, Brooklyn, Newark, Hackensack, Jersey City, Los Angeles, and Houston |
 | `geo-prose.mjs` | Templated state/city prose (wage levels, cost of living, local labor markets, venue) shared by the React pages and `scripts/prerender.mjs`; `geo-prose.d.mts` types it |
 | `geographicFaqs.ts`, `narratives.ts` | Thin React wrappers over `geo-prose.mjs`; `narratives.parity.test.mjs` pins the two sides |
-| `methods.ts` | 10 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets, personal consumption deduction, earnings growth rate selection) |
-| `guides.ts` | 17 attorney guides |
-| `comparisons.ts` | 10 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner, back pay vs. front pay, lost earnings vs. earning capacity in workers' compensation) |
-| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 4 insight posts (Legal, Economics, Records), 2 email-gated white papers |
+| `methods.ts` | 11 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets, personal consumption deduction, earnings growth rate selection, total offset discounting) |
+| `guides.ts` | 19 attorney guides |
+| `comparisons.ts` | 11 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner, back pay vs. front pay, lost earnings vs. earning capacity in workers' compensation, lost profits vs. diminished business value) |
+| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 5 insight posts (Legal, Economics, Records), 2 email-gated white papers |
 | `journeys.ts` | 56 attorney journey stages (considering, retaining, preparing-deposition, trial x 14 case types) |
 | `faqs.ts`, `home-faqs.mjs` | 15-question site FAQ and the 6-question homepage FAQ (shared with the prerender and the FAQPage JSON-LD) |
 | `references.ts` | 30-entry citation registry (NAFE ethics statement, Journal of Forensic Economics, BLS series, worklife tables, Treasury yields, AICPA SSVS No. 1, NACVA, federal rules); the only path for sources |
@@ -175,7 +175,7 @@ Spec section 12, tracked here until Chris confirms each:
 
 ## Expansion program (weekly waves)
 
-`docs/superpowers/specs/2026-09-02-kweconomics-expansion-authority-program-design.md` and the plan beside it drive one auto-merged wave per week (a cloud routine, Mondays 10:00 UTC). Wave 1 (2026-09-07) added the federal district court family and the first editorial batch. Wave 2 (2026-09-14) added the service x case type x state scaffold with state batch A (840 pages) and the second editorial batch. Every editorial piece cites the registry only; a new `references.ts` entry is added only when its URL can be live-verified from the build environment (the cloud egress policy blocks irs.gov, eeoc.gov, law.cornell.edu, and uscourts.gov, so wave 1 reused existing entries instead).
+`docs/superpowers/specs/2026-09-02-kweconomics-expansion-authority-program-design.md` and the plan beside it drive one auto-merged wave per week (a cloud routine, Mondays 10:00 UTC). Wave 1 (2026-09-07) added the federal district court family and the first editorial batch. Wave 2 (2026-09-14) added the service x case type x state scaffold with state batch A (840 pages) and the second editorial batch. Wave 3 (2026-09-21) released state batch B (1,680 pages in the family) and the third editorial batch. Every editorial piece cites the registry only; a new `references.ts` entry is added only when its URL can be live-verified from the build environment (the cloud egress policy blocks irs.gov, eeoc.gov, law.cornell.edu, and uscourts.gov, so wave 1 reused existing entries instead).
 
 ## Related repos
 
