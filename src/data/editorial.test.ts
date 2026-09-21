@@ -103,6 +103,7 @@ describe("economics editorial data", () => {
       "mitigation-and-offsets",
       "personal-consumption-tables",
       "present-value-and-discounting",
+      "total-offset-method",
       "wage-growth-and-earnings-projection",
       "worklife-expectancy",
     ]));
@@ -113,12 +114,14 @@ describe("economics editorial data", () => {
       "expert-witness-disclosure-rules",
       "federal-vs-state-court-daubert",
       "fringe-benefits-in-a-lost-earnings-claim",
+      "front-pay-vs-reinstatement",
       "household-services-in-personal-injury",
       "how-lost-earnings-are-calculated",
       "how-to-rebut-an-economic-damages-report",
       "how-worklife-expectancy-is-chosen",
       "income-determination-in-divorce",
       "lost-profits-vs-lost-business-value",
+      "mitigation-in-employment-cases",
       "personal-consumption-in-wrongful-death",
       "present-value-explained-for-attorneys",
       "valuing-a-homemakers-services",
@@ -136,6 +139,7 @@ describe("economics editorial data", () => {
       "lost-earnings-vs-earning-capacity-in-workers-compensation",
       "lost-earnings-vs-lost-earning-capacity",
       "lost-profits-vs-business-valuation",
+      "lost-profits-vs-diminished-business-value",
       "net-vs-gross-discount-rate",
       "plaintiff-economist-vs-defense-economist",
     ]));
@@ -145,6 +149,7 @@ describe("economics editorial data", () => {
     expect(slugs(insights)).toContain("components-of-an-economic-damages-report");
     expect(slugs(insights)).toContain("what-a-w-2-adds-to-a-lost-earnings-claim");
     expect(slugs(insights)).toContain("what-tax-returns-add-to-a-lost-earnings-claim");
+    expect(slugs(insights)).toContain("what-pay-stubs-add-to-a-lost-earnings-claim");
     expect(slugs(whitePapers)).toEqual(["business-valuation-standards-in-litigation", "daubert-ready-economic-damages-report"]);
     expect(whitePapers.every((w) => w.discipline === "Economic")).toBe(true);
   });
@@ -204,8 +209,8 @@ describe("author and date signals on every editorial page", () => {
       ...knowledge.map((k) => ({ page: `knowledge/${k.slug}`, ...k })),
       ...whitePapers.map((w) => ({ page: `white-papers/${w.slug}`, ...w })),
     ];
-    // 10 methods, 17 guides, 10 comparisons, 2 knowledge guides, 2 white papers (waves 1 and 2 each added one, two, and one).
-    expect(dated.length).toBe(10 + 17 + 10 + 2 + 2);
+    // 11 methods, 19 guides, 11 comparisons, 2 knowledge guides, 2 white papers (waves 1, 2, and 3 each added one, two, and one).
+    expect(dated.length).toBe(11 + 19 + 11 + 2 + 2);
     for (const x of dated) {
       expect(ROSTER, `${x.page} authorSlug`).toContain(x.authorSlug);
       expect(x.datePublished, `${x.page} datePublished`).toMatch(ISO_DATE);
@@ -226,7 +231,7 @@ describe("author and date signals on every editorial page", () => {
 describe("titles and meta descriptions are written for the SERP", () => {
   it("every editorial <title> is 40-60 characters with the brand suffix", () => {
     const titles = pageTitles();
-    expect(titles.length).toBe(10 + 17 + 10 + 2 + 4 + 2);
+    expect(titles.length).toBe(11 + 19 + 11 + 2 + 5 + 2);
     for (const { page, title } of titles) {
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeLessThanOrEqual(60);
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeGreaterThanOrEqual(40);
@@ -243,7 +248,7 @@ describe("titles and meta descriptions are written for the SERP", () => {
   });
   it("every meta description is a complete written sentence of 110-160 characters (no auto-cut, no markers)", () => {
     const descs = metaDescriptions();
-    expect(descs.length).toBe(10 + 17 + 10 + 2 + 4 + 2);
+    expect(descs.length).toBe(11 + 19 + 11 + 2 + 5 + 2);
     for (const { page, text } of descs) {
       expect(text.length, `${page} (${text.length})`).toBeLessThanOrEqual(160);
       expect(text.length, `${page} (${text.length})`).toBeGreaterThanOrEqual(110);
@@ -413,14 +418,19 @@ describe("insight posts", () => {
       expect(rel.map((r) => r.slug), p.slug).not.toContain(p.slug);
     }
     // The Economics post has no category sibling, so the fallback is what
-    // fills its block: the other posts, in file order. The two Records posts
-    // (wave 1 and wave 2) are each other's same-category match.
+    // fills its block: the first three other posts, in file order. The three
+    // Records posts (waves 1, 2, and 3) are each other's same-category match.
     expect(getRelatedPosts("components-of-an-economic-damages-report", "Economics").map((r) => r.slug)).toEqual([
       "daubert-vs-frye-expert-testimony-standards",
       "what-a-w-2-adds-to-a-lost-earnings-claim",
       "what-tax-returns-add-to-a-lost-earnings-claim",
     ]);
     expect(getRelatedPosts("what-a-w-2-adds-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
+      "what-tax-returns-add-to-a-lost-earnings-claim",
+      "what-pay-stubs-add-to-a-lost-earnings-claim",
+    ]);
+    expect(getRelatedPosts("what-pay-stubs-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
+      "what-a-w-2-adds-to-a-lost-earnings-claim",
       "what-tax-returns-add-to-a-lost-earnings-claim",
     ]);
   });

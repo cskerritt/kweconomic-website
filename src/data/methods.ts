@@ -532,6 +532,56 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["BLS_ECI", "BLS_CPS", "BLS_CPI", "CENSUS_ACS"]),
   },
+  {
+    slug: "total-offset-method",
+    name: "Total Offset Discounting",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-21",
+    dateModified: "2026-09-21",
+    metaDescription: "Under the total offset method the growth rate and the discount rate are assumed to cancel, so future losses are summed in today's dollars without discounting.",
+    summary:
+      "The total offset method is a present value convention under which the rate at which future losses would have grown and the rate at which they are discounted are assumed to be equal, so the two cancel and the present value of a future loss stream is the sum of the annual losses stated in the dollars of the valuation date. It replaces two contested inputs with one assumption, that the net discount rate is zero, and it is directed by decision or statute in a few venues and offered as an alternative presentation elsewhere.",
+    whenUsed:
+      "The method enters a report in two ways. Where the governing framework directs it, as the highest court of Pennsylvania has done for future lost earnings, the economist applies it as the venue's rule and shows the market-rate alternative only where counsel asks for it. Elsewhere it is one presentation among several: a [[/services/lost-earnings-and-earning-capacity|lost earnings]] or [[/services/wrongful-death-economic-loss|wrongful death]] schedule can be shown under a market discount rate and again under total offset so the trier of fact can see what the net rate assumption is worth, and a [[/services/personal-injury-economic-damages|personal injury]] report with several loss categories can apply the convention to the wage stream while discounting medical costs at their own net rate. The [[/methods/present-value-and-discounting|present value]] page explains the general mechanics the convention short-cuts.",
+    steps: [
+      "Fix the annual loss in the dollars of the valuation date, from the earnings base the tax returns and pay records establish, net of the post-event earnings and offsets that apply in the venue",
+      "Fix the horizon: the worklife expectancy for an earnings stream, the life expectancy or the joint life expectancy for support and household services, from the published tables",
+      "State the convention explicitly: full total offset, under which the nominal growth rate and the nominal discount rate cancel, or partial offset, under which only the inflation components cancel and a real growth rate and a real discount rate remain",
+      "Sum the annual losses over the horizon without growing or discounting them, so the present value is the annual loss multiplied by the number of years, adjusted for any partial-offset residual",
+      "Show, on the same schedule, the historical relationship between wage growth and low-risk yields over a stated window, so the reader can see whether a net rate of zero describes the period the report relies on",
+      "Present the result beside a market-rate present value where the venue does not direct the convention, and state which figure the report adopts and why",
+    ],
+    dataSources: [
+      "BLS Employment Cost Index and Current Population Survey earnings series, for the historical growth of wages the convention assumes the discount rate offsets",
+      "Treasury par yield curve rates, for the low-risk yields the convention assumes the growth rate offsets",
+      "BLS Consumer Price Index, for separating the inflation component in a partial-offset presentation",
+      "The person's pay records and tax returns, for the annual loss the convention multiplies over the horizon",
+      "Published worklife and life tables, for the horizon",
+    ],
+    limitations:
+      "The convention is an empirical claim, not a law of arithmetic: over some historical windows wage growth has run close to low-risk yields and over others it has not, and a report that adopts a net rate of zero has adopted a position about the future that the market data may or may not support. Because nothing is discounted, the result scales directly with the horizon, so an error in the worklife or life expectancy input moves the total by the full annual loss for every year added or removed. The convention also treats every loss category alike, when medical costs, replacement wages for household work, and earnings have each grown at their own rate; the [[/compare/net-vs-gross-discount-rate|net versus gross discount rate]] comparison explains why a single net rate can misstate a mixed stream. Where the venue does not direct the convention, a report that adopts it without showing the market-rate alternative invites the argument that it was chosen for the size of its result.",
+    admissibilityHistory:
+      "Courts that direct the convention treat it as the rule of the venue, and a report that follows it there is examined on its inputs rather than on the choice of method. The Supreme Court, in a federal maritime case, declined to prescribe any single discounting approach, described the total offset assumption as one a trier of fact may accept where the evidence supports it, and left the choice of rate to the record, so in federal practice the convention is admissible as one supported approach rather than as a required one. Challenges follow a report that applies the convention in a venue that requires market-rate discounting, that mixes a nominal loss stream with a partial-offset residual, or that adopts a net rate of zero for medical costs whose growth the record shows outrunning yields. A report that names the convention, shows the historical relationship it assumes, and presents the alternative is positioned to be examined on the merits, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions an opposing economist will ask.",
+    relevantServices: ["lost-earnings-and-earning-capacity", "wrongful-death-economic-loss", "personal-injury-economic-damages", "expert-rebuttal-and-report-review"],
+    faqs: [
+      {
+        question: "Does total offset mean the future losses are simply added up?",
+        answer:
+          "Yes, once each annual loss is stated in the dollars of the valuation date. The convention assumes that the growth the loss would have shown and the interest a present award would earn cancel each other, so the present value is the annual loss multiplied by the years in the horizon, with no growth applied and no discount taken.",
+      },
+      {
+        question: "What is the partial offset variant?",
+        answer:
+          "A version under which only the inflation components cancel. The economist removes expected inflation from both the growth rate and the discount rate, and the real rates that remain are applied as a small net rate, positive or negative, rather than assumed to be zero. It keeps the convention's simplicity for the inflation question while leaving the real growth and the real return visible.",
+      },
+      {
+        question: "Can a report use total offset where the venue does not require it?",
+        answer:
+          "It can, as a stated assumption beside the market-rate figure. The report shows the historical window over which wage growth and low-risk yields tracked each other, says which figure it adopts, and lets the trier of fact weigh the assumption. A report that presents the convention alone, in a venue that has not adopted it, has left its largest assumption unexplained.",
+      },
+    ],
+    sources: refsToSources(["KACZKOWSKI_V_BOLUBASZ", "JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD", "BLS_ECI"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

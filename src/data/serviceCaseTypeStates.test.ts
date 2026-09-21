@@ -30,11 +30,14 @@ describe("service x case type x state release plan", () => {
     expect(pairs).toEqual(serviceCaseTypePairs().map((p) => ({ serviceSlug: p.service.slug, typeSlug: p.caseTypeSlug })));
   });
 
-  it("released states are a non-empty prefix of the batch order (batch A shipped in wave 2)", () => {
+  it("released states are a non-empty prefix of the batch order (batch A shipped in wave 2, batch B in wave 3)", () => {
     const released = releasedStates();
-    expect(released.length).toBeGreaterThanOrEqual(14);
+    expect(released.length).toBeGreaterThanOrEqual(28);
     expect(STATE_BATCHES.flatMap((b) => b.states).slice(0, released.length)).toEqual(released);
     expect(STATE_BATCHES[0].released).toBe(true);
+    expect(STATE_BATCHES[1].released).toBe(true);
+    expect(released).toContain("massachusetts");
+    expect(released).toContain("oklahoma");
     // A later batch is never released ahead of an earlier one.
     let seenUnreleased = false;
     for (const b of STATE_BATCHES) {

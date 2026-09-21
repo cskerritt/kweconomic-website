@@ -237,6 +237,57 @@ Opposing economists rarely disagree about what the returns say; they disagree ab
 
 Complete returns with every schedule, for several years before the event and for every year since, are the request. The wage forms reconcile to the wage line; the business schedule reconciles to the business's own books, the general ledger, and the bank statements; the depreciation schedule explains the deduction; and the filing status and the dependents fix the household. Producing the set together lets the economist build the earnings base in one pass, separate the labor income from the rest, and reconcile every figure to a second record, which is what keeps a damages report from being revised after deposition when a late schedule changes a number.`,
   },
+  {
+    slug: "what-pay-stubs-add-to-a-lost-earnings-claim",
+    sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ECI"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-09-21",
+    title: "What Pay Stubs Add to a Lost Earnings Claim",
+    metaDescription:
+      "A pay stub shows the hourly rate, the hours, the overtime, and the deductions that a year-end wage form averages away; here is how the economist reads one.",
+    excerpt:
+      "The pay stub is the only record that shows how a year's wages were earned: the rate, the hours, the overtime and premium pay, the raise and its date, and the deductions that reveal which benefits the person carried. This post explains what each part of the stub adds to the earnings base, where it misleads, and which records it points to next.",
+    category: "Records",
+    publishedDate: "2026-09-21",
+    related: [
+      link("How Lost Earnings Are Calculated", "/guides/how-lost-earnings-are-calculated", "Building the base from the rate and the sustainable hours."),
+      link("Fringe Benefits Valuation", "/methods/fringe-benefits-valuation", "Pricing the benefits the deductions reveal."),
+      link("Lost Earnings and Earning Capacity Analysis", "/services/lost-earnings-and-earning-capacity", "The analysis the stubs feed."),
+    ],
+    content: `A pay stub is the statement an employer issues with each payment of wages, and in a [[/services/lost-earnings-and-earning-capacity|lost earnings claim]] it is the record that explains the year-end figures. The wage form reports what a year added up to; the stub reports how it was earned, pay period by pay period: the hourly rate or the salary, the regular hours, the overtime hours and the rate they were paid at, the shift differentials and premiums, the bonus paid in a particular week, and every deduction taken before the net pay was issued. A run of stubs across the periods before an injury, a death, or a termination is how the economist gets from an annual total to a rate of pay that can be projected.
+
+## The rate and the hours are separate facts
+
+The wage form gives one number for the year; the stub gives the two numbers that produced it. A person who earned a given annual figure by working a regular schedule at a modest rate is in a different position from one who earned the same figure through long overtime at a lower rate, because the projection has to decide what the person would have gone on earning, and the answer depends on which of the two would have continued. The stub shows the rate, the regular hours, and the overtime hours for the period, and a run of them shows whether the overtime was a steady feature of the job or a burst in one season. The [[/guides/how-lost-earnings-are-calculated|lost earnings guide]] describes how the base is built from the rate and the sustainable hours rather than from the annual total alone.
+
+## Overtime and premium pay are visible only here
+
+Overtime, shift differentials, holiday premiums, on-call pay, and hazard pay are folded into the wage form's gross figure without a trace. The stub itemizes each, and the itemization matters twice. It tells the economist how much of the base depends on hours beyond the regular schedule, which is the part most open to dispute, and it tells the economist what the rate for those hours was, so the projection can carry the premium forward at the terms the employer actually paid. A union contract or an employer policy usually fixes the premium rates, and the stub confirms the contract was applied as written.
+
+## The deductions show the benefits the person carried
+
+The deduction lines are the part of the stub that the earnings figures do not reach. Employee contributions to a retirement plan show the person was enrolled and at what rate, which in turn establishes the employer's matching contribution the plan document describes. Health, dental, and vision premiums show which coverage the person elected and at what tier, which is the starting point for valuing the employer's share. Union dues confirm the bargaining unit and point to the contract. Contributions to a flexible spending or health savings account, life and disability insurance premiums, and garnishments each tell the economist something about the compensation package or the household. The [[/methods/fringe-benefits-valuation|fringe benefits valuation]] draws on these lines together with the plan documents and the published employer cost data to put a value on the benefits the wage figures leave out.
+
+## Year-to-date figures date the loss
+
+Every stub carries year-to-date totals beside the current-period figures, and the last stub before the event fixes what the person had earned in the year to that date, which the wage form cannot do. The year-to-date column also dates a raise: the stub on which the rate changed, and the size of the change, are the evidence that the person was on a rising pay path and of how steep it was. In an employment matter the stubs on either side of a demotion or a change in hours show what the adverse action cost in the pay periods that followed, and in an injury matter the stubs after a return to light duty show the reduced hours or rate the restrictions produced. The [[/methods/wage-growth-and-earnings-projection|earnings projection]] uses the dated raises to place the person on the pay scale before the event, and the [[/services/employment-and-wage-loss-damages|employment damages]] analysis uses the post-event stubs for the interim earnings offset.
+
+## Several stubs make a pattern
+
+One stub is a snapshot and a run of them is a pattern. Read across a year or more, the stubs show whether the hours were stable or volatile, whether overtime clustered in a season, whether a bonus recurred, and whether the rate stepped up on a schedule the employer's pay scale would predict. The pattern is what lets the economist choose a representative base rather than the best or the worst period, and it is what a defense economist will examine when arguing the base was built on an unusual stretch. A run that reconciles to the year-end wage form, period by period, is the strongest foundation an earnings base can have.
+
+## What the stub cannot tell you
+
+The stub reports what the employee was paid and what was deducted from it, not what the employer spent. The employer's share of health premiums, the matching retirement contribution, and the payroll taxes the employer paid are absent, and the [[/insights/what-a-w-2-adds-to-a-lost-earnings-claim|W-2 post]] and the plan documents fill that gap. A bonus paid outside the regular payroll, an expense reimbursement, or income from a second employer will not appear, and the [[/insights/what-tax-returns-add-to-a-lost-earnings-claim|tax return]] is the record that shows every source. A stub also shows nothing about why the hours were what they were: whether a low-hours period reflected the employer's schedule, a leave, or a choice is a fact the record has to establish elsewhere.
+
+## Where the disputes start
+
+The disputes concern which periods to average, how much overtime to carry forward, and whether a raise shown on the stubs would have continued. A base built from the highest-overtime quarter overstates, and one built from a period of reduced hours understates, so the choice of periods is the argument, and the stubs are the evidence both sides read. Overtime that the employer has since eliminated, or that depended on a project that ended, is the defense's usual target, and a report that carries it forward without addressing the employer's own records is exposed. The [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] describes how the choice of periods is tested.
+
+## What to produce with it
+
+Every stub for at least a year before the event, and every stub since, is the request, together with the wage forms they reconcile to, the employer's pay scale or the collective bargaining agreement that sets the rates, and the plan documents behind the deductions. Producing the run complete, rather than a sample, lets the economist build the rate and the sustainable hours from the whole pattern, date the raises, value the benefits from the elections the deductions show, and reconcile the base to the year-end form, which is what keeps the number from moving when the missing periods surface at deposition.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {

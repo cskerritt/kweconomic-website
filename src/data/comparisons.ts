@@ -615,6 +615,64 @@ export const comparisons: Comparison[] = [
       { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets", description: "How post-injury earnings and paid benefits are handled." },
     ],
   },
+  {
+    slug: "lost-profits-vs-diminished-business-value",
+    title: "Lost Profits vs. Diminished Business Value",
+    answer:
+      "Lost profits measure a shortfall that ends with recovery; diminished business value measures a lasting reduction in what a surviving business is worth.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-21",
+    dateModified: "2026-09-21",
+    a: {
+      label: "Lost Profits",
+      summary:
+        "The profits a continuing business did not earn over a loss period that begins with the wrongful act and ends when the business recovered or would have recovered, measured through a [[/methods/lost-profits-but-for-analysis|but-for projection]] net of the costs the business avoided and the profits it recovered by mitigating, with any future portion reduced to present value.",
+      url: "/services/lost-profits-and-commercial-damages",
+    },
+    b: {
+      label: "Diminished Business Value",
+      summary:
+        "The difference between what the business was worth immediately before the wrongful act and what it was worth after it, where the business continues to operate but has been left permanently smaller, riskier, or less profitable. It is measured by two [[/methods/business-valuation-approaches|valuations]] on the same standard of value, one on each side of the harm.",
+      url: "/services/business-valuation",
+    },
+    rows: [
+      { dimension: "Nature of the harm", a: "An interruption the business recovers from", b: "A permanent impairment of a business that survives" },
+      { dimension: "Time frame", a: "A loss period with a beginning and an end", b: "A single measurement date, the value before against the value after" },
+      { dimension: "What is measured", a: "Profits not earned during the period, net of avoided costs", b: "The change in the capitalized value of all future cash flows" },
+      { dimension: "How it is built", a: "A but-for projection compared with actual results, year by year", b: "Two valuations under the income and market approaches, differing only in the effect of the act" },
+      { dimension: "Risk and discounting", a: "The specific projected profits at a rate reflecting their own risk", b: "Inside the capitalization or discount rate of each valuation" },
+      { dimension: "Where the two meet", a: "Runs to the date the permanent impairment is measured", b: "Absorbs every profit after the measurement date" },
+    ],
+    whenUseA:
+      "Lost profits is the measure when the business was set back and then came back: a supplier's breach that stopped production for a season, a competitor's misconduct that diverted customers until the business won them back, a period of closure after a casualty. The economist establishes the revenue the business would have earned from its own history and the market, deducts the costs it did not incur, nets the profits it earned by mitigating, and closes the period when the record shows the business had recovered. The [[/services/lost-profits-and-commercial-damages|lost profits and commercial damages]] service page describes the analysis, and a [[/case-types/commercial-contract-dispute|contract dispute]] is its most common setting.",
+    whenUseB:
+      "Diminished value is the measure when the business kept operating but will never be what it was: a franchise whose territory was cut, a company whose key contract, license, or reputation was permanently lost, a firm whose customer base was taken by a departing owner and will not return. The economist values the business as it stood the day before the act and again as it stands with the impairment, on the same standard of value and the same valuation date, and the difference is the loss. The [[/guides/business-valuation-in-litigation|business valuation in litigation]] guide covers the standards the two valuations follow.",
+    overlap:
+      "Both measures rest on projected cash flows, and both ask what the business would have earned but for the act, so the same records, the same history, and the same market analysis feed each. The boundary is time: lost profits run from the act to the date the impairment is measured, and the diminished value as of that date already contains every profit the business will now fail to earn afterward, so a claim that carries lost profits past the measurement date counts those profits twice. The [[/compare/lost-profits-vs-business-valuation|lost profits versus business valuation]] comparison draws the same line where the business was destroyed rather than impaired, and the [[/guides/lost-profits-vs-lost-business-value|lost profits versus lost business value]] guide works through the choice.",
+    faqs: [
+      {
+        question: "Can a business that is still operating claim diminished value?",
+        answer:
+          "Yes, where the record shows the impairment is permanent. A business that lost a territory, a license, or a customer base it cannot rebuild has a lasting reduction in its cash flows, and the reduction is measured as the difference between its value before and after the act. A business that will recover has a lost profits claim instead, and the report says which the evidence supports.",
+      },
+      {
+        question: "How is the value before the act established after the fact?",
+        answer:
+          "From the records as they stood on the day before the act: the financial statements, the contracts in force, the customer list, and the market conditions of that date, with no knowledge of what followed. The after value uses the same date and standard, changed only by the effect of the act, so the difference isolates the harm from everything else that happened to the business.",
+      },
+      {
+        question: "Is diminished value the same as lost goodwill?",
+        answer:
+          "Goodwill is one part of it. Diminished value measures the change in the whole enterprise, tangible assets and goodwill together, and a permanent loss of customers or reputation usually shows up as a reduction in goodwill within that total. The report values the enterprise, not the goodwill line alone, so that the effect on the assets and on the operating cash flows is captured as well.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD"]),
+    related: [
+      { title: "Lost Profits and Commercial Damages", href: "/services/lost-profits-and-commercial-damages", description: "The loss-period measure for a business that recovers." },
+      { title: "Business Valuation Approaches", href: "/methods/business-valuation-approaches", description: "The income, market, and asset approaches behind the two valuations." },
+      { title: "Lost Profits vs. Lost Business Value", href: "/guides/lost-profits-vs-lost-business-value", description: "The full guide to choosing the measure." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {
