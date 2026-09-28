@@ -32,7 +32,7 @@ export const STATE_BATCHES: StateBatch[] = [
   },
   {
     id: "C",
-    released: false,
+    released: true, // wave 4, 2026-09-28
     states: ["connecticut", "utah", "iowa", "nevada", "arkansas", "mississippi", "kansas", "new-mexico", "nebraska", "idaho", "west-virginia", "hawaii", "new-hampshire", "maine"],
   },
   {

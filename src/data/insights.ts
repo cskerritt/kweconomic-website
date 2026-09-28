@@ -288,6 +288,62 @@ The disputes concern which periods to average, how much overtime to carry forwar
 
 Every stub for at least a year before the event, and every stub since, is the request, together with the wage forms they reconcile to, the employer's pay scale or the collective bargaining agreement that sets the rates, and the plan documents behind the deductions. Producing the run complete, rather than a sample, lets the economist build the rate and the sustainable hours from the whole pattern, date the raises, value the benefits from the elections the deductions show, and reconcile the base to the year-end form, which is what keeps the number from moving when the missing periods surface at deposition.`,
   },
+  {
+    slug: "what-union-contracts-add-to-a-lost-earnings-claim",
+    sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ECI"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-09-28",
+    title: "What Union Contracts Add to a Lost Earnings Claim",
+    metaTitle: "What a Union Contract Adds to a Wage Claim",
+    metaDescription:
+      "A union contract fixes the wage scale, the steps, the premiums, and the benefit contributions an economist would otherwise estimate; here is how it is read.",
+    excerpt:
+      "For a union member, the collective bargaining agreement is the one record that states in advance what the person would have been paid: the wage scale and its scheduled increases, the steps and the seniority that drive them, the overtime and shift premiums, and the employer's contributions to health, pension, and annuity funds. This post explains what each article of the contract adds to the earnings projection, what the contract cannot show, and which records it points to next.",
+    category: "Records",
+    publishedDate: "2026-09-28",
+    related: [
+      link("Fringe Benefits in a Lost Earnings Claim", "/guides/fringe-benefits-in-a-lost-earnings-claim", "Pricing the fund contributions the contract sets."),
+      link("Wage Growth and Earnings Projection", "/methods/wage-growth-and-earnings-projection", "Projecting from a scale instead of a guess."),
+      link("Lost Earnings and Earning Capacity Analysis", "/services/lost-earnings-and-earning-capacity", "The analysis the contract feeds."),
+    ],
+    content: `A collective bargaining agreement is the contract between an employer and the union that represents its workers, and for a member of that unit it is the record that states in advance most of what a [[/services/lost-earnings-and-earning-capacity|lost earnings claim]] would otherwise have to estimate. The wage forms and the pay stubs show what the person was paid; the agreement shows what the person was entitled to be paid, this year and in each year of its term, at each step of the classification, for each hour of overtime and each shift outside the day, and it shows what the employer was obliged to contribute on the person's behalf to the health, pension, and annuity funds. Read with the person's classification, seniority date, and hours, it turns the projection from an inference about raises into a reading of a schedule.
+
+## The wage scale replaces the guess about raises
+
+For an employee without a contract, the economist projects future earnings by choosing a growth rate from the published series for the occupation and the economy, and the choice is one of the most contested inputs in the report. A union scale removes the guess for the term of the agreement. The wage article states the hourly rate for each classification in each year of the contract, so the raises for those years are not projected but read, and the report grows the rate exactly as the agreement does. Beyond the term, the economist still needs a growth rate, but the history of the prior agreements, which the union and the employer keep, shows what the negotiated increases have been over a long period and is a better starting point than a series for all workers. The [[/methods/wage-growth-and-earnings-projection|earnings projection]] method describes how the negotiated history and the published series are combined past the contract's expiration.
+
+## Steps and seniority date the path
+
+Most scales are not a single rate but a ladder: an apprentice or probationary rate, a set of steps tied to months or hours of service, and a journeyman or top rate reached after a stated period. Where the person stood on the ladder at the event, and when the next step would have arrived, are facts the agreement fixes from the seniority date and the hours worked, and the report places the person on the scale and moves them up it on the contract's timetable. The difference between a projection that leaves an apprentice at the apprentice rate and one that carries them to the journeyman rate on schedule is the difference the agreement resolves, and the seniority article also governs layoff order, recall rights, and shift bidding, each of which bears on how steady the hours would have been.
+
+## The premium provisions price the overtime and the shifts
+
+The overtime article states when the premium rate applies, by the day or by the week, and at what multiple; the shift differential article states the addition for evening and night work; and the holiday, call-in, and travel provisions state the rest. The [[/insights/what-pay-stubs-add-to-a-lost-earnings-claim|pay stubs]] show how much premium pay the person actually received; the agreement shows the terms under which it was paid and confirms that the stubs applied them correctly. For the projection, the agreement tells the economist what a continuing pattern of overtime would have been worth at the contract rate rather than at an assumed multiple, and the hours provisions and any guaranteed-hours clause bear on whether the pattern was likely to continue.
+
+## The benefit articles show what the employer paid
+
+For a non-union employee the value of health coverage and retirement contributions is estimated from the plan documents and the published employer cost data. A union agreement usually states the employer's contribution to the health and welfare fund and to the pension or annuity fund as a dollar amount per hour worked or per month, and the figure is the employer's cost of the benefit, which is the number the [[/methods/fringe-benefits-valuation|fringe benefits valuation]] is trying to establish. The contribution rates change with each contract year, and the schedule is on the page. The [[/guides/fringe-benefits-in-a-lost-earnings-claim|fringe benefits guide]] explains why the employer's cost rather than the plan's payout is the measure in most claims, and the agreement is the direct evidence of that cost.
+
+## Multi-employer pensions have their own arithmetic
+
+Many union pension plans are multi-employer defined benefit plans in which the benefit accrues by the hour or the year of covered service, at a rate the plan document states, and the employer's contribution funds the plan rather than the person's account. For those plans the lost contributions and the lost benefit are two different measures, and which one the report should use depends on the framework the venue applies. The agreement gives the contribution rate; the plan document and the person's annual statement give the accrual rate and the credited service to date; and the report states which measure it adopts and shows the other. A person who was short of vesting at the event, or who had reached a service milestone that changed the accrual, is a case where the difference between the two measures is large.
+
+## The term and the successor agreement
+
+An agreement runs for a stated term, and the scale it fixes ends with it. The projection therefore has two regions: the contract years, where the raises are read, and the years beyond, where they are projected. Where a successor agreement has been signed by the time of the report, its scale extends the first region and the economist uses it; where negotiations are open, the report says so and projects from the negotiated history. An expired agreement whose terms continue in force by practice or by law is treated as the last known scale, and the report explains the assumption. In a [[/case-types/workers-compensation/illinois|Illinois workers' compensation matter]], as in any venue, the years the contract actually governs are the ones least open to dispute.
+
+## What the contract cannot tell you
+
+The agreement states entitlements, not events. It does not show how many hours the person actually worked, whether they were laid off and recalled, whether they took the overtime offered, or whether they moved between classifications, and the pay stubs, the employer's payroll records, and the union's dispatch or hours records supply those facts. It does not show the person's individual benefit elections, the pension credit accrued, or the vesting status, which the fund statements do. And for a hiring-hall trade where the person worked for many employers under one agreement, the agreement fixes the rate but the hours come from the union's records rather than any single employer's.
+
+## Where the disputes start
+
+The disputes concern the hours and the path, not the rate. Whether the person would have worked the hours the projection assumes, whether the overtime pattern would have continued, whether they would have reached the top step on schedule or been laid off in a downturn, and what the scale would have done after the contract expired are the arguments, and each is about a fact the agreement does not decide. A report that reads the rate from the scale and then assumes full-time hours in a trade with seasonal layoffs has answered the easy question and skipped the hard one, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions that follow.
+
+## What to produce with it
+
+The current agreement and every prior agreement covering the person's years in the unit, the successor agreement if one exists, the wage and contribution schedules incorporated by reference, the health and pension plan documents, the person's annual fund statements, and the union's hours or dispatch records for a hiring-hall trade, together with the pay stubs and wage forms they reconcile to. Producing the set lets the economist place the person on the scale, read the raises for the contract years, price the benefits at the employer's contribution rate, and project past the term from the negotiated history rather than from a series for all workers.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {
