@@ -673,6 +673,66 @@ export const comparisons: Comparison[] = [
       { title: "Lost Profits vs. Lost Business Value", href: "/guides/lost-profits-vs-lost-business-value", description: "The full guide to choosing the measure." },
     ],
   },
+  {
+    slug: "fair-value-vs-fair-market-value-in-shareholder-disputes",
+    title: "Fair Value vs. Fair Market Value in Shareholder Disputes",
+    metaTitle: "Fair Value vs. FMV in Shareholder Disputes",
+    answer:
+      "Fair value pays the shareholder a pro rata share of the whole company, usually undiscounted; fair market value prices the minority block, with discounts.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-28",
+    dateModified: "2026-09-28",
+    a: {
+      label: "Fair Value",
+      summary:
+        "The standard most states prescribe when a shareholder dissents from a merger or claims oppression and the company or the majority must buy the shares. It is the shareholder's proportionate interest in the enterprise as a going concern, valued under the [[/methods/business-valuation-approaches|income and market approaches]] immediately before the transaction or the conduct complained of, and in most jurisdictions without a discount for lack of control or lack of marketability, so the departing owner receives a pro rata share of the whole.",
+      url: "/services/business-valuation",
+    },
+    b: {
+      label: "Fair Market Value",
+      summary:
+        "The price a hypothetical willing buyer would pay a willing seller for the specific block of shares, neither under compulsion and both informed. Applied to a minority interest in a closely held company, it reflects what that block is worth to an outsider who cannot control the company or readily sell the shares, so discounts for lack of control and lack of marketability are ordinarily considered, and the result for the minority holder is lower than a pro rata share of the enterprise.",
+      url: "/services/business-valuation",
+    },
+    rows: [
+      { dimension: "What is being valued", a: "The shareholder's proportionate share of the enterprise", b: "The specific block of shares as a buyer would see it" },
+      { dimension: "Discount for lack of control", a: "Usually not applied", b: "Ordinarily considered for a minority block" },
+      { dimension: "Discount for lack of marketability", a: "Excluded in most jurisdictions, applied in a few in limited circumstances", b: "Ordinarily considered for shares with no ready market" },
+      { dimension: "Valuation date", a: "Immediately before the merger or the oppressive conduct", b: "The date the agreement, the statute, or the court fixes" },
+      { dimension: "Effect of the transaction itself", a: "Value arising from the merger is generally excluded; oppression cases may adjust for the wrongdoer's conduct", b: "Not a feature of the standard" },
+      { dimension: "Where it is written", a: "The state's corporation statute and the case law applying it", b: "Tax definitions, professional valuation standards, and the agreement that adopts it" },
+      { dimension: "Result for a minority holder", a: "Higher, a pro rata share of the whole", b: "Lower, the discounted value of the block" },
+    ],
+    whenUseA:
+      "Fair value governs where a statute gives it to the shareholder: the appraisal remedy when a shareholder dissents from a merger or a sale of substantially all the assets, and the buyout remedy when a minority holder proves oppression or a deadlock and the court orders the company or the majority to purchase the shares. In both settings the departing owner is not a willing seller and the majority is not a hypothetical buyer, which is why most courts reject the discounts that describe an arm's-length sale of a minority block. The economist values the enterprise as a whole under the standard the state's case law describes, multiplies by the shareholder's percentage, and states the treatment of each discount with the authority counsel identifies. A [[/case-types/partnership-and-shareholder-dispute|partnership and shareholder dispute]] is the setting, and the [[/services/business-valuation|business valuation]] service page describes the valuation the standard is applied to.",
+    whenUseB:
+      "Fair market value governs where the parties chose it or the law imports it: a shareholder agreement or buy-sell provision that names the standard for a departing owner's shares, a voluntary sale between owners, a redemption priced by agreement, and the tax consequences of any of them. A minority holder who agreed in advance to be bought out at fair market value has usually agreed to the discounts that come with it, and the economist applies them from the evidence on the degree of control the block carries and the restrictions on its transfer. Where the agreement names the standard but the departing owner also pleads oppression, the two standards can both be in play, and the report presents the value under each so the court in a [[/case-types/partnership-and-shareholder-dispute/new-york|New York shareholder dispute]], or in any venue, can see what the choice of standard is worth. The [[/guides/business-valuation-in-litigation|business valuation in litigation]] guide covers the standards of value generally.",
+    overlap:
+      "Both standards begin from the same enterprise valuation: the same normalized financial statements, the same income and market approaches, and usually the same conclusion about what the whole company is worth. They part at the interest level, in whether the shareholder receives a proportionate share of that whole or the discounted value of the block. The general [[/compare/fair-market-value-vs-fair-value|fair market value versus fair value]] comparison sets out the definitions; the shareholder setting adds the questions of the valuation date, the exclusion of value created by the transaction, and the adjustments some courts make for the majority's conduct, each of which the report addresses expressly. Which standard applies is a legal question, and where it is unsettled the report carries both figures so that neither side has to argue the law from a number built for the other standard.",
+    faqs: [
+      {
+        question: "Does a buy-sell agreement's price override the statutory fair value standard?",
+        answer:
+          "Often for a voluntary departure, less often for an oppression or dissenters' rights claim. Courts differ on whether a shareholder can be held to an agreed formula when the statute gives a fair value remedy, and the answer is counsel's. The economist reports the value under the agreement's formula and under the statutory standard so the court can enforce whichever governs.",
+      },
+      {
+        question: "Is value created by the merger itself included in a fair value appraisal?",
+        answer:
+          "Generally not. The appraisal statutes in most states value the shares immediately before the transaction and exclude any appreciation or depreciation that the merger itself brings about, so synergies the acquirer expected are left out. The company is valued as it stood as a going concern on that date, on its own prospects.",
+      },
+      {
+        question: "Can a court apply a marketability discount but refuse a control discount in a fair value buyout?",
+        answer:
+          "Some courts have, on the reasoning that the lack of a market for the shares is a feature of the whole company rather than of the minority position. The majority of jurisdictions reject both discounts under fair value. The report states the treatment adopted and shows the figure with and without each discount so the difference is on the record.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS"]),
+    related: [
+      { title: "Partnership and Shareholder Disputes", href: "/case-types/partnership-and-shareholder-dispute", description: "The economic analysis in a buyout, appraisal, or oppression claim." },
+      { title: "Fair Market Value vs. Fair Value", href: "/compare/fair-market-value-vs-fair-value", description: "The two standards defined across every setting." },
+      { title: "Business Valuation", href: "/services/business-valuation", description: "Valuation of closely held interests for litigation." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

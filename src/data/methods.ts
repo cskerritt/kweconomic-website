@@ -582,6 +582,56 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["KACZKOWSKI_V_BOLUBASZ", "JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD", "BLS_ECI"]),
   },
+  {
+    slug: "below-market-discount-rate",
+    name: "Below-Market Discount Rate",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-28",
+    dateModified: "2026-09-28",
+    metaDescription: "The below-market discount rate removes expected inflation from both growth and discounting and applies a small real rate to real losses; here is how it is set.",
+    summary:
+      "The below-market discount rate is a present value convention under which future losses are projected without the inflation component of wage growth and discounted at a real rate of return, the yield on low-risk investments less expected inflation, rather than at the full market rate. It rests on the observation that a market interest rate contains a payment for the inflation the future losses will also carry, so removing inflation from both sides leaves the real growth of earnings against the real return on the award, a net rate that has historically been small and positive.",
+    whenUsed:
+      "The convention is one of the three ways a report can state the relationship between growth and discounting, between the full market-rate method the [[/methods/present-value-and-discounting|present value]] page describes and the [[/methods/total-offset-method|total offset]] assumption that the two cancel entirely. It is the approach the Supreme Court described, in a federal maritime case, as an acceptable way to compute the present value of lost earnings, and it is used in [[/services/lost-earnings-and-earning-capacity|lost earnings]], [[/services/wrongful-death-economic-loss|wrongful death]], and [[/services/personal-injury-economic-damages|personal injury]] reports wherever the venue permits the economist to choose the method. Its practical appeal is that it separates the inflation question, which the parties rarely dispute in principle, from the real growth and real return questions, which they do, and puts the report's assumption about the future in a single small number the trier of fact can weigh. The [[/compare/net-vs-gross-discount-rate|net versus gross discount rate]] comparison explains how the same net rate can be reached from nominal inputs.",
+    steps: [
+      "State the annual loss in the dollars of the valuation date, from the earnings base the pay records and tax returns establish, net of the post-event earnings and offsets the venue applies",
+      "Project the loss forward at a real growth rate: the rate at which earnings for the person's occupation, age, and education have grown in excess of price inflation over a stated historical window, from the published earnings and price series",
+      "Derive the real discount rate: the yield on low-risk government securities of maturities matching the loss horizon, less the expected inflation the same market prices in, or the yield on inflation-protected securities read directly",
+      "Fix the horizon from the published worklife or life tables and discount each year's real loss at the real rate to the valuation date",
+      "Show the historical window the real growth and real return figures come from, and the net rate they imply, so the reader can see what the report assumes about the future",
+      "Present the result beside the market-rate figure where the venue permits either, and state which the report adopts and why",
+    ],
+    dataSources: [
+      "Treasury par yield curve rates and the yields on inflation-protected Treasury securities, for the nominal and real risk-free returns",
+      "BLS Consumer Price Index, for the inflation component removed from both sides",
+      "BLS Employment Cost Index and Current Population Survey earnings series, for the real growth of earnings over the historical window",
+      "The person's pay records and tax returns, for the annual loss the convention grows and discounts",
+      "Published worklife and life tables, for the horizon",
+    ],
+    limitations:
+      "The convention removes inflation but does not remove judgment: the real growth rate and the real discount rate each depend on the historical window chosen, and the net rate they imply can move from near zero to two or three percentage points depending on the decades included. Because the net rate is small, a change of a fraction of a point moves a long-horizon present value materially, so the sensitivity of the result to the window matters more here than under a market-rate method where the gross figures are larger and the difference between them more stable. The convention also assumes the loss stream and the discount rate share a common inflation component, which holds for wages but not necessarily for medical costs or replacement services, whose prices have grown at their own rates; a mixed stream needs a separate real growth rate for each component. Where the venue directs a market rate or the total offset, the convention is presented as an alternative rather than adopted.",
+    admissibilityHistory:
+      "The Supreme Court, in a federal maritime case, reviewed the methods available for discounting lost future earnings, described the below-market approach as one a court may adopt, and left the choice of the real rate to the evidence in the record while observing that a rate within a modest positive range would be difficult to fault. Federal courts applying that guidance have accepted reports that state the real growth rate, the real discount rate, and the window each comes from, and have excluded or discounted reports that asserted a net rate without support. State courts that have not adopted a rule of their own generally admit the convention as a matter of method and leave the rate to cross-examination. The challenges that succeed target the inputs: a historical window selected for the net rate it produces, a real growth rate for the whole economy applied to an occupation whose earnings have grown more slowly, or a real discount rate taken from a single date rather than a horizon-matched curve. A report presented in a [[/case-types/personal-injury/new-jersey|New Jersey personal injury matter]], or in any venue, that names the window, shows the series, and presents the market-rate alternative is positioned to be examined on those inputs, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions an opposing economist will ask about them.",
+    relevantServices: ["lost-earnings-and-earning-capacity", "wrongful-death-economic-loss", "personal-injury-economic-damages", "employment-and-wage-loss-damages"],
+    faqs: [
+      {
+        question: "What is a real rate of return and where does it come from?",
+        answer:
+          "A real rate is the return on an investment after the inflation it will experience is removed. The economist takes it from low-risk government securities, either by subtracting the expected inflation the market prices in from the nominal yield or by reading the yield on inflation-protected securities directly, and matches the maturities to the years of the loss.",
+      },
+      {
+        question: "Is the below-market rate the same thing as the total offset assumption?",
+        answer:
+          "No. Total offset assumes the growth and discount rates cancel completely, so nothing is grown or discounted. The below-market convention removes only the shared inflation component and keeps the real growth of earnings and the real return on the award as separate, stated inputs, which usually leaves a small positive net rate rather than zero.",
+      },
+      {
+        question: "Which historical window fixes the real growth and real discount rates?",
+        answer:
+          "The one the report states and defends. A longer window smooths out unusual decades; a shorter one reflects recent conditions. The economist shows the net rate under the chosen window and how it would change under the alternatives, because a window selected for the result it produces is the first thing an opposing economist tests.",
+      },
+    ],
+    sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD", "BLS_CPI", "BLS_ECI"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

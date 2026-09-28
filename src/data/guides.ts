@@ -1398,6 +1398,150 @@ export const guides: Guide[] = [
       { title: "Mitigation in Employment Cases", href: "/guides/mitigation-in-employment-cases" },
     ],
   },
+  {
+    slug: "lost-profits-for-a-new-business",
+    title: "Lost Profits for a New Business: How the Claim Is Built",
+    metaTitle: "Lost Profits for a New Business",
+    metaDescription: "A new business has no track record, so its lost profits are proven from contracts, comparable firms, and early results; here is how the economist builds them.",
+    tldr:
+      "A new or unestablished business can claim lost profits, but it cannot prove them from its own past results, because it has few or none. The economist builds the but-for projection from other evidence: signed contracts and orders, the early-year performance of comparable businesses, industry data for the market the business was entering, the financing the venture attracted and the terms it was offered on, and whatever operating history the business accumulated before or after the event. This guide explains which of those sources carry weight, how the projection is shaped for a business that had not reached steady state, how the risk of failure and the discount rate are handled together, when the right measure is the value of the venture rather than a stream of profits, and where opposing reports on new-business claims go wrong.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-28",
+    dateModified: "2026-09-28",
+    sections: [
+      {
+        id: "why-a-new-business-is-different",
+        heading: "Why a new business is treated differently",
+        bodyHtml:
+          "<p>The ordinary lost profits analysis starts with the business's own history: the revenue and margins of the years before the wrongful act are the base from which the but-for projection is built, and the departure of actual results from that base is the loss. A business that opened months before the event, or that never opened at all, has no such base. Older frameworks treated the profits of an unestablished business as too speculative to recover at all; most now ask instead whether the profits can be shown with reasonable certainty from the evidence available, which turns the question from a bar into a matter of proof. Whether the proof meets the standard is a question for the court; what proof exists, what it supports, and what number follows from it are the questions the <a href=\"/services/lost-profits-and-commercial-damages\">lost profits and commercial damages</a> analysis answers.</p><p>The economist's method does not change. The <a href=\"/methods/lost-profits-but-for-analysis\">but-for analysis</a> still projects what the business would have earned, compares it with what it did earn, nets the costs avoided and the profits recovered by mitigating, and discounts any future portion to present value. What changes is where the inputs come from. Every figure that an established business would supply from its own ledger has to be drawn from a source outside it, and the report has to say which source, why it is comparable, and what it does not capture.</p>",
+      },
+      {
+        id: "evidence-that-carries-weight",
+        heading: "The evidence that carries weight",
+        bodyHtml:
+          "<p>The sources are not equal, and the report ranks them. Contracts, purchase orders, and signed leases with stated prices, quantities, and terms are the strongest evidence of revenue the business would have earned, because a counterparty had already committed to them; a letter of intent or a sales pipeline is weaker, and the report says how far it was from a binding commitment. Whatever operating history the business did accumulate, whether the months before the event or the period afterward if it survived, is the next source, and a business that reached its projected volume after a delay has itself proven what the projection assumed. Comparable businesses supply the yardstick: firms in the same line, of similar size, serving a similar market, whose early years show the ramp a new entrant in that trade actually experiences. Industry data on margins, turnover, and survival fill in what the comparables leave out.</p><p>The business plan and the financing sit last, and for different reasons. The plan's projections are the owner's expectations before the event and are useful as a statement of what the business intended to do, its capacity, and its cost structure, but they are not proof of what it would have earned, and a report that adopts them as the projection has assumed its conclusion. The financing is different: the amount lenders and investors put in, the terms they demanded, and the diligence they performed show what informed outsiders believed the venture was worth at the time, and the report uses those terms as a check on the projection rather than as its source. The <a href=\"/insights/what-tax-returns-add-to-a-lost-earnings-claim\">tax returns post</a> describes how a business's own filings are read where they exist.</p>",
+      },
+      {
+        id: "building-the-projection",
+        heading: "Building the projection without a track record",
+        bodyHtml:
+          "<p>A new business does not open at steady state, and the projection should not either. Revenue follows a ramp: the first months run below capacity while customers are found, staff are trained, and the operation settles, and the slope of the ramp comes from the early years of the comparable businesses, not from the plan's target. A projection that starts at the mature volume the plan hoped for overstates the loss by the whole difference between the ramp and the plateau, and it is the first thing an opposing economist looks for. Capacity caps the top of the ramp: the revenue cannot exceed what the location, the equipment, the staff, and the hours could produce, and the report states the constraint and the figure it implies.</p><p>Costs are built the same way. Fixed costs come from the leases, the loans, the insurance, and the contracts the business had signed; variable costs come from the industry margins and from whatever invoices the business incurred; and an owner who would have worked in the business is charged a market salary before any profit is counted, because the return to the owner's labor is not a profit of the business. The result is a year-by-year schedule of but-for revenue, costs, and net profit for the loss period, with each line tied to its source, so that a <a href=\"/case-types/commercial-contract-dispute\">contract dispute</a> over a supplier's breach or a landlord's default can be argued on the inputs rather than on whether a projection was possible at all.</p>",
+      },
+      {
+        id: "risk-and-the-discount-rate",
+        heading: "Risk, survival, and the discount rate",
+        bodyHtml:
+          "<p>An established business has already survived its early years; a new one has not, and the projection must reckon with the possibility that it would have failed for reasons unconnected to the wrongful act. There are two accepted ways to do it. The first weights each year's projected profit by the probability that a business of that age in that industry is still operating, drawn from published data on business survival, so the projection carries the risk in its expected values. The second discounts the unweighted profits at a rate high enough to reflect the risk of the venture, drawn from the returns investors require of businesses at that stage. Either is defensible; using both counts the risk twice, and using neither ignores it, and the report states which it adopted and why.</p><p>Past losses are stated in the dollars of each year and, where the venue allows, carry interest to the judgment date; future losses are reduced to present value at the judgment date as the <a href=\"/methods/present-value-and-discounting\">present value</a> page describes, at a rate that reflects the risk of the profits themselves rather than the risk-free rate a wage stream would carry. The loss period runs from the date the business would have opened or reached the interrupted milestone to the date it recovered or, where it never did, to the point where the evidence for the projection runs out, and the report says where that point is rather than projecting to a horizon no comparable supports.</p>",
+      },
+      {
+        id: "when-the-business-never-opened",
+        heading: "When the business never opened or did not survive",
+        bodyHtml:
+          "<p>A business that was prevented from opening, or that was destroyed before it could establish itself, presents a choice of measure. Lost profits describe a period of earnings that ended when the business recovered; a business with no recovery has no end to the period except the one the evidence imposes, and the more natural measure is often the value the venture would have had, which captures every future profit in a single figure at a single date. The <a href=\"/guides/lost-profits-vs-lost-business-value\">lost profits versus lost business value</a> guide works through the choice, and the <a href=\"/compare/lost-profits-vs-diminished-business-value\">diminished value comparison</a> draws the line where a business survived but was impaired. For a venture with no results to capitalize, the value rests on the same evidence the profits would have: the contracts, the comparables, and the terms of the financing, which are direct evidence of what investors paid for a share of the venture before the event.</p><p>Counsel sometimes frames the claim instead as the money spent in reliance on the contract or the venture: the build-out, the deposits, the inventory, the salaries paid before opening. That measure needs no projection, only the records of the expenditures and a showing that they were wasted, and the report can present it beside the lost profits or lost value figure so that a court in a <a href=\"/case-types/commercial-contract-dispute/texas\">Texas contract dispute</a>, or in any venue, can see what each theory is worth on the same record. The economist does not choose the theory; the report shows the number each one produces and the evidence each one rests on.</p>",
+      },
+      {
+        id: "where-reports-go-wrong",
+        heading: "Where new-business reports go wrong",
+        bodyHtml:
+          "<p>The recurring errors are visible on the schedule. A projection that begins at mature volume with no ramp. Revenue taken from the strongest comparable and costs taken from the plan, so the margin exceeds anything the industry shows. No salary for the owner's labor. A survival adjustment and a venture-level discount rate applied together, or neither applied at all. Comparables selected for their results rather than their similarity in size, market, and timing. A plan projection presented as evidence of what would have happened, when it is evidence only of what was intended. A loss period that runs to a distant horizon on the strength of a projection whose comparables cover a few years. Each of these is a question of inputs, not of whether the claim is possible, and each can be tested against the documents.</p><p>On the defense side the error runs the other way: a report that dismisses the claim as speculative without engaging the contracts and the comparables the plaintiff produced has left the projection unanswered rather than rebutted. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions that expose the plaintiff-side errors, and the <a href=\"/services/expert-rebuttal-and-report-review\">report review</a> service describes how an opposing new-business projection is tested input by input.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "What evidence proves lost profits when the business has no operating history?",
+        answer:
+          "Contracts and purchase orders with stated terms, the early-year results of comparable businesses in the same line and market, industry data on margins and survival, and the terms on which lenders and investors financed the venture. The business plan's own projections are the owner's expectations and are tested against those sources rather than treated as proof.",
+      },
+      {
+        question: "Does the projection for a new business begin at full capacity?",
+        answer:
+          "No. New businesses build volume over a ramp while customers are found and the operation settles, and the projection follows the ramp the comparable businesses show in their early years, capped by what the location, staff, and equipment could produce. Starting the projection at the plan's mature target overstates the loss by the difference between the ramp and the plateau.",
+      },
+      {
+        question: "How does the report account for the chance the venture would have failed anyway?",
+        answer:
+          "By one of two methods, never both. The projected profits are weighted by the published survival rate for businesses of that age and industry, or they are discounted at a rate that carries the risk investors require of a venture at that stage. The report names the method it adopted, and a report that applies both has counted the risk twice.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD"]),
+    related: [
+      { title: "Lost Profits and Commercial Damages", href: "/services/lost-profits-and-commercial-damages" },
+      { title: "Lost Profits But-For Analysis", href: "/methods/lost-profits-but-for-analysis" },
+      { title: "Lost Profits vs. Lost Business Value", href: "/guides/lost-profits-vs-lost-business-value" },
+    ],
+  },
+  {
+    slug: "goodwill-in-a-divorce-valuation",
+    title: "Goodwill in a Divorce Valuation: Enterprise and Personal",
+    metaTitle: "Goodwill in a Divorce Valuation",
+    metaDescription: "In a divorce, a business's goodwill is split between the enterprise and the owner, and that split can move the marital estate more than any other input.",
+    tldr:
+      "Goodwill is the part of a business's value that exceeds the value of its identifiable tangible and intangible assets, and in a divorce involving a closely held business it is often the largest and most contested component of the marital estate. Most frameworks divide it into enterprise goodwill, which belongs to the business and would transfer to a buyer, and personal goodwill, which attaches to the owner's skill, reputation, and relationships and in many states is not divisible property. Which rule applies is a legal question for counsel and the court; measuring the total goodwill, allocating it between the two kinds on evidence rather than assertion, and keeping the allocation consistent with the income used for support are the economist's tasks. This guide explains how each is done and where opposing valuations diverge.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-09-28",
+    dateModified: "2026-09-28",
+    sections: [
+      {
+        id: "what-goodwill-is",
+        heading: "What goodwill is and how it is measured",
+        bodyHtml:
+          "<p>A business is worth what its future cash flows are worth to an owner, and that figure usually exceeds what its equipment, receivables, inventory, and identifiable intangibles such as patents or leases would fetch on their own. The excess is goodwill: the value of the business as a going concern, with its customers, its reputation, its workforce, and its systems in place. It is not measured directly. The economist values the enterprise under the <a href=\"/methods/business-valuation-approaches\">income or market approach</a>, subtracts the value of the net tangible assets and any identifiable intangibles, and the residual is the goodwill. The size of that residual depends on every input to the enterprise valuation, which is why the normalization of the owner's compensation and the choice of capitalization rate matter before the goodwill question is even reached.</p><p>In a <a href=\"/services/divorce-and-marital-financial-analysis\">divorce and marital financial analysis</a> the goodwill matters because the marital estate includes the business, or the marital share of it, at a value the court fixes, and the goodwill can be the larger part of that value for a service business or a professional practice with few hard assets. The <a href=\"/services/business-valuation\">business valuation</a> service page describes the valuation as a whole; this guide concerns the one component that the domestic relations framework treats differently from every other.</p>",
+      },
+      {
+        id: "enterprise-vs-personal",
+        heading: "Enterprise goodwill and personal goodwill",
+        bodyHtml:
+          "<p>Enterprise goodwill is the part that would stay with the business if the owner walked away: the location, the trade name, the trained staff, the operating systems, the contracts, and the customers who come to the business rather than to the person. Personal goodwill is the part that would leave with the owner: the reputation, the licensed skill, the referral relationships, and the client loyalty that attach to the individual and cannot be sold to anyone else without the individual's continued involvement. A buyer of the business would pay for the first; for the second, a buyer would pay only if the owner agreed to stay on or to stay out of competition, which is the practical test the allocation turns on.</p><p>States differ on what follows. Some treat all goodwill as marital property and divide it; some exclude personal goodwill as an attribute of the person rather than an asset of the marriage; some draw the line at whether the goodwill could be sold. The <a href=\"/guides/business-valuation-in-litigation\">business valuation in litigation</a> guide covers the standards of value the frameworks adopt. The valuator does not pick the rule. The report measures the total goodwill, states the allocation between enterprise and personal with the evidence for it, and presents the marital value under the rule counsel identifies, with the alternative shown where the rule is unsettled.</p>",
+      },
+      {
+        id: "allocating-on-evidence",
+        heading: "How the allocation is made on evidence",
+        bodyHtml:
+          "<p>An allocation stated as a percentage with nothing behind it is the weakest part of most goodwill opinions and the first target of the other side. The evidence that supports an allocation is specific. Revenue by producer shows how much of the business's income the owner personally generates against what the other professionals or the staff generate. Referral source records show whether the work comes to the firm through institutional channels or through the owner's personal relationships. Customer tenure and concentration show whether the business would keep its clients through a change of ownership. The owner's hours, the extent to which the owner is the face of the business, and whether the business has a trade name distinct from the owner's all bear on it.</p><p>Two methods put a number on the split. The first values the business twice, once with the owner in place and once as it would operate with a hired manager or professional at market compensation, and the difference is the personal goodwill; the replacement salary is the input that drives it, and it is drawn from the published wage data for the position rather than assumed. The second looks to what a buyer would pay for the owner's covenant not to compete in a sale of the business, from comparable transactions that allocate the price between the enterprise and the covenant, because the covenant is the price of the goodwill that would otherwise walk. The <a href=\"/guides/income-determination-in-divorce\">income determination guide</a> explains the normalization of owner compensation that both methods depend on.</p>",
+      },
+      {
+        id: "professional-practices",
+        heading: "Professional practices and owner-operated businesses",
+        bodyHtml:
+          "<p>The allocation runs to extremes in the settings that produce the most disputes. A solo professional practice with no associates, no trade name, and clients who followed the owner from a prior firm has goodwill that is largely personal, and the enterprise component may be no more than the value of an established location and a trained staff. A multi-owner firm with institutional referral sources, a firm name, and clients who are served by whoever is assigned has goodwill that is largely enterprise, and an individual partner's reputation is a small part of it. Most businesses fall between, and the evidence in the section above decides where.</p><p>A buy-sell or partnership agreement that fixes a price for a departing owner's interest is evidence of value but in many states does not bind the court in a divorce, because the spouse was not a party to it and the formula was written for a different purpose. Industry rules of thumb that price a practice at a multiple of revenue are a check on the result, not a method, and a report that rests the goodwill on one has not measured it. A court weighing a practice valuation in a <a href=\"/case-types/divorce-and-marital-dissolution/florida\">Florida dissolution</a>, or in any venue, is better served by a valuation that shows the allocation evidence and states the rule applied than by one that adopts an industry multiple and a customary percentage.</p>",
+      },
+      {
+        id: "the-double-dip",
+        heading: "Goodwill and the support calculation",
+        bodyHtml:
+          "<p>The same earnings can appear twice in a divorce. If the business is valued by capitalizing the income the owner earns above a market salary, and the owner's full income including that excess is then used to set support, the excess earnings have been divided once as property and paid again as support. Frameworks differ on whether that is permissible, whether it is a double count only for personal goodwill, and how it is cured, and the answer is counsel's. The economist's contribution is consistency: the market compensation deducted in the valuation and the income attributed to the owner for support are built from the same normalization, and the report states plainly which dollars are in the value, which are in the income, and where the two overlap, so the court can apply its rule to a figure it can see.</p><p>The <a href=\"/case-types/divorce-and-marital-dissolution\">divorce and marital dissolution</a> case-type page describes the analysis as a whole, from the valuation through the income determination, and the reason the two are prepared together is exactly this overlap: a valuation and a support analysis done by different people on different normalizations will not reconcile, and the inconsistency is what the other side will find.</p>",
+      },
+      {
+        id: "where-valuations-diverge",
+        heading: "Where the two sides' valuations diverge",
+        bodyHtml:
+          "<p>Opposing goodwill opinions diverge at predictable points. The allocation percentage is asserted rather than supported. The replacement compensation in the with-and-without method is set too low, which inflates the enterprise goodwill, or too high, which erases it. A covenant not to compete is treated as enterprise value when it is the price of the owner's personal goodwill. The valuation date is set where it favors one side and the goodwill measured as of a different date than the tangible assets. The standard of value is fair market value in a state whose case law applies a fair value concept, or the reverse, and the <a href=\"/compare/fair-market-value-vs-fair-value\">fair market value versus fair value</a> comparison explains what turns on the difference. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions that test each of these, and the answers are usually in the business's own records.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is personal goodwill always left out of the marital estate?",
+        answer:
+          "No. Some states divide all of a business's goodwill, some exclude the portion that attaches to the owner personally, and some ask whether the goodwill could be sold to a buyer. The valuation reports the total goodwill and the evidence-based split between the enterprise and the owner so the court can apply whichever rule governs.",
+      },
+      {
+        question: "How does a covenant not to compete bear on personal goodwill?",
+        answer:
+          "In a sale of the business, the price a buyer would pay for the owner's agreement not to compete is the price of the goodwill that would otherwise leave with the owner, so allocations of price to covenants in comparable transactions are evidence of the personal share. A valuation that treats the covenant value as enterprise goodwill has moved personal goodwill into the marital estate.",
+      },
+      {
+        question: "Can the same business earnings count toward both the valuation and the support award?",
+        answer:
+          "Whether they may is a legal question that differs by state. The economist builds the market compensation deducted in the valuation and the income attributed to the owner for support from one normalization of the business's records and states where the two overlap, so the court can see the dollars in question and apply its rule.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "BLS_OES"]),
+    related: [
+      { title: "Divorce and Marital Financial Analysis", href: "/services/divorce-and-marital-financial-analysis" },
+      { title: "Business Valuation Approaches", href: "/methods/business-valuation-approaches" },
+      { title: "Income Determination in Divorce", href: "/guides/income-determination-in-divorce" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
