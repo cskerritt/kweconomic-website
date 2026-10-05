@@ -40,7 +40,7 @@ export function bareName(name) {
 export function profileTitle({ name, jobTitle, memoriam, orgName }) {
   const person = bareName(name);
   if (memoriam) return `${person} | In Memoriam | ${orgName}`;
-  // A compound role ("Economics Associate / Expert Liaison") keeps its first
+  // A compound role ("Economic Associate / Expert Liaison") keeps its first
   // half in the title; a role that still cannot fit beside the name and the
   // brand is dropped rather than paraphrased, so a job title never changes.
   const role = jobTitle.split(" / ")[0].trim();

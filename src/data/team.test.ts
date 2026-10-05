@@ -7,10 +7,17 @@ import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 import { practiceAreasFor } from "@/lib/practice-areas";
 
 describe("KW Economics team", () => {
-  it("has the two-person roster", () => {
-    expect(team.map((m) => m.slug)).toEqual(["christopher-skerritt", "zachary-sperling"]);
+  it("has the three-person roster", () => {
+    expect(team.map((m) => m.slug)).toEqual(["christopher-skerritt", "zachary-sperling", "francis-kumah"]);
     expect(getMemoriam()).toEqual([]);
-    expect(activeTeam.length).toBe(2);
+    expect(activeTeam.length).toBe(3);
+  });
+  it("Francis Kumah is a support forensic accountant and not retainable", () => {
+    const f = team.find((m) => m.slug === "francis-kumah")!;
+    expect(f.title).toBe("Forensic Accountant");
+    expect(f.role).toBe("support");
+    expect(f.expertTier).toBeUndefined();
+    expect(f.imageUrl).toBe("/team/francis-kumah.jpg");
   });
   it("Christopher Skerritt leads as Chief of Economic Services", () => {
     const c = team.find((m) => m.slug === "christopher-skerritt")!;
@@ -23,7 +30,7 @@ describe("KW Economics team", () => {
   });
   it("Zachary Sperling is support and not retainable", () => {
     const z = team.find((m) => m.slug === "zachary-sperling")!;
-    expect(z.title).toBe("Economics Associate / Expert Liaison");
+    expect(z.title).toBe("Economic Associate / Expert Liaison");
     expect(z.role).toBe("support");
     expect(z.expertTier).toBeUndefined();
     expect(retainableExperts().map((m) => m.slug)).toEqual(["christopher-skerritt"]);
@@ -65,8 +72,8 @@ describe("KW Economics team", () => {
       profileTitle({ name: "Christopher Skerritt, M.Ed., MBA", jobTitle: "Chief of Economic Services", orgName: ORG_NAME }),
     ).toBe(`Christopher Skerritt | ${ORG_NAME}`);
     expect(
-      profileTitle({ name: "Zachary Sperling", jobTitle: "Economics Associate / Expert Liaison", orgName: ORG_NAME }),
-    ).toBe(`Zachary Sperling, Economics Associate | ${ORG_NAME}`);
+      profileTitle({ name: "Zachary Sperling", jobTitle: "Economic Associate / Expert Liaison", orgName: ORG_NAME }),
+    ).toBe(`Zachary Sperling, Economic Associate | ${ORG_NAME}`);
     expect(
       profileTitle({ name: "Jane Roe, Ph.D.", jobTitle: "Economist", orgName: ORG_NAME }),
     ).toBe(`Jane Roe, Economist | ${ORG_NAME}`);

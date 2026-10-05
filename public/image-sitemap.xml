@@ -20,6 +20,7 @@
     <loc>https://kweconomics.com/team</loc>
     <image:image><image:loc>https://kweconomics.com/team/christopher-skerritt.jpg</image:loc><image:title>Christopher Skerritt, M.Ed., MBA</image:title></image:image>
     <image:image><image:loc>https://kweconomics.com/team/zachary-sperling.jpg</image:loc><image:title>Zachary Sperling</image:title></image:image>
+    <image:image><image:loc>https://kweconomics.com/team/francis-kumah.jpg</image:loc><image:title>Francis Kumah</image:title></image:image>
   </url>
   <url>
     <loc>https://kweconomics.com/team/christopher-skerritt</loc>
@@ -28,5 +29,9 @@
   <url>
     <loc>https://kweconomics.com/team/zachary-sperling</loc>
     <image:image><image:loc>https://kweconomics.com/team/zachary-sperling.jpg</image:loc><image:title>Zachary Sperling</image:title></image:image>
+  </url>
+  <url>
+    <loc>https://kweconomics.com/team/francis-kumah</loc>
+    <image:image><image:loc>https://kweconomics.com/team/francis-kumah.jpg</image:loc><image:title>Francis Kumah</image:title></image:image>
   </url>
 </urlset>

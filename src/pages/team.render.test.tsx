@@ -6,7 +6,7 @@ import Team from "./Team";
 import ExpertProfile from "./templates/ExpertProfile";
 import { LEGACY_BRAND_PATTERN } from "@/lib/brand";
 
-// Server renders of the roster pages for the two-person economics team.
+// Server renders of the roster pages for the three-person economics team.
 // usePageMeta does not run under renderToStaticMarkup, so this covers the
 // synchronous body and JSON-LD only; the meta pair is pinned separately by
 // scripts/prerender-meta.test.mjs.
@@ -30,18 +30,23 @@ const LCP_ROSTER_COPY = /Certified Life Care Planners|nurse life care planner|me
 // brand guard applies to the visible page, not to that block.
 const withoutJsonLd = (html: string) => html.replace(/<script type="application\/ld\+json">[^]*?<\/script>/g, "");
 
-describe("/team renders the two-person roster", () => {
+describe("/team renders the three-person roster", () => {
   const html = render("/team", "/team", Team);
 
-  it("lists both members under the economics headings, leadership first", () => {
-    expect(html).toContain("Leadership");
-    expect(html).toContain("Economics Team");
+  it("lists every member on one row under one heading, leadership first", () => {
+    expect(html).toContain("Our Team");
+    expect(html).not.toContain(">Economics Team<");
+    expect(html).toContain("lg:grid-cols-3");
+    expect(html.match(/lg:grid-cols-3/g)?.length).toBe(1);
     const chris = html.indexOf('href="/team/christopher-skerritt"');
     const zach = html.indexOf('href="/team/zachary-sperling"');
+    const francis = html.indexOf('href="/team/francis-kumah"');
     expect(chris).toBeGreaterThan(-1);
     expect(zach).toBeGreaterThan(chris);
+    expect(francis).toBeGreaterThan(zach);
+    expect(html).toContain("Forensic Accountant");
     expect(html).toContain("Chief of Economic Services");
-    expect(html).toContain("Economics Associate / Expert Liaison");
+    expect(html).toContain("Economic Associate / Expert Liaison");
   });
 
   it("emits no In Memoriam section and no sister-roster copy", () => {
@@ -54,12 +59,14 @@ describe("/team renders the two-person roster", () => {
   it("publishes Person schema for both active members", () => {
     expect(html).toContain("/team/christopher-skerritt#person");
     expect(html).toContain("/team/zachary-sperling#person");
+    expect(html).toContain("/team/francis-kumah#person");
   });
 });
 
 describe("/team/:slug profiles", () => {
   const chris = render("/team/christopher-skerritt", "/team/:slug", ExpertProfile);
   const zach = render("/team/zachary-sperling", "/team/:slug", ExpertProfile);
+  const francis = render("/team/francis-kumah", "/team/:slug", ExpertProfile);
 
   it("Christopher Skerritt: full biography, education, and economics practice areas", () => {
     expect(chris).toContain('<section id="bio"');
@@ -75,14 +82,21 @@ describe("/team/:slug profiles", () => {
 
   it("Zachary Sperling: support profile with no tier badge and no education block", () => {
     expect(zach).toContain('<section id="bio"');
-    expect(zach).toContain("Economics Associate and Expert Liaison");
+    expect(zach).toContain("Economic Associate and Expert Liaison");
     expect(zach).not.toContain('<section id="education"');
     expect(zach).not.toContain("Senior Expert");
     expect(zach).toContain("New Jersey, New York");
   });
 
-  it("neither profile carries sister-roster copy or dashes", () => {
-    for (const html of [chris, zach]) {
+  it("Francis Kumah: support profile with no tier badge", () => {
+    expect(francis).toContain('<section id="bio"');
+    expect(francis).toContain("forensic accountant on the economics team");
+    expect(francis).not.toContain("Senior Expert");
+    expect(francis).toContain("New Jersey, New York");
+  });
+
+  it("no profile carries sister-roster copy or dashes", () => {
+    for (const html of [chris, zach, francis]) {
       expect(html).not.toMatch(LCP_ROSTER_COPY);
       expect(withoutJsonLd(html)).not.toMatch(LEGACY_BRAND_PATTERN);
       expect(html).not.toMatch(/[\u2013\u2014]/);

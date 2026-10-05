@@ -403,7 +403,7 @@ describe("core page meta literals", () => {
   it("the team description says 'can testify', never that the chief testifies to every analysis", () => {
     const { description } = pageMeta("Team.tsx");
     expect(description).toBe(
-      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, and an associate who coordinates every engagement.`,
+      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, an economic associate, and a forensic accountant.`,
     );
     expect(description).not.toMatch(/directs and testifies/);
   });

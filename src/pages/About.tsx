@@ -220,8 +220,9 @@ export default function About() {
           <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Economists</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto mb-8">
             The practice is led by a Chief of Economic Services who directs every analysis and
-            is available to testify to it, supported by an economics associate who coordinates
-            each engagement with counsel. Read the background and practice areas of each member
+            is available to testify to it, supported by an economic associate who coordinates
+            each engagement with counsel and a forensic accountant who analyzes the financial
+            records. Read the background and practice areas of each member
             of the team.
           </p>
           <Link
