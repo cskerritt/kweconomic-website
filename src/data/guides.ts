@@ -1542,6 +1542,150 @@ export const guides: Guide[] = [
       { title: "Income Determination in Divorce", href: "/guides/income-determination-in-divorce" },
     ],
   },
+  {
+    slug: "discounts-for-lack-of-marketability",
+    title: "Discounts for Lack of Marketability in a Litigation Valuation",
+    metaTitle: "Discounts for Lack of Marketability",
+    metaDescription: "A marketability discount lowers the value of an interest that cannot be sold readily; here is how it is sized and when the standard of value allows it.",
+    tldr:
+      "A discount for lack of marketability reduces the indicated value of an ownership interest to reflect that it cannot be converted to cash quickly, at a known price, through an established market. Shares of a closely held company have no exchange to sell on, often carry transfer restrictions, and may wait years for a buyer, and a hypothetical purchaser pays less for them than for an otherwise identical interest that could be sold tomorrow. This guide explains what the discount measures and what it does not, which standards of value permit it and which exclude it, the evidence the economist draws on to size it for the specific interest, how it is kept separate from the discount for lack of control, how it is handled in divorce, shareholder, and damages matters, and where opposing valuations go wrong when they apply it.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    sections: [
+      {
+        id: "what-the-discount-measures",
+        heading: "What the discount measures",
+        bodyHtml:
+          "<p>Marketability is the ability to sell an interest quickly, at a price close to its indicated value, with little cost and little uncertainty about when the cash arrives. A share of a publicly traded company has it: the holder can sell at the quoted price within a day. An interest in a closely held company does not: there is no exchange, no quoted price, and no assurance that a buyer exists at any price, and the operating agreement or the shareholders' agreement may restrict to whom and on what terms the interest can be transferred. The discount for lack of marketability is the reduction a buyer demands for taking on that illiquidity, and it is applied after the <a href=\"/methods/business-valuation-approaches\">income, market, or asset approach</a> has produced a value for the interest as if it were freely tradable.</p><p>The discount is a feature of the interest, not of the company. A profitable, well run business can carry a large marketability discount on a minority block because the block cannot be sold, while the company as a whole could be sold in a transaction that takes months rather than minutes. That distinction is why the discount is applied at the level of the interest being valued, and why the report states the level of value the approaches produced before the discount was taken, so the reader can see what the discount is being applied to and whether that base already reflects some illiquidity.</p>",
+      },
+      {
+        id: "where-the-standard-of-value-allows-it",
+        heading: "Where the standard of value allows it and where it does not",
+        bodyHtml:
+          "<p>Whether the discount belongs in the valuation at all depends on the standard of value the law or the agreement imposes, and that is a legal question the <a href=\"/services/business-valuation\">business valuation</a> report takes from counsel rather than decides. Under fair market value, the price a hypothetical willing buyer would pay a hypothetical willing seller, the discount is ordinarily considered, because a real buyer of an illiquid interest would demand it. Under the fair value standard most states apply to dissenting shareholder appraisals and oppression buyouts, the discount is usually excluded, because the departing owner is not a willing seller to an outsider and the remaining owners are not buying a block they cannot sell. The <a href=\"/compare/fair-value-vs-fair-market-value-in-shareholder-disputes\">fair value versus fair market value</a> comparison sets out the two standards in the shareholder setting.</p><p>Divorce courts split. Some treat the marital interest at fair market value and allow the discount; others reason that the owner spouse is keeping the business, not selling it, and exclude a discount for a sale that will not happen; a third group allows it only where a sale is actually contemplated or the restrictions are real. The <a href=\"/compare/fair-market-value-vs-fair-value\">general comparison of the two standards</a> covers the definitions. Where the governing standard is unsettled, the report shows the value with and without the discount, so that the court can apply whichever rule it adopts to a number built for that rule rather than argue the law from a figure built for the other one.</p>",
+      },
+      {
+        id: "the-evidence-that-sizes-it",
+        heading: "The evidence that sizes the discount",
+        bodyHtml:
+          "<p>The size of the discount is not a convention; it is an estimate for the specific interest, and the report shows the evidence it rests on. The empirical base comes from two kinds of studies: comparisons of the prices at which restricted shares of public companies, which could not be sold for a holding period, traded against the same company's freely traded shares; and comparisons of the prices paid for shares in private transactions before an initial public offering against the offering price. Both measure what buyers paid to accept a period of illiquidity, and both have known limits that the report acknowledges: the restricted stock studies measure a defined holding period that a closely held interest may not have, and the pre-offering studies include companies whose offering was already in prospect.</p><p>From that base the economist moves to the interest in hand. The factors that raise the discount are a long expected holding period, transfer restrictions in the governing agreement, no history of distributions, no prospect of a sale or a public offering, a small block, a company whose earnings are volatile, and a pool of buyers limited to the other owners. The factors that lower it are a put right or a buy-sell agreement that creates a buyer at a formula price, regular distributions that pay the holder while they wait, a company being marketed for sale, and a block large enough to influence a sale. Option pricing models, which price the cost of protecting against a decline in value during the holding period, give a second, independent read on the discount from the interest's own volatility and expected holding period, and a report that reconciles the two reads has shown its work.</p>",
+      },
+      {
+        id: "marketability-and-control",
+        heading: "Marketability and control are different discounts",
+        bodyHtml:
+          "<p>A minority interest in a closely held company often carries two discounts, and they measure different things. The discount for lack of control reflects that the holder cannot set compensation, declare distributions, sell the company, or change its direction, and it is applied when the approaches produced a value at the control level. The discount for lack of marketability reflects that the holder cannot sell, and it applies whether or not the holder has control, though a controlling owner, who can sell the whole company, usually bears a far smaller one. The two are applied in sequence, control first and then marketability on the reduced base, because a buyer decides what the block is worth to hold before deciding what to deduct for the difficulty of selling it.</p><p>Keeping them separate matters for two reasons. First, the evidence differs: control discounts are drawn from the premiums paid in acquisitions of public companies, marketability discounts from the restricted stock and pre-offering studies, and a report that cites one body of evidence for both has priced one of them twice or not at all. Second, the law treats them differently in some settings; a court applying fair value may reject a control discount on the ground that the shareholder is entitled to a proportionate share of the whole while allowing a marketability discount at the enterprise level, or the reverse, and the report has to be able to remove either one without disturbing the other. The <a href=\"/guides/business-valuation-in-litigation\">business valuation in litigation</a> guide describes where each adjustment sits in the valuation.</p>",
+      },
+      {
+        id: "the-settings",
+        heading: "Divorce, shareholder, and damages settings",
+        bodyHtml:
+          "<p>In a <a href=\"/case-types/divorce-and-marital-dissolution\">divorce</a>, the discount is contested because it moves the marital estate directly and because the sale it assumes will usually not occur. The economist states the standard the venue applies, values the interest with and without the discount, and ties the factors to the agreement and the distribution history in the record. Where the business carries personal goodwill, the <a href=\"/guides/goodwill-in-a-divorce-valuation\">goodwill allocation</a> is made before any discount is considered, so that the same illiquidity is not removed twice, once as goodwill that leaves with the owner and once as a discount on what remains.</p><p>In a shareholder dispute venued in a <a href=\"/case-types/partnership-and-shareholder-dispute/new-jersey\">New Jersey</a> court, or in any venue, the fair value standard usually governs and the discount is usually excluded, but a buy-sell agreement that fixed fair market value as its measure can bring it back, and the report presents both figures. In a damages matter, where an owner's interest was destroyed or impaired, the discount enters only if the measure of loss is the value of the interest rather than a stream of lost profits, and the <a href=\"/guides/lost-profits-vs-lost-business-value\">lost profits versus lost business value</a> guide explains how that choice is made. An estate or gift tax valuation applies fair market value by definition and nearly always carries the discount, but that setting lies outside litigation and is noted here only because its case law is the source of much of the evidence the litigation reports rely on.</p>",
+      },
+      {
+        id: "where-reports-go-wrong",
+        heading: "Where reports go wrong on the discount",
+        bodyHtml:
+          "<p>The errors fall into a short list. A discount applied under a standard of value that excludes it, or omitted under one that requires it, with no statement of the standard. A figure asserted from a range the studies report without tying it to the interest's holding period, restrictions, distributions, or prospects for sale. A marketability discount applied to a controlling interest at the same rate as a minority block. Control and marketability discounts drawn from the same evidence, or applied in parallel to the undiscounted base rather than in sequence. A discount taken against a value the market approach already produced from transactions in illiquid private companies, so the illiquidity was removed twice. A discount applied to an interest the agreement gives a put right at a formula price, which is a buyer the discount assumes does not exist.</p><p>Each of these is visible on the face of the report and each can be tested against the agreement, the distribution history, and the studies cited. On the other side, a report that rejects every discount as speculative without engaging the evidence of illiquidity the agreement and the record show has left the question unanswered. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions that expose both failures, and the <a href=\"/services/expert-rebuttal-and-report-review\">report review</a> service describes how an opposing valuation's discounts are tested one factor at a time.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a marketability discount applied to a controlling interest?",
+        answer:
+          "Sometimes, but at a much smaller rate than for a minority block. A controlling owner can sell the whole company, so the illiquidity is the time and cost of marketing a business rather than the absence of any buyer. Whether any discount applies at the control level depends on the standard of value and the venue's case law, and the report states the treatment it adopted.",
+      },
+      {
+        question: "What evidence supports the size of a marketability discount?",
+        answer:
+          "Studies of the price difference between restricted and freely traded shares of the same public company, studies of private share sales before a public offering, and option pricing models that price the cost of waiting out the holding period. The economist then moves from that base to the interest at hand on the transfer restrictions, distribution history, expected holding period, and prospects for a sale shown in the record.",
+      },
+      {
+        question: "Does a transfer restriction in the shareholders' agreement increase the discount?",
+        answer:
+          "Usually, because a right of first refusal, a consent requirement, or a bar on transfer to outsiders narrows the pool of buyers and lengthens the wait. A restriction paired with a put right or a buy-sell formula can cut the other way, since it creates a buyer at a stated price, and the report reads the agreement for both effects before sizing the discount.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1","NACVA_STANDARDS"]),
+    related: [
+      { title: "Business Valuation", href: "/services/business-valuation" },
+      { title: "Fair Value vs. Fair Market Value in Shareholder Disputes", href: "/compare/fair-value-vs-fair-market-value-in-shareholder-disputes" },
+      { title: "Business Valuation Approaches", href: "/methods/business-valuation-approaches" },
+    ],
+  },
+  {
+    slug: "tracing-commingled-funds",
+    title: "Tracing Commingled Funds: How the Analysis Is Built",
+    metaTitle: "Tracing Commingled Funds in Litigation",
+    metaDescription: "When separate and shared or diverted and legitimate money sit in one account, tracing rebuilds the flows from the records; here is how the analysis is done.",
+    tldr:
+      "Tracing is the reconstruction of where identified money came from and where it went, through every account it passed, from the bank, brokerage, and accounting records that recorded each movement. Funds are commingled when money with one character, a spouse's premarital savings or a sum diverted from a company, is deposited into an account that also holds money of another character, so that the balance no longer shows which dollars are which. The analysis assigns the mixed balance and every withdrawal from it under a stated convention, follows the money into the assets it bought, and states where the trail breaks and what carries it across. This guide explains what tracing is and is not, the records it is built from, the conventions used to divide a mixed account and why the choice of convention is a legal question, how the analysis differs between divorce and fraud matters, and how the result is presented so it can be tested.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    sections: [
+      {
+        id: "what-tracing-is",
+        heading: "What tracing is and what it is not",
+        bodyHtml:
+          "<p>Tracing follows specific money through a series of transactions by matching each withdrawal to a deposit and each deposit to its source, using the records that documented the transfers. It is documentary work: the analyst does not infer that money moved because it would have been convenient, but shows the deposit item, the wire detail, or the check image that moved it. The <a href=\"/services/fraud-and-asset-tracing\">fraud and asset tracing</a> service describes the engagement in which diverted funds are followed into the assets they bought, and the <a href=\"/services/divorce-and-marital-financial-analysis\">divorce financial analysis</a> service describes the same work applied to a spouse's claim that an asset was acquired with separate property.</p><p>Tracing does not decide what the money was. Whether a deposit was separate or marital, whether a transfer was authorized or a diversion, and whether a commingled account lost its separate character by the act of commingling are questions the governing law answers, and the report takes the legal framework from counsel and applies it. What the analysis supplies is the factual chain: this sum entered here on this date from this source, sat in this account alongside these other funds, and left in these amounts to these destinations. The characterization and the remedy are built on that chain, and the chain is what the opposing analyst will test.</p>",
+      },
+      {
+        id: "the-records",
+        heading: "The records the analysis is built from",
+        bodyHtml:
+          "<p>Bank statements are the spine, but a statement alone shows amounts and dates, not sources and destinations. The analysis needs the deposit detail behind each credit, which identifies the check or the wire that made up the deposit; the check images and the wire confirmations behind each debit, which identify the payee and the receiving account; and the account opening records, which fix who owned the account and when. Brokerage statements add the trade confirmations and the transfers between cash and securities. Closing statements for real estate, title records, loan applications, and vehicle purchase documents show what the money bought. The company's general ledger, its accounts payable detail, and its payroll register show where diverted funds left the business and under what description.</p><p>Tax returns and their schedules tie the accounts together and sometimes reveal accounts that were not produced, because interest and dividend income are reported by payer. In a <a href=\"/case-types/fraud-and-embezzlement\">fraud or embezzlement</a> matter the records come from the company, its banks, and the subpoenaed accounts of the person who took the money; in a divorce they come from both spouses and reach back to the date of marriage or the date the separate funds arrived. The request is for complete runs, not samples: a single missing statement in the middle of a chain is a gap the analysis has to bridge by assumption, and a complete run lets it bridge by evidence.</p>",
+      },
+      {
+        id: "the-conventions",
+        heading: "The conventions that divide a mixed account",
+        bodyHtml:
+          "<p>Once money of two characters shares one account, every withdrawal has to be assigned to one source or the other, and no rule of arithmetic makes the choice; a convention does, and the conventions give different answers. Direct tracing matches a specific withdrawal to a specific deposit by amount, timing, and stated purpose, and is the strongest where the records permit it. Where they do not, the alternatives are rules: that withdrawals for ordinary living expenses are presumed to come from marital or legitimate funds first, so that the separate or diverted balance is preserved; that the separate funds can never exceed the lowest balance the account reached after they were deposited, since money that left cannot return; that withdrawals are taken in the order deposits were made; or that each withdrawal is split in proportion to the mixture in the account at that moment.</p><p>Which convention governs is a question of law that varies by state and by the kind of claim, and the economist applies the one counsel identifies while showing what the others would produce, because the difference between them is often the whole dispute. A spouse in a <a href=\"/case-types/divorce-and-marital-dissolution\">divorce</a> who claims a down payment came from premarital savings will fare very differently under a convention that charges living expenses to marital funds first than under one that charges them in proportion, and the report that presents only the favorable one has argued rather than analyzed. Presenting the result under each convention also lets the court adopt a rule without sending the analysis back to be redone.</p>",
+      },
+      {
+        id: "when-the-trail-breaks",
+        heading: "When the trail breaks",
+        bodyHtml:
+          "<p>Every tracing eventually meets a point where the records stop showing where the money went. Cash withdrawals leave the banking system and reappear, if at all, as cash deposits elsewhere that cannot be matched by item. A transfer to an account that was never produced, a closed account whose statements the bank no longer holds, a payment to a third party who passed the money on, or a period of missing statements each leaves a gap. The analysis does not paper over these. It states where the trail ends, what the records show up to that point, what the money could have become, and what assumption, if any, the report makes to carry the balance forward, and it separates the portion of the conclusion that rests on documents from the portion that rests on inference.</p><p>Gaps are also evidence in their own right. A pattern of cash withdrawals that begins when the diversion is alleged to have begun, or a set of accounts that appear on the tax return but were not produced, points to where the next subpoena should go, and the report can say so without concluding what the subpoena would show. For the separate property claim, a gap usually means the separate character cannot be carried past it under the stricter conventions, and the report states that consequence so counsel can weigh the cost of pursuing the missing records against what they could recover.</p>",
+      },
+      {
+        id: "divorce-and-fraud",
+        heading: "Tracing in divorce and tracing in fraud matters",
+        bodyHtml:
+          "<p>The mechanics are the same in both settings; the question and the direction differ. In divorce, the analysis usually runs forward from a known separate source, an inheritance, a premarital account, a gift to one spouse, through the accounts it was mixed into and into the assets that remain at the date of division, to show how much of a present asset is attributable to the separate source. Appreciation, distributions, and the spouses' own contributions during the marriage each have a treatment under the state's law, and the report applies the one counsel identifies and shows the separate and marital portions of each asset on a schedule.</p><p>In a fraud matter the analysis usually runs in both directions: backward from a suspicious payment or asset to the company account it was drawn from, and forward from the point of diversion to the accounts, property, and third parties that received the money, to quantify the loss and to identify what can be recovered. The loss figure and the recovery figure are different numbers, and the report keeps them separate. A matter venued in a <a href=\"/case-types/fraud-and-embezzlement/florida\">Florida</a> court, or in any venue, may also need the analysis to distinguish the diverted principal from any gains it earned, because the remedies for each can differ. The <a href=\"/compare/forensic-economist-vs-forensic-accountant\">economist versus forensic accountant</a> comparison explains why this work sits at the boundary of the two disciplines and how a practice that fields both assigns it.</p>",
+      },
+      {
+        id: "presenting-the-result",
+        heading: "Presenting the tracing so it can be tested",
+        bodyHtml:
+          "<p>A tracing stands or falls on whether the reader can follow it, so the presentation is part of the method. The core exhibit is a schedule for each account, in date order, that lists every deposit and withdrawal in the relevant period, assigns each to a source under the stated convention, and carries a running balance for each character of funds beside the bank's own balance, which the two must reconcile to on every statement date. A source-and-use summary then collapses the account schedules into a flow from each origin to each destination, and an asset schedule shows, for each asset still in existence, how much of its cost came from each source. Every line cites the document it came from.</p><p>The narrative explains the convention applied, the alternatives and their results, the gaps and the assumptions that bridge them, and the portion of the conclusion that rests on inference. A report built this way can be checked line by line, which is what a court needs when the opposing analyst applies a different convention to the same records. The <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal guide</a> lists the questions an opposing tracing will be asked, and most of them concern whether the schedules reconcile, whether the convention was applied consistently, and whether the gaps were disclosed.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Which tracing convention does the economist apply when funds are mixed in one account?",
+        answer:
+          "The one the governing law prescribes for that kind of claim, which counsel identifies. Because the conventions assign the same withdrawals to different sources and can reverse the result, the report applies the governing rule and also shows what the alternatives produce, so the court can adopt a rule and read the answer off the same schedules.",
+      },
+      {
+        question: "What happens to the tracing when a statement is missing or money leaves as cash?",
+        answer:
+          "The report marks the point where the documents stop, states what the records show up to it, and separates the conclusion that rests on documents from any portion carried forward by assumption. Under the stricter conventions a separate or diverted balance usually cannot be carried past an undocumented gap, and the report says so.",
+      },
+      {
+        question: "Does a tracing analysis prove that a transfer was wrongful?",
+        answer:
+          "No. It establishes the chain of movements: the source, the accounts the money passed through, and the destinations, each tied to a record. Whether a movement was authorized, whether a deposit was separate or marital, and what remedy follows are legal questions decided on that chain by the court, not by the analyst.",
+      },
+    ],
+    sources: refsToSources(["ACFE","NACVA_STANDARDS"]),
+    related: [
+      { title: "Fraud Investigation and Asset Tracing", href: "/services/fraud-and-asset-tracing" },
+      { title: "Divorce and Marital Financial Analysis", href: "/services/divorce-and-marital-financial-analysis" },
+      { title: "Forensic Economist vs. Forensic Accountant", href: "/compare/forensic-economist-vs-forensic-accountant" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

@@ -632,6 +632,56 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["JONES_LAUGHLIN_PFEIFER", "TREASURY_YIELD", "BLS_CPI", "BLS_ECI"]),
   },
+  {
+    slug: "age-earnings-profile",
+    name: "Age-Earnings Profile",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    metaDescription: "The age-earnings profile shapes a lost earnings projection to the rise, plateau, and decline of earnings over a working life; here is how it is built and used.",
+    summary:
+      "The age-earnings profile is the pattern of average earnings by age for workers who share an education level, an occupation, or both: earnings rise steeply through the twenties and thirties as skills and tenure accumulate, flatten through the middle years, and level off or decline toward the end of a working life. In a lost earnings projection the profile replaces a single flat growth rate with a path that reflects where the person stood on that curve at the event and how earnings for people like them move from there, so that a young worker's projection carries the real raises that experience would have brought and an older worker's does not.",
+    whenUsed:
+      "The profile is used whenever the person's own earnings history is too short, too early, or too disrupted to show how their earnings would have developed: a worker in their twenties whose first full-time years understate their capacity, a student or recent graduate with no history at all, a person returning to work after a long absence, or a career that was changing at the time of the event. It supplements, and does not replace, the economy-wide growth rate the [[/methods/earnings-growth-rate-selection|growth rate selection]] method chooses: the profile supplies the real movement along the curve that comes with age and experience, and the growth rate supplies the movement of the whole curve over time. The [[/methods/wage-growth-and-earnings-projection|earnings projection]] method shows where the two are combined, and the [[/guides/how-lost-earnings-are-calculated|lost earnings guide]] places the result in the full claim. The profile is most often applied in [[/services/lost-earnings-and-earning-capacity|lost earnings]], [[/services/personal-injury-economic-damages|personal injury]], and [[/services/wrongful-death-economic-loss|wrongful death]] reports, and in employment matters where front pay runs for a young plaintiff.",
+    steps: [
+      "Fix the person's position on the curve at the event: age, completed education, and the occupation or occupational group the record supports, from the pay records, the transcripts, and the employment history",
+      "Select the published cross-section of earnings by age for that education level or occupation, from the household survey or the decennial and annual census series, and state the year and the definition of earnings the series uses",
+      "Convert the cross-section to a path: the ratio of average earnings at each later age to average earnings at the person's current age gives the real increase experience would bring, independent of economy-wide growth",
+      "Anchor the path to the person: scale the published curve to the person's actual earnings at the event where a history exists, or to the entry earnings for the occupation where it does not, and state which anchor was used",
+      "Apply the economy-wide growth rate on top of the profile for each year, so that the projection carries both the movement along the curve and the movement of the curve",
+      "Carry the profile to the worklife horizon and discount, and show the projection with and without the profile so the reader can see what the shape contributes",
+    ],
+    dataSources: [
+      "Current Population Survey earnings by age, sex, and educational attainment, for the cross-sectional profile",
+      "American Community Survey earnings by age, education, and occupation, for a finer occupational or geographic cut",
+      "Occupational Employment and Wage Statistics, for the entry and experienced wage levels that bound an occupation's curve",
+      "The person's pay records, tax returns, transcripts, and employment history, for the anchor and the position on the curve",
+      "Published worklife tables, for the horizon the profile runs to",
+    ],
+    limitations:
+      "A cross-sectional profile compares different people at different ages in one year, not the same person over time, so it carries the assumption that today's fifty-year-olds show what today's thirty-year-olds will earn at fifty; where an occupation is changing, the assumption can fail in either direction. The published curves are averages for broad groups, and a person whose earnings at the event were well above or below the group's average needs an anchoring decision that the report has to state and defend: scaling the whole curve to the person preserves their relative position for life, while converging toward the group average assumes the gap would have closed, and the two produce different totals. The profile also interacts with the growth rate: a report that applies a profile built from a series that already embeds real growth, and then adds an economy-wide real growth rate on top, has counted the same raises twice. Finally, the late-career decline in a cross-section partly reflects who is still working at those ages rather than falling pay for those who are, and the report says how it treated that portion of the curve.",
+    admissibilityHistory:
+      "Courts have long accepted that a young plaintiff's earnings would have grown with experience and have admitted projections that model the growth from published data rather than from the person's own short history, provided the data are identified and the method is explained. The challenges that succeed are about the inputs: a profile drawn for a different education level than the record supports, an occupation assumed from aspiration rather than evidence, a curve for all workers applied to a person in a field with a flatter path, or the double counting of real growth described above. Reports that present the projection with and without the profile, state the anchor, and tie the education and occupation assumptions to the transcripts and the work history have generally been examined on cross rather than excluded, in a [[/case-types/personal-injury/california|California personal injury matter]] as elsewhere. The [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions an opposing economist asks about a profile, and nearly all of them concern the anchor and the double count.",
+    relevantServices: ["lost-earnings-and-earning-capacity","personal-injury-economic-damages","wrongful-death-economic-loss","employment-and-wage-loss-damages"],
+    faqs: [
+      {
+        question: "Why does a young worker's projection need an age-earnings profile?",
+        answer:
+          "Because their earnings at the event understate what they would have earned in mid-career. A flat growth rate carries forward entry-level pay with only economy-wide raises, while the profile adds the real increases that come with experience and tenure, which the published data show are largest in the first decades of a working life.",
+      },
+      {
+        question: "How does the economist anchor a published profile to a specific person?",
+        answer:
+          "By scaling the curve to the person's actual earnings at the event where a history exists, or to the occupation's entry wage where it does not, and stating the choice. Whether the person's gap above or below the group average is held for life or allowed to close is a separate stated assumption, and the report shows the result under the one adopted.",
+      },
+      {
+        question: "Can the age-earnings profile be combined with an economy-wide growth rate?",
+        answer:
+          "Yes, and it usually is, provided the two measure different things. The profile supplies the real movement along the curve from experience; the growth rate supplies the movement of the whole curve over time. The report checks that the series behind the profile does not already embed real growth, which would count the same raises twice.",
+      },
+    ],
+    sources: refsToSources(["BLS_CPS","CENSUS_ACS","BLS_OES"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {
