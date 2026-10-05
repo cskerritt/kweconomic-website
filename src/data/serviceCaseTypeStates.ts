@@ -37,7 +37,7 @@ export const STATE_BATCHES: StateBatch[] = [
   },
   {
     id: "D",
-    released: false,
+    released: true, // wave 5, 2026-10-05
     states: ["montana", "rhode-island", "delaware", "south-dakota", "north-dakota", "alaska", "vermont", "wyoming", "district-of-columbia", "puerto-rico", "guam", "us-virgin-islands", "american-samoa", "northern-mariana-islands"],
   },
 ];

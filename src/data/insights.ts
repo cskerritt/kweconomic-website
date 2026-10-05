@@ -344,6 +344,62 @@ The disputes concern the hours and the path, not the rate. Whether the person wo
 
 The current agreement and every prior agreement covering the person's years in the unit, the successor agreement if one exists, the wage and contribution schedules incorporated by reference, the health and pension plan documents, the person's annual fund statements, and the union's hours or dispatch records for a hiring-hall trade, together with the pay stubs and wage forms they reconcile to. Producing the set lets the economist place the person on the scale, read the raises for the contract years, price the benefits at the employer's contribution rate, and project past the term from the negotiated history rather than from a series for all workers.`,
   },
+  {
+    slug: "what-benefit-summaries-add-to-a-lost-earnings-claim",
+    sources: refsToSources(["BLS_ECEC","BLS_ECI","BLS_CPS"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-10-05",
+    title: "What Benefit Summaries Add to a Lost Earnings Claim",
+    metaTitle: "What Benefit Summaries Add to a Wage Claim",
+    metaDescription:
+      "The benefits summary and the plan documents behind it show what coverage the person had and what the employer paid for it; here is how an economist reads them.",
+    excerpt:
+      "The benefits summary an employer hands a new hire, and the summary plan descriptions and annual statements behind it, are the records that show what coverage the person actually had and what the employer paid to provide it: the health plan and the share of the premium the employer carried, the retirement plan and its matching or contribution formula, the vesting schedule, the life and disability coverage, and the paid leave. This post explains what each part of the package adds to the fringe benefit component of a lost earnings claim, what the summaries cannot show, and which records they point to next.",
+    category: "Records",
+    publishedDate: "2026-10-05",
+    related: [
+      link("Fringe Benefits in a Lost Earnings Claim", "/guides/fringe-benefits-in-a-lost-earnings-claim", "Why the employer's cost is the usual measure and how each benefit is priced."),
+      link("Fringe Benefits Valuation", "/methods/fringe-benefits-valuation", "The method the summaries feed."),
+      link("Lost Earnings and Earning Capacity Analysis", "/services/lost-earnings-and-earning-capacity", "The analysis the benefit component belongs to."),
+    ],
+    content: `A benefits summary is the document an employer gives its employees to describe the package that comes with the job: the health, dental, and vision plans and what the employee pays toward each, the retirement plan and how the employer contributes to it, the life and disability insurance, and the paid time off. Behind it sit the summary plan descriptions the law requires for each plan and the annual statements each plan sends its participants. Together they are the records that turn the fringe benefit component of a [[/services/lost-earnings-and-earning-capacity|lost earnings claim]] from an estimate drawn from national averages into a figure built from what this person actually had and what this employer actually paid for it.
+
+## The health plan and the premium the employer paid
+
+The largest single benefit in most packages is health coverage, and its value to the claim is the employer's cost of providing it, not the coverage's worth to the person or the premium the person would pay to replace it. The benefits summary states the plan tiers offered and the employee contribution for each; the open enrollment materials or the payroll deduction history show which tier the person elected; and the employer's premium rate sheet or the plan's annual statement shows the total premium for that tier. The employer's share is the difference, and it is the number the [[/methods/fringe-benefits-valuation|fringe benefits valuation]] carries forward. A person who elected family coverage and a person who waived coverage because a spouse's plan covered them have very different benefit losses on the same job, and only the elections show which one applies.
+
+## The retirement plan formula and the vesting schedule
+
+The summary plan description for a defined contribution plan states the employer's formula: a match of a stated percentage of what the employee defers up to a cap, a fixed contribution regardless of deferral, a profit-sharing allocation, or some combination. The annual participant statement shows what the employer actually contributed in each year and what the person deferred, which together fix the match the person was earning. The vesting schedule in the same document states when the employer's contributions became the person's, and a person who left before full vesting forfeited a portion that the claim has to treat correctly. For a defined benefit pension the summary states the accrual formula and the normal retirement age, and the annual benefit statement shows the credited service and the accrued benefit to date, which are the inputs to a lost pension calculation that the [[/guides/fringe-benefits-in-a-lost-earnings-claim|fringe benefits guide]] describes.
+
+## Life, disability, and the smaller coverages
+
+Employer-paid life insurance, short- and long-term disability coverage, and the dental and vision plans are each a cost the employer carried, and the summary states who paid for each. Where the employer paid the full premium, the plan's rate schedule gives the cost per employee and the benefit is valued at that cost. Where the coverage was employee-paid through payroll deduction, it is not a lost employer benefit at all, though the deduction history still matters because it shows what the person was spending from gross pay. Disability coverage has a second role: a plan that is now paying the person a benefit may be an offset the venue requires or forbids, and the summary plan description states whether the plan has a right to be repaid from a recovery.
+
+## Paid leave and the question of double counting
+
+Vacation, sick leave, and holidays appear in every benefits summary, and whether they belong in the benefit component depends on how the earnings base was built. A person paid a salary received their leave as part of it, and the pay records already carry it; adding the value of the leave again counts it twice. A person paid by the hour who was paid for holidays and vacation days not worked received that pay in the wage forms as well. The leave provisions matter chiefly for the hours assumption: a projection that assumes the person would have worked every week of the year, and then adds paid vacation on top, has made the error, and the summary is what shows how many weeks the pay actually covered.
+
+## The summary shows the offer, the statements show the take-up
+
+The distinction that organizes all of this is between what was offered and what was taken. The benefits summary describes the package available to everyone in the person's class; it does not show whether the person enrolled, which tier they chose, how much they deferred, or whether they were vested. The enrollment forms, the payroll deduction history, and the annual plan statements show those facts, and the benefit component of the claim rests on them. A report that values the full package from the summary alone has valued the offer, and the first question on cross will be whether the person accepted it.
+
+## The published cost data fill the gaps
+
+Where the plan documents are incomplete, or the employer no longer exists, or the person was between jobs at the event and the claim concerns the benefits a future employer would have provided, the published series on what employers pay for benefits as a share of wages, by industry, occupation, and region, supply the estimate. The economist states which components came from the person's own documents and which from the published averages, and does not mix the two for a single benefit. The [[/insights/what-union-contracts-add-to-a-lost-earnings-claim|union contract]] post describes the one setting where the employer's contribution is written into a contract and no estimate is needed.
+
+## What the summaries cannot tell you
+
+The benefits summary is a description written for employees, not a plan document, and where the two differ the plan document governs. It is dated, and the package the person had at the event may differ from the one described in the summary produced; the open enrollment materials for the relevant years are the check. It shows nothing about the person's health, their dependents, or their expected use of the coverage, none of which bear on the employer's cost. And it does not show whether the person's post-event employment carries benefits of its own, which the mitigation analysis needs and which the new employer's summary and the person's new elections supply.
+
+## Where the disputes start
+
+The disputes are about the measure and the take-up. Whether the employer's cost or the person's replacement cost is the right measure is a question the venue's law and the [[/guides/fringe-benefits-in-a-lost-earnings-claim|fringe benefits guide]] address; whether the person had the coverage the report values is a question the elections and statements answer. A report that applies the national average benefit share to a person whose own documents show a richer or leaner package has substituted an estimate for evidence, and a report that values a benefit the person waived has valued something that was never lost. In a [[/case-types/wrongful-termination/pennsylvania|Pennsylvania wrongful termination matter]], as anywhere, both errors are visible once the plan documents are produced.
+
+## What to produce with it
+
+The benefits summary for each year in the claim, the summary plan description for each plan, the person's enrollment and election forms, the annual participant statements from the retirement and pension plans, the employer's premium rate sheets or the plan's cost schedule, the payroll deduction history, and, for a person who has found new work, the same set from the new employer. Producing the set lets the economist price each benefit at the employer's actual cost, carry only the coverage the person held, treat vesting and paid leave correctly, and state exactly where the person's records end and the published averages begin.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {

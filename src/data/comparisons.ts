@@ -733,6 +733,66 @@ export const comparisons: Comparison[] = [
       { title: "Business Valuation", href: "/services/business-valuation", description: "Valuation of closely held interests for litigation." },
     ],
   },
+  {
+    slug: "economist-vs-forensic-accountant-on-lost-profits",
+    title: "Economist vs. Forensic Accountant on Lost Profits",
+    metaTitle: "Economist vs. Accountant on Lost Profits",
+    answer:
+      "On lost profits the forensic accountant rebuilds what the business earned from its books; the economist projects what it would have earned and discounts it.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    a: {
+      label: "Forensic Economist",
+      summary:
+        "An economist approaches a [[/services/lost-profits-and-commercial-damages|lost profits claim]] from the market the business operated in: the demand it faced, the prices and volumes comparable firms achieved, the industry's growth and margins, and the cost of capital that fits the risk of the projected stream. The economist's contribution is the but-for projection and its present value: what the business would have earned absent the wrongful act, over what period, discounted at what rate, and how sensitive the result is to each of those choices.",
+      url: "/services/lost-profits-and-commercial-damages",
+    },
+    b: {
+      label: "Forensic Accountant",
+      summary:
+        "A forensic accountant approaches the same claim from inside the business's records: the general ledger, the financial statements, the tax returns, the invoices, and the bank activity that show what the business actually earned before, during, and after the event. The accountant's contribution is the reconstruction and the normalization: which revenues and costs were real, which were affected by the event, which costs were avoided, and what the owner's compensation and the related-party transactions should look like before the figures are compared.",
+      url: "/services/fraud-and-asset-tracing",
+    },
+    rows: [
+      { dimension: "Starting point", a: "The market and the industry the business competed in", b: "The business's own books and records" },
+      { dimension: "Core question", a: "What would the business have earned absent the event?", b: "What did the business actually earn, and are the figures reliable?" },
+      { dimension: "Treatment of costs", a: "Incremental costs the lost revenue would have carried, from margins and cost behavior", b: "Costs as recorded, classified as fixed or variable, saved or incurred" },
+      { dimension: "Growth and the loss period", a: "From industry data, comparable firms, and economic conditions", b: "From the trend in the business's own historical results" },
+      { dimension: "Discounting", a: "A rate matched to the risk of the projected stream, with the choice explained", b: "Often a rate adopted by convention or taken from the economist" },
+      { dimension: "Reliability of the inputs", a: "Takes the financial statements as given unless told otherwise", b: "Tests the statements against the source documents" },
+      { dimension: "Typical failure", a: "A projection that outruns what the business could have delivered", b: "A trend extended from the books with no regard to the market" },
+    ],
+    whenUseA:
+      "The economist is the right lead when the dispute is about the projection: a business whose market changed around the time of the event, a new or growing business whose own history does not show what it would have become, a claim whose loss period and growth rate are the contested inputs, or a defendant who argues that the downturn in results came from the economy rather than the breach. The [[/methods/lost-profits-but-for-analysis|but-for analysis]] is the economist's method, and the [[/guides/lost-profits-for-a-new-business|new business guide]] shows what the projection rests on when the books are thin. The economist also owns the present value step wherever the stream runs into the future, because the discount rate has to carry the risk of the profits themselves and that is a question about markets, not ledgers.",
+    whenUseB:
+      "The forensic accountant is the right lead when the dispute is about the records: whether the historical results are reliable, whether revenues were shifted between periods or entities, how owner compensation and related-party dealings should be normalized, which costs were actually saved when the revenue stopped, and whether the post-event results reflect the event or a change in bookkeeping. A claim in a [[/case-types/commercial-contract-dispute/illinois|commercial contract dispute venued in Illinois]], or anywhere, in which the plaintiff's own statements are contested is one the accountant has to settle before any projection can begin, and a matter that also involves [[/services/fraud-and-asset-tracing|diverted funds]] is the accountant's from the start.",
+    overlap:
+      "Most lost profits claims need both kinds of work, and in a practice that fields both disciplines the question is one of sequence rather than of choosing. The reconstruction comes first: the historical results are tested and normalized so the projection has a reliable base and the actual results have a reliable comparison. The projection comes second, built from that base and from the market evidence, with the loss period, the growth, the incremental costs, and the discount rate each stated and sourced. The broader [[/compare/forensic-economist-vs-forensic-accountant|economist versus forensic accountant]] comparison draws the line between the two disciplines across every kind of claim; on lost profits the line is between what the books show and what the market would have allowed, and a report that reads only one side of it is the one an opposing expert takes apart. The report identifies which method produced each component so that the court can see the foundation under every figure.",
+    faqs: [
+      {
+        question: "Do an economist and a forensic accountant reach different lost profits figures from the same records?",
+        answer:
+          "They can, and the difference usually lies in the projection rather than the history. The accountant extends the business's own trend; the economist tests that trend against the market and the comparables and may shorten the loss period, lower the growth, or raise the discount rate. Where both work the same matter, the normalized history is shared and the projection is built on it.",
+      },
+      {
+        question: "Who decides which costs the lost revenue would have carried?",
+        answer:
+          "Both contribute. The accountant classifies the recorded costs as fixed or variable and identifies which were actually avoided when the revenue stopped; the economist estimates the incremental cost the projected revenue would have carried from the business's cost behavior and the industry's margins. The two figures are reconciled so that saved costs are deducted once.",
+      },
+      {
+        question: "Does a lost profits claim need two experts?",
+        answer:
+          "Not always. A short loss period for an established business with clean books can be handled by one expert with the right training. A claim with contested records and a contested projection, or one that mixes lost profits with a tracing or valuation question, usually benefits from both, with one report or two reconciled reports that use the same base and the same assumptions.",
+      },
+    ],
+    sources: refsToSources(["NAFE_ETHICS","ACFE","AICPA_SSVS1"]),
+    related: [
+      { title: "Lost Profits and Commercial Damages", href: "/services/lost-profits-and-commercial-damages", description: "The but-for projection and its present value." },
+      { title: "Forensic Economist vs. Forensic Accountant", href: "/compare/forensic-economist-vs-forensic-accountant", description: "The two disciplines across every kind of claim." },
+      { title: "Lost Profits But-For Analysis", href: "/methods/lost-profits-but-for-analysis", description: "How the projection is built and tested." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {
