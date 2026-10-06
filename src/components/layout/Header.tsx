@@ -4,7 +4,7 @@ import { Menu, X, ChevronDown, Phone } from "lucide-react";
 import MobileNav from "./MobileNav";
 import { ORG_NAME, ORG_PHONE, ORG_PHONE_DISPLAY, ORG_SHORT, telHref } from "@/lib/brand";
 
-// Static list of the 12 pillar service links. Kept static for render speed;
+// Static list of the 13 pillar service links. Kept static for render speed;
 // src/components/layout/nav.pillars.test.mjs pins the hrefs to pillarServices() order.
 const serviceLinks = [
   { name: "All Services", href: "/services" },
@@ -18,6 +18,7 @@ const serviceLinks = [
   { name: "Lost Profits & Commercial Damages", href: "/services/lost-profits-and-commercial-damages" },
   { name: "Fraud & Asset Tracing", href: "/services/fraud-and-asset-tracing" },
   { name: "Transfer Pricing Expert Witness", href: "/services/transfer-pricing-expert-witness" },
+  { name: "Intellectual Property Damages", href: "/services/intellectual-property-damages" },
   { name: "Divorce & Marital Financial Analysis", href: "/services/divorce-and-marital-financial-analysis" },
   { name: "Expert Rebuttal & Report Review", href: "/services/expert-rebuttal-and-report-review" },
 ];

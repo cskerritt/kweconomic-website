@@ -167,6 +167,44 @@ describe("ServiceCaseTypeState template", () => {
     }
   });
 
+  // Intellectual property infringement (2026-10-06): every pillar that
+  // declares the matter names the federal district courts first on its pair
+  // x state page, with the Federal Circuit and the state's own circuit before
+  // the state's courts, prints no second federal sentence, and closes the
+  // framework FAQ on the federal statutes, in every state, the District, and
+  // every territory.
+  it("the intellectual property pairs name the federal courts first and the federal statutes, in every state and territory", () => {
+    const pillars = ["intellectual-property-damages", "lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review"];
+    for (const serviceSlug of pillars) {
+      for (const st of states) {
+        const label = `${serviceSlug}/${st.slug}`;
+        const place = placeName(st.name);
+        const { html, description } = render(serviceSlug, "intellectual-property-infringement", st.slug);
+        const text = visibleText(html);
+        const faqs = faqLdStrings(html);
+        expect(description.length, label).toBeGreaterThanOrEqual(140);
+        expect(description.length, label).toBeLessThanOrEqual(160);
+        expect(description, label).toContain("courts");
+        expect(text, label).toContain(`cases involving ${place}: the measure each patent, trademark, copyright, or trade secret claim carries`);
+        const expertQ = faqs.findIndex((q) => q.startsWith(`What do the courts that hear an intellectual property case involving ${place} ask of`));
+        expect(expertQ, label).toBeGreaterThan(-1);
+        const expertAnswer = faqs[expertQ + 1];
+        expect(expertAnswer, label).toContain("Patent and copyright claims arise under federal law that only the federal courts may hear");
+        expect(expertAnswer, label).not.toContain("Matters within federal jurisdiction proceed in");
+        expect(faqs, label).toContain(`Which damages rules shape ${faqs[expertQ].slice(faqs[expertQ].indexOf(" ask of ") + 8, -1)} in an intellectual property case involving ${place}?`);
+        for (const t of [text, faqs.join(" ")]) {
+          expect(t, label).not.toMatch(/damages rules and venues|a present value built|past and future amounts separately|contributory negligence|comparative fault/);
+          expect(t, label).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia|for the District Court (of|for)/i);
+        }
+        if (st.slug === "american-samoa") {
+          expect(expertAnswer, label).toContain("American Samoa has no federal district court of its own");
+        } else {
+          expect(expertAnswer.indexOf("United States District Court"), label).toBeLessThan(expertAnswer.indexOf("Federal Circuit"));
+        }
+      }
+    }
+  }, 120_000);
+
   it("an undeclared pair, an unknown state, and an unknown service render NotFound and publish no meta", () => {
     for (const [s, c, st] of [
       ["divorce-and-marital-financial-analysis", "traumatic-brain-injury", "new-jersey"],

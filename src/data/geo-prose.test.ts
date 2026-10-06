@@ -20,6 +20,8 @@ import { districtOfColumbiaCities } from "./cities/district-of-columbia";
 import { illinoisCities } from "./cities/illinois";
 import { newJerseyCities } from "./cities/new-jersey";
 import { texasCities } from "./cities/texas";
+import { americanSamoaCities } from "./cities/american-samoa";
+import { guamCities } from "./cities/guam";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 import type { City } from "../types";
 
@@ -50,14 +52,16 @@ const DOUBLED_ARTICLE = /\b(a|an|the) (a|an|the)\b/i;
 const MISARTICLED = /\ba [AEIO]\w|\ban [B-DF-HJ-NP-TV-Z]\w/;
 const DOUBLED_WORD = /\b([a-z]{3,}) \1\b/i;
 
-// The transfer pricing pillar ("tax", 2026-10-05) is held to the same
-// standard: its pages build from the group's own records and comparables,
-// never from the personal-loss template's wage framing.
+// The transfer pricing pillar ("tax", 2026-10-05) and the intellectual
+// property pillar ("intellectual-property", 2026-10-06) are held to the same
+// standard: their pages build from the parties' own records, comparables, and
+// licenses, never from the personal-loss template's wage framing.
 const COMMERCIAL_AND_FAMILY = [
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
   "transfer-pricing-expert-witness",
+  "intellectual-property-damages",
   "divorce-and-marital-financial-analysis",
 ] as const;
 
@@ -128,6 +132,7 @@ describe("service categories", () => {
     expect(serviceGeoCategory("Fraud & Tracing")).toBe("commercial");
     expect(serviceGeoCategory("Divorce Financial Analysis")).toBe("family-financial");
     expect(serviceGeoCategory("Transfer Pricing")).toBe("tax");
+    expect(serviceGeoCategory("IP Damages")).toBe("intellectual-property");
     expect(serviceGeoCategory("Rebuttal")).toBe("rebuttal");
     // No service (the hub pages) and an unknown short name read as the shared framing.
     expect(serviceGeoCategory(undefined)).toBe("personal-loss");
@@ -137,7 +142,7 @@ describe("service categories", () => {
   it("gives every pillar a category and every commercial or family-financial pillar its own engagement, deliverables, and caption", () => {
     for (const s of pillarServices()) {
       const angle = SERVICE_GEO[s.shortName];
-      expect(angle?.category, s.slug).toMatch(/^(personal-loss|commercial|family-financial|tax|rebuttal)$/);
+      expect(angle?.category, s.slug).toMatch(/^(personal-loss|commercial|family-financial|tax|intellectual-property|rebuttal)$/);
     }
     for (const slug of COMMERCIAL_AND_FAMILY) {
       const angle = SERVICE_GEO[getServiceBySlug(slug)!.shortName];
@@ -363,6 +368,80 @@ describe("transfer pricing pages", () => {
     expect(stateLegal).toContain("a dispute over the District of Columbia's own tax follows its administrative and appeal process");
     expect(stateHero).toContain("in the District of Columbia, the analysis also meets the jurisdiction's own tax on related-party income");
     for (const text of [stateHero, stateLegal]) expect(text).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia/i);
+  });
+});
+
+describe("intellectual property pages", () => {
+  it("measure each statute's remedy from the parties' own records and name the federal courts first (Houston)", () => {
+    const { stateHero, stateLegal, cityHero, cityPlace, cityFaqs, stateFaqs, cityNarrative } = renderedProse("intellectual-property-damages", "texas", texasCities, "houston");
+    expect(serviceGeoCategory("IP Damages")).toBe("intellectual-property");
+    expect(stateHero.startsWith("KW Economics provides intellectual property damages analysis for matters venued in Texas. The analysis measures the remedy each claim carries:")).toBe(true);
+    expect(stateHero).toContain("each apportioned to the protected right and built from the parties' own sales, cost, and license records");
+    expect(stateHero).toContain("Patent, trademark, and copyright damages follow the same federal statutes in every district");
+    // The federal courts lead the legal context, with the Federal Circuit;
+    // the state's court hears the claims under its own law; no compensation forum.
+    expect(stateLegal).toBe(
+      "Patent and copyright claims are heard only in the federal courts, which for Texas means the federal district courts serving Texas, with appeals in patent cases to the United States Court of Appeals for the Federal Circuit; trademark and trade secret claims can be filed there or in Texas's own courts. Texas's District Court is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under Texas law that travel with an infringement claim. Final appeals in the Texas court system run to the Supreme Court of Texas.",
+    );
+    // The city hero names federal court for the patent and copyright claims,
+    // never "Civil claims arising in Houston" as the forum.
+    expect(cityHero).toContain(
+      "Patent and copyright claims involving a business in Houston are heard only in federal court, and the claims under Texas law that travel with them, such as a license or royalty dispute, are typically heard in the District Court sitting in Harris County.",
+    );
+    expect(cityHero).not.toContain("Civil claims arising in Houston");
+    expect(cityNarrative.venue).toBe("Civil claims arising in Houston are typically heard in the District Court sitting in Harris County.");
+    // The place paragraph says where the appeals that govern a patent case go, not who employs whom.
+    expect(cityPlace).toBe(
+      "An appeal in a patent case goes to the United States Court of Appeals for the Federal Circuit from every federal district court, so its damages decisions govern a patent case involving a business in Houston wherever the case is filed; appeals in copyright, trademark, and trade secret cases go to the regional court of appeals for the district that heard them. Plaintiff and defense.",
+    );
+    expect(cityPlace).not.toMatch(/Employers such as|labor market/);
+    expect(stateFaqs[0].answer).toContain("built from the parties' own sales, cost, and license records and from comparable licenses and market data selected for the technology at issue");
+    expect(stateFaqs[1].answer).toContain("a reasonable royalty built from the comparable licenses, the profit the protected feature made possible, and the user's alternatives");
+    expect(stateFaqs[2].answer).toContain("in a patent case the damages reports usually follow the court's construction of the claims");
+    expect(cityFaqs[1].question).toBe("What records drive an intellectual property damages analysis for a business based in Houston?");
+    expect(cityFaqs[2].answer).toContain("expert reports on the damages in patent, trademark, copyright, and trade secret claims");
+    expect(economicContextCaption("IP Damages", "Texas")).toBe(
+      "The damages rest on the parties' own sales, cost, and license records and on comparable licenses selected for the technology at issue; Texas enters as the forum for the claims under its own law and, where the market for the accused product is local, through Texas-area market conditions.",
+    );
+    for (const text of [stateHero, stateLegal, cityHero, cityPlace, JSON.stringify(stateFaqs), JSON.stringify(cityFaqs)]) {
+      expect(text).not.toMatch(/wage|worklife|household|Bureau of Labor Statistics|present value/i);
+      expect(text).not.toMatch(/\bSection \d|\bRule \d|U\.S\.C\.|C\.F\.R\.|[–—§]/);
+      expect(text).not.toMatch(/maximi[sz]e|minimi[sz]e|win your|\bverdict|\bmillion/i);
+    }
+  });
+
+  it("read the District with its article and its single federal district court (Washington)", () => {
+    const { stateHero, stateLegal, cityHero } = renderedProse("intellectual-property-damages", "district-of-columbia", districtOfColumbiaCities, "washington");
+    expect(stateLegal).toContain("which for the District of Columbia means the federal district court serving the District of Columbia");
+    expect(stateLegal).toContain("The Superior Court of the District of Columbia is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under District of Columbia law");
+    expect(cityHero).toContain("are typically heard in the Superior Court of the District of Columbia.");
+    for (const text of [stateHero, stateLegal, cityHero]) expect(text).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia|sitting in District of Columbia/i);
+  });
+
+  it("say where a claim is filed for a place with no federal district court, and make no claim about local trade secret law, in American Samoa and Guam", () => {
+    const as = renderedProse("intellectual-property-damages", "american-samoa", americanSamoaCities, americanSamoaCities[0].slug);
+    expect(as.stateLegal).toContain("American Samoa has no federal district court of its own, so such a claim involving a business there is filed in a federal district court where venue lies");
+    expect(as.stateLegal).toContain("is the primary trial-level forum for the contract and license claims under American Samoa law");
+    expect(as.stateLegal).not.toMatch(/trade secret, unfair competition|serving American Samoa|can be filed there or in/);
+    expect(as.cityPlace).toContain("wherever the case is filed");
+    const gu = renderedProse("intellectual-property-damages", "guam", guamCities, guamCities[0].slug);
+    expect(gu.stateLegal).toContain("which for Guam means the federal district court serving Guam");
+    expect(gu.stateLegal).toContain("is the primary trial-level forum for the contract and license claims under Guam law");
+    expect(gu.stateLegal).not.toMatch(/trade secret, unfair competition, contract/);
+    for (const text of [as.stateText, as.cityText, gu.stateText, gu.cityText]) {
+      expect(text).not.toMatch(/trade secret act|Uniform Trade Secrets|own trade secret law/i);
+      expect(text).not.toMatch(DOUBLED_ARTICLE);
+    }
+  });
+
+  it("the state legal context names the federal courts first in every state, the District, and every territory", () => {
+    for (const st of states) {
+      const legal = serviceStateLegalContext("IP Damages", getStateNarrative(st));
+      expect(legal.startsWith("Patent and copyright claims are heard only in the federal courts"), st.slug).toBe(true);
+      expect(legal, st.slug).toContain("United States Court of Appeals for the Federal Circuit");
+      expect(legal, st.slug).not.toMatch(/workers' compensation|wage-loss|personal injury, wrongful death/i);
+      expect(legal.indexOf("Federal Circuit"), st.slug).toBeLessThan(legal.indexOf("primary trial-level forum"));
+    }
   });
 });
 

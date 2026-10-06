@@ -90,6 +90,8 @@ const ECONOMICS_KEYS: Record<string, ReferenceTier> = {
   ROMAG_FASTENERS: "live-verified",
   DEWBERRY_GROUP: "live-verified",
   ON_DAVIS_V_GAP: "live-verified",
+  // Corrective advertising as trademark actual damages (pillar stage, live-verified 2026-10-06).
+  BIG_O_TIRES: "live-verified",
 };
 
 // Life-care-planning-only and vocational-only sources have no place on an
@@ -246,6 +248,7 @@ describe("REFERENCES registry integrity", () => {
       ["UNILOC", "f3d/632/html/1292-01", "632 F.3d 1292 (Fed. Cir. 2011)"],
       ["LASERDYNAMICS", "f3d/694/html/0051-01", "694 F.3d 51 (Fed. Cir. 2012)"],
       ["ON_DAVIS_V_GAP", "f3d/246/html/0152-01", "246 F.3d 152 (2d Cir. 2001)"],
+      ["BIG_O_TIRES", "f2d/561/html/1365-01", "561 F.2d 1365 (10th Cir. 1977)"],
     ]) {
       expect(REFERENCES[id].url, id).toBe(`https://static.case.law/${reporterPath}.html`);
       expect(REFERENCES[id].apa, id).toContain(cite);

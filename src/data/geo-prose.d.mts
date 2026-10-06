@@ -2,6 +2,8 @@
 import type { Faq } from "./types";
 
 export const ISLAND_SLUGS: Set<string>;
+/** The territories whose own trade secret law the intellectual property prose makes no claim about (Guam, the Northern Mariana Islands, American Samoa). */
+export const LOCAL_TRADE_SECRET_LAW_UNSTATED: Set<string>;
 export function placeName(stateName: string): string;
 /** Bare name for attributive slots ("District of Columbia wage levels"); accepts a raw state name or a placeName() result. */
 export function placeAttr(name: string): string;
@@ -32,6 +34,8 @@ export interface StateNarrativeOutput {
   legalContextFamily: string;
   /** The transfer pricing pillar's variant: the federal tax forums, the state's forum for the civil claims and its tax appeal process, appeals, and the federal district courts. */
   legalContextTax: string;
+  /** The intellectual property pillar's variant: the federal district courts that alone hear patent and copyright claims (or, for a place without one, where such a claim is filed) with the Federal Circuit, the place's forum for the claims under its own law, and appeals. */
+  legalContextIp: string;
 }
 export function buildStateNarrative(input: StateNarrativeInput): StateNarrativeOutput;
 /** The legal-context paragraph a service x state page prints for the pillar (by serviceGeoCategory). Takes the raw Service.shortName. */
@@ -53,18 +57,22 @@ export interface CityNarrativeOutput {
   anchor: string;
   /** The transfer pricing pillar's place sentence: where a federal or state tax dispute for a business based in the city is heard. */
   taxAnchor: string;
+  /** The intellectual property pillar's place sentence: where the appeals that govern a patent case involving a business in the city go. */
+  ipAnchor: string;
   blurb: string;
   /** "Civil claims arising in <city> are typically heard in ..." ("" when the city carries no county). */
   venue: string;
   /** The matrimonial form of `venue`, taken by the family-financial pillar ("" when the city carries no county). */
   familyVenue: string;
+  /** The intellectual property form of `venue`: patent and copyright claims in federal court, the claims under the place's own law in the county's court ("" when the city carries no county). */
+  ipVenue: string;
 }
 export function buildCityNarrative(input: CityNarrativeInput): CityNarrativeOutput;
-/** The place paragraph a service x city page prints under its hero: the anchor sentence (the tax anchor on the transfer pricing pillar) and the pillar's sides sentence. Takes the raw Service.shortName. */
-export function serviceCityPlaceParagraph(serviceShortName: string | undefined, n: Pick<CityNarrativeOutput, "anchor"> & Partial<Pick<CityNarrativeOutput, "taxAnchor">>): string;
+/** The place paragraph a service x city page prints under its hero: the anchor sentence (the tax anchor on the transfer pricing pillar, the IP anchor on the intellectual property pillar) and the pillar's sides sentence. Takes the raw Service.shortName. */
+export function serviceCityPlaceParagraph(serviceShortName: string | undefined, n: Pick<CityNarrativeOutput, "anchor"> & Partial<Pick<CityNarrativeOutput, "taxAnchor" | "ipAnchor">>): string;
 
 /** The kind of analysis a pillar performs; decides how local data enters its geo prose and sidebar panel. */
-export type GeoServiceCategory = "personal-loss" | "commercial" | "family-financial" | "tax" | "rebuttal";
+export type GeoServiceCategory = "personal-loss" | "commercial" | "family-financial" | "tax" | "intellectual-property" | "rebuttal";
 /** One pillar's geo angles (see the SERVICE_GEO comment in geo-prose.mjs for each slot). */
 export interface ServiceGeoAngle {
   category: GeoServiceCategory;

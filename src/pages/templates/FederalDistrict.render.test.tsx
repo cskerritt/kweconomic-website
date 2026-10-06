@@ -72,6 +72,11 @@ describe("FederalDistrict template", () => {
       expect(html).toContain('href="/jurisdictions"');
       expect(html).toContain('href="/services/lost-earnings-and-earning-capacity"');
       expect(html).toContain('href="/services/expert-rebuttal-and-report-review"');
+      // Patent and copyright claims are heard only in the federal district
+      // courts, so every district lists the intellectual property pillar and
+      // links its case type in the state (2026-10-06).
+      expect(html).toContain('href="/services/intellectual-property-damages"');
+      expect(html).not.toContain('href="/services/transfer-pricing-expert-witness"');
       for (const c of caseTypes) expect(html).toContain(`href="/case-types/${c.slug}/${d.stateSlug}"`);
       for (const s of siblingDistricts(d)) expect(html).toContain(`href="/jurisdictions/federal/${s.slug}"`);
       expect(html).not.toContain(`href="/jurisdictions/federal/${d.slug}"`);

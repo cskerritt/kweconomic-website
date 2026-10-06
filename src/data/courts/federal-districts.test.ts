@@ -47,6 +47,9 @@ describe("federal districts", () => {
     // nothing supports listing it as work "most often retained" in a
     // district court (review fix 2026-10-05).
     expect(FEDERAL_SERVICE_SLUGS as readonly string[]).not.toContain("transfer-pricing-expert-witness");
+    // Patent and copyright claims are heard only in the federal district
+    // courts, so the intellectual property pillar is listed (2026-10-06).
+    expect(FEDERAL_SERVICE_SLUGS as readonly string[]).toContain("intellectual-property-damages");
   });
   it("names each state's circuit, and none for American Samoa", () => {
     expect(circuitOfState("new-york")).toBe("Second");

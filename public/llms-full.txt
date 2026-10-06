@@ -2,7 +2,7 @@
 
 ## Organization Overview
 
-KW Economics is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, transfer pricing, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.
+KW Economics is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, transfer pricing, intellectual property damages, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.
 
 KW Economics operates from its New Jersey headquarters and a Virginia office and accepts engagements in all 50 states, the District of Columbia, and U.S. territories. Each analysis follows the sequence forensic economists use in injury, death, employment, and commercial matters: the earnings or profit base is established from the records in the case, projected with stated growth and duration assumptions drawn from published data, reduced by the offsets the facts support, and discounted to present value at a documented rate. Reports are written for attorneys, adjusters, mediators, and jurors, list the records relied on, and present the loss under alternative scenarios where the record supports more than one reading of the facts, so the calculation can be examined and reproduced by the other side.
 
@@ -33,7 +33,7 @@ He holds a Master of Business Administration in healthcare leadership from Bryan
 
 The jurisdictions listed above are the states in which he has served retaining counsel; the list describes experience, not licensure, since no state licenses forensic economists, and the practice accepts engagements in all 50 states, the District of Columbia, and U.S. territories. The rehabilitation counseling, life care planning, and Medicare set-aside designations listed above are background credentials from related disciplines; the work the practice is retained for, and the work he testifies to, is forensic economics.
 
-Practice areas: Forensic Economics, Economic Damages, Earning Capacity Analysis, Wrongful Death Analysis, Household Services, Employment Damages, Business Valuation, Transfer Pricing, Expert Testimony
+Practice areas: Forensic Economics, Economic Damages, Earning Capacity Analysis, Wrongful Death Analysis, Household Services, Employment Damages, Business Valuation, Transfer Pricing, Intellectual Property Damages, Expert Testimony
 
 States served: New Jersey, New York, Massachusetts, Virginia, Rhode Island, Connecticut, Pennsylvania
 
@@ -364,11 +364,11 @@ Page: https://kweconomics.com/services/business-valuation
 
 Valuation of closely held businesses and ownership interests for shareholder and partnership disputes, divorce, estate and gift matters, and buy-sell disagreements. The work applies the income, market, and asset approaches under the standard of value that governs the matter, addresses discounts for lack of control and marketability where they apply, and documents every input so the conclusion can be tested on cross-examination.
 
-Common case types: Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Commercial Contract Dispute, Tax and Transfer Pricing Dispute
+Common case types: Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Commercial Contract Dispute, Tax and Transfer Pricing Dispute, Intellectual Property Infringement
 
-Case-type pages: https://kweconomics.com/services/business-valuation/case/partnership-and-shareholder-dispute, https://kweconomics.com/services/business-valuation/case/divorce-and-marital-dissolution, https://kweconomics.com/services/business-valuation/case/commercial-contract-dispute, https://kweconomics.com/services/business-valuation/case/tax-and-transfer-pricing-dispute
+Case-type pages: https://kweconomics.com/services/business-valuation/case/partnership-and-shareholder-dispute, https://kweconomics.com/services/business-valuation/case/divorce-and-marital-dissolution, https://kweconomics.com/services/business-valuation/case/commercial-contract-dispute, https://kweconomics.com/services/business-valuation/case/tax-and-transfer-pricing-dispute, https://kweconomics.com/services/business-valuation/case/intellectual-property-infringement
 
-Case-type pages by state: https://kweconomics.com/services/business-valuation/case/{case-type}/{state} (each pairs the case type with the state's courts, expert standard, and governing framework; 56 states published so far)
+Case-type pages by state: https://kweconomics.com/services/business-valuation/case/{case-type}/{state} (each pairs the case type with the federal and state courts that hear it, expert standard, and governing framework; 56 states published so far)
 
 Fees and process: https://kweconomics.com/services/business-valuation/cost, https://kweconomics.com/services/business-valuation/process, https://kweconomics.com/services/business-valuation/timeline
 
@@ -414,11 +414,11 @@ Page: https://kweconomics.com/services/lost-profits-and-commercial-damages
 
 Lost profits and related commercial damages for contract, business-tort, and business-interruption matters. The analysis builds the but-for revenue and cost path from the company's own history, its market, and the terms of the disputed relationship, links each claimed loss to the conduct at issue, addresses mitigation, and reasons through the period of loss so the damages figure answers the causation question as well as the amount.
 
-Common case types: Commercial Contract Dispute, Partnership and Shareholder Dispute, Fraud and Embezzlement
+Common case types: Commercial Contract Dispute, Partnership and Shareholder Dispute, Fraud and Embezzlement, Intellectual Property Infringement
 
-Case-type pages: https://kweconomics.com/services/lost-profits-and-commercial-damages/case/commercial-contract-dispute, https://kweconomics.com/services/lost-profits-and-commercial-damages/case/partnership-and-shareholder-dispute, https://kweconomics.com/services/lost-profits-and-commercial-damages/case/fraud-and-embezzlement
+Case-type pages: https://kweconomics.com/services/lost-profits-and-commercial-damages/case/commercial-contract-dispute, https://kweconomics.com/services/lost-profits-and-commercial-damages/case/partnership-and-shareholder-dispute, https://kweconomics.com/services/lost-profits-and-commercial-damages/case/fraud-and-embezzlement, https://kweconomics.com/services/lost-profits-and-commercial-damages/case/intellectual-property-infringement
 
-Case-type pages by state: https://kweconomics.com/services/lost-profits-and-commercial-damages/case/{case-type}/{state} (each pairs the case type with the state's courts, expert standard, and damages framework; 56 states published so far)
+Case-type pages by state: https://kweconomics.com/services/lost-profits-and-commercial-damages/case/{case-type}/{state} (each pairs the case type with the federal and state courts that hear it, expert standard, and damages framework; 56 states published so far)
 
 Fees and process: https://kweconomics.com/services/lost-profits-and-commercial-damages/cost, https://kweconomics.com/services/lost-profits-and-commercial-damages/process, https://kweconomics.com/services/lost-profits-and-commercial-damages/timeline
 
@@ -565,6 +565,65 @@ A: By showing the result under the other side's method, tested party, comparable
 Q: When should a transfer pricing economist be brought in?
 A: As early as the record allows. During an examination, a review before a notice of proposed adjustment can show whether the issue turns on the method, the comparables, or the facts; at the appeals stage it puts the economic position in a form an appeals officer can weigh; and in litigation it leaves time to rebuild the delineation and the comparables before the disclosure deadline rather than defending the documentation as written.
 
+### Intellectual Property Damages
+Page: https://kweconomics.com/services/intellectual-property-damages
+
+Economic analysis and expert testimony on damages in patent, trademark, copyright, and trade secret cases and in license and royalty disputes, for the patentee or the accused infringer and for either side of every other claim. The work measures each remedy the governing statute allows: a reasonable royalty and the patentee's lost profits, including price erosion, apportioned to the patented feature; the defendant's profits, the owner's actual damages, and corrective advertising in a trademark case; actual damages and the infringer's profits in a copyright case, where the infringer carries the burden of its deductible expenses and of the profit owed to other factors; and actual loss, unjust enrichment, or a reasonable royalty for a misappropriated trade secret.
+
+Common case types: Intellectual Property Infringement, Commercial Contract Dispute, Partnership and Shareholder Dispute
+
+Case-type pages: https://kweconomics.com/services/intellectual-property-damages/case/intellectual-property-infringement, https://kweconomics.com/services/intellectual-property-damages/case/commercial-contract-dispute, https://kweconomics.com/services/intellectual-property-damages/case/partnership-and-shareholder-dispute
+
+Case-type pages by state: https://kweconomics.com/services/intellectual-property-damages/case/{case-type}/{state} (each pairs the case type with the federal and state courts that hear it, expert standard, and damages framework; 56 states published so far)
+
+Fees and process: https://kweconomics.com/services/intellectual-property-damages/cost, https://kweconomics.com/services/intellectual-property-damages/process, https://kweconomics.com/services/intellectual-property-damages/timeline
+
+Engagement process:
+1. Retention and conflict check: We confirm conflicts across the parties, their affiliates, and the licensees in the record, identify the rights asserted, the accused products, and the forum, establish the retainer, and agree on the report deadline the scheduling order sets.
+2. Records and data request: We request the accused products' unit sales, revenue, pricing, and cost data, the owner's financial and capacity records for its own products, every license to the rights in suit and to comparable technology with the negotiation files, the marking and notice records, and the business plans and forecasts from the date the infringement or misappropriation began, most of it produced under a protective order.
+3. Analysis and modeling: We build each measure the claims support: the reasonable royalty from the comparable licenses, the profit the protected feature made possible, and the user's alternatives; lost profits from the market and the owner's capacity; the infringer's profits with its claimed costs and apportionment tested; and unjust enrichment net of any overlap, with the damages period and prejudgment interest applied.
+4. Draft report and counsel review: We deliver a draft that states every input, the royalty base and the apportionment, the licenses relied on and the ones rejected, and the opinions of the technical and survey experts it relies on, and review it with counsel for completeness and factual accuracy before finalizing.
+5. Final report and testimony support: We issue the final report on the disclosure schedule and provide deposition and trial testimony, critique of the opposing damages analysis, and updated calculations as the court construes the claims and the record develops.
+
+Typical timeline:
+- Retention and records intake: 1 to 2 weeks
+- License, market, and sales analysis: 4 to 8 weeks after the sales and license data are produced
+- Draft and final report: 2 to 3 weeks after the analysis
+- Deposition and trial support: As scheduled by counsel and the court
+
+Fee scope: Intellectual property damages engagements are scoped to the rights asserted, the accused products and the damages period, and how much of the record must be built. A royalty analysis for one patent and one accused product line, with the infringer's sales data and the relevant licenses in hand, is the narrowest scope; several patents or marks, lost profits or price erosion claims that require the market to be reconstructed, trade secrets that must be valued one by one, apportionment that depends on survey or technical evidence, or parallel infringement and license claims widen it. We provide a written fee schedule and a cost estimate before work begins.
+
+Cost drivers:
+- Number and kind of rights asserted, patents, trademarks, copyrights, or trade secrets, and whether each claim needs a measure of its own
+- Number of accused products and the length of the damages period, and whether the sales, pricing, and cost data arrive in usable form or must be rebuilt from transaction records
+- Whether lost profits, price erosion, or a market share must be reconstructed, which requires the market, the substitutes, and the owner's capacity to be analyzed
+- Scope of the license analysis: the licenses to the rights in suit, comparable licenses in the record and in public sources, and any lump sums that must be converted to rates
+- The apportionment evidence and the coordination it requires with the technical and survey experts
+- Deposition and trial testimony, including preparation and travel time
+
+Fees: Intellectual property damages analysis is billed at an hourly rate for records review, license and market analysis, modeling, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.
+
+Q: What does an intellectual property damages expert measure?
+A: The remedy the governing statute provides, built from the record. In a patent case that is a reasonable royalty, the floor of every award, and the patentee's lost profits on sales it would have made; for an infringed trademark, the defendant's profits, the owner's actual damages, and the cost of corrective advertising; in a copyright case, the owner's actual damages and the infringer's profits not already counted in them; and for a trade secret, the owner's actual loss and the misappropriator's unjust enrichment, or a reasonable royalty in their place. The expert measures each, and the court and the fact finder decide which one applies.
+
+Q: How is a reasonable royalty determined?
+A: Through a hypothetical negotiation: the license a willing licensor and a willing licensee would have agreed to just before the infringement began, with the patent assumed valid and infringed. The economist builds it from comparable licenses, read in full and adjusted for differences in scope, form, and circumstances, from the profit the protected feature made possible for the user, and from the cost of the user's next-best alternative, and organizes the evidence through the factors courts commonly use rather than treating them as a formula.
+
+Q: What is apportionment, and why does it decide so many cases?
+A: Apportionment separates the value of the patented feature, the protected work or mark, or the trade secret from everything else that earned the profit: unpatented features, the infringer's brand and distribution, and its other technology. A royalty applied to the price of a whole multi-feature product overstates the damages unless the patented feature drives demand for the whole, so the economist builds the base on the smallest unit that practices the invention and uses the licenses, the infringer's own feature analyses, price comparisons, or survey evidence to separate the rest.
+
+Q: Who must prove what in a claim for the infringer's profits?
+A: It depends on the statute. In a copyright case the owner proves the infringer's gross revenue from the infringement, and the infringer must prove its deductible expenses and the share of profit owed to factors other than the work. In a trademark case the owner proves the defendant's sales and the defendant proves the costs or deductions it claims, and only the named defendant's own profits count, not those of affiliates that are not parties. Utility patents carry no profits remedy, while a design patent allows the infringer's total profit on the article of manufacture.
+
+Q: Is the analysis different for the patentee and the accused infringer?
+A: The method is the same: the same records, the same measures, and the same apportionment, with the result presented under each side's view of the disputed inputs. What differs is the order of the work. The owner's expert builds the affirmative measure, and the accused infringer's expert tests it and builds the alternative the record supports, often a narrower royalty base, a different set of comparable licenses, or an acceptable design-around that bounds what a licensee would have paid.
+
+Q: How does the report deal with the opposing damages expert?
+A: By showing the result under the other side's royalty base, comparable licenses, apportionment, and alternatives as well as under its own, and by explaining which of those choices the record supports and why the others do not. Because courts decide many damages disputes in these cases as questions of admissibility before trial, the report ties every input to a document or to another expert's stated opinion, so a reliability challenge meets the evidence rather than a conclusion.
+
+Q: When should an intellectual property damages expert be brought in?
+A: Before the damages discovery requests go out. The royalty and lost profits theories decide which sales, cost, license, and forecasting records must be produced, and in a patent case the expert reports usually follow the court's construction of the claims, so early involvement leaves time to obtain the data, coordinate with the technical and survey experts, and test the alternatives before the disclosure deadline. In a trade secret case, early work can also address whether the harm can be measured in money, which bears on a request for an injunction.
+
 ### Divorce and Marital Financial Analysis
 Page: https://kweconomics.com/services/divorce-and-marital-financial-analysis
 
@@ -623,11 +682,11 @@ Page: https://kweconomics.com/services/expert-rebuttal-and-report-review
 
 Critique of an opposing economic damages, valuation, or forensic accounting report for plaintiff or defense counsel. The review tests the assumptions, data sources, discount rates, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The result supports cross-examination, a rebuttal report, or a motion directed at the reliability of the opinion.
 
-Common case types: Personal Injury, Wrongful Death, Medical Malpractice, Motor Vehicle Accident, Traumatic Brain Injury, Spinal Cord Injury, Workers' Compensation, Employment Discrimination, Wrongful Termination, Commercial Contract Dispute, Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Fraud and Embezzlement, Product Liability, Tax and Transfer Pricing Dispute
+Common case types: Personal Injury, Wrongful Death, Medical Malpractice, Motor Vehicle Accident, Traumatic Brain Injury, Spinal Cord Injury, Workers' Compensation, Employment Discrimination, Wrongful Termination, Commercial Contract Dispute, Partnership and Shareholder Dispute, Divorce and Marital Dissolution, Fraud and Embezzlement, Product Liability, Tax and Transfer Pricing Dispute, Intellectual Property Infringement
 
-Case-type pages: https://kweconomics.com/services/expert-rebuttal-and-report-review/case/personal-injury, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/wrongful-death, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/medical-malpractice, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/motor-vehicle-accident, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/traumatic-brain-injury, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/spinal-cord-injury, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/workers-compensation, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/employment-discrimination, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/wrongful-termination, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/commercial-contract-dispute, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/partnership-and-shareholder-dispute, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/divorce-and-marital-dissolution, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/fraud-and-embezzlement, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/product-liability, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/tax-and-transfer-pricing-dispute
+Case-type pages: https://kweconomics.com/services/expert-rebuttal-and-report-review/case/personal-injury, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/wrongful-death, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/medical-malpractice, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/motor-vehicle-accident, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/traumatic-brain-injury, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/spinal-cord-injury, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/workers-compensation, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/employment-discrimination, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/wrongful-termination, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/commercial-contract-dispute, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/partnership-and-shareholder-dispute, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/divorce-and-marital-dissolution, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/fraud-and-embezzlement, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/product-liability, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/tax-and-transfer-pricing-dispute, https://kweconomics.com/services/expert-rebuttal-and-report-review/case/intellectual-property-infringement
 
-Case-type pages by state: https://kweconomics.com/services/expert-rebuttal-and-report-review/case/{case-type}/{state} (each pairs the case type with the state's courts, expert standard, and governing framework; 56 states published so far)
+Case-type pages by state: https://kweconomics.com/services/expert-rebuttal-and-report-review/case/{case-type}/{state} (each pairs the case type with the federal and state courts that hear it, expert standard, and governing framework; 56 states published so far)
 
 Fees and process: https://kweconomics.com/services/expert-rebuttal-and-report-review/cost, https://kweconomics.com/services/expert-rebuttal-and-report-review/process, https://kweconomics.com/services/expert-rebuttal-and-report-review/timeline
 
@@ -1030,6 +1089,32 @@ A: An adjustment by one country raises the income reported there without lowerin
 Q: When does a transfer pricing adjustment carry a penalty?
 A: A large net transfer pricing adjustment can carry a penalty unless the taxpayer had documentation, in existence when the return was filed and produced on request, showing that it reasonably selected and applied a method. A separate penalty can apply to a single transaction whose price on the return is far from the arm's length price, whatever the size of the net adjustment, unless the taxpayer shows reasonable cause and good faith; documentation that meets the net adjustment rules is treated as showing it. Whether either protection holds is a different question from whether the price was arm's length, so the economist addresses the two separately and states which records each conclusion rests on.
 
+### Intellectual Property Infringement
+URL: https://kweconomics.com/case-types/intellectual-property-infringement
+
+Intellectual property infringement cases turn on what a protected right was worth to the parties: what the owner lost because a patent, trademark, copyright, or trade secret was used without permission, and what the user gained by using it. Each statute supplies its own measure, from the reasonable royalty that is the floor of every patent award to the trademark owner's claim to the defendant's profits and the trade secret owner's claim to unjust enrichment, and each requires the damages to be tied to the protected right rather than to the rest of the product. The economist builds those measures from both sides' sales, cost, and license records and states every input, so the patentee and the accused infringer, or the owner and the party accused of taking the information, can test it.
+
+What the economic claim consists of: Depending on the right, the claim consists of a reasonable royalty for the use made of a patent, at the least, and the patentee's lost profits on sales it would have made, including price erosion, and for a design patent the infringer's total profit on the article of manufacture; the defendant's profits, the owner's actual damages, and the cost of corrective advertising for an infringed trademark; the copyright owner's actual damages and the infringer's profits not already counted in them, or statutory damages within the range the statute fixes where the owner elects them instead; and the trade secret owner's actual loss and the misappropriator's unjust enrichment, or a reasonable royalty in their place. A license dispute adds the royalties owed under the contract's own terms. The drivers are the accused products' unit sales, revenue, prices, and costs, the owner's sales, margins, and capacity, the licenses to the rights in suit and to comparable technology, the marking, notice, and public disclosure records that set the damages period, the parties' forecasts and business plans from the date the infringement began, and the technical and survey experts' opinions on what the right covers and what it adds to the product.
+
+Where the damages concentrate: Which measure dominates depends on the right and on how the parties compete. Where the owner and the infringer sell competing products and few substitutes exist, lost profits on the diverted sales and price erosion can exceed any royalty; where the owner licenses rather than sells, or many substitutes share the market, the reasonable royalty usually carries the claim, and the royalty base, the comparability of the licenses, and the cost of the infringer's alternatives move it most. In a trademark or copyright claim for the infringer's profits, the costs the infringer can deduct and the share of profit it can attribute to factors other than the protected right are the usual battleground, and in a trade secret case the length of the protection period and the head start, and whether the owner's loss and the misappropriator's gain overlap, often decide the size of the award. Across every right, apportionment to the protected feature is the most contested input, and enhanced damages for a patent and exemplary damages for a trade secret, where the statute allows them, are for the court on the defendant's conduct rather than part of the economic measure.
+
+How the analysis is built: The economist starts with the rights, the accused products, and the timeline: when the infringement or misappropriation began, when the owner gave notice or marked its products, when the information became public, and which part of the period is recoverable under the limitation rules each claim carries. The accused products' sales, prices, and costs are rebuilt from the accused party's records by product, period, and customer, and the owner's sales, margins, and capacity from its own. For a reasonable royalty, the economist reconstructs the hypothetical negotiation at the start of the infringement from the comparable licenses, read in full and adjusted for scope, form, and circumstances, from the profit the protected feature made possible, and from the cost of the user's next-best alternative, and settles the rate and the base within the bargaining range; for lost profits, the but-for market is rebuilt from demand, substitutes, and capacity, and the incremental profit is computed on the sales the owner would have made; for the infringer's profits, its claimed costs and the share owed to other factors are tested against its ledger. Each measure is apportioned to the protected right with the technical and survey experts' inputs stated, overlaps are removed, prejudgment interest is computed on the basis the court adopts, and the report shows the result under the opposing base, licenses, and alternatives.
+
+Q: Which courts hear intellectual property infringement cases?
+A: Patent and copyright claims arise under federal law and are heard only in the federal district courts; no court of a state, the District of Columbia, or a territory may hear them. Trademark and trade secret claims can be brought in federal court or in a state court, and claims under state law, such as a trade secret claim under a state statute, unfair competition, or a dispute over the royalties owed under a license, are heard in the state's courts unless they are joined with a federal claim. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit; other appeals from the district courts go to the regional court of appeals.
+
+Q: Does the economist decide whether the right was infringed?
+A: No. Infringement, validity, and whether information qualifies as a trade secret are decided by the fact finder on evidence the economist does not supply, and the technical experts address what the claims cover and which features practice them. The economist measures the damages on the assumption that liability is found, as the reasonable royalty framework itself assumes, and builds the measure so it can be adjusted if the fact finder accepts only some of the asserted claims, products, or secrets.
+
+Q: Why do two damages experts in the same case reach such different numbers?
+A: Because a few choices carry most of the result: the royalty base and its apportionment, which licenses are treated as comparable and how lump sums are converted to rates, whether the infringer had an acceptable alternative, how the market and the owner's capacity are defined in a lost profits claim, and the length of the damages period. A report that shows the result under the other side's choices as well as its own lets the fact finder see which of those choices explains the gap.
+
+Q: What records should be gathered first?
+A: The accused products' unit sales, revenue, prices, and costs by product and period; the owner's sales, margins, and capacity for its competing products; every license to the rights in suit and to comparable technology, with the negotiation files; the marking, notice, and public disclosure records that set the damages period; and both sides' business plans and forecasts from around the date the infringement began. Most of it is produced under a protective order, so the request is planned with the order's limits in mind.
+
+Q: Is prejudgment interest part of the damages calculation?
+A: Usually, and over a long damages period it can be a large part of the total. The patent statute provides for damages together with interest as the court fixes it, and the other intellectual property claims follow their own rules on whether and how interest runs. The court decides the rate and whether it compounds; the economist computes the interest on the basis the court adopts and shows it apart from the damages, so either can be adjusted.
+
 ## Credentials and Standards
 
 Reference pages on how a forensic economist is qualified to testify on damages: graduate training in economics, finance, and business, the professional standards of the national forensic economics associations, and a record of reports and testimony. No state licenses forensic economists. These pages describe the qualification and how courts weigh it; they do not list the roster and make no claim that the practice or any named person holds an association membership.
@@ -1273,7 +1358,7 @@ URL: https://kweconomics.com/methods/lost-profits-but-for-analysis
 
 Lost profits measure the difference between the profits a business would have earned had the wrongful act not occurred and the profits it actually earned or will earn. The economist builds the but-for scenario from the company's own history, its market, and the terms of the disrupted relationship, subtracts actual results and avoided costs, and reduces future losses to present value.
 
-When used: Lost profits are the usual measure in contract disputes, business interruption claims, and cases in which a business was harmed but continues to operate. Where the business was destroyed, the measure may shift to lost business value, as the lost profits versus lost business value guide explains. The lost profits service covers both.
+When used: Lost profits are the usual measure in contract disputes, business interruption claims, and cases in which a business was harmed but continues to operate. Where the business was destroyed, the measure may shift to lost business value, as the lost profits versus lost business value guide explains. The lost profits service covers both. The same but-for analysis measures a patentee's lost sales and a trade secret owner's actual loss in an intellectual property damages claim, where it is set beside a reasonable royalty for the sales the owner cannot show it would have made.
 
 Steps:
 1. Define the loss period from the date of the wrongful act to the date the business recovered, or would have recovered, or to the end of the disrupted relationship
@@ -2229,7 +2314,7 @@ Lost Profits compared with Reasonable Royalty.
 
 When Lost Profits applies: Lost profits are the measure where the owner competed for the sales the infringer made and can prove it would have made them. A manufacturer whose patented product faced the infringer's copy in a market with few acceptable substitutes, and that had the capacity to supply the added demand, has the classic claim, and the four Panduit factors, demand, the absence of acceptable noninfringing substitutes, capacity, and the profit it would have made, are the usual proof; where several competitors share the market, the owner may claim the share of the infringing sales that matches its market share. The claim can include price erosion, where the competition forced the owner's prices down, and lost sales of the owner's own competing products, where the infringement caused them and the loss was foreseeable. In a trade secret case the same analysis measures the owner's actual loss from customers and sales diverted by the misappropriation, as the trade secret damages guide explains, and the patent damages guide sets out the proof in a patent case.
 
-When Reasonable Royalty applies: A reasonable royalty is the measure for every infringing sale the owner cannot show it would have made: all of them for an owner that licenses rather than sells, or that lacked the capacity to serve the market, and the remainder for a competitor whose lost profits cover only part of the infringing sales. It is also the measure a trade secret owner can elect in place of actual loss and unjust enrichment, often where the secret was used but the owner's loss and the defendant's gain are hard to isolate. The royalty prices the right to use the invention in a hypothetical negotiation at the start of the infringement, with the patent assumed valid and infringed, and it is built from comparable licenses, the profit attributable to the patented feature, and the cost of the infringer's alternatives, under the apportionment rules that keep the base and the rate tied to the invention. In a license dispute, where the question is what a licensee owes under its agreement, the contract rather than the patent statute sets the measure, though the same comparable-license evidence often informs it.
+When Reasonable Royalty applies: A reasonable royalty is the measure for every infringing sale the owner cannot show it would have made: all of them for an owner that licenses rather than sells, or that lacked the capacity to serve the market, and the remainder for a competitor whose lost profits cover only part of the infringing sales. It is also the measure a trade secret owner can elect in place of actual loss and unjust enrichment, often where the secret was used but the owner's loss and the defendant's gain are hard to isolate. The royalty prices the right to use the invention in a hypothetical negotiation at the start of the infringement, with the patent assumed valid and infringed, and an intellectual property damages analysis builds it from comparable licenses, the profit attributable to the patented feature, and the cost of the infringer's alternatives, under the apportionment rules that keep the base and the rate tied to the invention. In a license dispute, where the question is what a licensee owes under its agreement, the contract rather than the patent statute sets the measure, though the same comparable-license evidence often informs it.
 
 Where they overlap: The two measures are not exclusive, and a patent award often combines them: lost profits on the sales the owner proves it would have made and a reasonable royalty on the rest, with no sale counted twice. They also inform each other. The profit the owner expected to lose by licensing a competitor raises the minimum it would have accepted in the hypothetical negotiation, and the profit the infringer expected to earn sets the most it would have paid, so the evidence behind a lost profits claim reappears in the royalty analysis even where the lost profits claim fails. Both measures rest on a reconstruction of the market as it would have been without the infringement, with the same alternatives, the same customers, and the same period, and a report that treats the alternatives one way for lost profits and another way for the royalty will be tested on the inconsistency. The lost profits and commercial damages service and the report review service describe how each side's measure is built and examined.
 
@@ -2572,6 +2657,20 @@ A: Yes. A review during the examination can show whether the documentation suppo
 Q: What does a preliminary transfer pricing review cost relative to a full report?
 A: A preliminary review is a limited engagement built from the agreements, the documentation, and the financial statements, so it costs far less than a full analysis, which adds the functional analysis, the comparables search, the range, and the written report. The engagement letter states the fee basis for each phase, and counsel can stop after the review.
 
+#### Considering an Economist for Intellectual Property Infringement Cases
+URL: https://kweconomics.com/attorneys/considering/intellectual-property-infringement
+
+An intellectual property case needs an economist once the damages will be decided on a reconstruction rather than read from the records: a reasonable royalty that has to be built from licenses and the profit the invention made possible, lost profits that depend on what buyers would have done without the infringing product, an infringer's profits claim whose deductions and apportionment are contested, or a trade secret claim whose value runs to the end of a head start. Counsel considering an economist should start with the accused products' sales data, the licenses in the record, and the dates that set the damages period, because the measure is built from them and each is often disputed.
+
+Q: When does an intellectual property case justify a testifying damages economist?
+A: When the damages will be decided on a reconstructed measure rather than read from the records: a reasonable royalty built from licenses and the profit the invention made possible, lost profits that depend on the market without the infringer, or an infringer's profits claim with contested deductions and apportionment. A dispute over royalties owed under a license that the contract's own rate settles may need only an accounting of the licensee's sales.
+
+Q: Can an economist give a view of the damages before discovery is complete?
+A: Yes, as consulting work. A preliminary review of the licenses, the public information on the accused products, and any sales data already produced can show which measures the record is likely to support, which records to request first, and where the other side is likely to press, before any decision about a testifying expert is made.
+
+Q: What does a preliminary damages review cost relative to a full report?
+A: A preliminary review is a limited engagement built from the pleadings, the licenses, and the sales data in hand, so it costs far less than a full analysis, which adds the market and license analysis, the apportionment, the damages period, and the written report. The engagement letter states the fee basis for each phase, and counsel can stop after the review.
+
 ### Retaining an Economist (https://kweconomics.com/attorneys/retaining)
 Engaging the economist: scope, conflict check, the records request, and how the report fits with the opinions other experts supply. Pick your case type for a step-by-step retention checklist.
 
@@ -2784,6 +2883,20 @@ A: Every company in the group, the opposing parties, and any affiliate whose res
 
 Q: Can consulting work become a disclosed report later?
 A: Yes. Many engagements begin as consulting work that tests the documentation and the opposing position, and become a disclosed report once counsel decides the economic analysis will be presented. The scope and the form of the work product are set at retention and can be changed as the case develops, subject to the forum's disclosure rules.
+
+#### Retaining an Economist for Intellectual Property Infringement Cases
+URL: https://kweconomics.com/attorneys/retaining/intellectual-property-infringement
+
+Retaining an economist in an intellectual property case means fixing the rights, the accused products, the remedies, and the court's schedule before the analysis begins, because each changes the records the economist needs and the report the court will receive. The conflict check runs across the parties, their affiliates, and the licensees whose agreements the analysis will read; the records request starts with the accused products' sales and cost data and the licenses; and the schedule is set by the court, which in a patent case usually ties the expert reports to its construction of the claims.
+
+Q: How is the scope of an intellectual property damages engagement set?
+A: By the rights, the accused products, the remedies, and the court's schedule. A royalty for one patent and one product line with the licenses in hand is the narrowest scope; several patents or marks, lost profits or price erosion claims that require the market to be reconstructed, trade secrets valued one by one, or survey-based apportionment widen it. The engagement letter states the scope and the fee basis for each phase.
+
+Q: Why does the protective order matter at retention?
+A: Because the sales, cost, and license data the analysis rests on are usually produced under a protective order that limits who may see them, often to outside counsel and retained experts who sign an acknowledgment. The economist and the staff who will work with the data are identified and sign before it is sent, so the analysis is not delayed when the production arrives.
+
+Q: Can consulting work become a disclosed report later?
+A: Yes. Many engagements begin as consulting work that tests the other side's theory and the licenses in the record, and become a disclosed report once counsel decides the damages analysis will be presented. The scope and the form of the work product are set at retention and can be changed as the case develops, subject to the court's disclosure rules.
 
 ### Preparing for Deposition (https://kweconomics.com/attorneys/preparing-deposition)
 Getting the economist and the report ready for deposition. Pick your case type for the assumptions that will be tested, the documents to assemble, and the common attacks.
@@ -2998,6 +3111,20 @@ A: Because the report is read as the direct testimony, it has to answer in writi
 Q: Should the expert be ready to address the group's documentation?
 A: Yes, directly. Opposing counsel will contrast the report with the documentation the group prepared for the tax authorities, so the expert should be ready to say where the report adopts the documentation, where it departs from it, and why each departure follows from the record rather than from the litigation position.
 
+#### Preparing for Deposition for Intellectual Property Infringement Cases
+URL: https://kweconomics.com/attorneys/preparing-deposition/intellectual-property-infringement
+
+Preparing the economist for deposition in an intellectual property case centers on the inputs the other side will say were chosen to reach a result: the royalty base and its apportionment, the licenses treated as comparable and the ones set aside, the conversion of lump sums into rates, the design-around or substitute the infringer could have adopted, the market and capacity behind a lost profits claim, and the start and end of the damages period. Because courts decide many of these disputes as questions of admissibility, the deposition also builds the record for a reliability challenge, so the economist should be able to tie every input to a document or to another expert's stated opinion.
+
+Q: What is the most common line of attack on an intellectual property damages expert?
+A: The royalty base and the licenses. Opposing counsel asks whether the base reaches value the patent did not create, whether each license is comparable in technology, rights, and circumstances, and how a lump sum was turned into a per-unit rate. The expert's answer is a comparability analysis for each license and a sensitivity table that shows the result under the disputed choices.
+
+Q: How does the deposition bear on a later challenge to the testimony?
+A: Courts decide many damages disputes in these cases as questions of whether the opinion rests on sufficient facts or data and on reliable methods reliably applied. Answers that tie each input to the record make that showing, while an answer that the expert assumed a rate or did not read a license can become the basis of a motion to exclude, so preparation goes through each input with the documents behind it.
+
+Q: Should the expert be ready to address the technical and survey experts' opinions?
+A: Yes, at the level the damages depend on them. The economist should know which inputs come from the technical expert, such as whether a design-around was available, and which from the survey expert, such as the value buyers place on a feature, and should be able to show what the result is if either input changes.
+
 ### Trial Testimony (https://kweconomics.com/attorneys/trial)
 Presenting economic damages at trial. Pick your case type for demonstratives, the present value explanation for the fact finder, and rebuttal of the opposing economist.
 
@@ -3211,6 +3338,20 @@ A: The report's sensitivity tables let the court adopt one expert's method with 
 Q: How is a transfer pricing analysis presented to a jury in a commercial case?
 A: With the transactions and the price first, in terms of what each company did and what an independent company would have paid, and the method second. The jury sees the price charged, the arm's length price, the difference applied to the volumes in the record, and the resulting figure by year, with the comparables shown as the evidence for the arm's length price rather than as a statistical exercise.
 
+#### Trial Testimony for Intellectual Property Infringement Cases
+URL: https://kweconomics.com/attorneys/trial/intellectual-property-infringement
+
+Trial testimony in an intellectual property case presents the damages to a jury or a judge, usually after the liability evidence. The economist explains the measure the statute provides first, then the evidence behind it: for a reasonable royalty, the hypothetical negotiation, the licenses, the profit the protected feature made possible, and the alternatives that bound the bargain; for lost profits, the market, the substitutes, and the owner's capacity; for the infringer's profits, the revenue, the deductions, and the apportionment. Demonstratives should show the royalty base and the rate as separate steps and the result under the other side's choices, so the fact finder can see where the experts differ.
+
+Q: How does the economist explain a reasonable royalty to a jury?
+A: As the license the two companies would have signed just before the infringement began, if both had been willing to deal and both knew the patent was valid and infringed. The economist shows the licenses that tell what similar rights sold for, the profit the invention made possible, and the cost of the alternative the infringer had, and walks from that evidence to the base and the rate one step at a time.
+
+Q: What if the fact finder accepts only some of the claims or products?
+A: The report's schedules let the fact finder apply the measure to the claims, products, and periods it accepts and read the result directly. The economist should say on direct that the analysis is built claim by claim and product by product, because it tells the fact finder the damages are not all or nothing.
+
+Q: Does the economist testify about enhanced or exemplary damages?
+A: No. Enhanced damages for a patent and exemplary damages for a trade secret are for the court to decide on the defendant's conduct, and they are not part of the economic measure. The economist's testimony covers the compensatory damages and, where the court asks for it, the computation of prejudgment interest.
+
 ## Frequently Asked Questions
 
 URL: https://kweconomics.com/resources/faq
@@ -3219,7 +3360,7 @@ URL: https://kweconomics.com/resources/faq
 A forensic economist measures economic losses for litigation: lost earnings and fringe benefits, the value of household services, the support a decedent would have provided to survivors, the present value of future care costs, lost profits, and the value of a business interest. The analysis is built from the records in the case and published government data, and every assumption is stated so the calculation can be examined and reproduced. The what is a forensic economist guide describes the discipline.
 
 ### What types of matters does a forensic economist handle?
-Economic damages analyses are prepared for personal injury, wrongful death, medical malpractice, motor vehicle, traumatic brain injury, spinal cord injury, workers' compensation, and product liability matters; employment discrimination and wrongful termination claims; and commercial contract, shareholder and partnership, divorce, and fraud and embezzlement matters, and arm's length analyses are prepared for tax and transfer pricing disputes over the prices charged between related companies. Engagements are accepted from plaintiff and defense counsel and from carriers.
+Economic damages analyses are prepared for personal injury, wrongful death, medical malpractice, motor vehicle, traumatic brain injury, spinal cord injury, workers' compensation, and product liability matters; employment discrimination and wrongful termination claims; and commercial contract, shareholder and partnership, divorce, fraud and embezzlement, and intellectual property infringement matters, and arm's length analyses are prepared for tax and transfer pricing disputes over the prices charged between related companies. Engagements are accepted from plaintiff and defense counsel and from carriers.
 
 ### What records does the economist need?
 For a personal claim: tax returns and W-2 or 1099 forms for several years before the event, pay stubs and employer records, benefit statements, the medical and functional evidence bearing on the ability to work, and the household's account of the services the person performed. A records checklist is provided at retention, and the when to retain guide lists what to send first.
@@ -3244,6 +3385,9 @@ Yes. Business valuation engagements value closely held interests under the stand
 
 ### Can a forensic economist serve as a transfer pricing expert witness?
 Yes. A transfer pricing expert witness tests whether the prices charged between related companies, for goods, services, the use of intangibles, and loans, match what unrelated parties would have agreed to under the arm's length standard: the transactions are delineated from the intercompany agreements and the companies' conduct, the most reliable method is selected, and the comparables and the range are documented. The analysis serves tax and transfer pricing disputes in an examination, the Tax Court, or a refund suit, and commercial, shareholder, and divorce cases in which an intercompany price decides what a party receives. The transfer pricing disputes guide explains the standard and the forums, and the transfer pricing methodology page the methods.
+
+### Can a forensic economist serve as an intellectual property damages expert?
+Yes. An intellectual property damages analysis measures the remedy each statute provides: a reasonable royalty, the floor of every patent award, and the patentee's lost profits; the defendant's profits and the owner's actual damages for an infringed trademark; actual damages and the infringer's profits for a copyright; and actual loss, unjust enrichment, or a reasonable royalty for a misappropriated trade secret, each apportioned to the protected right and built from both sides' sales, cost, and license records. Patent and copyright claims are heard only in the federal courts, as the intellectual property infringement page explains, and the patent damages guide and the reasonable royalty methodology page describe how the royalty is built, for the patentee or the accused infringer.
 
 ### Can a forensic economist rebut an opposing economist's report?
 Yes. An expert rebuttal and report review tests the opposing report input by input against the record: the earnings base, the growth rate, the worklife and life expectancy horizons, the fringe benefits and offsets, the consumption deduction in a death claim, the discount rate and its consistency with growth, and in a commercial report the but-for revenue, avoided costs, and causation. Where the record supports it, the review includes an alternative calculation, and the findings organize the deposition of the opposing economist. The rebuttal guide sets out the review in order.

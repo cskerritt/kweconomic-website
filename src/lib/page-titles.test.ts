@@ -312,8 +312,25 @@ describe("the fallbacks shorten only what cannot fit", () => {
     expect(serviceStateTitle(tp, states.find((s) => s.slug === "district-of-columbia")!, ORG_NAME)).toBe(`Transfer Pricing in the District of Columbia | ${ORG_NAME}`);
     const tx = states.find((s) => s.slug === "texas")!;
     expect(serviceCityTitle(tp, { name: "Houston" }, tx, ORG_NAME)).toBe(`Transfer Pricing Expert in Houston, TX | ${ORG_NAME}`);
+    // The intellectual property pillar (2026-10-06) carries the role the
+    // same way: "Intellectual Property Damages Expert in Texas" where it
+    // fits, "IP Damages Expert in <place>" elsewhere, and the pair tags keep
+    // the heading label.
+    const ip = pillarServices().find((s) => s.slug === "intellectual-property-damages")!;
+    expect(pillarTitle(ip, ORG_NAME)).toBe(`Intellectual Property Damages Expert | ${ORG_NAME}`);
+    expect(variantTitle(ip, "Timeline", ORG_NAME)).toBe(`Intellectual Property Damages Timeline | ${ORG_NAME}`);
+    expect(serviceGeoTitleLabels(ip)).toEqual(["Intellectual Property Damages Expert", "IP Damages Expert", "IP Damages"]);
+    expect(serviceGeoHeadingLabel(ip)).toBe("Intellectual Property Damages Expert");
+    expect(serviceStateTitle(ip, states.find((s) => s.slug === "texas")!, ORG_NAME)).toBe(`Intellectual Property Damages Expert in Texas | ${ORG_NAME}`);
+    expect(serviceStateTitle(ip, states.find((s) => s.slug === "north-carolina")!, ORG_NAME)).toBe(`IP Damages Expert in North Carolina | ${ORG_NAME}`);
+    expect(serviceStateTitle(ip, states.find((s) => s.slug === "district-of-columbia")!, ORG_NAME)).toBe(`IP Damages Expert in the District of Columbia | ${ORG_NAME}`);
+    expect(serviceCityTitle(ip, { name: "Houston" }, tx, ORG_NAME)).toBe(`IP Damages Expert in Houston, TX | ${ORG_NAME}`);
+    const ipCase = caseTypes.find((c) => c.slug === "intellectual-property-infringement")!;
+    expect(pairTitle(ip, ipCase, ORG_NAME)).toBe(`IP Damages Expert for IP Infringement | ${ORG_NAME}`);
+    expect(serviceCaseStateTitle(ip, ipCase, tx, ORG_NAME)).toBe(`IP Damages for IP Infringement in Texas | ${ORG_NAME}`);
+    expect(serviceCaseStateTitle(ip, ipCase, states.find((s) => s.slug === "north-carolina")!, ORG_NAME)).toBe(`IP Damages for IP Infringement in NC | ${ORG_NAME}`);
     // Every other pillar's geo ladder is its heading ladder.
-    for (const s of pillarServices().filter((x) => x.slug !== tp.slug)) {
+    for (const s of pillarServices().filter((x) => x.slug !== tp.slug && x.slug !== ip.slug)) {
       expect(serviceGeoTitleLabels(s), s.slug).toEqual(serviceTitleLabels(s));
       expect(serviceGeoHeadingLabel(s), s.slug).toBe(s.shortName);
     }

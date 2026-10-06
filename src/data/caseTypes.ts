@@ -2,11 +2,12 @@ import type { Faq, Source } from "./types";
 import { refsToSources } from "./references";
 import { expertInquiryOf } from "./regulations/state-regs";
 import type { CourtSelection } from "./courts/state-courts";
+import { LOCAL_TRADE_SECRET_LAW_UNSTATED } from "./geo-prose.mjs";
 
 /**
  * KW Economics case types.
  *
- * Fifteen matters in which counsel retain a forensic economist. Each entry
+ * Sixteen matters in which counsel retain a forensic economist. Each entry
  * is written from the economist's standpoint: what the economic loss claim
  * consists of (`lossComponents`), which components usually dominate and why
  * (`damagesExposure`), and how the economist builds the number
@@ -36,7 +37,8 @@ export type CaseTypeCategory =
   | "employment"
   | "commercial"
   | "family"
-  | "tax";
+  | "tax"
+  | "intellectual-property";
 
 /**
  * Page framing for a matter that is not a damages claim. The case-type hub
@@ -149,10 +151,73 @@ export interface CaseTypeForums {
    * it reaches the fact finder?". */
   expertQuestion: string;
   /** Forums printed before the state's trial courts under "Where these cases
-   * are heard"; `{place}` and `{attr}` slots. */
-  list: { label: string; description: string }[];
+   * are heard"; `{place}` and `{attr}` slots, and on a venue-framed entry
+   * also `{federalCourtsName}` (the place's federal district courts, without
+   * the article) and `{circuitName}` ("Third", "District of Columbia"). An
+   * item that `requires` the place's federal district courts or its circuit
+   * is left out where the place has none (American Samoa). */
+  list: { label: string; description: string; requires?: "districts" | "circuit" }[];
   /** How many of the state's trial courts follow the forums. */
   trialCourtLimit: number;
+}
+
+/**
+ * Page framing for a damages claim whose measures and forums are not the
+ * state's: an intellectual property claim, whose damages the federal
+ * statutes set for patents, trademarks, and copyrights wherever the case is
+ * heard, and whose patent and copyright claims only the federal district
+ * courts may hear. Unlike CaseTypeFraming it leaves the hub title, the H1s,
+ * and the section headings to the shared damages strings (it is a damages
+ * claim) and replaces only what the shared strings misplace: the state
+ * courts named as the forum, the state's tort, fault, and interest rules
+ * named as the damages framework, and the present value named as the
+ * product. The caseType* helpers read it after `framing`, on the hub, the
+ * state tier, and the service x case type x state tier, and the static
+ * shells read the same helpers. Slots are CaseTypeFraming's, plus
+ * `{federalCourts}` ("the United States District Court for the District of
+ * New Jersey"), `{circuit}` ("the United States Court of Appeals for the
+ * Third Circuit"), and `{stateClaims}` (the claims under the place's own law
+ * that its courts hear, from `stateClaims`). Keys are never `slug` or `name`,
+ * because build scripts read this file as text.
+ */
+export interface CaseTypeVenueFraming {
+  /** Hub meta description (140-160 characters) in place of "... how the present value is built". */
+  hubDescription: string;
+  /** State-tier meta description with one `{place}` slot, 140-160 characters beside every place name. */
+  stateDescription: string;
+  /** State-tier lead with `{org}`, `{place}`, and `{attr}` slots. */
+  stateLead: string;
+  /** State-tier sentence over the numbered steps, with a `{place}` slot. */
+  stateStepsIntro: string;
+  /** State-tier framework paragraph with a `{place}` slot, in place of the state's generalContext. */
+  stateFramework: string;
+  /** The local FAQ question over the framework paragraph, with a `{place}` slot. */
+  stateFrameworkQuestion: string;
+  /** Lead of the service x case type x state page (`{org}`, `{work}`, `{matter}`, `{place}`, `{attr}`). */
+  pairStateLead: string;
+  /** The service x case type x state framework FAQ question, with `{place}`
+   * and `{work}` slots, in place of "How does the <attr> damages framework
+   * shape <work> in <matter> case?". */
+  pairStateFrameworkQuestion: string;
+  /** The close of that FAQ's answer, with an `{attr}` slot. */
+  pairStateFrameworkTail: string;
+  /** The courts answer, as complete sentences carrying the federal and state
+   * appeals, for a place with federal district courts: `{place}`, `{attr}`,
+   * `{federalCourts}`, `{circuit}`, `{courts}`, `{supremeCourt}`, and
+   * `{stateClaims}`. */
+  courtsSentence: string;
+  /** The same answer for a place with no federal district court of its own
+   * (American Samoa), with the same slots less `{federalCourts}` and
+   * `{circuit}`. */
+  courtsSentenceNoDistrict: string;
+  /** The expert-standard paragraph, with `{place}` and `{inquiry}` slots (caseTypeExpertStandard). */
+  expertStandard: string;
+  /** What `{stateClaims}` reads: `stated` names the place's trade secret law
+   * among the claims its courts hear, `unstated` makes no claim about it, for
+   * the places in LOCAL_TRADE_SECRET_LAW_UNSTATED (src/data/geo-prose.mjs). */
+  stateClaims: { stated: string; unstated: string };
+  /** The courts the state tier lists ahead of the state's trial courts, and the questions that name them. */
+  forums: CaseTypeForums;
 }
 
 export interface CaseType {
@@ -173,6 +238,10 @@ export interface CaseType {
    * rather than "Tax Dispute: ..."); at most SHORT_NAME_MAX characters
    * (src/lib/attorney-stages.ts). */
   journeyShortName?: string;
+  /** What the trial-stage journey description says the economist explains,
+   * in place of "explaining present value", for a damages claim whose trial
+   * seldom turns on a present value ("explaining the royalty"). */
+  journeyTrialFocus?: string;
   category: CaseTypeCategory;
   /** SERP title stem, always `${name} Economist` ("Wrongful Death
    * Economist"): the hub appends the brand, so the full keyword stays on the
@@ -209,6 +278,10 @@ export interface CaseType {
    * matter (family law, tax and transfer pricing); entries without it keep
    * the templates' defaults. */
   framing?: CaseTypeFraming;
+  /** Set only on a damages claim the state's courts do not hear alone and
+   * the state's damages rules do not govern (intellectual property); see
+   * CaseTypeVenueFraming. Never set together with `framing`. */
+  venueFraming?: CaseTypeVenueFraming;
 }
 
 export const caseTypes: CaseType[] = [
@@ -729,7 +802,7 @@ export const caseTypes: CaseType[] = [
     category: "commercial",
     titleBase: "Commercial Contract Dispute Economist",
     datePublished: "2026-08-27",
-    dateModified: "2026-10-05",
+    dateModified: "2026-10-06",
     summaryShort:
       "A commercial contract damages claim measures the profits a business lost, or the costs it incurred, because the other party did not perform, as the difference between the performed-contract path and what the business actually earned or could have earned by mitigating.",
     inShort: [
@@ -751,7 +824,7 @@ export const caseTypes: CaseType[] = [
       "The size of the claim depends on the contract's remaining term, the profit margin the business would have realized, and how much of the lost volume was or could have been replaced. Incremental cost treatment is the usual battleground: whether a given cost would have been avoided when the revenue disappeared changes the margin and therefore the loss. For a new venture or a contract without a performance history, the reasonableness of the projected revenue is the central dispute, and the period over which lost profits are claimed is scrutinized against the contract's terms and the market.",
     economicImpact:
       "The economist establishes the but-for revenue from the contract terms, the pre-dispute projections, and the business's own history, then identifies the incremental costs that would have been incurred to earn that revenue so that only the lost margin is claimed. Actual results after the breach are analyzed to separate the effect of the breach from market conditions and other causes, and mitigation revenue is credited. Past lost profits are brought forward and future lost profits are discounted to present value at a rate that reflects the risk of the earnings stream, with the rate stated and its effect shown. The report is organized so each element of the claim ties to a document and can be tested independently.",
-    relevantServices: ["lost-profits-and-commercial-damages", "business-valuation", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "expert-rebuttal-and-report-review"],
+    relevantServices: ["lost-profits-and-commercial-damages", "business-valuation", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "intellectual-property-damages", "expert-rebuttal-and-report-review"],
     relevantCredentials: ["Forensic Economist", "MBA", "NAFE", "AAEFE", "PhD"],
     faqs: [
       {
@@ -784,7 +857,7 @@ export const caseTypes: CaseType[] = [
     category: "commercial",
     titleBase: "Partnership and Shareholder Dispute Economist",
     datePublished: "2026-08-27",
-    dateModified: "2026-10-05",
+    dateModified: "2026-10-06",
     summaryShort:
       "A partnership or shareholder dispute turns on what an ownership interest is worth under the standard of value that applies and whether the business's earnings have been fairly shared, both answered from the agreements and the financial records.",
     inShort: [
@@ -806,7 +879,7 @@ export const caseTypes: CaseType[] = [
       "The valuation date and the standard of value control the result: a fair value standard may exclude the minority and marketability discounts that a fair market value standard applies, and the gap between the two can be substantial for a minority interest in a closely held company. Normalizing adjustments to owner compensation and related-party dealings often decide whether the business shows earnings to value at all. Where the claim includes diverted profits, the amount depends on how far back the records permit reconstruction and on whether the business's actual results can be separated from market conditions.",
     economicImpact:
       "The economist reviews the agreements to identify the valuation date, the standard of value, and any buyout formula, then normalizes the financial statements for owner compensation, related-party transactions, and non-recurring items. The interest is valued using the income, market, and asset approaches as the facts support, with the weighting and any discounts or premiums explained. Where profits were diverted, the report traces the transactions through the ledger and bank records and quantifies the amounts by year. The result is presented as a value or a damages figure tied to the agreements and the records, with the effect of the principal assumptions shown.",
-    relevantServices: ["business-valuation", "lost-profits-and-commercial-damages", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "expert-rebuttal-and-report-review"],
+    relevantServices: ["business-valuation", "lost-profits-and-commercial-damages", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "intellectual-property-damages", "expert-rebuttal-and-report-review"],
     relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
     faqs: [
       {
@@ -1176,6 +1249,136 @@ export const caseTypes: CaseType[] = [
     ],
     sources: refsToSources(["IRC_482", "TREAS_REG_1_482_1", "TREAS_REG_1_6662_6", "TAX_COURT_RULE_143", "IRS_TP_EXAM_PROCESS", "IRS_MAP_OVERVIEW", "OECD_TP_GUIDELINES"]),
   },
+  {
+    slug: "intellectual-property-infringement",
+    name: "Intellectual Property Infringement",
+    shortName: "IP Infringement",
+    // A trial over intellectual property damages turns on the royalty and its
+    // apportionment far more often than on a present value.
+    journeyTrialFocus: "explaining the royalty",
+    category: "intellectual-property",
+    titleBase: "Intellectual Property Infringement Economist",
+    datePublished: "2026-10-06",
+    dateModified: "2026-10-06",
+    // Owner request 2026-10-06. An infringement or misappropriation claim is
+    // a damages claim, so the hub title, the H1s, and the section headings
+    // keep the shared damages strings; the venue framing replaces only the
+    // state-court forum and the state damages rules the shared strings would
+    // print, because patent and copyright claims are heard only in the
+    // federal courts and the federal statutes set the measures (see
+    // CaseTypeVenueFraming). Written for the patentee and the accused
+    // infringer alike, citation-free, with the statutes and decisions
+    // carried by the registry sources.
+    venueFraming: {
+      hubDescription:
+        "Patent, trademark, copyright, and trade secret damages: the reasonable royalty, lost profits, the infringer's profits, and how each is apportioned to the right.",
+      stateDescription:
+        "Intellectual property infringement damages in {place}: the patent, trademark, copyright, and trade secret claims, the courts, and the analysis.",
+      stateLead:
+        "{org} prepares economic damages analyses for intellectual property infringement cases involving {place}: the measure each patent, trademark, copyright, and trade secret claim carries, the sales, cost, and license records that drive it, and a report built for the federal district courts that hear every patent and copyright claim and for the {attr} courts that hear the claims under {attr} law. Plaintiff and defense.",
+      stateStepsIntro:
+        "The same four steps apply to an intellectual property infringement case involving {place}; the statute behind each claim, set out above, decides which measures enter the total.",
+      // The federal measures first (the same in every district), then the
+      // trade secret statutes without a claim about any one place's
+      // enactment, then the place's own law for the claims that travel with
+      // an infringement claim.
+      stateFramework:
+        "Patent, copyright, and trademark damages are set by federal statute, so the measures are the same in every district: a reasonable royalty at least, and lost profits where they are proven, for a patent, with recovery limited to six years before suit and, for unmarked products, to the period after notice; the defendant's profits, the owner's actual damages, and the costs of the action for a trademark; and actual damages and the infringer's profits, or statutory damages where the owner elects them, for a copyright. A trade secret claim can be brought under the federal statute, and most states, the District of Columbia, Puerto Rico, and the U.S. Virgin Islands have also enacted a version of the Uniform Trade Secrets Act; {place}'s own law governs the contract and license claims that travel with an infringement claim, and counsel confirms which trade secret law applies and the measures it allows.",
+      stateFrameworkQuestion: "Which damages rules apply to an intellectual property claim involving {place}?",
+      pairStateLead:
+        "{org} prepares {work} for {matter} cases involving {place}: the measure each patent, trademark, copyright, or trade secret claim carries, the sales, cost, and license records that drive it, and a report built for the federal and {attr} courts that hear the claims. Plaintiff and defense.",
+      pairStateFrameworkQuestion: "Which damages rules shape {work} in an intellectual property case involving {place}?",
+      pairStateFrameworkTail:
+        "The report presents each measure the claims support with its period, base, and apportionment, states every license, rate, and cost with its source, and shows the result under the alternatives the other side is likely to argue, so counsel can apply the federal statute or the {attr} law that governs each claim to a documented figure.",
+      // The federal district courts first (exclusive for patent and
+      // copyright claims), the Federal Circuit for patent appeals, the
+      // regional circuit otherwise, then the place's own courts for the
+      // claims under its law, with their appeal.
+      courtsSentence:
+        "Patent and copyright claims arise under federal law that only the federal courts may hear, so they are heard in {federalCourts}, and trademark and trade secret claims can be filed there or in {place}'s own courts. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit, and an appeal in any other case from the district court to {circuit}. Claims under {attr} law, such as {stateClaims}, are heard in {courts}, with final appeals to the {supremeCourt}.",
+      courtsSentenceNoDistrict:
+        "Patent and copyright claims arise under federal law that only the federal courts may hear, and {place} has no federal district court of its own, so such a claim involving a business there is filed in a federal district court where venue lies, and a federal trademark or trade secret claim can be filed there as well. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit from whichever district court hears it. Claims under {attr} law, such as {stateClaims}, are heard in {courts}, with final appeals to the {supremeCourt}.",
+      expertStandard:
+        "In the federal district courts, which hear every patent and copyright claim, damages testimony is tested under the federal rules of evidence: whether the expert is qualified, whether the testimony rests on sufficient facts or data, and whether reliable methods were reliably applied to the facts of the case, with the proponent showing each is more likely than not. Claims heard in {place}'s own courts are tested under its own standard. {inquiry} An intellectual property damages report meets each of these inquiries by tying every royalty input, apportionment step, and sales figure to the record or to another expert's stated opinion.",
+      stateClaims: {
+        stated: "trade secret misappropriation, unfair competition, and disputes over royalties owed under a license",
+        unstated: "disputes over royalties owed under a license",
+      },
+      forums: {
+        noun: "courts",
+        courtsQuestion: "Which courts hear an intellectual property infringement case involving {place}?",
+        expertQuestion: "What do the courts that hear an intellectual property case involving {place} ask of {work}?",
+        list: [
+          {
+            label: "{federalCourtsName}",
+            description: "Patent and copyright claims, which only the federal courts may hear, and the trademark and trade secret claims filed in federal court",
+            requires: "districts",
+          },
+          {
+            label: "United States Court of Appeals for the Federal Circuit",
+            description: "Appeals in every case with a claim or compulsory counterclaim under the patent laws, from any federal district court",
+          },
+          {
+            label: "United States Court of Appeals for the {circuitName} Circuit",
+            description: "Appeals in copyright, trademark, and trade secret cases that raise no patent claim",
+            requires: "circuit",
+          },
+        ],
+        trialCourtLimit: 2,
+      },
+    },
+    summaryShort:
+      "An intellectual property infringement claim measures what the unauthorized use of a patent, trademark, copyright, or trade secret cost the owner or gained the user, under the measure each statute provides, apportioned to the protected right and built from both sides' sales, cost, and license records.",
+    inShort: [
+      "The claim consists of a reasonable royalty or lost profits for a patent, the defendant's profits and the owner's actual damages for a trademark, actual damages and the infringer's profits for a copyright, and actual loss, unjust enrichment, or a royalty for a trade secret.",
+      "The accused products' sales, prices, and costs, the owner's own sales and capacity, and the licenses to the rights in suit and to comparable technology drive the number.",
+      "Each measure is apportioned to the protected right, limited to the recoverable period, and stated with prejudgment interest on the basis the court adopts.",
+    ],
+    steps: [
+      "Identify the rights asserted, the accused products, and the recoverable period, applying the limitation, notice, and protection periods each claim carries.",
+      "Build the royalty base and the infringing sales from the accused party's sales, pricing, and cost records, and apportion them to the patented feature, the protected work or mark, or the trade secret.",
+      "Measure each available remedy: the reasonable royalty from comparable licenses, the profit the right made possible, and the user's alternatives; lost profits from the market and the owner's capacity; and the infringer's profits with its costs tested.",
+      "Remove any overlap between the measures, add prejudgment interest on the basis the court adopts, and show how the result moves under the opposing base, licenses, and alternatives.",
+    ],
+    summary:
+      "Intellectual property infringement cases turn on what a protected right was worth to the parties: what the owner lost because a patent, trademark, copyright, or trade secret was used without permission, and what the user gained by using it. Each statute supplies its own measure, from the reasonable royalty that is the floor of every patent award to the trademark owner's claim to the defendant's profits and the trade secret owner's claim to unjust enrichment, and each requires the damages to be tied to the protected right rather than to the rest of the product. The economist builds those measures from both sides' sales, cost, and license records and states every input, so the patentee and the accused infringer, or the owner and the party accused of taking the information, can test it.",
+    lossComponents:
+      "Depending on the right, the claim consists of a reasonable royalty for the use made of a patent, at the least, and the patentee's lost profits on sales it would have made, including price erosion, and for a design patent the infringer's total profit on the article of manufacture; the defendant's profits, the owner's actual damages, and the cost of corrective advertising for an infringed trademark; the copyright owner's actual damages and the infringer's profits not already counted in them, or statutory damages within the range the statute fixes where the owner elects them instead; and the trade secret owner's actual loss and the misappropriator's unjust enrichment, or a reasonable royalty in their place. A license dispute adds the royalties owed under the contract's own terms. The drivers are the accused products' unit sales, revenue, prices, and costs, the owner's sales, margins, and capacity, the licenses to the rights in suit and to comparable technology, the marking, notice, and public disclosure records that set the damages period, the parties' forecasts and business plans from the date the infringement began, and the technical and survey experts' opinions on what the right covers and what it adds to the product.",
+    damagesExposure:
+      "Which measure dominates depends on the right and on how the parties compete. Where the owner and the infringer sell competing products and few substitutes exist, lost profits on the diverted sales and price erosion can exceed any royalty; where the owner licenses rather than sells, or many substitutes share the market, the reasonable royalty usually carries the claim, and the royalty base, the comparability of the licenses, and the cost of the infringer's alternatives move it most. In a trademark or copyright claim for the infringer's profits, the costs the infringer can deduct and the share of profit it can attribute to factors other than the protected right are the usual battleground, and in a trade secret case the length of the protection period and the head start, and whether the owner's loss and the misappropriator's gain overlap, often decide the size of the award. Across every right, apportionment to the protected feature is the most contested input, and enhanced damages for a patent and exemplary damages for a trade secret, where the statute allows them, are for the court on the defendant's conduct rather than part of the economic measure.",
+    economicImpact:
+      "The economist starts with the rights, the accused products, and the timeline: when the infringement or misappropriation began, when the owner gave notice or marked its products, when the information became public, and which part of the period is recoverable under the limitation rules each claim carries. The accused products' sales, prices, and costs are rebuilt from the accused party's records by product, period, and customer, and the owner's sales, margins, and capacity from its own. For a reasonable royalty, the economist reconstructs the hypothetical negotiation at the start of the infringement from the comparable licenses, read in full and adjusted for scope, form, and circumstances, from the profit the protected feature made possible, and from the cost of the user's next-best alternative, and settles the rate and the base within the bargaining range; for lost profits, the but-for market is rebuilt from demand, substitutes, and capacity, and the incremental profit is computed on the sales the owner would have made; for the infringer's profits, its claimed costs and the share owed to other factors are tested against its ledger. Each measure is apportioned to the protected right with the technical and survey experts' inputs stated, overlaps are removed, prejudgment interest is computed on the basis the court adopts, and the report shows the result under the opposing base, licenses, and alternatives.",
+    relevantServices: ["intellectual-property-damages", "lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
+    faqs: [
+      {
+        question: "Which courts hear intellectual property infringement cases?",
+        answer:
+          "Patent and copyright claims arise under federal law and are heard only in the federal district courts; no court of a state, the District of Columbia, or a territory may hear them. Trademark and trade secret claims can be brought in federal court or in a state court, and claims under state law, such as a trade secret claim under a state statute, unfair competition, or a dispute over the royalties owed under a license, are heard in the state's courts unless they are joined with a federal claim. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit; other appeals from the district courts go to the regional court of appeals.",
+      },
+      {
+        question: "Does the economist decide whether the right was infringed?",
+        answer:
+          "No. Infringement, validity, and whether information qualifies as a trade secret are decided by the fact finder on evidence the economist does not supply, and the technical experts address what the claims cover and which features practice them. The economist measures the damages on the assumption that liability is found, as the reasonable royalty framework itself assumes, and builds the measure so it can be adjusted if the fact finder accepts only some of the asserted claims, products, or secrets.",
+      },
+      {
+        question: "Why do two damages experts in the same case reach such different numbers?",
+        answer:
+          "Because a few choices carry most of the result: the royalty base and its apportionment, which licenses are treated as comparable and how lump sums are converted to rates, whether the infringer had an acceptable alternative, how the market and the owner's capacity are defined in a lost profits claim, and the length of the damages period. A report that shows the result under the other side's choices as well as its own lets the fact finder see which of those choices explains the gap.",
+      },
+      {
+        question: "What records should be gathered first?",
+        answer:
+          "The accused products' unit sales, revenue, prices, and costs by product and period; the owner's sales, margins, and capacity for its competing products; every license to the rights in suit and to comparable technology, with the negotiation files; the marking, notice, and public disclosure records that set the damages period; and both sides' business plans and forecasts from around the date the infringement began. Most of it is produced under a protective order, so the request is planned with the order's limits in mind.",
+      },
+      {
+        question: "Is prejudgment interest part of the damages calculation?",
+        answer:
+          "Usually, and over a long damages period it can be a large part of the total. The patent statute provides for damages together with interest as the court fixes it, and the other intellectual property claims follow their own rules on whether and how interest runs. The court decides the rate and whether it compounds; the economist computes the interest on the basis the court adopts and shows it apart from the damages, so either can be adjusted.",
+      },
+    ],
+    sources: refsToSources(["JURISDICTION_1338", "FEDERAL_CIRCUIT_1295", "PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT", "PANDUIT", "GEORGIA_PACIFIC", "BIG_O_TIRES"]),
+  },
 ];
 
 export function getCaseType(slug: string): CaseType | undefined {
@@ -1186,13 +1389,15 @@ export function getCaseType(slug: string): CaseType | undefined {
 // Page strings shared by the case-type templates (CaseTypeHub.tsx,
 // CaseTypeState.tsx) and the static shells (scripts/prerender.mjs loads this
 // module through vite). Each returns the entry's `framing` string where the
-// entry carries one and the shared economic-damages string otherwise, so the
-// two render paths cannot disagree on which framing a case type takes.
-// `place` is the place name as geo-prose.mjs placeName() spells it ("the
-// District of Columbia"); `orgName` is the brand.
+// entry carries one, its `venueFraming` string where it carries that (a
+// damages claim heard first in the federal courts), and the shared
+// economic-damages string otherwise, so the two render paths cannot disagree
+// on which framing a case type takes. `place` is the place name as
+// geo-prose.mjs placeName() spells it ("the District of Columbia"); `orgName`
+// is the brand.
 // ---------------------------------------------------------------------------
 
-/** The slots a framing string may carry (see CaseTypeFraming). */
+/** The slots a framing string may carry (see CaseTypeFraming and CaseTypeVenueFraming). */
 interface FramingSlots {
   org?: string;
   place?: string;
@@ -1205,14 +1410,41 @@ interface FramingSlots {
   inquiry?: string;
   circuit?: string;
   circuitNote?: string;
+  federalCourts?: string;
+  federalCourtsName?: string;
+  circuitName?: string;
+  stateClaims?: string;
 }
 
 /** Fill the slots of a framing string (see FramingSlots); a slot with no value renders empty. */
 const fillSlots = (s: string, slots: FramingSlots): string =>
   s.replace(
-    /\{(org|place|work|matter|attr|courts|supremeCourt|stateSlug|inquiry|circuit|circuitNote)\}/g,
+    /\{(org|place|work|matter|attr|courts|supremeCourt|stateSlug|inquiry|circuit|circuitNote|federalCourts|federalCourtsName|circuitName|stateClaims)\}/g,
     (_, key: keyof FramingSlots) => slots[key] ?? "",
   );
+
+/** "a, b, and c" (two names take "and" alone). */
+const listNames = (names: string[]): string => {
+  if (names.length <= 1) return names.join("");
+  if (names.length === 2) return `${names[0]} and ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")}, and ${names[names.length - 1]}`;
+};
+
+/**
+ * "the United States District Court for the District of New Jersey", the
+ * plural form for a state with several districts, and the territorial
+ * districts' own names ("the United States District Court of Guam"), the
+ * same rule CaseTypeState.tsx applies to its federal venue sentence.
+ */
+function federalCourtsPhrase(names: string[]): string {
+  if (names.length === 1) {
+    return /^District Court\b/.test(names[0]) ? `the United States ${names[0]}` : `the United States District Court for the ${names[0]}`;
+  }
+  return `the United States District Courts for the ${listNames(names)}`;
+}
+
+/** A circuit as its court of appeals is named ("Third", "District of Columbia" for "D.C."). */
+const circuitCourtName = (circuit: string): string => (circuit === "D.C." ? "District of Columbia" : circuit);
 
 /**
  * Which of a state's trial courts the case-type x state and service x case
@@ -1221,20 +1453,25 @@ const fillSlots = (s: string, slots: FramingSlots): string =>
  * equity courts for a divorce, the chancery and business courts for a
  * commercial dispute, the chancery, business, and general-jurisdiction
  * courts alone for the commercial and shareholder claims of a tax or
- * transfer pricing dispute (no limited court and no court for claims against
- * the state, such as a Court of Claims), and the general-jurisdiction courts
- * otherwise. A framing entry with forums of its own also caps the list
- * (CaseTypeForums.trialCourtLimit).
+ * transfer pricing dispute and for the claims under state law that travel
+ * with an intellectual property claim (no limited court and no court for
+ * claims against the state, such as a Court of Claims), and the
+ * general-jurisdiction courts otherwise. An entry with forums of its own also
+ * caps the list (CaseTypeForums.trialCourtLimit).
  */
 export const CASE_TYPE_COURT_SELECTION: Partial<Record<CaseTypeCategory, CourtSelection>> = {
   family: "family",
   commercial: "commercial",
   tax: "business",
+  "intellectual-property": "business",
 };
+
+/** The forums block an entry carries, from its framing or its venue framing. */
+const forumsOf = (c: CaseType): CaseTypeForums | undefined => c.framing?.forums ?? c.venueFraming?.forums;
 
 /** The court selection and list length for a case type (see CASE_TYPE_COURT_SELECTION). */
 export function caseTypeCourtSelection(c: CaseType): { kind: CourtSelection; limit?: number } {
-  return { kind: CASE_TYPE_COURT_SELECTION[c.category] ?? "general", limit: c.framing?.forums?.trialCourtLimit };
+  return { kind: CASE_TYPE_COURT_SELECTION[c.category] ?? "general", limit: forumsOf(c)?.trialCourtLimit };
 }
 
 /** Hub H1. */
@@ -1246,6 +1483,7 @@ export function caseTypeHubHeading(c: CaseType): string {
 export function caseTypeHubDescription(c: CaseType): string {
   return (
     c.framing?.hubDescription ??
+    c.venueFraming?.hubDescription ??
     `${c.name} economic damages: loss components, the records that drive them, and how the present value is built. Plaintiff and defense.`
   );
 }
@@ -1257,15 +1495,17 @@ export function caseTypeStateHeading(c: CaseType, place: string): string {
 
 /** State-tier meta description. */
 export function caseTypeStateDescription(c: CaseType, place: string): string {
-  return c.framing
-    ? fillSlots(c.framing.stateDescription, { place })
+  const text = c.framing?.stateDescription ?? c.venueFraming?.stateDescription;
+  return text
+    ? fillSlots(text, { place })
     : `${c.name} economic damages in ${place}: loss components, state damages rules and venues, and how the number is built.`;
 }
 
 /** State-tier lead paragraph under the H1. */
 export function caseTypeStateLead(c: CaseType, orgName: string, place: string): string {
-  return c.framing
-    ? fillSlots(c.framing.stateLead, { org: orgName, place })
+  const text = c.framing?.stateLead ?? c.venueFraming?.stateLead;
+  return text
+    ? fillSlots(text, { org: orgName, place, attr: place.replace(/^the /, "") })
     : `${orgName} prepares economic damages analyses for ${c.name.toLowerCase()} cases venued in ${place}: the components the loss claim consists of, the records that drive them, and a present value built to ${place}'s damages rules and venues. Plaintiff and defense.`;
 }
 
@@ -1274,8 +1514,9 @@ const withArticle = (phrase: string): string => `${/^[aeiou]/i.test(phrase) ? "a
 
 /** State-tier sentence that introduces the numbered steps. */
 export function caseTypeStateStepsIntro(c: CaseType, place: string): string {
-  return c.framing
-    ? fillSlots(c.framing.stateStepsIntro, { place })
+  const text = c.framing?.stateStepsIntro ?? c.venueFraming?.stateStepsIntro;
+  return text
+    ? fillSlots(text, { place })
     : `The same four steps apply to ${withArticle(c.name.toLowerCase())} case venued in ${place}; the damages framework above decides which components enter the total.`;
 }
 
@@ -1285,9 +1526,11 @@ export function caseTypeStateStepsIntro(c: CaseType, place: string): string {
  * and death categories, generalContext otherwise). `circuit` is the federal
  * circuit the place sits in (src/data/courts/federal-districts.ts
  * circuitOfState: "Second", "D.C."), which fills the entry's circuitNote; a
- * place in no circuit takes none.
+ * place in no circuit takes none. A venue-framed entry (intellectual
+ * property) prints its own paragraph: the federal statutes set its measures.
  */
 export function caseTypeStateFramework(c: CaseType, place: string, stateFrameworkText: string, circuit?: string): string {
+  if (c.venueFraming) return fillSlots(c.venueFraming.stateFramework, { place });
   if (!c.framing) return stateFrameworkText;
   const circuitNote =
     circuit && c.framing.circuitNote ? fillSlots(c.framing.circuitNote, { place, circuit: `the ${circuit} Circuit` }) : "";
@@ -1298,29 +1541,41 @@ export function caseTypeStateFramework(c: CaseType, place: string, stateFramewor
  * The expert-standard paragraph of the state tier and the service x case
  * type x state page: the state's own text (`regulation.expertStandard`,
  * which closes on how an economic damages report meets the inquiry), or for
- * a framing entry its own paragraph around the state's inquiry alone
- * (src/data/regulations/state-regs.ts expertInquiryOf).
+ * a framing or venue-framed entry its own paragraph around the state's
+ * inquiry alone (src/data/regulations/state-regs.ts expertInquiryOf).
  */
 export function caseTypeExpertStandard(
   c: CaseType,
   place: string,
   regulation: { expertStandard: string; expertInquiry?: string },
 ): string {
-  return c.framing ? fillSlots(c.framing.expertStandard, { place, inquiry: expertInquiryOf(regulation) }) : regulation.expertStandard;
+  const text = c.framing?.expertStandard ?? c.venueFraming?.expertStandard;
+  return text ? fillSlots(text, { place, inquiry: expertInquiryOf(regulation) }) : regulation.expertStandard;
 }
 
 /** The close of the service x case type x state framework FAQ answer (`attr` is the attributive place name). */
 export function caseTypePairStateFrameworkTail(c: CaseType, attr: string): string {
-  return c.framing
-    ? fillSlots(c.framing.pairStateFrameworkTail, { attr })
+  const text = c.framing?.pairStateFrameworkTail ?? c.venueFraming?.pairStateFrameworkTail;
+  return text
+    ? fillSlots(text, { attr })
     : `The report presents past and future amounts separately, states every rate and table with its source, and shows the result under the alternatives the other side is likely to argue, so counsel can apply the ${attr} rules to a documented figure.`;
+}
+
+/**
+ * The service x case type x state framework FAQ question (`work` is the
+ * pillar's work phrase): "How does the <attr> <framework> shape <work> in
+ * <matter> case?", or a venue-framed entry's own question, since the
+ * federal statutes rather than the state's framework set its measures.
+ */
+export function caseTypePairStateFrameworkQuestion(c: CaseType, attr: string, place: string, work: string): string {
+  if (c.venueFraming) return fillSlots(c.venueFraming.pairStateFrameworkQuestion, { place, work });
+  return `How does the ${attr} ${caseTypeSectionHeadings(c).framework.toLowerCase()} shape ${work} in ${withArticle(c.name.toLowerCase())} case?`;
 }
 
 /** The local FAQ question over the framework paragraph. */
 export function caseTypeStateFrameworkQuestion(c: CaseType, place: string): string {
-  return c.framing
-    ? fillSlots(c.framing.stateFrameworkQuestion, { place })
-    : `How does ${place}'s damages framework shape the economic analysis?`;
+  const text = c.framing?.stateFrameworkQuestion ?? c.venueFraming?.stateFrameworkQuestion;
+  return text ? fillSlots(text, { place }) : `How does ${place}'s damages framework shape the economic analysis?`;
 }
 
 /** The state page's Service node description. */
@@ -1337,8 +1592,9 @@ export function caseTypeStateServiceDescription(c: CaseType, place: string): str
  */
 export function caseTypePairStateLead(c: CaseType, orgName: string, work: string, place: string, attr: string): string {
   const matter = c.name.toLowerCase();
-  return c.framing
-    ? fillSlots(c.framing.pairStateLead, { org: orgName, work, matter, place, attr })
+  const text = c.framing?.pairStateLead ?? c.venueFraming?.pairStateLead;
+  return text
+    ? fillSlots(text, { org: orgName, work, matter, place, attr })
     : `${orgName} prepares ${work} for ${matter} cases venued in ${place}: what the loss claim consists of, the records that drive it, and a present value built to ${attr} damages rules and venues. Plaintiff and defense.`;
 }
 
@@ -1351,6 +1607,16 @@ export interface CaseTypeCourtsInput {
   /** The state's highest court ("Supreme Court of New Jersey"). */
   supremeCourt: string;
   stateSlug: string;
+  /** The place's federal district court names ("District of New Jersey"),
+   * which a venue-framed entry names first; none for American Samoa. */
+  federalDistricts?: string[];
+  /** The place's circuit ("Third", "D.C."; federal-districts.ts circuitOfState). */
+  circuit?: string;
+}
+
+/** What a venue-framed entry's `{stateClaims}` slot reads for a place (see CaseTypeVenueFraming.stateClaims). */
+function stateClaimsOf(venue: CaseTypeVenueFraming, stateSlug: string): string {
+  return LOCAL_TRADE_SECRET_LAW_UNSTATED.has(stateSlug) ? venue.stateClaims.unstated : venue.stateClaims.stated;
 }
 
 /**
@@ -1361,40 +1627,88 @@ export interface CaseTypeCourtsInput {
  * "sentence"), or ", with final appeals to the <court>." on the pair x state
  * page ("clause"). A framing entry whose matter is not heard only in the
  * state's trial courts supplies its own answer, which carries the federal
- * forums' appeals and the state's (the tax and transfer pricing dispute).
+ * forums' appeals and the state's (the tax and transfer pricing dispute); a
+ * venue-framed entry names the place's federal district courts first, then
+ * the Federal Circuit and the regional circuit, then the state's courts for
+ * the claims under its law (intellectual property).
  */
 export function caseTypeStateCourts(c: CaseType, input: CaseTypeCourtsInput, appeal: "sentence" | "clause"): string {
-  const { place, courtList, supremeCourt, stateSlug } = input;
+  const { place, courtList, supremeCourt, stateSlug, federalDistricts = [], circuit } = input;
+  if (c.venueFraming) {
+    const v = c.venueFraming;
+    const slots: FramingSlots = {
+      place,
+      attr: place.replace(/^the /, ""),
+      courts: courtList,
+      supremeCourt,
+      stateSlug,
+      stateClaims: stateClaimsOf(v, stateSlug),
+      federalCourts: federalCourtsPhrase(federalDistricts),
+      circuit: circuit ? `the United States Court of Appeals for the ${circuitCourtName(circuit)} Circuit` : "the regional court of appeals",
+    };
+    return fillSlots(federalDistricts.length ? v.courtsSentence : v.courtsSentenceNoDistrict, slots);
+  }
   if (c.framing?.courtsSentence) return fillSlots(c.framing.courtsSentence, { place, courts: courtList, supremeCourt, stateSlug });
   const heard = `${c.name} cases venued in ${place} are heard in ${courtList}`;
   return appeal === "clause" ? `${heard}, with final appeals to the ${supremeCourt}.` : `${heard}. Final appeals run to the ${supremeCourt}.`;
 }
 
+/**
+ * Whether the entry's courts answer already names the place's federal
+ * district courts (a venue-framed entry), so the templates leave out the
+ * generic "Matters within federal jurisdiction proceed in ..." sentence they
+ * add after every other entry's answer.
+ */
+export function caseTypeCourtsNameFederalCourts(c: CaseType): boolean {
+  return Boolean(c.venueFraming);
+}
+
 /** H2 of the courts section on the state tier and the service x case type x state page. */
 export function caseTypeVenuesHeading(c: CaseType, stateName: string): string {
-  return `${stateName} ${c.framing?.forums?.noun ?? "courts"} and expert standards`;
+  return `${stateName} ${forumsOf(c)?.noun ?? "courts"} and expert standards`;
 }
 
 /** The state-tier courts FAQ question. */
 export function caseTypeStateCourtsQuestion(c: CaseType, stateName: string, place: string): string {
-  return c.framing?.forums
-    ? fillSlots(c.framing.forums.courtsQuestion, { place })
-    : `Which ${stateName} courts hear ${c.name.toLowerCase()} cases?`;
+  const forums = forumsOf(c);
+  return forums ? fillSlots(forums.courtsQuestion, { place }) : `Which ${stateName} courts hear ${c.name.toLowerCase()} cases?`;
 }
 
 /** The service x case type x state expert FAQ question (`work` is the pillar's work phrase). */
 export function caseTypePairStateExpertQuestion(c: CaseType, attr: string, place: string, work: string): string {
-  return c.framing?.forums
-    ? fillSlots(c.framing.forums.expertQuestion, { place, work })
+  const forums = forumsOf(c);
+  return forums
+    ? fillSlots(forums.expertQuestion, { place, work })
     : `What do ${attr} courts ask of ${work} before it reaches the fact finder?`;
 }
 
-/** The forums a framing entry lists ahead of the state's trial courts, in the trial-court shape the venue lists render; none otherwise. */
-export function caseTypeStateForums(c: CaseType, place: string, attr: string): { name: string; description: string }[] {
-  return (c.framing?.forums?.list ?? []).map((f) => ({
-    name: fillSlots(f.label, { place, attr }),
-    description: fillSlots(f.description, { place, attr }),
-  }));
+/** The place's federal courts, as a venue-framed entry's forum list reads them. */
+export interface CaseTypeForumGeo {
+  /** The place's federal district court names (state-courts.ts federalDistricts). */
+  federalDistricts: string[];
+  /** The place's circuit ("Third", "D.C."), undefined for American Samoa. */
+  circuit?: string;
+}
+
+/**
+ * The forums an entry lists ahead of the state's trial courts, in the
+ * trial-court shape the venue lists render; none otherwise. A venue-framed
+ * entry's list depends on the place's federal courts (`geo`): an item that
+ * requires the district courts or the circuit is left out where the place
+ * has none.
+ */
+export function caseTypeStateForums(c: CaseType, place: string, attr: string, geo?: CaseTypeForumGeo): { name: string; description: string }[] {
+  const districts = geo?.federalDistricts ?? [];
+  const circuit = geo?.circuit;
+  const slots: FramingSlots = {
+    place,
+    attr,
+    federalCourtsName: districts.length ? federalCourtsPhrase(districts).replace(/^the /, "") : "",
+    circuitName: circuit ? circuitCourtName(circuit) : "",
+  };
+  return (forumsOf(c)?.list ?? [])
+    .filter((f) => (f.requires === "districts" ? districts.length > 0 : f.requires === "circuit" ? Boolean(circuit) : true))
+    .map((f) => ({ name: fillSlots(f.label, slots), description: fillSlots(f.description, slots) }));
 }
 
 /** Anchor text of the service x case type page's link to the case-type hub: the hub's own three section headings where the entry carries a framing block. */

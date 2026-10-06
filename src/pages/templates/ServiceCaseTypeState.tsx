@@ -13,7 +13,9 @@ import {
   caseTypeCourtSelection,
   caseTypeVenuesHeading,
   caseTypePairStateExpertQuestion,
+  caseTypePairStateFrameworkQuestion,
   caseTypeStateForums,
+  caseTypeCourtsNameFederalCourts,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -42,8 +44,9 @@ const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hove
 // compensation forum; employment, commercial, family, and tax matters get the
 // fault, interest, and cap paragraph (generalContext), which a framing entry
 // replaces with its own framework paragraph. The trial courts listed follow
-// the category (caseTypes.ts caseTypeCourtSelection: tax matters take the
-// business selection, after the federal tax forums the entry lists).
+// the category (caseTypes.ts caseTypeCourtSelection: tax and intellectual
+// property matters take the business selection, after the federal tax
+// forums or the federal courts the entry lists).
 const INJURY_CATEGORIES: ReadonlySet<CaseTypeCategory> = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
 
 const listNames = (names: string[]) => {
@@ -98,13 +101,16 @@ export default function ServiceCaseTypeState() {
   const regulations = getRegulationsByState(state.slug);
   const selection = caseTypeCourtSelection(caseType);
   const trialCourts = courts ? selectTrialCourts(courts, selection.kind, selection.limit) : [];
-  // A matter heard outside the state's courts lists its own forums first
-  // (the federal tax forums and the state's tax appeal process).
-  const venues = [...caseTypeStateForums(caseType, place, attr), ...trialCourts];
   const districts = federalDistricts.filter((d) => d.stateSlug === state.slug);
+  const circuit = circuitOfState(state.slug);
+  // A matter heard outside the state's courts lists its own forums first
+  // (the federal tax forums and the state's tax appeal process; the federal
+  // district courts serving the state and the courts of appeals for an
+  // intellectual property claim).
+  const venues = [...caseTypeStateForums(caseType, place, attr, { federalDistricts: districts.map((d) => d.name), circuit }), ...trialCourts];
   const headings = caseTypeSectionHeadings(caseType);
   const frameworkText = regulations
-    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuitOfState(state.slug))
+    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuit)
     : "";
   // The state's expert standard closes on how an economic damages report
   // meets it; a framing entry prints the state's inquiry with its own close.
@@ -143,8 +149,14 @@ export default function ServiceCaseTypeState() {
               expertStandard,
               caseType.category === "workers-comp"
                 ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`
-                : caseTypeStateCourts(caseType, { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug }, "clause"),
-              districts.length > 0 ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
+                : caseTypeStateCourts(
+                    caseType,
+                    { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug, federalDistricts: districts.map((d) => d.name), circuit },
+                    "clause",
+                  ),
+              // An answer that already names the federal district courts
+              // (intellectual property) takes no second federal sentence.
+              districts.length > 0 && !caseTypeCourtsNameFederalCourts(caseType) ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
             ]
               .filter(Boolean)
               .join(" "),
@@ -154,7 +166,9 @@ export default function ServiceCaseTypeState() {
     ...(regulations
       ? [
           {
-            question: `How does the ${attr} ${headings.framework.toLowerCase()} shape ${work} in ${withArticle(lower)} case?`,
+            // "How does the <attr> damages framework shape ...?", or the
+            // entry's own question where federal statutes set the measures.
+            question: caseTypePairStateFrameworkQuestion(caseType, attr, place, work),
             answer: `${frameworkText} ${caseTypePairStateFrameworkTail(caseType, attr)}`,
           },
         ]

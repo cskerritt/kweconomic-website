@@ -6,7 +6,7 @@ const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
 
 // Date the FAQ copy was last revised. Printed in the page byline and stamped
 // on the FAQPage node as dateModified; the static shell prints the same value.
-export const FAQ_DATE_MODIFIED = "2026-10-05";
+export const FAQ_DATE_MODIFIED = "2026-10-06";
 
 // Single source of truth for the site FAQ. Imported by the FAQ page
 // (src/pages/FAQ.tsx) and by the llms.txt generator (scripts/generate-llms.mjs),
@@ -29,7 +29,7 @@ export const faqs: Faq[] = [
   {
     question: "What types of matters does a forensic economist handle?",
     answer:
-      "Economic damages analyses are prepared for [[/case-types/personal-injury|personal injury]], [[/case-types/wrongful-death|wrongful death]], [[/case-types/medical-malpractice|medical malpractice]], [[/case-types/motor-vehicle-accident|motor vehicle]], [[/case-types/traumatic-brain-injury|traumatic brain injury]], [[/case-types/spinal-cord-injury|spinal cord injury]], [[/case-types/workers-compensation|workers' compensation]], and [[/case-types/product-liability|product liability]] matters; [[/case-types/employment-discrimination|employment discrimination]] and [[/case-types/wrongful-termination|wrongful termination]] claims; and [[/case-types/commercial-contract-dispute|commercial contract]], [[/case-types/partnership-and-shareholder-dispute|shareholder and partnership]], [[/case-types/divorce-and-marital-dissolution|divorce]], and [[/case-types/fraud-and-embezzlement|fraud and embezzlement]] matters, and arm's length analyses are prepared for [[/case-types/tax-and-transfer-pricing-dispute|tax and transfer pricing disputes]] over the prices charged between related companies. Engagements are accepted from plaintiff and defense counsel and from carriers.",
+      "Economic damages analyses are prepared for [[/case-types/personal-injury|personal injury]], [[/case-types/wrongful-death|wrongful death]], [[/case-types/medical-malpractice|medical malpractice]], [[/case-types/motor-vehicle-accident|motor vehicle]], [[/case-types/traumatic-brain-injury|traumatic brain injury]], [[/case-types/spinal-cord-injury|spinal cord injury]], [[/case-types/workers-compensation|workers' compensation]], and [[/case-types/product-liability|product liability]] matters; [[/case-types/employment-discrimination|employment discrimination]] and [[/case-types/wrongful-termination|wrongful termination]] claims; and [[/case-types/commercial-contract-dispute|commercial contract]], [[/case-types/partnership-and-shareholder-dispute|shareholder and partnership]], [[/case-types/divorce-and-marital-dissolution|divorce]], [[/case-types/fraud-and-embezzlement|fraud and embezzlement]], and [[/case-types/intellectual-property-infringement|intellectual property infringement]] matters, and arm's length analyses are prepared for [[/case-types/tax-and-transfer-pricing-dispute|tax and transfer pricing disputes]] over the prices charged between related companies. Engagements are accepted from plaintiff and defense counsel and from carriers.",
   },
   {
     question: "What records does the economist need?",
@@ -77,6 +77,12 @@ export const faqs: Faq[] = [
     sources: refsToSources(["IRC_482", "TREAS_REG_1_482_1", "OECD_TP_GUIDELINES"]),
     answer:
       "Yes. A [[/services/transfer-pricing-expert-witness|transfer pricing expert witness]] tests whether the prices charged between related companies, for goods, services, the use of intangibles, and loans, match what unrelated parties would have agreed to under the arm's length standard: the transactions are delineated from the intercompany agreements and the companies' conduct, the most reliable method is selected, and the comparables and the range are documented. The analysis serves [[/case-types/tax-and-transfer-pricing-dispute|tax and transfer pricing disputes]] in an examination, the Tax Court, or a refund suit, and commercial, shareholder, and divorce cases in which an intercompany price decides what a party receives. The [[/guides/transfer-pricing-disputes-explained|transfer pricing disputes guide]] explains the standard and the forums, and the [[/methods/transfer-pricing-methods|transfer pricing methodology]] page the methods.",
+  },
+  {
+    question: "Can a forensic economist serve as an intellectual property damages expert?",
+    sources: refsToSources(["PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "JURISDICTION_1338"]),
+    answer:
+      "Yes. An [[/services/intellectual-property-damages|intellectual property damages]] analysis measures the remedy each statute provides: a reasonable royalty, the floor of every patent award, and the patentee's lost profits; the defendant's profits and the owner's actual damages for an infringed trademark; actual damages and the infringer's profits for a copyright; and actual loss, unjust enrichment, or a reasonable royalty for a misappropriated trade secret, each apportioned to the protected right and built from both sides' sales, cost, and license records. Patent and copyright claims are heard only in the federal courts, as the [[/case-types/intellectual-property-infringement|intellectual property infringement]] page explains, and the [[/guides/patent-damages-reasonable-royalty-explained|patent damages guide]] and the [[/methods/reasonable-royalty-analysis|reasonable royalty methodology]] page describe how the royalty is built, for the patentee or the accused infringer.",
   },
   {
     question: "Can a forensic economist rebut an opposing economist's report?",

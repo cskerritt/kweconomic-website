@@ -179,6 +179,7 @@ const COMMERCIAL_AND_FAMILY = new Set([
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
   "transfer-pricing-expert-witness",
+  "intellectual-property-damages",
   "divorce-and-marital-financial-analysis",
 ]);
 const SHARED_DAMAGES_LEAK = /Workers' compensation claims|wage-loss benefits|personal injury, wrongful death, employment, and commercial damages claims|prepares economic damages analyses/;
@@ -280,6 +281,12 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
               // state's forum for the civil claims and its own tax process.
               expect(legal).toMatch(/^Federal transfer pricing disputes are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; the same statute and regulations apply wherever the business is based, but where it is based decides which federal court of appeals(?:'|&#x27;) decisions govern\./);
               expect(legal).toContain("primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price");
+            } else if (service.slug === "intellectual-property-damages") {
+              // The intellectual property variant: the federal courts that
+              // alone hear patent and copyright claims, with the Federal
+              // Circuit, ahead of the state's own forum.
+              expect(legal).toMatch(/^Patent and copyright claims are heard only in the federal courts, which for .* means the federal district courts? serving .*, with appeals in patent cases to the United States Court of Appeals for the Federal Circuit;/);
+              expect(legal).toContain("is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under");
             } else {
               expect(legal).toContain("primary trial-level forum for the shareholder, partnership, contract, and fraud claims these analyses support.");
             }
@@ -297,11 +304,15 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
           expect(faqText(html)).toContain(question);
           expect(faqLdStrings(html)).toContain(question);
           // The transfer pricing pillar answers with the Tax Court's report
-          // exchange, where most of its disputes are tried.
+          // exchange, where most of its disputes are tried, and the
+          // intellectual property pillar with the federal scheduling order
+          // and the claim construction its damages reports follow.
           expect(faqText(html)).toContain(
             service.slug === "transfer-pricing-expert-witness"
               ? "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony."
-              : `Expert disclosure in ${place} is scheduled case by case: in the ${placeAttr(state.name)} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework,`,
+              : service.slug === "intellectual-property-damages"
+                ? "In the federal district courts, which hear every patent and copyright claim, the court's scheduling order sets the dates for the expert reports, and in a patent case the damages reports usually follow the court's construction of the claims."
+                : `Expert disclosure in ${place} is scheduled case by case: in the ${placeAttr(state.name)} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework,`,
           );
           expect(faqText(html)).not.toContain("Disclosure timing is typically set by the scheduling order in the case.");
         });
@@ -421,7 +432,9 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           expect(text).toContain(
             service.slug === "transfer-pricing-expert-witness"
               ? `are familiar with the forums and disclosure rules that apply to transfer pricing disputes involving ${placeAttr(state.name)} businesses.`
-              : `requirements that affect ${proseName(service.shortName)} engagements in ${place}.`,
+              : service.slug === "intellectual-property-damages"
+                ? `are familiar with the federal and ${placeAttr(state.name)} courts that hear intellectual property claims and the disclosure rules that apply in them.`
+                : `requirements that affect ${proseName(service.shortName)} engagements in ${place}.`,
           );
         });
 

@@ -775,5 +775,35 @@ describe("intellectual property editorial: statements match the rules they descr
     const royalty = guides.find((g) => g.slug === "intercompany-royalty-rates-in-litigation")!;
     const body = royalty.sections!.map((s) => s.bodyHtml).join(" ");
     expect(body).toContain('A <a href="/guides/patent-damages-reasonable-royalty-explained">reasonable royalty for patent infringement</a> is a different measure');
+    // The pillar stage (2026-10-06) points the contrast at the IP damages pillar.
+    expect(body).toContain('the one an <a href="/services/intellectual-property-damages">intellectual property damages</a> analysis answers');
+  });
+
+  // The pillar stage (2026-10-06): every page of the batch links the
+  // intellectual-property-damages pillar and the intellectual property
+  // infringement case type from its prose and its related cards.
+  it("links the pillar and the case type from every page of the batch", () => {
+    const PILLAR = "/services/intellectual-property-damages";
+    const CASE = "/case-types/intellectual-property-infringement";
+    for (const g of [patent, secrets]) {
+      const body = g.sections!.map((x) => x.bodyHtml).join(" ");
+      expect(body, g.slug).toContain(`href="${PILLAR}"`);
+      expect(body, g.slug).toContain(`href="${CASE}"`);
+      expect(g.related!.map((r) => r.href), g.slug).toEqual(expect.arrayContaining([PILLAR, CASE]));
+    }
+    expect(patent.sections!.find((x) => x.id === "where-patent-cases-are-heard")!.bodyHtml).toContain(`<p>A <a href="${CASE}">claim for patent infringement</a> arises under federal law`);
+    expect(patent.sections!.find((x) => x.id === "what-the-expert-does")!.bodyHtml).toContain(`<p>A <a href="${PILLAR}">patent damages expert</a> builds the measure`);
+    expect(secrets.sections!.find((x) => x.id === "what-the-expert-does")!.bodyHtml).toContain(`<p>A <a href="${PILLAR}">trade secret damages expert</a> measures`);
+    expect(method.relevantServices[0]).toBe("intellectual-property-damages");
+    expect(method.whenUsed).toContain(`[[${CASE}|every patent infringement award]]`);
+    expect(comparison.b.url).toBe(PILLAR);
+    expect(comparison.whenUseB).toContain(`[[${PILLAR}|intellectual property damages]]`);
+    expect(comparison.overlap).toContain(`[[${CASE}|patent award]]`);
+    expect(comparison.related!.map((r) => r.href)).toContain(PILLAR);
+    expect(post.related!.map((r) => r.href)).toContain(PILLAR);
+    expect(post.content).toContain(`[[${PILLAR}|intellectual property damages claim]]`);
+    expect(post.content).toContain(`[[${CASE}|patent case]]`);
+    const butFor = methods.find((m) => m.slug === "lost-profits-but-for-analysis")!;
+    expect(butFor.whenUsed).toContain(`[[${PILLAR}|intellectual property damages]]`);
   });
 });

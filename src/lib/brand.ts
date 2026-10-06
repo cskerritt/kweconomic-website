@@ -71,6 +71,8 @@ export const KNOWS_ABOUT = [
   "Forensic Accounting",
   "Transfer Pricing",
   "Arm's Length Analysis",
+  "Intellectual Property Damages",
+  "Reasonable Royalty Analysis",
   "Expert Witness Testimony",
 ] as const;
 

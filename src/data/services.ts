@@ -7,7 +7,7 @@ import { VOC_SERVICE_URL, LCP_SERVICE_URL } from "@/lib/brand";
 /**
  * KW Economics service taxonomy.
  *
- * Twelve `pillar: true` entries are the site's indexable service lines: every
+ * Thirteen `pillar: true` entries are the site's indexable service lines: every
  * service page, service x state, service x city, cost/process/timeline page,
  * hub card, cross-link, sitemap entry, and prerendered route enumerates from
  * `pillarServices()`. The two `pillar: false` entries (vocational assessment
@@ -957,7 +957,7 @@ export const services: ServiceEntry[] = [
     description: "Valuation of closely held businesses and ownership interests for shareholder and partnership disputes, divorce, estate and gift matters, and buy-sell disagreements. The work applies the income, market, and asset approaches under the standard of value that governs the matter, addresses discounts for lack of control and marketability where they apply, and documents every input so the conclusion can be tested on cross-examination.",
     icon: "Building2",
     keywords: ["business valuation expert", "closely held business valuation", "fair market value vs fair value", "income approach valuation", "discount for lack of marketability", "shareholder dispute valuation"],
-    caseTypes: ["partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "commercial-contract-dispute", "tax-and-transfer-pricing-dispute"],
+    caseTypes: ["partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "commercial-contract-dispute", "tax-and-transfer-pricing-dispute", "intellectual-property-infringement"],
     relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
     cost: {
       range: "Valuation engagements are scoped to the size and complexity of the business, the quality of its financial records, and the purpose and standard of value. A single operating company with clean financial statements and one valuation date is the narrowest scope; multiple entities, related-party transactions, normalization of owner compensation, or several valuation dates widen it. We provide a written fee schedule and a cost estimate before work begins.",
@@ -985,7 +985,7 @@ export const services: ServiceEntry[] = [
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
     ],
     metaDescription: "Business valuation for litigation, plaintiff and defense, nationwide: income, market, and asset approaches under the governing standard of value, documented.",
-    dateModified: "2026-10-05",
+    dateModified: "2026-10-06",
     faqs: [
       {
         question: "Which standard of value applies?",
@@ -1010,6 +1010,7 @@ export const services: ServiceEntry[] = [
       { title: "Fair Market Value vs. Fair Value", href: "/compare/fair-market-value-vs-fair-value", description: "Comparison" },
       { title: "Lost Profits vs. Business Valuation", href: "/compare/lost-profits-vs-business-valuation", description: "Comparison" },
       { title: "Intercompany Royalty Rates in Litigation", href: "/guides/intercompany-royalty-rates-in-litigation", description: "Guide" },
+      { title: "Trade Secret Damages Explained", href: "/guides/trade-secret-damages-explained", description: "Guide" },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD"]),
     caseTypeNotes: {
@@ -1065,6 +1066,23 @@ export const services: ServiceEntry[] = [
           },
         ],
       },
+      // The intellectual property case type (2026-10-06): a value rather than
+      // a stream of lost sales, for a trade secret the misappropriation
+      // destroyed, a business the infringement impaired, or a right whose
+      // value is itself at issue.
+      "intellectual-property-infringement": {
+        summary: "Valuation enters an intellectual property case when the measure of the harm is a value rather than a stream of lost sales: a trade secret that disclosure destroyed, where the governing law allows its value at the date of the disclosure as the measure of the loss; a business whose products or brand the infringement impaired, measured by the change in the value of the business; or a patent, mark, copyright, or body of know-how whose value is itself at issue in a license dispute or a transaction. The economist values the asset or the business under the income, market, and cost approaches as the facts support, states the projections, royalty rates, useful lives, and discount rate the value rests on, and coordinates the valuation with any lost profits or royalty claim, so the same earnings are not counted twice.",
+        faqs: [
+          {
+            question: "How is a trade secret valued when misappropriation destroyed it?",
+            answer: "As an intangible asset at the date it lost protection, most often with an income approach that measures the earnings the secret produced or would have produced over its expected life, or the royalty an owner could have charged for it, and with a cost approach as a check on what recreating it would take. Whether the value of the secret is the measure of the loss is a question of the governing law, which counsel confirms.",
+          },
+          {
+            question: "When is the loss of business value the right measure rather than lost profits?",
+            answer: "When the infringement or misappropriation permanently impaired the business, its brand, or its product line, so that the harm continues beyond any period of lost sales the record can measure directly. The report uses lost profits for the period they can be measured and the change in value for the lasting harm, and explains the boundary between them so the same earnings are not counted in both.",
+          },
+        ],
+      },
     },
   },
   {
@@ -1075,7 +1093,7 @@ export const services: ServiceEntry[] = [
     description: "Lost profits and related commercial damages for contract, business-tort, and business-interruption matters. The analysis builds the but-for revenue and cost path from the company's own history, its market, and the terms of the disputed relationship, links each claimed loss to the conduct at issue, addresses mitigation, and reasons through the period of loss so the damages figure answers the causation question as well as the amount.",
     icon: "LineChart",
     keywords: ["lost profits expert", "commercial damages economist", "but-for profits analysis", "business interruption damages", "breach of contract damages", "period of loss"],
-    caseTypes: ["commercial-contract-dispute", "partnership-and-shareholder-dispute", "fraud-and-embezzlement"],
+    caseTypes: ["commercial-contract-dispute", "partnership-and-shareholder-dispute", "fraud-and-embezzlement", "intellectual-property-infringement"],
     relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "MBA", "PhD"],
     cost: {
       range: "Lost profits engagements are scoped to the length of the loss period, the complexity of the business, and how much of the but-for case must be built from market data rather than the company's own history. A single product line with an established sales history and a defined loss period is the narrowest scope; a new venture, multiple revenue streams, disputed causation, or an open-ended loss period widen it. We provide a written fee schedule and a cost estimate before work begins.",
@@ -1103,7 +1121,7 @@ export const services: ServiceEntry[] = [
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
     ],
     metaDescription: "Lost profits and commercial damages for plaintiff and defense counsel nationwide: but-for revenue and costs, causation, mitigation, and the period of loss.",
-    dateModified: "2026-10-05",
+    dateModified: "2026-10-06",
     faqs: [
       {
         question: "How are lost profits measured?",
@@ -1128,6 +1146,7 @@ export const services: ServiceEntry[] = [
       { title: "Lost Profits vs. Business Valuation", href: "/compare/lost-profits-vs-business-valuation", description: "Comparison" },
       { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets", description: "Method" },
       { title: "Transfer Pricing Disputes Explained", href: "/guides/transfer-pricing-disputes-explained", description: "Guide" },
+      { title: "Lost Profits vs. Reasonable Royalty", href: "/compare/lost-profits-vs-reasonable-royalty", description: "Comparison" },
     ],
     sources: refsToSources(["AAEFE_JLE", "NAFE_JFE", "TREASURY_YIELD", "BLS_CPI"]),
     caseTypeNotes: {
@@ -1167,6 +1186,23 @@ export const services: ServiceEntry[] = [
           {
             question: "What if the business would have struggled anyway?",
             answer: "The economist analyzes the business's results against its market and its own history to separate the effect of the fraud from other causes, and states what portion of the shortfall the records attribute to the diversion. Where the separation cannot be made cleanly, the report says so.",
+          },
+        ],
+      },
+      // The intellectual property case type (2026-10-06): lost profits on the
+      // sales the owner would have made, the patent courts' four-factor test
+      // and market share approach, price erosion, and the royalty left for
+      // the sales the owner cannot show it would have made.
+      "intellectual-property-infringement": {
+        summary: "In an intellectual property case lost profits are the owner's profits on the sales it would have made but for the infringement or misappropriation, including the higher price it would have charged without the infringer's competition. The economist reconstructs the but-for market: the demand for the protected product, the substitutes buyers could have chosen, the owner's capacity to make and sell the added units, and its incremental profit on them, using the four-factor proof patent courts commonly accept or a market share approach where several competitors share the market. Price erosion requires an estimate of how demand responds to price, unpatented items count only where they function together with the patented product, and the sales the owner cannot show it would have made are left to a reasonable royalty.",
+        faqs: [
+          {
+            question: "What does a patentee have to show to recover lost profits?",
+            answer: "That but for the infringement it would have made some or all of the infringer's sales, or made its own sales at a higher price, and that the loss was reasonably foreseeable. The usual proof shows demand for the patented product, the absence of acceptable noninfringing substitutes or the patentee's share of the market where substitutes exist, the capacity to make and sell the added units, and the incremental profit it would have earned on them.",
+          },
+          {
+            question: "How is price erosion measured without overstating it?",
+            answer: "By estimating the higher price the owner would have charged and the smaller number of units it would have sold at that price, from the sales history, customer evidence, or pricing studies, rather than applying the higher price to every unit actually sold. The report states the demand response it assumes and shows how the result moves with it.",
           },
         ],
       },
@@ -1337,7 +1373,7 @@ export const services: ServiceEntry[] = [
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the tribunal" },
     ],
     metaDescription: "Transfer pricing expert witness for plaintiff and defense counsel nationwide and either side of a tax dispute: arm's length analysis of intercompany prices.",
-    dateModified: "2026-10-05",
+    dateModified: "2026-10-06",
     faqs: [
       {
         question: "What does a transfer pricing expert witness analyze?",
@@ -1369,6 +1405,9 @@ export const services: ServiceEntry[] = [
       { title: "Transfer Pricing Methodology", href: "/methods/transfer-pricing-methods", description: "Method" },
       { title: "Intercompany Royalty Rates in Litigation", href: "/guides/intercompany-royalty-rates-in-litigation", description: "Guide" },
       { title: "Transfer Pricing Documentation vs. Expert Report", href: "/compare/transfer-pricing-documentation-vs-expert-report", description: "Comparison" },
+      // The infringement royalty the intercompany royalty guide contrasts
+      // with the arm's length rate (2026-10-06).
+      { title: "Reasonable Royalty Methodology", href: "/methods/reasonable-royalty-analysis", description: "Method" },
     ],
     sources: refsToSources(["IRC_482", "TREAS_REG_1_482_1", "OECD_TP_GUIDELINES", "TAX_COURT_RULE_143", "IRS_TP_EXAM_PROCESS"]),
     caseTypeNotes: {
@@ -1424,6 +1463,138 @@ export const services: ServiceEntry[] = [
           {
             question: "Does an arm's length restatement change the value of the business in the marital estate?",
             answer: "It can, because the valuation capitalizes the same earnings the restatement corrects. The economist carries the restated earnings into the income approach and reconciles them with the income determination, so the profit an intercompany price moved is counted once, and shows the value with and without the restatement so either spouse or the court can see what it contributes and whether the governing framework adopts it.",
+          },
+        ],
+      },
+    },
+  },
+  // Intellectual property damages (owner request 2026-10-06), the thirteenth
+  // pillar, after transfer pricing. Written from the economist's standpoint
+  // and neutral between the patentee and the accused infringer, the owner and
+  // the party accused of taking a trade secret, plaintiff and defense; the
+  // work is directed by the Chief of Economic Services (the ResponsibilityLine
+  // the templates print), and no person is said to hold an intellectual
+  // property credential, membership, testimony history, or prior engagement.
+  // The statutes and decisions are described, never cited; the registry
+  // sources carry the references, and no figure, award, or outcome from any
+  // case appears.
+  {
+    slug: "intellectual-property-damages",
+    name: "Intellectual Property Damages",
+    shortName: "IP Damages",
+    // The state and city pages carry the role the local query carries
+    // ("Intellectual Property Damages Expert in Texas", "IP Damages Expert in
+    // Houston, TX"); the heading label "IP Damages" closes the ladder where
+    // neither fits (src/lib/page-titles.mjs). The pair titles keep "IP
+    // Damages".
+    geoTitleLabels: ["Intellectual Property Damages Expert", "IP Damages Expert"],
+    pillar: true,
+    description: "Economic analysis and expert testimony on damages in patent, trademark, copyright, and trade secret cases and in license and royalty disputes, for the patentee or the accused infringer and for either side of every other claim. The work measures each remedy the governing statute allows: a reasonable royalty and the patentee's lost profits, including price erosion, apportioned to the patented feature; the defendant's profits, the owner's actual damages, and corrective advertising in a trademark case; actual damages and the infringer's profits in a copyright case, where the infringer carries the burden of its deductible expenses and of the profit owed to other factors; and actual loss, unjust enrichment, or a reasonable royalty for a misappropriated trade secret.",
+    icon: "Lightbulb",
+    keywords: ["intellectual property damages expert", "patent damages expert witness", "reasonable royalty expert", "trademark damages expert", "copyright damages expert", "trade secret damages expert", "patent infringement lost profits", "IP damages economist"],
+    caseTypes: ["intellectual-property-infringement", "commercial-contract-dispute", "partnership-and-shareholder-dispute"],
+    relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
+    cost: {
+      range: "Intellectual property damages engagements are scoped to the rights asserted, the accused products and the damages period, and how much of the record must be built. A royalty analysis for one patent and one accused product line, with the infringer's sales data and the relevant licenses in hand, is the narrowest scope; several patents or marks, lost profits or price erosion claims that require the market to be reconstructed, trade secrets that must be valued one by one, apportionment that depends on survey or technical evidence, or parallel infringement and license claims widen it. We provide a written fee schedule and a cost estimate before work begins.",
+      drivers: [
+        "Number and kind of rights asserted, patents, trademarks, copyrights, or trade secrets, and whether each claim needs a measure of its own",
+        "Number of accused products and the length of the damages period, and whether the sales, pricing, and cost data arrive in usable form or must be rebuilt from transaction records",
+        "Whether lost profits, price erosion, or a market share must be reconstructed, which requires the market, the substitutes, and the owner's capacity to be analyzed",
+        "Scope of the license analysis: the licenses to the rights in suit, comparable licenses in the record and in public sources, and any lump sums that must be converted to rates",
+        "The apportionment evidence and the coordination it requires with the technical and survey experts",
+        "Deposition and trial testimony, including preparation and travel time",
+      ],
+      billingStructure: "Intellectual property damages analysis is billed at an hourly rate for records review, license and market analysis, modeling, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.",
+    },
+    process: [
+      { step: "Retention and conflict check", description: "We confirm conflicts across the parties, their affiliates, and the licensees in the record, identify the rights asserted, the accused products, and the forum, establish the retainer, and agree on the report deadline the scheduling order sets." },
+      { step: "Records and data request", description: "We request the accused products' unit sales, revenue, pricing, and cost data, the owner's financial and capacity records for its own products, every license to the rights in suit and to comparable technology with the negotiation files, the marking and notice records, and the business plans and forecasts from the date the infringement or misappropriation began, most of it produced under a protective order." },
+      { step: "Analysis and modeling", description: "We build each measure the claims support: the reasonable royalty from the comparable licenses, the profit the protected feature made possible, and the user's alternatives; lost profits from the market and the owner's capacity; the infringer's profits with its claimed costs and apportionment tested; and unjust enrichment net of any overlap, with the damages period and prejudgment interest applied." },
+      { step: "Draft report and counsel review", description: "We deliver a draft that states every input, the royalty base and the apportionment, the licenses relied on and the ones rejected, and the opinions of the technical and survey experts it relies on, and review it with counsel for completeness and factual accuracy before finalizing." },
+      { step: "Final report and testimony support", description: "We issue the final report on the disclosure schedule and provide deposition and trial testimony, critique of the opposing damages analysis, and updated calculations as the court construes the claims and the record develops." },
+    ],
+    timeline: [
+      { phase: "Retention and records intake", duration: "1 to 2 weeks" },
+      { phase: "License, market, and sales analysis", duration: "4 to 8 weeks after the sales and license data are produced" },
+      { phase: "Draft and final report", duration: "2 to 3 weeks after the analysis" },
+      { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
+    ],
+    metaDescription: "Intellectual property damages expert for plaintiff and defense counsel nationwide: reasonable royalty, lost profits, infringer's profits, and trade secret loss.",
+    dateModified: "2026-10-06",
+    faqs: [
+      {
+        question: "What does an intellectual property damages expert measure?",
+        answer: "The remedy the governing statute provides, built from the record. In a patent case that is a reasonable royalty, the floor of every award, and the patentee's lost profits on sales it would have made; for an infringed trademark, the defendant's profits, the owner's actual damages, and the cost of corrective advertising; in a copyright case, the owner's actual damages and the infringer's profits not already counted in them; and for a trade secret, the owner's actual loss and the misappropriator's unjust enrichment, or a reasonable royalty in their place. The expert measures each, and the court and the fact finder decide which one applies.",
+      },
+      {
+        question: "How is a reasonable royalty determined?",
+        answer: "Through a hypothetical negotiation: the license a willing licensor and a willing licensee would have agreed to just before the infringement began, with the patent assumed valid and infringed. The economist builds it from comparable licenses, read in full and adjusted for differences in scope, form, and circumstances, from the profit the protected feature made possible for the user, and from the cost of the user's next-best alternative, and organizes the evidence through the factors courts commonly use rather than treating them as a formula.",
+      },
+      {
+        question: "What is apportionment, and why does it decide so many cases?",
+        answer: "Apportionment separates the value of the patented feature, the protected work or mark, or the trade secret from everything else that earned the profit: unpatented features, the infringer's brand and distribution, and its other technology. A royalty applied to the price of a whole multi-feature product overstates the damages unless the patented feature drives demand for the whole, so the economist builds the base on the smallest unit that practices the invention and uses the licenses, the infringer's own feature analyses, price comparisons, or survey evidence to separate the rest.",
+      },
+      {
+        question: "Who must prove what in a claim for the infringer's profits?",
+        answer: "It depends on the statute. In a copyright case the owner proves the infringer's gross revenue from the infringement, and the infringer must prove its deductible expenses and the share of profit owed to factors other than the work. In a trademark case the owner proves the defendant's sales and the defendant proves the costs or deductions it claims, and only the named defendant's own profits count, not those of affiliates that are not parties. Utility patents carry no profits remedy, while a design patent allows the infringer's total profit on the article of manufacture.",
+      },
+      {
+        question: "Is the analysis different for the patentee and the accused infringer?",
+        answer: "The method is the same: the same records, the same measures, and the same apportionment, with the result presented under each side's view of the disputed inputs. What differs is the order of the work. The owner's expert builds the affirmative measure, and the accused infringer's expert tests it and builds the alternative the record supports, often a narrower royalty base, a different set of comparable licenses, or an acceptable design-around that bounds what a licensee would have paid.",
+      },
+      {
+        question: "How does the report deal with the opposing damages expert?",
+        answer: "By showing the result under the other side's royalty base, comparable licenses, apportionment, and alternatives as well as under its own, and by explaining which of those choices the record supports and why the others do not. Because courts decide many damages disputes in these cases as questions of admissibility before trial, the report ties every input to a document or to another expert's stated opinion, so a reliability challenge meets the evidence rather than a conclusion.",
+      },
+      {
+        question: "When should an intellectual property damages expert be brought in?",
+        answer: "Before the damages discovery requests go out. The royalty and lost profits theories decide which sales, cost, license, and forecasting records must be produced, and in a patent case the expert reports usually follow the court's construction of the claims, so early involvement leaves time to obtain the data, coordinate with the technical and survey experts, and test the alternatives before the disclosure deadline. In a trade secret case, early work can also address whether the harm can be measured in money, which bears on a request for an injunction.",
+      },
+    ],
+    related: [
+      { title: "Patent Damages Explained: Reasonable Royalty, Lost Profits, and Apportionment", href: "/guides/patent-damages-reasonable-royalty-explained", description: "Guide" },
+      { title: "Trade Secret Damages Explained", href: "/guides/trade-secret-damages-explained", description: "Guide" },
+      { title: "Reasonable Royalty Methodology", href: "/methods/reasonable-royalty-analysis", description: "Method" },
+      { title: "Lost Profits vs. Reasonable Royalty", href: "/compare/lost-profits-vs-reasonable-royalty", description: "Comparison" },
+    ],
+    sources: refsToSources(["PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "JURISDICTION_1338", "GEORGIA_PACIFIC", "BIG_O_TIRES", "FEDERAL_CIRCUIT_1295", "UNIFORM_TRADE_SECRETS_ACT", "FRE_702"]),
+    caseTypeNotes: {
+      "intellectual-property-infringement": {
+        summary: "In an infringement or misappropriation case the damages analysis follows the statute behind each claim. For a patent, the economist builds the reasonable royalty from the hypothetical negotiation at the start of the infringement and any lost profits from the market the patentee and the infringer shared; for a trademark, the defendant's profits from its sales of the infringing goods, with its claimed costs tested, the owner's actual damages, and the cost of corrective advertising; for a copyright, actual damages and the infringer's profits not already counted in them; and for a trade secret, actual loss and unjust enrichment net of their overlap, or a royalty in their place. Each measure is apportioned to the protected right, limited to the recoverable period, and presented claim by claim, so the fact finder can apply the measure it finds.",
+        faqs: [
+          {
+            question: "Can one report cover patent, trademark, and trade secret claims in the same case?",
+            answer: "Yes, and it should keep them apart. Each claim has its own measure, period, and burden, and the same sale can support more than one claim, so the report computes each measure separately, shows where they overlap, and presents a combined figure only after removing the overlap, so the fact finder can award what it finds on each claim without counting a sale twice.",
+          },
+          {
+            question: "How are the infringing sales identified?",
+            answer: "From the accused party's own sales and transaction records, produced in discovery and matched to the products the claims and the technical experts identify, by product, period, and customer. Where the data are incomplete, the report states what was estimated and how, and where the court's construction of the claims narrows the accused products, the schedule is rebuilt for the narrower set.",
+          },
+        ],
+      },
+      "commercial-contract-dispute": {
+        summary: "A commercial contract dispute becomes an intellectual property damages question when the contract is a license: a patent, trademark, software, or technology license whose royalties were underpaid, a licensee that kept selling after the license ended, or a dispute over the royalty base, the products covered, or the audit rights. The economist reads the license and its royalty provisions, rebuilds the royalty base from the licensee's sales records and any audit findings, and computes the shortfall by period under the contract's own terms. Where a licensee kept using the technology after termination, or an infringement claim is joined with the contract claim, the economist also measures the infringement damages, often a reasonable royalty informed by the license itself, and keeps the contract and infringement measures separate.",
+        faqs: [
+          {
+            question: "How is a royalty underpayment measured?",
+            answer: "By applying the license's own rate and base definitions to the licensee's sales, product by product and period by period, and comparing the result with the royalties reported and paid. The economist reconciles the royalty reports to the licensee's sales records and financial statements, states each reading of a disputed term, such as which products or revenues the base includes, and shows the shortfall under each reading counsel identifies.",
+          },
+          {
+            question: "What happens to the damages when a licensee keeps selling after the license ends?",
+            answer: "The sales after termination are no longer priced by the contract, so the claim for them usually becomes one for infringement, measured by a reasonable royalty or by lost profits. The expired license is strong evidence of what a royalty would be, but the hypothetical negotiation can differ from it, since the license's terms reflected the circumstances when it was signed, and the report shows the post-termination damages under the license rate and under the measure the infringement claim supports.",
+          },
+        ],
+      },
+      "partnership-and-shareholder-dispute": {
+        summary: "In an owner dispute the intellectual property question is usually who took what: a departing partner, member, or shareholder who used the company's trade secrets, customer information, or technology in a competing venture, or a controlling owner who moved the company's patents, marks, or software into an entity the owner holds separately. The economist measures the company's actual loss from the diverted sales and customers, the competing venture's profits attributable to the information, and, where those are hard to isolate, a reasonable royalty for the use, net of any overlap, and coordinates the measure with any valuation of an owner's interest, so the same lost earnings are not counted both as damages and as a reduction in the value of the interest.",
+        faqs: [
+          {
+            question: "How are trade secret damages measured against a departing owner?",
+            answer: "The same way as against any other party accused of misappropriation: the company's actual loss from the customers and sales it lost because its information was used, the profits the competing venture earned from that use that the loss does not already capture, or a reasonable royalty in their place, each limited to the period the information stayed secret plus any head start. The analysis separates the effect of the information from the departing owner's general skill and knowledge, which the trade secret claim does not reach.",
+          },
+          {
+            question: "Does a trade secret claim change the value of an owner's interest?",
+            answer: "It can. If the misappropriation reduced the company's earnings, a valuation of the interest at a later date may already reflect the loss, so the damages and the valuation are built from the same projections and dated consistently, and the report shows how each figure changes if the other is adopted, so the lost earnings are counted once.",
           },
         ],
       },
@@ -1528,7 +1699,7 @@ export const services: ServiceEntry[] = [
     description: "Critique of an opposing economic damages, valuation, or forensic accounting report for plaintiff or defense counsel. The review tests the assumptions, data sources, discount rates, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The result supports cross-examination, a rebuttal report, or a motion directed at the reliability of the opinion.",
     icon: "FileSearch",
     keywords: ["economic damages rebuttal", "rebuttal expert economist", "expert report review", "opposing expert critique", "damages report errors", "cross-examination support"],
-    caseTypes: ["personal-injury", "wrongful-death", "medical-malpractice", "motor-vehicle-accident", "traumatic-brain-injury", "spinal-cord-injury", "workers-compensation", "employment-discrimination", "wrongful-termination", "commercial-contract-dispute", "partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "fraud-and-embezzlement", "product-liability", "tax-and-transfer-pricing-dispute"],
+    caseTypes: ["personal-injury", "wrongful-death", "medical-malpractice", "motor-vehicle-accident", "traumatic-brain-injury", "spinal-cord-injury", "workers-compensation", "employment-discrimination", "wrongful-termination", "commercial-contract-dispute", "partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "fraud-and-embezzlement", "product-liability", "tax-and-transfer-pricing-dispute", "intellectual-property-infringement"],
     relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "MBA", "PhD"],
     cost: {
       range: "Rebuttal engagements are scoped to the length and complexity of the report under review and whether counsel needs a written rebuttal or consulting support only. A review of a single lost earnings report with a memo of findings is the narrowest scope; a valuation or lost profits report with extensive schedules, multiple opposing experts, or a full alternative calculation widens it. We provide a written fee schedule and a cost estimate before work begins.",
@@ -1556,7 +1727,7 @@ export const services: ServiceEntry[] = [
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
     ],
     metaDescription: "Expert rebuttal and report review for plaintiff and defense counsel nationwide: the opposing economic report tested input by input and recalculated.",
-    dateModified: "2026-10-05",
+    dateModified: "2026-10-06",
     faqs: [
       {
         question: "What does a rebuttal review test in an opposing report?",
@@ -1581,6 +1752,7 @@ export const services: ServiceEntry[] = [
       { title: "Plaintiff Economist vs. Defense Economist: Is the Method Different?", href: "/compare/plaintiff-economist-vs-defense-economist", description: "Comparison" },
       { title: "Net vs. Gross Discount Rate", href: "/compare/net-vs-gross-discount-rate", description: "Comparison" },
       { title: "Transfer Pricing Documentation vs. Expert Report", href: "/compare/transfer-pricing-documentation-vs-expert-report", description: "Comparison" },
+      { title: "Reasonable Royalty Methodology", href: "/methods/reasonable-royalty-analysis", description: "Method" },
     ],
     sources: refsToSources(["NAFE_ETHICS", "DAUBERT", "KUMHO_TIRE", "FRE_702", "FRCP_26"]),
     caseTypeNotes: {
@@ -1776,6 +1948,22 @@ export const services: ServiceEntry[] = [
           {
             question: "How is the review used when the opposing report is the expert's direct testimony?",
             answer: "In the Tax Court the opposing report is received as that expert's direct testimony, so the review shapes the cross-examination and any rebuttal testimony the court permits, choice by choice and with the effect of each correction stated. The same review can be used earlier, at the examination or appeals stage, to show where an opposing economic position does not hold.",
+          },
+        ],
+      },
+      // The intellectual property case type (2026-10-06): the choices that
+      // carry an opposing royalty or lost profits number, and the
+      // reliability questions courts decide on them before trial.
+      "intellectual-property-infringement": {
+        summary: "An opposing intellectual property damages report is tested on the choices that carry its number: the royalty base and whether it is apportioned to the patented feature or reaches the whole product, the licenses offered as comparable and the adjustments made to them, the conversion of lump sums into rates, the alternatives available to the infringer, the market and capacity assumed in a lost profits claim, the costs deducted from the infringer's profits, and the damages period. The economist rebuilds each step from the report's own data and workpapers, recalculates the result under corrected inputs one at a time and together, and ranks each finding by its effect, so counsel can see which choices carry the number and the court can decide the reliability questions on the record.",
+        faqs: [
+          {
+            question: "What does a review of an opposing royalty analysis look for first?",
+            answer: "Whether the royalty base is apportioned to the patented feature and whether the licenses relied on are comparable in technology, rights, and circumstances, since those two choices move the result more than most others. The review then checks how lump sums were converted to rates, whether settlement licenses were treated as market transactions, and whether the alternatives open to the infringer are accounted for.",
+          },
+          {
+            question: "Can a rebuttal support a challenge to the admissibility of the opposing damages testimony?",
+            answer: "Yes. Courts decide many damages disputes in intellectual property cases as questions of whether the testimony rests on sufficient facts or data and on reliable methods reliably applied, so the review identifies the inputs that lack support in the record, such as a rate taken from a rule of thumb or licenses read for a per-unit rate they do not state, and documents each finding so counsel can raise it before trial or on cross-examination.",
           },
         ],
       },

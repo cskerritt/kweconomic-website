@@ -717,6 +717,22 @@ export const REFERENCES: Record<string, Reference> = {
     "On Davis v. The Gap, Inc., 246 F.3d 152 (2d Cir. 2001).",
     "https://static.case.law/f3d/246/html/0152-01.html",
   ),
+  // Corrective advertising as trademark actual damages (added in the pillar
+  // stage, live-verified 2026-10-06 on the Caselaw Access Project page and its
+  // case metadata: 561 F.2d 1365, 10th Cir., decided September 2, 1977). In a
+  // reverse confusion case under the false designation provision and the
+  // common law, the court held the owner could recover a reasonable amount
+  // equivalent to a corrective advertising campaign it had not yet run,
+  // scaled to the markets where it did business and less than dollar for
+  // dollar against the infringer's own campaign. The pages that cite it carry
+  // none of the case's figures.
+  BIG_O_TIRES: R(
+    "BIG_O_TIRES",
+    "live-verified",
+    "case-law",
+    "Big O Tire Dealers, Inc. v. Goodyear Tire & Rubber Co., 561 F.2d 1365 (10th Cir. 1977).",
+    "https://static.case.law/f2d/561/html/1365-01.html",
+  ),
 };
 
 /**

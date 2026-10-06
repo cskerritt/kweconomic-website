@@ -23,6 +23,7 @@ import { ORG_NAME } from "@/lib/brand";
 import { proseName } from "@/lib/service-prose.mjs";
 import { getMetroLabor } from "./labor/metro-labor";
 import { getCourtsByState } from "./courts/state-courts";
+import { circuitOfState } from "./courts/federal-districts";
 import { getRegulationsByState } from "./regulations/state-regs";
 import { credentials } from "./credentials";
 import { refsToSources } from "./references";
@@ -30,6 +31,7 @@ import {
   buildCityNarrative,
   buildStateNarrative,
   cityAttr,
+  LOCAL_TRADE_SECRET_LAW_UNSTATED,
   majorEmployers,
   placeAttr,
   placeName,
@@ -115,6 +117,11 @@ interface VenueContext {
   /** "the Superior Court, Law Division" or the generic fallback. */
   forum: string;
   compensationForum?: string;
+  stateSlug: string;
+  /** The federal circuit the place sits in ("Third", "D.C."); undefined for American Samoa. */
+  circuit?: string;
+  /** How many federal district courts serve the place (none for American Samoa). */
+  federalDistrictCount: number;
 }
 
 interface ServicePageProse {
@@ -214,6 +221,30 @@ const SERVICE_PAGE_PROSE: Record<string, ServicePageProse> = {
       `Transfer pricing disputes that involve ${place} reach several forums: the United States Tax Court and, on a refund claim, the federal district courts serving ${place} or the Court of Federal Claims for federal income tax; the ${attr} tax authority and its appeal process for a dispute over ${attr} tax; and ${forum} for the commercial, shareholder, and matrimonial claims that turn on an intercompany price. The arm's length analysis is built the same way for each forum; the forum sets the rule of decision, which counsel confirms, and the report presents the result so it can be applied under it.`,
     familiar: (attr) => `the forums and disclosure rules that apply to transfer pricing disputes involving ${attr} businesses`,
   },
+  // Intellectual property damages (2026-10-06): the federal district courts
+  // first, the Federal Circuit and the place's regional circuit for the
+  // appeals, then the place's own court for the claims under its law, with
+  // no claim about the trade secret law of the territories in
+  // LOCAL_TRADE_SECRET_LAW_UNSTATED.
+  "intellectual-property-damages": {
+    measures: (cityA) =>
+      `measure patent, trademark, copyright, and trade secret damages from the parties' own sales, cost, and license records, apportioned to the protected right, with ${cityA}-area market conditions entering only where the market for the accused product is local`,
+    sources: ["PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "JURISDICTION_1338"],
+    venue: ({ place, attr, forum, stateSlug, circuit, federalDistrictCount }) => {
+      const localClaims = LOCAL_TRADE_SECRET_LAW_UNSTATED.has(stateSlug)
+        ? "the contract and license claims"
+        : "the trade secret, unfair competition, contract, and license claims";
+      const appeals = circuit
+        ? `the United States Court of Appeals for the Federal Circuit for every appeal in a case with a patent claim, and the court of appeals for the ${circuit === "D.C." ? "District of Columbia" : circuit} Circuit for the others`
+        : "the United States Court of Appeals for the Federal Circuit for every appeal in a case with a patent claim";
+      const federal =
+        federalDistrictCount > 0
+          ? `the federal district court${federalDistrictCount === 1 ? "" : "s"} serving ${place} for patent and copyright claims, which only the federal courts may hear, and for the trademark and trade secret claims filed in federal court`
+          : `a federal district court where venue lies for patent and copyright claims, which only the federal courts may hear, since ${place} has no federal district court of its own`;
+      return `Intellectual property claims that involve ${place} reach several courts: ${federal}; ${appeals}; and ${forum} for ${localClaims} under ${attr} law. The patent, trademark, and copyright measures are set by federal statute and are the same in every district; the court fixes the interest and decides any enhancement, and the report presents each measure so it can be applied to the claims the fact finder accepts.`;
+    },
+    familiar: (attr) => `the federal and ${attr} courts that hear intellectual property claims and the disclosure rules that apply in them`,
+  },
   "divorce-and-marital-financial-analysis": {
     measures: (cityA) =>
       `determine income available for support from the spouse's own records, value a marital business from its own statements and the ${cityA}-area market it serves, and trace separate and marital funds through accounts and assets`,
@@ -238,19 +269,23 @@ const defaultMeasures = (cityA: string) =>
 /**
  * The venue paragraph of a service x state page for the pillars whose forum
  * is not the tort damages framework (employment, the four commercial pillars,
- * transfer pricing, rebuttal). Returns undefined for the injury, death, household services, and
+ * transfer pricing, intellectual property, rebuttal). Returns undefined for the injury, death, household services, and
  * life care costing pillars, which print the state's damagesContext and
  * workers' compensation forum instead.
  */
 export function serviceStateVenueParagraph(service: Service, state: State): string | undefined {
   const venue = SERVICE_PAGE_PROSE[service.slug]?.venue;
   if (!venue) return undefined;
-  const trial = getCourtsByState(state.slug)?.trialCourts?.[0]?.name;
+  const courts = getCourtsByState(state.slug);
+  const trial = courts?.trialCourts?.[0]?.name;
   return venue({
     place: placeName(state.name),
     attr: placeAttr(state.name),
     forum: trial ? `the ${trial}` : "the general-jurisdiction trial courts",
     compensationForum: getRegulationsByState(state.slug)?.compensationForum,
+    stateSlug: state.slug,
+    circuit: circuitOfState(state.slug),
+    federalDistrictCount: courts?.federalDistricts?.length ?? 0,
   });
 }
 

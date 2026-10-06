@@ -34,6 +34,20 @@ describe("KW Economics team", () => {
     expect(practiceAreaLabel(francis, tp)).toBe("Transfer Pricing");
     expect(practiceAreaLabel(francis, bv)).toBe("Business Valuation");
   });
+  it("the intellectual property damages specialty sits on Christopher Skerritt's profile only (owner instruction 2026-10-06)", () => {
+    const ip = pillarServices().find((s) => s.slug === "intellectual-property-damages")!;
+    for (const m of team) {
+      const has = m.specialties.includes("Intellectual Property Damages");
+      expect(has, m.slug).toBe(m.slug === "christopher-skerritt");
+      expect(practiceAreasFor(m).map((s) => s.slug).includes(ip.slug), m.slug).toBe(m.slug === "christopher-skerritt");
+      if (m.slug !== "christopher-skerritt") expect(`${m.bio} ${m.fullBio ?? ""}`, m.slug).not.toMatch(/intellectual property|patent|trademark|copyright|trade secret|royalt/i);
+    }
+    // The name is the work, not a role noun, so it reads the same on any profile.
+    expect(practiceAreaLabel(team.find((m) => m.slug === "christopher-skerritt")!, ip)).toBe("Intellectual Property Damages");
+    // No biography claims an intellectual property credential, testimony history, or engagement.
+    const chris = team.find((m) => m.slug === "christopher-skerritt")!;
+    expect(`${chris.bio} ${chris.fullBio ?? ""}`).not.toMatch(/intellectual property|patent|trademark|copyright|trade secret|royalt/i);
+  });
   it("Christopher Skerritt leads as Chief of Economic Services", () => {
     const c = team.find((m) => m.slug === "christopher-skerritt")!;
     expect(c.title).toBe("Chief of Economic Services");

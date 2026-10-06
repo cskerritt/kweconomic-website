@@ -115,6 +115,14 @@ describe("/team/:slug profiles", () => {
     expect(chris).toContain('href="/services/transfer-pricing-expert-witness"');
   });
 
+  it("only Christopher Skerritt's profile lists intellectual property damages, on the page and in the Person node (2026-10-06)", () => {
+    expect(chris).toContain('href="/services/intellectual-property-damages"');
+    for (const html of [zach, francis]) {
+      expect(html).not.toContain('href="/services/intellectual-property-damages"');
+      expect(withoutJsonLd(html)).not.toMatch(/intellectual property|patent|trademark|copyright|trade secret/i);
+    }
+  });
+
   it("no profile carries sister-roster copy or dashes", () => {
     for (const html of [chris, zach, francis]) {
       expect(html).not.toMatch(LCP_ROSTER_COPY);

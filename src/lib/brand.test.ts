@@ -34,5 +34,8 @@ describe("brand constants", () => {
     // directing economist's Person node carry (review fix 2026-10-05).
     expect(KNOWS_ABOUT).toContain("Transfer Pricing");
     expect(KNOWS_ABOUT).toContain("Arm's Length Analysis");
+    // And the intellectual property topics the pillar carries (2026-10-06).
+    expect(KNOWS_ABOUT).toContain("Intellectual Property Damages");
+    expect(KNOWS_ABOUT).toContain("Reasonable Royalty Analysis");
   });
 });

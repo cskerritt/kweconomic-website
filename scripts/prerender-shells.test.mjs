@@ -33,6 +33,8 @@ import { comparisons } from "@/data/comparisons";
 import { methods } from "@/data/methods";
 import { states } from "@/data/states";
 import { pillarServices, serviceCaseTypePairs } from "@/data/services";
+import { federalDistricts } from "@/data/courts/federal-districts";
+import { placeName } from "@/data/geo-prose.mjs";
 import { knowledgeGuides } from "@/data/knowledge";
 import { insightPosts } from "@/data/insights";
 import { whitePapers } from "@/data/whitePapers";
@@ -106,6 +108,7 @@ import InsightPost from "@/pages/InsightPost";
 import WhitePaper from "@/pages/WhitePaper";
 import JourneyStageIndex from "@/pages/templates/JourneyStageIndex";
 import JourneyStage from "@/pages/templates/JourneyStage";
+import FederalDistrict from "@/pages/templates/FederalDistrict";
 
 vi.mock("@/hooks/use-page-meta", () => ({ usePageMeta: vi.fn() }));
 vi.mock("@/hooks/use-state-cities", async () => {
@@ -233,6 +236,29 @@ const ROUTES = [
   { route: "/case-types/workers-compensation/texas", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
   { route: "/case-types/wrongful-death/guam", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
   { route: "/team/francis-kumah", pattern: "/team/:slug", Page: ExpertProfile },
+  // The intellectual property damages pillar and the intellectual property
+  // infringement matter (2026-10-06): the pillar and a variant, the pillar's
+  // geo pages (the federal-courts-first legal context, the District's single
+  // district court, the IP city venue), its pairs and pair x state pages (a
+  // place with no federal district court among them), the hub and three
+  // state pages with the federal courts listed first, a journey, and a
+  // federal district page that now lists the pillar.
+  { route: "/services/intellectual-property-damages", pattern: "/services/:serviceSlug", Page: ServicePillar },
+  { route: "/services/intellectual-property-damages/cost", pattern: "/services/:serviceSlug/cost", Page: ServiceTransactional, props: { variant: "cost" } },
+  { route: "/services/intellectual-property-damages/new-jersey", pattern: "/services/:serviceSlug/:stateSlug", Page: ServiceState },
+  { route: "/services/intellectual-property-damages/district-of-columbia", pattern: "/services/:serviceSlug/:stateSlug", Page: ServiceState },
+  { route: "/services/intellectual-property-damages/new-jersey/hackensack", pattern: "/services/:serviceSlug/:stateSlug/:citySlug", Page: ServiceStateCity },
+  { route: "/services/intellectual-property-damages/case/intellectual-property-infringement", pattern: "/services/:serviceSlug/case/:typeSlug", Page: ServiceCaseType },
+  { route: "/services/intellectual-property-damages/case/commercial-contract-dispute", pattern: "/services/:serviceSlug/case/:typeSlug", Page: ServiceCaseType },
+  { route: "/services/intellectual-property-damages/case/intellectual-property-infringement/american-samoa", pattern: "/services/:serviceSlug/case/:typeSlug/:stateSlug", Page: ServiceCaseTypeState },
+  { route: "/services/lost-profits-and-commercial-damages/case/intellectual-property-infringement/texas", pattern: "/services/:serviceSlug/case/:typeSlug/:stateSlug", Page: ServiceCaseTypeState },
+  { route: "/services/intellectual-property-damages/case/partnership-and-shareholder-dispute/delaware", pattern: "/services/:serviceSlug/case/:typeSlug/:stateSlug", Page: ServiceCaseTypeState },
+  { route: "/case-types/intellectual-property-infringement", pattern: "/case-types/:slug", Page: CaseTypeHub },
+  { route: "/case-types/intellectual-property-infringement/new-york", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  { route: "/case-types/intellectual-property-infringement/american-samoa", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  { route: "/case-types/intellectual-property-infringement/guam", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  { route: "/attorneys/trial/intellectual-property-infringement", pattern: "/attorneys/:stage/:caseTypeSlug", Page: JourneyStage },
+  { route: "/jurisdictions/federal/district-of-delaware", pattern: "/jurisdictions/federal/:districtSlug", Page: FederalDistrict },
   { route: "/credentials/forensic-economist", pattern: "/credentials/:slug", Page: CredentialHub },
   { route: "/credentials/forensic-economist/new-jersey", pattern: "/credentials/:credSlug/:stateSlug", Page: CredentialState },
   { route: "/credentials/nafe-member/district-of-columbia", pattern: "/credentials/:credSlug/:stateSlug", Page: CredentialState },
@@ -863,6 +889,79 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
     // The territorial district names keep their own form in the courts answer.
     expect(textOf(readShell("/case-types/wrongful-death/guam"))).toContain("Matters within federal jurisdiction proceed in the United States District Court of Guam.");
     expect(textOf(readShell("/case-types/wrongful-death/guam"))).not.toContain("District Court for the District Court of Guam");
+  });
+
+  // The intellectual property pillar and case type (2026-10-06), on the built
+  // shells: every state, the District, and every territory carries the
+  // federal-courts-first forum framing, the pillar's geo shells carry the
+  // role in the title and H1 and the IP legal context, and the tier is
+  // reachable by link from outside itself.
+  it("the intellectual property hub and every state shell name the federal courts first and keep the damages framing (2026-10-06)", () => {
+    const hub = readShell("/case-types/intellectual-property-infringement");
+    expect(titleOf(hub)).toBe(`Intellectual Property Infringement Economist | ${ORG_NAME}`);
+    expect(h1Of(hub)).toBe("Intellectual Property Infringement Economic Damages Analysis");
+    expect(descriptionOf(hub)).toMatch(/^Patent, trademark, copyright, and trade secret damages:/);
+    expect(textOf(hub)).toContain("What the economic claim consists of");
+    for (const st of states) {
+      const shell = readShell(`/case-types/intellectual-property-infringement/${st.slug}`);
+      const text = textOf(shell);
+      const place = placeName(st.name);
+      expect(titleOf(shell), st.slug).toMatch(/^IP Infringement Economist in /);
+      expect(h1Of(shell), st.slug).toBe(`Intellectual Property Infringement Economic Damages Expert in ${place}`);
+      expect(descriptionOf(shell).length, st.slug).toBeGreaterThanOrEqual(140);
+      expect(descriptionOf(shell).length, st.slug).toBeLessThanOrEqual(160);
+      expect(text, st.slug).toContain("Patent and copyright claims arise under federal law that only the federal courts may hear");
+      expect(text, st.slug).toContain("United States Court of Appeals for the Federal Circuit");
+      expect(text, st.slug).toContain("Patent, copyright, and trademark damages are set by federal statute");
+      expect(text, st.slug).not.toMatch(/Matters within federal jurisdiction proceed in|damages rules and venues|a present value built|contributory negligence|comparative fault/);
+      if (st.slug === "american-samoa") expect(text).toContain("American Samoa has no federal district court of its own");
+      else expect(text.indexOf("United States District Court"), st.slug).toBeLessThan(text.indexOf("Federal Circuit"));
+      // The services-in-state list links every declaring pillar's pair x state shell.
+      for (const pillar of ["intellectual-property-damages", "lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review"]) {
+        expect(hrefs(shell).has(`/services/${pillar}/case/intellectual-property-infringement/${st.slug}`), `${st.slug} ${pillar}`).toBe(true);
+      }
+    }
+  });
+
+  it("the intellectual property pillar's state and city shells carry the role and the federal-courts-first legal context (2026-10-06)", () => {
+    const tx = readShell("/services/intellectual-property-damages/texas");
+    expect(titleOf(tx)).toBe(`Intellectual Property Damages Expert in Texas | ${ORG_NAME}`);
+    expect(h1Of(tx)).toBe("Intellectual Property Damages Expert in Texas");
+    expect(textOf(tx)).toContain("Patent and copyright claims are heard only in the federal courts, which for Texas means the federal district courts serving Texas");
+    expect(textOf(tx)).not.toMatch(/orkers' compensation|wage-loss benefits|personal injury, wrongful death, employment, and commercial damages claims/);
+    for (const st of states) {
+      const shell = readShell(`/services/intellectual-property-damages/${st.slug}`);
+      expect(textOf(shell), st.slug).toContain("Patent and copyright claims are heard only in the federal courts");
+      expect(descriptionOf(shell).length, st.slug).toBeGreaterThanOrEqual(140);
+      expect(descriptionOf(shell).length, st.slug).toBeLessThanOrEqual(160);
+      expect(hrefs(shell).has("/case-types/intellectual-property-infringement/" + st.slug), st.slug).toBe(true);
+    }
+    const houston = readShell("/services/intellectual-property-damages/texas/houston");
+    expect(titleOf(houston)).toBe(`IP Damages Expert in Houston, TX | ${ORG_NAME}`);
+    expect(h1Of(houston)).toBe("Intellectual Property Damages Expert in Houston, TX");
+    expect(textOf(houston)).toContain("Patent and copyright claims involving a business in Houston are heard only in federal court");
+    expect(textOf(houston)).toContain("An appeal in a patent case goes to the United States Court of Appeals for the Federal Circuit from every federal district court");
+    expect(textOf(houston)).not.toMatch(/Civil claims arising in Houston|Employers such as [^.]* shape the Houston labor market/);
+  });
+
+  it("the intellectual property pair hubs link every state shell, and every federal district shell lists the pillar (2026-10-06)", () => {
+    for (const { service, caseTypeSlug, path } of serviceCaseTypePairs().filter((p) => p.caseTypeSlug === "intellectual-property-infringement" || p.service.slug === "intellectual-property-damages")) {
+      const links = hrefs(readShell(path));
+      for (const st of states) expect(links.has(`${path}/${st.slug}`), `${service.slug} x ${caseTypeSlug} -> ${st.slug}`).toBe(true);
+    }
+    expect(textOf(readShell("/services/intellectual-property-damages/case/intellectual-property-infringement"))).toContain(
+      "How intellectual property damages analysis applies to Intellectual Property Infringement",
+    );
+    for (const d of federalDistricts) {
+      expect(hrefs(readShell(`/jurisdictions/federal/${d.slug}`)).has("/services/intellectual-property-damages"), d.slug).toBe(true);
+    }
+    // Only the directing economist's profile lists the practice area.
+    expect(hrefs(readShell("/team/christopher-skerritt")).has("/services/intellectual-property-damages")).toBe(true);
+    for (const slug of ["zachary-sperling", "francis-kumah"]) {
+      const profile = readShell(`/team/${slug}`);
+      expect(hrefs(profile).has("/services/intellectual-property-damages"), slug).toBe(false);
+      expect(rootOf(profile), slug).not.toMatch(/intellectual property|patent|trademark|copyright|trade secret/i);
+    }
   });
 
   it("F06: the about, contact, and consultation shells print the shared intake copy and nothing the pages do not", () => {

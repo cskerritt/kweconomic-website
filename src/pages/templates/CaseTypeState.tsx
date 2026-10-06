@@ -17,6 +17,7 @@ import {
   caseTypeVenuesHeading,
   caseTypeStateCourtsQuestion,
   caseTypeStateForums,
+  caseTypeCourtsNameFederalCourts,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -47,8 +48,9 @@ const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hove
 // family, and tax matters get the fault, interest, and cap paragraph
 // (generalContext), which a framing entry replaces with its own framework
 // paragraph. The trial courts listed follow the category
-// (caseTypes.ts caseTypeCourtSelection: tax matters take the business
-// selection, after the federal tax forums the entry lists itself).
+// (caseTypes.ts caseTypeCourtSelection: tax and intellectual property
+// matters take the business selection, after the federal tax forums or the
+// federal district courts and courts of appeals the entry lists itself).
 const INJURY_CATEGORIES: ReadonlySet<CaseTypeCategory> = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
 
 const listNames = (names: string[]) => {
@@ -106,16 +108,22 @@ export default function CaseTypeState() {
   const regulations = getRegulationsByState(state.slug);
   const selection = caseTypeCourtSelection(caseType);
   const trialCourts = courts ? selectTrialCourts(courts, selection.kind, selection.limit) : [];
+  const federalVenues = courts?.federalDistricts ?? [];
+  const circuit = circuitOfState(state.slug);
   // A matter heard outside the state's courts lists its own forums first
   // (the tax and transfer pricing dispute: the federal tax forums and the
-  // state's tax appeal process); every other entry lists none.
-  const venues = [...caseTypeStateForums(caseType, place, placeAttr(state.name)), ...trialCourts];
-  const federalVenues = courts?.federalDistricts ?? [];
+  // state's tax appeal process; intellectual property infringement: the
+  // federal district courts serving the state, the Federal Circuit, and the
+  // regional circuit); every other entry lists none.
+  const venues = [
+    ...caseTypeStateForums(caseType, place, placeAttr(state.name), { federalDistricts: federalVenues.map((d) => d.name), circuit }),
+    ...trialCourts,
+  ];
   // The framework paragraph: the state module's damages text (tort for the
   // injury and death categories, fault-interest-caps otherwise), or the
   // entry's own framing paragraph for a matter that is not a damages claim.
   const frameworkText = regulations
-    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuitOfState(state.slug))
+    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuit)
     : "";
   // The state's expert standard closes on how an economic damages report
   // meets it; a framing entry prints the state's inquiry with its own close.
@@ -130,7 +138,8 @@ export default function CaseTypeState() {
   // FAQs are linked, not repeated, so the FAQPage node is not a duplicate.
   // A workers' compensation claim is decided by the compensation forum, so
   // its courts answer names the forum first and the civil courts only for
-  // the third-party action.
+  // the third-party action. An answer that already names the federal
+  // district courts (intellectual property) takes no second federal sentence.
   const localFaqs = [
     ...(courts
       ? [
@@ -139,8 +148,14 @@ export default function CaseTypeState() {
             answer: [
               caseType.category === "workers-comp" && regulations
                 ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}. Final appeals run to the ${courts.supremeCourt}.`
-                : caseTypeStateCourts(caseType, { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug }, "sentence"),
-              federalVenues.length > 0 ? `Matters within federal jurisdiction proceed in ${federalCourts(federalVenues.map((d) => d.name))}.` : "",
+                : caseTypeStateCourts(
+                    caseType,
+                    { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug, federalDistricts: federalVenues.map((d) => d.name), circuit },
+                    "sentence",
+                  ),
+              federalVenues.length > 0 && !caseTypeCourtsNameFederalCourts(caseType)
+                ? `Matters within federal jurisdiction proceed in ${federalCourts(federalVenues.map((d) => d.name))}.`
+                : "",
               courts.venueNote ?? "",
             ]
               .filter(Boolean)

@@ -44,11 +44,13 @@ describe("serviceCityServices", () => {
       "lost-profits-and-commercial-damages",
       "fraud-and-asset-tracing",
       "transfer-pricing-expert-witness",
+      "intellectual-property-damages",
       "divorce-and-marital-financial-analysis",
       "expert-rebuttal-and-report-review",
     ]);
     expect(serviceHasCityPages("lost-earnings-and-earning-capacity")).toBe(true);
     expect(serviceHasCityPages("transfer-pricing-expert-witness")).toBe(true);
+    expect(serviceHasCityPages("intellectual-property-damages")).toBe(true);
     expect(serviceHasCityPages("vocational-evaluation")).toBe(false);
     expect(serviceHasCityPages("life-care-planning")).toBe(false);
   });

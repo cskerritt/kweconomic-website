@@ -10,7 +10,7 @@ import { ORG_NAME } from "@/lib/brand";
 // Lead definition: the extractable answer to "which case types call for a
 // forensic economist". Rendered in the hero and reused as the CollectionPage
 // description so the visible and structured-data summaries agree.
-const LEAD = `The case type fixes what the economic analysis consists of: in an injury or death matter, the earnings, benefits, and household services a person would have provided; in an employment, commercial, or family matter, the wages, profits, cash flows, or business value at issue; in a tax or transfer pricing dispute, whether the prices charged between related companies are at arm's length. ${ORG_NAME} prepares the analysis for plaintiff and defense counsel alike, and each page below sets out the components of the claim, the records that drive it, and how the number is built.`;
+const LEAD = `The case type fixes what the economic analysis consists of: in an injury or death matter, the earnings, benefits, and household services a person would have provided; in an employment, commercial, or family matter, the wages, profits, cash flows, or business value at issue; in a tax or transfer pricing dispute, whether the prices charged between related companies are at arm's length; in an intellectual property infringement case, the royalty, the lost profits, or the infringer's profits a patent, trademark, copyright, or trade secret supports. ${ORG_NAME} prepares the analysis for plaintiff and defense counsel alike, and each page below sets out the components of the claim, the records that drive it, and how the number is built.`;
 
 const RELATED_RESOURCES = [
   { href: "/attorneys", label: "Attorney resources by litigation stage" },

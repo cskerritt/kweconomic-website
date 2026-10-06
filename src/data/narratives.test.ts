@@ -327,6 +327,7 @@ const COMMERCIAL_AND_REBUTTAL = [
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
   "transfer-pricing-expert-witness",
+  "intellectual-property-damages",
   "divorce-and-marital-financial-analysis",
   "expert-rebuttal-and-report-review",
 ];
@@ -420,12 +421,18 @@ describe("pillar angles on the service x geo templates", () => {
       const faq = serviceStateGeographicFaqs(s, tx.name)[2];
       expect(faq.question, s.slug).toBe("When is expert disclosure due for a case venued in Texas?");
       // The transfer pricing pillar's disputes are mostly tried in the Tax
-      // Court, whose own rule fixes the report exchange; every other pillar
-      // keeps the shared answer.
+      // Court, whose own rule fixes the report exchange, and the patent and
+      // copyright claims of the intellectual property pillar only in the
+      // federal courts; every other pillar keeps the shared answer.
+      const own: Record<string, string> = {
+        "transfer-pricing-expert-witness":
+          "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony. In a refund suit in a federal district court or the Court of Federal Claims, or a commercial, shareholder, or matrimonial case in the Texas trial courts, the court's scheduling order ordinarily sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
+        "intellectual-property-damages":
+          "In the federal district courts, which hear every patent and copyright claim, the court's scheduling order sets the dates for the expert reports, and in a patent case the damages reports usually follow the court's construction of the claims. In a case heard in the Texas trial courts, such as a dispute over royalties owed under a license, the case management or scheduling order sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
+      };
       expect(faq.answer, s.slug).toBe(
-        s.slug === "transfer-pricing-expert-witness"
-          ? "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony. In a refund suit in a federal district court or the Court of Federal Claims, or a commercial, shareholder, or matrimonial case in the Texas trial courts, the court's scheduling order ordinarily sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case."
-          : "Expert disclosure in Texas is scheduled case by case: in the Texas trial courts by the case management or scheduling order, and in the federal district courts serving Texas by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
+        own[s.slug] ??
+          "Expert disclosure in Texas is scheduled case by case: in the Texas trial courts by the case management or scheduling order, and in the federal district courts serving Texas by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
       );
     }
     const dc = serviceStateGeographicFaqs(getServiceBySlug("wrongful-death-economic-loss")!, "District of Columbia")[2];
@@ -556,6 +563,23 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
     expect(serviceStateVenueParagraph(getServiceBySlug("transfer-pricing-expert-witness")!, nj)).toBe(
       "Transfer pricing disputes that involve New Jersey reach several forums: the United States Tax Court and, on a refund claim, the federal district courts serving New Jersey or the Court of Federal Claims for federal income tax; the New Jersey tax authority and its appeal process for a dispute over New Jersey tax; and the Superior Court, Law Division for the commercial, shareholder, and matrimonial claims that turn on an intercompany price. The arm's length analysis is built the same way for each forum; the forum sets the rule of decision, which counsel confirms, and the report presents the result so it can be applied under it.",
     );
+    // The intellectual property pillar names the federal district court
+    // first, then the Federal Circuit and the state's own circuit, then the
+    // state's court for the claims under its law (2026-10-06).
+    const ip = getServiceBySlug("intellectual-property-damages")!;
+    expect(serviceStateVenueParagraph(ip, nj)).toBe(
+      "Intellectual property claims that involve New Jersey reach several courts: the federal district court serving New Jersey for patent and copyright claims, which only the federal courts may hear, and for the trademark and trade secret claims filed in federal court; the United States Court of Appeals for the Federal Circuit for every appeal in a case with a patent claim, and the court of appeals for the Third Circuit for the others; and the Superior Court, Law Division for the trade secret, unfair competition, contract, and license claims under New Jersey law. The patent, trademark, and copyright measures are set by federal statute and are the same in every district; the court fixes the interest and decides any enhancement, and the report presents each measure so it can be applied to the claims the fact finder accepts.",
+    );
+    expect(serviceStateVenueParagraph(ip, getStateBySlug("district-of-columbia")!)).toContain("the court of appeals for the District of Columbia Circuit for the others");
+    const asVenue = serviceStateVenueParagraph(ip, getStateBySlug("american-samoa")!)!;
+    expect(asVenue).toContain("a federal district court where venue lies for patent and copyright claims, which only the federal courts may hear, since American Samoa has no federal district court of its own");
+    expect(asVenue).toContain("for the contract and license claims under American Samoa law");
+    expect(asVenue).not.toMatch(/trade secret, unfair competition|serving American Samoa|Circuit for the others/);
+    for (const st of states) {
+      const v = serviceStateVenueParagraph(ip, st)!;
+      expect(v.indexOf("federal district court"), st.slug).toBeLessThan(v.indexOf("Federal Circuit"));
+      expect(v, st.slug).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia|\{[a-z]+\}/i);
+    }
   });
 
   it("names what each pillar measures in the city context paragraph", () => {
@@ -563,13 +587,15 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
     expect(new Set(paragraphs).size).toBe(pillars.length);
     for (const [i, p] of paragraphs.entries()) {
       expect(p.startsWith("KW Economics serves counsel throughout Hackensack and the surrounding Bergen County area. Our economists ")).toBe(true);
-      // The transfer pricing pillar's forums are mostly federal, so its
-      // paragraph names the forums for disputes involving the state's
-      // businesses rather than the state's court system.
+      // The transfer pricing pillar's forums are mostly federal, and so are
+      // the intellectual property pillar's, so their paragraphs name those
+      // forums rather than the state's court system.
       expect(p).toMatch(
         pillars[i].slug === "transfer-pricing-expert-witness"
           ? /are familiar with the forums and disclosure rules that apply to transfer pricing disputes involving New Jersey businesses\.$/
-          : /engagements in New Jersey\.$/,
+          : pillars[i].slug === "intellectual-property-damages"
+            ? /are familiar with the federal and New Jersey courts that hear intellectual property claims and the disclosure rules that apply in them\.$/
+            : /engagements in New Jersey\.$/,
       );
       expect(p).not.toMatch(TYPOGRAPHY);
       expect(p).not.toMatch(CARE_COST);

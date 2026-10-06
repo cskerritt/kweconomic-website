@@ -8,7 +8,7 @@ import { states } from "@/data/states";
 import { retainableExperts } from "@/data/team";
 import { ORG_NAME, VOC_SERVICE_URL, LCP_SERVICE_URL } from "@/lib/brand";
 import { pillarTitle, expertLabel } from "@/lib/page-titles.mjs";
-import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
+import { capFirst, proseName, workPhrase } from "@/lib/service-prose.mjs";
 import { ORG_URL } from "@/lib/schema";
 import {
   renderRoute,
@@ -86,7 +86,9 @@ describe("ServicePillar", () => {
         expect(html).toContain('href="/team"');
         expect(html).toContain(`<time dateTime="${service.dateModified}">`);
         expect(html).toContain('id="sources-heading"');
-        for (const s of service.sources) expect(html).toContain(`href="${s.url}"`);
+        // React writes an ampersand in an attribute as &amp; (the Uniform
+        // Trade Secrets Act page carries a query string).
+        for (const s of service.sources) expect(html).toContain(`href="${s.url.replace(/&/g, "&amp;")}"`);
       });
 
       it("carries 'nationwide' and 'plaintiff and defense' in the hero lead, not the title", () => {
@@ -280,6 +282,11 @@ describe("ServicePillar", () => {
       "What does a transfer pricing expert witness analyze?",
       "How is expert testimony presented in the Tax Court?",
     ],
+    "intellectual-property-damages": [
+      "What does an intellectual property damages expert measure?",
+      "How is a reasonable royalty determined?",
+      "Who must prove what in a claim for the infringer's profits?",
+    ],
     "expert-rebuttal-and-report-review": [
       "What does a rebuttal review test in an opposing report?",
     ],
@@ -306,6 +313,7 @@ describe("ServicePillar", () => {
     "life-care-plan-cost-projection": "How life care plan costing applies to the specific demands of each case type",
     "expert-rebuttal-and-report-review": "How rebuttal analysis applies to the specific demands of each case type",
     "transfer-pricing-expert-witness": "How transfer pricing analysis applies to the specific demands of each case type",
+    "intellectual-property-damages": "How intellectual property damages analysis applies to the specific demands of each case type",
   };
   for (const [slug, phrase] of Object.entries(CASE_TYPE_INTRO_PINS)) {
     it(`${slug}: the by-Case-Type intro names the work performed`, () => {
@@ -324,7 +332,9 @@ describe("ServicePillar", () => {
     for (const service of pillarServices()) {
       const { title } = render(service.slug);
       expect(title.length, service.slug).toBeLessThanOrEqual(60);
-      expect(title, service.slug).toContain(service.shortName.split(" ")[0]);
+      // The keyword is the short name's first word in its prose form, so an
+      // acronym short name ("IP Damages") is checked as spelled out.
+      expect(title.toLowerCase(), service.slug).toContain(proseName(service.shortName).split(" ")[0]);
     }
     // The two pillars whose full name cannot fit carry a written titleName.
     expect(render("lost-earnings-and-earning-capacity").title).toBe(`Lost Earnings and Earning Capacity Expert | ${ORG_NAME}`);
@@ -332,6 +342,8 @@ describe("ServicePillar", () => {
     expect(render("business-valuation").title).toBe(`Business Valuation Expert | ${ORG_NAME}`);
     // The pillar whose name already carries the role keeps it once.
     expect(render("transfer-pricing-expert-witness").title).toBe(`Transfer Pricing Expert Witness | ${ORG_NAME}`);
+    // The intellectual property pillar spells the keyword out in its title.
+    expect(render("intellectual-property-damages").title).toBe(`Intellectual Property Damages Expert | ${ORG_NAME}`);
   });
 
   it("a non-pillar cross-sell renders the hand-off card, not the pillar body", () => {

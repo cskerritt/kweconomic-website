@@ -2,7 +2,7 @@ import type { Faq, Source } from "./types";
 import { refsToSources } from "./references";
 
 /**
- * Attorney journeys: four stages x fifteen case types, written from the
+ * Attorney journeys: four stages x sixteen case types, written from the
  * economist's standpoint. Each stage answers the question counsel is actually
  * asking at that point: whether the loss justifies an economist and what to
  * gather first (considering), how to scope the engagement and what to send
@@ -828,6 +828,58 @@ export const journeys: JourneyStage[] = [
     ],
     sources: refsToSources(["IRS_TP_EXAM_PROCESS", "TREAS_REG_1_482_1", "IRS_TP_DOCUMENTATION_FAQS"]),
   },
+  {
+    stage: "considering",
+    caseTypeSlug: "intellectual-property-infringement",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-06",
+    dateModified: "2026-10-06",
+    intro:
+      "An intellectual property case needs an economist once the damages will be decided on a reconstruction rather than read from the records: a reasonable royalty that has to be built from licenses and the profit the invention made possible, lost profits that depend on what buyers would have done without the infringing product, an infringer's profits claim whose deductions and apportionment are contested, or a trade secret claim whose value runs to the end of a head start. Counsel considering an economist should start with the accused products' sales data, the licenses in the record, and the dates that set the damages period, because the measure is built from them and each is often disputed.",
+    checklist: [
+      "Identify the rights asserted, the accused products, and the remedies the claims seek: a royalty, lost profits, the infringer's profits, or unjust enrichment",
+      "Note the dates that set the damages period: the start of the infringement or misappropriation, any marking or notice, and the filing of the complaint",
+      "Gather the licenses to the rights in suit and any licenses for comparable technology the parties have signed",
+      "Ask for the accused products' unit sales, revenue, and cost data in the first discovery requests",
+      "Identify the technical and survey questions, such as design-arounds and the value of the patented feature, that other experts will answer",
+    ],
+    questionsToAsk: [
+      "Which measures does the record support, and which one is likely to carry the claim?",
+      "Which licenses in the record are likely to be treated as comparable, and what adjustments will they need?",
+      "What sales and cost data do you need first to give a preliminary view of the damages?",
+      "How will the court's construction of the claims affect the accused products and the schedule?",
+    ],
+    timeline: "Two to three weeks from the first call to a preliminary view of the measures and the issues, once the pleadings, the licenses, and the first sales data are in hand. A full analysis follows the retention and records phases described on the services pages.",
+    requiredDocuments: [
+      "The complaint, the asserted claims or the identified trade secrets, and any infringement contentions",
+      "Licenses to the rights in suit and to comparable technology, with the negotiation files",
+      "Unit sales, revenue, and cost data for the accused products and the owner's competing products",
+      "Marking, notice, and public disclosure records that bear on the damages period",
+    ],
+    pitfalls: [
+      "Serving damages discovery before the economist has identified the sales, cost, and license records the measures need",
+      "Assuming lost profits are available without evidence of demand, substitutes, and the owner's capacity to make the added sales",
+      "Treating a royalty rate from an industry survey or a rule of thumb as a substitute for the licenses and the record of the case",
+    ],
+    faqs: [
+      {
+        question: "When does an intellectual property case justify a testifying damages economist?",
+        answer:
+          "When the damages will be decided on a reconstructed measure rather than read from the records: a reasonable royalty built from licenses and the profit the invention made possible, lost profits that depend on the market without the infringer, or an infringer's profits claim with contested deductions and apportionment. A dispute over royalties owed under a license that the contract's own rate settles may need only an accounting of the licensee's sales.",
+      },
+      {
+        question: "Can an economist give a view of the damages before discovery is complete?",
+        answer:
+          "Yes, as consulting work. A preliminary review of the licenses, the public information on the accused products, and any sales data already produced can show which measures the record is likely to support, which records to request first, and where the other side is likely to press, before any decision about a testifying expert is made.",
+      },
+      {
+        question: "What does a preliminary damages review cost relative to a full report?",
+        answer:
+          "A preliminary review is a limited engagement built from the pleadings, the licenses, and the sales data in hand, so it costs far less than a full analysis, which adds the market and license analysis, the apportionment, the damages period, and the written report. The engagement letter states the fee basis for each phase, and counsel can stop after the review.",
+      },
+    ],
+    sources: refsToSources(["PATENT_284", "GEORGIA_PACIFIC", "PANDUIT"]),
+  },
   // ── Retaining stage ───────────────────────────────────────────
   {
     stage: "retaining",
@@ -1617,6 +1669,58 @@ export const journeys: JourneyStage[] = [
     ],
     sources: refsToSources(["TREAS_REG_1_482_1", "IRS_TP_DOCUMENTATION_FAQS", "FRCP_26"]),
   },
+  {
+    stage: "retaining",
+    caseTypeSlug: "intellectual-property-infringement",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-06",
+    dateModified: "2026-10-06",
+    intro:
+      "Retaining an economist in an intellectual property case means fixing the rights, the accused products, the remedies, and the court's schedule before the analysis begins, because each changes the records the economist needs and the report the court will receive. The conflict check runs across the parties, their affiliates, and the licensees whose agreements the analysis will read; the records request starts with the accused products' sales and cost data and the licenses; and the schedule is set by the court, which in a patent case usually ties the expert reports to its construction of the claims.",
+    checklist: [
+      "Run the conflict check across the parties, their affiliates, and the licensees whose agreements the analysis will rely on",
+      "Define the rights, the accused products, the remedies sought, and the damages period the analysis covers",
+      "Confirm the protective order's terms for the economist and staff before any confidential data is sent",
+      "Send the licenses, the sales and cost data produced so far, and the infringement contentions with the engagement letter",
+      "Agree on the report deadline from the scheduling order and the claim construction schedule",
+    ],
+    questionsToAsk: [
+      "Have you or your firm worked for either party, its affiliates, or the licensees in the record?",
+      "Which technical and survey experts will you rely on, and for which inputs?",
+      "How will you obtain comparable licenses beyond those the parties produce?",
+      "How will the analysis change if the court construes the claims more narrowly than we expect?",
+    ],
+    timeline: "About two weeks for retention, the protective order acknowledgment, and the first records transfer. The license and market analysis follows once the sales, cost, and license data are in hand.",
+    requiredDocuments: [
+      "The licenses to the rights in suit and to comparable technology, with the negotiation files and royalty reports",
+      "Sales, pricing, and cost data for the accused products by product, period, and customer",
+      "The owner's financial statements, capacity records, and sales data for its competing products",
+      "The protective order and the scheduling order with the claim construction dates",
+    ],
+    pitfalls: [
+      "Leaving the remedies and the accused products undefined, so the records request and the cost estimate drift",
+      "Producing sales data without the cost detail needed to compute incremental profit or the infringer's deductible expenses",
+      "Retaining the damages expert after the technical experts have formed their views on design-arounds and apportionment, so the inputs cannot be coordinated",
+    ],
+    faqs: [
+      {
+        question: "How is the scope of an intellectual property damages engagement set?",
+        answer:
+          "By the rights, the accused products, the remedies, and the court's schedule. A royalty for one patent and one product line with the licenses in hand is the narrowest scope; several patents or marks, lost profits or price erosion claims that require the market to be reconstructed, trade secrets valued one by one, or survey-based apportionment widen it. The engagement letter states the scope and the fee basis for each phase.",
+      },
+      {
+        question: "Why does the protective order matter at retention?",
+        answer:
+          "Because the sales, cost, and license data the analysis rests on are usually produced under a protective order that limits who may see them, often to outside counsel and retained experts who sign an acknowledgment. The economist and the staff who will work with the data are identified and sign before it is sent, so the analysis is not delayed when the production arrives.",
+      },
+      {
+        question: "Can consulting work become a disclosed report later?",
+        answer:
+          "Yes. Many engagements begin as consulting work that tests the other side's theory and the licenses in the record, and become a disclosed report once counsel decides the damages analysis will be presented. The scope and the form of the work product are set at retention and can be changed as the case develops, subject to the court's disclosure rules.",
+      },
+    ],
+    sources: refsToSources(["PATENT_284", "DTSA_1836", "FRCP_26"]),
+  },
   // ── Preparing for Deposition ──────────────────────────────────
   {
     stage: "preparing-deposition",
@@ -2398,6 +2502,58 @@ export const journeys: JourneyStage[] = [
     ],
     sources: refsToSources(["TAX_COURT_RULE_143", "TREAS_REG_1_482_5", "FRE_702"]),
   },
+  {
+    stage: "preparing-deposition",
+    caseTypeSlug: "intellectual-property-infringement",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-06",
+    dateModified: "2026-10-06",
+    intro:
+      "Preparing the economist for deposition in an intellectual property case centers on the inputs the other side will say were chosen to reach a result: the royalty base and its apportionment, the licenses treated as comparable and the ones set aside, the conversion of lump sums into rates, the design-around or substitute the infringer could have adopted, the market and capacity behind a lost profits claim, and the start and end of the damages period. Because courts decide many of these disputes as questions of admissibility, the deposition also builds the record for a reliability challenge, so the economist should be able to tie every input to a document or to another expert's stated opinion.",
+    checklist: [
+      "Confirm each royalty input, apportionment step, and sales figure ties to a produced document or an expert's stated opinion",
+      "Prepare the reasons each license was treated as comparable or set aside, and how each adjustment was made",
+      "Prepare the result under the opposing base, licenses, and alternatives",
+      "Review the technical and survey experts' reports the analysis relies on and the limits of each",
+      "Assemble the reliance file: licenses, sales and cost data, forecasts, workpapers, and the opposing report",
+    ],
+    questionsToAsk: [
+      "Why is your royalty base the smallest unit that practices the patent, and what does it still include?",
+      "How did you convert each lump-sum license into a rate, and what sales did you assume?",
+      "What does the result look like if the opposing expert's design-around is accepted?",
+      "Which of your inputs come from another expert, and what happens if that opinion is excluded?",
+    ],
+    timeline: "One to two preparation sessions in the two weeks before the deposition, after the report, the workpapers, and the opposing report are final.",
+    requiredDocuments: [
+      "The final report, the workpapers, and the license comparability analysis",
+      "The licenses, the sales and cost data, and the forecasts relied on",
+      "The technical and survey experts' reports the analysis relies on",
+      "The opposing damages report and its workpapers",
+    ],
+    pitfalls: [
+      "A rate drawn from licenses the economist cannot show are comparable in technology, rights, and circumstances",
+      "An apportionment that rests on an assumption rather than on the licenses, the infringer's documents, or survey evidence",
+      "Relying on another expert's opinion without knowing its limits, so the damages fall with it",
+    ],
+    faqs: [
+      {
+        question: "What is the most common line of attack on an intellectual property damages expert?",
+        answer:
+          "The royalty base and the licenses. Opposing counsel asks whether the base reaches value the patent did not create, whether each license is comparable in technology, rights, and circumstances, and how a lump sum was turned into a per-unit rate. The expert's answer is a comparability analysis for each license and a sensitivity table that shows the result under the disputed choices.",
+      },
+      {
+        question: "How does the deposition bear on a later challenge to the testimony?",
+        answer:
+          "Courts decide many damages disputes in these cases as questions of whether the opinion rests on sufficient facts or data and on reliable methods reliably applied. Answers that tie each input to the record make that showing, while an answer that the expert assumed a rate or did not read a license can become the basis of a motion to exclude, so preparation goes through each input with the documents behind it.",
+      },
+      {
+        question: "Should the expert be ready to address the technical and survey experts' opinions?",
+        answer:
+          "Yes, at the level the damages depend on them. The economist should know which inputs come from the technical expert, such as whether a design-around was available, and which from the survey expert, such as the value buyers place on a feature, and should be able to show what the result is if either input changes.",
+      },
+    ],
+    sources: refsToSources(["ECOFACTOR_GOOGLE", "LASERDYNAMICS", "FRE_702"]),
+  },
   // ── Trial Testimony ───────────────────────────────────────────
   {
     stage: "trial",
@@ -3178,6 +3334,58 @@ export const journeys: JourneyStage[] = [
       },
     ],
     sources: refsToSources(["TAX_COURT_RULE_143", "TREAS_REG_1_482_1", "OECD_TP_GUIDELINES"]),
+  },
+  {
+    stage: "trial",
+    caseTypeSlug: "intellectual-property-infringement",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-06",
+    dateModified: "2026-10-06",
+    intro:
+      "Trial testimony in an intellectual property case presents the damages to a jury or a judge, usually after the liability evidence. The economist explains the measure the statute provides first, then the evidence behind it: for a reasonable royalty, the hypothetical negotiation, the licenses, the profit the protected feature made possible, and the alternatives that bound the bargain; for lost profits, the market, the substitutes, and the owner's capacity; for the infringer's profits, the revenue, the deductions, and the apportionment. Demonstratives should show the royalty base and the rate as separate steps and the result under the other side's choices, so the fact finder can see where the experts differ.",
+    checklist: [
+      "Prepare a board of the royalty base, the apportionment, and the rate as separate steps",
+      "Prepare a board of the licenses relied on, with the differences each adjustment addresses",
+      "Prepare the reconciliation of the two experts' results, choice by choice",
+      "Prepare the result under the opposing base, licenses, and alternatives",
+      "Confirm every board figure ties to a report schedule and a produced document",
+    ],
+    questionsToAsk: [
+      "How will you explain the hypothetical negotiation to a jury that has never seen a license?",
+      "How will you show why your royalty base is apportioned to the patented feature?",
+      "What does the result look like under the opposing expert's licenses?",
+      "How will you explain the damages period and the dates that limit it?",
+    ],
+    timeline: "One to two preparation sessions in the week before testimony, after the demonstratives are drafted and the opposing report has been analyzed.",
+    requiredDocuments: [
+      "The final report with the measures, the damages period, and the sensitivity schedules",
+      "The licenses, the sales data, and the cost records relied on",
+      "Draft demonstratives",
+      "The opposing expert's report and deposition transcript",
+    ],
+    pitfalls: [
+      "Presenting the rate and the base as a single number, so the fact finder cannot adjust either one",
+      "Leaving the fact finder without the result under the other side's choices",
+      "Explaining the royalty in the vocabulary of the case law rather than in terms of what the parties would have agreed and why",
+    ],
+    faqs: [
+      {
+        question: "How does the economist explain a reasonable royalty to a jury?",
+        answer:
+          "As the license the two companies would have signed just before the infringement began, if both had been willing to deal and both knew the patent was valid and infringed. The economist shows the licenses that tell what similar rights sold for, the profit the invention made possible, and the cost of the alternative the infringer had, and walks from that evidence to the base and the rate one step at a time.",
+      },
+      {
+        question: "What if the fact finder accepts only some of the claims or products?",
+        answer:
+          "The report's schedules let the fact finder apply the measure to the claims, products, and periods it accepts and read the result directly. The economist should say on direct that the analysis is built claim by claim and product by product, because it tells the fact finder the damages are not all or nothing.",
+      },
+      {
+        question: "Does the economist testify about enhanced or exemplary damages?",
+        answer:
+          "No. Enhanced damages for a patent and exemplary damages for a trade secret are for the court to decide on the defendant's conduct, and they are not part of the economic measure. The economist's testimony covers the compensatory damages and, where the court asks for it, the computation of prejudgment interest.",
+      },
+    ],
+    sources: refsToSources(["GEORGIA_PACIFIC", "LUCENT_GATEWAY", "HALO_ELECTRONICS"]),
   },
 ];
 

@@ -227,6 +227,33 @@ describe("attorney stage module", () => {
     expect(journeyDescription("trial", wd)).toContain("explaining present value");
   });
 
+  it("the intellectual property journeys keep the acronym and the damages framing, and explain the royalty at trial (2026-10-06)", () => {
+    const ip = caseTypes.find((c) => c.slug === "intellectual-property-infringement")!;
+    expect(ip.framing).toBeUndefined();
+    expect(journeyShortName(ip)).toBe("IP Infringement");
+    expect(journeyHeading("considering", ip)).toBe("IP Infringement: Is an Economist Needed?");
+    expect(journeyTitle("preparing-deposition", ip)).toBe("IP Infringement: Economist at Deposition | KW Economics");
+    // The full name runs past the band, so the short form stands in, with
+    // its capitals kept (never "ip infringement").
+    expect(journeyDescription("considering", ip)).toBe(
+      "When IP infringement claims need a forensic economist: the loss threshold, records to request, and what to ask before retaining. Plaintiff and defense.",
+    );
+    expect(journeyDescription("trial", ip)).toBe(
+      "The economist at trial in IP infringement cases: demonstratives, explaining the royalty, and rebutting the opposing economist. Plaintiff and defense.",
+    );
+    for (const st of STAGES) {
+      const d = journeyDescription(st, ip);
+      expect(d, st).not.toMatch(/\bip\b|present value/);
+      expect(d, st).toContain("IP infringement");
+    }
+    // Every journey entry for the matter names both sides and no person, figure, or outcome.
+    for (const j of journeys.filter((x) => x.caseTypeSlug === ip.slug)) {
+      const text = JSON.stringify({ ...j, authorSlug: "" });
+      expect(text, j.stage).not.toMatch(/Skerritt|Sperling|Kumah|\$\d|\d+%|\bverdict|\bmillion/i);
+      expect(j.datePublished, j.stage).toBe("2026-10-06");
+    }
+  });
+
   it("stage index heading, title, description, and intro fit their bands", () => {
     for (const s of STAGES) {
       const heading = stageIndexHeading(s);
