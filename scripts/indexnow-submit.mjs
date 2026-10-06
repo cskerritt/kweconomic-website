@@ -50,24 +50,22 @@ if (urls.length === 0) {
 }
 const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
 
-console.log(`Submitting ${urls.length} URLs to IndexNow (host ${HOST}).`);
+// IndexNow accepts at most 10,000 URLs per request, so the sitemap is sent in
+// batches of BATCH_SIZE.
+const BATCH_SIZE = 10000;
+const batches = Math.ceil(urls.length / BATCH_SIZE);
+console.log(`Submitting ${urls.length} URLs to IndexNow (host ${HOST}) in ${batches} batch(es).`);
 
-const body = {
-  host: HOST,
-  key: KEY,
-  keyLocation: KEY_LOCATION,
-  urlList: urls,
-};
-
-const res = await fetch(ENDPOINT, {
-  method: "POST",
-  headers: { "Content-Type": "application/json; charset=utf-8" },
-  body: JSON.stringify(body),
-});
-
-console.log("IndexNow response:", res.status, res.statusText);
-if (res.status >= 400) {
-  const txt = await res.text();
-  console.error(txt);
-  process.exit(1);
+for (let i = 0; i < urls.length; i += BATCH_SIZE) {
+  const urlList = urls.slice(i, i + BATCH_SIZE);
+  const res = await fetch(ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: JSON.stringify({ host: HOST, key: KEY, keyLocation: KEY_LOCATION, urlList }),
+  });
+  console.log(`IndexNow batch ${i / BATCH_SIZE + 1}/${batches} (${urlList.length} URLs):`, res.status, res.statusText);
+  if (res.status >= 400) {
+    console.error(await res.text());
+    process.exit(1);
+  }
 }
