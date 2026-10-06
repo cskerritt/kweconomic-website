@@ -419,8 +419,13 @@ describe("pillar angles on the service x geo templates", () => {
     for (const s of pillars) {
       const faq = serviceStateGeographicFaqs(s, tx.name)[2];
       expect(faq.question, s.slug).toBe("When is expert disclosure due for a case venued in Texas?");
+      // The transfer pricing pillar's disputes are mostly tried in the Tax
+      // Court, whose own rule fixes the report exchange; every other pillar
+      // keeps the shared answer.
       expect(faq.answer, s.slug).toBe(
-        "Expert disclosure in Texas is scheduled case by case: in the Texas trial courts by the case management or scheduling order, and in the federal district courts serving Texas by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
+        s.slug === "transfer-pricing-expert-witness"
+          ? "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony. In a refund suit in a federal district court or the Court of Federal Claims, or a commercial, shareholder, or matrimonial case in the Texas trial courts, the court's scheduling order ordinarily sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case."
+          : "Expert disclosure in Texas is scheduled case by case: in the Texas trial courts by the case management or scheduling order, and in the federal district courts serving Texas by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
       );
     }
     const dc = serviceStateGeographicFaqs(getServiceBySlug("wrongful-death-economic-loss")!, "District of Columbia")[2];
@@ -556,9 +561,16 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
   it("names what each pillar measures in the city context paragraph", () => {
     const paragraphs = pillars.map((s) => serviceCityContextParagraph(s, nj, hackensack));
     expect(new Set(paragraphs).size).toBe(pillars.length);
-    for (const p of paragraphs) {
+    for (const [i, p] of paragraphs.entries()) {
       expect(p.startsWith("KW Economics serves counsel throughout Hackensack and the surrounding Bergen County area. Our economists ")).toBe(true);
-      expect(p).toMatch(/engagements in New Jersey\.$/);
+      // The transfer pricing pillar's forums are mostly federal, so its
+      // paragraph names the forums for disputes involving the state's
+      // businesses rather than the state's court system.
+      expect(p).toMatch(
+        pillars[i].slug === "transfer-pricing-expert-witness"
+          ? /are familiar with the forums and disclosure rules that apply to transfer pricing disputes involving New Jersey businesses\.$/
+          : /engagements in New Jersey\.$/,
+      );
       expect(p).not.toMatch(TYPOGRAPHY);
       expect(p).not.toMatch(CARE_COST);
       expect(p).not.toContain("&");

@@ -30,6 +30,10 @@ export interface StateRegulationEntry extends StateRegulation {
   generalContext: string;
   /** What the state's courts ask of an economic damages expert. */
   expertStandard: string;
+  /** The inquiry alone, without the damages-report sentence: set only where
+   * the first sentence of `expertStandard` itself names a damages opinion
+   * (expertInquiryOf reads the first sentence otherwise). */
+  expertInquiry?: string;
 }
 
 export const stateRegulations: StateRegulationEntry[] = [
@@ -39,6 +43,7 @@ export const stateRegulations: StateRegulationEntry[] = [
     damagesContext: "Alabama measures wrongful death differently from most states: the recovery is punitive in character rather than a computation of the survivors' pecuniary loss, so the economist's projection of the decedent's earnings plays a narrower role than in a personal injury claim, where lost earnings and household services are measured in the usual way. Alabama retains contributory negligence, evidence that medical expenses were paid by insurance or other sources is admissible, a departure from the strict collateral source rule, and prejudgment interest is generally not awarded on unliquidated tort damages.",
     generalContext: "Alabama retains contributory negligence, so in a negligence-based claim any fault on the plaintiff's part is a complete bar rather than a percentage reduction. Prejudgment interest is generally available on a liquidated sum, such as an unpaid contract balance, but not on unliquidated tort damages. No general statutory limit applies to economic damages, so the report states each loss as of a fixed date and separates past from future amounts so counsel can apply whichever interest rule governs.",
     expertStandard: "Alabama applies a reliability inquiry to scientific evidence and asks of other expert testimony whether the witness is qualified by training and experience and whether the opinion will assist the jury, so an economic damages opinion is tested mainly on its inputs: whether each rate, table, and assumption traces to the record and to a published source.",
+    expertInquiry: "Alabama applies a reliability inquiry to scientific evidence and asks of other expert testimony whether the witness is qualified by training and experience and whether the opinion will assist the jury.",
   },
   {
     stateSlug: "alaska",
@@ -137,6 +142,7 @@ export const stateRegulations: StateRegulationEntry[] = [
     damagesContext: "Indiana's wrongful death remedies differ by who died: the general act measures the loss to a spouse or dependents, a separate act covers adults without dependents with limited nonpecuniary recovery, and a child act covers minors, so the economist's role depends on which act applies. Recovery is barred once the plaintiff's fault exceeds half, the jury may hear evidence of collateral-source payments other than insurance the plaintiff or family paid for and governmental benefits, and prejudgment interest in tort turns on a statutory settlement-offer procedure.",
     generalContext: "Indiana reduces a negligence-based award by the plaintiff's share of fault and bars recovery once that share exceeds half. Interest before judgment is available on a contract claim when the amount was ascertainable by simple computation, and in tort it turns on a statutory settlement-offer procedure. Economic damages are not subject to a general statutory limit outside specific statutory claims, and the report separates the components that were ascertainable when they accrued from those that had to be projected.",
     expertStandard: "Indiana courts require that the principles behind expert scientific testimony be reliable and treat the federal reliability factors as helpful rather than controlling; for economic damages testimony the inquiry is whether the witness is qualified and whether the method and its inputs rest on a sound basis. A report that names its sources and ties each assumption to the record meets that standard.",
+    expertInquiry: "Indiana courts require that the principles behind expert scientific testimony be reliable and treat the federal reliability factors as helpful rather than controlling; for economic testimony the inquiry is whether the witness is qualified and whether the method and its inputs rest on a sound basis.",
   },
   {
     stateSlug: "iowa",
@@ -429,4 +435,17 @@ export const stateRegulations: StateRegulationEntry[] = [
 
 export function getRegulationsByState(stateSlug: string): StateRegulationEntry | undefined {
   return stateRegulations.find((r) => r.stateSlug === stateSlug);
+}
+
+/**
+ * What the state's courts ask of an expert, without the sentence that says
+ * how an economic damages report meets the inquiry: the pages for a matter
+ * that is not a damages claim (src/data/caseTypes.ts CaseTypeFraming
+ * expertStandard) print the inquiry with a closing sentence of their own.
+ * The entry's `expertInquiry` where it carries one, else the first sentence
+ * of `expertStandard` (every entry states the inquiry first and the damages
+ * sentence after it; state-regs.test.ts holds every entry to that).
+ */
+export function expertInquiryOf(entry: Pick<StateRegulationEntry, "expertStandard" | "expertInquiry">): string {
+  return entry.expertInquiry ?? entry.expertStandard.split(/(?<=\.)\s+(?=[A-Z])/)[0];
 }

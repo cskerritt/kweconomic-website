@@ -13,6 +13,7 @@ import {
   STAGE_LABELS,
   STAGE_GUIDES,
   caseTypeShortName,
+  journeyShortName,
   journeyHeading,
   journeyTitle,
   journeyDescription,
@@ -146,6 +147,7 @@ describe("attorney stage module", () => {
     for (const c of caseTypes) {
       expect(c.shortName, `${c.slug} needs a short name`).toBeTruthy();
       expect(c.shortName.length, c.slug).toBeLessThanOrEqual(SHORT_NAME_MAX);
+      expect(journeyShortName(c).length, c.slug).toBeLessThanOrEqual(SHORT_NAME_MAX);
       expect(c.shortName, c.slug).not.toMatch(DASHES);
       expect(caseTypeShortName(c), c.slug).toBe(c.shortName);
       expect(caseTypeShortName({ slug: c.slug, name: c.name }), `${c.slug} without a short form`).toBe(c.name);
@@ -166,14 +168,16 @@ describe("attorney stage module", () => {
         const heading = journeyHeading(s, c);
         const title = journeyTitle(s, c);
         const description = journeyDescription(s, c);
-        expect(heading, id).toContain(caseTypeShortName(c));
+        expect(heading, id).toContain(journeyShortName(c));
         expect(heading, id).toMatch(/Economist/);
         expect(title, id).toBe(`${heading}${TITLE_SUFFIX}`);
         expect(title.endsWith(" | KW Economics"), id).toBe(true);
         expect(title.length, `${id} title ${title.length} chars`).toBeLessThanOrEqual(TITLE_MAX);
         expect(description.length, `${id} description ${description.length} chars`).toBeGreaterThanOrEqual(DESCRIPTION_MIN);
         expect(description.length, `${id} description ${description.length} chars`).toBeLessThanOrEqual(DESCRIPTION_MAX);
-        expect(description.endsWith("Plaintiff and defense."), id).toBe(true);
+        // A matter that is not a damages claim closes on "Either side." (a
+        // divorce has spouses, a tax dispute a taxpayer and a government).
+        expect(description.endsWith(c.framing ? "Either side." : "Plaintiff and defense."), id).toBe(true);
         expect(description, id).toMatch(/economist/);
         // No mismatched indefinite article ("a employment", "an personal").
         expect(description, id).not.toMatch(/\ba [aeiou]|\ban [bcdfghjklmnpqrstvwxyz]/i);
@@ -198,14 +202,25 @@ describe("attorney stage module", () => {
     for (const c of framed) {
       for (const s of STAGES) expect(journeyDescription(s, c), `${s}/${c.slug}`).not.toMatch(/loss threshold|present value/);
     }
+    // The tax journeys carry the query term (journeyShortName "Transfer
+    // Pricing") in the heading, the title, and the description; the pair
+    // titles keep the "Tax Dispute" short form.
     const tax = caseTypes.find((c) => c.slug === "tax-and-transfer-pricing-dispute")!;
-    expect(journeyHeading("considering", tax)).toBe("Tax Dispute: Is an Economist Needed?");
+    expect(journeyShortName(tax)).toBe("Transfer Pricing");
+    expect(caseTypeShortName(tax)).toBe("Tax Dispute");
+    expect(journeyHeading("considering", tax)).toBe("Transfer Pricing: Is an Economist Needed?");
+    expect(journeyTitle("preparing-deposition", tax)).toBe("Transfer Pricing: Economist at Deposition | KW Economics");
     expect(journeyDescription("considering", tax)).toBe(
-      "When tax dispute matters need a forensic economist: the threshold questions, records to request, and what to ask before retaining. Plaintiff and defense.",
+      "When transfer pricing matters need a forensic economist: the threshold questions, the records to request, and what to ask before retaining. Either side.",
     );
     expect(journeyDescription("trial", tax)).toBe(
-      "The economist at trial in tax dispute cases: demonstratives, explaining the analysis, and rebutting the opposing economist. Plaintiff and defense.",
+      "The economist at trial in tax and transfer pricing dispute cases: demonstratives, explaining the analysis, and rebutting the opposing economist. Either side.",
     );
+    for (const s of STAGES) {
+      expect(journeyTitle(s, tax), s).toContain("Transfer Pricing");
+      expect(journeyDescription(s, tax), s).toMatch(/transfer pricing/);
+      expect(journeyDescription(s, tax), s).not.toContain("Plaintiff and defense");
+    }
     // The damages matters keep the shared descriptions.
     const wd = caseTypes.find((c) => c.slug === "wrongful-death")!;
     expect(journeyDescription("considering", wd)).toContain("the loss threshold");

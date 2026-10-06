@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { federalDistricts, getFederalDistrict, districtsByCircuit, districtSlug, federalCourtName, FEDERAL_SERVICE_SLUGS, CIRCUIT_ORDER } from "./federal-districts";
+import { federalDistricts, getFederalDistrict, districtsByCircuit, districtSlug, federalCourtName, FEDERAL_SERVICE_SLUGS, CIRCUIT_ORDER, circuitOfState } from "./federal-districts";
 import { pillarServices } from "../services";
 import { stateCourts } from "./state-courts";
 import { states } from "../states";
@@ -43,6 +43,18 @@ describe("federal districts", () => {
     const pillars = new Set(pillarServices().map((s) => s.slug));
     expect(FEDERAL_SERVICE_SLUGS.length).toBeGreaterThanOrEqual(3);
     for (const slug of FEDERAL_SERVICE_SLUGS) expect(pillars.has(slug), slug).toBe(true);
+    // Federal transfer pricing litigation is heard mostly in the Tax Court;
+    // nothing supports listing it as work "most often retained" in a
+    // district court (review fix 2026-10-05).
+    expect(FEDERAL_SERVICE_SLUGS as readonly string[]).not.toContain("transfer-pricing-expert-witness");
+  });
+  it("names each state's circuit, and none for American Samoa", () => {
+    expect(circuitOfState("new-york")).toBe("Second");
+    expect(circuitOfState("texas")).toBe("Fifth");
+    expect(circuitOfState("district-of-columbia")).toBe("D.C.");
+    expect(circuitOfState("guam")).toBe("Ninth");
+    expect(circuitOfState("american-samoa")).toBeUndefined();
+    for (const d of federalDistricts) expect(circuitOfState(d.stateSlug), d.slug).toBe(d.circuit);
   });
   it("looks up by slug", () => {
     expect(getFederalDistrict("district-of-new-jersey")?.stateSlug).toBe("new-jersey");

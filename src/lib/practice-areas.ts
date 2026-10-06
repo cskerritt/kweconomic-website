@@ -27,6 +27,20 @@ const SPECIALTY_TO_SERVICE: Record<string, string> = {
   "Expert Liaison": "",
 };
 
+/** A service name that names the role rather than the work ("Transfer Pricing Expert Witness"). */
+const ROLE_NOUN_NAME = /\bExpert(?: Witness)?$/;
+
+/**
+ * Anchor text of a profile's "Areas of Practice" link: the service name, or,
+ * on the profile of a member counsel cannot retain by name (no expertTier),
+ * the short name wherever the service name is a role noun, so a support
+ * profile never reads as "<Name> ... Transfer Pricing Expert Witness".
+ * scripts/prerender.mjs applies the same rule to the profile shells.
+ */
+export function practiceAreaLabel(member: Pick<TeamMember, "expertTier">, service: Pick<Service, "name" | "shortName">): string {
+  return !member.expertTier && ROLE_NOUN_NAME.test(service.name) ? service.shortName : service.name;
+}
+
 /**
  * Returns the pillar service lines a team member practices in, derived from
  * their specialties. Order follows the canonical services.ts order.

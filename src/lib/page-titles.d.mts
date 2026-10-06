@@ -25,6 +25,8 @@ export interface TitleService {
   shortName: string;
   titleName?: string;
   titleShortName?: string;
+  /** Labels the service x state and service x city tags try before the heading labels, longest first. */
+  geoTitleLabels?: readonly string[];
 }
 
 /** The first candidate body whose branded title fits TITLE_MAX; the last candidate when none does. */
@@ -43,6 +45,10 @@ export function cityTitle(label: string | readonly string[], city: TitleCity, st
 export function serviceTitleLabels(service: TitleService): string[];
 /** The full name, then titleName where the data sets one. */
 export function serviceTitleNames(service: TitleService): string[];
+/** geoTitleLabels (where set) and then serviceTitleLabels, de-duplicated: the service x state and service x city ladders. */
+export function serviceGeoTitleLabels(service: TitleService): string[];
+/** The service x state and service x city H1 label: the first geo label where set, else the short name. */
+export function serviceGeoHeadingLabel(service: TitleService): string;
 /** titleBase, then "<shortName> Economist" where it differs; a framing block's stateTitleStems instead where the entry carries one. */
 export function caseTypeTitleStems(caseType: TitleCaseType): string[];
 /** /case-types/<case>: titleBase (or the framing block's titleStem) plus the brand. */

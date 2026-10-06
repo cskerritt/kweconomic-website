@@ -95,6 +95,26 @@ describe("/team/:slug profiles", () => {
     expect(francis).toContain("New Jersey, New York");
   });
 
+  it("Francis Kumah's profile claims no transfer pricing work, on the page or in the Person node (review fix 2026-10-05)", () => {
+    // His source roster entry lists forensic accounting, financial analysis,
+    // and economic damages; nothing names transfer pricing until the owner
+    // confirms it (README, facts to confirm).
+    expect(withoutJsonLd(francis)).not.toMatch(/transfer pricing|intercompany/i);
+    expect(francis).not.toContain('href="/services/transfer-pricing-expert-witness"');
+    // The Person node's knowsAbout comes from his specialties (the
+    // Organization node may list the topic; the person may not).
+    const person = [...francis.matchAll(/<script type="application\/ld\+json">([^]*?)<\/script>/g)]
+      .flatMap((m) => {
+        const doc = JSON.parse(m[1]);
+        return (doc["@graph"] ?? [doc]) as { "@type"?: string; "@id"?: string; knowsAbout?: string[] }[];
+      })
+      .find((n) => n["@type"] === "Person" && n["@id"]?.endsWith("/team/francis-kumah#person"));
+    expect(person).toBeDefined();
+    expect(person!.knowsAbout ?? []).not.toContain("Transfer Pricing");
+    // The senior expert who directs the work keeps the practice area.
+    expect(chris).toContain('href="/services/transfer-pricing-expert-witness"');
+  });
+
   it("no profile carries sister-roster copy or dashes", () => {
     for (const html of [chris, zach, francis]) {
       expect(html).not.toMatch(LCP_ROSTER_COPY);

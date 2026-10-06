@@ -311,16 +311,31 @@ describe("divorce financial analysis pages", () => {
 
 describe("transfer pricing pages", () => {
   it("test intercompany prices against the arm's length standard from the group's own records, and name the federal tax forums before the state's (Houston)", () => {
-    const { stateHero, stateLegal, cityHero, cityFaqs, stateFaqs } = renderedProse("transfer-pricing-expert-witness", "texas", texasCities, "houston");
+    const { stateHero, stateLegal, cityHero, cityPlace, cityFaqs, stateFaqs } = renderedProse("transfer-pricing-expert-witness", "texas", texasCities, "houston");
     expect(serviceGeoCategory("Transfer Pricing")).toBe("tax");
     expect(stateHero.startsWith("KW Economics provides transfer pricing analysis for matters venued in Texas. The analysis tests the prices charged between related companies")).toBe(true);
     expect(stateHero).toContain("against the arm's length standard");
-    expect(stateHero).toContain("A federal transfer pricing dispute follows the same federal rules wherever the business is based; in Texas, the analysis also meets the jurisdiction's own tax on related-party income");
+    // One statute and one set of regulations, but the business's location
+    // decides which circuit's appellate decisions govern (the review fix of
+    // 2026-10-05 retired "the same federal rules wherever the business is
+    // based").
+    expect(stateHero).toContain(
+      "A federal transfer pricing dispute applies the same statute and regulations wherever the business is based, though where it is based decides which federal court of appeals' decisions govern; in Texas, the analysis also meets the jurisdiction's own tax on related-party income",
+    );
     // The federal tax forums lead the legal context; the state's trial court
     // hears the civil claims, and the compensation forum never appears.
     expect(stateLegal).toBe(
-      "Federal transfer pricing disputes are decided under the same federal rules wherever the business is based: in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims. Texas's District Court is the primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price, and a dispute over Texas's own tax follows its administrative and appeal process. Final appeals in the Texas court system run to the Supreme Court of Texas. Texas is served by 4 federal district courts, where the same analyses are offered under the federal expert-disclosure framework.",
+      "Federal transfer pricing disputes are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; the same statute and regulations apply wherever the business is based, but where it is based decides which federal court of appeals' decisions govern. Texas's District Court is the primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price, and a dispute over Texas's own tax follows its administrative and appeal process. Final appeals in the Texas court system run to the Supreme Court of Texas. Texas is served by 4 federal district courts, where the same analyses are offered under the federal expert-disclosure framework.",
     );
+    for (const text of [stateHero, stateLegal]) expect(text).not.toMatch(/same federal rules|same federal arm's length rules/);
+    // The city place paragraph says where a tax dispute for a business based
+    // in the city is heard, not which employers shape its labor market.
+    expect(cityPlace).toBe(
+      "A federal tax dispute for a business based in Houston is heard in the United States Tax Court, which holds trials in cities across the country, or, on a refund claim, in a federal district court or the Court of Federal Claims; a dispute over Texas's own tax follows its administrative and appeal process. Either side.",
+    );
+    expect(cityPlace).not.toMatch(/Employers such as|labor market/);
+    // The disclosure FAQ names the Tax Court's report exchange.
+    expect(stateFaqs[2].answer).toContain("no later than thirty days before the call of the trial calendar");
     expect(stateFaqs[0].answer).toBe(
       "Yes. KW Economics provides transfer pricing analysis for attorneys handling matters venued in Texas, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the group's own intercompany agreements and financial records and from comparable transactions and companies selected for the transactions at issue rather than from data for the venue.",
     );
@@ -335,7 +350,7 @@ describe("transfer pricing pages", () => {
     expect(economicContextCaption("Transfer Pricing", "Texas")).toBe(
       "The arm's length result rests on the group's own agreements and financial records and on comparables selected for the transactions at issue; Texas enters as the forum for a state or local tax dispute or a civil claim and, where a comparability adjustment calls for it, through Texas-area market conditions.",
     );
-    for (const text of [stateHero, stateLegal, cityHero, JSON.stringify(stateFaqs), JSON.stringify(cityFaqs)]) {
+    for (const text of [stateHero, stateLegal, cityHero, cityPlace, JSON.stringify(stateFaqs), JSON.stringify(cityFaqs)]) {
       expect(text).not.toMatch(/wage|worklife|household|Bureau of Labor Statistics/i);
       expect(text).not.toMatch(/\bSection \d|\bRule \d|U\.S\.C\.|C\.F\.R\.|[–—§]/);
       expect(text).not.toMatch(/maximi[sz]e|minimi[sz]e|avoid tax|tax shelter|win your/i);

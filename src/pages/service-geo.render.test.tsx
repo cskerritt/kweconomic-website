@@ -21,7 +21,7 @@ import {
 import { cityAttr, placeAttr, placeName } from "@/data/geo-prose.mjs";
 import { ORG_NAME } from "@/lib/brand";
 import { ORG_URL } from "@/lib/schema";
-import { serviceStateTitle, serviceCityTitle, stateHubTitle } from "@/lib/page-titles.mjs";
+import { serviceStateTitle, serviceCityTitle, stateHubTitle, serviceGeoHeadingLabel } from "@/lib/page-titles.mjs";
 import { truncateAtWord } from "@/lib/text";
 import { capFirst, proseName, workPhrase } from "@/lib/service-prose.mjs";
 import {
@@ -278,7 +278,7 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
             } else if (service.slug === "transfer-pricing-expert-witness") {
               // The tax variant: the federal tax forums first, then the
               // state's forum for the civil claims and its own tax process.
-              expect(legal).toMatch(/^Federal transfer pricing disputes are decided under the same federal rules wherever the business is based: in the United States Tax Court/);
+              expect(legal).toMatch(/^Federal transfer pricing disputes are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; the same statute and regulations apply wherever the business is based, but where it is based decides which federal court of appeals(?:'|&#x27;) decisions govern\./);
               expect(legal).toContain("primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price");
             } else {
               expect(legal).toContain("primary trial-level forum for the shareholder, partnership, contract, and fraud claims these analyses support.");
@@ -296,8 +296,12 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
           const question = `When is expert disclosure due for a case venued in ${place}?`;
           expect(faqText(html)).toContain(question);
           expect(faqLdStrings(html)).toContain(question);
+          // The transfer pricing pillar answers with the Tax Court's report
+          // exchange, where most of its disputes are tried.
           expect(faqText(html)).toContain(
-            `Expert disclosure in ${place} is scheduled case by case: in the ${placeAttr(state.name)} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework,`,
+            service.slug === "transfer-pricing-expert-witness"
+              ? "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony."
+              : `Expert disclosure in ${place} is scheduled case by case: in the ${placeAttr(state.name)} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework,`,
           );
           expect(faqText(html)).not.toContain("Disclosure timing is typically set by the scheduling order in the case.");
         });
@@ -363,8 +367,9 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
 
         it("renders the page body (not the loading placeholder) with its credential chips", () => {
           expect(html).not.toContain("Loading...");
-          // The H1 keeps the short name as written; static markup escapes its "&".
-          expect(html).toContain(`${service.shortName.replace("&", "&amp;")}</span> in ${cityName},`);
+          // The H1 keeps the short name as written (static markup escapes its
+          // "&"), or the pillar's fullest geo label where it sets one.
+          expect(html).toContain(`${serviceGeoHeadingLabel(service).replace("&", "&amp;")}</span> in ${cityName},`);
           expect(html).toContain("Expert Credentials");
           for (const cred of service.relevantCredentials) expect(html).toContain(`>${cred}<`);
         });
@@ -396,9 +401,17 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           // Hero paragraphs in order: the eyebrow, the direct answer, the place paragraph.
           const place = paragraphs(html)[2] ?? "";
           expect(place).not.toContain("prepares economic damages analyses for cases venued");
-          expect(place).toMatch(/ (Plaintiff and defense|The report can be prepared for one spouse, for both, or for the court)\.$/);
+          expect(place).toMatch(/ (Plaintiff and defense|The report can be prepared for one spouse, for both, or for the court|Either side)\.$/);
           if (COMMERCIAL_AND_FAMILY.has(service.slug)) expect(text).not.toMatch(SHARED_DAMAGES_LEAK);
           if (service.slug === "divorce-and-marital-financial-analysis") expect(place).toMatch(/for one spouse, for both, or for the court\.$/);
+          // The transfer pricing pillar's comparables are chosen for the
+          // transactions, so its place paragraph names where a tax dispute
+          // for a business based in the city is heard, not its employers.
+          if (service.slug === "transfer-pricing-expert-witness") {
+            expect(place).toMatch(new RegExp(`^A federal tax dispute for a business based in ${cityName} is heard in the United States Tax Court`));
+            expect(place).toMatch(/Either side\.$/);
+            expect(place).not.toMatch(/Employers such as|labor market/);
+          }
           expect(html).toContain(`href="/team/${EXPERT.slug}"`);
           expect(text).toContain(`${capFirst(work)} for ${cityAttr(cityName)} matters is directed by`);
         });
@@ -406,7 +419,9 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
         it("names the work in the nearby-cities cross-link sentence and the local-context paragraph", () => {
           expect(text).toContain(`We also provide ${work} in these ${state.name} communities.`);
           expect(text).toContain(
-            `requirements that affect ${proseName(service.shortName)} engagements in ${place}.`,
+            service.slug === "transfer-pricing-expert-witness"
+              ? `are familiar with the forums and disclosure rules that apply to transfer pricing disputes involving ${placeAttr(state.name)} businesses.`
+              : `requirements that affect ${proseName(service.shortName)} engagements in ${place}.`,
           );
         });
 

@@ -66,16 +66,20 @@ export const team: TeamMember[] = [
     title: "Forensic Accountant",
     credentials: [],
     role: "support",
-    bio: "Francis Kumah is a forensic accountant on the economics team, analyzing the financial records, earnings histories, and business documentation that support the practice's damages, valuation, and transfer pricing analyses.",
+    bio: "Francis Kumah is a forensic accountant on the economics team, analyzing the financial records, earnings histories, and business documentation that support the practice's forensic economic analyses and damages calculations.",
     // Same footing as the associate's profile: the forensic accountant
     // prepares the financial analysis behind a report but does not author the
-    // opinion or testify (no expertTier; see retainableExperts).
+    // opinion or testify (no expertTier; see retainableExperts). The scope is
+    // the source roster entry's (forensic accounting, financial analysis,
+    // economic damages): no transfer pricing specialty, record, or schedule is
+    // attributed to him until the owner confirms one (README, facts to
+    // confirm).
     fullBio: [
-      "Francis Kumah is a forensic accountant on the economics team. He analyzes the financial records an economic analysis rests on: tax returns, payroll and W-2 histories, general ledgers, financial statements, bank records, and intercompany accounts. His work turns those records into the earnings bases, normalized financial statements, traced transactions, and intercompany schedules the practice's lost earnings, lost profits, business valuation, fraud tracing, and transfer pricing analyses are built on.",
+      "Francis Kumah is a forensic accountant on the economics team. He analyzes the financial records an economic analysis rests on: tax returns, payroll and W-2 histories, general ledgers, financial statements, and bank records. His work turns those records into the earnings bases, normalized financial statements, and traced transactions the practice's lost earnings, lost profits, business valuation, and fraud tracing analyses are built on.",
       "He does not author the practice's opinions and is not retained as a testifying expert. Every analysis is directed by the Chief of Economic Services, who is responsible for the report and is available to testify to it. The accounting work is documented so that each figure in the report traces to the record it came from and opposing counsel can check it.",
       "The jurisdictions listed above are the states in which he has supported engagements. The list describes experience, not licensure, and the profile lists no professional license or certification.",
     ].join("\n\n"),
-    specialties: ["Forensic Accounting", "Financial Analysis", "Economic Damages", "Transfer Pricing"],
+    specialties: ["Forensic Accounting", "Financial Analysis", "Economic Damages"],
     statesServed: ["NJ", "NY"],
     imageUrl: "/team/francis-kumah.jpg",
   },

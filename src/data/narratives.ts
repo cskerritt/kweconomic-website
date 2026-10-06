@@ -129,6 +129,11 @@ interface ServicePageProse {
    * care costing): those print the state's damagesContext and its workers'
    * compensation forum instead. */
   venue?: (ctx: VenueContext) => string;
+  /** The object of "are familiar with ..." in the city context paragraph,
+   * where "the court system and disclosure requirements that affect <work>
+   * engagements in <state>" misplaces the pillar's forums (transfer pricing:
+   * mostly federal). Takes the attributive state name. */
+  familiar?: (attr: string) => string;
 }
 
 const SERVICE_PAGE_PROSE: Record<string, ServicePageProse> = {
@@ -207,6 +212,7 @@ const SERVICE_PAGE_PROSE: Record<string, ServicePageProse> = {
     sources: ["IRC_482", "TREAS_REG_1_482_1", "OECD_TP_GUIDELINES"],
     venue: ({ place, attr, forum }) =>
       `Transfer pricing disputes that involve ${place} reach several forums: the United States Tax Court and, on a refund claim, the federal district courts serving ${place} or the Court of Federal Claims for federal income tax; the ${attr} tax authority and its appeal process for a dispute over ${attr} tax; and ${forum} for the commercial, shareholder, and matrimonial claims that turn on an intercompany price. The arm's length analysis is built the same way for each forum; the forum sets the rule of decision, which counsel confirms, and the report presents the result so it can be applied under it.`,
+    familiar: (attr) => `the forums and disclosure rules that apply to transfer pricing disputes involving ${attr} businesses`,
   },
   "divorce-and-marital-financial-analysis": {
     measures: (cityA) =>
@@ -256,8 +262,12 @@ export function serviceStateVenueParagraph(service: Service, state: State): stri
  */
 export function serviceCityContextParagraph(service: Service, state: State, city: City): string {
   const cityA = cityAttr(city.name);
-  const measures = SERVICE_PAGE_PROSE[service.slug]?.measures(cityA) ?? defaultMeasures(cityA);
-  return `${ORG_NAME} serves counsel throughout ${city.name} and the surrounding ${city.county || state.name} area. Our economists ${measures}, and are familiar with the court system and disclosure requirements that affect ${proseName(service.shortName)} engagements in ${placeName(state.name)}.`;
+  const prose = SERVICE_PAGE_PROSE[service.slug];
+  const measures = prose?.measures(cityA) ?? defaultMeasures(cityA);
+  const familiar =
+    prose?.familiar?.(placeAttr(state.name)) ??
+    `the court system and disclosure requirements that affect ${proseName(service.shortName)} engagements in ${placeName(state.name)}`;
+  return `${ORG_NAME} serves counsel throughout ${city.name} and the surrounding ${city.county || state.name} area. Our economists ${measures}, and are familiar with ${familiar}.`;
 }
 
 /**

@@ -3,7 +3,7 @@ import ServiceCaseTypeState from "./ServiceCaseTypeState";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { declaredPairs, releasedStates, STATE_BATCHES } from "@/data/serviceCaseTypeStates";
 import { pillarServices } from "@/data/services";
-import { getCaseType, caseTypeSectionHeadings } from "@/data/caseTypes";
+import { getCaseType, caseTypeSectionHeadings, caseTypeVenuesHeading } from "@/data/caseTypes";
 import { states } from "@/data/states";
 import { federalDistricts } from "@/data/courts/federal-districts";
 import { ORG_NAME } from "@/lib/brand";
@@ -51,8 +51,9 @@ describe("ServiceCaseTypeState template", () => {
       // The direct-answer lead names the practice, the work, and the place.
       expect(html).toMatch(/<p class="kw-lead[^"]*">/);
       expect(text).toContain(`${ORG_NAME} prepares`);
-      // State substance: the courts block, the framework block, and the pair note.
-      expect(text).toContain("New Jersey courts and expert standards");
+      // State substance: the courts block ("forums" on the tax matter), the
+      // framework block, and the pair note.
+      expect(text).toContain(caseTypeVenuesHeading(caseType, "New Jersey"));
       expect(text).toContain(headings.framework);
       expect(text).toContain(headings.concentration);
       expect(text).toContain(service.caseTypeNotes[caseType.slug].summary);
@@ -88,7 +89,7 @@ describe("ServiceCaseTypeState template", () => {
     });
   }
 
-  it("every declared pair in every state publishes a title inside the SERP window and a description inside 160 characters", () => {
+  it("every declared pair in every state publishes a title inside the SERP window and a description inside the 140-160 band", () => {
     for (const { serviceSlug, typeSlug } of declaredPairs()) {
       const service = pillarServices().find((s) => s.slug === serviceSlug)!;
       const caseType = getCaseType(typeSlug)!;
@@ -98,7 +99,12 @@ describe("ServiceCaseTypeState template", () => {
         expect(title).not.toMatch(/&|[–—§]/);
         const description = serviceCaseStateDescription(service, caseType, placeName(st.name));
         expect(description.length, `${serviceSlug}/${typeSlug}/${st.slug}`).toBeLessThanOrEqual(160);
+        // The builder takes the first candidate inside the band (review fix
+        // 2026-10-05: four transfer pricing x shareholder pages fell to 139).
+        expect(description.length, `${serviceSlug}/${typeSlug}/${st.slug}: ${description}`).toBeGreaterThanOrEqual(140);
         expect(description).toMatch(/\.$/);
+        // A matter that is not a damages claim never closes on "Plaintiff and defense."
+        if (caseType.framing) expect(description, `${serviceSlug}/${typeSlug}/${st.slug}`).not.toContain("Plaintiff and defense");
       }
     }
   });
@@ -122,6 +128,43 @@ describe("ServiceCaseTypeState template", () => {
     expect(visibleText(divorce.html)).not.toContain("Damages framework");
     expect(divorce.description).toContain("financial questions");
     expect(divorce.description).not.toContain("loss claim");
+  });
+
+  // Review fixes (2026-10-05): the tax pair x state pages printed New
+  // Jersey's damages-report sentence, listed only the state's trial courts,
+  // and closed their framework FAQ on "past and future amounts"; the divorce
+  // pairs carried the same expert-standard and FAQ tails.
+  it("the tax pairs name the federal tax forums, the federal evidence rules, and a transfer pricing close, never a damages report", () => {
+    for (const serviceSlug of ["transfer-pricing-expert-witness", "business-valuation", "expert-rebuttal-and-report-review"]) {
+      const { html } = render(serviceSlug, "tax-and-transfer-pricing-dispute", "new-york");
+      const text = visibleText(html);
+      const faqs = faqLdStrings(html).join(" ");
+      expect(text).toContain("New York forums and expert standards");
+      for (const forum of ["United States Tax Court", "United States District Courts", "United States Court of Federal Claims", "New York tax appeals"]) {
+        expect(text, `${serviceSlug}: ${forum}`).toContain(forum);
+      }
+      // The commercial selection, two courts deep: no Court of Claims (claims against the State).
+      expect(text).not.toContain("Court of Claims");
+      expect(text).toContain("Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute");
+      expect(text).toContain("A transfer pricing report meets each of these inquiries");
+      expect(faqs).toContain("What do the forums that hear a tax or transfer pricing dispute involving New York ask of");
+      expect(faqs).toContain("(for a business based in New York, the Second Circuit)");
+      expect(faqs).toContain("The report states each transaction, method choice, and comparable screen with its source");
+      expect(html).toContain('href="/case-types/divorce-and-marital-dissolution/new-york"');
+      for (const s of [text, faqs]) {
+        expect(s, serviceSlug).not.toMatch(/damages report|lost earnings, household services|past and future amounts|Final appeals run to/);
+      }
+    }
+  });
+
+  it("the divorce pairs close the expert standard and the framework FAQ on the family-law work", () => {
+    for (const serviceSlug of ["divorce-and-marital-financial-analysis", "transfer-pricing-expert-witness"]) {
+      const { html } = render(serviceSlug, "divorce-and-marital-dissolution", "new-york");
+      const text = `${visibleText(html)} ${faqLdStrings(html).join(" ")}`;
+      expect(text).toContain("A financial analysis for a divorce meets that inquiry");
+      expect(text).toContain("The report lists each normalization adjustment, valuation input, and tracing step with its source");
+      expect(text, serviceSlug).not.toMatch(/damages report|lost earnings, household services|past and future amounts/);
+    }
   });
 
   it("an undeclared pair, an unknown state, and an unknown service render NotFound and publish no meta", () => {

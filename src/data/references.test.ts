@@ -55,6 +55,9 @@ const ECONOMICS_KEYS: Record<string, ReferenceTier> = {
   IRS_TP_EXAM_PROCESS: "live-verified",
   IRS_TP_DOCUMENTATION_FAQS: "live-verified",
   IRS_MAP_OVERVIEW: "live-verified",
+  // Review fixes (2026-10-05): the treaty arbitration sentence of the
+  // documentation vs. expert report comparison.
+  IRS_REV_PROC_2015_40: "live-verified",
   IRS_APMA: "live-verified",
   IRS_APMA_REPORT_2025: "live-verified",
 };
@@ -165,7 +168,7 @@ describe("REFERENCES registry integrity", () => {
     expect(REFERENCES.IRC_482.url).toBe("https://www.law.cornell.edu/uscode/text/26/482");
     expect(REFERENCES.TAX_COURT_RULE_143.url).toMatch(/^https:\/\/ustaxcourt\.gov\/files\/documents\/rule-143\.pdf$/);
     expect(REFERENCES.OECD_TP_GUIDELINES.url).toBe("https://doi.org/10.1787/0e655865-en");
-    for (const id of ["IRS_TP_EXAM_PROCESS", "IRS_TP_DOCUMENTATION_FAQS", "IRS_MAP_OVERVIEW", "IRS_APMA", "IRS_APMA_REPORT_2025"]) {
+    for (const id of ["IRS_TP_EXAM_PROCESS", "IRS_TP_DOCUMENTATION_FAQS", "IRS_MAP_OVERVIEW", "IRS_REV_PROC_2015_40", "IRS_APMA", "IRS_APMA_REPORT_2025"]) {
       expect(REFERENCES[id].url, id).toMatch(/^https:\/\/www\.irs\.gov\//);
     }
     // House rule: the section sign never appears, in legal strings or anywhere else.

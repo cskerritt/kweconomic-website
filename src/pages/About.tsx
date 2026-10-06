@@ -218,7 +218,7 @@ export default function About() {
       {/* Leadership Teaser */}
       <section className="py-16 bg-neutral-50 border-y border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Economists</h2>
+          <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Team</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto mb-8">
             The practice is led by a Chief of Economic Services who directs every analysis and
             is available to testify to it, supported by an economic associate who coordinates

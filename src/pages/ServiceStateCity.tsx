@@ -17,6 +17,8 @@ import {
 } from "@/lib/schema";
 import { ORG_NAME } from "@/lib/brand";
 import { serviceCityTitle } from "@/lib/page-titles.mjs";
+// The H1 label: the pillar's fullest geo label where it sets one (page-titles.mjs).
+import { serviceGeoHeadingLabel } from "@/lib/page-titles.mjs";
 import { cityAttr, placeName } from "@/data/geo-prose.mjs";
 import { proseName } from "@/lib/service-prose.mjs";
 import {
@@ -147,7 +149,7 @@ export default function ServiceStateCity() {
             </div>
             <div className="min-w-0">
               <h1 className="kw-enter kw-enter-1 font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4">
-                <span className="kw-gradient-text">{service.shortName}</span> in {city.name}, {state.abbreviation}
+                <span className="kw-gradient-text">{serviceGeoHeadingLabel(service)}</span> in {city.name}, {state.abbreviation}
               </h1>
               <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-3xl mb-3">
                 {directAnswer}

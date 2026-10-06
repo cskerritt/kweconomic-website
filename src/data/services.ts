@@ -1300,11 +1300,16 @@ export const services: ServiceEntry[] = [
     slug: "transfer-pricing-expert-witness",
     name: "Transfer Pricing Expert Witness",
     shortName: "Transfer Pricing",
+    // The state and city pages carry the role the local query carries
+    // ("Transfer Pricing Expert Witness in Texas", "Transfer Pricing Expert
+    // in Houston, TX"); the heading label "Transfer Pricing" closes the
+    // ladder where neither fits (src/lib/page-titles.mjs).
+    geoTitleLabels: ["Transfer Pricing Expert Witness", "Transfer Pricing Expert"],
     pillar: true,
     description: "Economic analysis and expert testimony on whether the prices charged between companies under common control, for goods, services, the use of intangibles, and intercompany loans, meet the arm's length standard: the result unrelated parties would have reached in the same transaction under the same circumstances. The work delineates the transactions from the intercompany agreements and the companies' actual conduct, selects the most reliable method, documents the comparables and the arm's length range, and quantifies what the price moved, for tax examinations and appeals, Tax Court and refund litigation, state tax disputes, and commercial, shareholder, and divorce cases.",
     icon: "ArrowLeftRight",
     keywords: ["transfer pricing expert witness", "transfer pricing economist", "arm's length standard", "Section 482 dispute", "intercompany pricing", "transfer pricing litigation", "intercompany royalty rate", "comparable profits method"],
-    caseTypes: ["tax-and-transfer-pricing-dispute", "commercial-contract-dispute", "partnership-and-shareholder-dispute"],
+    caseTypes: ["tax-and-transfer-pricing-dispute", "commercial-contract-dispute", "partnership-and-shareholder-dispute", "divorce-and-marital-dissolution"],
     relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
     cost: {
       range: "Transfer pricing engagements are scoped to the controlled transactions and years at issue, the forum, and how much of the record must be rebuilt. A review of one intercompany arrangement over a defined period, with the group's documentation and segmented financial statements in hand, is the narrowest scope; several transaction types, intangibles whose ownership or value is contested, a comparables search built from the ground up, or parallel tax and commercial proceedings widen it. We provide a written fee schedule and a cost estimate before work begins.",
@@ -1403,6 +1408,22 @@ export const services: ServiceEntry[] = [
           {
             question: "Is an arm's length price the measure of the minority owner's loss?",
             answer: "It is evidence of what an independent party would have charged, and counsel and the court decide whether the governing agreement or the fiduciary duty adopts it as the measure. The economist presents the arm's length result and the restated earnings, and shows their effect on the value of the interest or on the damages claim under the measure counsel identifies.",
+          },
+        ],
+      },
+      // The divorce coverage the description and the third pillar FAQ name
+      // (a spouse's business that trades with affiliates the same owner
+      // controls), written for either spouse or the court.
+      "divorce-and-marital-dissolution": {
+        summary: "In a divorce the transfer pricing question arises when a spouse's business trades with affiliates, often abroad, that the same owner controls: the prices it pays to or charges those affiliates decide how much profit the business reports, and with it both the income available for support and the value of the business in the marital estate. The economist identifies each related-party transaction from the ledger and the intercompany agreements, establishes the functions, assets, and risks on each side, measures the prices against comparable transactions or the returns of comparable independent companies, and restates the business's earnings by year. The restated earnings then feed the income determination and the valuation together, so the same profit is counted once, and the report presents the arm's length result as evidence of what unrelated parties would have agreed, for either spouse or the court to apply under the governing framework.",
+        faqs: [
+          {
+            question: "How can intercompany prices change the income available for support in a divorce?",
+            answer: "When the business a spouse controls buys from, sells to, or licenses from affiliates the same owner holds, the prices set between them decide where the group's profit is reported. A price above or below what an unrelated party would have agreed moves profit out of, or into, the business whose income is at issue. The economist measures the prices against comparable transactions or companies and restates the business's earnings, so the support calculation rests on an arm's length figure, with each restatement shown line by line.",
+          },
+          {
+            question: "Does an arm's length restatement change the value of the business in the marital estate?",
+            answer: "It can, because the valuation capitalizes the same earnings the restatement corrects. The economist carries the restated earnings into the income approach and reconciles them with the income determination, so the profit an intercompany price moved is counted once, and shows the value with and without the restatement so either spouse or the court can see what it contributes and whether the governing framework adopts it.",
           },
         ],
       },

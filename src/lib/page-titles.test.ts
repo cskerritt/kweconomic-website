@@ -49,6 +49,8 @@ import {
   serviceCaseStateTitle,
   serviceTitleLabels,
   serviceTitleNames,
+  serviceGeoTitleLabels,
+  serviceGeoHeadingLabel,
 } from "./page-titles.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -302,11 +304,24 @@ describe("the fallbacks shorten only what cannot fit", () => {
     expect(pillarTitle(tp, ORG_NAME)).toBe(`Transfer Pricing Expert Witness | ${ORG_NAME}`);
     expect(variantTitle(tp, "Timeline", ORG_NAME)).toBe(`Transfer Pricing Expert Witness Timeline | ${ORG_NAME}`);
     expect(serviceTitleLabels(tp)).toEqual(["Transfer Pricing"]);
+    // The state and city tags carry the role the local query carries, and
+    // the heading label closes the ladder; the pair tags keep the heading label.
+    expect(serviceGeoTitleLabels(tp)).toEqual(["Transfer Pricing Expert Witness", "Transfer Pricing Expert", "Transfer Pricing"]);
+    expect(serviceGeoHeadingLabel(tp)).toBe("Transfer Pricing Expert Witness");
+    expect(serviceStateTitle(tp, states.find((s) => s.slug === "north-carolina")!, ORG_NAME)).toBe(`Transfer Pricing Expert in North Carolina | ${ORG_NAME}`);
+    expect(serviceStateTitle(tp, states.find((s) => s.slug === "district-of-columbia")!, ORG_NAME)).toBe(`Transfer Pricing in the District of Columbia | ${ORG_NAME}`);
+    const tx = states.find((s) => s.slug === "texas")!;
+    expect(serviceCityTitle(tp, { name: "Houston" }, tx, ORG_NAME)).toBe(`Transfer Pricing Expert in Houston, TX | ${ORG_NAME}`);
+    // Every other pillar's geo ladder is its heading ladder.
+    for (const s of pillarServices().filter((x) => x.slug !== tp.slug)) {
+      expect(serviceGeoTitleLabels(s), s.slug).toEqual(serviceTitleLabels(s));
+      expect(serviceGeoHeadingLabel(s), s.slug).toBe(s.shortName);
+    }
     const tax = caseTypes.find((c) => c.slug === "tax-and-transfer-pricing-dispute")!;
     // The matter's short form keeps the pillar's own pair title from reading
     // "Transfer Pricing Expert for Transfer Pricing".
     expect(pairTitle(tp, tax, ORG_NAME)).toBe(`Transfer Pricing Expert for Tax Dispute | ${ORG_NAME}`);
-    expect(serviceStateTitle(tp, states.find((s) => s.slug === "texas")!, ORG_NAME)).toBe(`Transfer Pricing in Texas | ${ORG_NAME}`);
+    expect(serviceStateTitle(tp, states.find((s) => s.slug === "texas")!, ORG_NAME)).toBe(`Transfer Pricing Expert Witness in Texas | ${ORG_NAME}`);
     expect(serviceCaseStateTitle(tp, tax, states.find((s) => s.slug === "texas")!, ORG_NAME)).toBe(`Transfer Pricing for Tax Dispute in Texas | ${ORG_NAME}`);
   });
 

@@ -89,6 +89,7 @@ import ExpertProfile from "@/pages/templates/ExpertProfile";
 import ServicePillar from "@/pages/ServicePillar";
 import ServiceTransactional from "@/pages/templates/ServiceTransactional";
 import ServiceCaseType from "@/pages/templates/ServiceCaseType";
+import ServiceCaseTypeState from "@/pages/templates/ServiceCaseTypeState";
 import StateHub from "@/pages/StateHub";
 import CityPage from "@/pages/CityPage";
 import ServiceState from "@/pages/ServiceState";
@@ -219,6 +220,19 @@ const ROUTES = [
   { route: "/case-types/tax-and-transfer-pricing-dispute", pattern: "/case-types/:slug", Page: CaseTypeHub },
   { route: "/case-types/tax-and-transfer-pricing-dispute/district-of-columbia", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
   { route: "/services/divorce-and-marital-financial-analysis/new-jersey/hackensack", pattern: "/services/:serviceSlug/:stateSlug/:citySlug", Page: ServiceStateCity },
+  // Review fixes (2026-10-05): the tax forums, expert standard, and courts
+  // answer on a state page with a business-court selection; the pair x state
+  // tier (tax and divorce); the transfer pricing city page's tax anchor and
+  // geo H1; the workers' compensation courts answer and a territorial
+  // district's name, which the shells had printed differently from the page.
+  { route: "/case-types/tax-and-transfer-pricing-dispute/new-york", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  { route: "/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute/new-york", pattern: "/services/:serviceSlug/case/:typeSlug/:stateSlug", Page: ServiceCaseTypeState },
+  { route: "/services/transfer-pricing-expert-witness/case/divorce-and-marital-dissolution", pattern: "/services/:serviceSlug/case/:typeSlug", Page: ServiceCaseType },
+  { route: "/services/transfer-pricing-expert-witness/case/divorce-and-marital-dissolution/new-york", pattern: "/services/:serviceSlug/case/:typeSlug/:stateSlug", Page: ServiceCaseTypeState },
+  { route: "/services/transfer-pricing-expert-witness/new-jersey/hackensack", pattern: "/services/:serviceSlug/:stateSlug/:citySlug", Page: ServiceStateCity },
+  { route: "/case-types/workers-compensation/texas", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  { route: "/case-types/wrongful-death/guam", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
+  { route: "/team/francis-kumah", pattern: "/team/:slug", Page: ExpertProfile },
   { route: "/credentials/forensic-economist", pattern: "/credentials/:slug", Page: CredentialHub },
   { route: "/credentials/forensic-economist/new-jersey", pattern: "/credentials/:credSlug/:stateSlug", Page: CredentialState },
   { route: "/credentials/nafe-member/district-of-columbia", pattern: "/credentials/:credSlug/:stateSlug", Page: CredentialState },
@@ -773,6 +787,82 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
     expect(titleOf(pairState)).toBe(`Transfer Pricing for Tax Dispute in Texas | ${ORG_NAME}`);
     expect(textOf(pairState)).toContain("KW Economics prepares transfer pricing analysis for tax and transfer pricing dispute matters involving businesses in Texas:");
     expect(textOf(pairState)).not.toMatch(/loss claim consists of|damages rules and venues|income, valuation, and tracing questions/);
+  });
+
+  // Review fixes (2026-10-05): the tax shells name the federal tax forums
+  // ahead of the state's courts, print the federal evidence rules around the
+  // state's own inquiry (never the state's damages-report sentence), carry
+  // the appeals inside the courts answer, and close the pair x state
+  // framework FAQ on the transfer pricing work.
+  it("the tax shells name their forums and the federal evidence rules, and print no damages-report wording (review fixes 2026-10-05)", () => {
+    const DAMAGES_REPORT = /damages report|An economic damages|economic damages testimony|lost earnings, household services|past and future amounts/;
+    for (const st of states) {
+      const shell = readShell(`/case-types/tax-and-transfer-pricing-dispute/${st.slug}`);
+      const text = textOf(shell);
+      expect(text, st.slug).toContain(`${st.name} forums and expert standards`);
+      expect(text, st.slug).toContain("United States Tax Court - Hears a challenge to an IRS notice of deficiency before the tax is paid");
+      expect(text, st.slug).toContain("Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute");
+      expect(text, st.slug).not.toMatch(DAMAGES_REPORT);
+      expect(text, st.slug).not.toContain("Final appeals run to");
+      expect(text, st.slug).not.toMatch(/same federal arm's length rules|Court of Claims \(Claims against/);
+    }
+    for (const pillar of ["transfer-pricing-expert-witness", "business-valuation", "expert-rebuttal-and-report-review"]) {
+      const shell = readShell(`/services/${pillar}/case/tax-and-transfer-pricing-dispute/new-york`);
+      const text = textOf(shell);
+      expect(text, pillar).toContain("New York forums and expert standards");
+      expect(text, pillar).toContain("(for a business based in New York, the Second Circuit)");
+      expect(text, pillar).toContain("The report states each transaction, method choice, and comparable screen with its source");
+      expect(text, pillar).not.toMatch(DAMAGES_REPORT);
+    }
+    // The divorce shells close the state's inquiry on the family-law work.
+    const divorce = textOf(readShell("/case-types/divorce-and-marital-dissolution/new-york"));
+    expect(divorce).toContain("A financial analysis for a divorce meets that inquiry");
+    expect(divorce).not.toMatch(DAMAGES_REPORT);
+  });
+
+  it("the service x case type x state tier is linked from outside itself: the pair hub's state list and the case-type x state services list (review fixes 2026-10-05)", () => {
+    const pairHub = readShell("/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute");
+    const links = hrefs(pairHub);
+    for (const st of states) {
+      expect(links.has(`/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute/${st.slug}`), st.slug).toBe(true);
+    }
+    expect(textOf(pairHub)).toContain("How transfer pricing analysis applies to Tax and Transfer Pricing Dispute");
+    expect(textOf(pairHub)).not.toContain("How Transfer Pricing Expert Witness applies");
+    const stateShell = readShell("/case-types/tax-and-transfer-pricing-dispute/texas");
+    expect(hrefs(stateShell).has("/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute/texas")).toBe(true);
+    expect(textOf(stateShell)).toContain("Services for tax and transfer pricing dispute cases in Texas");
+    // The same holds for every other pair hub and case type.
+    expect(hrefs(readShell("/services/lost-earnings-and-earning-capacity/case/personal-injury")).has("/services/lost-earnings-and-earning-capacity/case/personal-injury/california")).toBe(true);
+    expect(hrefs(readShell("/case-types/wrongful-death/ohio")).has("/services/wrongful-death-economic-loss/case/wrongful-death/ohio")).toBe(true);
+  });
+
+  it("the transfer pricing geo shells carry the role in the title and H1, and the city place paragraph names the tax forums (review fixes 2026-10-05)", () => {
+    const tx = readShell("/services/transfer-pricing-expert-witness/texas");
+    expect(titleOf(tx)).toBe(`Transfer Pricing Expert Witness in Texas | ${ORG_NAME}`);
+    expect(h1Of(tx)).toBe("Transfer Pricing Expert Witness in Texas");
+    const houston = readShell("/services/transfer-pricing-expert-witness/texas/houston");
+    expect(titleOf(houston)).toBe(`Transfer Pricing Expert in Houston, TX | ${ORG_NAME}`);
+    expect(h1Of(houston)).toBe("Transfer Pricing Expert Witness in Houston, TX");
+    expect(textOf(houston)).toContain("A federal tax dispute for a business based in Houston is heard in the United States Tax Court");
+    expect(textOf(houston)).not.toMatch(/Employers such as [^.]* shape the Houston labor market/);
+    expect(textOf(houston)).toContain("the forums and disclosure rules that apply to transfer pricing disputes involving Texas businesses");
+    expect(textOf(tx)).toContain("no later than thirty days before the call of the trial calendar");
+  });
+
+  it("Francis Kumah's profile, /about, and the federal district shells carry no transfer pricing claim (review fixes 2026-10-05)", () => {
+    const francis = readShell("/team/francis-kumah");
+    expect(rootOf(francis)).not.toMatch(/transfer pricing|intercompany/i);
+    expect(hrefs(francis).has("/services/transfer-pricing-expert-witness")).toBe(false);
+    expect(hrefs(readShell("/team/christopher-skerritt")).has("/services/transfer-pricing-expert-witness")).toBe(true);
+    const about = readShell("/about");
+    expect(about).toContain("<h2>Our Team</h2>");
+    expect(about).not.toContain("<h2>Our Economists</h2>");
+    for (const d of ["district-court-of-guam", "southern-district-of-new-york"]) {
+      expect(hrefs(readShell(`/jurisdictions/federal/${d}`)).has("/services/transfer-pricing-expert-witness"), d).toBe(false);
+    }
+    // The territorial district names keep their own form in the courts answer.
+    expect(textOf(readShell("/case-types/wrongful-death/guam"))).toContain("Matters within federal jurisdiction proceed in the United States District Court of Guam.");
+    expect(textOf(readShell("/case-types/wrongful-death/guam"))).not.toContain("District Court for the District Court of Guam");
   });
 
   it("F06: the about, contact, and consultation shells print the shared intake copy and nothing the pages do not", () => {

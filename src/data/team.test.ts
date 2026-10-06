@@ -4,7 +4,8 @@ import { describe, expect, it } from "vitest";
 import { team, activeTeam, retainableExperts, getMemoriam } from "./team";
 import { bareName, profileTitle } from "./team-meta.mjs";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
-import { practiceAreasFor } from "@/lib/practice-areas";
+import { practiceAreasFor, practiceAreaLabel } from "@/lib/practice-areas";
+import { pillarServices } from "./services";
 
 describe("KW Economics team", () => {
   it("has the three-person roster", () => {
@@ -18,6 +19,20 @@ describe("KW Economics team", () => {
     expect(f.role).toBe("support");
     expect(f.expertTier).toBeUndefined();
     expect(f.imageUrl).toBe("/team/francis-kumah.jpg");
+    // The source roster's specialties; no transfer pricing specialty,
+    // record, or schedule is attributed to him (review fix 2026-10-05).
+    expect(f.specialties).toEqual(["Forensic Accounting", "Financial Analysis", "Economic Damages"]);
+    expect(`${f.bio} ${f.fullBio ?? ""}`).not.toMatch(/transfer pricing|intercompany/i);
+    expect(practiceAreasFor(f).map((s) => s.slug)).not.toContain("transfer-pricing-expert-witness");
+  });
+  it("a member counsel cannot retain by name never carries a role-noun practice-area label", () => {
+    const tp = pillarServices().find((s) => s.slug === "transfer-pricing-expert-witness")!;
+    const bv = pillarServices().find((s) => s.slug === "business-valuation")!;
+    const chris = team.find((m) => m.slug === "christopher-skerritt")!;
+    const francis = team.find((m) => m.slug === "francis-kumah")!;
+    expect(practiceAreaLabel(chris, tp)).toBe("Transfer Pricing Expert Witness");
+    expect(practiceAreaLabel(francis, tp)).toBe("Transfer Pricing");
+    expect(practiceAreaLabel(francis, bv)).toBe("Business Valuation");
   });
   it("Christopher Skerritt leads as Chief of Economic Services", () => {
     const c = team.find((m) => m.slug === "christopher-skerritt")!;

@@ -45,15 +45,29 @@ export interface CaseTypeName {
    */
   shortName?: string;
   /**
+   * Short form the journey headings and descriptions take in place of
+   * `shortName` where the pair titles' short form leaves the journey's query
+   * term out (the tax and transfer pricing dispute: "Transfer Pricing", not
+   * "Tax Dispute"); must fit SHORT_NAME_MAX.
+   */
+  journeyShortName?: string;
+  /**
    * Present on a matter that is not a damages claim (src/data/caseTypes.ts
    * CaseTypeFraming: the family-law and tax matters); the journey
-   * descriptions then name the questions the analysis answers, not a loss.
+   * descriptions then name the questions the analysis answers, not a loss,
+   * and close on "Either side." rather than "Plaintiff and defense." (a
+   * divorce has spouses, a tax dispute a taxpayer and a government).
    */
   framing?: object;
 }
 
 export function caseTypeShortName(caseType: CaseTypeName): string {
   return caseType.shortName ?? caseType.name;
+}
+
+/** The short form the journey headings and descriptions use: journeyShortName where set, else the shared short name. */
+export function journeyShortName(caseType: CaseTypeName): string {
+  return caseType.journeyShortName ?? caseTypeShortName(caseType);
 }
 
 /** Brand suffix every page <title> on the site carries. */
@@ -90,17 +104,18 @@ const STAGE_PHRASE_MAX = Math.max(...Object.values(JOURNEY_HEADINGS).map((build)
  */
 export const SHORT_NAME_MAX = TITLE_MAX - TITLE_SUFFIX.length - STAGE_PHRASE_MAX;
 
-// Journey page meta descriptions. The case-type name is lowercased mid-sentence
-// and phrased without an indefinite article, so no a/an choice is needed.
+// Journey page meta descriptions, before the audience tag journeyDescription
+// appends. The case-type name is lowercased mid-sentence and phrased without
+// an indefinite article, so no a/an choice is needed.
 const JOURNEY_DESCRIPTIONS: Record<string, (name: string) => string> = {
   considering: (name) =>
-    `When ${name} claims need a forensic economist: the loss threshold, records to request, and what to ask before retaining. Plaintiff and defense.`,
+    `When ${name} claims need a forensic economist: the loss threshold, records to request, and what to ask before retaining.`,
   retaining: (name) =>
-    `Retaining a forensic economist in ${name} matters: scope, conflict check, the records request, and the report deadline. Plaintiff and defense.`,
+    `Retaining a forensic economist in ${name} matters: scope, conflict check, the records request, and the report deadline.`,
   "preparing-deposition": (name) =>
-    `The economist at deposition in ${name} cases: the assumptions that get tested, the reliance file, and the common attacks. Plaintiff and defense.`,
+    `The economist at deposition in ${name} cases: the assumptions that get tested, the reliance file, and the common attacks.`,
   trial: (name) =>
-    `The economist at trial in ${name} cases: demonstratives, explaining present value, and rebutting the opposing economist. Plaintiff and defense.`,
+    `The economist at trial in ${name} cases: demonstratives, explaining present value, and rebutting the opposing economist.`,
 };
 
 // The stages whose shared description names a loss or present value take a
@@ -108,15 +123,18 @@ const JOURNEY_DESCRIPTIONS: Record<string, (name: string) => string> = {
 // and deposition descriptions already fit every matter.
 const JOURNEY_DESCRIPTIONS_FRAMED: Record<string, (name: string) => string> = {
   considering: (name) =>
-    `When ${name} matters need a forensic economist: the threshold questions, records to request, and what to ask before retaining. Plaintiff and defense.`,
+    `When ${name} matters need a forensic economist: the threshold questions, the records to request, and what to ask before retaining.`,
   trial: (name) =>
-    `The economist at trial in ${name} cases: demonstratives, explaining the analysis, and rebutting the opposing economist. Plaintiff and defense.`,
+    `The economist at trial in ${name} cases: demonstratives, explaining the analysis, and rebutting the opposing economist.`,
 };
+
+/** The audience tag every journey description closes on (see CaseTypeName.framing). */
+const journeySides = (caseType: CaseTypeName): string => (caseType.framing ? " Either side." : " Plaintiff and defense.");
 
 /** H1 of /attorneys/<stage>/<case-type>; "" for an unknown stage. */
 export function journeyHeading(stage: string, caseType: CaseTypeName): string {
   const build = JOURNEY_HEADINGS[stage];
-  return build ? build(caseTypeShortName(caseType)) : "";
+  return build ? build(journeyShortName(caseType)) : "";
 }
 
 /** Full <title> of /attorneys/<stage>/<case-type>; "" for an unknown stage. */
@@ -127,13 +145,15 @@ export function journeyTitle(stage: string, caseType: CaseTypeName): string {
 
 /**
  * Meta description of /attorneys/<stage>/<case-type>. Uses the full case-type
- * name unless that runs past DESCRIPTION_MAX, then the short name.
+ * name unless that runs past DESCRIPTION_MAX, then the journey's short name,
+ * and closes on the audience tag.
  */
 export function journeyDescription(stage: string, caseType: CaseTypeName): string {
   const build = (caseType.framing && JOURNEY_DESCRIPTIONS_FRAMED[stage]) || JOURNEY_DESCRIPTIONS[stage];
   if (!build) return "";
-  const full = build(caseType.name.toLowerCase());
-  return full.length <= DESCRIPTION_MAX ? full : build(caseTypeShortName(caseType).toLowerCase());
+  const sides = journeySides(caseType);
+  const full = `${build(caseType.name.toLowerCase())}${sides}`;
+  return full.length <= DESCRIPTION_MAX ? full : `${build(journeyShortName(caseType).toLowerCase())}${sides}`;
 }
 
 // Per-stage index pages (/attorneys/<stage>).

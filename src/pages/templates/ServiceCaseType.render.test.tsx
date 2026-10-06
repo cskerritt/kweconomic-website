@@ -103,11 +103,13 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
         expect(intro).toBe(
           `${capFirst(work)} applied to ${ct} litigation: methodology, deliverables, and case-specific considerations.`,
         );
-        // The heading label never enters a sentence raw; the H2 keeps the
-        // full name as a proper noun.
+        // The heading label never enters a sentence raw, and the H2 names
+        // the work rather than the service name, which can be a role noun
+        // ("How Transfer Pricing Expert Witness applies ..." misreads).
         expect(description).not.toContain(`${service.shortName} services`);
         expect(intro).not.toContain(`${service.shortName} applied`);
-        expect(text).toContain(`How ${service.name} applies to ${caseType.name}`);
+        expect(text).toContain(`How ${work} applies to ${caseType.name}`);
+        expect(text).not.toContain(`How ${service.name} applies to`);
         for (const t of [description, intro]) {
           expect(t).not.toContain("&");
           expect(excerpt(t, DOUBLED_WORD)).toBeUndefined();

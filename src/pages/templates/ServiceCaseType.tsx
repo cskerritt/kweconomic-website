@@ -16,9 +16,11 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
 import { pairTitle } from "@/lib/page-titles.mjs";
 // Service.shortName is a heading label ("Fraud & Tracing"); the meta
-// description and the intro sentence render the work the pillar performs
-// through the shared helper ("fraud and tracing analysis"). The H1 and the
-// H2 keep the full service name as a proper noun; the <title> comes from the
+// description, the intro sentence, and the H2 render the work the pillar
+// performs through the shared helper ("fraud and tracing analysis"; a role
+// noun such as "Transfer Pricing Expert Witness" cannot be the subject of
+// "applies to"). The H1 keeps the full service name as a proper noun; the
+// <title> comes from the
 // shared pairTitle builder (src/lib/page-titles.mjs, also used by
 // scripts/prerender.mjs): the heading label plus the case type's short name,
 // with "Expert" wherever it fits the 60-character tag, then without it, and
@@ -104,7 +106,7 @@ export default function ServiceCaseType() {
       </p>
 
       <section id="application" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">How {service.name} applies to {caseType.name}</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">How {work} applies to {caseType.name}</h2>
         {note && <p className="text-neutral-700 mb-3">{note.summary}</p>}
         <p className="text-neutral-700">{service.description}</p>
       </section>

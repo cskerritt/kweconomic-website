@@ -403,6 +403,20 @@ export const REFERENCES: Record<string, Reference> = {
     "Internal Revenue Service. (n.d.). Overview of the MAP process. U.S. Department of the Treasury. Retrieved October 5, 2026.",
     "https://www.irs.gov/businesses/overview-of-the-map-process",
   ),
+  // Rev. Proc. 2015-40, the competent authority procedures; section 10
+  // (arbitration) says a case the competent authorities cannot resolve in
+  // the treaty's time goes to the panel, the taxpayer's analysis reaches the
+  // panel through the U.S. competent authority as the treaty permits, and
+  // the determination binds only if the taxpayer accepts it. Read on the
+  // Internal Revenue Bulletin page 2026-10-05 (the review fixes); the IRS
+  // MAP overview cites the same sections.
+  IRS_REV_PROC_2015_40: R(
+    "IRS_REV_PROC_2015_40",
+    "live-verified",
+    "gov",
+    "Rev. Proc. 2015-40, 2015-35 I.R.B. 236 (procedures for requesting U.S. competent authority assistance under tax treaties).",
+    "https://www.irs.gov/irb/2015-35_IRB#RP-2015-40",
+  ),
   IRS_APMA: R(
     "IRS_APMA",
     "live-verified",

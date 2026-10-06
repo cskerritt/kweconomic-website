@@ -3,7 +3,7 @@ import { ArrowRight, MapPin } from "lucide-react";
 import { team } from "@/data/team";
 import { bareName, isDegreeCredential, profileTitle } from "@/data/team-meta.mjs";
 import { states } from "@/data/states";
-import { practiceAreasFor } from "@/lib/practice-areas";
+import { practiceAreasFor, practiceAreaLabel } from "@/lib/practice-areas";
 import { initialsOf } from "@/lib/initials";
 import { truncateAtWord } from "@/lib/text";
 import { ORG_NAME } from "@/lib/brand";
@@ -175,7 +175,7 @@ export default function ExpertProfile() {
                       className="group flex items-center justify-between gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 hover:border-amber/50 hover:shadow-md transition-all"
                     >
                       <span className="font-medium text-navy group-hover:text-amber-dark transition-colors">
-                        {svc.name}
+                        {practiceAreaLabel(m, svc)}
                       </span>
                       <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-amber-dark transition-all group-hover:translate-x-0.5 shrink-0" />
                     </Link>

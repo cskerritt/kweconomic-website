@@ -15,7 +15,17 @@ import {
   caseTypePairStateLead,
   caseTypeStateCourts,
   caseTypeHubLinkLabel,
+  caseTypeExpertStandard,
+  caseTypePairStateFrameworkTail,
+  caseTypeCourtSelection,
+  caseTypeVenuesHeading,
+  caseTypeStateCourtsQuestion,
+  caseTypePairStateExpertQuestion,
+  caseTypeStateForums,
 } from "./caseTypes";
+import { stateRegulations, expertInquiryOf } from "./regulations/state-regs";
+import { circuitOfState } from "./courts/federal-districts";
+import { getCourtsByState, selectTrialCourts } from "./courts/state-courts";
 import { getAllServiceSlugs, pillarServices } from "./services";
 import { states } from "./states";
 import { placeName } from "./geo-prose.mjs";
@@ -50,9 +60,10 @@ describe("economics case types", () => {
     expect(getCaseType("fraud-and-embezzlement")!.relevantServices).toContain("fraud-and-asset-tracing");
     expect(getCaseType("divorce-and-marital-dissolution")!.relevantServices).toContain("divorce-and-marital-financial-analysis");
     expect(getCaseType("tax-and-transfer-pricing-dispute")!.relevantServices[0]).toBe("transfer-pricing-expert-witness");
-    // The transfer pricing pillar declares the two commercial matters too, so their hubs list it.
+    // The transfer pricing pillar declares the two commercial matters and the divorce matter too, so their hubs list it.
     expect(getCaseType("commercial-contract-dispute")!.relevantServices).toContain("transfer-pricing-expert-witness");
     expect(getCaseType("partnership-and-shareholder-dispute")!.relevantServices).toContain("transfer-pricing-expert-witness");
+    expect(getCaseType("divorce-and-marital-dissolution")!.relevantServices).toContain("transfer-pricing-expert-witness");
   });
 });
 
@@ -225,6 +236,9 @@ describe("divorce case type: family-law framing", () => {
     framing.stateStepsIntro,
     framing.stateFramework,
     framing.stateFrameworkQuestion,
+    framing.pairStateLead,
+    framing.expertStandard,
+    framing.pairStateFrameworkTail,
     ...Object.values(framing.sections),
   ].join(" ");
   const ADVOCACY = /maximi[sz]e|minimi[sz]e|fight for|win your case|winning|aggressive|leverage|protect your|hide|hidden assets/i;
@@ -266,7 +280,10 @@ describe("divorce case type: family-law framing", () => {
     expect(`${divorce.titleBase} | ${ORG_NAME}`.length).toBeLessThanOrEqual(60);
     expect(divorce.shortName).toBe("Divorce");
     expect(divorce.dateModified >= "2026-09-05").toBe(true);
-    expect(divorce.relevantServices).toEqual(["divorce-and-marital-financial-analysis", "business-valuation", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"]);
+    // The transfer pricing pillar declares the divorce matter (a spouse's
+    // business that trades with affiliates the same owner controls), so the
+    // hub lists it beside the valuation and tracing pillars.
+    expect(divorce.relevantServices).toEqual(["divorce-and-marital-financial-analysis", "business-valuation", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "expert-rebuttal-and-report-review"]);
   });
 
   it("carries page framing that replaces the damages strings and fits the SERP windows", () => {
@@ -394,6 +411,13 @@ describe("tax and transfer pricing dispute case type: arm's length framing", () 
     framing.stateFrameworkQuestion,
     framing.pairStateLead,
     framing.courtsSentence ?? "",
+    framing.expertStandard,
+    framing.pairStateFrameworkTail,
+    framing.circuitNote ?? "",
+    framing.forums?.noun ?? "",
+    framing.forums?.courtsQuestion ?? "",
+    framing.forums?.expertQuestion ?? "",
+    ...(framing.forums?.list ?? []).flatMap((f) => [f.label, f.description]),
     ...Object.values(framing.sections),
   ].join(" ");
   const ADVOCACY = /maximi[sz]e|minimi[sz]e|fight for|win your case|winning|aggressive|leverage|protect your|avoid tax|tax shelter/i;
@@ -434,13 +458,27 @@ describe("tax and transfer pricing dispute case type: arm's length framing", () 
     expect(framing.stateLead).toMatch(/\{org\}/);
     expect(framing.stateLead).toMatch(/\{place\}/);
     expect(framing.stateLead).not.toMatch(/\{(?!org\}|place\})/);
-    for (const slotted of [framing.stateStepsIntro, framing.stateFramework, framing.stateFrameworkQuestion]) {
+    for (const slotted of [framing.stateStepsIntro, framing.stateFrameworkQuestion]) {
       expect(slotted).toMatch(/\{place\}/);
       expect(slotted).not.toMatch(/\{(?!place\})/);
     }
+    expect(framing.stateFramework).toMatch(/\{place\}/);
+    expect(framing.stateFramework).toMatch(/\{circuitNote\}/);
+    expect(framing.stateFramework).not.toMatch(/\{(?!place\}|circuitNote\})/);
+    expect(framing.circuitNote).not.toMatch(/\{(?!place\}|circuit\})/);
     expect(framing.pairStateLead).not.toMatch(/\{(?!org\}|work\}|matter\}|place\}|attr\})/);
-    expect(framing.courtsSentence).toMatch(/\{courts\}$/);
-    expect(framing.courtsSentence).not.toMatch(/\{(?!place\}|courts\})/);
+    // The courts answer is complete sentences that carry the appeals of the
+    // federal forums and of the state, and send a divorce to the court that
+    // hears divorce in the state.
+    expect(framing.courtsSentence).toMatch(/\.$/);
+    expect(framing.courtsSentence).toMatch(/\{courts\}, with final appeals to the \{supremeCourt\}/);
+    expect(framing.courtsSentence).toContain("[[/case-types/divorce-and-marital-dissolution/{stateSlug}|");
+    expect(framing.courtsSentence).toContain("the Federal Circuit");
+    expect(framing.courtsSentence).not.toMatch(/\{(?!place\}|courts\}|supremeCourt\}|stateSlug\})/);
+    expect(framing.expertStandard).toMatch(/\{inquiry\}/);
+    expect(framing.expertStandard).not.toMatch(/\{(?!place\}|inquiry\})/);
+    expect(framing.forums!.courtsQuestion).toMatch(/\?$/);
+    expect(framing.forums!.expertQuestion).toMatch(/\?$/);
     expect(framing.stateFrameworkQuestion).toMatch(/\?$/);
     expect(`${framing.stateHeadingStem} in ${longestPlace}`.length).toBeLessThanOrEqual(90);
     expect(new Set(Object.values(framing.sections)).size).toBe(4);
@@ -467,7 +505,16 @@ describe("tax and transfer pricing dispute case type: arm's length framing", () 
     expect(caseTypeHubDescription(tax)).toBe(framing.hubDescription);
     expect(caseTypeStateHeading(tax, "Texas")).toBe("Economic Analysis for Tax and Transfer Pricing Disputes in Texas");
     expect(caseTypeSectionHeadings(tax)).toEqual(framing.sections);
-    expect(caseTypeStateFramework(tax, "Texas", "fault text")).toBe(framing.stateFramework.replace(/\{place\}/g, "Texas"));
+    // The framework paragraph names the circuit whose appellate decisions
+    // govern a business based in the place, and none where there is none.
+    const txFramework = caseTypeStateFramework(tax, "Texas", "fault text", circuitOfState("texas"));
+    expect(txFramework).toContain("for the circuit where a corporation has its principal place of business (for a business based in Texas, the Fifth Circuit), whose precedent the Tax Court follows");
+    expect(txFramework).not.toMatch(/same federal arm's length rules|\{[a-zA-Z]+\}/);
+    expect(caseTypeStateFramework(tax, "Texas", "fault text")).toBe(
+      framing.stateFramework.replace(/\{place\}/g, "Texas").replace("{circuitNote}", ""),
+    );
+    expect(caseTypeStateFramework(tax, dc, "", circuitOfState("district-of-columbia"))).toContain("(for a business based in the District of Columbia, the D.C. Circuit)");
+    expect(circuitOfState("american-samoa")).toBeUndefined();
     expect(caseTypeStateServiceDescription(tax, "Texas")).toBe(caseTypeStateDescription(tax, "Texas"));
 
     const lead = caseTypePairStateLead(tax, ORG_NAME, "transfer pricing analysis", "Texas", "Texas");
@@ -475,32 +522,52 @@ describe("tax and transfer pricing dispute case type: arm's length framing", () 
       "KW Economics prepares transfer pricing analysis for tax and transfer pricing dispute matters involving businesses in Texas: the controlled transactions and prices at issue, the records and comparables that test them, and a report written for the forum that decides the dispute. Either side.",
     );
     expect(lead).not.toMatch(/loss claim|present value|damages rules|Plaintiff and defense/);
-    const courts = caseTypeStateCourts(tax, "Texas", "the District Court (General jurisdiction)");
+    const tx = { place: "Texas", courtList: "the District Court (General jurisdiction)", supremeCourt: "Supreme Court of Texas", stateSlug: "texas" };
+    const courts = caseTypeStateCourts(tax, tx, "sentence");
     expect(courts.startsWith("Federal income tax disputes over related-party prices are heard in the United States Tax Court")).toBe(true);
-    expect(courts).toContain("a dispute over Texas's own tax follows its administrative and appeal process");
-    expect(courts.endsWith("that turn on an intercompany price are heard in the District Court (General jurisdiction)")).toBe(true);
+    expect(courts).toContain("appeals from the Tax Court and the district courts ordinarily go to the federal court of appeals for the circuit where the business is based, and appeals from the Court of Federal Claims to the Federal Circuit.");
+    expect(courts).toContain("A dispute over Texas's own tax follows its administrative and appeal process.");
+    expect(courts).toContain(
+      "Commercial and shareholder claims in Texas that turn on an intercompany price are heard in the District Court (General jurisdiction), with final appeals to the Supreme Court of Texas,",
+    );
+    expect(courts).toContain("[[/case-types/divorce-and-marital-dissolution/texas|the court that hears divorce in Texas]].");
+    // The entry carries its own appeals, so both appeal forms read the same,
+    // and no sentence sends a federal tax appeal to the state's high court.
+    expect(caseTypeStateCourts(tax, tx, "clause")).toBe(courts);
+    expect(courts).not.toMatch(/Final appeals run to|matrimonial claims in Texas/);
     for (const t of [
       caseTypeStateLead(tax, ORG_NAME, dc),
       caseTypeStateStepsIntro(tax, dc),
-      caseTypeStateFramework(tax, dc, ""),
+      caseTypeStateFramework(tax, dc, "", circuitOfState("district-of-columbia")),
       caseTypeStateFrameworkQuestion(tax, dc),
       caseTypePairStateLead(tax, ORG_NAME, "rebuttal analysis", dc, "District of Columbia"),
-      caseTypeStateCourts(tax, dc, "the Superior Court of the District of Columbia (General jurisdiction)"),
+      caseTypeStateCourts(tax, { place: dc, courtList: "the Superior Court of the District of Columbia (General jurisdiction)", supremeCourt: "District of Columbia Court of Appeals", stateSlug: "district-of-columbia" }, "sentence"),
+      caseTypeStateCourtsQuestion(tax, "District of Columbia", dc),
+      caseTypePairStateExpertQuestion(tax, "District of Columbia", dc, "rebuttal analysis"),
+      ...caseTypeStateForums(tax, dc, "District of Columbia").flatMap((f) => [f.name, f.description]),
     ]) {
-      expect(t).not.toMatch(/\{[a-z]+\}/);
+      expect(t).not.toMatch(/\{[a-zA-Z]+\}/);
       expect(t).not.toMatch(/a the |the the |in District of Columbia/);
     }
 
     // The shared damages strings and the divorce entry's own strings are
     // unchanged by the helpers.
     const wd = getCaseType("wrongful-death")!;
-    expect(caseTypeStateCourts(wd, "New Jersey", "the Superior Court")).toBe("Wrongful Death cases venued in New Jersey are heard in the Superior Court");
+    const nj = { place: "New Jersey", courtList: "the Superior Court", supremeCourt: "Supreme Court of New Jersey", stateSlug: "new-jersey" };
+    expect(caseTypeStateCourts(wd, nj, "sentence")).toBe(
+      "Wrongful Death cases venued in New Jersey are heard in the Superior Court. Final appeals run to the Supreme Court of New Jersey.",
+    );
+    expect(caseTypeStateCourts(wd, nj, "clause")).toBe(
+      "Wrongful Death cases venued in New Jersey are heard in the Superior Court, with final appeals to the Supreme Court of New Jersey.",
+    );
     expect(caseTypePairStateLead(wd, ORG_NAME, "lost earnings analysis", "New Jersey", "New Jersey")).toBe(
       "KW Economics prepares lost earnings analysis for wrongful death cases venued in New Jersey: what the loss claim consists of, the records that drive it, and a present value built to New Jersey damages rules and venues. Plaintiff and defense.",
     );
     const divorce = getCaseType("divorce-and-marital-dissolution")!;
     expect(divorce.framing!.courtsSentence).toBeUndefined();
-    expect(caseTypeStateCourts(divorce, "Florida", "the Circuit Court")).toBe("Divorce and Marital Dissolution cases venued in Florida are heard in the Circuit Court");
+    expect(
+      caseTypeStateCourts(divorce, { place: "Florida", courtList: "the Circuit Court", supremeCourt: "Supreme Court of Florida", stateSlug: "florida" }, "sentence"),
+    ).toBe("Divorce and Marital Dissolution cases venued in Florida are heard in the Circuit Court. Final appeals run to the Supreme Court of Florida.");
     expect(caseTypePairStateLead(divorce, ORG_NAME, "business valuation", "Florida", "Florida")).toBe(
       "KW Economics prepares business valuation for divorce and marital dissolution matters venued in Florida: the income, valuation, and tracing questions the matter raises, the records that answer them, and a presentation built to the way Florida courts decide them. Either party.",
     );
@@ -511,5 +578,127 @@ describe("tax and transfer pricing dispute case type: arm's length framing", () 
     expect(caseTypeHubLinkLabel(tax)).toBe(
       "Tax and Transfer Pricing Dispute: what the economic analysis consists of, which choices move the result, and how the analysis is built",
     );
+  });
+});
+
+// Review fixes (2026-10-05): the framing entries' state pages carried the
+// state's expert standard, whose closing sentence speaks of a damages report
+// ("Forensic economic methods for lost earnings, household services, and
+// present value ..."), and the tax pages listed only the state's trial courts
+// (the Court of Claims among them) for a dispute most often heard in the
+// federal tax forums. The helpers below replace both on the framing entries
+// and leave every other entry's strings untouched.
+describe("framing entries: expert standard, forums, and court selection", () => {
+  const tax = getCaseType("tax-and-transfer-pricing-dispute")!;
+  const divorce = getCaseType("divorce-and-marital-dissolution")!;
+  const wd = getCaseType("wrongful-death")!;
+  const DAMAGES_REPORT = /damages|lost earnings|household services|present value|worklife/i;
+
+  it("every state entry states its inquiry first, and the inquiry alone names no damages opinion", () => {
+    for (const r of stateRegulations) {
+      const inquiry = expertInquiryOf(r);
+      expect(inquiry, r.stateSlug).toMatch(/\.$/);
+      expect(inquiry, r.stateSlug).not.toMatch(DAMAGES_REPORT);
+      expect(inquiry.length, r.stateSlug).toBeGreaterThan(100);
+      if (!r.expertInquiry) expect(r.expertStandard.startsWith(inquiry), r.stateSlug).toBe(true);
+    }
+    // The two entries whose first sentence names a damages opinion carry the inquiry on its own.
+    expect(stateRegulations.filter((r) => r.expertInquiry).map((r) => r.stateSlug)).toEqual(["alabama", "indiana"]);
+  });
+
+  it("the tax and divorce state pages print the state's inquiry with their own close, never the damages-report sentence", () => {
+    for (const r of stateRegulations) {
+      const st = states.find((s) => s.slug === r.stateSlug)!;
+      const place = placeName(st.name);
+      const taxStandard = caseTypeExpertStandard(tax, place, r);
+      expect(taxStandard, r.stateSlug).toMatch(/^Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute/);
+      expect(taxStandard, r.stateSlug).toContain(`heard in ${place}'s courts are tested under its own standard`);
+      expect(taxStandard, r.stateSlug).toContain(expertInquiryOf(r));
+      expect(taxStandard.endsWith("A transfer pricing report meets each of these inquiries by stating every method choice and naming the data behind every comparable."), r.stateSlug).toBe(true);
+      const divorceStandard = caseTypeExpertStandard(divorce, place, r);
+      expect(divorceStandard.startsWith(expertInquiryOf(r)), r.stateSlug).toBe(true);
+      for (const text of [taxStandard, divorceStandard]) {
+        expect(text, r.stateSlug).not.toMatch(DAMAGES_REPORT);
+        expect(text, r.stateSlug).not.toMatch(/\{[a-zA-Z]+\}|a the |the the /);
+      }
+      // Every other entry keeps the state's own text.
+      expect(caseTypeExpertStandard(wd, place, r)).toBe(r.expertStandard);
+    }
+  });
+
+  it("the pair x state framework FAQ closes on the entry's own sentence on the framing entries", () => {
+    expect(caseTypePairStateFrameworkTail(tax, "Texas")).toBe(tax.framing!.pairStateFrameworkTail);
+    expect(caseTypePairStateFrameworkTail(divorce, "Florida")).toContain("so counsel can apply the Florida rules to a documented figure");
+    for (const c of [tax, divorce]) expect(caseTypePairStateFrameworkTail(c, "Texas")).not.toMatch(/past and future amounts|every rate and table/);
+    expect(caseTypePairStateFrameworkTail(wd, "New Jersey")).toBe(
+      "The report presents past and future amounts separately, states every rate and table with its source, and shows the result under the alternatives the other side is likely to argue, so counsel can apply the New Jersey rules to a documented figure.",
+    );
+  });
+
+  it("the tax pages name their forums: the heading, the two questions, and the federal forums ahead of the state's trial courts", () => {
+    expect(caseTypeVenuesHeading(tax, "New York")).toBe("New York forums and expert standards");
+    expect(caseTypeVenuesHeading(wd, "New York")).toBe("New York courts and expert standards");
+    expect(caseTypeStateCourtsQuestion(tax, "Texas", "Texas")).toBe("Which forums hear a tax or transfer pricing dispute involving Texas?");
+    expect(caseTypeStateCourtsQuestion(wd, "Texas", "Texas")).toBe("Which Texas courts hear wrongful death cases?");
+    expect(caseTypePairStateExpertQuestion(tax, "Texas", "Texas", "transfer pricing analysis")).toBe(
+      "What do the forums that hear a tax or transfer pricing dispute involving Texas ask of transfer pricing analysis?",
+    );
+    expect(caseTypePairStateExpertQuestion(wd, "Texas", "Texas", "lost earnings analysis")).toBe(
+      "What do Texas courts ask of lost earnings analysis before it reaches the fact finder?",
+    );
+    expect(caseTypeStateForums(tax, "New York", "New York").map((f) => f.name)).toEqual([
+      "United States Tax Court",
+      "United States District Courts",
+      "United States Court of Federal Claims",
+      "New York tax appeals",
+    ]);
+    expect(caseTypeStateForums(divorce, "New York", "New York")).toEqual([]);
+    expect(caseTypeStateForums(wd, "New York", "New York")).toEqual([]);
+    // Commercial and shareholder claims take the business selection (the
+    // chancery, business, and general-jurisdiction courts alone), two courts
+    // deep after the forums; every other category keeps its own.
+    expect(caseTypeCourtSelection(tax)).toEqual({ kind: "business", limit: 2 });
+    expect(caseTypeCourtSelection(getCaseType("commercial-contract-dispute")!)).toEqual({ kind: "commercial", limit: undefined });
+    expect(caseTypeCourtSelection(divorce)).toEqual({ kind: "family", limit: undefined });
+    expect(caseTypeCourtSelection(wd)).toEqual({ kind: "general", limit: undefined });
+  });
+
+  it("the business selection lists only chancery, business, and general-jurisdiction courts for the tax matter's civil claims", () => {
+    for (const st of states) {
+      const courts = getCourtsByState(st.slug);
+      if (!courts) continue;
+      const { kind, limit } = caseTypeCourtSelection(tax);
+      const picked = selectTrialCourts(courts, kind, limit);
+      expect(picked.length, st.slug).toBeGreaterThan(0);
+      for (const c of picked) {
+        expect(`${c.name} ${c.description}`, st.slug).toMatch(/general jurisdiction|general civil|chancery|business|commercial/i);
+        expect(`${c.name} ${c.description}`, st.slug).not.toMatch(/claims against|limited jurisdiction|smaller civil|mid-sized|minor civil/i);
+      }
+    }
+    expect(selectTrialCourts(getCourtsByState("new-york")!, "business", 2).map((c) => c.name)).toEqual(["Supreme Court"]);
+    expect(selectTrialCourts(getCourtsByState("ohio")!, "business", 2).map((c) => c.name)).toEqual(["Court of Common Pleas"]);
+    expect(selectTrialCourts(getCourtsByState("delaware")!, "business", 2).map((c) => c.name)).toEqual(["Court of Chancery", "Superior Court"]);
+  });
+
+  it("the tax state descriptions sit inside the 140-160 band in every state and territory", () => {
+    for (const st of states) {
+      const d = caseTypeStateDescription(tax, placeName(st.name));
+      expect(d.length, `${st.slug}: ${d}`).toBeGreaterThanOrEqual(140);
+      expect(d.length, `${st.slug}: ${d}`).toBeLessThanOrEqual(160);
+    }
+  });
+
+  it("the tax matter's penalty answer covers the transactional penalty as well as the net adjustment penalty", () => {
+    const faq = tax.faqs.find((f) => f.question === "When does a transfer pricing adjustment carry a penalty?")!;
+    expect(faq.answer).toContain("A large net transfer pricing adjustment can carry a penalty");
+    expect(faq.answer).toContain("A separate penalty can apply to a single transaction whose price on the return is far from the arm's length price");
+    expect(faq.answer).toContain("reasonable cause and good faith");
+    expect(faq.answer).not.toMatch(/\d/);
+  });
+
+  it("the journey short form keeps the query term on the tax journeys and nowhere else", () => {
+    expect(tax.journeyShortName).toBe("Transfer Pricing");
+    expect(caseTypes.filter((c) => c.journeyShortName).map((c) => c.slug)).toEqual(["tax-and-transfer-pricing-dispute"]);
+    expect(tax.journeyShortName!.length).toBeLessThanOrEqual(20);
   });
 });

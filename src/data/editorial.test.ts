@@ -536,3 +536,78 @@ describe("formatPublishedDate", () => {
     }
   });
 });
+
+// Review fixes (2026-10-05) to the transfer pricing editorial batch: each pin
+// below holds a statement to the regulation it paraphrases (Treas. Reg.
+// 1.482-1(c)(1) and (e)(2), 1.482-5(b)(4), 1.6662-6(b) and (d)) or to the
+// procedure it describes, and keeps every source a statement leans on in the
+// entry's References block.
+describe("transfer pricing editorial: statements match the rules they describe", () => {
+  const method = methods.find((m) => m.slug === "transfer-pricing-methods")!;
+  const disputes = guides.find((g) => g.slug === "transfer-pricing-disputes-explained")!;
+  const royalty = guides.find((g) => g.slug === "intercompany-royalty-rates-in-litigation")!;
+  const comparison = comparisons.find((c) => c.slug === "transfer-pricing-documentation-vs-expert-report")!;
+  const disputesText = JSON.stringify(disputes);
+
+  it("the best method rule: no method must first be shown inapplicable; the rejected-alternatives duty belongs to the penalty documentation", () => {
+    const faq = method.faqs.find((f) => f.question === "What is the best method rule in transfer pricing?")!;
+    expect(faq.answer).toContain("A method may be applied without first showing that the others are inapplicable, but a method later shown to be more reliable must be used.");
+    expect(faq.answer).toContain("Describing the alternatives considered and why they were rejected is a requirement of the penalty documentation");
+    expect(faq.answer).not.toMatch(/has to explain why the other methods were not used/);
+  });
+
+  it("the arm's length range comes from equally reliable comparables, and inexact comparables narrow it", () => {
+    expect(method.summary).toContain("where several comparables are equally reliable the result is a range, narrowed to the interquartile range when the comparables are inexact");
+    expect(method.summary).not.toMatch(/where the comparables are inexact the result is a range/);
+    const faq = (disputes.faqs ?? []).find((f) => /arm's length standard require/.test(f.question))!;
+    expect(faq.answer).toContain("expressed as a range, narrowed by a statistical method when the comparables are inexact");
+  });
+
+  it("a tested party belongs to the one-sided methods; the profit split has none", () => {
+    const step = method.steps.find((s) => /select the tested party/.test(s))!;
+    expect(step).toMatch(/^For a one-sided method \(the comparable profits method or its OECD counterpart, the transactional net margin method, and the resale price or cost plus method\)/);
+    expect(step).toContain("the profit split has no tested party");
+    expect(disputesText).toContain("where a one-sided method such as the comparable profits method applies");
+    expect(disputesText).not.toContain("where a profit-based method applies");
+  });
+
+  it("the multi-year rule applies to the comparables' results", () => {
+    expect(disputesText).toContain(
+      "The years: comparables' results drawn from a single year, where the regulations generally call for at least the year under review and the two years before it",
+    );
+    expect(disputesText).not.toContain("a single year tested under the comparable profits method");
+  });
+
+  it("the disputes guide cites the documentation guidance, the penalty regulation, and the comparable profits regulation it leans on", () => {
+    const urls = (disputes.sources ?? []).map((s) => s.url);
+    for (const url of [
+      "https://www.irs.gov/businesses/international-businesses/transfer-pricing-documentation-best-practices-frequently-asked-questions-faqs",
+      "https://www.ecfr.gov/current/title-26/section-1.6662-6",
+      "https://www.ecfr.gov/current/title-26/section-1.482-5",
+    ]) {
+      expect(urls, url).toContain(url);
+    }
+  });
+
+  it("the royalty guide's snippet gives the licensee its routine return, not the residual profit", () => {
+    expect(royalty.metaDescription).toContain("the licensee's routine return");
+    expect(royalty.metaDescription).not.toContain("residual profit");
+    expect(royalty.metaDescription.length).toBeGreaterThanOrEqual(140);
+    expect(royalty.metaDescription.length).toBeLessThanOrEqual(160);
+  });
+
+  it("the expert report is the instrument in contract arbitration; treaty arbitration decides between the competent authorities", () => {
+    expect(comparison.whenUseB).toContain("an arbitration under a contract,");
+    expect(comparison.whenUseB).not.toContain("an arbitration under a treaty or a contract");
+    expect(comparison.whenUseB).toContain("the taxpayer's analysis reaches the panel through the U.S. competent authority, to the extent the treaty permits, rather than through testimony");
+    for (const url of ["https://www.irs.gov/businesses/overview-of-the-map-process", "https://www.irs.gov/irb/2015-35_IRB#RP-2015-40"]) {
+      expect(comparison.sources.map((s) => s.url), url).toContain(url);
+    }
+  });
+
+  it("the site FAQ keeps the arm's length work apart from the damages analyses", () => {
+    const faq = faqs.find((f) => f.question === "What types of matters does a forensic economist handle?")!;
+    expect(faq.answer).toContain("matters, and arm's length analyses are prepared for [[/case-types/tax-and-transfer-pricing-dispute|tax and transfer pricing disputes]]");
+    expect(faq.answer).not.toMatch(/matters; and \[\[\/case-types\/tax/);
+  });
+});

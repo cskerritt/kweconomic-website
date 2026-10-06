@@ -195,7 +195,11 @@ async function main() {
   const expandStates = (abbrs) =>
     (abbrs || []).map((a) => stateNameByAbbr[a] || a).join(", ");
   const caseTypeNameBySlug = {};
-  for (const c of caseTypes) caseTypeNameBySlug[c.slug] = c.name;
+  const caseTypeBySlug = {};
+  for (const c of caseTypes) {
+    caseTypeNameBySlug[c.slug] = c.name;
+    caseTypeBySlug[c.slug] = c;
+  }
   const expandCaseTypes = (slugs) =>
     (slugs || []).map((s) => caseTypeNameBySlug[s] || s).join(", ");
 
@@ -378,8 +382,16 @@ async function main() {
     p(s.description);
     if (s.caseTypes && s.caseTypes.length) {
       p(`Common case types: ${expandCaseTypes(s.caseTypes)}`);
+      // One URL per declared pair, so every pair hub is addressable from the
+      // export; the state tier is written as a pattern without angle
+      // brackets, which the HTML guard below would strip as tags.
+      p(`Case-type pages: ${s.caseTypes.map((ct) => `${SITE}/services/${s.slug}/case/${ct}`).join(", ")}`);
       if (releasedStateSlugs.length) {
-        p(`Case-type pages by state: ${SITE}/services/${s.slug}/case/<case-type>/<state> (each pairs the case type with the state's courts, expert standard, and damages framework; ${releasedStateSlugs.length} states published so far)`);
+        // A matter that is not a damages claim (a case type with a framing
+        // block) is paired with the state's governing framework, not its
+        // damages framework.
+        const framework = s.caseTypes.some((ct) => caseTypeBySlug[ct]?.framing) ? "governing framework" : "damages framework";
+        p(`Case-type pages by state: ${SITE}/services/${s.slug}/case/{case-type}/{state} (each pairs the case type with the state's courts, expert standard, and ${framework}; ${releasedStateSlugs.length} states published so far)`);
       }
     }
     p(`Fees and process: ${SITE}/services/${s.slug}/cost, ${SITE}/services/${s.slug}/process, ${SITE}/services/${s.slug}/timeline`);
@@ -532,7 +544,9 @@ async function main() {
   }
 
   h2("Geographic Coverage");
-  p(`Directory: ${SITE}/locations (state pages at ${SITE}/locations/<state>; jurisdictions hub at ${SITE}/jurisdictions)`);
+  // URL patterns use {braces}: an <angle-bracket> placeholder reads as a tag
+  // to the HTML guard at the bottom of this file and is stripped.
+  p(`Directory: ${SITE}/locations (state pages at ${SITE}/locations/{state}; jurisdictions hub at ${SITE}/jurisdictions)`);
   for (const region of ["northeast", "southeast", "midwest", "west", "territory"]) {
     const inRegion = states
       .filter((s) => s.region === region)
@@ -540,7 +554,7 @@ async function main() {
     if (!inRegion.length) continue;
     p(`${REGION_LABELS[region]}: ${joinList(inRegion)}`);
   }
-  p(`Federal district courts: one page per district at ${SITE}/jurisdictions/federal/<district> (${federalDistricts.length} districts, grouped by circuit on the jurisdictions hub), each covering how the damages report, the expert disclosure, and the deposition are prepared for federal practice.`);
+  p(`Federal district courts: one page per district at ${SITE}/jurisdictions/federal/{district} (${federalDistricts.length} districts, grouped by circuit on the jurisdictions hub), each covering how the damages report, the expert disclosure, and the deposition are prepared for federal practice.`);
 
   h2("Office Locations");
   li(`Headquarters: ${HQ}`);

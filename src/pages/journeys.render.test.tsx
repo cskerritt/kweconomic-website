@@ -267,3 +267,18 @@ describe("AttorneysHubPage /attorneys", () => {
     expect(html).not.toContain("Retaining an Expert");
   });
 });
+
+// Review fix (2026-10-05): the journeys link the first four pillars a case
+// type lists, so the transfer pricing pillar (fourth on the commercial and
+// shareholder matters, after lost profits or valuation and tracing) is
+// linked from those eight journey pages.
+describe("the commercial and shareholder journeys link the transfer pricing pillar", () => {
+  for (const slug of ["commercial-contract-dispute", "partnership-and-shareholder-dispute"]) {
+    for (const stage of ATTORNEY_STAGES) {
+      it(`/attorneys/${stage.slug}/${slug}`, () => {
+        const html = render(`/attorneys/${stage.slug}/${slug}`, JOURNEY_ROUTE, JourneyStage);
+        expect(html).toContain('href="/services/transfer-pricing-expert-witness"');
+      });
+    }
+  }
+});

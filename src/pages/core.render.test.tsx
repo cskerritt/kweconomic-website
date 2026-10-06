@@ -123,6 +123,12 @@ describe("JSON-LD on the core pages resolves its types", () => {
     });
   }
 
+  it("/about heads the team section \"Our Team\": the roster includes a forensic accountant and an associate (review fix 2026-10-05)", () => {
+    const html = rendered["/about"];
+    expect(html).toMatch(/<h2[^>]*>Our Team<\/h2>/);
+    expect(html).not.toMatch(/<h2[^>]*>Our Economists<\/h2>/);
+  });
+
   it("the entity pages tie their page node to the Organization and WebSite ids", () => {
     const org = `${SITE_URL}/#org`;
     const site = `${SITE_URL}/#website`;

@@ -69,6 +69,8 @@ export const KNOWS_ABOUT = [
   "Business Valuation",
   "Lost Profits",
   "Forensic Accounting",
+  "Transfer Pricing",
+  "Arm's Length Analysis",
   "Expert Witness Testimony",
 ] as const;
 
