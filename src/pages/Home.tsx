@@ -28,9 +28,9 @@ const HOW_WE_WORK = [
 ];
 
 const CASE_TYPE_ENTRIES = [
-  { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Lost earnings, wrongful death, household services, employment, commercial damages, business valuation, and marital financial matters" },
+  { label: "Schedule a Consultation", href: "/schedule-consultation", blurb: "Lost earnings, wrongful death, household services, employment, commercial damages, business valuation, transfer pricing, and marital financial matters" },
   { label: "Rebut an Opposing Report", href: "/services/expert-rebuttal-and-report-review", blurb: "Review of an opposing economist's inputs, methods, and arithmetic against the record" },
-  { label: "Browse Case Types", href: "/case-types", blurb: "Personal injury, wrongful death, employment, commercial, and family law matters, with the loss components each one raises" },
+  { label: "Browse Case Types", href: "/case-types", blurb: "Personal injury, wrongful death, employment, commercial, family law, and tax and transfer pricing matters, with what each analysis consists of" },
   { label: "General Inquiry", href: "/contact", blurb: "Anything else - we respond in 1 business day" },
 ];
 
@@ -133,8 +133,9 @@ export default function Home() {
               </h1>
               <p className="kw-enter kw-enter-2 text-lg md:text-xl text-neutral-300 mb-8 leading-relaxed max-w-xl">
                 {ORG_NAME} delivers independent lost earnings, wrongful death, household services,
-                employment, business valuation, and forensic accounting analyses for plaintiff and
-                defense counsel in all 50 states, the District of Columbia, and U.S. territories.
+                employment, business valuation, transfer pricing, and forensic accounting analyses for
+                plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S.
+                territories.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-6">
@@ -268,8 +269,8 @@ export default function Home() {
             <p className="text-neutral-600 max-w-2xl">
               Lost earnings and earning capacity, wrongful death economic loss, personal injury
               damages, household services, life care plan costing, employment and wage-loss
-              damages, business valuation, lost profits, fraud and asset tracing, and marital
-              financial analysis.
+              damages, business valuation, lost profits, fraud and asset tracing, transfer pricing
+              expert witness work, and marital financial analysis.
             </p>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

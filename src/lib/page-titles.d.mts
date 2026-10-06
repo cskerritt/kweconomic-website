@@ -53,6 +53,8 @@ export function cityHubTitle(city: TitleCity, state: TitleState, orgName: string
 export function caseTypeStateTitle(caseType: TitleCaseType, state: TitleState, orgName: string): string;
 export function serviceStateTitle(service: TitleService, state: TitleState, orgName: string): string;
 export function serviceCityTitle(service: TitleService, city: TitleCity, state: TitleState, orgName: string): string;
+/** "<name> Expert", or the name as written where it already ends in "Expert" or "Expert Witness". */
+export function expertLabel(name: string): string;
 export function pillarTitle(service: TitleService, orgName: string): string;
 export function variantTitle(service: TitleService, variantLabel: string, orgName: string): string;
 export function pairTitle(service: TitleService, caseType: TitleCaseType, orgName: string): string;

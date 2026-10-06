@@ -21,6 +21,7 @@ const SIBLINGS = [
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
+  "transfer-pricing-expert-witness",
   "divorce-and-marital-financial-analysis",
   "expert-rebuttal-and-report-review",
 ];
@@ -40,7 +41,7 @@ function render(citySlug: string): string {
 describe("ServiceCityCrossLinks on a service-city page", () => {
   const html = render("hackensack");
 
-  it("links the ten sibling pillar service pages in the same city", () => {
+  it("links the eleven sibling pillar service pages in the same city", () => {
     for (const slug of SIBLINGS) {
       expect(html).toContain(`href="/services/${slug}/new-jersey/hackensack"`);
     }

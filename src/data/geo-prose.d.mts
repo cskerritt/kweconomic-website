@@ -30,6 +30,8 @@ export interface StateNarrativeOutput {
   legalContextCommercial: string;
   /** The family-financial pillar's variant: the matrimonial part and the appellate court. */
   legalContextFamily: string;
+  /** The transfer pricing pillar's variant: the federal tax forums, the state's forum for the civil claims and its tax appeal process, appeals, and the federal district courts. */
+  legalContextTax: string;
 }
 export function buildStateNarrative(input: StateNarrativeInput): StateNarrativeOutput;
 /** The legal-context paragraph a service x state page prints for the pillar (by serviceGeoCategory). Takes the raw Service.shortName. */
@@ -60,7 +62,7 @@ export function buildCityNarrative(input: CityNarrativeInput): CityNarrativeOutp
 export function serviceCityPlaceParagraph(serviceShortName: string | undefined, n: Pick<CityNarrativeOutput, "anchor">): string;
 
 /** The kind of analysis a pillar performs; decides how local data enters its geo prose and sidebar panel. */
-export type GeoServiceCategory = "personal-loss" | "commercial" | "family-financial" | "rebuttal";
+export type GeoServiceCategory = "personal-loss" | "commercial" | "family-financial" | "tax" | "rebuttal";
 /** One pillar's geo angles (see the SERVICE_GEO comment in geo-prose.mjs for each slot). */
 export interface ServiceGeoAngle {
   category: GeoServiceCategory;

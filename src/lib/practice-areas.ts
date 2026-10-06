@@ -20,6 +20,7 @@ const SPECIALTY_TO_SERVICE: Record<string, string> = {
   "Business Valuation": "business-valuation",
   "Lost Profits": "lost-profits-and-commercial-damages",
   "Forensic Accounting": "fraud-and-asset-tracing",
+  "Transfer Pricing": "transfer-pricing-expert-witness",
   "Divorce Financial Analysis": "divorce-and-marital-financial-analysis",
   "Expert Testimony": "expert-rebuttal-and-report-review",
   "Economic Analysis": "lost-earnings-and-earning-capacity",

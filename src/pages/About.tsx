@@ -79,8 +79,9 @@ export default function About() {
               {ORG_NAME} is a forensic economics practice. We measure economic losses for
               litigation - lost earnings, wrongful death losses, household services, the present
               value of future care, employment damages, lost profits, and the value of business
-              interests - for attorneys and their clients across all U.S. jurisdictions, and we
-              testify to that work when the case requires it.
+              interests - and test the prices charged between related companies in transfer
+              pricing disputes, for attorneys and their clients across all U.S. jurisdictions, and
+              we testify to that work when the case requires it.
             </p>
           </div>
         </div>

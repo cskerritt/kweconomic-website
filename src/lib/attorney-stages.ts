@@ -44,6 +44,12 @@ export interface CaseTypeName {
    * SHORT_NAME_MAX (journeys.test.ts checks).
    */
   shortName?: string;
+  /**
+   * Present on a matter that is not a damages claim (src/data/caseTypes.ts
+   * CaseTypeFraming: the family-law and tax matters); the journey
+   * descriptions then name the questions the analysis answers, not a loss.
+   */
+  framing?: object;
 }
 
 export function caseTypeShortName(caseType: CaseTypeName): string {
@@ -97,6 +103,16 @@ const JOURNEY_DESCRIPTIONS: Record<string, (name: string) => string> = {
     `The economist at trial in ${name} cases: demonstratives, explaining present value, and rebutting the opposing economist. Plaintiff and defense.`,
 };
 
+// The stages whose shared description names a loss or present value take a
+// form of their own on a matter that is not a damages claim; the retaining
+// and deposition descriptions already fit every matter.
+const JOURNEY_DESCRIPTIONS_FRAMED: Record<string, (name: string) => string> = {
+  considering: (name) =>
+    `When ${name} matters need a forensic economist: the threshold questions, records to request, and what to ask before retaining. Plaintiff and defense.`,
+  trial: (name) =>
+    `The economist at trial in ${name} cases: demonstratives, explaining the analysis, and rebutting the opposing economist. Plaintiff and defense.`,
+};
+
 /** H1 of /attorneys/<stage>/<case-type>; "" for an unknown stage. */
 export function journeyHeading(stage: string, caseType: CaseTypeName): string {
   const build = JOURNEY_HEADINGS[stage];
@@ -114,7 +130,7 @@ export function journeyTitle(stage: string, caseType: CaseTypeName): string {
  * name unless that runs past DESCRIPTION_MAX, then the short name.
  */
 export function journeyDescription(stage: string, caseType: CaseTypeName): string {
-  const build = JOURNEY_DESCRIPTIONS[stage];
+  const build = (caseType.framing && JOURNEY_DESCRIPTIONS_FRAMED[stage]) || JOURNEY_DESCRIPTIONS[stage];
   if (!build) return "";
   const full = build(caseType.name.toLowerCase());
   return full.length <= DESCRIPTION_MAX ? full : build(caseTypeShortName(caseType).toLowerCase());

@@ -33,7 +33,8 @@ const here = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(here, "..");
 const PUBLIC = join(ROOT, "public");
 
-// The eleven indexable service lines, in services.ts order (spec 4.1). The two
+// The twelve indexable service lines, in services.ts order (spec 4.1; the
+// transfer pricing pillar joined after fraud and asset tracing on 2026-10-05). The two
 // cross-sell entries (vocational-evaluation, life-care-planning) are
 // `pillar: false` and must never reach a sitemap.
 const PILLARS = [
@@ -46,6 +47,7 @@ const PILLARS = [
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
+  "transfer-pricing-expert-witness",
   "divorce-and-marital-financial-analysis",
   "expert-rebuttal-and-report-review",
 ];
@@ -246,21 +248,25 @@ describe("service x state x city sitemap gating (contentReadiness)", () => {
   });
 
   it("keeps the services section within the crawl-budget target", () => {
-    // 11 pillars x 56 states = 616, plus the gated city combos (11 x 275 =
-    // 3,025: the first SERVICE_CITY_SITEMAP_TOP cities per state and the
-    // prerendered metro-labor cities), the /services hub, the
-    // pillar/cost/process/timeline pages (11 + 33), and the 60 declared
-    // service x case pairs: 3,746. The ceiling is pinned just above that so a
+    // 12 pillars x 56 states = 672, plus the sitemap-ready city combos (12 x
+    // 275 = 3,300: the first SERVICE_CITY_SITEMAP_TOP cities per state and
+    // the prerendered metro-labor cities), the /services hub, the
+    // pillar/cost/process/timeline pages (12 + 36), and the 65 declared
+    // service x case pairs: 4,086. The ceiling is pinned just above that so a
     // widened gate (or a leaked cross-sell) fails the build; the twin sites
-    // pin theirs the same way (kwvrs 2,600; kwlcp 3,600).
+    // pin theirs the same way (kwvrs 2,600; kwlcp 3,600). Raised from 4,000
+    // to 4,100 on 2026-10-05 for the transfer pricing pillar (the 11-pillar
+    // child was 3,746; the pillar adds 1 + 3 variants + 56 states + 275 city
+    // combos and its 3 pairs, and the tax and transfer pricing dispute adds
+    // the business valuation and rebuttal pairs: 340).
     // T08 decision (audit 2026-09-05): the gate stays. Widening it to the
-    // whole prerender window (SERVICE_CITY_SITEMAP_TOP = 10) adds the 2,772
-    // gated combos (6,518 in this child) and must raise this ceiling to 7,000
-    // in the same change, on Search Console evidence only (README, "Facts to
-    // confirm").
+    // whole prerender window (SERVICE_CITY_SITEMAP_TOP = 10) adds the gated
+    // combos (2,772 at the audit; 12 x 252 = 3,024 since 2026-10-05, 7,110 in
+    // this child) and must raise this ceiling to 7,200 in the same change, on
+    // Search Console evidence only (README, "Facts to confirm").
     const total = childUrls["sitemap-services.xml"].length;
     expect(total).toBeGreaterThanOrEqual(1500);
-    expect(total).toBeLessThanOrEqual(4000);
+    expect(total).toBeLessThanOrEqual(4100);
   });
 
   it("prerender.mjs's SERVICE_CITY_TOP matches contentReadiness's prerender constant", () => {
@@ -404,9 +410,12 @@ describe("service x case-type pairs: only the declared pairs are advertised", ()
 // Wave 2 (2026-09-14): the service x case type x state family. One URL per
 // declared pair per released state batch (src/data/serviceCaseTypeStates.ts),
 // in its own child so the services child's ceiling is untouched. The ceiling
-// here is pinned for the full rollout: 60 declared pairs x 56 states = 3,360
-// (the plan's 3,300 assumed 56 pairs; services.ts declares 60), so a fifth
-// batch or a widened pair set fails the build.
+// here is pinned for the full rollout: 65 declared pairs x 56 states = 3,640
+// (the plan's 3,300 assumed 56 pairs; services.ts declared 60 through wave 5,
+// 3,360 under a 3,400 ceiling, and the transfer pricing pillar and the tax
+// and transfer pricing dispute added 5 pairs on 2026-10-05, raising the
+// ceiling from 3,400 to 3,680 with the same headroom), so a fifth batch or a
+// widened pair set fails the build.
 describe("service x case type x state pages ride their own child (wave 2)", () => {
   const FILE = "sitemap-service-case-types.xml";
   const STATE_PAIR_PATH = /^\/services\/([a-z0-9-]+)\/case\/([a-z0-9-]+)\/([a-z0-9-]+)$/;
@@ -424,7 +433,7 @@ describe("service x case type x state pages ride their own child (wave 2)", () =
   });
 
   it("stays inside the family's crawl-budget ceiling", () => {
-    expect(advertised.length).toBeLessThanOrEqual(3400);
+    expect(advertised.length).toBeLessThanOrEqual(3680);
   });
 
   it("every URL is a state pair path in a released state, and no unreleased state or undeclared pair leaks", () => {
@@ -475,7 +484,7 @@ describe("ungated sections stay complete", () => {
   });
 
   it("case-types child lists the hub, every case type, and every case type x state", () => {
-    expect(caseTypes).toHaveLength(14);
+    expect(caseTypes).toHaveLength(15);
     const expected = [
       "/case-types",
       ...caseTypes.map((c) => `/case-types/${c}`),
@@ -642,9 +651,9 @@ describe("non-pillar services stay out of the sitemap", () => {
 });
 
 describe("scripts/lib/service-slugs.mjs object-boundary split", () => {
-  it("reads the real services.ts: 11 pillars in canonical order, both cross-sells flagged non-pillar", () => {
+  it("reads the real services.ts: 12 pillars in canonical order, both cross-sells flagged non-pillar", () => {
     const entries = serviceEntries(servicesSource);
-    expect(entries).toHaveLength(13);
+    expect(entries).toHaveLength(14);
     for (const slug of CROSS_SELLS) {
       expect(entries.map((e) => e.slug)).toContain(slug);
       expect(entries.find((e) => e.slug === slug)?.pillar).toBe(false);

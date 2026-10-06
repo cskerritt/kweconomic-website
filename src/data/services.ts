@@ -7,7 +7,7 @@ import { VOC_SERVICE_URL, LCP_SERVICE_URL } from "@/lib/brand";
 /**
  * KW Economics service taxonomy.
  *
- * Eleven `pillar: true` entries are the site's indexable service lines: every
+ * Twelve `pillar: true` entries are the site's indexable service lines: every
  * service page, service x state, service x city, cost/process/timeline page,
  * hub card, cross-link, sitemap entry, and prerendered route enumerates from
  * `pillarServices()`. The two `pillar: false` entries (vocational assessment
@@ -957,7 +957,7 @@ export const services: ServiceEntry[] = [
     description: "Valuation of closely held businesses and ownership interests for shareholder and partnership disputes, divorce, estate and gift matters, and buy-sell disagreements. The work applies the income, market, and asset approaches under the standard of value that governs the matter, addresses discounts for lack of control and marketability where they apply, and documents every input so the conclusion can be tested on cross-examination.",
     icon: "Building2",
     keywords: ["business valuation expert", "closely held business valuation", "fair market value vs fair value", "income approach valuation", "discount for lack of marketability", "shareholder dispute valuation"],
-    caseTypes: ["partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "commercial-contract-dispute"],
+    caseTypes: ["partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "commercial-contract-dispute", "tax-and-transfer-pricing-dispute"],
     relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
     cost: {
       range: "Valuation engagements are scoped to the size and complexity of the business, the quality of its financial records, and the purpose and standard of value. A single operating company with clean financial statements and one valuation date is the narrowest scope; multiple entities, related-party transactions, normalization of owner compensation, or several valuation dates widen it. We provide a written fee schedule and a cost estimate before work begins.",
@@ -985,7 +985,7 @@ export const services: ServiceEntry[] = [
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
     ],
     metaDescription: "Business valuation for litigation, plaintiff and defense, nationwide: income, market, and asset approaches under the governing standard of value, documented.",
-    dateModified: "2026-09-02",
+    dateModified: "2026-10-05",
     faqs: [
       {
         question: "Which standard of value applies?",
@@ -1009,6 +1009,7 @@ export const services: ServiceEntry[] = [
       { title: "Business Valuation Approaches", href: "/methods/business-valuation-approaches", description: "Method" },
       { title: "Fair Market Value vs. Fair Value", href: "/compare/fair-market-value-vs-fair-value", description: "Comparison" },
       { title: "Lost Profits vs. Business Valuation", href: "/compare/lost-profits-vs-business-valuation", description: "Comparison" },
+      { title: "Intercompany Royalty Rates in Litigation", href: "/guides/intercompany-royalty-rates-in-litigation", description: "Guide" },
     ],
     sources: refsToSources(["AICPA_SSVS1", "NACVA_STANDARDS", "TREASURY_YIELD"]),
     caseTypeNotes: {
@@ -1051,6 +1052,19 @@ export const services: ServiceEntry[] = [
           },
         ],
       },
+      "tax-and-transfer-pricing-dispute": {
+        summary: "A tax dispute becomes a valuation when it turns on what property was worth rather than on a recurring intercompany price: intangibles or a business line transferred to an affiliate in a restructuring, a contribution to an arrangement in which affiliates share the cost of developing intangibles, or a closely held interest transferred by gift or at death. The economist values the property under the income, market, and asset approaches as the facts support, states the projections, the discount rate, and the useful lives the value rests on, and applies the standard of value the tax framework requires. Where the same dispute also tests the prices the affiliates charged one another, the valuation is reconciled with the transfer pricing analysis so that the value of the transferred property and the returns to each company's routine functions are not counted twice.",
+        faqs: [
+          {
+            question: "Which standard of value governs a valuation in a tax dispute?",
+            answer: "The one the tax framework applies to the transfer. Property moved between affiliates is measured by the arm's length result the transfer pricing rules require, while most other federal tax valuations, including transfers by gift or at death, use fair market value. The approaches overlap, but the standard decides what is measured, so the report states which one applies and why.",
+          },
+          {
+            question: "How is a valuation kept consistent with the transfer pricing analysis in the same dispute?",
+            answer: "By building both from the same projections, the same functional analysis, and the same conclusion about which company owns which intangibles, so that the value assigned to the transferred property and the routine returns assigned to each company's functions add up to the profit the business actually earns. The report shows the reconciliation so a reviewer can see that no profit is counted in both.",
+          },
+        ],
+      },
     },
   },
   {
@@ -1089,7 +1103,7 @@ export const services: ServiceEntry[] = [
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
     ],
     metaDescription: "Lost profits and commercial damages for plaintiff and defense counsel nationwide: but-for revenue and costs, causation, mitigation, and the period of loss.",
-    dateModified: "2026-09-02",
+    dateModified: "2026-10-05",
     faqs: [
       {
         question: "How are lost profits measured?",
@@ -1113,6 +1127,7 @@ export const services: ServiceEntry[] = [
       { title: "Lost Profits vs. Lost Business Value", href: "/guides/lost-profits-vs-lost-business-value", description: "Guide" },
       { title: "Lost Profits vs. Business Valuation", href: "/compare/lost-profits-vs-business-valuation", description: "Comparison" },
       { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets", description: "Method" },
+      { title: "Transfer Pricing Disputes Explained", href: "/guides/transfer-pricing-disputes-explained", description: "Guide" },
     ],
     sources: refsToSources(["AAEFE_JLE", "NAFE_JFE", "TREASURY_YIELD", "BLS_CPI"]),
     caseTypeNotes: {
@@ -1274,6 +1289,125 @@ export const services: ServiceEntry[] = [
       },
     },
   },
+  // Transfer pricing (owner request 2026-10-05). Written from the economist's
+  // standpoint and neutral between taxpayer and government, plaintiff and
+  // defense; the work is directed by the Chief of Economic Services (the
+  // ResponsibilityLine the templates print), and no person is said to hold a
+  // transfer pricing credential, membership, testimony history, or prior
+  // engagement. The statute and the regulations are described, never cited;
+  // the registry sources carry the references.
+  {
+    slug: "transfer-pricing-expert-witness",
+    name: "Transfer Pricing Expert Witness",
+    shortName: "Transfer Pricing",
+    pillar: true,
+    description: "Economic analysis and expert testimony on whether the prices charged between companies under common control, for goods, services, the use of intangibles, and intercompany loans, meet the arm's length standard: the result unrelated parties would have reached in the same transaction under the same circumstances. The work delineates the transactions from the intercompany agreements and the companies' actual conduct, selects the most reliable method, documents the comparables and the arm's length range, and quantifies what the price moved, for tax examinations and appeals, Tax Court and refund litigation, state tax disputes, and commercial, shareholder, and divorce cases.",
+    icon: "ArrowLeftRight",
+    keywords: ["transfer pricing expert witness", "transfer pricing economist", "arm's length standard", "Section 482 dispute", "intercompany pricing", "transfer pricing litigation", "intercompany royalty rate", "comparable profits method"],
+    caseTypes: ["tax-and-transfer-pricing-dispute", "commercial-contract-dispute", "partnership-and-shareholder-dispute"],
+    relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
+    cost: {
+      range: "Transfer pricing engagements are scoped to the controlled transactions and years at issue, the forum, and how much of the record must be rebuilt. A review of one intercompany arrangement over a defined period, with the group's documentation and segmented financial statements in hand, is the narrowest scope; several transaction types, intangibles whose ownership or value is contested, a comparables search built from the ground up, or parallel tax and commercial proceedings widen it. We provide a written fee schedule and a cost estimate before work begins.",
+      drivers: [
+        "Number and type of controlled transactions at issue: sales of goods, services, licenses of intangibles, and intercompany loans or guarantees",
+        "Number of years and legal entities in the analysis, and whether segmented financial statements exist or must be built from the general ledger",
+        "Whether the group's contemporaneous documentation can serve as a starting point or the delineation and functional analysis must be rebuilt from the agreements, the ledger, and interviews",
+        "Scope of the comparables work: a search of financial data on independent companies, a review of license agreements between unrelated parties, or both",
+        "The forum and its schedule: an examination or appeal, a Tax Court petition or refund suit, a state tax appeal, or a commercial, shareholder, or divorce case",
+        "Deposition and trial testimony, including preparation and travel time",
+      ],
+      billingStructure: "Transfer pricing analysis is billed at an hourly rate for records review, the functional analysis, comparables research, modeling, report preparation, and testimony. A retainer is established at the outset and applied against time incurred. The current rate schedule and retainer terms are provided on request and confirmed in a written engagement agreement.",
+    },
+    process: [
+      { step: "Retention and conflict check", description: "We confirm conflicts across the group's affiliates and the opposing parties, identify the transactions, years, and forum at issue, establish the retainer, and agree on the report deadline and any disclosure dates." },
+      { step: "Records and data request", description: "We request the intercompany agreements and amendments, the transfer pricing documentation for each year, legal-entity and segmented financial statements, general ledger detail of the intercompany accounts, the related tax filings, and the operating records and interviews the functional analysis needs." },
+      { step: "Analysis and modeling", description: "We delineate the controlled transactions, perform the functional analysis, evaluate the methods under the best method rule, search for and screen the comparables, compute the arm's length range, and quantify any adjustment or restated profit, with the effect of each contested choice shown." },
+      { step: "Draft report and counsel review", description: "We deliver a draft that states every transaction, assumption, screen, and adjustment, with the rejected methods and comparables explained, and review it with counsel for completeness and factual accuracy before finalizing." },
+      { step: "Final report and testimony support", description: "We issue the final report in the form the forum requires and provide deposition and trial testimony, critique of the opposing transfer pricing analysis, and updated calculations as the record develops." },
+    ],
+    timeline: [
+      { phase: "Retention and records intake", duration: "1 to 2 weeks" },
+      { phase: "Functional analysis and comparables", duration: "4 to 8 weeks after records are received" },
+      { phase: "Draft and final report", duration: "2 to 3 weeks after the analysis" },
+      { phase: "Deposition and trial support", duration: "As scheduled by counsel and the tribunal" },
+    ],
+    metaDescription: "Transfer pricing expert witness for plaintiff and defense counsel nationwide and either side of a tax dispute: arm's length analysis of intercompany prices.",
+    dateModified: "2026-10-05",
+    faqs: [
+      {
+        question: "What does a transfer pricing expert witness analyze?",
+        answer: "Whether the prices charged between related companies match what unrelated parties would have agreed to in the same transactions under the same circumstances. The expert delineates the transactions from the intercompany agreements, the invoices, and the ledger, establishes which company performed which functions, owned which assets, and bore which risks, selects the method that gives the most reliable measure, and compares the result with comparable transactions or companies to determine the arm's length range and any adjustment.",
+      },
+      {
+        question: "What records does a transfer pricing analysis need?",
+        answer: "The intercompany agreements and their amendments, the transfer pricing policy and the documentation for each year at issue, legal-entity and segmented financial statements, general ledger detail of the intercompany accounts and any year-end adjustments, the tax returns and information returns that report related-party transactions, any advance pricing agreement, and the organization charts and operating records the functional analysis rests on. Interviews with the people who ran each function fill in what the documents leave out.",
+      },
+      {
+        question: "Is the analysis different in a tax case and in a commercial case?",
+        answer: "The economics is the same: the delineation, the functional analysis, the method, the comparables, and the range. What differs is the rule of decision. In a tax forum the arm's length standard governs the result; in a commercial, shareholder, or divorce case the contract, the fiduciary duty, or the support statute governs, and the arm's length result is evidence of what an unrelated party would have paid. The report states which question it answers and presents the result in the form the forum uses.",
+      },
+      {
+        question: "How is expert testimony presented in the Tax Court?",
+        answer: "In writing first. The court requires each expert to prepare a report that states every opinion with its basis and reasons, the facts and data considered, the exhibits, the expert's qualifications, prior testimony, and compensation, and the report is received in evidence as the expert's direct testimony. Cross-examination then tests it, so the report is written to stand on its own, with every choice stated and every figure traceable to the record.",
+      },
+      {
+        question: "How does the report deal with the opposing transfer pricing expert?",
+        answer: "By showing the result under the other side's method, tested party, comparable set, and adjustments as well as under its own, and by explaining which of those choices it accepts and why the others do not hold. A tribunal deciding between two transfer pricing analyses can then see which choices drive the difference and attach its finding to the record rather than to an expert's conclusion.",
+      },
+      {
+        question: "When should a transfer pricing economist be brought in?",
+        answer: "As early as the record allows. During an examination, a review before a notice of proposed adjustment can show whether the issue turns on the method, the comparables, or the facts; at the appeals stage it puts the economic position in a form an appeals officer can weigh; and in litigation it leaves time to rebuild the delineation and the comparables before the disclosure deadline rather than defending the documentation as written.",
+      },
+    ],
+    related: [
+      { title: "Transfer Pricing Disputes Explained: The Arm's Length Standard and Section 482", href: "/guides/transfer-pricing-disputes-explained", description: "Guide" },
+      { title: "Transfer Pricing Methodology", href: "/methods/transfer-pricing-methods", description: "Method" },
+      { title: "Intercompany Royalty Rates in Litigation", href: "/guides/intercompany-royalty-rates-in-litigation", description: "Guide" },
+      { title: "Transfer Pricing Documentation vs. Expert Report", href: "/compare/transfer-pricing-documentation-vs-expert-report", description: "Comparison" },
+    ],
+    sources: refsToSources(["IRC_482", "TREAS_REG_1_482_1", "OECD_TP_GUIDELINES", "TAX_COURT_RULE_143", "IRS_TP_EXAM_PROCESS"]),
+    caseTypeNotes: {
+      "tax-and-transfer-pricing-dispute": {
+        summary: "In a tax dispute the transfer pricing analysis answers the question the examination or the petition raises: whether the results of the controlled transactions are consistent with what unrelated parties would have realized in the same transactions under the same circumstances, and if not, how much income should be reallocated and between which companies. The economist rebuilds the delineation and the functional analysis from the agreements, the ledger, and the companies' conduct rather than from the group's documentation alone, evaluates the methods under the best method rule, assembles and screens the comparables, computes the range, and states the adjustment or its absence by year. The report is written for the forum: as direct testimony in the Tax Court, as a disclosed report in a refund suit, or as the economic position put to an appeals officer or a competent authority.",
+        faqs: [
+          {
+            question: "Does the analysis start from the group's own transfer pricing documentation?",
+            answer: "It starts by reading it, because the documentation shows the method the group applied and what it told the tax authority, but it does not adopt its conclusions. The economist tests the delineation against the agreements and the conduct, rebuilds the comparable set with stated screens, and shows where the documentation holds up and where an examiner or an opposing expert is likely to press.",
+          },
+          {
+            question: "Can the economist help before a dispute reaches the Tax Court?",
+            answer: "Yes. An economic review during the examination or at the IRS Independent Office of Appeals can show whether the issue turns on the method, the comparables, or the facts, and puts the position in a form an appeals officer or a competent authority can weigh. The same analysis carries into a petition or a refund suit if the issue is not resolved.",
+          },
+        ],
+      },
+      "commercial-contract-dispute": {
+        summary: "A commercial contract dispute becomes a transfer pricing question when the contract began as an intercompany agreement or prices transactions between affiliates: a supply, services, or license agreement that survived a sale or a spin-off and now governs companies that are no longer related, a joint venture whose partner's affiliate charged the venture for inputs, or an earn-out measured on earnings that intercompany charges reduced after closing. The economist reads the agreement and its pricing clause, delineates the transactions from the invoices and the ledger, measures the price against an arm's length benchmark, and carries the difference into a damages schedule by period, applied to the volumes in the record. Because the contract, not the tax rule, decides the claim, the report presents the arm's length result as evidence of what unrelated parties would have agreed and shows the figure under the contract's own terms.",
+        faqs: [
+          {
+            question: "When does a contract dispute call for a transfer pricing analysis?",
+            answer: "When the price at issue was set between related companies or under an agreement drafted between affiliates, so its terms do not reflect a market negotiation. The arm's length analysis then supplies a benchmark for a reasonable price where the agreement is silent, ambiguous, or terminated, or tests whether intercompany charges reduced a measure of earnings the contract relies on.",
+          },
+          {
+            question: "How is an arm's length price difference turned into a damages figure?",
+            answer: "The difference between the price charged and the arm's length price is applied to the volumes the record shows for each period, adjusted for any terms the contract fixes, and the result is presented by year, with past amounts brought forward and any future amounts discounted at a stated rate, so the figure can be tested against the invoices and the ledger.",
+          },
+        ],
+      },
+      "partnership-and-shareholder-dispute": {
+        summary: "In an owner dispute the transfer pricing question is whether a controlling owner moved profit out of the company through purchases from, sales to, services from, or licenses from entities the owner holds separately. The economist identifies each related-party transaction from the ledger and the agreements, establishes the functions, assets, and risks on each side, measures the prices against comparable transactions or the returns of comparable independent companies, and quantifies the profit diverted year by year. The restated earnings then feed the valuation of the minority interest or the damages claim, and the report keeps the arm's length adjustment and the valuation coordinated so the same profit is counted once.",
+        faqs: [
+          {
+            question: "How is profit shifted to a controlling owner's affiliate measured?",
+            answer: "By comparing what the company paid to or received from the affiliate with what an independent party would have paid or received for the same goods, services, or rights, using comparable transactions where they exist and the returns of comparable independent companies where they do not. The difference, year by year, is the profit the related-party prices moved.",
+          },
+          {
+            question: "Is an arm's length price the measure of the minority owner's loss?",
+            answer: "It is evidence of what an independent party would have charged, and counsel and the court decide whether the governing agreement or the fiduciary duty adopts it as the measure. The economist presents the arm's length result and the restated earnings, and shows their effect on the value of the interest or on the damages claim under the measure counsel identifies.",
+          },
+        ],
+      },
+    },
+  },
   {
     slug: "divorce-and-marital-financial-analysis",
     name: "Divorce and Marital Financial Analysis",
@@ -1373,7 +1507,7 @@ export const services: ServiceEntry[] = [
     description: "Critique of an opposing economic damages, valuation, or forensic accounting report for plaintiff or defense counsel. The review tests the assumptions, data sources, discount rates, worklife and life expectancy inputs, growth rates, mitigation treatment, and arithmetic behind the opposing number, identifies the errors that matter, and quantifies how the conclusion changes when they are corrected. The result supports cross-examination, a rebuttal report, or a motion directed at the reliability of the opinion.",
     icon: "FileSearch",
     keywords: ["economic damages rebuttal", "rebuttal expert economist", "expert report review", "opposing expert critique", "damages report errors", "cross-examination support"],
-    caseTypes: ["personal-injury", "wrongful-death", "medical-malpractice", "motor-vehicle-accident", "traumatic-brain-injury", "spinal-cord-injury", "workers-compensation", "employment-discrimination", "wrongful-termination", "commercial-contract-dispute", "partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "fraud-and-embezzlement", "product-liability"],
+    caseTypes: ["personal-injury", "wrongful-death", "medical-malpractice", "motor-vehicle-accident", "traumatic-brain-injury", "spinal-cord-injury", "workers-compensation", "employment-discrimination", "wrongful-termination", "commercial-contract-dispute", "partnership-and-shareholder-dispute", "divorce-and-marital-dissolution", "fraud-and-embezzlement", "product-liability", "tax-and-transfer-pricing-dispute"],
     relevantCredentials: ["Forensic Economist", "NAFE", "AAEFE", "MBA", "PhD"],
     cost: {
       range: "Rebuttal engagements are scoped to the length and complexity of the report under review and whether counsel needs a written rebuttal or consulting support only. A review of a single lost earnings report with a memo of findings is the narrowest scope; a valuation or lost profits report with extensive schedules, multiple opposing experts, or a full alternative calculation widens it. We provide a written fee schedule and a cost estimate before work begins.",
@@ -1401,7 +1535,7 @@ export const services: ServiceEntry[] = [
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
     ],
     metaDescription: "Expert rebuttal and report review for plaintiff and defense counsel nationwide: the opposing economic report tested input by input and recalculated.",
-    dateModified: "2026-09-02",
+    dateModified: "2026-10-05",
     faqs: [
       {
         question: "What does a rebuttal review test in an opposing report?",
@@ -1425,6 +1559,7 @@ export const services: ServiceEntry[] = [
       { title: "Expert Testimony Admissibility: Federal vs. State Court", href: "/guides/federal-vs-state-court-daubert", description: "Guide" },
       { title: "Plaintiff Economist vs. Defense Economist: Is the Method Different?", href: "/compare/plaintiff-economist-vs-defense-economist", description: "Comparison" },
       { title: "Net vs. Gross Discount Rate", href: "/compare/net-vs-gross-discount-rate", description: "Comparison" },
+      { title: "Transfer Pricing Documentation vs. Expert Report", href: "/compare/transfer-pricing-documentation-vs-expert-report", description: "Comparison" },
     ],
     sources: refsToSources(["NAFE_ETHICS", "DAUBERT", "KUMHO_TIRE", "FRE_702", "FRCP_26"]),
     caseTypeNotes: {
@@ -1607,6 +1742,19 @@ export const services: ServiceEntry[] = [
           {
             question: "Can the review test a common damages model applied across many claimants?",
             answer: "Yes. The economist checks whether the method is documented, whether it was applied to each claimant's own records, and whether individual results deviate from the method without explanation, and states the effect of correcting the deviations.",
+          },
+        ],
+      },
+      "tax-and-transfer-pricing-dispute": {
+        summary: "An opposing transfer pricing report is tested on the choices that drive its result: whether the delineation of the transactions matches the agreements and the companies' conduct, the functional analysis, the method selected and the reasons the alternatives were rejected, the tested party and the profit level indicator, the comparables screens and the companies they admitted or excluded, the adjustments, the years of data, and the point in the range. The economist rebuilds each step from the report's own workpapers and data where they are produced, recalculates the result under corrected choices one at a time and together, and ranks each finding by its effect, so counsel can see which choices carry the number and the tribunal can weigh the two analyses on the record.",
+        faqs: [
+          {
+            question: "What does a review of an opposing transfer pricing report look for first?",
+            answer: "Whether the tested party really is the simpler participant and whether the comparables perform the functions it performs, because those two choices move the result more than most others. The review then checks the screens, the rejected companies, the profit level indicator, the years averaged, and the adjustments, and recalculates the range with each correction.",
+          },
+          {
+            question: "How is the review used when the opposing report is the expert's direct testimony?",
+            answer: "In the Tax Court the opposing report is received as that expert's direct testimony, so the review shapes the cross-examination and any rebuttal testimony the court permits, choice by choice and with the effect of each correction stated. The same review can be used earlier, at the examination or appeals stage, to show where an opposing economic position does not hold.",
           },
         ],
       },

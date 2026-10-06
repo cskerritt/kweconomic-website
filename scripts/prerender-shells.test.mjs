@@ -210,6 +210,14 @@ const ROUTES = [
   { route: "/case-types/divorce-and-marital-dissolution", pattern: "/case-types/:slug", Page: CaseTypeHub },
   { route: "/case-types/divorce-and-marital-dissolution/alabama", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
   { route: "/services/business-valuation/new-jersey", pattern: "/services/:serviceSlug/:stateSlug", Page: ServiceState },
+  // The transfer pricing pillar and the tax and transfer pricing dispute
+  // (2026-10-05): the second framing entry, the tax legal context, and the
+  // pillar whose name already ends in the role.
+  { route: "/services/transfer-pricing-expert-witness", pattern: "/services/:serviceSlug", Page: ServicePillar },
+  { route: "/services/transfer-pricing-expert-witness/new-jersey", pattern: "/services/:serviceSlug/:stateSlug", Page: ServiceState },
+  { route: "/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute", pattern: "/services/:serviceSlug/case/:typeSlug", Page: ServiceCaseType },
+  { route: "/case-types/tax-and-transfer-pricing-dispute", pattern: "/case-types/:slug", Page: CaseTypeHub },
+  { route: "/case-types/tax-and-transfer-pricing-dispute/district-of-columbia", pattern: "/case-types/:typeSlug/:stateSlug", Page: CaseTypeState },
   { route: "/services/divorce-and-marital-financial-analysis/new-jersey/hackensack", pattern: "/services/:serviceSlug/:stateSlug/:citySlug", Page: ServiceStateCity },
   { route: "/credentials/forensic-economist", pattern: "/credentials/:slug", Page: CredentialHub },
   { route: "/credentials/forensic-economist/new-jersey", pattern: "/credentials/:credSlug/:stateSlug", Page: CredentialState },
@@ -693,6 +701,7 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
     "business-valuation",
     "lost-profits-and-commercial-damages",
     "fraud-and-asset-tracing",
+    "transfer-pricing-expert-witness",
     "divorce-and-marital-financial-analysis",
   ];
   const expert = retainableExperts()[0];
@@ -740,6 +749,30 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
       expect(descriptionOf(shell), st.slug).toMatch(/^Income analysis, business valuation, and funds tracing for divorce and marital dissolution in /);
       expect(textOf(shell), st.slug).not.toMatch(/Economic Damages Expert|economic damages in|Damages framework|damages framework/);
     }
+  });
+
+  it("the tax and transfer pricing hub and every state shell carry the arm's length title, H1, description, and courts sentence (2026-10-05)", () => {
+    const hub = readShell("/case-types/tax-and-transfer-pricing-dispute");
+    expect(titleOf(hub)).toBe(`Tax and Transfer Pricing Dispute Economist | ${ORG_NAME}`);
+    expect(h1Of(hub)).toBe("Economic Analysis for Tax and Transfer Pricing Disputes");
+    expect(textOf(hub)).not.toMatch(/Economic Damages Analysis|Where the damages concentrate|What the economic claim consists of/);
+    for (const st of states) {
+      const shell = readShell(`/case-types/tax-and-transfer-pricing-dispute/${st.slug}`);
+      expect(titleOf(shell), st.slug).toMatch(/^Transfer Pricing Economist in /);
+      expect(h1Of(shell), st.slug).toMatch(/^Economic Analysis for Tax and Transfer Pricing Disputes in /);
+      expect(descriptionOf(shell), st.slug).toMatch(/^Arm's length analysis for tax and transfer pricing disputes in /);
+      expect(textOf(shell), st.slug).not.toMatch(/Economic Damages Expert|economic damages in|Damages framework|contributory negligence|prejudgment interest/);
+      expect(textOf(shell), st.slug).toContain("Federal income tax disputes over related-party prices are heard in the United States Tax Court");
+    }
+    // The pillar's own pair page and a state page of it.
+    const pair = readShell("/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute");
+    expect(titleOf(pair)).toBe(`Transfer Pricing Expert for Tax Dispute | ${ORG_NAME}`);
+    expect(textOf(pair)).toContain("What the economic analysis consists of");
+    expect(textOf(pair)).not.toContain("What the economic claim consists of");
+    const pairState = readShell("/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute/texas");
+    expect(titleOf(pairState)).toBe(`Transfer Pricing for Tax Dispute in Texas | ${ORG_NAME}`);
+    expect(textOf(pairState)).toContain("KW Economics prepares transfer pricing analysis for tax and transfer pricing dispute matters involving businesses in Texas:");
+    expect(textOf(pairState)).not.toMatch(/loss claim consists of|damages rules and venues|income, valuation, and tracing questions/);
   });
 
   it("F06: the about, contact, and consultation shells print the shared intake copy and nothing the pages do not", () => {

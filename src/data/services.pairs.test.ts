@@ -42,16 +42,21 @@ describe("serviceCaseTypePairs()", () => {
     }
   });
 
-  it("is the declared subset of the all-pairs grid: 60 of the 154 pillar x case-type combinations, never the 94 undeclared", () => {
-    // The 94 undeclared pairs are the 91 the audit found unreachable plus the
+  it("is the declared subset of the all-pairs grid: 65 of the 180 pillar x case-type combinations, never the 115 undeclared", () => {
+    // The 115 undeclared pairs are the 91 the audit found unreachable, the
     // three the case-type hubs reference through caseType.relevantServices
-    // (services.test.ts, KNOWN_UNDECLARED_HUB_REFERENCES). A change to a
-    // pillar's caseTypes moves pages in or out of the site: revisit the
-    // sitemap ceiling comment in scripts/sitemap-index.test.mjs when it does.
+    // (services.test.ts, KNOWN_UNDECLARED_HUB_REFERENCES), and the 21 the
+    // transfer pricing pillar and the tax and transfer pricing dispute added
+    // on 2026-10-05 (12 pillars x 15 case types = 180, less the 60 earlier
+    // pairs and the 5 new ones: transfer pricing x tax, commercial contract,
+    // and shareholder dispute; business valuation x tax; rebuttal x tax). A
+    // change to a pillar's caseTypes moves pages in or out of the site:
+    // revisit the sitemap ceiling comment in scripts/sitemap-index.test.mjs
+    // when it does.
     const grid = pillarServices().length * caseTypes.length;
-    expect(grid).toBe(154);
-    expect(pairs).toHaveLength(60);
-    expect(grid - pairs.length).toBe(94);
+    expect(grid).toBe(180);
+    expect(pairs).toHaveLength(65);
+    expect(grid - pairs.length).toBe(115);
     for (const path of UNDECLARED_EXAMPLES) expect(declared.has(path), path).toBe(false);
   });
 });

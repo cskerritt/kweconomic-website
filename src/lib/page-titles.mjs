@@ -149,9 +149,18 @@ export const serviceStateTitle = (service, state, orgName) => placeTitle(service
 export const serviceCityTitle = (service, city, state, orgName) =>
   cityTitle(serviceTitleLabels(service), city, state, orgName);
 
-/** /services/<pillar>: "<name> Expert". */
+/**
+ * The pillar title label: "<name> Expert", or the name as written where it
+ * already ends in the role ("Transfer Pricing Expert Witness"), so no title
+ * reads "Expert Witness Expert".
+ * @param {string} name
+ * @returns {string}
+ */
+export const expertLabel = (name) => (/\bExpert(?: Witness)?$/.test(name) ? name : `${name} Expert`);
+
+/** /services/<pillar>: "<name> Expert" (see expertLabel). */
 export const pillarTitle = (service, orgName) =>
-  fitTitle(orgName, ...serviceTitleNames(service).map((name) => `${name} Expert`));
+  fitTitle(orgName, ...serviceTitleNames(service).map(expertLabel));
 
 /** /services/<pillar>/<cost|process|timeline>: "<name> Cost", "<name> Process", "<name> Timeline". */
 export const variantTitle = (service, variantLabel, orgName) =>

@@ -70,7 +70,8 @@ describe("homepage report checklist covers the valuation and tracing lanes (F08)
 
   it("describes the transparent-assumptions promise across lanes and lists the valuation and family matters at intake", () => {
     expect(html).toMatch(/standard of value where a business is valued/);
-    expect(html).toMatch(/business valuation, and marital financial matters/);
+    // The transfer pricing pillar (2026-10-05) joined the intake list beside valuation.
+    expect(html).toMatch(/business valuation, transfer pricing, and marital financial matters/);
   });
 });
 

@@ -12,6 +12,9 @@ import {
   caseTypeStateFrameworkQuestion,
   caseTypeStateServiceDescription,
   caseTypeSectionHeadings,
+  caseTypePairStateLead,
+  caseTypeStateCourts,
+  caseTypeHubLinkLabel,
 } from "./caseTypes";
 import { getAllServiceSlugs, pillarServices } from "./services";
 import { states } from "./states";
@@ -19,10 +22,10 @@ import { placeName } from "./geo-prose.mjs";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 import { caseTypeHubTitle, caseTypeStateTitle, serviceTitleLabels } from "@/lib/page-titles.mjs";
 
-const SLUGS = ["commercial-contract-dispute","divorce-and-marital-dissolution","employment-discrimination","fraud-and-embezzlement","medical-malpractice","motor-vehicle-accident","partnership-and-shareholder-dispute","personal-injury","product-liability","spinal-cord-injury","traumatic-brain-injury","workers-compensation","wrongful-death","wrongful-termination"];
+const SLUGS = ["commercial-contract-dispute","divorce-and-marital-dissolution","employment-discrimination","fraud-and-embezzlement","medical-malpractice","motor-vehicle-accident","partnership-and-shareholder-dispute","personal-injury","product-liability","spinal-cord-injury","tax-and-transfer-pricing-dispute","traumatic-brain-injury","workers-compensation","wrongful-death","wrongful-termination"];
 
 describe("economics case types", () => {
-  it("has the 14 case types", () => {
+  it("has the 15 case types", () => {
     expect(caseTypes.map((c) => c.slug).sort()).toEqual(SLUGS);
     expect(getCaseType("business-valuation")).toBeUndefined();
   });
@@ -42,10 +45,14 @@ describe("economics case types", () => {
       expect(text, c.slug).not.toMatch(/[–—§]/);
     }
   });
-  it("commercial and family matters point at valuation/accounting pillars", () => {
+  it("commercial, family, and tax matters point at valuation/accounting pillars", () => {
     expect(getCaseType("partnership-and-shareholder-dispute")!.relevantServices).toContain("business-valuation");
     expect(getCaseType("fraud-and-embezzlement")!.relevantServices).toContain("fraud-and-asset-tracing");
     expect(getCaseType("divorce-and-marital-dissolution")!.relevantServices).toContain("divorce-and-marital-financial-analysis");
+    expect(getCaseType("tax-and-transfer-pricing-dispute")!.relevantServices[0]).toBe("transfer-pricing-expert-witness");
+    // The transfer pricing pillar declares the two commercial matters too, so their hubs list it.
+    expect(getCaseType("commercial-contract-dispute")!.relevantServices).toContain("transfer-pricing-expert-witness");
+    expect(getCaseType("partnership-and-shareholder-dispute")!.relevantServices).toContain("transfer-pricing-expert-witness");
   });
 });
 
@@ -66,6 +73,10 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const STANDARD_SHORT_FORMS: Record<string, string> = {
   "motor-vehicle-accident": "Auto Accident",
   "workers-compensation": "Workers' Comp",
+  // "Transfer Pricing", the run of words that fits, is the pillar's own
+  // label, and the pair titles would read "Transfer Pricing Expert for
+  // Transfer Pricing"; the matter's standard short form keeps them distinct.
+  "tax-and-transfer-pricing-dispute": "Tax Dispute",
 };
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const stateBySlug = (slug: string) => states.find((s) => s.slug === slug)!;
@@ -120,13 +131,15 @@ describe("case-type SERP fields", () => {
         else rungs.shortStem++;
       }
     }
-    // 14 case types x 56 places: the full stem beside the full place name on
+    // 15 case types x 56 places: the full stem beside the full place name on
     // most pages; the short stem on the long-named families only; the
     // abbreviation only for the District, the territories, and the two-word
-    // states beside the longest stems. The divorce entry's own stem fits
+    // states beside the longest stems. The divorce entry's own stem, and the
+    // tax entry's ("Transfer Pricing Economist", added 2026-10-05: 53 full
+    // stems and 3 abbreviations over the 14-type counts of 516, 205, 63), fit
     // beside every place but the District, the U.S. Virgin Islands, and the
     // Northern Mariana Islands.
-    expect(rungs).toEqual({ fullStem: 516, shortStem: 205, abbreviated: 63 });
+    expect(rungs).toEqual({ fullStem: 569, shortStem: 205, abbreviated: 66 });
     const ed = getCaseType("employment-discrimination")!;
     expect(caseTypeStateTitle(ed, stateBySlug("texas"), ORG_NAME)).toBe(`Employment Discrimination Economist in Texas | ${ORG_NAME}`);
     expect(caseTypeStateTitle(ed, stateBySlug("north-carolina"), ORG_NAME)).toBe(`Discrimination Economist in North Carolina | ${ORG_NAME}`);
@@ -344,10 +357,159 @@ describe("divorce case type: family-law framing", () => {
     });
   });
 
-  it("is the only case type that overrides the shared framing, and only a family matter may", () => {
+  it("only the family-law matter and the tax matter override the shared framing", () => {
+    // The framing block is reserved for matters that are not damages claims:
+    // the family-law matter (an income, valuation, and tracing assignment)
+    // and the tax and transfer pricing dispute (an arm's length or valuation
+    // question), identified by their categories.
     for (const c of caseTypes) {
-      if (c.framing) expect(c.category, c.slug).toBe("family");
+      if (c.framing) expect(["family", "tax"], c.slug).toContain(c.category);
     }
-    expect(caseTypes.filter((c) => c.framing).map((c) => c.slug)).toEqual(["divorce-and-marital-dissolution"]);
+    expect(caseTypes.filter((c) => c.framing).map((c) => c.slug)).toEqual(["divorce-and-marital-dissolution", "tax-and-transfer-pricing-dispute"]);
+  });
+});
+
+// The tax and transfer pricing dispute (owner request 2026-10-05) is an arm's
+// length or valuation question, not a damages claim: what one company in a
+// group charged another, measured against what unrelated parties would have
+// agreed to. Its `framing` block carries the page strings the case-type
+// templates substitute for the shared damages framing, the service x case
+// type x state lead, and a courts sentence that names the federal tax forums
+// before the state's trial courts (pinned below and, as rendered, in
+// src/pages/templates/CaseTypeFraming.render.test.tsx).
+describe("tax and transfer pricing dispute case type: arm's length framing", () => {
+  const tax = getCaseType("tax-and-transfer-pricing-dispute")!;
+  const framing = tax.framing!;
+  const longText = [tax.summary, tax.summaryShort, ...tax.inShort, ...tax.steps, tax.lossComponents, tax.damagesExposure, tax.economicImpact, ...tax.faqs.map((f) => `${f.question} ${f.answer}`)].join(" ");
+  const framingText = [
+    framing.titleStem,
+    ...framing.stateTitleStems,
+    framing.hubHeading,
+    framing.hubDescription,
+    framing.stateHeadingStem,
+    framing.stateDescription,
+    framing.stateLead,
+    framing.stateStepsIntro,
+    framing.stateFramework,
+    framing.stateFrameworkQuestion,
+    framing.pairStateLead,
+    framing.courtsSentence ?? "",
+    ...Object.values(framing.sections),
+  ].join(" ");
+  const ADVOCACY = /maximi[sz]e|minimi[sz]e|fight for|win your case|winning|aggressive|leverage|protect your|avoid tax|tax shelter/i;
+  const CITATION = /\bSection \d|\bRule \d|U\.S\.C\.|C\.F\.R\.|[–—§]/;
+  const longestPlace = states.map((s) => placeName(s.name)).sort((a, b) => b.length - a.length)[0];
+
+  it("describes the arm's length and valuation assignment, neutrally, rather than an economic loss", () => {
+    for (const phrase of ["arm's length", "controlled transaction", "functional analysis", "comparables", "best method rule", "Tax Court", "valuation"]) {
+      expect(longText, phrase).toContain(phrase);
+    }
+    expect(longText).not.toMatch(/economic damages|economic loss|lost earnings|worklife|personal consumption|household services/i);
+    expect(longText).not.toMatch(ADVOCACY);
+    expect(longText).not.toMatch(CITATION);
+    expect(longText).not.toMatch(FIGURES);
+    expect(longText).not.toMatch(LEGACY_BRAND_PATTERN);
+    expect(longText).not.toMatch(SISTER_VOCABULARY);
+  });
+
+  it("keeps the titleBase the shared builders expect, takes the Tax Dispute short form, and lists the pillars that declare it", () => {
+    expect(tax.titleBase).toBe("Tax and Transfer Pricing Dispute Economist");
+    expect(caseTypeHubTitle(tax, ORG_NAME)).toBe(`Tax and Transfer Pricing Dispute Economist | ${ORG_NAME}`);
+    expect(tax.shortName).toBe("Tax Dispute");
+    expect(tax.category).toBe("tax");
+    expect(tax.relevantServices).toEqual(["transfer-pricing-expert-witness", "business-valuation", "expert-rebuttal-and-report-review"]);
+    expect(tax.datePublished).toBe("2026-10-05");
+  });
+
+  it("carries page framing that replaces the damages strings and fits the SERP windows", () => {
+    expect(framing.hubHeading).toBe("Economic Analysis for Tax and Transfer Pricing Disputes");
+    expect(framing.hubDescription.length).toBeGreaterThanOrEqual(110);
+    expect(framing.hubDescription.length).toBeLessThanOrEqual(160);
+    expect(framing.hubDescription).toMatch(/\.$/);
+    expect(framing.stateDescription.match(/\{place\}/g)).toHaveLength(1);
+    expect(framing.stateDescription).not.toMatch(/\{org\}/);
+    const longestStateDescription = framing.stateDescription.replace("{place}", longestPlace);
+    expect(longestStateDescription.length, longestStateDescription).toBeLessThanOrEqual(160);
+    expect(longestStateDescription.length).toBeGreaterThanOrEqual(110);
+    expect(framing.stateLead).toMatch(/\{org\}/);
+    expect(framing.stateLead).toMatch(/\{place\}/);
+    expect(framing.stateLead).not.toMatch(/\{(?!org\}|place\})/);
+    for (const slotted of [framing.stateStepsIntro, framing.stateFramework, framing.stateFrameworkQuestion]) {
+      expect(slotted).toMatch(/\{place\}/);
+      expect(slotted).not.toMatch(/\{(?!place\})/);
+    }
+    expect(framing.pairStateLead).not.toMatch(/\{(?!org\}|work\}|matter\}|place\}|attr\})/);
+    expect(framing.courtsSentence).toMatch(/\{courts\}$/);
+    expect(framing.courtsSentence).not.toMatch(/\{(?!place\}|courts\})/);
+    expect(framing.stateFrameworkQuestion).toMatch(/\?$/);
+    expect(`${framing.stateHeadingStem} in ${longestPlace}`.length).toBeLessThanOrEqual(90);
+    expect(new Set(Object.values(framing.sections)).size).toBe(4);
+    expect(framingText).not.toMatch(/damages|economic claim|loss components/i);
+    expect(framingText).not.toMatch(CITATION);
+    expect(framingText).not.toMatch(LEGACY_BRAND_PATTERN);
+    expect(framingText).not.toMatch(SISTER_VOCABULARY);
+    expect(framingText).not.toMatch(ADVOCACY);
+  });
+
+  it("supplies a state title stem that fits the SERP window and collides with no service pillar title", () => {
+    expect(framing.titleStem).toBe(tax.titleBase);
+    expect(framing.stateTitleStems).toEqual(["Transfer Pricing Economist"]);
+    const pillarLabels = new Set(pillarServices().flatMap(serviceTitleLabels));
+    for (const stem of framing.stateTitleStems) expect(pillarLabels.has(stem), stem).toBe(false);
+    expect(caseTypeStateTitle(tax, stateBySlug("texas"), ORG_NAME)).toBe(`Transfer Pricing Economist in Texas | ${ORG_NAME}`);
+    expect(caseTypeStateTitle(tax, stateBySlug("north-carolina"), ORG_NAME)).toBe(`Transfer Pricing Economist in North Carolina | ${ORG_NAME}`);
+    expect(caseTypeStateTitle(tax, stateBySlug("district-of-columbia"), ORG_NAME)).toBe(`Transfer Pricing Economist in DC | ${ORG_NAME}`);
+  });
+
+  it("the page helpers substitute the framing strings for the tax entry and keep the shared and divorce strings elsewhere", () => {
+    const dc = placeName(stateBySlug("district-of-columbia").name);
+    expect(caseTypeHubHeading(tax)).toBe(framing.hubHeading);
+    expect(caseTypeHubDescription(tax)).toBe(framing.hubDescription);
+    expect(caseTypeStateHeading(tax, "Texas")).toBe("Economic Analysis for Tax and Transfer Pricing Disputes in Texas");
+    expect(caseTypeSectionHeadings(tax)).toEqual(framing.sections);
+    expect(caseTypeStateFramework(tax, "Texas", "fault text")).toBe(framing.stateFramework.replace(/\{place\}/g, "Texas"));
+    expect(caseTypeStateServiceDescription(tax, "Texas")).toBe(caseTypeStateDescription(tax, "Texas"));
+
+    const lead = caseTypePairStateLead(tax, ORG_NAME, "transfer pricing analysis", "Texas", "Texas");
+    expect(lead).toBe(
+      "KW Economics prepares transfer pricing analysis for tax and transfer pricing dispute matters involving businesses in Texas: the controlled transactions and prices at issue, the records and comparables that test them, and a report written for the forum that decides the dispute. Either side.",
+    );
+    expect(lead).not.toMatch(/loss claim|present value|damages rules|Plaintiff and defense/);
+    const courts = caseTypeStateCourts(tax, "Texas", "the District Court (General jurisdiction)");
+    expect(courts.startsWith("Federal income tax disputes over related-party prices are heard in the United States Tax Court")).toBe(true);
+    expect(courts).toContain("a dispute over Texas's own tax follows its administrative and appeal process");
+    expect(courts.endsWith("that turn on an intercompany price are heard in the District Court (General jurisdiction)")).toBe(true);
+    for (const t of [
+      caseTypeStateLead(tax, ORG_NAME, dc),
+      caseTypeStateStepsIntro(tax, dc),
+      caseTypeStateFramework(tax, dc, ""),
+      caseTypeStateFrameworkQuestion(tax, dc),
+      caseTypePairStateLead(tax, ORG_NAME, "rebuttal analysis", dc, "District of Columbia"),
+      caseTypeStateCourts(tax, dc, "the Superior Court of the District of Columbia (General jurisdiction)"),
+    ]) {
+      expect(t).not.toMatch(/\{[a-z]+\}/);
+      expect(t).not.toMatch(/a the |the the |in District of Columbia/);
+    }
+
+    // The shared damages strings and the divorce entry's own strings are
+    // unchanged by the helpers.
+    const wd = getCaseType("wrongful-death")!;
+    expect(caseTypeStateCourts(wd, "New Jersey", "the Superior Court")).toBe("Wrongful Death cases venued in New Jersey are heard in the Superior Court");
+    expect(caseTypePairStateLead(wd, ORG_NAME, "lost earnings analysis", "New Jersey", "New Jersey")).toBe(
+      "KW Economics prepares lost earnings analysis for wrongful death cases venued in New Jersey: what the loss claim consists of, the records that drive it, and a present value built to New Jersey damages rules and venues. Plaintiff and defense.",
+    );
+    const divorce = getCaseType("divorce-and-marital-dissolution")!;
+    expect(divorce.framing!.courtsSentence).toBeUndefined();
+    expect(caseTypeStateCourts(divorce, "Florida", "the Circuit Court")).toBe("Divorce and Marital Dissolution cases venued in Florida are heard in the Circuit Court");
+    expect(caseTypePairStateLead(divorce, ORG_NAME, "business valuation", "Florida", "Florida")).toBe(
+      "KW Economics prepares business valuation for divorce and marital dissolution matters venued in Florida: the income, valuation, and tracing questions the matter raises, the records that answer them, and a presentation built to the way Florida courts decide them. Either party.",
+    );
+    expect(caseTypeHubLinkLabel(wd)).toBe("Wrongful Death: the economic claim, where the damages concentrate, and how the analysis is built");
+    expect(caseTypeHubLinkLabel(divorce)).toBe(
+      "Divorce and Marital Dissolution: what the financial analysis consists of, which figures move the result, and how the analysis is built",
+    );
+    expect(caseTypeHubLinkLabel(tax)).toBe(
+      "Tax and Transfer Pricing Dispute: what the economic analysis consists of, which choices move the result, and how the analysis is built",
+    );
   });
 });

@@ -43,10 +43,12 @@ describe("serviceCityServices", () => {
       "business-valuation",
       "lost-profits-and-commercial-damages",
       "fraud-and-asset-tracing",
+      "transfer-pricing-expert-witness",
       "divorce-and-marital-financial-analysis",
       "expert-rebuttal-and-report-review",
     ]);
     expect(serviceHasCityPages("lost-earnings-and-earning-capacity")).toBe(true);
+    expect(serviceHasCityPages("transfer-pricing-expert-witness")).toBe(true);
     expect(serviceHasCityPages("vocational-evaluation")).toBe(false);
     expect(serviceHasCityPages("life-care-planning")).toBe(false);
   });

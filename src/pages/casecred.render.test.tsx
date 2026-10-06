@@ -128,7 +128,7 @@ describe("CaseTypeHub /case-types/wrongful-death", () => {
   });
 });
 
-describe("CaseTypeHub across all 14 case types", () => {
+describe("CaseTypeHub across all 15 case types", () => {
   for (const ct of caseTypes) {
     it(`/case-types/${ct.slug} names the same retainable economist and fits the SERP`, () => {
       const { html, title, description } = render(`/case-types/${ct.slug}`, HUB_ROUTE, CaseTypeHub);

@@ -326,6 +326,7 @@ const COMMERCIAL_AND_REBUTTAL = [
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
+  "transfer-pricing-expert-witness",
   "divorce-and-marital-financial-analysis",
   "expert-rebuttal-and-report-review",
 ];
@@ -544,6 +545,11 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
     );
     expect(serviceStateVenueParagraph(getServiceBySlug("lost-profits-and-commercial-damages")!, nj)).toContain(
       "Lost profits claims arising in New Jersey are heard in the Superior Court, Law Division and, where jurisdiction allows, in the federal district courts serving New Jersey.",
+    );
+    // The transfer pricing pillar names the federal tax forums, the state's
+    // own tax process, and the civil court, in that order.
+    expect(serviceStateVenueParagraph(getServiceBySlug("transfer-pricing-expert-witness")!, nj)).toBe(
+      "Transfer pricing disputes that involve New Jersey reach several forums: the United States Tax Court and, on a refund claim, the federal district courts serving New Jersey or the Court of Federal Claims for federal income tax; the New Jersey tax authority and its appeal process for a dispute over New Jersey tax; and the Superior Court, Law Division for the commercial, shareholder, and matrimonial claims that turn on an intercompany price. The arm's length analysis is built the same way for each forum; the forum sets the rule of decision, which counsel confirms, and the report presents the result so it can be applied under it.",
     );
   });
 

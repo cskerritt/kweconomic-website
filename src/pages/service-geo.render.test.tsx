@@ -178,6 +178,7 @@ const COMMERCIAL_AND_FAMILY = new Set([
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
+  "transfer-pricing-expert-witness",
   "divorce-and-marital-financial-analysis",
 ]);
 const SHARED_DAMAGES_LEAK = /Workers' compensation claims|wage-loss benefits|personal injury, wrongful death, employment, and commercial damages claims|prepares economic damages analyses/;
@@ -274,6 +275,11 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
             expect(text).not.toMatch(SHARED_DAMAGES_LEAK);
             if (service.slug === "divorce-and-marital-financial-analysis") {
               expect(legal).toMatch(/^Matrimonial matters in .* are heard in the family or domestic relations part of the trial courts/);
+            } else if (service.slug === "transfer-pricing-expert-witness") {
+              // The tax variant: the federal tax forums first, then the
+              // state's forum for the civil claims and its own tax process.
+              expect(legal).toMatch(/^Federal transfer pricing disputes are decided under the same federal rules wherever the business is based: in the United States Tax Court/);
+              expect(legal).toContain("primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price");
             } else {
               expect(legal).toContain("primary trial-level forum for the shareholder, partnership, contract, and fraud claims these analyses support.");
             }

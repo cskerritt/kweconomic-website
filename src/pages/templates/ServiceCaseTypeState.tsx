@@ -6,6 +6,8 @@ import {
   caseTypeStateFramework,
   caseTypeStateStepsIntro,
   caseTypeSectionHeadings,
+  caseTypePairStateLead,
+  caseTypeStateCourts,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -31,8 +33,10 @@ const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hove
 // The state modules are keyed on the case type's category, the same way
 // CaseTypeState.tsx keys them: injury and death matters get the wrongful
 // death / survival / collateral source paragraph (damagesContext) and the
-// compensation forum; employment, commercial, and family matters get the
-// fault, interest, and cap paragraph (generalContext).
+// compensation forum; employment, commercial, family, and tax matters get the
+// fault, interest, and cap paragraph (generalContext), which a framing entry
+// replaces with its own framework paragraph. Tax matters list the
+// general-jurisdiction trial courts (the default selection).
 const INJURY_CATEGORIES: ReadonlySet<CaseTypeCategory> = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
 const COURT_SELECTION: Partial<Record<CaseTypeCategory, CourtSelection>> = { family: "family", commercial: "commercial" };
 
@@ -94,9 +98,10 @@ export default function ServiceCaseTypeState() {
     : "";
   const finalStep = service.process?.at(-1);
   const h1 = `${service.name} for ${caseType.name} Cases in ${place}`;
-  const lead = caseType.framing
-    ? `${ORG_NAME} prepares ${work} for ${lower} matters venued in ${place}: the income, valuation, and tracing questions the matter raises, the records that answer them, and a presentation built to the way ${attr} courts decide them. Either party.`
-    : `${ORG_NAME} prepares ${work} for ${lower} cases venued in ${place}: what the loss claim consists of, the records that drive it, and a present value built to ${attr} damages rules and venues. Plaintiff and defense.`;
+  // The entry's framing block supplies the lead for a matter that is not a
+  // damages claim (caseTypes.ts caseTypePairStateLead; the prerender reads
+  // the same helper).
+  const lead = caseTypePairStateLead(caseType, ORG_NAME, work, place, attr);
   const courtList = listNames(trialCourts.map((c) => `the ${c.name} (${c.description})`));
   const federalList = listNames(districts.map((d) => d.name));
 
@@ -125,7 +130,7 @@ export default function ServiceCaseTypeState() {
               regulations.expertStandard,
               caseType.category === "workers-comp"
                 ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`
-                : `${caseType.name} cases venued in ${place} are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`,
+                : `${caseTypeStateCourts(caseType, place, courtList)}, with final appeals to the ${courts.supremeCourt}.`,
               districts.length > 0 ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
             ]
               .filter(Boolean)

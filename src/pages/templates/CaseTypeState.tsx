@@ -11,6 +11,7 @@ import {
   caseTypeStateFrameworkQuestion,
   caseTypeStateServiceDescription,
   caseTypeSectionHeadings,
+  caseTypeStateCourts,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -36,8 +37,10 @@ const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hove
 
 // The state modules are keyed on the case type's category: injury and death
 // matters get the wrongful death / survival / collateral source paragraph
-// (damagesContext) and the compensation forum; employment, commercial, and
-// family matters get the fault, interest, and cap paragraph (generalContext).
+// (damagesContext) and the compensation forum; employment, commercial,
+// family, and tax matters get the fault, interest, and cap paragraph
+// (generalContext), which a framing entry replaces with its own framework
+// paragraph. Tax matters list the general-jurisdiction trial courts.
 const INJURY_CATEGORIES: ReadonlySet<CaseTypeCategory> = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
 const COURT_SELECTION: Partial<Record<CaseTypeCategory, CourtSelection>> = { family: "family", commercial: "commercial" };
 
@@ -121,7 +124,7 @@ export default function CaseTypeState() {
             answer: [
               caseType.category === "workers-comp" && regulations
                 ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}.`
-                : `${caseType.name} cases venued in ${place} are heard in ${courtList}.`,
+                : `${caseTypeStateCourts(caseType, place, courtList)}.`,
               `Final appeals run to the ${courts.supremeCourt}.`,
               federalVenues.length > 0 ? `Matters within federal jurisdiction proceed in ${federalCourts(federalVenues.map((d) => d.name))}.` : "",
               courts.venueNote ?? "",

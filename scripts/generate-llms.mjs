@@ -143,7 +143,7 @@ async function main() {
   const [
     { pillarServices },
     { team },
-    { caseTypes },
+    { caseTypes, caseTypeSectionHeadings },
     { credentials },
     { methods },
     { guides },
@@ -184,7 +184,7 @@ async function main() {
   // The service x case type x state tier (wave 2): released state batches only.
   const releasedStateSlugs = releasedStates();
 
-  // Indexable service lines only (the eleven pillars). The two `pillar: false`
+  // Indexable service lines only (the twelve pillars). The two `pillar: false`
   // entries are hand-offs to the sister practices, not services of this site.
   const serviceLines = pillarServices();
 
@@ -206,7 +206,7 @@ async function main() {
   // Shared prose. Written once so llms.txt and llms-full.txt never disagree
   // about what the practice is.
   const ABOUT =
-    `${COMPANY} is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.`;
+    `${COMPANY} is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, transfer pricing, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.`;
   const CREDENTIALS_NOTE =
     "Reference pages on how a forensic economist is qualified to testify on damages: graduate training in economics, finance, and business, the professional standards of the national forensic economics associations, and a record of reports and testimony. No state licenses forensic economists. These pages describe the qualification and how courts weigh it; they do not list the roster and make no claim that the practice or any named person holds an association membership.";
   const SISTER_NOTE =
@@ -416,9 +416,13 @@ async function main() {
     h3(c.name);
     p(`URL: ${SITE}/case-types/${c.slug}`);
     p(c.summary);
-    if (c.lossComponents) p(`What the economic claim consists of: ${c.lossComponents}`);
-    if (c.damagesExposure) p(`Where the damages concentrate: ${c.damagesExposure}`);
-    if (c.economicImpact) p(`How the analysis is built: ${c.economicImpact}`);
+    // The section labels the hub prints: the shared damages headings, or the
+    // framing block's own for a matter that is not a damages claim (the
+    // family-law and tax entries).
+    const headings = caseTypeSectionHeadings(c);
+    if (c.lossComponents) p(`${headings.components}: ${c.lossComponents}`);
+    if (c.damagesExposure) p(`${headings.concentration}: ${c.damagesExposure}`);
+    if (c.economicImpact) p(`${headings.method}: ${c.economicImpact}`);
     faqBlock(c.faqs);
   }
 

@@ -86,6 +86,9 @@ const [
     caseTypeStateFrameworkQuestion,
     caseTypeStateServiceDescription,
     caseTypeSectionHeadings,
+    caseTypePairStateLead,
+    caseTypeStateCourts,
+    caseTypeHubLinkLabel,
   },
   { credentials, credentialStateHeadings, credentialStateAngle },
   { methods },
@@ -406,7 +409,10 @@ function variantDescription(s, variant) {
 // the title comes from the shared pairTitle builder (src/lib/page-titles.mjs);
 // the description names the work through the shared prose helper.
 const pairDescription = (s, c) => {
-  const base = `${prose.capFirst(prose.workPhrase(s.shortName))} for ${c.name.toLowerCase()} cases: how the loss is built, which records drive it, and testimony support.`;
+  // A matter that is not a damages claim (a framing entry) says how the
+  // analysis is built rather than the loss, as ServiceCaseType.tsx does.
+  const built = c.framing ? "how the analysis is built" : "how the loss is built";
+  const base = `${prose.capFirst(prose.workPhrase(s.shortName))} for ${c.name.toLowerCase()} cases: ${built}, which records drive it, and testimony support.`;
   // Mirrors ServiceCaseType.tsx: the audience tag rides along only inside the
   // 160-character window.
   return base.length + " Either side.".length <= 160 ? `${base} Either side.` : base;
@@ -814,7 +820,7 @@ const corePages = [
       "Independent lost earnings, wrongful death, household services, employment, and business damages analyses for plaintiff and defense attorneys in all 50 states.",
     innerHtml:
       `<h1>Economic Damages Analysis Built on Transparent Methods</h1>` +
-      `<p>${ORG_NAME} delivers independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
+      `<p>${ORG_NAME} delivers independent lost earnings, wrongful death, household services, employment, business valuation, transfer pricing, and forensic accounting analyses for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
       `<p>Engagements accepted in all 50 states, the District of Columbia, and U.S. territories. Headquarters in Hackensack, NJ with a Richmond, VA office. <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>.</p>` +
       // Mirrors Home.tsx REPORT_STATES: the inputs every report sets out, across
       // the earnings, valuation, and tracing lanes alike.
@@ -848,7 +854,7 @@ const corePages = [
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "About", path: "/about" }],
     innerHtml:
       `<h1>About ${ORG_NAME}</h1>` +
-      `<p>${ORG_NAME} is a forensic economics practice. We measure economic losses for litigation - lost earnings, wrongful death losses, household services, the present value of future care, employment damages, lost profits, and the value of business interests - for attorneys and their clients across all U.S. jurisdictions, and we testify to that work when the case requires it.</p>` +
+      `<p>${ORG_NAME} is a forensic economics practice. We measure economic losses for litigation - lost earnings, wrongful death losses, household services, the present value of future care, employment damages, lost profits, and the value of business interests - and test the prices charged between related companies in transfer pricing disputes, for attorneys and their clients across all U.S. jurisdictions, and we testify to that work when the case requires it.</p>` +
       `<section>${h2("The Practice")}` +
       `<p>${ORG_NAME} is the trade name of ${esc(ORG_LEGAL)}, the forensic economics, forensic accounting, and business valuation practice of a family of expert firms headquartered in Hackensack, New Jersey. The practice operates under its own name so that attorneys, insurers, and courts can find a dedicated economics resource.</p>` +
       `<p>Every analysis is built from the records in the case and from published data: tax returns, wage and benefit records, and financial statements on one side, and government wage, price, and worklife series, market yield data, and the forensic economics literature on the other. The report states each assumption in plain language and presents the loss under alternative scenarios where the record supports more than one reading of the facts, so the other side can recompute the figure from the report alone.</p>` +
@@ -1803,11 +1809,11 @@ for (const svc of serviceData) {
 // ---------------------------------------------------------------------------
 
 const hubLead = {
-  caseTypes: `The case type fixes what an economic damages claim consists of: in an injury or death matter, the earnings, benefits, and household services a person would have provided; in an employment, commercial, or family matter, the wages, profits, cash flows, or business value at issue. ${ORG_NAME} prepares the analysis for plaintiff and defense counsel alike, and each page below sets out the components of the claim, the records that drive it, and how the number is built.`,
+  caseTypes: `The case type fixes what an economic damages claim consists of: in an injury or death matter, the earnings, benefits, and household services a person would have provided; in an employment, commercial, or family matter, the wages, profits, cash flows, or business value at issue; in a tax or transfer pricing dispute, whether the prices charged between related companies are at arm's length. ${ORG_NAME} prepares the analysis for plaintiff and defense counsel alike, and each page below sets out the components of the claim, the records that drive it, and how the number is built.`,
   credentials:
     "Economic damages testimony does not rest on a state license. It rests on graduate training in economics and finance, on the published standards of the profession's associations, and on a record of reports and testimony that have held up under cross-examination. These pages set out each of those foundations, what it does and does not establish, and how courts weigh it.",
   guides:
-    "A practitioner guide walks through one damages question from the economist's standpoint: what the claim consists of, which records drive it, how the number is built, and where it is tested at deposition and trial. The guides below cover lost earnings, wrongful death, household services, present value, expert disclosure, business valuation, lost profits, and rebutting an opposing report, for attorneys on either side of the claim.",
+    "A practitioner guide walks through one damages question from the economist's standpoint: what the claim consists of, which records drive it, how the number is built, and where it is tested at deposition and trial. The guides below cover lost earnings, wrongful death, household services, present value, expert disclosure, business valuation, lost profits, transfer pricing disputes, and rebutting an opposing report, for attorneys on either side of the claim.",
   compare:
     "Choosing the right expert and the right damages measure is the first decision in an economic damages case, because each measure rests on different records and answers a different question. Each comparison below sets the two side by side, states what each one measures and from which records, and identifies when one applies, when the other does, and where they overlap.",
   methods:
@@ -2053,7 +2059,7 @@ for (const [i, c] of caseTypes.entries()) {
             {
               question: `Which ${s.name} courts hear ${lower} cases?`,
               answer: [
-                `${c.name} cases venued in ${place} are heard in ${listNames(trialCourts.map((t) => `the ${t.name} (${t.description})`))}.`,
+                `${caseTypeStateCourts(c, place, listNames(trialCourts.map((t) => `the ${t.name} (${t.description})`)))}.`,
                 `Final appeals run to the ${courts.supremeCourt}.`,
                 federalVenues.length > 0
                   ? `Matters within federal jurisdiction proceed in the United States District Court${federalVenues.length > 1 ? "s" : ""} for the ${listNames(federalVenues.map((d) => d.name))}.`
@@ -2419,6 +2425,7 @@ const PRACTICE_AREA_BY_SPECIALTY = {
   "Business Valuation": "business-valuation",
   "Lost Profits": "lost-profits-and-commercial-damages",
   "Forensic Accounting": "fraud-and-asset-tracing",
+  "Transfer Pricing": "transfer-pricing-expert-witness",
   "Divorce Financial Analysis": "divorce-and-marital-financial-analysis",
   "Expert Testimony": "expert-rebuttal-and-report-review",
   "Economic Analysis": "lost-earnings-and-earning-capacity",
@@ -2590,12 +2597,12 @@ for (const s of serviceData) {
         renderBylineHtml(undefined, undefined, s.dateModified) +
         `<p>${esc(prose.capFirst(work))} applied to ${esc(lower)} litigation: methodology, deliverables, and case-specific considerations.</p>` +
         `<section id="application">${h2(`How ${s.name} applies to ${c.name}`)}${note ? para(note.summary) : ""}${para(s.description)}</section>` +
-        `<section id="loss-components">${h2("What the economic claim consists of")}${para(c.lossComponents)}</section>` +
+        `<section id="loss-components">${h2(caseTypeSectionHeadings(c).components)}${para(c.lossComponents)}</section>` +
         (finalStep ? `<section id="deliverables">${h2("Typical deliverables")}${para(finalStep.description)}</section>` : "") +
         // Crawl path out of the pair page: the case-type hub, the other
         // pillars that declare this case type, and the engagement details.
         `<section id="related-pages">${h2("Related pages")}${linkList([
-          { href: `/case-types/${c.slug}`, label: `${c.name}: the economic claim, where the damages concentrate, and how the analysis is built` },
+          { href: `/case-types/${c.slug}`, label: caseTypeHubLinkLabel(c) },
           ...siblings.map((x) => ({ href: `/services/${x.slug}/case/${c.slug}`, label: `${x.shortName} for ${c.name}` })),
           ...VARIANTS.map((v) => ({ href: `/services/${s.slug}/${v}`, label: `${VARIANT_LINK_LABEL[v]} for ${s.shortName}` })),
         ])}</section>` +
@@ -2664,9 +2671,9 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
       ? caseTypeStateFramework(c, place, isInjury ? regulations.damagesContext : regulations.generalContext)
       : "";
     const h1 = `${s.name} for ${c.name} Cases in ${place}`;
-    const lead = c.framing
-      ? `${ORG_NAME} prepares ${work} for ${lower} matters venued in ${place}: the income, valuation, and tracing questions the matter raises, the records that answer them, and a presentation built to the way ${attr} courts decide them. Either party.`
-      : `${ORG_NAME} prepares ${work} for ${lower} cases venued in ${place}: what the loss claim consists of, the records that drive it, and a present value built to ${attr} damages rules and venues. Plaintiff and defense.`;
+    // Mirrors ServiceCaseTypeState.tsx: the entry's framing block supplies
+    // the lead for a matter that is not a damages claim.
+    const lead = caseTypePairStateLead(c, ORG_NAME, work, place, attr);
     const courtList = listNames(trialCourts.map((t) => `the ${t.name} (${t.description})`));
     const federalList = listNames(districts.map((d) => d.name));
     const otherStates = releasedStateSlugs
@@ -2686,7 +2693,7 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
                 regulations.expertStandard,
                 c.category === "workers-comp"
                   ? `${c.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`
-                  : `${c.name} cases venued in ${place} are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`,
+                  : `${caseTypeStateCourts(c, place, courtList)}, with final appeals to the ${courts.supremeCourt}.`,
                 districts.length > 0 ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
               ]
                 .filter(Boolean)

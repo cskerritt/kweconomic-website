@@ -1,5 +1,6 @@
 import {
   Activity,
+  ArrowLeftRight,
   Baby,
   Briefcase,
   Building2,
@@ -30,6 +31,7 @@ export type IconComponent = ComponentType<{ className?: string }>;
  */
 export const ICONS: Record<string, IconComponent | undefined> = {
   Activity,
+  ArrowLeftRight,
   Baby,
   Briefcase,
   Building2,

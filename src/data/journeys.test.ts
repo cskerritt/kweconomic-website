@@ -192,6 +192,26 @@ describe("attorney stage module", () => {
     expect(journeyTitle("not-a-stage", caseTypes[0])).toBe("");
   });
 
+  it("a matter that is not a damages claim (a framing entry) is described by its questions, never by a loss or present value", () => {
+    const framed = caseTypes.filter((c) => c.framing);
+    expect(framed.map((c) => c.slug)).toEqual(["divorce-and-marital-dissolution", "tax-and-transfer-pricing-dispute"]);
+    for (const c of framed) {
+      for (const s of STAGES) expect(journeyDescription(s, c), `${s}/${c.slug}`).not.toMatch(/loss threshold|present value/);
+    }
+    const tax = caseTypes.find((c) => c.slug === "tax-and-transfer-pricing-dispute")!;
+    expect(journeyHeading("considering", tax)).toBe("Tax Dispute: Is an Economist Needed?");
+    expect(journeyDescription("considering", tax)).toBe(
+      "When tax dispute matters need a forensic economist: the threshold questions, records to request, and what to ask before retaining. Plaintiff and defense.",
+    );
+    expect(journeyDescription("trial", tax)).toBe(
+      "The economist at trial in tax dispute cases: demonstratives, explaining the analysis, and rebutting the opposing economist. Plaintiff and defense.",
+    );
+    // The damages matters keep the shared descriptions.
+    const wd = caseTypes.find((c) => c.slug === "wrongful-death")!;
+    expect(journeyDescription("considering", wd)).toContain("the loss threshold");
+    expect(journeyDescription("trial", wd)).toContain("explaining present value");
+  });
+
   it("stage index heading, title, description, and intro fit their bands", () => {
     for (const s of STAGES) {
       const heading = stageIndexHeading(s);

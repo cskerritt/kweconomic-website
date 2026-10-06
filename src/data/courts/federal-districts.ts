@@ -74,6 +74,10 @@ export const FEDERAL_SERVICE_SLUGS = [
   "employment-and-wage-loss-damages",
   "lost-profits-and-commercial-damages",
   "business-valuation",
+  // A federal tax refund suit over transfer pricing is heard in a federal
+  // district court (or the Court of Federal Claims), beside the commercial
+  // claims that turn on an intercompany price.
+  "transfer-pricing-expert-witness",
   "expert-rebuttal-and-report-review",
 ] as const;
 

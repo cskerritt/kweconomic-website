@@ -18,8 +18,8 @@ function serviceHrefs(file) {
 }
 
 describe("header/footer service links track pillarServices()", () => {
-  it("services.ts exposes the 11 pillar slugs", () => {
-    expect(expected).toHaveLength(11);
+  it("services.ts exposes the 12 pillar slugs", () => {
+    expect(expected).toHaveLength(12);
   });
   it("Header.tsx serviceLinks match pillar slugs in order", () => {
     expect(serviceHrefs("src/components/layout/Header.tsx")).toEqual(expected);

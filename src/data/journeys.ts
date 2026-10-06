@@ -2,7 +2,7 @@ import type { Faq, Source } from "./types";
 import { refsToSources } from "./references";
 
 /**
- * Attorney journeys: four stages x fourteen case types, written from the
+ * Attorney journeys: four stages x fifteen case types, written from the
  * economist's standpoint. Each stage answers the question counsel is actually
  * asking at that point: whether the loss justifies an economist and what to
  * gather first (considering), how to scope the engagement and what to send
@@ -776,6 +776,58 @@ export const journeys: JourneyStage[] = [
     ],
     sources: refsToSources(["BLS_CPS", "CENSUS_ACS", "BLS_ATUS"]),
   },
+  {
+    stage: "considering",
+    caseTypeSlug: "tax-and-transfer-pricing-dispute",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    intro:
+      "A tax or transfer pricing dispute needs an economist once the question is whether an intercompany price, or the profit it left in each company, matches what unrelated parties would have agreed to. That question arises when an examination team proposes an adjustment supported by its own economist, when an appeal or a Tax Court petition is in view, when a state challenges related-party royalties or fees, and when a commercial, shareholder, or divorce claim turns on a price set between affiliates. Counsel considering an economist should start with the intercompany agreements and the documentation for the years at issue, because the analysis starts there.",
+    checklist: [
+      "Identify the controlled transactions at issue: sales of goods, services, licenses of intangibles, or intercompany loans",
+      "Gather the intercompany agreements, their amendments, and the transfer pricing documentation for each year at issue",
+      "Establish the forum and its stage: examination, appeals, a Tax Court petition, a refund suit, a state tax appeal, or a civil case",
+      "Note any notice of proposed adjustment, examination report, or opposing analysis already in hand",
+      "Confirm whether an advance pricing agreement or a mutual agreement request covers any of the years",
+    ],
+    questionsToAsk: [
+      "Does the dispute turn on the method, the comparables, or the facts of what each company did?",
+      "Can the group's own documentation be defended as written, or does the analysis need to be rebuilt?",
+      "Which records do you need first to give a preliminary view of the arm's length range?",
+      "How would the analysis differ if the case goes to the Tax Court rather than a refund suit or a commercial court?",
+    ],
+    timeline: "Two to three weeks from the first call to a preliminary view of the issues, once the agreements, the documentation, and the opposing position are in hand. A full analysis follows the retention and records phases described on the services pages.",
+    requiredDocuments: [
+      "Intercompany agreements, amendments, and side letters for the years at issue",
+      "Transfer pricing documentation and the transfer pricing policy for each year",
+      "Legal-entity financial statements and general ledger detail of the intercompany accounts",
+      "Any notice of proposed adjustment, examination report, or opposing expert analysis",
+    ],
+    pitfalls: [
+      "Treating the group's transfer pricing documentation as the answer to the question the dispute asks, rather than as one record to be tested",
+      "Waiting until the disclosure deadline, when there is no longer time to rebuild the delineation and the comparables",
+      "Overlooking the consequences of the same adjustment in a foreign jurisdiction or a state, which can change how the dispute is resolved",
+    ],
+    faqs: [
+      {
+        question: "When does a transfer pricing issue justify a testifying economist?",
+        answer:
+          "When the dispute will be decided on an economic analysis rather than on a reading of the documents alone: an adjustment the examiners support with their own economist's report, an appeal or a petition in which the method or the comparables are contested, or a civil claim in which an intercompany price decides the amount at issue. A narrow dispute over whether a payment was made can often be resolved from the records without an expert.",
+      },
+      {
+        question: "Can the economist review the documentation before a dispute becomes formal?",
+        answer:
+          "Yes. A review during the examination can show whether the documentation supports the method it selected, where an examiner or an opposing expert is likely to press, and which records would answer the questions, and it can be done as consulting work before any decision about a testifying expert is made.",
+      },
+      {
+        question: "What does a preliminary transfer pricing review cost relative to a full report?",
+        answer:
+          "A preliminary review is a limited engagement built from the agreements, the documentation, and the financial statements, so it costs far less than a full analysis, which adds the functional analysis, the comparables search, the range, and the written report. The engagement letter states the fee basis for each phase, and counsel can stop after the review.",
+      },
+    ],
+    sources: refsToSources(["IRS_TP_EXAM_PROCESS", "TREAS_REG_1_482_1", "IRS_TP_DOCUMENTATION_FAQS"]),
+  },
   // ── Retaining stage ───────────────────────────────────────────
   {
     stage: "retaining",
@@ -1513,6 +1565,58 @@ export const journeys: JourneyStage[] = [
     ],
     sources: refsToSources(["BLS_ATUS", "CENSUS_ACS", "BLS_OES"]),
   },
+  {
+    stage: "retaining",
+    caseTypeSlug: "tax-and-transfer-pricing-dispute",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    intro:
+      "Retaining an economist in a tax or transfer pricing dispute means fixing the transactions, the years, the entities, and the forum before the analysis begins, because each changes the record the economist needs and the form the report must take. The conflict check runs across the group's affiliates and the opposing parties, the records request starts with the intercompany agreements and the documentation, and the schedule is set by the forum: the examination or appeals timetable, the Tax Court's pretrial order, or the civil court's disclosure deadlines.",
+    checklist: [
+      "Run the conflict check across the group's affiliates, the opposing parties, and any earlier work on the group's documentation",
+      "Define the controlled transactions, the years, and the entities the analysis covers",
+      "Decide whether the engagement is consulting work, a disclosed report, or both",
+      "Send the intercompany agreements, the documentation, and the legal-entity financial statements with the engagement letter",
+      "Agree on the report deadline from the forum's schedule",
+    ],
+    questionsToAsk: [
+      "Have you or your firm prepared documentation for this group or any of its affiliates?",
+      "Which records do you need for the functional analysis beyond the documents already produced?",
+      "Which sources of company financial data and license agreements will the comparables search draw on?",
+      "How will you coordinate with any valuation or damages expert whose figures depend on your result?",
+    ],
+    timeline: "About two weeks for retention and the first records transfer. The functional analysis and the comparables work follow once the agreements, the documentation, and the ledger detail are in hand.",
+    requiredDocuments: [
+      "Intercompany agreements and amendments, with the transfer pricing documentation for each year",
+      "Legal-entity and segmented financial statements and general ledger detail",
+      "Tax returns and information returns reporting related-party transactions",
+      "Organization charts and the names of the people who ran each function, for interviews",
+    ],
+    pitfalls: [
+      "Retaining the firm that prepared the documentation as the testifying expert without weighing what it will have to defend",
+      "Leaving the transactions and years in scope undefined, so the records request and the cost estimate drift",
+      "Producing the documentation without the agreements and the ledger detail, without which the delineation cannot be built",
+    ],
+    faqs: [
+      {
+        question: "How is the scope of a transfer pricing engagement set?",
+        answer:
+          "By the transactions, years, entities, and forum at issue. A single transaction type tested over a few years with sound documentation is the narrowest scope; several transaction types, contested intangibles, a comparables search built from the ground up, or parallel tax and civil proceedings widen it. The engagement letter states the scope and the fee basis for each phase so counsel can see what each part costs.",
+      },
+      {
+        question: "What does the conflict check cover in a transfer pricing matter?",
+        answer:
+          "Every company in the group, the opposing parties, and any affiliate whose results the analysis will touch, together with any earlier work on the group's documentation or its advance pricing agreements. Because a multinational group can have many affiliates, the check is run on the entity list counsel provides before any records are exchanged.",
+      },
+      {
+        question: "Can consulting work become a disclosed report later?",
+        answer:
+          "Yes. Many engagements begin as consulting work that tests the documentation and the opposing position, and become a disclosed report once counsel decides the economic analysis will be presented. The scope and the form of the work product are set at retention and can be changed as the case develops, subject to the forum's disclosure rules.",
+      },
+    ],
+    sources: refsToSources(["TREAS_REG_1_482_1", "IRS_TP_DOCUMENTATION_FAQS", "FRCP_26"]),
+  },
   // ── Preparing for Deposition ──────────────────────────────────
   {
     stage: "preparing-deposition",
@@ -2242,6 +2346,58 @@ export const journeys: JourneyStage[] = [
     ],
     sources: refsToSources(["CENSUS_ACS", "BLS_ATUS", "SKOOG_CIECKA_KRUEGER_2011"]),
   },
+  {
+    stage: "preparing-deposition",
+    caseTypeSlug: "tax-and-transfer-pricing-dispute",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    intro:
+      "Preparing the economist for deposition and cross-examination in a tax or transfer pricing dispute centers on the choices the other side will say were made to reach a result: the delineation of the transactions, the tested party, the method, the comparables screens and the companies they admitted or rejected, the profit level indicator, the years of data, and the point in the range. In the Tax Court the expert's written report is received as direct testimony, so preparation concentrates on the report and on cross-examination at trial; in a refund suit or a commercial case the deposition tests the disclosed report line by line. The economist should be able to explain every choice from the record and show the result under the alternatives.",
+    checklist: [
+      "Confirm the delineation of each transaction ties to the agreements, the invoices, and the ledger",
+      "Review the functional analysis against the interview notes and the operating records",
+      "Prepare the reasons each rejected method and each rejected comparable was excluded",
+      "Prepare the result under the opposing tested party, comparable set, and profit level indicator",
+      "Assemble the reliance file: agreements, documentation, financial statements, database extracts, and workpapers",
+    ],
+    questionsToAsk: [
+      "Why is your tested party the least complex participant, and what in the record shows it owns no valuable intangibles?",
+      "Which screens removed which companies, and how does the range change if a disputed company is restored?",
+      "Why did you prefer this method over the comparable price or profit split methods?",
+      "What is the result under the opposing expert's comparable set?",
+    ],
+    timeline: "One to two preparation sessions in the two weeks before the deposition or the trial date, after the report, the workpapers, and the opposing report are final.",
+    requiredDocuments: [
+      "The final report, the workpapers, and the comparables database extracts with the screening log",
+      "The intercompany agreements, the documentation, and the financial statements relied on",
+      "The opposing expert's report and workpapers",
+      "Interview notes and the operating records behind the functional analysis",
+    ],
+    pitfalls: [
+      "A comparables screen that cannot be explained without the result it produced",
+      "Treating legal ownership of an intangible as decisive without addressing the functions the record shows",
+      "Defending the documentation's conclusions rather than the analysis in the report",
+    ],
+    faqs: [
+      {
+        question: "What is the most common line of attack on a transfer pricing expert's analysis?",
+        answer:
+          "The comparables. Opposing counsel asks why each company was included or excluded, whether the screens were set before or after the results were seen, and whether the range would hold if one company were removed. The expert's answer is a screening log that records each criterion and each decision, and a sensitivity table that shows the range under the disputed choices.",
+      },
+      {
+        question: "How is preparation different when the report is the expert's direct testimony?",
+        answer:
+          "Because the report is read as the direct testimony, it has to answer in writing the questions the other side will ask: why the method was selected, why each comparable was kept or rejected, and what the result is under the alternatives. Preparation then concentrates on cross-examination, testing each section of the report against the record and the opposing report before the expert takes the stand.",
+      },
+      {
+        question: "Should the expert be ready to address the group's documentation?",
+        answer:
+          "Yes, directly. Opposing counsel will contrast the report with the documentation the group prepared for the tax authorities, so the expert should be ready to say where the report adopts the documentation, where it departs from it, and why each departure follows from the record rather than from the litigation position.",
+      },
+    ],
+    sources: refsToSources(["TAX_COURT_RULE_143", "TREAS_REG_1_482_5", "FRE_702"]),
+  },
   // ── Trial Testimony ───────────────────────────────────────────
   {
     stage: "trial",
@@ -2970,6 +3126,58 @@ export const journeys: JourneyStage[] = [
       },
     ],
     sources: refsToSources(["CENSUS_ACS", "BLS_ATUS", "JONES_LAUGHLIN_PFEIFER"]),
+  },
+  {
+    stage: "trial",
+    caseTypeSlug: "tax-and-transfer-pricing-dispute",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    intro:
+      "Trial testimony in a tax or transfer pricing dispute presents an economic analysis to a judge in the Tax Court, or to a judge or jury in a refund suit or a commercial case. The economist explains the transactions and the companies' roles first, then the method and why it is the most reliable, then the comparables and the range, and finally where the controlled result falls and what adjustment, if any, follows. Demonstratives should show the functional analysis, the screening of the comparables, and the range with the controlled result marked, and a reconciliation of the two experts' results should show how much of the gap each disputed choice explains.",
+    checklist: [
+      "Prepare a board of the transactions and each company's functions, assets, and risks",
+      "Prepare a board of the comparables search: the screens, the accepted and rejected companies, and the range",
+      "Prepare the reconciliation of the two experts' results, choice by choice",
+      "Prepare the result under the opposing method and tested party",
+      "Confirm every board figure ties to a report schedule and a source document",
+    ],
+    questionsToAsk: [
+      "How will you explain the arm's length standard to a fact finder who has not seen a transfer pricing case?",
+      "How will you show why your tested party is the right one?",
+      "What does the result look like under the opposing comparable set?",
+      "How will you explain the point in the range the result is measured to?",
+    ],
+    timeline: "One to two preparation sessions in the week before testimony, after the demonstratives are drafted and the opposing report has been analyzed.",
+    requiredDocuments: [
+      "The final report with the range, the adjustment, and the sensitivity schedules",
+      "The agreements, the documentation, and the financial statements relied on",
+      "Draft demonstratives",
+      "The opposing expert's report and any deposition transcript",
+    ],
+    pitfalls: [
+      "Presenting the comparables as a list of names rather than as the result of stated screens",
+      "Leaving the fact finder without the result under the other side's choices, so the gap between the experts cannot be broken down",
+      "Explaining the method in the vocabulary of the regulations rather than in terms of what each company did",
+    ],
+    faqs: [
+      {
+        question: "How does the economist explain the arm's length range to a judge?",
+        answer:
+          "As the spread of results that comparable independent companies earned in similar circumstances, narrowed to the middle of the distribution where the comparables are inexact, with the controlled company's result marked on it. The board shows each comparable, the screen that admitted it, and the range, so the court can see whether the result falls inside it and, if not, how far outside it falls.",
+      },
+      {
+        question: "What if the court accepts neither expert's analysis in full?",
+        answer:
+          "The report's sensitivity tables let the court adopt one expert's method with the other's comparables, or exclude a disputed company, and read the result directly. The economist should say on direct that the analysis is built in steps that can be accepted or rejected one at a time, because it tells the court the result is not all or nothing.",
+      },
+      {
+        question: "How is a transfer pricing analysis presented to a jury in a commercial case?",
+        answer:
+          "With the transactions and the price first, in terms of what each company did and what an independent company would have paid, and the method second. The jury sees the price charged, the arm's length price, the difference applied to the volumes in the record, and the resulting figure by year, with the comparables shown as the evidence for the arm's length price rather than as a statistical exercise.",
+      },
+    ],
+    sources: refsToSources(["TAX_COURT_RULE_143", "TREAS_REG_1_482_1", "OECD_TP_GUIDELINES"]),
   },
 ];
 

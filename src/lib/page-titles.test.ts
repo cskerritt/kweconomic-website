@@ -43,6 +43,7 @@ import {
   serviceStateTitle,
   serviceCityTitle,
   pillarTitle,
+  expertLabel,
   variantTitle,
   pairTitle,
   serviceCaseStateTitle,
@@ -290,6 +291,23 @@ describe("the fallbacks shorten only what cannot fit", () => {
     expect(variantTitle(divorce, "Cost", ORG_NAME)).toBe(`Divorce and Marital Financial Analysis Cost | ${ORG_NAME}`);
     expect(variantTitle(fraud, "Process", ORG_NAME)).toBe(`Fraud Investigation and Asset Tracing Process | ${ORG_NAME}`);
     expect(variantTitle(divorce, "Timeline", ORG_NAME)).toBe(`Divorce Financial Analysis Timeline | ${ORG_NAME}`);
+  });
+
+  it("the pillar title never doubles the role: a name that already ends in Expert or Expert Witness is used as written", () => {
+    expect(expertLabel("Business Valuation")).toBe("Business Valuation Expert");
+    expect(expertLabel("Transfer Pricing Expert Witness")).toBe("Transfer Pricing Expert Witness");
+    expect(expertLabel("Damages Expert")).toBe("Damages Expert");
+    expect(expertLabel("Expertise Review")).toBe("Expertise Review Expert");
+    const tp = pillarServices().find((s) => s.slug === "transfer-pricing-expert-witness")!;
+    expect(pillarTitle(tp, ORG_NAME)).toBe(`Transfer Pricing Expert Witness | ${ORG_NAME}`);
+    expect(variantTitle(tp, "Timeline", ORG_NAME)).toBe(`Transfer Pricing Expert Witness Timeline | ${ORG_NAME}`);
+    expect(serviceTitleLabels(tp)).toEqual(["Transfer Pricing"]);
+    const tax = caseTypes.find((c) => c.slug === "tax-and-transfer-pricing-dispute")!;
+    // The matter's short form keeps the pillar's own pair title from reading
+    // "Transfer Pricing Expert for Transfer Pricing".
+    expect(pairTitle(tp, tax, ORG_NAME)).toBe(`Transfer Pricing Expert for Tax Dispute | ${ORG_NAME}`);
+    expect(serviceStateTitle(tp, states.find((s) => s.slug === "texas")!, ORG_NAME)).toBe(`Transfer Pricing in Texas | ${ORG_NAME}`);
+    expect(serviceCaseStateTitle(tp, tax, states.find((s) => s.slug === "texas")!, ORG_NAME)).toBe(`Transfer Pricing for Tax Dispute in Texas | ${ORG_NAME}`);
   });
 
   it("the service labels, case-type stems, and short names are budgeted so every title fits inside the ladders", () => {

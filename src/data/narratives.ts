@@ -201,6 +201,13 @@ const SERVICE_PAGE_PROSE: Record<string, ServicePageProse> = {
     venue: ({ place, forum }) =>
       `Fraud and tracing engagements in ${place} arise in civil fraud, fiduciary, partnership, and matrimonial matters heard in ${forum}, in the federal district courts serving ${place}, and in insurance recoveries that never reach a courtroom. The tracing is built from the entity's own bank, ledger, and payment records rather than from wage or market data, and the evidence trail is documented so the same schedule can support a civil claim, an insurance claim, or a referral.`,
   },
+  "transfer-pricing-expert-witness": {
+    measures: (cityA) =>
+      `test the prices charged between related companies against the arm's length standard, from the group's own intercompany agreements and financial records and from comparables selected for the transactions at issue, with ${cityA}-area market conditions entering only where a comparability adjustment calls for them`,
+    sources: ["IRC_482", "TREAS_REG_1_482_1", "OECD_TP_GUIDELINES"],
+    venue: ({ place, attr, forum }) =>
+      `Transfer pricing disputes that involve ${place} reach several forums: the United States Tax Court and, on a refund claim, the federal district courts serving ${place} or the Court of Federal Claims for federal income tax; the ${attr} tax authority and its appeal process for a dispute over ${attr} tax; and ${forum} for the commercial, shareholder, and matrimonial claims that turn on an intercompany price. The arm's length analysis is built the same way for each forum; the forum sets the rule of decision, which counsel confirms, and the report presents the result so it can be applied under it.`,
+  },
   "divorce-and-marital-financial-analysis": {
     measures: (cityA) =>
       `determine income available for support from the spouse's own records, value a marital business from its own statements and the ${cityA}-area market it serves, and trace separate and marital funds through accounts and assets`,
@@ -225,7 +232,7 @@ const defaultMeasures = (cityA: string) =>
 /**
  * The venue paragraph of a service x state page for the pillars whose forum
  * is not the tort damages framework (employment, the four commercial pillars,
- * rebuttal). Returns undefined for the injury, death, household services, and
+ * transfer pricing, rebuttal). Returns undefined for the injury, death, household services, and
  * life care costing pillars, which print the state's damagesContext and
  * workers' compensation forum instead.
  */

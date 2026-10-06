@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import ServiceCaseType from "./ServiceCaseType";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { pillarServices, servicesForCaseType } from "@/data/services";
-import { caseTypes } from "@/data/caseTypes";
+import { caseTypes, caseTypeSectionHeadings } from "@/data/caseTypes";
 import { ORG_NAME } from "@/lib/brand";
 import { pairTitle } from "@/lib/page-titles.mjs";
 import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
@@ -91,7 +91,10 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
         expect(title).toBe(ladder.find((t) => t.length <= 60));
         expect(title.length).toBeLessThanOrEqual(60);
         expect(title).not.toContain("&");
-        const base = `${capFirst(work)} for ${ct} cases: how the loss is built, which records drive it, and testimony support.`;
+        // A matter that is not a damages claim (a framing entry: the
+        // family-law and tax matters) says how the analysis is built.
+        const built = caseType.framing ? "how the analysis is built" : "how the loss is built";
+        const base = `${capFirst(work)} for ${ct} cases: ${built}, which records drive it, and testimony support.`;
         // "Either side." rides along only while the description fits the
         // 160-character window.
         expect(description).toBe(base.length + " Either side.".length <= 160 ? `${base} Either side.` : base);
@@ -116,13 +119,16 @@ describe("ServiceCaseType meta, intro, and shared sections", () => {
         const { html } = render(service.slug, caseType.slug);
         const text = visibleText(html);
         // The pillar's own description sits under the pinned H2; the case
-        // type's loss components sit under their own H2 (the hub's heading).
+        // type's loss components sit under their own H2 (the hub's heading,
+        // the framing block's for the family-law and tax matters).
         const application = html.indexOf('<section id="application"');
         const loss = html.indexOf('<section id="loss-components"');
         expect(application).toBeGreaterThan(-1);
         expect(loss).toBeGreaterThan(application);
         expect(visibleText(html.slice(application, loss))).toContain(service.description);
-        expect(text).toContain("What the economic claim consists of");
+        expect(text).toContain(caseTypeSectionHeadings(caseType).components);
+        if (caseType.framing) expect(text).not.toContain("What the economic claim consists of");
+        else expect(text).toContain("What the economic claim consists of");
         expect(text).toContain(caseType.lossComponents);
         // Deliverables come from the pillar's final process step, not a fixed sentence.
         expect(text).toContain(service.process!.at(-1)!.description);

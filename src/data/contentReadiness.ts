@@ -33,7 +33,8 @@ import { getMetroLabor } from "./labor/metro-labor";
  * they are unadvertised until Search Console evidence supports widening.
  * Widening = set SERVICE_CITY_SITEMAP_TOP to SERVICE_CITY_PRERENDER_TOP (10)
  * and raise the services child ceiling in scripts/sitemap-index.test.mjs
- * (4,000 to 7,000) in the same change. Evidence needed first: Search Console
+ * (4,100 to 7,200 since the twelfth pillar, 2026-10-05) in the same change.
+ * Evidence needed first: Search Console
  * page-indexing coverage and impressions for gated vs advertised combos over
  * 4-6 weeks (README, "Facts to confirm").
  *

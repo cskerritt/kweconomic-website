@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from "react-router-dom";
 import { pillarServices, servicesForCaseType, type PillarService } from "@/data/services";
-import { getCaseType, type CaseType } from "@/data/caseTypes";
+import { getCaseType, caseTypeHubLinkLabel, caseTypeSectionHeadings, type CaseType } from "@/data/caseTypes";
 import { states } from "@/data/states";
 import { releasedStates, serviceCaseStatePath } from "@/data/serviceCaseTypeStates";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
@@ -28,10 +28,15 @@ import NotFound from "@/pages/NotFound";
 
 const LINK_CLASS = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
 
-/** Meta description: 126-158 characters on every declared pair (pinned by the render test). */
+/**
+ * Meta description: 126-158 characters on every declared pair (pinned by the
+ * render test). A matter that is not a damages claim (a case type carrying a
+ * `framing` block) says how the analysis is built rather than the loss.
+ */
 function pairDescription(service: PillarService, caseType: CaseType): string {
   const work = workPhrase(service.shortName);
-  const base = `${capFirst(work)} for ${caseType.name.toLowerCase()} cases: how the loss is built, which records drive it, and testimony support.`;
+  const built = caseType.framing ? "how the analysis is built" : "how the loss is built";
+  const base = `${capFirst(work)} for ${caseType.name.toLowerCase()} cases: ${built}, which records drive it, and testimony support.`;
   // The audience tag rides along only while the description stays inside the
   // 160-character SERP window.
   return base.length + " Either side.".length <= 160 ? `${base} Either side.` : base;
@@ -73,6 +78,9 @@ export default function ServiceCaseType() {
   // guard keeps a note-less pair rendering the shared sections with no FAQ
   // block or FAQPage markup, so the case-type hub stays the FAQ owner.
   const note = service.caseTypeNotes[caseType.slug];
+  // The hub's own section headings (the framing block's, for a matter that
+  // is not a damages claim); scripts/prerender.mjs reads the same helper.
+  const headings = caseTypeSectionHeadings(caseType);
   const siblings = servicesForCaseType(caseType.slug).filter((s) => s.slug !== service.slug);
   const finalStep = service.process?.at(-1);
   // The state tier of this pair (wave 2): only the states whose batch has
@@ -101,7 +109,7 @@ export default function ServiceCaseType() {
         <p className="text-neutral-700">{service.description}</p>
       </section>
       <section id="loss-components" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">What the economic claim consists of</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">{headings.components}</h2>
         <p className="text-neutral-700">{caseType.lossComponents}</p>
       </section>
       {finalStep && (
@@ -115,7 +123,7 @@ export default function ServiceCaseType() {
         <section id="by-state" className="mb-6">
           <h2 className="font-serif text-2xl text-navy mb-2">{service.shortName} for {caseType.name} by state</h2>
           <p className="text-neutral-700 mb-2">
-            Each state page adds the courts, the expert standard, and the damages framework the report is built around in that venue.
+            Each state page adds the courts, the expert standard, and the {headings.framework.toLowerCase()} the report is built around in that venue.
           </p>
           <ul className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
             {stateTier.map((s) => (
@@ -137,7 +145,7 @@ export default function ServiceCaseType() {
         <ul className="list-disc ml-5 text-neutral-700 space-y-1">
           <li>
             <Link to={`/case-types/${caseType.slug}`} className={LINK_CLASS}>
-              {caseType.name}: the economic claim, where the damages concentrate, and how the analysis is built
+              {caseTypeHubLinkLabel(caseType)}
             </Link>
           </li>
           {siblings.map((s) => (
