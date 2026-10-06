@@ -60,6 +60,36 @@ const ECONOMICS_KEYS: Record<string, ReferenceTier> = {
   IRS_REV_PROC_2015_40: "live-verified",
   IRS_APMA: "live-verified",
   IRS_APMA_REPORT_2025: "live-verified",
+  // Intellectual property damages primary sources (live-verified 2026-10-06).
+  PATENT_284: "live-verified",
+  PATENT_286: "live-verified",
+  PATENT_287: "live-verified",
+  PATENT_289: "live-verified",
+  LANHAM_ACT_1117: "live-verified",
+  COPYRIGHT_504: "live-verified",
+  DTSA_1836: "live-verified",
+  DTSA_1838: "live-verified",
+  DTSA_1839: "live-verified",
+  JURISDICTION_1338: "live-verified",
+  FEDERAL_CIRCUIT_1295: "live-verified",
+  UNIFORM_TRADE_SECRETS_ACT: "live-verified",
+  USPTO_PATENT_ESSENTIALS: "live-verified",
+  USPTO_TRADE_SECRET_POLICY: "live-verified",
+  GEORGIA_PACIFIC: "live-verified",
+  PANDUIT: "live-verified",
+  STATE_INDUSTRIES_MOR_FLO: "live-verified",
+  RITE_HITE: "live-verified",
+  GRAIN_PROCESSING: "live-verified",
+  LUCENT_GATEWAY: "live-verified",
+  UNILOC: "live-verified",
+  LASERDYNAMICS: "live-verified",
+  ECOFACTOR_GOOGLE: "live-verified",
+  ARO_MANUFACTURING: "live-verified",
+  SAMSUNG_V_APPLE: "live-verified",
+  HALO_ELECTRONICS: "live-verified",
+  ROMAG_FASTENERS: "live-verified",
+  DEWBERRY_GROUP: "live-verified",
+  ON_DAVIS_V_GAP: "live-verified",
 };
 
 // Life-care-planning-only and vocational-only sources have no place on an
@@ -173,6 +203,66 @@ describe("REFERENCES registry integrity", () => {
     }
     // House rule: the section sign never appears, in legal strings or anywhere else.
     for (const [key, ref] of entries) expect(ref.apa, key).not.toContain("\u00a7");
+  });
+
+  it("pins the intellectual property sources to their primary publishers and their reporter cites", () => {
+    // Statutes: the U.S. Code on LII, section by section, cited "<title> U.S.C. sec. <section> (".
+    for (const [id, title, section] of [
+      ["PATENT_284", "35", "284"],
+      ["PATENT_286", "35", "286"],
+      ["PATENT_287", "35", "287"],
+      ["PATENT_289", "35", "289"],
+      ["LANHAM_ACT_1117", "15", "1117"],
+      ["COPYRIGHT_504", "17", "504"],
+      ["DTSA_1836", "18", "1836"],
+      ["DTSA_1838", "18", "1838"],
+      ["DTSA_1839", "18", "1839"],
+      ["JURISDICTION_1338", "28", "1338"],
+      ["FEDERAL_CIRCUIT_1295", "28", "1295"],
+    ]) {
+      expect(REFERENCES[id].url, id).toBe(`https://www.law.cornell.edu/uscode/text/${title}/${section}`);
+      expect(REFERENCES[id].apa, id).toMatch(new RegExp(`^${title} U\\.S\\.C\\. sec\\. ${section} \\(`));
+    }
+    // Supreme Court opinions on LII (docket or volume/page paths); the U.S. Reports cite in `apa`.
+    for (const [id, path, cite] of [
+      ["ARO_MANUFACTURING", "377/476", "377 U.S. 476 (1964)"],
+      ["SAMSUNG_V_APPLE", "15-777", "580 U.S. 53 (2016)"],
+      ["HALO_ELECTRONICS", "14-1513", "579 U.S. 93 (2016)"],
+      ["ROMAG_FASTENERS", "18-1233", "590 U.S. 212 (2020)"],
+      ["DEWBERRY_GROUP", "23-900", "604 U.S. 321 (2025)"],
+    ]) {
+      expect(REFERENCES[id].url, id).toBe(`https://www.law.cornell.edu/supremecourt/text/${path}`);
+      expect(REFERENCES[id].apa, id).toContain(cite);
+    }
+    // Courts of appeals and the district court before 2018: the Caselaw Access
+    // Project page for the reporter, volume, and first page in `apa`.
+    for (const [id, reporterPath, cite] of [
+      ["GEORGIA_PACIFIC", "f-supp/318/html/1116-01", "318 F. Supp. 1116 (S.D.N.Y. 1970)"],
+      ["PANDUIT", "f2d/575/html/1152-02", "575 F.2d 1152 (6th Cir. 1978)"],
+      ["STATE_INDUSTRIES_MOR_FLO", "f2d/883/html/1573-01", "883 F.2d 1573 (Fed. Cir. 1989)"],
+      ["RITE_HITE", "f3d/56/html/1538-01", "56 F.3d 1538 (Fed. Cir. 1995) (en banc)"],
+      ["GRAIN_PROCESSING", "f3d/185/html/1341-01", "185 F.3d 1341 (Fed. Cir. 1999)"],
+      ["LUCENT_GATEWAY", "f3d/580/html/1301-01", "580 F.3d 1301 (Fed. Cir. 2009)"],
+      ["UNILOC", "f3d/632/html/1292-01", "632 F.3d 1292 (Fed. Cir. 2011)"],
+      ["LASERDYNAMICS", "f3d/694/html/0051-01", "694 F.3d 51 (Fed. Cir. 2012)"],
+      ["ON_DAVIS_V_GAP", "f3d/246/html/0152-01", "246 F.3d 152 (2d Cir. 2001)"],
+    ]) {
+      expect(REFERENCES[id].url, id).toBe(`https://static.case.law/${reporterPath}.html`);
+      expect(REFERENCES[id].apa, id).toContain(cite);
+    }
+    expect(REFERENCES.GEORGIA_PACIFIC.apa).toContain("modified and aff'd, 446 F.2d 295 (2d Cir. 1971)");
+    // The 2025 en banc opinion on the Federal Circuit's own site.
+    expect(REFERENCES.ECOFACTOR_GOOGLE.url).toMatch(/^https:\/\/www\.cafc\.uscourts\.gov\/opinions-orders\/23-1101\.OPINION\.5-21-2025_\d+\.pdf$/);
+    expect(REFERENCES.ECOFACTOR_GOOGLE.apa).toContain("137 F.4th 1333 (Fed. Cir. 2025) (en banc)");
+    expect(REFERENCES.UNIFORM_TRADE_SECRETS_ACT.url).toMatch(/^https:\/\/www\.uniformlaws\.org\//);
+    for (const id of ["USPTO_PATENT_ESSENTIALS", "USPTO_TRADE_SECRET_POLICY"]) {
+      expect(REFERENCES[id].url, id).toMatch(/^https:\/\/www\.uspto\.gov\//);
+      expect(REFERENCES[id].type, id).toBe("gov");
+    }
+    // justia.com blocks non-browser fetches, so none of this batch links there.
+    for (const id of ["GEORGIA_PACIFIC", "PANDUIT", "RITE_HITE", "UNILOC", "LASERDYNAMICS", "SAMSUNG_V_APPLE", "DEWBERRY_GROUP"]) {
+      expect(REFERENCES[id].url, id).not.toContain("justia.com");
+    }
   });
 
   it("no longer carries life-care-planning-only or vocational-only sources", () => {

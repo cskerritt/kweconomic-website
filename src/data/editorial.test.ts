@@ -7,6 +7,7 @@ import { insightPosts as insights, formatPublishedDate, getRelatedPosts, insight
 import { whitePapers } from "./whitePapers";
 import { pillarServices } from "./services";
 import { faqs } from "./faqs";
+import { REFERENCES } from "./references";
 import { homepageFaqs } from "./home-faqs.mjs";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 
@@ -105,6 +106,7 @@ describe("economics editorial data", () => {
       "mitigation-and-offsets",
       "personal-consumption-tables",
       "present-value-and-discounting",
+      "reasonable-royalty-analysis",
       "total-offset-method",
       "transfer-pricing-methods",
       "wage-growth-and-earnings-projection",
@@ -129,9 +131,11 @@ describe("economics editorial data", () => {
       "lost-profits-for-a-new-business",
       "lost-profits-vs-lost-business-value",
       "mitigation-in-employment-cases",
+      "patent-damages-reasonable-royalty-explained",
       "personal-consumption-in-wrongful-death",
       "present-value-explained-for-attorneys",
       "tracing-commingled-funds",
+      "trade-secret-damages-explained",
       "transfer-pricing-disputes-explained",
       "valuing-a-homemakers-services",
       "what-is-a-forensic-economist",
@@ -151,6 +155,7 @@ describe("economics editorial data", () => {
       "lost-earnings-vs-lost-earning-capacity",
       "lost-profits-vs-business-valuation",
       "lost-profits-vs-diminished-business-value",
+      "lost-profits-vs-reasonable-royalty",
       "net-vs-gross-discount-rate",
       "plaintiff-economist-vs-defense-economist",
       "transfer-pricing-documentation-vs-expert-report",
@@ -165,6 +170,7 @@ describe("economics editorial data", () => {
     expect(slugs(insights)).toContain("what-union-contracts-add-to-a-lost-earnings-claim");
     expect(slugs(insights)).toContain("what-benefit-summaries-add-to-a-lost-earnings-claim");
     expect(slugs(insights)).toContain("what-intercompany-agreements-add-to-a-transfer-pricing-dispute");
+    expect(slugs(insights)).toContain("what-license-agreements-add-to-an-ip-damages-claim");
     expect(slugs(whitePapers)).toEqual(["business-valuation-standards-in-litigation", "daubert-ready-economic-damages-report"]);
     expect(whitePapers.every((w) => w.discipline === "Economic")).toBe(true);
   });
@@ -224,9 +230,10 @@ describe("author and date signals on every editorial page", () => {
       ...knowledge.map((k) => ({ page: `knowledge/${k.slug}`, ...k })),
       ...whitePapers.map((w) => ({ page: `white-papers/${w.slug}`, ...w })),
     ];
-    // 14 methods, 25 guides, 14 comparisons, 2 knowledge guides, 2 white papers (waves 1 to 5 each added one, two,
-    // and one; the transfer pricing batch of 2026-10-05 added one, two, and one).
-    expect(dated.length).toBe(14 + 25 + 14 + 2 + 2);
+    // 15 methods, 27 guides, 15 comparisons, 2 knowledge guides, 2 white papers (waves 1 to 5 each added one, two,
+    // and one; the transfer pricing batch of 2026-10-05 and the intellectual property batch of 2026-10-06 each
+    // added one, two, and one).
+    expect(dated.length).toBe(15 + 27 + 15 + 2 + 2);
     for (const x of dated) {
       expect(ROSTER, `${x.page} authorSlug`).toContain(x.authorSlug);
       expect(x.datePublished, `${x.page} datePublished`).toMatch(ISO_DATE);
@@ -247,7 +254,7 @@ describe("author and date signals on every editorial page", () => {
 describe("titles and meta descriptions are written for the SERP", () => {
   it("every editorial <title> is 40-60 characters with the brand suffix", () => {
     const titles = pageTitles();
-    expect(titles.length).toBe(14 + 25 + 14 + 2 + 8 + 2);
+    expect(titles.length).toBe(15 + 27 + 15 + 2 + 9 + 2);
     for (const { page, title } of titles) {
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeLessThanOrEqual(60);
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeGreaterThanOrEqual(40);
@@ -264,7 +271,7 @@ describe("titles and meta descriptions are written for the SERP", () => {
   });
   it("every meta description is a complete written sentence of 110-160 characters (no auto-cut, no markers)", () => {
     const descs = metaDescriptions();
-    expect(descs.length).toBe(14 + 25 + 14 + 2 + 8 + 2);
+    expect(descs.length).toBe(15 + 27 + 15 + 2 + 9 + 2);
     for (const { page, text } of descs) {
       expect(text.length, `${page} (${text.length})`).toBeLessThanOrEqual(160);
       expect(text.length, `${page} (${text.length})`).toBeGreaterThanOrEqual(110);
@@ -428,6 +435,16 @@ describe("insight posts", () => {
       "Where the disputes start",
       "What to produce with it",
     ]);
+    expect(byId["what-license-agreements-add-to-an-ip-damages-claim"]).toEqual([
+      "The grant: rights, field, territory, and exclusivity",
+      "The royalty terms: rate, base, and lump sums",
+      "Portfolio, cross, and settlement licenses",
+      "The date and the parties",
+      "Licenses for trademarks, copyrights, and trade secrets",
+      "What the license cannot tell you",
+      "Where the disputes start",
+      "What to produce with it",
+    ]);
   });
   it("carry three curated related links that resolve to real editorial or service routes", () => {
     for (const p of insights) {
@@ -445,9 +462,10 @@ describe("insight posts", () => {
       expect(rel.map((r) => r.slug), p.slug).not.toContain(p.slug);
     }
     // The Economics post has no category sibling, so the fallback is what
-    // fills its block: the first three other posts, in file order. The six
-    // Records posts (waves 1 to 5 and the transfer pricing batch of
-    // 2026-10-05) are each other's same-category match, in file order.
+    // fills its block: the first three other posts, in file order. The seven
+    // Records posts (waves 1 to 5, the transfer pricing batch of 2026-10-05,
+    // and the intellectual property batch of 2026-10-06) are each other's
+    // same-category match, in file order.
     expect(getRelatedPosts("components-of-an-economic-damages-report", "Economics").map((r) => r.slug)).toEqual([
       "daubert-vs-frye-expert-testimony-standards",
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -459,6 +477,7 @@ describe("insight posts", () => {
       "what-union-contracts-add-to-a-lost-earnings-claim",
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
+      "what-license-agreements-add-to-an-ip-damages-claim",
     ]);
     expect(getRelatedPosts("what-pay-stubs-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -466,6 +485,7 @@ describe("insight posts", () => {
       "what-union-contracts-add-to-a-lost-earnings-claim",
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
+      "what-license-agreements-add-to-an-ip-damages-claim",
     ]);
     expect(getRelatedPosts("what-union-contracts-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -473,6 +493,7 @@ describe("insight posts", () => {
       "what-pay-stubs-add-to-a-lost-earnings-claim",
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
+      "what-license-agreements-add-to-an-ip-damages-claim",
     ]);
     expect(getRelatedPosts("what-benefit-summaries-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -480,6 +501,7 @@ describe("insight posts", () => {
       "what-pay-stubs-add-to-a-lost-earnings-claim",
       "what-union-contracts-add-to-a-lost-earnings-claim",
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
+      "what-license-agreements-add-to-an-ip-damages-claim",
     ]);
     expect(getRelatedPosts("what-intercompany-agreements-add-to-a-transfer-pricing-dispute", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -487,6 +509,15 @@ describe("insight posts", () => {
       "what-pay-stubs-add-to-a-lost-earnings-claim",
       "what-union-contracts-add-to-a-lost-earnings-claim",
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
+      "what-license-agreements-add-to-an-ip-damages-claim",
+    ]);
+    expect(getRelatedPosts("what-license-agreements-add-to-an-ip-damages-claim", "Records").map((r) => r.slug)).toEqual([
+      "what-a-w-2-adds-to-a-lost-earnings-claim",
+      "what-tax-returns-add-to-a-lost-earnings-claim",
+      "what-pay-stubs-add-to-a-lost-earnings-claim",
+      "what-union-contracts-add-to-a-lost-earnings-claim",
+      "what-benefit-summaries-add-to-a-lost-earnings-claim",
+      "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
     ]);
   });
   it("the admissibility post and its companion guide name Daubert and Frye", () => {
@@ -609,5 +640,140 @@ describe("transfer pricing editorial: statements match the rules they describe",
     const faq = faqs.find((f) => f.question === "What types of matters does a forensic economist handle?")!;
     expect(faq.answer).toContain("matters, and arm's length analyses are prepared for [[/case-types/tax-and-transfer-pricing-dispute|tax and transfer pricing disputes]]");
     expect(faq.answer).not.toMatch(/matters; and \[\[\/case-types\/tax/);
+  });
+});
+
+// Intellectual property batch (2026-10-06): each pin below holds a statement to
+// the statute or decision it paraphrases (35 U.S.C. 284, 286, 287, and 289; 28
+// U.S.C. 1338(a) and 1295(a)(1); 18 U.S.C. 1836 and 1838; the Uniform Trade
+// Secrets Act and its comments; Panduit, Mor-Flo, Rite-Hite, Grain Processing,
+// Georgia-Pacific, Lucent, Uniloc, LaserDynamics, the 2025 en banc EcoFactor
+// decision, Aro, Samsung v. Apple, Halo, Romag, Dewberry, and On Davis), keeps
+// every source a statement leans on in the entry's References block, and holds
+// the batch to the house rules the transfer pricing review enforced: forums
+// framed federal first, both sides named, no person, figure, or outcome.
+describe("intellectual property editorial: statements match the rules they describe", () => {
+  const patent = guides.find((g) => g.slug === "patent-damages-reasonable-royalty-explained")!;
+  const secrets = guides.find((g) => g.slug === "trade-secret-damages-explained")!;
+  const method = methods.find((m) => m.slug === "reasonable-royalty-analysis")!;
+  const comparison = comparisons.find((c) => c.slug === "lost-profits-vs-reasonable-royalty")!;
+  const post = insights.find((p) => p.slug === "what-license-agreements-add-to-an-ip-damages-claim")!;
+  // Prose only: the byline slug is the one place a person's name may appear.
+  const prose = (x: unknown) => JSON.stringify(x, (key, value) => (key === "authorSlug" ? undefined : value));
+  const cites = (sources: { url: string }[] | undefined, ids: string[]) => {
+    const urls = (sources ?? []).map((s) => s.url);
+    for (const id of ids) expect(urls, id).toContain(REFERENCES[id].url);
+  };
+
+  it("every page in the batch carries a meta description of 140 to 160 characters", () => {
+    for (const d of [patent.metaDescription, secrets.metaDescription, method.metaDescription, comparison.answer, post.metaDescription]) {
+      expect(d.length, d).toBeGreaterThanOrEqual(140);
+      expect(d.length, d).toBeLessThanOrEqual(160);
+    }
+    // The methods template appends " Method" unless the name ends in "Methodology".
+    expect(method.name).toBe("Reasonable Royalty Methodology");
+  });
+
+  it("frames the forums federal first: patent and copyright claims in the federal courts, patent appeals in the Federal Circuit, trade secret claims in either system", () => {
+    const forum = patent.sections!.find((s) => s.id === "where-patent-cases-are-heard")!.bodyHtml;
+    expect(forum).toContain(
+      "the federal district courts have exclusive jurisdiction over it: no court of any state, the District of Columbia, or a territory may hear a claim for relief arising under the patent laws, and the same is true of copyright claims",
+    );
+    expect(forum).toContain("Appeals go to the U.S. Court of Appeals for the Federal Circuit rather than to the regional circuit that covers the district");
+    expect(forum).toContain("usually a contract claim governed by state law, which a state court can hear");
+    cites(patent.sources, ["JURISDICTION_1338", "FEDERAL_CIRCUIT_1295"]);
+    const tsForum = secrets.sections!.find((s) => s.id === "where-claims-are-heard")!.bodyHtml;
+    expect(tsForum).toContain("the federal district courts have original jurisdiction of those claims");
+    expect(tsForum).toContain("The federal statute does not preempt or displace state law");
+    expect(tsForum).toContain("goes to the Federal Circuit only when the case also includes a claim or compulsory counterclaim arising under the patent laws");
+    // Enactment counts change; the copy says "most states" and names no number.
+    expect(tsForum).not.toMatch(/\d+ states|forty|fifty/i);
+    cites(secrets.sources, ["DTSA_1836", "DTSA_1838", "UNIFORM_TRADE_SECRETS_ACT", "FEDERAL_CIRCUIT_1295"]);
+  });
+
+  it("the patent damages period: six years, marking and notice, and a negotiation dated when the infringement began", () => {
+    const t = prose(patent);
+    expect(t).toContain("No recovery is had for infringement committed more than six years before the complaint or counterclaim for infringement was filed");
+    expect(t).toContain("filing the lawsuit is itself notice");
+    expect(t).toContain("the six-year limit and the marking rule restrict what is recoverable without moving the date on which the license would have been agreed");
+    cites(patent.sources, ["PATENT_284", "PATENT_286", "PATENT_287", "LASERDYNAMICS"]);
+  });
+
+  it("lost profits: the Panduit factors, the market share approach, available alternatives, and the functional unit", () => {
+    const t = prose(patent);
+    expect(t).toContain("four factors from the Panduit decision");
+    expect(t).toContain("the Federal Circuit has accepted a market share approach");
+    expect(t).toContain("counts against the claim even if it was not on the market during the infringement, provided it was available");
+    expect(t).toContain("count only if they function together with it as a unit");
+    cites(patent.sources, ["PANDUIT", "STATE_INDUSTRIES_MOR_FLO", "GRAIN_PROCESSING", "RITE_HITE", "ARO_MANUFACTURING"]);
+    cites(comparison.sources, ["PANDUIT", "STATE_INDUSTRIES_MOR_FLO", "GRAIN_PROCESSING", "RITE_HITE"]);
+  });
+
+  it("the reasonable royalty: Georgia-Pacific, validity and infringement assumed, apportionment, and the rejected rule of thumb", () => {
+    const t = prose(patent);
+    expect(t).toContain("the list of fifteen factors from the Georgia-Pacific decision");
+    expect(t).toContain("The parties are assumed to know that the patent is valid and infringed");
+    expect(t).toContain("the royalty is generally built on the smallest salable unit that practices the patent");
+    expect(t).toContain("applies when the patented feature drives the demand for the whole product");
+    // The 25 percent rule appears only as the rule the Federal Circuit rejected.
+    expect(t).toContain("the 25 percent rule of thumb, which assigned the patentee a fixed share of the infringer's expected profit, is a fundamentally flawed tool");
+    expect(method.limitations).toContain("the Federal Circuit rejected the 25 percent rule of thumb as a starting point");
+    for (const x of [patent, secrets, method, comparison, post]) {
+      for (const m of prose(x).matchAll(/[^.]*25 percent[^.]*\./g)) expect(m[0], x.slug).toMatch(/Federal Circuit/);
+    }
+    cites(patent.sources, ["GEORGIA_PACIFIC", "LUCENT_GATEWAY", "UNILOC", "LASERDYNAMICS"]);
+    cites(method.sources, ["PATENT_284", "GEORGIA_PACIFIC", "LUCENT_GATEWAY", "UNILOC", "LASERDYNAMICS", "GRAIN_PROCESSING"]);
+  });
+
+  it("comparable licenses: the 2025 en banc decision and Rule 702 travel with the sources they rest on", () => {
+    expect(prose(patent)).toContain("Sitting en banc in 2025, the Federal Circuit held that a damages expert's testimony that earlier lump-sum licenses reflected an agreed per-unit rate was not based on sufficient facts or data");
+    expect(post.content).toContain("Sitting en banc in 2025, the court also held");
+    expect(method.admissibilityHistory).toContain("which requires the proponent to show the court that each admissibility requirement is more likely than not met");
+    cites(patent.sources, ["ECOFACTOR_GOOGLE", "FRE_702"]);
+    cites(post.sources, ["ECOFACTOR_GOOGLE", "LASERDYNAMICS", "LUCENT_GATEWAY", "GEORGIA_PACIFIC"]);
+    cites(method.sources, ["ECOFACTOR_GOOGLE", "FRE_702"]);
+  });
+
+  it("design patents and enhancement: total profit on the article of manufacture; enhancement is the court's sanction, not the economic measure", () => {
+    const t = prose(patent);
+    expect(t).toContain("in a multi-component product the article can be the end product sold to the consumer or a component of it");
+    expect(t).toContain("generally reserved for egregious infringement behavior, decided by the court and separate from the economic measure of the loss");
+    cites(patent.sources, ["PATENT_289", "SAMSUNG_V_APPLE", "HALO_ELECTRONICS"]);
+  });
+
+  it("trade secret measures: non-overlapping loss and enrichment or a royalty in their place, the head start, and exemplary damages for the court", () => {
+    const t = prose(secrets);
+    expect(secrets.tldr).toContain("to the extent the two do not overlap, or, in place of both, a reasonable royalty");
+    expect(t).toContain("plus any additional period in which the misappropriator kept an advantage over good-faith competitors because of the misappropriation");
+    expect(t).toContain("the court may award exemplary damages of up to twice the compensatory award");
+    expect(t).toContain("Reverse engineering and independent derivation are not improper means");
+    cites(secrets.sources, ["DTSA_1839", "USPTO_TRADE_SECRET_POLICY", "GEORGIA_PACIFIC"]);
+    cites(comparison.sources, ["DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT"]);
+  });
+
+  it("trademark and copyright statements rest on the statutes and the decisions they describe", () => {
+    expect(post.content).toContain("the Supreme Court has held that willfulness is not a precondition to a profits award");
+    expect(post.content).toContain("only the named defendant's profits can be awarded, not those of affiliates that are not parties");
+    expect(post.content).toContain("the Second Circuit has held that the fair market value of a license covering the infringing use can be the owner's actual damages in appropriate circumstances");
+    cites(post.sources, ["LANHAM_ACT_1117", "ROMAG_FASTENERS", "DEWBERRY_GROUP", "COPYRIGHT_504", "ON_DAVIS_V_GAP", "DTSA_1836"]);
+    expect(method.whenUsed).toContain("with a license fee entering a trademark case as evidence of the damages rather than as a measure of its own");
+    cites(method.sources, ["COPYRIGHT_504", "ON_DAVIS_V_GAP", "LANHAM_ACT_1117", "DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT"]);
+  });
+
+  it("names both sides, no team member, and no figure, award, or outcome", () => {
+    expect(prose(patent)).toContain("the work follows the same sequence for the patentee and for the accused infringer");
+    expect(prose(secrets)).toContain("for whichever side retains the expert, the owner or the party accused of taking the information");
+    for (const x of [patent, secrets, method, comparison, post]) {
+      const t = prose(x);
+      expect(t, x.slug).not.toMatch(/Skerritt|Sperling|Kumah/);
+      expect(t, x.slug).not.toMatch(/\$\d|\d+(\.\d+)?\s?%|\bmillion\b|\bbillion\b|\bverdict\b/i);
+      expect(t, x.slug).not.toMatch(/\b(we|our) (have )?(testified|been retained|won)\b/i);
+    }
+  });
+
+  it("the intercompany royalty guide links the patent damages guide where it contrasts the two royalties", () => {
+    const royalty = guides.find((g) => g.slug === "intercompany-royalty-rates-in-litigation")!;
+    const body = royalty.sections!.map((s) => s.bodyHtml).join(" ");
+    expect(body).toContain('A <a href="/guides/patent-damages-reasonable-royalty-explained">reasonable royalty for patent infringement</a> is a different measure');
   });
 });

@@ -859,6 +859,82 @@ export const comparisons: Comparison[] = [
       { title: "Transfer Pricing Expert Witness", href: "/services/transfer-pricing-expert-witness", description: "The litigation analysis and report, for either side of a tax or civil dispute." },
     ],
   },
+  // Intellectual property damages (owner request 2026-10-06): the two patent
+  // and trade secret measures side by side, neutral between the owner and the
+  // accused party. The answer names "profits" and "royalty", the last long
+  // word of each label, as the answer-block test requires.
+  {
+    slug: "lost-profits-vs-reasonable-royalty",
+    title: "Lost Profits vs. Reasonable Royalty",
+    answer:
+      "Lost profits measure the sales a patentee or trade secret owner proves it lost; a reasonable royalty prices the use itself and is open to every owner.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-06",
+    dateModified: "2026-10-06",
+    a: {
+      label: "Lost Profits",
+      summary:
+        "The profits the owner would have earned on the sales it lost to the infringer or misappropriator, on its own sales at prices the competition forced down, and on related sales that function with the protected product as a unit. In a patent case the owner proves that but for the infringement it would have made the sales, commonly through the four Panduit factors or a market share approach, and the claim is computed at incremental profit; under the trade secret statutes it is the main form of the owner's actual loss. The [[/methods/lost-profits-but-for-analysis|but-for analysis]] that supports it is the one used in any commercial damages claim.",
+      url: "/methods/lost-profits-but-for-analysis",
+    },
+    b: {
+      label: "Reasonable Royalty",
+      summary:
+        "The license fee a willing licensor and a willing licensee would have agreed to for the use the infringer made, negotiated hypothetically as of the date the infringement or misappropriation began. The Patent Act makes it the floor of every patent award, and the trade secret statutes allow it in place of the owner's loss and the misappropriator's gain. It is built from comparable licenses, the profit the protected feature made possible, and the cost of the user's next-best alternative, apportioned to the protected feature, as the [[/methods/reasonable-royalty-analysis|reasonable royalty methodology]] describes.",
+      url: "/methods/reasonable-royalty-analysis",
+    },
+    rows: [
+      { dimension: "Who can claim it", a: "An owner that competed for the sales, with the patented product or a product of its own that the infringing product displaced", b: "Every patent owner, including one that licenses rather than sells, and a trade secret owner that elects it in place of other measures" },
+      { dimension: "What it measures", a: "The owner's lost incremental profit on lost sales, eroded prices, and related sales that function with the product", b: "The value of the right to use the protected invention or information, priced as a license fee" },
+      { dimension: "What must be proved", a: "That the owner would have made the sales but for the infringement, and that the loss was reasonably foreseeable", b: "The infringing use and its extent; no lost sale has to be shown" },
+      { dimension: "Key evidence", a: "Market structure, substitutes, capacity, the owner's costs, and the infringer's sales", b: "Comparable licenses, the profit the feature made possible, and the cost of the user's alternatives" },
+      { dimension: "Noninfringing alternatives", a: "An available and acceptable substitute can defeat or reduce the claim, even if it was not on the market", b: "The cost and delay of switching to an alternative bound what the licensee would have paid" },
+      { dimension: "Apportionment", a: "Related unpatented sales count only if they function with the patented product as a unit", b: "The base and the rate must reflect the patented feature, not the unpatented features of the product" },
+      { dimension: "Timing", a: "The loss period, with the six-year limit and any marking and notice rule applied", b: "A negotiation dated when the infringement began, with payment for the recoverable period" },
+      { dimension: "Where the experts disagree", a: "Market definition, substitutes, capacity, and incremental costs", b: "The comparability of licenses, the royalty base, and the point within the bargaining range" },
+    ],
+    whenUseA:
+      "Lost profits are the measure where the owner competed for the sales the infringer made and can prove it would have made them. A manufacturer whose patented product faced the infringer's copy in a market with few acceptable substitutes, and that had the capacity to supply the added demand, has the classic claim, and the four Panduit factors, demand, the absence of acceptable noninfringing substitutes, capacity, and the profit it would have made, are the usual proof; where several competitors share the market, the owner may claim the share of the infringing sales that matches its market share. The claim can include price erosion, where the competition forced the owner's prices down, and lost sales of the owner's own competing products, where the infringement caused them and the loss was foreseeable. In a trade secret case the same analysis measures the owner's actual loss from customers and sales diverted by the misappropriation, as the [[/guides/trade-secret-damages-explained|trade secret damages guide]] explains, and the [[/guides/patent-damages-reasonable-royalty-explained|patent damages guide]] sets out the proof in a patent case.",
+    whenUseB:
+      "A reasonable royalty is the measure for every infringing sale the owner cannot show it would have made: all of them for an owner that licenses rather than sells, or that lacked the capacity to serve the market, and the remainder for a competitor whose lost profits cover only part of the infringing sales. It is also the measure a trade secret owner can elect in place of actual loss and unjust enrichment, often where the secret was used but the owner's loss and the defendant's gain are hard to isolate. The royalty prices the right to use the invention in a hypothetical negotiation at the start of the infringement, with the patent assumed valid and infringed, and it is built from comparable licenses, the profit attributable to the patented feature, and the cost of the infringer's alternatives, under the apportionment rules that keep the base and the rate tied to the invention. In a [[/case-types/commercial-contract-dispute|license dispute]], where the question is what a licensee owes under its agreement, the contract rather than the patent statute sets the measure, though the same comparable-license evidence often informs it.",
+    overlap:
+      "The two measures are not exclusive, and a patent award often combines them: lost profits on the sales the owner proves it would have made and a reasonable royalty on the rest, with no sale counted twice. They also inform each other. The profit the owner expected to lose by licensing a competitor raises the minimum it would have accepted in the hypothetical negotiation, and the profit the infringer expected to earn sets the most it would have paid, so the evidence behind a lost profits claim reappears in the royalty analysis even where the lost profits claim fails. Both measures rest on a reconstruction of the market as it would have been without the infringement, with the same alternatives, the same customers, and the same period, and a report that treats the alternatives one way for lost profits and another way for the royalty will be tested on the inconsistency. The [[/services/lost-profits-and-commercial-damages|lost profits and commercial damages]] service and the [[/services/expert-rebuttal-and-report-review|report review]] service describe how each side's measure is built and examined.",
+    faqs: [
+      {
+        question: "Can a patentee recover lost profits on some infringing sales and a royalty on the rest?",
+        answer:
+          "Yes. Courts allow a split award: lost profits on the share of the infringing sales the patentee proves it would have made, often its share of the market, and a reasonable royalty on the remainder. The damages schedule assigns each infringing unit to one measure so that none is counted twice.",
+      },
+      {
+        question: "Which measure is larger, lost profits or a reasonable royalty?",
+        answer:
+          "It depends on the facts. A competitor's margin on a lost sale can exceed what it would have accepted as a royalty on that sale, but the royalty reaches every infringing sale while lost profits reach only the sales the owner proves it would have made. The market, the alternatives, and the owner's capacity decide the comparison, and the report computes both where the evidence supports them.",
+      },
+      {
+        question: "Does a reasonable royalty in a trade secret case work the same way as in a patent case?",
+        answer:
+          "The framework is similar, a hypothetical negotiation dated when the misappropriation began, but the inputs differ. There is no patent term, so the license runs for the period the information would have stayed secret or the head start would have lasted, and the alternatives that bound the bargain include independent development and reverse engineering, which trade secret law treats as lawful.",
+      },
+    ],
+    sources: refsToSources([
+      "PATENT_284",
+      "PANDUIT",
+      "STATE_INDUSTRIES_MOR_FLO",
+      "RITE_HITE",
+      "GRAIN_PROCESSING",
+      "GEORGIA_PACIFIC",
+      "LUCENT_GATEWAY",
+      "LASERDYNAMICS",
+      "DTSA_1836",
+      "UNIFORM_TRADE_SECRETS_ACT",
+    ]),
+    related: [
+      { title: "Patent Damages Explained", href: "/guides/patent-damages-reasonable-royalty-explained", description: "Where patent cases are heard and how lost profits and the royalty are built." },
+      { title: "Reasonable Royalty Methodology", href: "/methods/reasonable-royalty-analysis", description: "The hypothetical negotiation, step by step." },
+      { title: "Trade Secret Damages Explained", href: "/guides/trade-secret-damages-explained", description: "Actual loss, unjust enrichment, and the royalty in a misappropriation case." },
+      { title: "Lost Profits and But-For Analysis", href: "/methods/lost-profits-but-for-analysis", description: "How the but-for projection is built and tested." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

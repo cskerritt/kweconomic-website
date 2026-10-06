@@ -52,6 +52,25 @@ import type { Source, SourceType } from "./types";
  * publication page, which serves a bot challenge to curl; its title, date,
  * and DOI were confirmed in a headless browser session and in the Crossref
  * registration record.
+ *
+ * LIVE-CHECK NOTES (2026-10-06, intellectual property damages sources): every
+ * URL below returned HTTP 200 with curl on that date and the cited text was
+ * read on the page or in the PDF. The statutes link to the U.S. Code on
+ * law.cornell.edu, and each page's title was matched to the section heading
+ * in `apa`; the Supreme Court opinions link to law.cornell.edu, whose pages
+ * carry the slip opinion, so each U.S. Reports volume and first page was
+ * confirmed through CourtListener's citation resolver
+ * (courtlistener.com/c/U.S./<vol>/<page>/), which redirected to the named
+ * case. The court of appeals and district court opinions decided before
+ * 2018 link to the Caselaw Access Project of the Harvard Law School Library
+ * (static.case.law), whose metadata confirmed the reporter, volume, first
+ * page, court, and decision date of each; the Federal Circuit's 2025 en banc
+ * opinion links to the court's own PDF, and its F.4th cite was confirmed
+ * through the same resolver. justia.com still blocks non-browser fetches,
+ * which is why these entries do not use it. The Uniform Trade Secrets Act
+ * links to the Uniform Law Commission's final act page, whose attached PDF
+ * (the act with the 1985 amendments and comments) was read; the USPTO pages
+ * were read on uspto.gov.
  */
 
 export type ReferenceTier = "verified" | "anchor" | "live-verified";
@@ -434,6 +453,269 @@ export const REFERENCES: Record<string, Reference> = {
     "gov",
     "Internal Revenue Service. (2026). Announcement and report concerning advance pricing agreements [2025 APMA statutory report]. U.S. Department of the Treasury.",
     "https://www.irs.gov/pub/irs-drop/a-26-08.pdf",
+  ),
+  // Intellectual property damages primary sources (live-verified 2026-10-06;
+  // see the LIVE-CHECK NOTES above). Statutes are cited Bluebook-style with
+  // "sec." in place of the section sign (house rule). The pages that cite
+  // these entries describe the rules; they carry no award, verdict, or
+  // figure from any case.
+  PATENT_284: R(
+    "PATENT_284",
+    "live-verified",
+    "case-law",
+    "35 U.S.C. sec. 284 (damages).",
+    "https://www.law.cornell.edu/uscode/text/35/284",
+  ),
+  PATENT_286: R(
+    "PATENT_286",
+    "live-verified",
+    "case-law",
+    "35 U.S.C. sec. 286 (time limitation on damages).",
+    "https://www.law.cornell.edu/uscode/text/35/286",
+  ),
+  PATENT_287: R(
+    "PATENT_287",
+    "live-verified",
+    "case-law",
+    "35 U.S.C. sec. 287 (limitation on damages and other remedies; marking and notice).",
+    "https://www.law.cornell.edu/uscode/text/35/287",
+  ),
+  PATENT_289: R(
+    "PATENT_289",
+    "live-verified",
+    "case-law",
+    "35 U.S.C. sec. 289 (additional remedy for infringement of design patent).",
+    "https://www.law.cornell.edu/uscode/text/35/289",
+  ),
+  LANHAM_ACT_1117: R(
+    "LANHAM_ACT_1117",
+    "live-verified",
+    "case-law",
+    "15 U.S.C. sec. 1117 (recovery for violation of rights).",
+    "https://www.law.cornell.edu/uscode/text/15/1117",
+  ),
+  COPYRIGHT_504: R(
+    "COPYRIGHT_504",
+    "live-verified",
+    "case-law",
+    "17 U.S.C. sec. 504 (remedies for infringement: damages and profits).",
+    "https://www.law.cornell.edu/uscode/text/17/504",
+  ),
+  DTSA_1836: R(
+    "DTSA_1836",
+    "live-verified",
+    "case-law",
+    "18 U.S.C. sec. 1836 (civil proceedings).",
+    "https://www.law.cornell.edu/uscode/text/18/1836",
+  ),
+  DTSA_1838: R(
+    "DTSA_1838",
+    "live-verified",
+    "case-law",
+    "18 U.S.C. sec. 1838 (construction with other laws).",
+    "https://www.law.cornell.edu/uscode/text/18/1838",
+  ),
+  DTSA_1839: R(
+    "DTSA_1839",
+    "live-verified",
+    "case-law",
+    "18 U.S.C. sec. 1839 (definitions).",
+    "https://www.law.cornell.edu/uscode/text/18/1839",
+  ),
+  // Subsection (a): original federal jurisdiction over patent, plant variety,
+  // copyright, and trademark claims, exclusive of every state, the District
+  // of Columbia, and the territories for patent and copyright claims.
+  JURISDICTION_1338: R(
+    "JURISDICTION_1338",
+    "live-verified",
+    "case-law",
+    "28 U.S.C. sec. 1338 (patents, plant variety protection, copyrights, mask works, designs, trademarks, and unfair competition).",
+    "https://www.law.cornell.edu/uscode/text/28/1338",
+  ),
+  // Subsection (a)(1): the Federal Circuit hears the appeal in any civil
+  // action arising under the patent laws, from every district court,
+  // including the territorial courts of Guam, the Virgin Islands, and the
+  // Northern Mariana Islands.
+  FEDERAL_CIRCUIT_1295: R(
+    "FEDERAL_CIRCUIT_1295",
+    "live-verified",
+    "case-law",
+    "28 U.S.C. sec. 1295 (jurisdiction of the United States Court of Appeals for the Federal Circuit).",
+    "https://www.law.cornell.edu/uscode/text/28/1295",
+  ),
+  // The act with the 1985 amendments and the commissioners' comments
+  // (UTSA_final_85.pdf, attached to the final act page). Section 3 and its
+  // comment: damages for actual loss and unjust enrichment without double
+  // counting, a reasonable royalty in lieu of other measures on competent
+  // evidence, recovery limited to the period of protection plus any head
+  // start, and exemplary damages up to twice the award; sections 2(b), 4, 6,
+  // and 7 cover the royalty injunction, fees, the three-year limitation, and
+  // the displacement of other tort and restitution claims.
+  UNIFORM_TRADE_SECRETS_ACT: R(
+    "UNIFORM_TRADE_SECRETS_ACT",
+    "live-verified",
+    "case-law",
+    "Unif. Trade Secrets Act with 1985 Amendments (Unif. L. Comm'n 1985).",
+    "https://www.uniformlaws.org/viewdocument/final-act-128?CommunityKey=3a2538fb-e030-4e2d-a9e2-90373dc05792&tab=librarydocuments",
+  ),
+  USPTO_PATENT_ESSENTIALS: R(
+    "USPTO_PATENT_ESSENTIALS",
+    "live-verified",
+    "gov",
+    "U.S. Patent and Trademark Office. (n.d.). Patent essentials. U.S. Department of Commerce. Retrieved October 6, 2026.",
+    "https://www.uspto.gov/patents/basics/essentials",
+  ),
+  USPTO_TRADE_SECRET_POLICY: R(
+    "USPTO_TRADE_SECRET_POLICY",
+    "live-verified",
+    "gov",
+    "U.S. Patent and Trademark Office. (n.d.). Trade secret policy. U.S. Department of Commerce. Retrieved October 6, 2026.",
+    "https://www.uspto.gov/ip-policy/trade-secret-policy",
+  ),
+  // The fifteen-factor framework for the hypothetical negotiation (318 F.
+  // Supp. at 1120) and the reasonable profit left to the licensee; the
+  // Second Circuit modified the royalty and otherwise affirmed.
+  GEORGIA_PACIFIC: R(
+    "GEORGIA_PACIFIC",
+    "live-verified",
+    "case-law",
+    "Georgia-Pacific Corp. v. United States Plywood Corp., 318 F. Supp. 1116 (S.D.N.Y. 1970), modified and aff'd, 446 F.2d 295 (2d Cir. 1971).",
+    "https://static.case.law/f-supp/318/html/1116-01.html",
+  ),
+  // The four-factor lost profits test (575 F.2d at 1156). Two opinions begin
+  // on this page of the reporter; 1152-02 is Panduit.
+  PANDUIT: R(
+    "PANDUIT",
+    "live-verified",
+    "case-law",
+    "Panduit Corp. v. Stahlin Bros. Fibre Works, Inc., 575 F.2d 1152 (6th Cir. 1978).",
+    "https://static.case.law/f2d/575/html/1152-02.html",
+  ),
+  // Lost profits on the patentee's market share of the infringing sales, a
+  // reasonable royalty on the rest.
+  STATE_INDUSTRIES_MOR_FLO: R(
+    "STATE_INDUSTRIES_MOR_FLO",
+    "live-verified",
+    "case-law",
+    "State Industries, Inc. v. Mor-Flo Industries, Inc., 883 F.2d 1573 (Fed. Cir. 1989).",
+    "https://static.case.law/f2d/883/html/1573-01.html",
+  ),
+  // But-for causation and reasonable, objective foreseeability; lost sales of
+  // a competing product the patent does not cover; unpatented items sold with
+  // the patented one only where they form a functional unit.
+  RITE_HITE: R(
+    "RITE_HITE",
+    "live-verified",
+    "case-law",
+    "Rite-Hite Corp. v. Kelley Co., 56 F.3d 1538 (Fed. Cir. 1995) (en banc).",
+    "https://static.case.law/f3d/56/html/1538-01.html",
+  ),
+  // An acceptable noninfringing substitute that was available, though not on
+  // the market, during the infringement.
+  GRAIN_PROCESSING: R(
+    "GRAIN_PROCESSING",
+    "live-verified",
+    "case-law",
+    "Grain Processing Corp. v. American Maize-Products Co., 185 F.3d 1341 (Fed. Cir. 1999).",
+    "https://static.case.law/f3d/185/html/1341-01.html",
+  ),
+  // The analytical method and the hypothetical negotiation (580 F.3d at
+  // 1324-25, with validity and infringement assumed); lump-sum and running
+  // royalty licenses compared.
+  LUCENT_GATEWAY: R(
+    "LUCENT_GATEWAY",
+    "live-verified",
+    "case-law",
+    "Lucent Technologies, Inc. v. Gateway, Inc., 580 F.3d 1301 (Fed. Cir. 2009).",
+    "https://static.case.law/f3d/580/html/1301-01.html",
+  ),
+  // The 25 percent rule of thumb held a fundamentally flawed tool and
+  // inadmissible under Daubert and the Federal Rules of Evidence.
+  UNILOC: R(
+    "UNILOC",
+    "live-verified",
+    "case-law",
+    "Uniloc USA, Inc. v. Microsoft Corp., 632 F.3d 1292 (Fed. Cir. 2011).",
+    "https://static.case.law/f3d/632/html/1292-01.html",
+  ),
+  // The smallest salable patent-practicing unit, the entire market value rule
+  // as a narrow exception, the hypothetical negotiation dated when the
+  // infringement began (apart from the sec. 286 and 287 limits), and a
+  // settlement license admitted in error.
+  LASERDYNAMICS: R(
+    "LASERDYNAMICS",
+    "live-verified",
+    "case-law",
+    "LaserDynamics, Inc. v. Quanta Computer, Inc., 694 F.3d 51 (Fed. Cir. 2012).",
+    "https://static.case.law/f3d/694/html/0051-01.html",
+  ),
+  // En banc, decided May 21, 2025: a damages expert's opinion that lump-sum
+  // licenses reflected an agreed per-unit rate was not based on sufficient
+  // facts or data under Rule 702(b); the court noted that the 2023 amendment,
+  // which clarifies the proponent's burden, did not change the standard.
+  ECOFACTOR_GOOGLE: R(
+    "ECOFACTOR_GOOGLE",
+    "live-verified",
+    "case-law",
+    "EcoFactor, Inc. v. Google LLC, 137 F.4th 1333 (Fed. Cir. 2025) (en banc).",
+    "https://www.cafc.uscourts.gov/opinions-orders/23-1101.OPINION.5-21-2025_2518737.pdf",
+  ),
+  // Since the 1946 amendment only damages, not the infringer's profits as
+  // such, are recoverable for a utility patent; the measure asks what the
+  // patentee would have made had the infringer not infringed.
+  ARO_MANUFACTURING: R(
+    "ARO_MANUFACTURING",
+    "live-verified",
+    "case-law",
+    "Aro Manufacturing Co. v. Convertible Top Replacement Co., 377 U.S. 476 (1964).",
+    "https://www.law.cornell.edu/supremecourt/text/377/476",
+  ),
+  // Sec. 289: the article of manufacture may be the end product or a
+  // component of it; total profit is computed on that article.
+  SAMSUNG_V_APPLE: R(
+    "SAMSUNG_V_APPLE",
+    "live-verified",
+    "case-law",
+    "Samsung Electronics Co. v. Apple Inc., 580 U.S. 53 (2016).",
+    "https://www.law.cornell.edu/supremecourt/text/15-777",
+  ),
+  // Enhanced damages under sec. 284 are discretionary and generally reserved
+  // for egregious infringement behavior.
+  HALO_ELECTRONICS: R(
+    "HALO_ELECTRONICS",
+    "live-verified",
+    "case-law",
+    "Halo Electronics, Inc. v. Pulse Electronics, Inc., 579 U.S. 93 (2016).",
+    "https://www.law.cornell.edu/supremecourt/text/14-1513",
+  ),
+  // Willfulness is not a precondition to a profits award under 15 U.S.C.
+  // 1117(a), though the defendant's mental state is a highly important
+  // consideration.
+  ROMAG_FASTENERS: R(
+    "ROMAG_FASTENERS",
+    "live-verified",
+    "case-law",
+    "Romag Fasteners, Inc. v. Fossil, Inc., 590 U.S. 212 (2020).",
+    "https://www.law.cornell.edu/supremecourt/text/18-1233",
+  ),
+  // Decided February 26, 2025: the "defendant's profits" under sec. 1117(a)
+  // are the named defendant's own, not those of affiliates that are not
+  // parties.
+  DEWBERRY_GROUP: R(
+    "DEWBERRY_GROUP",
+    "live-verified",
+    "case-law",
+    "Dewberry Group, Inc. v. Dewberry Engineers Inc., 604 U.S. 321 (2025).",
+    "https://www.law.cornell.edu/supremecourt/text/23-900",
+  ),
+  // Sec. 504(b) permits actual damages, in appropriate circumstances, for the
+  // fair market value of a license covering the infringing use.
+  ON_DAVIS_V_GAP: R(
+    "ON_DAVIS_V_GAP",
+    "live-verified",
+    "case-law",
+    "On Davis v. The Gap, Inc., 246 F.3d 152 (2d Cir. 2001).",
+    "https://static.case.law/f3d/246/html/0152-01.html",
   ),
 };
 

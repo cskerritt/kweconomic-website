@@ -739,6 +739,79 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["TREAS_REG_1_482_1", "TREAS_REG_1_482_3", "TREAS_REG_1_482_4", "TREAS_REG_1_482_5", "TREAS_REG_1_482_6", "TREAS_REG_1_482_9", "OECD_TP_GUIDELINES", "IRS_APMA_REPORT_2025"]),
   },
+  // Intellectual property damages (owner request 2026-10-06): the reasonable
+  // royalty as the courts build it in patent and trade secret cases, and its
+  // place in copyright, trademark, and license disputes. The name ends in
+  // "Methodology" so the <title> reads "Reasonable Royalty Methodology"
+  // rather than "Reasonable Royalty Analysis Method". Neutral between the
+  // owner and the accused user; no figure, award, or outcome is named.
+  {
+    slug: "reasonable-royalty-analysis",
+    name: "Reasonable Royalty Methodology",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-06",
+    dateModified: "2026-10-06",
+    metaDescription: "A reasonable royalty rebuilds the license willing parties would have signed when infringement began, from comparable licenses, profits, and alternatives.",
+    summary:
+      "A reasonable royalty is the license fee a willing licensor and a willing licensee would have agreed to for the use the infringer made of a patent or a trade secret, negotiated hypothetically as of the date the infringement or misappropriation began. The economist builds it from three kinds of evidence: the market, in the form of comparable licenses; the income the protected invention or information made possible for the user, apportioned to the protected feature; and the cost of the user's next-best alternative, which bounds what it would have paid. The royalty is expressed as a running rate on a defined royalty base or as a lump sum, and every input is tied to the facts of the case rather than to a rule of thumb.",
+    whenUsed:
+      "The reasonable royalty is the statutory floor of every patent infringement award, the measure for a patent owner that does not compete in the market, and the measure for the infringing sales a competing patentee cannot show it would have made, as the [[/guides/patent-damages-reasonable-royalty-explained|patent damages guide]] explains. Under the Defend Trade Secrets Act and the state statutes based on the Uniform Trade Secrets Act it is the alternative to actual loss and unjust enrichment, often used where the secret was used but the owner's loss is hard to isolate, as the [[/guides/trade-secret-damages-explained|trade secret damages guide]] describes. Copyright and trademark statutes frame the remedies differently: the copyright statute awards the owner's actual damages and the infringer's profits not already counted in them, and the Second Circuit has held that the fair market value of a license covering the infringing use can be the owner's actual damages in appropriate circumstances, while the Lanham Act awards the defendant's profits and the owner's damages, with a license fee entering a trademark case as evidence of the damages rather than as a measure of its own. The same analysis prices the use of intellectual property in [[/case-types/commercial-contract-dispute|license and royalty disputes]] where the agreement is silent, ambiguous, or terminated, and it shares its comparable-license tools with the arm's length benchmarking of [[/guides/intercompany-royalty-rates-in-litigation|intercompany royalties]], though the two answer different questions.",
+    steps: [
+      "Fix the date and the parties of the hypothetical negotiation: the date the infringement or misappropriation began, the owner and the user as they stood then, and the premises the law supplies, that the patent is valid and infringed or that the information is the protected secret, and that both sides know the facts surrounding the infringement",
+      "Define what is licensed and the royalty base: the claims or secrets at issue, the accused products and the features that practice them, and the smallest salable unit that practices the patent, using the entire product only where the patented feature drives the demand for it",
+      "Collect the licenses in the record, the owner's, the user's, and third parties' for comparable technology, and assess each for technical and economic comparability, accounting for differences in scope, exclusivity, territory, term, the number of patents covered, settlement circumstances, and the form of payment, and convert any lump sum into a rate only with stated assumptions about the expected sales",
+      "Measure the income the protected feature made possible for the user, from the user's own profit projections at the date of the negotiation, the price premium or cost savings the feature produced, or survey evidence of its value relative to other features, and separate that increment from the profit the user's own contributions earn",
+      "Identify the user's next-best alternative, a design-around, a noninfringing substitute, or independent development, with its cost, delay, and effect on sales, which sets the most the licensee would have paid, and the licensor's minimum, including the profit it would expect to lose by licensing a competitor and its licensing policy",
+      "Weigh the evidence through the factors the courts use to organize it, the Georgia-Pacific factors in a patent case and their adaptation in a trade secret case, tying each factor to the record rather than labeling it as raising or lowering the rate, and settle the form of the royalty, a running rate per unit or on revenue or a lump sum, and the rate within the bargaining range",
+      "Apply the royalty to the infringing use over the recoverable period, with the six-year limit, the marking and notice rule, or the trade secret period applied, and compute prejudgment interest on the basis the court adopts",
+      "Show the sensitivity of the result to the base, the licenses relied on, the apportionment, and the alternatives, so the reader can see which inputs drive the conclusion",
+    ],
+    dataSources: [
+      "License agreements for the patent or secret in suit and for comparable technology, with the negotiation files, drafts, royalty reports, and any related settlement agreements",
+      "The infringer's unit sales, revenue, pricing, and cost data for the accused products, by product, period, and customer, usually produced under a protective order",
+      "The parties' business plans, forecasts, and product-feature analyses from around the date of the hypothetical negotiation",
+      "Technical expert opinions on what the claims or secrets cover, which features use them, and whether alternatives were available and acceptable",
+      "Consumer survey or conjoint evidence, where a survey expert has measured the value buyers place on the patented feature",
+      "Licensing databases and public filings that disclose royalty terms between unrelated parties, read in full rather than as database summaries",
+    ],
+    limitations:
+      "Every input is a reconstruction. Comparable licenses differ from the hypothetical license in scope, timing, and circumstances, and each adjustment that bridges a difference adds an assumption; a lump-sum license converted to a running rate depends on what the parties expected the licensee to sell, which the license rarely states. The income approach depends on separating the profit attributable to the protected feature from the profit that the rest of the product, the user's brand and distribution, and its other technology earn, and survey evidence of feature value carries the design choices of the survey. The bargaining range can be wide, and the point within it is a judgment the evidence narrows but seldom fixes, which is why the Federal Circuit rejected the 25 percent rule of thumb as a starting point. The cost of an alternative caps the royalty only if the alternative was actually available and acceptable at the time, a question the technical evidence answers. And outside the patent and trade secret statutes the royalty is evidence rather than a statutory measure: in a license dispute the agreement governs, and in a trademark case a license fee is evidence of the owner's damages.",
+    admissibilityHistory:
+      "Royalty testimony is admitted or excluded on its inputs rather than its framework, which courts accept. The Federal Circuit has held that the 25 percent rule of thumb is inadmissible because it does not tie the royalty to the facts of the case, that the entire market value of a multi-component product may serve as the base only when the patented feature drives demand for the whole, that a settlement license was admitted in error where the circumstances of the settlement made it unreliable as a comparable, and, sitting en banc in 2025, that a damages expert's reading of comparable licenses must rest on sufficient facts or data under Rule 702, which requires the proponent to show the court that each admissibility requirement is more likely than not met. A report that ties each comparable license to the hypothetical license with stated adjustments, apportions the base and the rate with evidence, and shows the result under the other side's base and alternatives is positioned to be examined on its inputs rather than excluded, in a federal patent case or a [[/case-types/commercial-contract-dispute/delaware|Delaware license dispute]] alike. The [[/compare/lost-profits-vs-reasonable-royalty|lost profits versus reasonable royalty]] comparison explains how the royalty relates to the other measure, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions an opposing expert asks.",
+    relevantServices: ["lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review", "transfer-pricing-expert-witness"],
+    faqs: [
+      {
+        question: "What is the hypothetical negotiation in a reasonable royalty analysis?",
+        answer:
+          "A reconstruction of the license the patent owner and the infringer would have signed just before the infringement began, had both been willing to agree. It assumes the patent is valid and infringed and that each side knows the relevant facts, so the analysis asks what the right to use the invention was worth to each party on that date, not what either would accept to end a lawsuit.",
+      },
+      {
+        question: "What is the smallest salable patent-practicing unit?",
+        answer:
+          "The smallest component or product sold in the market that contains the patented feature, such as a chip or a drive inside a computer. The royalty is generally applied to that unit rather than to the whole product, so that the patentee is not paid for unpatented features; the whole product can be the base only if the patented feature drives demand for it.",
+      },
+      {
+        question: "How does a design-around cost affect a reasonable royalty?",
+        answer:
+          "It limits what the licensee would have paid. If the infringer could have switched to an available, acceptable noninfringing alternative at a known cost and delay, a rational licensee would not have paid much more than that to use the patent, so the cost of the alternative often anchors the top of the bargaining range, provided the evidence shows the alternative was truly available and acceptable.",
+      },
+    ],
+    sources: refsToSources([
+      "PATENT_284",
+      "GEORGIA_PACIFIC",
+      "LUCENT_GATEWAY",
+      "LASERDYNAMICS",
+      "UNILOC",
+      "ECOFACTOR_GOOGLE",
+      "GRAIN_PROCESSING",
+      "DTSA_1836",
+      "UNIFORM_TRADE_SECRETS_ACT",
+      "COPYRIGHT_504",
+      "ON_DAVIS_V_GAP",
+      "LANHAM_ACT_1117",
+      "FRE_702",
+    ]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

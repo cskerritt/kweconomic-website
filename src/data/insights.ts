@@ -460,6 +460,73 @@ In a [[/case-types/tax-and-transfer-pricing-dispute|tax case]] the disputes star
 
 Every intercompany agreement in force during the years at issue, with its schedules, amendments, side letters, and the drafts and correspondence around its execution; the transfer pricing policy and the documentation reports for each year; the year-end adjustment calculations and the journal entries that booked them; the intercompany invoices and the general ledger detail of the intercompany accounts; the legal-entity and segmented financial statements; the board minutes and approvals for the agreements; the tax returns and the information returns that report transactions with related parties; any advance pricing agreement and its annual reports; and, for imported goods, the customs entries. Producing the set lets the economist delineate the transactions from the documents, test the terms against the conduct, and apply the method to the transactions the companies actually entered into.`,
   },
+  // Intellectual property damages (owner request 2026-10-06): the Records
+  // series applied to the first record a reasonable royalty turns on. No
+  // person, figure, award, or outcome is named.
+  {
+    slug: "what-license-agreements-add-to-an-ip-damages-claim",
+    sources: refsToSources([
+      "GEORGIA_PACIFIC",
+      "LUCENT_GATEWAY",
+      "LASERDYNAMICS",
+      "ECOFACTOR_GOOGLE",
+      "COPYRIGHT_504",
+      "ON_DAVIS_V_GAP",
+      "LANHAM_ACT_1117",
+      "ROMAG_FASTENERS",
+      "DEWBERRY_GROUP",
+      "DTSA_1836",
+    ]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-10-06",
+    title: "What License Agreements Add to an Intellectual Property Damages Claim",
+    metaTitle: "License Agreements in IP Damages Claims",
+    metaDescription:
+      "A license states the rights, the royalty, and the base; here is how an economist reads one as evidence of a reasonable royalty in a patent or trade secret case.",
+    excerpt:
+      "A license agreement is the record of what someone actually agreed to pay for the right to use a patent, a trade secret, a trademark, or a copyrighted work: the rights granted, the royalty and the base it applies to, any lump sum, and the terms that changed the price. This post explains what each part of a license adds to an intellectual property damages claim, how a license is tested for comparability with the hypothetical license the claim requires, what it cannot show, and which records it points to next.",
+    category: "Records",
+    publishedDate: "2026-10-06",
+    related: [
+      link("Reasonable Royalty Methodology", "/methods/reasonable-royalty-analysis", "How the license evidence becomes a rate on a royalty base."),
+      link("Patent Damages Explained", "/guides/patent-damages-reasonable-royalty-explained", "Lost profits, the hypothetical negotiation, and apportionment."),
+      link("Lost Profits vs. Reasonable Royalty", "/compare/lost-profits-vs-reasonable-royalty", "When a royalty is the measure and when lost profits are."),
+      link("Trade Secret Damages Explained", "/guides/trade-secret-damages-explained", "Actual loss, unjust enrichment, and the royalty for a misappropriated secret."),
+    ],
+    content: `A license agreement is the contract by which the owner of intellectual property grants another party the right to use it for a price: a patent license to make and sell a product, a trade secret or know-how license to use a process, a trademark license to sell goods under a brand, or a copyright license to reproduce or display a work. In an intellectual property damages claim it is often the most direct evidence of what the use was worth, because the hypothetical negotiation behind a [[/methods/reasonable-royalty-analysis|reasonable royalty]] asks what a willing licensor and a willing licensee would have agreed to, and a real license shows what real parties did agree to. The first two factors the courts use to organize royalty evidence are the royalties the owner has received for licensing the patent in suit and the rates the licensee has paid for comparable patents, and the license is where the analysis of both begins. How much weight a license carries depends on how closely its terms and circumstances match the license the claim requires, and the gaps between the two are where the analysis looks first.
+
+## The grant: rights, field, territory, and exclusivity
+
+The grant states what the licensee may do: which patents, claims, secrets, marks, or works it covers; the products or field of use; the territory; whether the grant is exclusive, sole, or nonexclusive; the term and the termination rights; the right to sublicense; and any rights to improvements or future patents. Each of those terms moves the price. An exclusive worldwide license to a portfolio is a different asset from a nonexclusive license to one patent in one country, and a license that also transfers know-how, technical support, or the right to use a trademark bundles value that a hypothetical license to the patent alone does not include. The economist sets each term beside the corresponding term of the hypothetical license and records every difference that calls for an adjustment or limits the weight the license can carry.
+
+## The royalty terms: rate, base, and lump sums
+
+The royalty clause states the price: a running royalty as a percentage of a defined base or an amount per unit, a lump sum paid once for the whole term, an upfront fee followed by running royalties, minimum annual payments, caps, or rates that step down as volume rises. The base matters as much as the rate, since a rate on the selling price of a component and the same rate on the price of the finished product are different prices, and a comparable license's rate carries over only to a comparable base. A lump sum has to be converted before it can be compared with a running royalty, and the conversion depends on the sales the parties expected the licensee to make, which the agreement rarely records; the courts have recognized that a lump sum and a running royalty allocate the risk of future sales differently. The [[/guides/patent-damages-reasonable-royalty-explained|patent damages guide]] explains why the royalty base has to be tied to the patented feature.
+
+## Portfolio, cross, and settlement licenses
+
+Many licenses in the record are not clean comparables. A portfolio license covers many patents, and the value attributable to the patent in suit has to be separated from the rest with evidence of how the parties valued each, not divided equally by count. A cross license pays partly in the licensee's own patents, so its cash terms understate the price. A license granted to settle infringement litigation reflects the parties' views of validity and infringement, the cost of the case, and the risk of an injunction as much as the value of the rights, and the Federal Circuit has held that a settlement license should have been excluded where the circumstances of the settlement made it unreliable as evidence of the rate; how close the settlement came to trial and what the parties knew are part of the analysis. Sitting en banc in 2025, the court also held that a damages expert's opinion that a set of lump-sum licenses reflected an agreed per-unit rate was not based on sufficient facts or data, because the licenses did not show that the licensees had agreed to the rate; a recital in a license, such as the licensor's statement of the rate it believed reasonable, is tested against the payments and terms the parties actually agreed.
+
+## The date and the parties
+
+When a license was signed and between whom decide how close it comes to the hypothetical negotiation. A license signed near the date the infringement began, between parties in positions like the patentee's and the infringer's, is closer than one signed years earlier in a smaller market or years later, after the technology's value was proven. The relationship matters too: a license between competitors, between a licensor and a customer, with a university, or with a company whose business is licensing each reflects a different bargaining position, and a license between related companies reflects the group's tax and transfer pricing choices rather than an arm's length bargain unless it is shown to meet that standard, as the [[/guides/intercompany-royalty-rates-in-litigation|intercompany royalty guide]] explains. The economist records each license's date, parties, and circumstances and states which differences are adjusted and which limit the weight the license can carry.
+
+## Licenses for trademarks, copyrights, and trade secrets
+
+Outside patent cases a license plays a different role, because the statutes frame the remedies differently. The copyright statute awards the owner's actual damages and the infringer's profits attributable to the infringement that the actual damages do not already count, and the Second Circuit has held that the fair market value of a license covering the infringing use can be the owner's actual damages in appropriate circumstances, so the owner's own licensing history for comparable uses is often the evidence of that value. The trademark statute awards the defendant's profits, the owner's damages, and costs, subject to the principles of equity: a license fee the owner charged or would have charged is evidence of the damages, the owner proves the defendant's profits by showing its sales while the defendant must prove its costs and deductions, and the Supreme Court has held that willfulness is not a precondition to a profits award, though the defendant's mental state remains a highly important consideration. Where the defendant's revenue sits with affiliates, the intercompany agreements decide what the defendant's own profits are, because the Supreme Court held in 2025 that only the named defendant's profits can be awarded, not those of affiliates that are not parties; the [[/insights/what-intercompany-agreements-add-to-a-transfer-pricing-dispute|intercompany agreements post]] explains how those agreements are read. In a trade secret case a license of the secret, or of similar know-how in the industry, is the evidence for the reasonable royalty the statutes allow in place of the owner's loss and the misappropriator's gain.
+
+## What the license cannot tell you
+
+A license shows what one licensee paid for one set of rights at one time; it does not show what the invention is worth to the infringer, which depends on the infringer's own products, margins, and alternatives. It cannot establish that the licensed patents are the ones the accused products use, which is for the technical experts, or that the licensee's products resemble the accused products, which the record has to show. A royalty rate drawn from a database summary of a license, without the agreement itself, cannot show the base, the bundled rights, the upfront payments, or the settlement circumstances that change what the rate means. And a recital of a reasonable rate states one party's position, not the price both parties agreed to, unless the payments bear it out.
+
+## Where the disputes start
+
+In a patent case the disputes start with comparability: one expert relies on licenses the other says cover different technology, a broader portfolio, or a settlement, and the other relies on low lump sums the first says were struck before the technology was proven or under the pressure of litigation. They continue with the conversion of lump sums into rates, the apportionment of portfolio licenses, and the base a comparable rate is applied to. In a [[/case-types/commercial-contract-dispute|license dispute]] they start with the agreement itself: the definition of royalty-bearing products, the base, the audit rights, and what happens after termination. In a trade secret case they start with whether any license of comparable know-how exists at all, and in copyright and trademark cases with whether the owner's licensing history matches the use the defendant made.
+
+## What to produce with it
+
+Every license and covenant not to sue for the patents, secrets, marks, or works in suit and for comparable technology, with all amendments, side letters, and exhibits; the negotiation files, term sheets, drafts, and correspondence behind each; the royalty reports and payment records showing what was actually paid, on which products and on what base; any settlement agreements and the pleadings they resolved; the parties' licensing policies and offers to license, including any offer made to the accused party; and any valuation or licensing analyses either side prepared. Producing the set lets the economist test each license against the hypothetical license, convert lump sums with evidence rather than assumption, and reconcile the royalty with any lost profits claim, as the [[/compare/lost-profits-vs-reasonable-royalty|lost profits versus reasonable royalty]] comparison explains.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {

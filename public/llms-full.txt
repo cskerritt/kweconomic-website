@@ -1478,6 +1478,34 @@ A: When the comparables are not close enough for every material difference to be
 Q: How is the tested party chosen under the comparable profits method?
 A: It is the participant whose operating profit from the controlled transactions can be verified with the most reliable data and the fewest adjustments, and for which reliable comparables can be found. In most cases that is the least complex company, one that owns no valuable intangibles or unique assets; choosing a party that does makes the comparables unreliable.
 
+### Reasonable Royalty Methodology
+URL: https://kweconomics.com/methods/reasonable-royalty-analysis
+
+A reasonable royalty is the license fee a willing licensor and a willing licensee would have agreed to for the use the infringer made of a patent or a trade secret, negotiated hypothetically as of the date the infringement or misappropriation began. The economist builds it from three kinds of evidence: the market, in the form of comparable licenses; the income the protected invention or information made possible for the user, apportioned to the protected feature; and the cost of the user's next-best alternative, which bounds what it would have paid. The royalty is expressed as a running rate on a defined royalty base or as a lump sum, and every input is tied to the facts of the case rather than to a rule of thumb.
+
+When used: The reasonable royalty is the statutory floor of every patent infringement award, the measure for a patent owner that does not compete in the market, and the measure for the infringing sales a competing patentee cannot show it would have made, as the patent damages guide explains. Under the Defend Trade Secrets Act and the state statutes based on the Uniform Trade Secrets Act it is the alternative to actual loss and unjust enrichment, often used where the secret was used but the owner's loss is hard to isolate, as the trade secret damages guide describes. Copyright and trademark statutes frame the remedies differently: the copyright statute awards the owner's actual damages and the infringer's profits not already counted in them, and the Second Circuit has held that the fair market value of a license covering the infringing use can be the owner's actual damages in appropriate circumstances, while the Lanham Act awards the defendant's profits and the owner's damages, with a license fee entering a trademark case as evidence of the damages rather than as a measure of its own. The same analysis prices the use of intellectual property in license and royalty disputes where the agreement is silent, ambiguous, or terminated, and it shares its comparable-license tools with the arm's length benchmarking of intercompany royalties, though the two answer different questions.
+
+Steps:
+1. Fix the date and the parties of the hypothetical negotiation: the date the infringement or misappropriation began, the owner and the user as they stood then, and the premises the law supplies, that the patent is valid and infringed or that the information is the protected secret, and that both sides know the facts surrounding the infringement
+2. Define what is licensed and the royalty base: the claims or secrets at issue, the accused products and the features that practice them, and the smallest salable unit that practices the patent, using the entire product only where the patented feature drives the demand for it
+3. Collect the licenses in the record, the owner's, the user's, and third parties' for comparable technology, and assess each for technical and economic comparability, accounting for differences in scope, exclusivity, territory, term, the number of patents covered, settlement circumstances, and the form of payment, and convert any lump sum into a rate only with stated assumptions about the expected sales
+4. Measure the income the protected feature made possible for the user, from the user's own profit projections at the date of the negotiation, the price premium or cost savings the feature produced, or survey evidence of its value relative to other features, and separate that increment from the profit the user's own contributions earn
+5. Identify the user's next-best alternative, a design-around, a noninfringing substitute, or independent development, with its cost, delay, and effect on sales, which sets the most the licensee would have paid, and the licensor's minimum, including the profit it would expect to lose by licensing a competitor and its licensing policy
+6. Weigh the evidence through the factors the courts use to organize it, the Georgia-Pacific factors in a patent case and their adaptation in a trade secret case, tying each factor to the record rather than labeling it as raising or lowering the rate, and settle the form of the royalty, a running rate per unit or on revenue or a lump sum, and the rate within the bargaining range
+7. Apply the royalty to the infringing use over the recoverable period, with the six-year limit, the marking and notice rule, or the trade secret period applied, and compute prejudgment interest on the basis the court adopts
+8. Show the sensitivity of the result to the base, the licenses relied on, the apportionment, and the alternatives, so the reader can see which inputs drive the conclusion
+
+Limitations: Every input is a reconstruction. Comparable licenses differ from the hypothetical license in scope, timing, and circumstances, and each adjustment that bridges a difference adds an assumption; a lump-sum license converted to a running rate depends on what the parties expected the licensee to sell, which the license rarely states. The income approach depends on separating the profit attributable to the protected feature from the profit that the rest of the product, the user's brand and distribution, and its other technology earn, and survey evidence of feature value carries the design choices of the survey. The bargaining range can be wide, and the point within it is a judgment the evidence narrows but seldom fixes, which is why the Federal Circuit rejected the 25 percent rule of thumb as a starting point. The cost of an alternative caps the royalty only if the alternative was actually available and acceptable at the time, a question the technical evidence answers. And outside the patent and trade secret statutes the royalty is evidence rather than a statutory measure: in a license dispute the agreement governs, and in a trademark case a license fee is evidence of the owner's damages.
+
+Q: What is the hypothetical negotiation in a reasonable royalty analysis?
+A: A reconstruction of the license the patent owner and the infringer would have signed just before the infringement began, had both been willing to agree. It assumes the patent is valid and infringed and that each side knows the relevant facts, so the analysis asks what the right to use the invention was worth to each party on that date, not what either would accept to end a lawsuit.
+
+Q: What is the smallest salable patent-practicing unit?
+A: The smallest component or product sold in the market that contains the patented feature, such as a chip or a drive inside a computer. The royalty is generally applied to that unit rather than to the whole product, so that the patentee is not paid for unpatented features; the whole product can be the base only if the patented feature drives demand for it.
+
+Q: How does a design-around cost affect a reasonable royalty?
+A: It limits what the licensee would have paid. If the infringer could have switched to an available, acceptable noninfringing alternative at a known cost and delay, a rational licensee would not have paid much more than that to use the patent, so the cost of the alternative often anchors the top of the bargaining range, provided the evidence shows the alternative was truly available and acceptable.
+
 ## Guides for Attorneys
 
 ### What Is a Forensic Economist?
@@ -1880,6 +1908,38 @@ A: For tax purposes it can. The commensurate-with-income rule lets the rate in a
 Q: Who earns the return on an intangible that one affiliate owns and another develops?
 A: Under the U.S. regulations the legal owner is generally treated as the owner unless that is inconsistent with the economic substance, and the developer is compensated for the functions it performs. The OECD Guidelines look to which companies perform and control the development, enhancement, maintenance, protection, and exploitation functions, so the two frameworks can allocate the return differently.
 
+### Patent Damages Explained: Reasonable Royalty, Lost Profits, and Apportionment
+URL: https://kweconomics.com/guides/patent-damages-reasonable-royalty-explained
+
+Patent damages compensate the patent owner for infringement, and the Patent Act sets their floor: damages adequate to compensate for the infringement, but never less than a reasonable royalty for the use the infringer made of the invention, together with interest and costs. A patentee that would have made the infringer's sales can claim the profits it lost on them, including price erosion and certain related sales, if it proves it would have made them; every patentee can claim a reasonable royalty, the license fee a willing licensor and a willing licensee would have agreed to in a hypothetical negotiation on the date the infringement began. Both measures turn on apportionment, because the damages must reflect the value of the patented invention and not the unpatented features of the product it sits in. This guide explains where patent cases are heard and how the damages period is set, how lost profits and the reasonable royalty are built, how design patents differ, what a patent damages expert does for the patentee or the accused infringer, and where the analysis is contested.
+
+Sections: What patent damages compensate; Where patent cases are heard and when damages run; Lost profits: the sales the patentee would have made; The reasonable royalty: a hypothetical negotiation; Apportionment, the royalty base, and comparable licenses; Design patents and the infringer's total profit; What a patent damages expert does; Where patent damages analyses are contested; When to bring in the economist and what to gather
+
+Q: Can a patent owner that does not sell products recover lost profits?
+A: Ordinarily not, because lost profits require proof of sales the owner would have made but for the infringement. A licensing company, or an owner that neither practices the patent nor sells a competing product, recovers a reasonable royalty, which the statute sets as the floor for every patentee and which is measured by the license the parties would have agreed to when the infringement began.
+
+Q: Is the reasonable royalty the same as what the parties discussed before the lawsuit?
+A: Not necessarily. Earlier offers and negotiations are evidence, but the hypothetical negotiation assumes what real negotiators did not know: that the patent is valid and infringed. A rate offered while validity was uncertain, or in the shadow of litigation, can understate or overstate what that assumption produces, so the report explains how each real negotiation bears on the rate.
+
+Q: How far back can patent damages reach?
+A: No further than six years before the complaint or counterclaim was filed, and where patented products were sold unmarked, only from the date the infringer was notified, which the lawsuit itself provides. The date of the hypothetical negotiation can still be earlier, at the start of the infringement, because the limits restrict what is collected, not when the license would have been struck.
+
+### Trade Secret Damages Explained: Actual Loss, Unjust Enrichment, and Reasonable Royalty
+URL: https://kweconomics.com/guides/trade-secret-damages-explained
+
+Trade secret damages compensate the owner of confidential business information that was acquired, used, or disclosed by improper means. Under the federal Defend Trade Secrets Act and the state statutes modeled on the Uniform Trade Secrets Act, the owner can recover its actual loss and the misappropriator's unjust enrichment to the extent the two do not overlap, or, in place of both, a reasonable royalty for the unauthorized use or disclosure, and a court can add exemplary damages of up to twice that award where the misappropriation was willful and malicious. Every measure shares one limit: it runs only for the period the information deserved protection, plus any head start the misappropriator kept over competitors who did the work honestly. This guide explains where trade secret claims are heard, how each measure is built, how the period is set, what a trade secret damages expert does for the owner or the accused party, and where the analysis is contested.
+
+Sections: What a trade secret is and what misappropriation means; Federal and state law, and where the claims are heard; Actual loss: what the owner lost; Unjust enrichment: what the misappropriator gained; The reasonable royalty in a trade secret case; The damages period, the head start, and exemplary damages; What a trade secret damages expert does; Where trade secret damages analyses are contested; When to bring in the economist and what to gather
+
+Q: Can a trade secret owner recover both its own lost profits and the defendant's profits?
+A: Yes, to the extent they do not overlap. The federal statute and the uniform act both allow the owner's actual loss together with the misappropriator's unjust enrichment that the loss does not already account for, so a sale the owner lost and the defendant made counts once, while profits the defendant earned from customers the owner would never have served can be added.
+
+Q: How long does a trade secret damages period last?
+A: For as long as the information would have remained protected, plus any head start the misappropriator kept over honest competitors. The end date usually turns on when the information became public or how long independent development or reverse engineering would have taken, which is why the period is often presented under alternative assumptions.
+
+Q: What happens to the damages if only some of the claimed trade secrets are found to qualify?
+A: The damages have to follow the secrets actually found to qualify and to have been misappropriated. An analysis that values the asserted secrets only as a group can leave the fact finder with no supported figure, so the report should show the measure for each secret, or for groups that track how the claims will be decided.
+
 ## Comparisons
 
 ### Forensic Economist vs. Forensic Accountant
@@ -2162,6 +2222,26 @@ A: No. Penalty protection turns on whether the method was reasonably selected an
 Q: Should the firm that prepared the documentation also serve as the testifying expert?
 A: It can, but the expert then defends the firm's earlier work and is examined on every choice it made. A testifying expert who did not prepare the documentation can test it the way the other side will, adopt what holds up, and correct what does not; the choice depends on the strength of the documentation, the issues in dispute, and the cost of a second review.
 
+### Lost Profits vs. Reasonable Royalty
+URL: https://kweconomics.com/compare/lost-profits-vs-reasonable-royalty
+
+Lost Profits compared with Reasonable Royalty.
+
+When Lost Profits applies: Lost profits are the measure where the owner competed for the sales the infringer made and can prove it would have made them. A manufacturer whose patented product faced the infringer's copy in a market with few acceptable substitutes, and that had the capacity to supply the added demand, has the classic claim, and the four Panduit factors, demand, the absence of acceptable noninfringing substitutes, capacity, and the profit it would have made, are the usual proof; where several competitors share the market, the owner may claim the share of the infringing sales that matches its market share. The claim can include price erosion, where the competition forced the owner's prices down, and lost sales of the owner's own competing products, where the infringement caused them and the loss was foreseeable. In a trade secret case the same analysis measures the owner's actual loss from customers and sales diverted by the misappropriation, as the trade secret damages guide explains, and the patent damages guide sets out the proof in a patent case.
+
+When Reasonable Royalty applies: A reasonable royalty is the measure for every infringing sale the owner cannot show it would have made: all of them for an owner that licenses rather than sells, or that lacked the capacity to serve the market, and the remainder for a competitor whose lost profits cover only part of the infringing sales. It is also the measure a trade secret owner can elect in place of actual loss and unjust enrichment, often where the secret was used but the owner's loss and the defendant's gain are hard to isolate. The royalty prices the right to use the invention in a hypothetical negotiation at the start of the infringement, with the patent assumed valid and infringed, and it is built from comparable licenses, the profit attributable to the patented feature, and the cost of the infringer's alternatives, under the apportionment rules that keep the base and the rate tied to the invention. In a license dispute, where the question is what a licensee owes under its agreement, the contract rather than the patent statute sets the measure, though the same comparable-license evidence often informs it.
+
+Where they overlap: The two measures are not exclusive, and a patent award often combines them: lost profits on the sales the owner proves it would have made and a reasonable royalty on the rest, with no sale counted twice. They also inform each other. The profit the owner expected to lose by licensing a competitor raises the minimum it would have accepted in the hypothetical negotiation, and the profit the infringer expected to earn sets the most it would have paid, so the evidence behind a lost profits claim reappears in the royalty analysis even where the lost profits claim fails. Both measures rest on a reconstruction of the market as it would have been without the infringement, with the same alternatives, the same customers, and the same period, and a report that treats the alternatives one way for lost profits and another way for the royalty will be tested on the inconsistency. The lost profits and commercial damages service and the report review service describe how each side's measure is built and examined.
+
+Q: Can a patentee recover lost profits on some infringing sales and a royalty on the rest?
+A: Yes. Courts allow a split award: lost profits on the share of the infringing sales the patentee proves it would have made, often its share of the market, and a reasonable royalty on the remainder. The damages schedule assigns each infringing unit to one measure so that none is counted twice.
+
+Q: Which measure is larger, lost profits or a reasonable royalty?
+A: It depends on the facts. A competitor's margin on a lost sale can exceed what it would have accepted as a royalty on that sale, but the royalty reaches every infringing sale while lost profits reach only the sales the owner proves it would have made. The market, the alternatives, and the owner's capacity decide the comparison, and the report computes both where the evidence supports them.
+
+Q: Does a reasonable royalty in a trade secret case work the same way as in a patent case?
+A: The framework is similar, a hypothetical negotiation dated when the misappropriation began, but the inputs differ. There is no patent term, so the license runs for the period the information would have stayed secret or the head start would have lasted, and the alternatives that bound the bargain include independent development and reverse engineering, which trade secret law treats as lawful.
+
 ## Knowledge Center
 
 ### Guide to Economic Damages
@@ -2235,6 +2315,13 @@ URL: https://kweconomics.com/insights/what-intercompany-agreements-add-to-a-tran
 Published: 2026-10-05
 
 The intercompany agreement is the record that states what one company in a group agreed to provide another, at what price, and which of them was to bear which risks: the license and its scope, the distribution or manufacturing arrangement, the services and the costs they are charged from, the loan and its terms, and any clause that resets the price after the year ends. This post explains what each part of an agreement adds to a transfer pricing dispute, how the agreement is tested against what the companies actually did, what it cannot show, and which records it points to next.
+
+### What License Agreements Add to an Intellectual Property Damages Claim
+URL: https://kweconomics.com/insights/what-license-agreements-add-to-an-ip-damages-claim
+
+Published: 2026-10-06
+
+A license agreement is the record of what someone actually agreed to pay for the right to use a patent, a trade secret, a trademark, or a copyrighted work: the rights granted, the royalty and the base it applies to, any lump sum, and the terms that changed the price. This post explains what each part of a license adds to an intellectual property damages claim, how a license is tested for comparability with the hypothetical license the claim requires, what it cannot show, and which records it points to next.
 
 ## White Papers
 
