@@ -400,6 +400,65 @@ The disputes are about the measure and the take-up. Whether the employer's cost 
 
 The benefits summary for each year in the claim, the summary plan description for each plan, the person's enrollment and election forms, the annual participant statements from the retirement and pension plans, the employer's premium rate sheets or the plan's cost schedule, the payroll deduction history, and, for a person who has found new work, the same set from the new employer. Producing the set lets the economist price each benefit at the employer's actual cost, carry only the coverage the person held, treat vesting and paid leave correctly, and state exactly where the person's records end and the published averages begin.`,
   },
+  // Transfer pricing (owner request 2026-10-05): the Records series applied to
+  // the first record a transfer pricing dispute turns on. No person, figure,
+  // or outcome is named.
+  {
+    slug: "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
+    sources: refsToSources(["TREAS_REG_1_482_1", "TREAS_REG_1_6662_6", "IRS_TP_DOCUMENTATION_FAQS"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-10-05",
+    title: "What Intercompany Agreements Add to a Transfer Pricing Dispute",
+    metaTitle: "Intercompany Agreements in Transfer Pricing",
+    metaDescription:
+      "An intercompany agreement states the transaction, the price, and who bears which risk; here is how an economist reads it against the conduct and the records.",
+    excerpt:
+      "The intercompany agreement is the record that states what one company in a group agreed to provide another, at what price, and which of them was to bear which risks: the license and its scope, the distribution or manufacturing arrangement, the services and the costs they are charged from, the loan and its terms, and any clause that resets the price after the year ends. This post explains what each part of an agreement adds to a transfer pricing dispute, how the agreement is tested against what the companies actually did, what it cannot show, and which records it points to next.",
+    category: "Records",
+    publishedDate: "2026-10-05",
+    related: [
+      link("Transfer Pricing Disputes Explained", "/guides/transfer-pricing-disputes-explained", "Where transfer pricing disputes arise and how each forum decides them."),
+      link("Transfer Pricing Methodology", "/methods/transfer-pricing-methods", "The methods applied to the transactions the agreement describes."),
+      link("Transfer Pricing Documentation vs. Expert Report", "/compare/transfer-pricing-documentation-vs-expert-report", "Why the tax study written around the agreement does not end the inquiry."),
+    ],
+    content: `An intercompany agreement is the contract between two companies in the same group that states what one will provide the other and on what terms: the goods a parent will sell to its distributor, the technology a subsidiary may use and the royalty it will pay, the services a shared service center will perform and how they will be charged, or the loan one affiliate makes to another. In a [[/guides/transfer-pricing-disputes-explained|transfer pricing dispute]] it is the first record the economist reads, because the Treasury regulations respect the written terms, including the allocation of risk between the parties, when they were agreed in writing before the transactions took place and are consistent with the economic substance of what the parties did. The agreement frames the delineation of the transactions that every method in the [[/methods/transfer-pricing-methods|transfer pricing methodology]] is applied to, and the gaps between its text and the parties' conduct are where the analysis looks first.
+
+## The parties and the transactions it covers
+
+The agreement names the legal entities, gives each a role, and defines the transactions: licensor and licensee, principal and limited-risk distributor, contract manufacturer and owner of the product, service provider and recipient, lender and borrower. Those roles carry economic consequences, since a limited-risk distributor is expected to earn a modest and stable return while the principal keeps the residual profit and absorbs the losses, and the economist checks each role against the legal-entity financial statements: whether the company the agreement calls the distributor actually records the sales, whether the manufacturer records the costs of production, and whether the flows on the books match the flows on paper. Master agreements with schedules, amendments, and side letters each change the picture, and the analysis needs every version in force during the years at issue.
+
+## The pricing clause and the year-end adjustment
+
+The pricing clause states how the price is set: a markup on the manufacturer's costs, a resale price less a distributor's margin, a royalty as a percentage of a defined base, a services charge at cost or at cost plus a markup, or an interest rate on a loan. Many agreements add a year-end adjustment clause that resets the price after the books close so that the tested party lands on a target margin or inside a range, which turns the tested party's profit into a fixed return and moves the remaining profit or loss to the other side. The economist reads the clause against the general ledger to see whether the adjustments were actually booked, in what amounts and when, and whether the method in the agreement matches the method in the documentation, since a cost plus pricing policy tested at year end on a distributor margin is a different arrangement from the one the agreement describes. The same adjustment can have consequences for the customs value declared on imported goods, which a separate body of rules governs.
+
+## Risk allocation and the conduct that has to match it
+
+Risk clauses allocate market, inventory, credit, currency, warranty, and product liability risk between the parties, and the allocation drives the expected return: the party that bears a risk earns the reward for bearing it. In testing whether a contractual allocation has economic substance, the regulations give the greatest weight to the parties' actual conduct, and they ask whether the pattern of conduct over time is consistent with the allocation, whether the party said to bear a risk had the financial capacity to absorb the losses it could produce, and which party exercised managerial or operational control over the activities that decide the outcome. A distributor the agreement calls limited-risk but that sets its own prices, holds inventory it cannot return, and absorbs bad debts bears more risk than its label, while a right to return unsold inventory to the supplier shifts risk the other way, which the IRS's own documentation guidance uses as an example of an allocation the analysis has to address.
+
+## Intangibles: ownership, scope, and the royalty base
+
+For a license the agreement fixes who owns the intangible, what rights are granted, and on what base the royalty is paid: the field of use, the territory, exclusivity, duration, rights to improvements, sublicensing, and the definition of net sales or whatever other measure the rate is applied to. The economist compares those terms with the comparable licenses the rate is benchmarked against, because a rate is comparable only to a rate on similar rights and a similar base, and with the functions the record shows, because a licensee that does its own development, marketing, or adaptation may hold intangibles of its own that the agreement never mentions. The [[/guides/intercompany-royalty-rates-in-litigation|intercompany royalty guide]] explains how the rate itself is tested.
+
+## Services, cost bases, and intercompany loans
+
+A services agreement defines the services, the pool of costs they draw on, the allocation key that spreads those costs among the affiliates, and whether the charge is at cost or carries a markup, and the analysis checks each element: whether the services were actually rendered and benefited the recipient, whether activities performed only in the parent's capacity as a shareholder were left out, and whether the allocation key tracks the benefit. A loan agreement states the principal, the interest rate, the maturity, the security, and the repayment terms, and the question is whether an independent lender would have extended the same credit on the same terms to the borrower as it actually stood, given its own credit standing and the support it enjoyed as a member of the group.
+
+## When the agreement was signed
+
+The date matters as much as the text. An agreement signed before the transactions began, and followed in practice, is the strongest evidence of the terms the parties intended. An agreement drafted years into the relationship, after an examination began, or after the results of a risky venture were known is weaker: the regulations treat an allocation of risk made after the outcome is known or reasonably knowable as lacking economic substance, and where there is no written agreement at all, terms can be imputed from the parties' course of conduct. The economist records when each agreement was executed and amended, compares the versions, and notes where the agreements filed in different countries describe the same transaction differently.
+
+## What the agreement cannot tell you
+
+The agreement states what the parties promised, not whether the price produced an arm's length result; that is the work of the method and the comparables. It does not show whether the conduct matched the text, which the invoices, the ledger, the operating records, and the testimony of the people who ran the business show. It does not value the intangibles it licenses or establish that the affiliate it names as owner performed the functions that created their value. And it says nothing about the commercial reality of a company with few employees to which the agreement assigns the most important decisions, a question the functional analysis answers from the record.
+
+## Where the disputes start
+
+In a tax case the disputes start where the label and the substance part: a limited-risk entity that bore real risk, a principal with no one to make its decisions, a year-end adjustment that moved profit after the fact, or a royalty base defined differently from the comparables'. In commercial litigation they start when an agreement drafted for tax purposes between affiliates comes to govern a relationship between companies that are no longer related, after a sale or a spin-off, and its pricing clause is asked to do work it was never written for. In a [[/case-types/partnership-and-shareholder-dispute|shareholder dispute]] they start with agreements the controlling owner caused the company to sign with entities it holds separately, and in a [[/case-types/divorce-and-marital-dissolution|divorce]] with agreements between the owner spouse's company and affiliates the owner controls. In each setting the agreement is where the analysis begins, and the [[/compare/transfer-pricing-documentation-vs-expert-report|documentation versus expert report]] comparison explains why the tax study written around it does not end the inquiry.
+
+## What to produce with it
+
+Every intercompany agreement in force during the years at issue, with its schedules, amendments, side letters, and the drafts and correspondence around its execution; the transfer pricing policy and the documentation reports for each year; the year-end adjustment calculations and the journal entries that booked them; the intercompany invoices and the general ledger detail of the intercompany accounts; the legal-entity and segmented financial statements; the board minutes and approvals for the agreements; the tax returns and the information returns that report transactions with related parties; any advance pricing agreement and its annual reports; and, for imported goods, the customs entries. Producing the set lets the economist delineate the transactions from the documents, test the terms against the conduct, and apply the method to the transactions the companies actually entered into.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {

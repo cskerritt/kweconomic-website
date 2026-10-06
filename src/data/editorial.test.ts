@@ -106,6 +106,7 @@ describe("economics editorial data", () => {
       "personal-consumption-tables",
       "present-value-and-discounting",
       "total-offset-method",
+      "transfer-pricing-methods",
       "wage-growth-and-earnings-projection",
       "worklife-expectancy",
     ]));
@@ -124,12 +125,14 @@ describe("economics editorial data", () => {
       "how-to-rebut-an-economic-damages-report",
       "how-worklife-expectancy-is-chosen",
       "income-determination-in-divorce",
+      "intercompany-royalty-rates-in-litigation",
       "lost-profits-for-a-new-business",
       "lost-profits-vs-lost-business-value",
       "mitigation-in-employment-cases",
       "personal-consumption-in-wrongful-death",
       "present-value-explained-for-attorneys",
       "tracing-commingled-funds",
+      "transfer-pricing-disputes-explained",
       "valuing-a-homemakers-services",
       "what-is-a-forensic-economist",
       "when-do-you-need-an-economic-expert",
@@ -150,6 +153,7 @@ describe("economics editorial data", () => {
       "lost-profits-vs-diminished-business-value",
       "net-vs-gross-discount-rate",
       "plaintiff-economist-vs-defense-economist",
+      "transfer-pricing-documentation-vs-expert-report",
     ]));
   it("knowledge, insights, white papers", () => {
     expect(slugs(knowledge)).toEqual(["expert-witness-testimony-guide", "guide-to-economic-damages"]);
@@ -160,6 +164,7 @@ describe("economics editorial data", () => {
     expect(slugs(insights)).toContain("what-pay-stubs-add-to-a-lost-earnings-claim");
     expect(slugs(insights)).toContain("what-union-contracts-add-to-a-lost-earnings-claim");
     expect(slugs(insights)).toContain("what-benefit-summaries-add-to-a-lost-earnings-claim");
+    expect(slugs(insights)).toContain("what-intercompany-agreements-add-to-a-transfer-pricing-dispute");
     expect(slugs(whitePapers)).toEqual(["business-valuation-standards-in-litigation", "daubert-ready-economic-damages-report"]);
     expect(whitePapers.every((w) => w.discipline === "Economic")).toBe(true);
   });
@@ -219,8 +224,9 @@ describe("author and date signals on every editorial page", () => {
       ...knowledge.map((k) => ({ page: `knowledge/${k.slug}`, ...k })),
       ...whitePapers.map((w) => ({ page: `white-papers/${w.slug}`, ...w })),
     ];
-    // 13 methods, 23 guides, 13 comparisons, 2 knowledge guides, 2 white papers (waves 1 to 5 each added one, two, and one).
-    expect(dated.length).toBe(13 + 23 + 13 + 2 + 2);
+    // 14 methods, 25 guides, 14 comparisons, 2 knowledge guides, 2 white papers (waves 1 to 5 each added one, two,
+    // and one; the transfer pricing batch of 2026-10-05 added one, two, and one).
+    expect(dated.length).toBe(14 + 25 + 14 + 2 + 2);
     for (const x of dated) {
       expect(ROSTER, `${x.page} authorSlug`).toContain(x.authorSlug);
       expect(x.datePublished, `${x.page} datePublished`).toMatch(ISO_DATE);
@@ -241,7 +247,7 @@ describe("author and date signals on every editorial page", () => {
 describe("titles and meta descriptions are written for the SERP", () => {
   it("every editorial <title> is 40-60 characters with the brand suffix", () => {
     const titles = pageTitles();
-    expect(titles.length).toBe(13 + 23 + 13 + 2 + 7 + 2);
+    expect(titles.length).toBe(14 + 25 + 14 + 2 + 8 + 2);
     for (const { page, title } of titles) {
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeLessThanOrEqual(60);
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeGreaterThanOrEqual(40);
@@ -258,7 +264,7 @@ describe("titles and meta descriptions are written for the SERP", () => {
   });
   it("every meta description is a complete written sentence of 110-160 characters (no auto-cut, no markers)", () => {
     const descs = metaDescriptions();
-    expect(descs.length).toBe(13 + 23 + 13 + 2 + 7 + 2);
+    expect(descs.length).toBe(14 + 25 + 14 + 2 + 8 + 2);
     for (const { page, text } of descs) {
       expect(text.length, `${page} (${text.length})`).toBeLessThanOrEqual(160);
       expect(text.length, `${page} (${text.length})`).toBeGreaterThanOrEqual(110);
@@ -411,6 +417,17 @@ describe("insight posts", () => {
       "The report is the defense",
       "Hybrid and codified state rules",
     ]);
+    expect(byId["what-intercompany-agreements-add-to-a-transfer-pricing-dispute"]).toEqual([
+      "The parties and the transactions it covers",
+      "The pricing clause and the year-end adjustment",
+      "Risk allocation and the conduct that has to match it",
+      "Intangibles: ownership, scope, and the royalty base",
+      "Services, cost bases, and intercompany loans",
+      "When the agreement was signed",
+      "What the agreement cannot tell you",
+      "Where the disputes start",
+      "What to produce with it",
+    ]);
   });
   it("carry three curated related links that resolve to real editorial or service routes", () => {
     for (const p of insights) {
@@ -428,8 +445,9 @@ describe("insight posts", () => {
       expect(rel.map((r) => r.slug), p.slug).not.toContain(p.slug);
     }
     // The Economics post has no category sibling, so the fallback is what
-    // fills its block: the first three other posts, in file order. The five
-    // Records posts (waves 1 to 5) are each other's same-category match.
+    // fills its block: the first three other posts, in file order. The six
+    // Records posts (waves 1 to 5 and the transfer pricing batch of
+    // 2026-10-05) are each other's same-category match, in file order.
     expect(getRelatedPosts("components-of-an-economic-damages-report", "Economics").map((r) => r.slug)).toEqual([
       "daubert-vs-frye-expert-testimony-standards",
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -440,24 +458,35 @@ describe("insight posts", () => {
       "what-pay-stubs-add-to-a-lost-earnings-claim",
       "what-union-contracts-add-to-a-lost-earnings-claim",
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
+      "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
     ]);
     expect(getRelatedPosts("what-pay-stubs-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
       "what-tax-returns-add-to-a-lost-earnings-claim",
       "what-union-contracts-add-to-a-lost-earnings-claim",
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
+      "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
     ]);
     expect(getRelatedPosts("what-union-contracts-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
       "what-tax-returns-add-to-a-lost-earnings-claim",
       "what-pay-stubs-add-to-a-lost-earnings-claim",
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
+      "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
     ]);
     expect(getRelatedPosts("what-benefit-summaries-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
       "what-tax-returns-add-to-a-lost-earnings-claim",
       "what-pay-stubs-add-to-a-lost-earnings-claim",
       "what-union-contracts-add-to-a-lost-earnings-claim",
+      "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
+    ]);
+    expect(getRelatedPosts("what-intercompany-agreements-add-to-a-transfer-pricing-dispute", "Records").map((r) => r.slug)).toEqual([
+      "what-a-w-2-adds-to-a-lost-earnings-claim",
+      "what-tax-returns-add-to-a-lost-earnings-claim",
+      "what-pay-stubs-add-to-a-lost-earnings-claim",
+      "what-union-contracts-add-to-a-lost-earnings-claim",
+      "what-benefit-summaries-add-to-a-lost-earnings-claim",
     ]);
   });
   it("the admissibility post and its companion guide name Daubert and Frye", () => {

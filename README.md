@@ -79,16 +79,16 @@ Railway service creation and the DNS cutover are separate follow-ups on Chris's 
 
 ## Page inventory
 
-From `npm run build` at this commit (11,998 prerendered `index.html` shells):
+From `npm run build` at this commit (12,004 prerendered `index.html` shells):
 
 | Family | Pages |
 |---|---|
-| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 53 |
+| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 55 |
 | Service pillar pages | 11 |
 | Knowledge guides | 2 |
-| Insight posts | 7 |
-| Guide pages | 23 |
-| Comparison pages | 13 |
+| Insight posts | 8 |
+| Guide pages | 25 |
+| Comparison pages | 14 |
 | State pages | 56 |
 | City pages | 802 |
 | Service x State | 616 |
@@ -101,20 +101,20 @@ From `npm run build` at this commit (11,998 prerendered `index.html` shells):
 | Service x Case-type x State (`/services/<pillar>/case/<case-type>/<state>`, declared pairs x released state batches) | 3,360 |
 | Attorney journey (4 stage indexes + 4 x 14) | 60 |
 | White paper (hub + 2) | 3 |
-| **Total** | **11,998** |
+| **Total** | **12,004** |
 
 Sitemap index `public/sitemap.xml` (6 children + image sitemap; `news-sitemap.xml` is generated, listed in the index, and declared in robots.txt only while an insight post is inside the two-day Google News window), `<loc>` counts:
 
 | File | URLs |
 |---|---|
-| `sitemap-core.xml` | 138 |
+| `sitemap-core.xml` | 144 |
 | `sitemap-services.xml` | 3,746 (hub 1 + 11 pillars + 33 variants + 60 declared service x case pairs + 616 service x state + 3,025 gated city combos; the test ceiling is 4,000, see build notes) |
 | `sitemap-service-case-types.xml` | 3,360 (60 declared service x case-type pairs x all 56 states and territories, batches A to D released; `src/data/serviceCaseTypeStates.ts`; the test ceiling is 3,400) |
 | `sitemap-locations.xml` | 954 (the `/locations` subtree plus the `/jurisdictions` hub and the 94 federal district pages) |
 | `sitemap-case-types.xml` | 799 |
 | `sitemap-credentials.xml` | 229 |
-| `image-sitemap.xml` | 7 |
-| `news-sitemap.xml` | written only for posts published in the last two days (1 at the 2026-10-05 build; the next build after the window removes it) |
+| `image-sitemap.xml` | 8 |
+| `news-sitemap.xml` | written only for posts published in the last two days (2 at the 2026-10-05 build; the next build after the window removes them) |
 
 Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 5,797 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`; 3,025 combos). T08 decision (2026-09-05): the gate stays, on all three KW sites. The 2,772 gated combos the audit listed are prerendered, linked from the Service x State "Cities" grid, self-canonical, and indexable; they are simply not advertised until Search Console evidence supports widening (see "Facts to confirm"). `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404, pins the gate constants, and, after a build, checks that the only shells the sitemap leaves out are the gated combos. Service x case-type pages exist only for the pairs a pillar declares in `services.ts` (`serviceCaseTypePairs()`); an undeclared pair's address 301s to the pillar (`lib/service-case-redirects.server.mjs`). `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.
 
@@ -133,13 +133,13 @@ Service x State x City pages are prerendered for the top slice of each state's c
 | `local-content.ts` | 10 hand-written local essays for first-hand markets: the New York, Virginia, and Massachusetts state pages plus New York City, Brooklyn, Newark, Hackensack, Jersey City, Los Angeles, and Houston |
 | `geo-prose.mjs` | Templated state/city prose (wage levels, cost of living, local labor markets, venue) shared by the React pages and `scripts/prerender.mjs`; `geo-prose.d.mts` types it |
 | `geographicFaqs.ts`, `narratives.ts` | Thin React wrappers over `geo-prose.mjs`; `narratives.parity.test.mjs` pins the two sides |
-| `methods.ts` | 13 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets, personal consumption deduction, earnings growth rate selection, total offset discounting, below-market discount rate, age-earnings profile) |
-| `guides.ts` | 23 attorney guides |
-| `comparisons.ts` | 13 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner, back pay vs. front pay, lost earnings vs. earning capacity in workers' compensation, lost profits vs. diminished business value, fair value vs. fair market value in shareholder disputes, economist vs. forensic accountant on lost profits) |
-| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 7 insight posts (Legal, Economics, Records), 2 email-gated white papers |
+| `methods.ts` | 14 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets, personal consumption deduction, earnings growth rate selection, total offset discounting, below-market discount rate, age-earnings profile, transfer pricing methodology) |
+| `guides.ts` | 25 attorney guides (including transfer pricing disputes and intercompany royalty rates, added 2026-10-05) |
+| `comparisons.ts` | 14 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner, back pay vs. front pay, lost earnings vs. earning capacity in workers' compensation, lost profits vs. diminished business value, fair value vs. fair market value in shareholder disputes, economist vs. forensic accountant on lost profits, transfer pricing documentation vs. expert report) |
+| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 8 insight posts (Legal, Economics, Records; the sixth Records post covers intercompany agreements in a transfer pricing dispute), 2 email-gated white papers |
 | `journeys.ts` | 56 attorney journey stages (considering, retaining, preparing-deposition, trial x 14 case types) |
 | `faqs.ts`, `home-faqs.mjs` | 15-question site FAQ and the 6-question homepage FAQ (shared with the prerender and the FAQPage JSON-LD) |
-| `references.ts` | 30-entry citation registry (NAFE ethics statement, Journal of Forensic Economics, BLS series, worklife tables, Treasury yields, AICPA SSVS No. 1, NACVA, federal rules); the only path for sources |
+| `references.ts` | 45-entry citation registry (NAFE ethics statement, Journal of Forensic Economics, BLS series, worklife tables, Treasury yields, AICPA SSVS No. 1, NACVA, federal rules, and the transfer pricing primary sources: section 482 and its Treasury regulations on eCFR, Tax Court Rule 143(g), the OECD Transfer Pricing Guidelines, and the IRS examination, documentation, MAP, and APMA publications); the only path for sources |
 | `regulations/state-regs.ts`, `courts/state-courts.ts` | Per-state expert-testimony rules and court systems |
 | `serviceCaseTypeStates.ts` | The release plan for the service x case type x state family (`STATE_BATCHES`, four batches of 14 states in crawl-priority order, `released` flipped one batch per wave and all four released as of wave 5; `releasedStates()`, `declaredPairs()`, `isReleased()`, `serviceCaseStatePath()`); `ServiceCaseTypeState.tsx` renders `/services/<pillar>/case/<case-type>/<state>` for any declared pair in any state, and the prerender, the sitemap child `sitemap-service-case-types.xml`, and the "by state" grids on the pair and case-type x state pages follow the released set. Title from `serviceCaseStateTitle` (`page-titles.mjs`), description from `serviceCaseStateDescription` (`service-prose.mjs`) |
 | `courts/federal-districts.ts` | The 94 federal district courts derived from `state-courts.ts` (slug, reporter abbreviation, state, circuit); `FederalDistrict.tsx` renders one page each under `/jurisdictions/federal/`, the jurisdictions hub groups them by circuit, and the prerender and sitemap load the same module |

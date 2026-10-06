@@ -41,6 +41,22 @@ const ECONOMICS_KEYS: Record<string, ReferenceTier> = {
   KACZKOWSKI_V_BOLUBASZ: "verified",
   NCHS_LIFE_TABLES: "verified",
   CDC_LIFE_TABLES: "live-verified",
+  // Transfer pricing primary sources (live-verified 2026-10-05).
+  IRC_482: "live-verified",
+  TREAS_REG_1_482_1: "live-verified",
+  TREAS_REG_1_482_3: "live-verified",
+  TREAS_REG_1_482_4: "live-verified",
+  TREAS_REG_1_482_5: "live-verified",
+  TREAS_REG_1_482_6: "live-verified",
+  TREAS_REG_1_482_9: "live-verified",
+  TREAS_REG_1_6662_6: "live-verified",
+  TAX_COURT_RULE_143: "live-verified",
+  OECD_TP_GUIDELINES: "live-verified",
+  IRS_TP_EXAM_PROCESS: "live-verified",
+  IRS_TP_DOCUMENTATION_FAQS: "live-verified",
+  IRS_MAP_OVERVIEW: "live-verified",
+  IRS_APMA: "live-verified",
+  IRS_APMA_REPORT_2025: "live-verified",
 };
 
 // Life-care-planning-only and vocational-only sources have no place on an
@@ -130,6 +146,30 @@ describe("REFERENCES registry integrity", () => {
     expect(REFERENCES.SKOOG_CIECKA_KRUEGER_2011.apa).toMatch(/Journal of Forensic Economics, 22\(2\), 165-229\./);
     for (const id of ["NAFE", "NAFE_ETHICS", "NAFE_JFE"]) expect(REFERENCES[id].url).toMatch(/^https:\/\/nafe\.net\//);
     expect(REFERENCES.AAEFE_JLE.url).toMatch(/^https:\/\/aaefe\.org\//);
+  });
+
+  it("pins the transfer pricing sources to their primary publishers", () => {
+    // The regulations link to the current eCFR text, section by section.
+    for (const [id, section] of [
+      ["TREAS_REG_1_482_1", "1.482-1"],
+      ["TREAS_REG_1_482_3", "1.482-3"],
+      ["TREAS_REG_1_482_4", "1.482-4"],
+      ["TREAS_REG_1_482_5", "1.482-5"],
+      ["TREAS_REG_1_482_6", "1.482-6"],
+      ["TREAS_REG_1_482_9", "1.482-9"],
+      ["TREAS_REG_1_6662_6", "1.6662-6"],
+    ]) {
+      expect(REFERENCES[id].url, id).toBe(`https://www.ecfr.gov/current/title-26/section-${section}`);
+      expect(REFERENCES[id].apa, id).toMatch(new RegExp(`^Treas\\. Reg\\. sec\\. ${section.replace(".", "\\.")} \\(`));
+    }
+    expect(REFERENCES.IRC_482.url).toBe("https://www.law.cornell.edu/uscode/text/26/482");
+    expect(REFERENCES.TAX_COURT_RULE_143.url).toMatch(/^https:\/\/ustaxcourt\.gov\/files\/documents\/rule-143\.pdf$/);
+    expect(REFERENCES.OECD_TP_GUIDELINES.url).toBe("https://doi.org/10.1787/0e655865-en");
+    for (const id of ["IRS_TP_EXAM_PROCESS", "IRS_TP_DOCUMENTATION_FAQS", "IRS_MAP_OVERVIEW", "IRS_APMA", "IRS_APMA_REPORT_2025"]) {
+      expect(REFERENCES[id].url, id).toMatch(/^https:\/\/www\.irs\.gov\//);
+    }
+    // House rule: the section sign never appears, in legal strings or anywhere else.
+    for (const [key, ref] of entries) expect(ref.apa, key).not.toContain("\u00a7");
   });
 
   it("no longer carries life-care-planning-only or vocational-only sources", () => {
