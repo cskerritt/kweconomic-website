@@ -793,6 +793,72 @@ export const comparisons: Comparison[] = [
       { title: "Lost Profits But-For Analysis", href: "/methods/lost-profits-but-for-analysis", description: "How the projection is built and tested." },
     ],
   },
+  // Transfer pricing (owner request 2026-10-05): the tax-compliance study and
+  // the litigation report side by side, neutral between taxpayer and
+  // government. The answer names "documentation" and "report", the last long
+  // word of each label, as the answer-block test requires.
+  {
+    slug: "transfer-pricing-documentation-vs-expert-report",
+    title: "Transfer Pricing Documentation vs. Expert Report",
+    metaTitle: "Transfer Pricing Study vs. Expert Report",
+    answer:
+      "Transfer pricing documentation supports a tax return before any dispute; a litigation expert report states and defends opinions for the tribunal deciding one.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    a: {
+      label: "Transfer Pricing Documentation",
+      summary:
+        "The study a taxpayer maintains to show that its intercompany prices were set under a reasonably selected and reasonably applied method. Under the U.S. penalty regulations its principal documents describe the business and the organization, the controlled transactions, the method selected and why, the alternatives considered and why they were rejected, the comparables and the adjustments, and the economic analysis; they must exist when the return is filed and be provided within thirty days of an IRS request to protect against the net adjustment penalty. Under the OECD approach the equivalent record is a master file and a local file alongside country-by-country reporting, and the [[/methods/transfer-pricing-methods|methods]] it documents are the same.",
+      url: "/methods/transfer-pricing-methods",
+    },
+    b: {
+      label: "Litigation Expert Report",
+      summary:
+        "The report a testifying expert prepares once a dispute exists, stating every opinion with its basis and reasons, the facts or data considered, the exhibits, and the expert's qualifications, prior testimony, and compensation. In the U.S. Tax Court it is received in evidence as the expert's direct testimony; in a district court or an arbitration it is the disclosure the expert is examined on and the opinion the tribunal tests for reliability. It answers the question the case presents, for the transactions and years at issue, and it has to engage the other side's analysis rather than only present its own, as the [[/guides/expert-witness-disclosure-rules|disclosure guide]] describes.",
+      url: "/services/transfer-pricing-expert-witness",
+    },
+    rows: [
+      { dimension: "Purpose", a: "Support the return position and protect against the net adjustment penalty", b: "Present and defend opinions on the arm's length result before the tribunal" },
+      { dimension: "When it is prepared", a: "By the time the return is filed, and updated as the transactions change", b: "After the dispute arises, on the schedule the court or the panel sets" },
+      { dimension: "Audience", a: "The examining tax authority", b: "A Tax Court judge, a jury in a refund suit or a commercial case, or an arbitral panel" },
+      { dimension: "Standard it is judged by", a: "Whether the method was reasonably selected and reasonably applied under the best method rule", b: "Whether the opinion rests on sufficient facts and a reliable method reliably applied, and whether it persuades" },
+      { dimension: "Scope", a: "Every material controlled transaction for the year, often at a summary level", b: "The transactions and years in dispute, in the depth the contested issues require" },
+      { dimension: "The other side's analysis", a: "None exists yet; the study anticipates the questions", b: "Must engage the opposing expert's method, tested party, comparables, and adjustments" },
+      { dimension: "Data", a: "The most current reliable data available by the end of the year, plus relevant data obtained before filing", b: "The full record produced in the case, including later data where the framework allows" },
+      { dimension: "Author's exposure", a: "Prepared for the taxpayer, often by its advisors, and reviewed by the examiners", b: "Signed by the testifying expert, who is deposed and cross-examined on it" },
+    ],
+    whenUseA:
+      "Documentation is the instrument before any dispute, prepared as each return is filed: it records the method the group applied, why it was the best method, and how the result was computed, so that an examination can be resolved on the record and the penalty protection is preserved. In an examination it is the record the examiners test the taxpayer's results against, and the IRS has said that documentation which explains the actual drivers of the results, including a downturn or a year-end adjustment, can support an early end to the inquiry. In a commercial, shareholder, or divorce case the documentation is evidence of the policy the group applied and of what it told the tax authorities, and a party may offer it as proof that the intercompany prices were fair; it answers the tax question it was written for, and the economist reads it for what it shows about the transactions rather than adopting its conclusion, as the [[/guides/transfer-pricing-disputes-explained|transfer pricing disputes guide]] explains.",
+    whenUseB:
+      "The expert report is the instrument once a dispute exists and a tribunal will decide it: a [[/case-types/tax-and-transfer-pricing-dispute|Tax Court petition]], a refund suit, an arbitration under a contract, or a commercial action in which the intercompany price is part of the claim or the defense, such as a [[/case-types/commercial-contract-dispute|commercial contract dispute]] over an agreement between former affiliates or a [[/case-types/partnership-and-shareholder-dispute|shareholder dispute]] over profits shifted to entities the controlling owner holds. Treaty arbitration is different: under the treaties that provide it, a case the two competent authorities could not resolve through the mutual agreement procedure goes to an arbitration panel whose determination binds them only if the taxpayer accepts it, and the taxpayer's analysis reaches the panel through the U.S. competent authority, to the extent the treaty permits, rather than through testimony. The report is prepared under the tribunal's disclosure rules, for the transactions and years at issue, and it has to test the documentation rather than restate it: whether the delineation matched the conduct, whether the tested party and the comparables hold up, and what the result is under the alternatives the other side will press. The [[/methods/transfer-pricing-methods|transfer pricing methodology]] page lists the choices the report has to defend one by one.",
+    overlap:
+      "Both documents apply the same regulations, the same methods, and often the same comparables, and an expert report may start from the documentation's delineation and functional analysis. They differ in what they are for and how they are tested. The documentation shows that a reasonable method was reasonably applied when the return was filed; the expert report shows what the arm's length result is on the full record and defends it under cross-examination against an opposing analysis. Documentation that was adequate for penalty protection can still be the weak point at trial, because a comparable set or a tested party that was reasonable for compliance may not survive an opposing expert's scrutiny, and an expert who adopts it without testing it inherits its weaknesses. A [[/services/transfer-pricing-expert-witness|testifying transfer pricing expert]] who did not prepare the documentation can test it as the other side will, and the [[/services/expert-rebuttal-and-report-review|report review]] service describes how an opposing transfer pricing report is examined one choice at a time.",
+    faqs: [
+      {
+        question: "Is a company's transfer pricing study evidence of an arm's length price in litigation?",
+        answer:
+          "It is evidence of the policy the company applied and of what it told the tax authorities, and its admissibility and weight are for counsel and the court. It is not an expert opinion on the question the case presents: an expert who relies on it adopts its delineation, comparables, and method and must be ready to defend each of them, and in the Tax Court the expert's own report, not the study, is the direct testimony.",
+      },
+      {
+        question: "Does documentation that protects against a transfer pricing penalty prove the prices were arm's length?",
+        answer:
+          "No. Penalty protection turns on whether the method was reasonably selected and applied with the data available when the return was filed, and on whether the documentation existed then and was produced on time. An adjustment can still be sustained on the full record even though no penalty applies, because the two questions are judged by different standards.",
+      },
+      {
+        question: "Should the firm that prepared the documentation also serve as the testifying expert?",
+        answer:
+          "It can, but the expert then defends the firm's earlier work and is examined on every choice it made. A testifying expert who did not prepare the documentation can test it the way the other side will, adopt what holds up, and correct what does not; the choice depends on the strength of the documentation, the issues in dispute, and the cost of a second review.",
+      },
+    ],
+    sources: refsToSources(["TREAS_REG_1_6662_6", "IRS_TP_DOCUMENTATION_FAQS", "TAX_COURT_RULE_143", "FRCP_26", "FRE_702", "IRS_MAP_OVERVIEW", "IRS_REV_PROC_2015_40", "OECD_TP_GUIDELINES"]),
+    related: [
+      { title: "Transfer Pricing Disputes Explained", href: "/guides/transfer-pricing-disputes-explained", description: "Where transfer pricing disputes arise and how each forum decides them." },
+      { title: "Transfer Pricing Methodology", href: "/methods/transfer-pricing-methods", description: "The methods both documents apply, step by step." },
+      { title: "Expert Witness Disclosure Rules", href: "/guides/expert-witness-disclosure-rules", description: "What a testifying expert's report must contain and when it is due." },
+      { title: "Transfer Pricing Expert Witness", href: "/services/transfer-pricing-expert-witness", description: "The litigation analysis and report, for either side of a tax or civil dispute." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

@@ -63,16 +63,18 @@ export default function JourneyStage() {
   const prev = idx > 0 ? neighbour(idx - 1) : undefined;
   const next = idx < journeys.length - 1 ? neighbour(idx + 1) : undefined;
 
-  // Contextual links beyond the family: the first three pillar services the
-  // case type declares (the pillar:false cross-sells never resolve here) and
-  // the guide that maps onto this stage, with anchor text from the data.
+  // Contextual links beyond the family: the first four pillar services the
+  // case type declares (the pillar:false cross-sells never resolve here; four
+  // so the transfer pricing pillar, fourth on the commercial and shareholder
+  // matters, is linked) and the guide that maps onto this stage, with anchor
+  // text from the data. scripts/prerender.mjs applies the same cap.
   const pillars = pillarServices();
   const relatedServices = caseType.relevantServices
     .flatMap((slug) => {
       const s = pillars.find((p) => p.slug === slug);
       return s ? [s] : [];
     })
-    .slice(0, 3);
+    .slice(0, 4);
   const stageGuide = guides.find((g) => g.slug === STAGE_GUIDES[stage]);
 
   return (

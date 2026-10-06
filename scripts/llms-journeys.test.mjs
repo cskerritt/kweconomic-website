@@ -140,3 +140,31 @@ describe("public/llms-full.txt (comprehensive)", () => {
     expect(full).not.toMatch(/[–—§]/);
   });
 });
+
+// Review fix (2026-10-05): an <angle-bracket> URL placeholder reads as a tag
+// to generate-llms.mjs's HTML guard, which stripped it ("/case//",
+// "/locations/;") and, once tripped, collapsed every blank line in the file.
+// The patterns use {braces}, and every declared pair hub has its own URL.
+describe("llms-full.txt URL patterns and pair URLs", () => {
+  it("prints no stripped placeholder and keeps its paragraph breaks", () => {
+    expect(full).not.toMatch(/\/case\/\/|\/locations\/;|\/federal\/ \(/);
+    expect(full).toContain(`${SITE_URL}/services/transfer-pricing-expert-witness/case/{case-type}/{state}`);
+    expect(full).toContain(`${SITE_URL}/locations/{state}`);
+    expect(full).toContain(`${SITE_URL}/jurisdictions/federal/{district}`);
+    expect(full).toMatch(/\n\n/);
+    expect(full).not.toMatch(/<[a-z][^>]*>/i);
+  });
+
+  it("lists every declared pair hub of every pillar", () => {
+    for (const s of pillarServices()) {
+      for (const ct of s.caseTypes) expect(full, `${s.slug} x ${ct}`).toContain(`${SITE_URL}/services/${s.slug}/case/${ct}`);
+    }
+  });
+
+  it("names the governing framework, not a damages framework, on a pillar with a framing case type", () => {
+    const tpLine = full.split("\n").find((l) => l.startsWith(`Case-type pages by state: ${SITE_URL}/services/transfer-pricing-expert-witness/`));
+    expect(tpLine).toContain("governing framework");
+    const leLine = full.split("\n").find((l) => l.startsWith(`Case-type pages by state: ${SITE_URL}/services/lost-earnings-and-earning-capacity/`));
+    expect(leLine).toContain("damages framework");
+  });
+});

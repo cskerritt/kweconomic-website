@@ -86,10 +86,99 @@ describe("a divorce state page takes the family-law framing", () => {
       expect(text).toContain(`the governing framework in ${place} decides how each finding is applied`);
       expect(faqLdStrings(html)).toContain(`How does ${place}'s family-law framework shape the financial analysis?`);
       expect(text).not.toMatch(DAMAGES_FRAMING);
+      // The state's expert standard closes on the family-law work, not on a
+      // damages report (review fix 2026-10-05).
+      expect(text).toContain("A financial analysis for a divorce meets that inquiry");
+      expect(`${text} ${faqLdStrings(html).join(" ")}`).not.toMatch(/damages report|An economic damages|lost earnings, household services/);
       expect(text).not.toMatch(/contributory negligence|comparative|prejudgment interest/);
       expect(jsonLdBlocks(html)).toContain(`"description":"${framing.stateDescription.replace("{place}", place)}"`);
       expect(jsonLdBlocks(html)).toContain(`"@id":"${url}#service"`);
       expect(text).not.toMatch(/a the |the the /);
+    });
+  }
+});
+
+// The tax and transfer pricing dispute (2026-10-05) is the second framing
+// entry: an arm's length or valuation question rather than a damages claim.
+// Its hub and state pages take the framing strings on the hydrated side too,
+// and its courts FAQ names the federal tax forums before the state's courts.
+const tax = getCaseType("tax-and-transfer-pricing-dispute")!;
+const taxFraming = tax.framing!;
+
+describe("the tax and transfer pricing hub takes the arm's length framing", () => {
+  const { html, title, description, text } = render("/case-types/tax-and-transfer-pricing-dispute", HUB_ROUTE, CaseTypeHub);
+
+  it("publishes the full-keyword title, the framing H1, and the arm's length description", () => {
+    expect(title).toBe(`Tax and Transfer Pricing Dispute Economist | ${ORG_NAME}`);
+    expect(h1Of(html)).toBe("Economic Analysis for Tax and Transfer Pricing Disputes");
+    expect(description).toBe(taxFraming.hubDescription);
+    expect(description.length).toBeLessThanOrEqual(160);
+  });
+
+  it("heads its sections for the arm's length assignment and keeps every damages heading off the page", () => {
+    const h2s = h2sOf(html);
+    expect(h2s).toContain("What the economic analysis consists of");
+    expect(h2s).toContain("Which choices move the result");
+    expect(h2s).toContain("How the analysis is built");
+    expect(text).not.toMatch(DAMAGES_FRAMING);
+    expect(jsonLdBlocks(html)).toContain('"headline":"Economic Analysis for Tax and Transfer Pricing Disputes"');
+    // The pillars that declare the matter, the transfer pricing pillar among them.
+    expect(html).toContain('href="/services/transfer-pricing-expert-witness/case/tax-and-transfer-pricing-dispute"');
+  });
+});
+
+describe("a tax and transfer pricing state page takes the arm's length framing", () => {
+  for (const stateSlug of ["texas", "district-of-columbia"]) {
+    const state = getStateBySlug(stateSlug)!;
+    const place = placeName(state.name);
+    const { html, title, description, text } = render(`/case-types/tax-and-transfer-pricing-dispute/${stateSlug}`, STATE_ROUTE, CaseTypeState);
+
+    it(`/${stateSlug}: title, H1, description, lead, and the courts sentence`, () => {
+      expect(title).toBe(stateSlug === "texas" ? `Transfer Pricing Economist in Texas | ${ORG_NAME}` : `Transfer Pricing Economist in DC | ${ORG_NAME}`);
+      expect(h1Of(html)).toBe(`Economic Analysis for Tax and Transfer Pricing Disputes in ${place}`);
+      expect(description).toBe(taxFraming.stateDescription.replace("{place}", place));
+      expect(text).toContain(`${ORG_NAME} prepares the economic analysis in tax and transfer pricing disputes involving businesses in ${place}:`);
+      expect(faqLdStrings(html)).toContain(`Which forums hear a tax or transfer pricing dispute involving ${place}?`);
+      expect(text).toContain("Federal income tax disputes over related-party prices are heard in the United States Tax Court");
+      expect(text).toContain("appeals from the Court of Federal Claims to the Federal Circuit");
+      expect(text).toContain(`A dispute over ${place}'s own tax follows its administrative and appeal process.`);
+      // The state's appeal closes the state-court clause; no separate
+      // sentence sends the federal tax appeals to the state's high court.
+      expect(text).not.toContain("Final appeals run to");
+      expect(html).toContain(`href="/case-types/divorce-and-marital-dissolution/${stateSlug}"`);
+    });
+
+    it(`/${stateSlug}: the forums and the federal evidence rules lead the courts section, and no damages-report sentence prints`, () => {
+      expect(h2sOf(html)).toContain(`${state.name} forums and expert standards`);
+      expect(h2sOf(html)).not.toContain(`${state.name} courts and expert standards`);
+      for (const forum of ["United States Tax Court", "United States District Courts", "United States Court of Federal Claims", `${state.name} tax appeals`]) {
+        expect(text, forum).toContain(forum);
+      }
+      expect(text).toContain("Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute");
+      expect(text).not.toMatch(/damages report|An economic damages|lost earnings, household services/);
+      expect(faqLdStrings(html).join(" ")).not.toMatch(/damages report|An economic damages/);
+    });
+
+    it(`/${stateSlug}: framework block and local FAQ carry no damages framing`, () => {
+      expect(h3sOf(html)).toContain("Tax and legal framework");
+      expect(h3sOf(html)).not.toContain("Damages framework");
+      expect(faqLdStrings(html)).toContain(`Which rules govern a tax or transfer pricing dispute involving ${place}?`);
+      expect(text).not.toMatch(DAMAGES_FRAMING);
+      expect(text).not.toMatch(/contributory negligence|comparative fault|prejudgment interest/);
+      expect(text).not.toMatch(/a the |the the /);
+      expect(jsonLdBlocks(html)).toContain(`"description":"${taxFraming.stateDescription.replace("{place}", place)}"`);
+    });
+  }
+});
+
+// Review fix (2026-10-05): the hub's "Related services" lists the first four
+// declaring pillars, so the transfer pricing pair, fourth on the commercial
+// and shareholder hubs, is linked from its own case-type hub.
+describe("the commercial and shareholder hubs link the transfer pricing pair", () => {
+  for (const slug of ["commercial-contract-dispute", "partnership-and-shareholder-dispute", "divorce-and-marital-dissolution"]) {
+    it(`/case-types/${slug}`, () => {
+      const { html } = render(`/case-types/${slug}`, HUB_ROUTE, CaseTypeHub);
+      expect(html).toContain(`href="/services/transfer-pricing-expert-witness/case/${slug}"`);
     });
   }
 });

@@ -163,14 +163,14 @@ export default function Team() {
   usePageMeta({
     title: `Forensic Economics Team | ${ORG_NAME}`,
     description:
-      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, and an associate who coordinates every engagement.`,
+      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, an economic associate, and a forensic accountant.`,
     canonical: `${SITE_URL}/team`,
   });
 
-  const leadership = getTeamByRole("leadership");
-  // Everyone who is not leadership renders under one "Economics Team" heading:
-  // economists (role "expert") first, then associates and support staff.
-  const economicsTeam = [...getTeamByRole("expert"), ...getTeamByRole("support")];
+  // The practice is small enough that the whole roster renders as one row:
+  // leadership first, then economists (role "expert"), then associates and
+  // support staff.
+  const roster = [...getTeamByRole("leadership"), ...getTeamByRole("expert"), ...getTeamByRole("support")];
   const memoriam = getMemoriam();
 
   return (
@@ -217,8 +217,10 @@ export default function Team() {
             <p className="text-lg text-neutral-300 leading-relaxed">
               {ORG_NAME} is a focused practice: a Chief of Economic Services who
               directs every forensic economic analysis and is available to testify
-              to it, and an economics associate who coordinates each engagement
-              between the economics team and retaining counsel. Our analyses are
+              to it, an economic associate who coordinates each engagement
+              between the economics team and retaining counsel, and a forensic
+              accountant who analyzes the financial records each analysis rests
+              on. Our analyses are
               prepared for plaintiff and defense attorneys and are built to be
               examined in the report, at deposition, and at trial.
             </p>
@@ -230,17 +232,10 @@ export default function Team() {
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <TeamSection
-            title="Leadership"
-            description="The Chief of Economic Services who directs the practice's damages analyses and is available for deposition and trial testimony."
-            members={leadership}
-            columns="lg:grid-cols-4"
-          />
-
-          <TeamSection
-            title="Economics Team"
-            description="The team that supports each analysis and coordinates the engagement between the economics practice and retaining counsel."
-            members={economicsTeam}
-            columns="lg:grid-cols-4"
+            title="Our Team"
+            description="The Chief of Economic Services who directs every damages analysis and is available for deposition and trial testimony, and the economics team that supports each analysis and coordinates the engagement with retaining counsel."
+            members={roster}
+            columns="lg:grid-cols-3"
           />
 
           {/* The In Memoriam section renders only when the roster honors someone;

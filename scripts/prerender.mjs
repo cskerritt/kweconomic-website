@@ -38,6 +38,7 @@ import {
   variantTitle,
   pairTitle,
   serviceCaseStateTitle,
+  serviceGeoHeadingLabel,
 } from "../src/lib/page-titles.mjs";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -86,6 +87,16 @@ const [
     caseTypeStateFrameworkQuestion,
     caseTypeStateServiceDescription,
     caseTypeSectionHeadings,
+    caseTypePairStateLead,
+    caseTypeStateCourts,
+    caseTypeHubLinkLabel,
+    caseTypeExpertStandard,
+    caseTypePairStateFrameworkTail,
+    caseTypeCourtSelection,
+    caseTypeVenuesHeading,
+    caseTypeStateCourtsQuestion,
+    caseTypePairStateExpertQuestion,
+    caseTypeStateForums,
   },
   { credentials, credentialStateHeadings, credentialStateAngle },
   { methods },
@@ -102,8 +113,8 @@ const [
   geoFaqs,
   { getRegulationsByState },
   { getCourtsByState, selectTrialCourts, courtSystemLabel },
-  { federalDistricts, districtsByCircuit, siblingDistricts, federalCourtName, FEDERAL_SERVICE_SLUGS },
-  { releasedStates, serviceCaseStatePath },
+  { federalDistricts, districtsByCircuit, siblingDistricts, federalCourtName, FEDERAL_SERVICE_SLUGS, circuitOfState },
+  { releasedStates, serviceCaseStatePath, isReleased },
   { refsToSources },
   { getLocalContent },
   geoLinks,
@@ -406,7 +417,10 @@ function variantDescription(s, variant) {
 // the title comes from the shared pairTitle builder (src/lib/page-titles.mjs);
 // the description names the work through the shared prose helper.
 const pairDescription = (s, c) => {
-  const base = `${prose.capFirst(prose.workPhrase(s.shortName))} for ${c.name.toLowerCase()} cases: how the loss is built, which records drive it, and testimony support.`;
+  // A matter that is not a damages claim (a framing entry) says how the
+  // analysis is built rather than the loss, as ServiceCaseType.tsx does.
+  const built = c.framing ? "how the analysis is built" : "how the loss is built";
+  const base = `${prose.capFirst(prose.workPhrase(s.shortName))} for ${c.name.toLowerCase()} cases: ${built}, which records drive it, and testimony support.`;
   // Mirrors ServiceCaseType.tsx: the audience tag rides along only inside the
   // 160-character window.
   return base.length + " Either side.".length <= 160 ? `${base} Either side.` : base;
@@ -814,7 +828,7 @@ const corePages = [
       "Independent lost earnings, wrongful death, household services, employment, and business damages analyses for plaintiff and defense attorneys in all 50 states.",
     innerHtml:
       `<h1>Economic Damages Analysis Built on Transparent Methods</h1>` +
-      `<p>${ORG_NAME} delivers independent lost earnings, wrongful death, household services, employment, business valuation, and forensic accounting analyses for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
+      `<p>${ORG_NAME} delivers independent lost earnings, wrongful death, household services, employment, business valuation, transfer pricing, and forensic accounting analyses for plaintiff and defense counsel in all 50 states, the District of Columbia, and U.S. territories.</p>` +
       `<p>Engagements accepted in all 50 states, the District of Columbia, and U.S. territories. Headquarters in Hackensack, NJ with a Richmond, VA office. <a href="tel:${ORG_PHONE.replace(/-/g, "")}">${ORG_PHONE_DISPLAY}</a>.</p>` +
       // Mirrors Home.tsx REPORT_STATES: the inputs every report sets out, across
       // the earnings, valuation, and tracing lanes alike.
@@ -848,7 +862,7 @@ const corePages = [
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "About", path: "/about" }],
     innerHtml:
       `<h1>About ${ORG_NAME}</h1>` +
-      `<p>${ORG_NAME} is a forensic economics practice. We measure economic losses for litigation - lost earnings, wrongful death losses, household services, the present value of future care, employment damages, lost profits, and the value of business interests - for attorneys and their clients across all U.S. jurisdictions, and we testify to that work when the case requires it.</p>` +
+      `<p>${ORG_NAME} is a forensic economics practice. We measure economic losses for litigation - lost earnings, wrongful death losses, household services, the present value of future care, employment damages, lost profits, and the value of business interests - and test the prices charged between related companies in transfer pricing disputes, for attorneys and their clients across all U.S. jurisdictions, and we testify to that work when the case requires it.</p>` +
       `<section>${h2("The Practice")}` +
       `<p>${ORG_NAME} is the trade name of ${esc(ORG_LEGAL)}, the forensic economics, forensic accounting, and business valuation practice of a family of expert firms headquartered in Hackensack, New Jersey. The practice operates under its own name so that attorneys, insurers, and courts can find a dedicated economics resource.</p>` +
       `<p>Every analysis is built from the records in the case and from published data: tax returns, wage and benefit records, and financial statements on one side, and government wage, price, and worklife series, market yield data, and the forensic economics literature on the other. The report states each assumption in plain language and presents the loss under alternative scenarios where the record supports more than one reading of the facts, so the other side can recompute the figure from the report alone.</p>` +
@@ -863,7 +877,7 @@ const corePages = [
       `<p>${esc(intake.FAMILY_SECTION.intro[0])}<a href="${VOC_SITE_URL}" rel="noopener">${hostOf(VOC_SITE_URL)}</a>${esc(intake.FAMILY_SECTION.intro[1])}<a href="${LCP_SITE_URL}" rel="noopener">${hostOf(LCP_SITE_URL)}</a>${esc(intake.FAMILY_SECTION.intro[2])}</p>` +
       `<ul>${intake.FAMILY_SECTION.bullets.map((b) => `<li><strong>${esc(b.lead)}</strong>${esc(b.text)}</li>`).join("")}</ul>` +
       `<p>${esc(intake.FAMILY_SECTION.intake[0])}<a href="/contact">${esc(intake.FAMILY_SECTION.contactFormLabel)}</a>${esc(intake.FAMILY_SECTION.intake[1])}<a href="mailto:${esc(brand.ORG_EMAIL)}">${esc(brand.ORG_EMAIL)}</a>${esc(intake.FAMILY_SECTION.intake[2])}</p></section>` +
-      `<section>${h2("Our Economists")}<p>The practice is led by a Chief of Economic Services who directs every analysis and is available to testify to it, supported by an economics associate who coordinates each engagement with counsel.</p>${linkList(activeTeam.map((m) => ({ href: `/team/${m.slug}`, label: m.name, blurb: m.title })))}</section>` +
+      `<section>${h2("Our Team")}<p>The practice is led by a Chief of Economic Services who directs every analysis and is available to testify to it, supported by an economic associate who coordinates each engagement with counsel and a forensic accountant who analyzes the financial records.</p>${linkList(activeTeam.map((m) => ({ href: `/team/${m.slug}`, label: m.name, blurb: m.title })))}</section>` +
       navLinks([{ href: "/team", label: "Our Team" }, { href: "/services", label: "Services" }, { href: "/contact", label: "Contact" }]),
     jsonLd: [
       schema.organizationSchema(),
@@ -882,13 +896,12 @@ const corePages = [
     path: "/team",
     title: `Forensic Economics Team | ${ORG_NAME}`,
     description:
-      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, and an associate who coordinates every engagement.`,
+      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, an economic associate, and a forensic accountant.`,
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "Team", path: "/team" }],
     innerHtml:
       `<h1>The ${ORG_NAME} Team</h1>` +
-      `<p>${ORG_NAME} is a focused practice: a Chief of Economic Services who directs every forensic economic analysis and is available to testify to it, and an economics associate who coordinates each engagement between the economics team and retaining counsel. Our analyses are prepared for plaintiff and defense attorneys and are built to be examined in the report, at deposition, and at trial.</p>` +
-      `<section>${h2("Leadership")}<ul>${activeTeam.filter((m) => m.role === "leadership").map(memberSummaryHtml).join("")}</ul></section>` +
-      `<section>${h2("Economics Team")}<ul>${activeTeam.filter((m) => m.role !== "leadership").map(memberSummaryHtml).join("")}</ul></section>` +
+      `<p>${ORG_NAME} is a focused practice: a Chief of Economic Services who directs every forensic economic analysis and is available to testify to it, an economic associate who coordinates each engagement between the economics team and retaining counsel, and a forensic accountant who analyzes the financial records each analysis rests on. Our analyses are prepared for plaintiff and defense attorneys and are built to be examined in the report, at deposition, and at trial.</p>` +
+      `<section>${h2("Our Team")}<ul>${activeTeam.map(memberSummaryHtml).join("")}</ul></section>` +
       navLinks([{ href: "/about", label: "About" }, { href: "/services", label: "Services" }, { href: "/contact", label: "Contact" }]),
     jsonLd: [schema.organizationSchema(), ...activeTeam.map(personNode)],
   },
@@ -1658,7 +1671,7 @@ for (const svc of serviceData) {
     const venueParagraph = narratives.serviceStateVenueParagraph(svc, state);
     const topCities = geoLinks.serviceCityCities(cityDataByState[state.slug] ?? []);
     const innerHtml =
-      `<h1>${esc(svc.shortName)} in ${esc(place)}</h1>` +
+      `<h1>${esc(serviceGeoHeadingLabel(svc))} in ${esc(place)}</h1>` +
       para(directAnswer) +
       // Mirrors ServiceState.tsx: the legal context for this pillar's category
       // (the commercial and family-financial pillars never print the workers'
@@ -1732,7 +1745,7 @@ for (const svc of serviceData) {
       const cityA = cityAttr(city.name);
       const otherCities = geoLinks.nearestCities(cities, city.slug, cities.length);
       const cityInner =
-        `<h1>${esc(svc.shortName)} in ${esc(city.name)}, ${esc(state.abbreviation)}</h1>` +
+        `<h1>${esc(serviceGeoHeadingLabel(svc))} in ${esc(city.name)}, ${esc(state.abbreviation)}</h1>` +
         para(cityDirect) +
         // Mirrors ServiceStateCity.tsx: the place paragraph is the city
         // narrative's anchor sentence with the sides sentence; the hero above
@@ -1804,11 +1817,11 @@ for (const svc of serviceData) {
 // ---------------------------------------------------------------------------
 
 const hubLead = {
-  caseTypes: `The case type fixes what an economic damages claim consists of: in an injury or death matter, the earnings, benefits, and household services a person would have provided; in an employment, commercial, or family matter, the wages, profits, cash flows, or business value at issue. ${ORG_NAME} prepares the analysis for plaintiff and defense counsel alike, and each page below sets out the components of the claim, the records that drive it, and how the number is built.`,
+  caseTypes: `The case type fixes what the economic analysis consists of: in an injury or death matter, the earnings, benefits, and household services a person would have provided; in an employment, commercial, or family matter, the wages, profits, cash flows, or business value at issue; in a tax or transfer pricing dispute, whether the prices charged between related companies are at arm's length. ${ORG_NAME} prepares the analysis for plaintiff and defense counsel alike, and each page below sets out the components of the claim, the records that drive it, and how the number is built.`,
   credentials:
     "Economic damages testimony does not rest on a state license. It rests on graduate training in economics and finance, on the published standards of the profession's associations, and on a record of reports and testimony that have held up under cross-examination. These pages set out each of those foundations, what it does and does not establish, and how courts weigh it.",
   guides:
-    "A practitioner guide walks through one damages question from the economist's standpoint: what the claim consists of, which records drive it, how the number is built, and where it is tested at deposition and trial. The guides below cover lost earnings, wrongful death, household services, present value, expert disclosure, business valuation, lost profits, and rebutting an opposing report, for attorneys on either side of the claim.",
+    "A practitioner guide walks through one damages question from the economist's standpoint: what the claim consists of, which records drive it, how the number is built, and where it is tested at deposition and trial. The guides below cover lost earnings, wrongful death, household services, present value, expert disclosure, business valuation, lost profits, transfer pricing disputes, and rebutting an opposing report, for attorneys on either side of the claim.",
   compare:
     "Choosing the right expert and the right damages measure is the first decision in an economic damages case, because each measure rests on different records and answers a different question. Each comparison below sets the two side by side, states what each one measures and from which records, and identifies when one applies, when the other does, and where they overlap.",
   methods:
@@ -1950,7 +1963,16 @@ for (const p of newHubPages) { writePage(p.path, buildPage(p)); counts.core++; }
 // CaseTypeState.tsx: the named reviewer and dates, the headings and section
 // order, the category-gated state modules, the local FAQs, and the JSON-LD.
 const INJURY_CATEGORIES = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
-const COURT_SELECTION = { family: "family", commercial: "commercial" };
+// "the United States District Court for the District of New Jersey"; the
+// territorial districts are named "District Court of Guam" and "District
+// Court for the Northern Mariana Islands", so the prefix is not repeated for
+// them (mirrors federalCourts in CaseTypeState.tsx).
+const federalCourtsPhrase = (names) =>
+  names.length === 1
+    ? /^District Court\b/.test(names[0])
+      ? `the United States ${names[0]}`
+      : `the United States District Court for the ${names[0]}`
+    : `the United States District Courts for the ${listNames(names)}`;
 // The economists counsel may retain by name (team.ts retention rule), senior
 // first; the same named economist signs the work on every case-type page.
 const caseTypeExperts = retainableExperts();
@@ -1964,8 +1986,10 @@ for (const [i, c] of caseTypes.entries()) {
   const linkedServices = serviceData.filter((s) => c.relevantServices.includes(s.slug));
   // "Related services" links the service x case pair pages, so only the linked
   // services that declare this case type in services.ts (the pairs that exist;
-  // an undeclared pair 301s to the pillar). Mirrors CaseTypeHub.tsx.
-  const pairServices = linkedServices.filter((s) => s.caseTypes.includes(c.slug)).slice(0, 3);
+  // an undeclared pair 301s to the pillar), the first four, so a pillar
+  // declared fourth (transfer pricing on the commercial and shareholder hubs)
+  // is still linked. Mirrors CaseTypeHub.tsx.
+  const pairServices = linkedServices.filter((s) => s.caseTypes.includes(c.slug)).slice(0, 4);
   const linkedCredentials = credentials.filter((cred) => credentialMatches(cred, c.relevantCredentials));
   // The H1, title stem, description, and section headings come from the
   // case-type helpers CaseTypeHub.tsx reads: the entry's `framing` block where
@@ -2036,29 +2060,36 @@ for (const [i, c] of caseTypes.entries()) {
     const expertsInState = caseTypeExperts.filter((m) => m.statesServed.includes(s.abbreviation));
     const courts = getCourtsByState(s.slug);
     const regulations = getRegulationsByState(s.slug);
-    const trialCourts = courts ? selectTrialCourts(courts, COURT_SELECTION[c.category] ?? "general") : [];
+    const selection = caseTypeCourtSelection(c);
+    const trialCourts = courts ? selectTrialCourts(courts, selection.kind, selection.limit) : [];
+    // Mirrors CaseTypeState.tsx: a matter heard outside the state's courts
+    // lists its own forums ahead of the trial courts.
+    const venues = [...caseTypeStateForums(c, place, placeAttr(s.name)), ...trialCourts];
     const federalVenues = courts?.federalDistricts ?? [];
     // Mirrors CaseTypeState.tsx: the state module's damages text (tort for the
     // injury and death categories, fault-interest-caps otherwise), or the
     // entry's own framing paragraph for a matter that is not a damages claim.
     const frameworkText = regulations
-      ? caseTypeStateFramework(c, place, isInjury ? regulations.damagesContext : regulations.generalContext)
+      ? caseTypeStateFramework(c, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuitOfState(s.slug))
       : "";
+    // The state's expert standard, or a framing entry's paragraph around the
+    // state's inquiry (no damages-report sentence on those pages).
+    const expertStandard = regulations ? caseTypeExpertStandard(c, place, regulations) : "";
     const h1 = caseTypeStateHeading(c, place);
     const stateHeadings = caseTypeSectionHeadings(c);
+    const courtList = listNames(trialCourts.map((t) => `the ${t.name} (${t.description})`));
     // Two FAQs that exist only for this case type in this state; the hub's own
     // FAQs are linked, not repeated, so the FAQPage node is not a duplicate.
     const localFaqs = [
       ...(courts
         ? [
             {
-              question: `Which ${s.name} courts hear ${lower} cases?`,
+              question: caseTypeStateCourtsQuestion(c, s.name, place),
               answer: [
-                `${c.name} cases venued in ${place} are heard in ${listNames(trialCourts.map((t) => `the ${t.name} (${t.description})`))}.`,
-                `Final appeals run to the ${courts.supremeCourt}.`,
-                federalVenues.length > 0
-                  ? `Matters within federal jurisdiction proceed in the United States District Court${federalVenues.length > 1 ? "s" : ""} for the ${listNames(federalVenues.map((d) => d.name))}.`
-                  : "",
+                c.category === "workers-comp" && regulations
+                  ? `${c.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}. Final appeals run to the ${courts.supremeCourt}.`
+                  : caseTypeStateCourts(c, { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: s.slug }, "sentence"),
+                federalVenues.length > 0 ? `Matters within federal jurisdiction proceed in ${federalCourtsPhrase(federalVenues.map((d) => d.name))}.` : "",
                 courts.venueNote ?? "",
               ]
                 .filter(Boolean)
@@ -2070,7 +2101,7 @@ for (const [i, c] of caseTypes.entries()) {
         ? [
             {
               question: caseTypeStateFrameworkQuestion(c, place),
-              answer: `${frameworkText} ${regulations.expertStandard}`,
+              answer: `${frameworkText} ${expertStandard}`,
             },
           ]
         : []),
@@ -2100,9 +2131,9 @@ for (const [i, c] of caseTypes.entries()) {
         para(caseTypeStateLead(c, ORG_NAME, place)) +
         `<section id="definition"><p>${esc(c.summaryShort ?? c.summary)} <a href="/case-types/${c.slug}">Read the full ${esc(lower)} analysis guide</a>.</p></section>` +
         (courts || regulations
-          ? `<section id="jurisdictional-notes">${h2(`${s.name} courts and expert standards`)}` +
-            (regulations ? para(regulations.expertStandard) : "") +
-            (courts ? courtVenuesHtml(courts, trialCourts, "Where these cases are heard") + compensationHtml : "") +
+          ? `<section id="jurisdictional-notes">${h2(caseTypeVenuesHeading(c, s.name))}` +
+            (regulations ? para(expertStandard) : "") +
+            (courts ? courtVenuesHtml(courts, venues, "Where these cases are heard") + compensationHtml : "") +
             (regulations ? `${h3(stateHeadings.framework)}${para(frameworkText)}` : "") +
             `</section>`
           : "") +
@@ -2117,6 +2148,19 @@ for (const [i, c] of caseTypes.entries()) {
           { href: `/locations/${s.slug}`, label: `Forensic economists in ${place}` },
           ...linkedServices.map((svc) => ({ href: `/services/${svc.slug}/${s.slug}`, label: `${svc.shortName} in ${place}` })),
         ])}</section>` +
+        // Mirrors CaseTypeState.tsx "services-in-state": the pillars that
+        // declare this case type, each at its own state page where the state's
+        // batch has shipped and at the pair page otherwise, so a crawler that
+        // does not run JavaScript reaches the service x case type x state tier.
+        `<section id="services-in-state">${h2(`Services for ${lower} cases in ${place}`)}${linkList(
+          servicesForCaseType(c.slug).map((svc) => {
+            const released = isReleased(svc.slug, c.slug, s.slug);
+            return {
+              href: released ? serviceCaseStatePath(svc.slug, c.slug, s.slug) : `/services/${svc.slug}/case/${c.slug}`,
+              label: `${svc.name} for ${lower} cases${released ? ` in ${place}` : ""}`,
+            };
+          }),
+        )}</section>` +
         `<section id="other-case-types">${h2(`Other case types in ${place}`)}${linkList(caseTypes.filter((ct) => ct.slug !== c.slug).map((ct) => ({ href: `/case-types/${ct.slug}/${s.slug}`, label: ct.name })))}</section>` +
         renderFaqHtml(localFaqs, `Frequently asked: ${lower} cases in ${place}`) +
         `<section id="more-questions">${h2(`More questions about ${lower} analysis`)}${linkList(c.faqs.map((f) => ({ href: `/case-types/${c.slug}#faq-heading`, label: f.question })))}</section>` +
@@ -2420,10 +2464,17 @@ const PRACTICE_AREA_BY_SPECIALTY = {
   "Business Valuation": "business-valuation",
   "Lost Profits": "lost-profits-and-commercial-damages",
   "Forensic Accounting": "fraud-and-asset-tracing",
+  "Transfer Pricing": "transfer-pricing-expert-witness",
   "Divorce Financial Analysis": "divorce-and-marital-financial-analysis",
   "Expert Testimony": "expert-rebuttal-and-report-review",
   "Economic Analysis": "lost-earnings-and-earning-capacity",
 };
+
+// Mirrors src/lib/practice-areas.ts practiceAreaLabel: a member counsel
+// cannot retain by name (no expertTier) is never labeled with a role-noun
+// service name ("Transfer Pricing Expert Witness"); the short name stands in.
+const practiceAreaLabelFor = (member, service) =>
+  !member.expertTier && /\bExpert(?: Witness)?$/.test(service.name) ? service.shortName : service.name;
 
 // Team profiles
 const stateNameByAbbr = Object.fromEntries(states.map((s) => [s.abbreviation, s.name]));
@@ -2469,7 +2520,7 @@ for (const t of team) {
       `<section>${h2("Biography", "bio")}${paragraphs(t.fullBio || t.bio)}</section>` +
       ((t.specialties ?? []).length ? `<section>${h2("Areas of Expertise", "expertise")}${ul(t.specialties)}</section>` : "") +
       (!memoriam && practiceAreas.length
-        ? `<section>${h2("Areas of Practice", "practice")}${linkList(practiceAreas.map((s) => ({ href: `/services/${s.slug}`, label: s.name })))}</section>`
+        ? `<section>${h2("Areas of Practice", "practice")}${linkList(practiceAreas.map((s) => ({ href: `/services/${s.slug}`, label: practiceAreaLabelFor(t, s) })))}</section>`
         : "") +
       ((t.education ?? []).length
         ? `<section>${h2("Education", "education")}${ul(t.education.map((e) => `${e.degree}, ${e.institution}${e.year ? ` (${e.year})` : ""}`))}</section>`
@@ -2564,6 +2615,10 @@ for (const s of serviceData) {
   // pair is not a page: ServiceCaseType.tsx sends it to the pillar and
   // server.js 301s its address the same way, so no shell is written for it.
   const declaredPairs = serviceCaseTypePairs().filter((p) => p.service.slug === s.slug);
+  // The pair's released state tier (ServiceCaseType.tsx stateTier).
+  const pairStateTier = releasedStates()
+    .map((slug) => states.find((st) => st.slug === slug))
+    .filter(Boolean);
   for (const c of declaredPairs.map((p) => caseTypeBySlug[p.caseTypeSlug]).filter(Boolean)) {
     const path = `/services/${s.slug}/case/${c.slug}`;
     const url = abs(path);
@@ -2590,13 +2645,21 @@ for (const s of serviceData) {
         `<h1>${esc(heading)}</h1>` +
         renderBylineHtml(undefined, undefined, s.dateModified) +
         `<p>${esc(prose.capFirst(work))} applied to ${esc(lower)} litigation: methodology, deliverables, and case-specific considerations.</p>` +
-        `<section id="application">${h2(`How ${s.name} applies to ${c.name}`)}${note ? para(note.summary) : ""}${para(s.description)}</section>` +
-        `<section id="loss-components">${h2("What the economic claim consists of")}${para(c.lossComponents)}</section>` +
+        `<section id="application">${h2(`How ${work} applies to ${c.name}`)}${note ? para(note.summary) : ""}${para(s.description)}</section>` +
+        `<section id="loss-components">${h2(caseTypeSectionHeadings(c).components)}${para(c.lossComponents)}</section>` +
         (finalStep ? `<section id="deliverables">${h2("Typical deliverables")}${para(finalStep.description)}</section>` : "") +
+        // Mirrors ServiceCaseType.tsx "by-state": the released state tier of
+        // this pair, so the service x case type x state pages are reachable
+        // by link from outside their own tier.
+        (pairStateTier.length
+          ? `<section id="by-state">${h2(`${s.shortName} for ${c.name} by state`)}<p>Each state page adds the courts, the expert standard, and the ${esc(caseTypeSectionHeadings(c).framework.toLowerCase())} the report is built around in that venue.</p>${linkList(
+              pairStateTier.map((st) => ({ href: serviceCaseStatePath(s.slug, c.slug, st.slug), label: st.name })),
+            )}</section>`
+          : "") +
         // Crawl path out of the pair page: the case-type hub, the other
         // pillars that declare this case type, and the engagement details.
         `<section id="related-pages">${h2("Related pages")}${linkList([
-          { href: `/case-types/${c.slug}`, label: `${c.name}: the economic claim, where the damages concentrate, and how the analysis is built` },
+          { href: `/case-types/${c.slug}`, label: caseTypeHubLinkLabel(c) },
           ...siblings.map((x) => ({ href: `/services/${x.slug}/case/${c.slug}`, label: `${x.shortName} for ${c.name}` })),
           ...VARIANTS.map((v) => ({ href: `/services/${s.slug}/${v}`, label: `${VARIANT_LINK_LABEL[v]} for ${s.shortName}` })),
         ])}</section>` +
@@ -2659,15 +2722,20 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
     const attr = placeAttr(st.name);
     const courts = getCourtsByState(st.slug);
     const regulations = getRegulationsByState(st.slug);
-    const trialCourts = courts ? selectTrialCourts(courts, COURT_SELECTION[c.category] ?? "general") : [];
+    const selection = caseTypeCourtSelection(c);
+    const trialCourts = courts ? selectTrialCourts(courts, selection.kind, selection.limit) : [];
+    // Mirrors ServiceCaseTypeState.tsx: the entry's own forums ahead of the
+    // state's trial courts (the tax and transfer pricing dispute).
+    const venues = [...caseTypeStateForums(c, place, attr), ...trialCourts];
     const districts = federalDistricts.filter((d) => d.stateSlug === st.slug);
     const frameworkText = regulations
-      ? caseTypeStateFramework(c, place, isInjury ? regulations.damagesContext : regulations.generalContext)
+      ? caseTypeStateFramework(c, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuitOfState(st.slug))
       : "";
+    const expertStandard = regulations ? caseTypeExpertStandard(c, place, regulations) : "";
     const h1 = `${s.name} for ${c.name} Cases in ${place}`;
-    const lead = c.framing
-      ? `${ORG_NAME} prepares ${work} for ${lower} matters venued in ${place}: the income, valuation, and tracing questions the matter raises, the records that answer them, and a presentation built to the way ${attr} courts decide them. Either party.`
-      : `${ORG_NAME} prepares ${work} for ${lower} cases venued in ${place}: what the loss claim consists of, the records that drive it, and a present value built to ${attr} damages rules and venues. Plaintiff and defense.`;
+    // Mirrors ServiceCaseTypeState.tsx: the entry's framing block supplies
+    // the lead for a matter that is not a damages claim.
+    const lead = caseTypePairStateLead(c, ORG_NAME, work, place, attr);
     const courtList = listNames(trialCourts.map((t) => `the ${t.name} (${t.description})`));
     const federalList = listNames(districts.map((d) => d.name));
     const otherStates = releasedStateSlugs
@@ -2682,12 +2750,12 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
       ...(regulations && courts
         ? [
             {
-              question: `What do ${attr} courts ask of ${work} before it reaches the fact finder?`,
+              question: caseTypePairStateExpertQuestion(c, attr, place, work),
               answer: [
-                regulations.expertStandard,
+                expertStandard,
                 c.category === "workers-comp"
                   ? `${c.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`
-                  : `${c.name} cases venued in ${place} are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`,
+                  : caseTypeStateCourts(c, { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: st.slug }, "clause"),
                 districts.length > 0 ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
               ]
                 .filter(Boolean)
@@ -2699,14 +2767,14 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
         ? [
             {
               question: `How does the ${attr} ${headings.framework.toLowerCase()} shape ${work} in ${prose.withArticle(lower)} case?`,
-              answer: `${frameworkText} The report presents past and future amounts separately, states every rate and table with its source, and shows the result under the alternatives the other side is likely to argue, so counsel can apply the ${attr} rules to a documented figure.`,
+              answer: `${frameworkText} ${caseTypePairStateFrameworkTail(c, attr)}`,
             },
           ]
         : []),
     ];
     const courtsBlock = courts
       ? h3("Where these cases are heard") +
-        `<ul>${trialCourts.map((t) => `<li><strong>${esc(t.name)}</strong> - ${esc(t.description)}</li>`).join("")}</ul>` +
+        `<ul>${venues.map((t) => `<li><strong>${esc(t.name)}</strong> - ${esc(t.description)}</li>`).join("")}</ul>` +
         `<p>Highest court: ${esc(courts.supremeCourt)}.` +
         (courts.filingPortalUrl
           ? ` Court system: <a href="${esc(courts.filingPortalUrl)}" rel="noopener">${esc(courtSystemLabel(courts.filingPortalUrl))}</a>.`
@@ -2740,11 +2808,11 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
         `<h1>${esc(h1)}</h1>` +
         renderBylineHtml(undefined, undefined, s.dateModified) +
         `<p>${esc(lead)}</p>` +
-        `<section id="application">${h2(`How ${s.name} applies to ${c.name} in ${place}`)}${note ? para(note.summary) : ""}${para(s.description)}</section>` +
+        `<section id="application">${h2(`How ${work} applies to ${c.name} in ${place}`)}${note ? para(note.summary) : ""}${para(s.description)}</section>` +
         `<section id="exposure">${h2(headings.concentration)}${para(c.damagesExposure)}</section>` +
         (courts || regulations
-          ? `<section id="jurisdictional-notes">${h2(`${st.name} courts and expert standards`)}` +
-            (regulations ? para(regulations.expertStandard) : "") +
+          ? `<section id="jurisdictional-notes">${h2(caseTypeVenuesHeading(c, st.name))}` +
+            (regulations ? para(expertStandard) : "") +
             courtsBlock +
             (regulations ? `${h3(headings.framework)}${para(frameworkText)}` : "") +
             `</section>`
@@ -2856,12 +2924,13 @@ for (const [idx, j] of journeys.entries()) {
   };
   const prev = idx > 0 ? neighbour(idx - 1) : undefined;
   const next = idx < journeys.length - 1 ? neighbour(idx + 1) : undefined;
-  // Contextual links beyond the family: the first three pillar services the
-  // case type declares and the guide that maps onto this stage.
+  // Contextual links beyond the family: the first four pillar services the
+  // case type declares and the guide that maps onto this stage (mirrors
+  // JourneyStage.tsx).
   const relatedServices = c.relevantServices
     .map((slug) => serviceData.find((s) => s.slug === slug))
     .filter(Boolean)
-    .slice(0, 3);
+    .slice(0, 4);
   const stageGuide = guides.find((g) => g.slug === STAGE_GUIDES[stage]);
   writePage(path, buildPage({
     path,

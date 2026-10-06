@@ -1,4 +1,4 @@
-import { placeName } from "@/data/geo-prose.mjs";
+import { placeName, placeAttr } from "@/data/geo-prose.mjs";
 import { useParams, Link } from "react-router-dom";
 import {
   caseTypes,
@@ -11,6 +11,12 @@ import {
   caseTypeStateFrameworkQuestion,
   caseTypeStateServiceDescription,
   caseTypeSectionHeadings,
+  caseTypeStateCourts,
+  caseTypeExpertStandard,
+  caseTypeCourtSelection,
+  caseTypeVenuesHeading,
+  caseTypeStateCourtsQuestion,
+  caseTypeStateForums,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -18,7 +24,8 @@ import { pillarServices, servicesForCaseType } from "@/data/services";
 import { isReleased, serviceCaseStatePath } from "@/data/serviceCaseTypeStates";
 import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
 import { retainableExperts } from "@/data/team";
-import { getCourtsByState, selectTrialCourts, courtSystemLabel, type CourtSelection } from "@/data/courts/state-courts";
+import { getCourtsByState, selectTrialCourts, courtSystemLabel } from "@/data/courts/state-courts";
+import { circuitOfState } from "@/data/courts/federal-districts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import FAQBlock from "@/components/FAQBlock";
@@ -36,10 +43,13 @@ const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hove
 
 // The state modules are keyed on the case type's category: injury and death
 // matters get the wrongful death / survival / collateral source paragraph
-// (damagesContext) and the compensation forum; employment, commercial, and
-// family matters get the fault, interest, and cap paragraph (generalContext).
+// (damagesContext) and the compensation forum; employment, commercial,
+// family, and tax matters get the fault, interest, and cap paragraph
+// (generalContext), which a framing entry replaces with its own framework
+// paragraph. The trial courts listed follow the category
+// (caseTypes.ts caseTypeCourtSelection: tax matters take the business
+// selection, after the federal tax forums the entry lists itself).
 const INJURY_CATEGORIES: ReadonlySet<CaseTypeCategory> = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
-const COURT_SELECTION: Partial<Record<CaseTypeCategory, CourtSelection>> = { family: "family", commercial: "commercial" };
 
 const listNames = (names: string[]) => {
   if (names.length <= 1) return names.join("");
@@ -94,14 +104,22 @@ export default function CaseTypeState() {
   const author = retainableExperts()[0];
   const courts = getCourtsByState(state.slug);
   const regulations = getRegulationsByState(state.slug);
-  const trialCourts = courts ? selectTrialCourts(courts, COURT_SELECTION[caseType.category] ?? "general") : [];
+  const selection = caseTypeCourtSelection(caseType);
+  const trialCourts = courts ? selectTrialCourts(courts, selection.kind, selection.limit) : [];
+  // A matter heard outside the state's courts lists its own forums first
+  // (the tax and transfer pricing dispute: the federal tax forums and the
+  // state's tax appeal process); every other entry lists none.
+  const venues = [...caseTypeStateForums(caseType, place, placeAttr(state.name)), ...trialCourts];
   const federalVenues = courts?.federalDistricts ?? [];
   // The framework paragraph: the state module's damages text (tort for the
   // injury and death categories, fault-interest-caps otherwise), or the
   // entry's own framing paragraph for a matter that is not a damages claim.
   const frameworkText = regulations
-    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext)
+    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuitOfState(state.slug))
     : "";
+  // The state's expert standard closes on how an economic damages report
+  // meets it; a framing entry prints the state's inquiry with its own close.
+  const expertStandard = regulations ? caseTypeExpertStandard(caseType, place, regulations) : "";
   // The H1, lead, headings, and framework question read the entry's `framing`
   // block where it carries one; scripts/prerender.mjs reads the same helpers.
   const h1 = caseTypeStateHeading(caseType, place);
@@ -117,12 +135,11 @@ export default function CaseTypeState() {
     ...(courts
       ? [
           {
-            question: `Which ${state.name} courts hear ${lower} cases?`,
+            question: caseTypeStateCourtsQuestion(caseType, state.name, place),
             answer: [
               caseType.category === "workers-comp" && regulations
-                ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}.`
-                : `${caseType.name} cases venued in ${place} are heard in ${courtList}.`,
-              `Final appeals run to the ${courts.supremeCourt}.`,
+                ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}. Final appeals run to the ${courts.supremeCourt}.`
+                : caseTypeStateCourts(caseType, { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug }, "sentence"),
               federalVenues.length > 0 ? `Matters within federal jurisdiction proceed in ${federalCourts(federalVenues.map((d) => d.name))}.` : "",
               courts.venueNote ?? "",
             ]
@@ -135,7 +152,7 @@ export default function CaseTypeState() {
       ? [
           {
             question: caseTypeStateFrameworkQuestion(caseType, place),
-            answer: `${frameworkText} ${regulations.expertStandard}`,
+            answer: `${frameworkText} ${expertStandard}`,
           },
         ]
       : []),
@@ -165,13 +182,13 @@ export default function CaseTypeState() {
 
       {(courts || regulations) && (
         <section id="jurisdictional-notes" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">{state.name} courts and expert standards</h2>
-          {regulations && <p className="text-neutral-700 mb-3">{regulations.expertStandard}</p>}
+          <h2 className="font-serif text-2xl text-navy mb-2">{caseTypeVenuesHeading(caseType, state.name)}</h2>
+          {regulations && <p className="text-neutral-700 mb-3">{expertStandard}</p>}
           {courts && (
             <div className="mb-3">
               <h3 className="font-semibold text-navy mb-1">Where these cases are heard</h3>
               <ul className="list-disc ml-5 text-neutral-700 space-y-1">
-                {trialCourts.map((c) => (
+                {venues.map((c) => (
                   <li key={c.name}><strong>{c.name}</strong> - {c.description}</li>
                 ))}
               </ul>

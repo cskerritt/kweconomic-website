@@ -7,7 +7,7 @@ import { credentials } from "@/data/credentials";
 import { states } from "@/data/states";
 import { retainableExperts } from "@/data/team";
 import { ORG_NAME, VOC_SERVICE_URL, LCP_SERVICE_URL } from "@/lib/brand";
-import { pillarTitle } from "@/lib/page-titles.mjs";
+import { pillarTitle, expertLabel } from "@/lib/page-titles.mjs";
 import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import { ORG_URL } from "@/lib/schema";
 import {
@@ -58,10 +58,13 @@ describe("ServicePillar", () => {
 
       it("publishes the pillar title and the hand-authored meta description", () => {
         // The shared builder: "<name> Expert" on the full name where it fits
-        // the 60-character tag, else on the pillar's titleName.
+        // the 60-character tag, else on the pillar's titleName; a name that
+        // already ends in the role ("Transfer Pricing Expert Witness") is
+        // used as written (expertLabel).
         expect(title).toBe(pillarTitle(service, ORG_NAME));
-        const full = `${service.name} Expert | ${ORG_NAME}`;
-        expect(title).toBe(full.length <= 60 ? full : `${service.titleName ?? service.name} Expert | ${ORG_NAME}`);
+        const full = `${expertLabel(service.name)} | ${ORG_NAME}`;
+        expect(title).toBe(full.length <= 60 ? full : `${expertLabel(service.titleName ?? service.name)} | ${ORG_NAME}`);
+        expect(title).not.toMatch(/Expert Witness Expert|Expert Expert/);
         expect(description).toBe(service.metaDescription);
         expect(description.length).toBeGreaterThanOrEqual(140);
         expect(description.length).toBeLessThanOrEqual(160);
@@ -273,6 +276,10 @@ describe("ServicePillar", () => {
     "divorce-and-marital-financial-analysis": [
       "What is a lifestyle analysis?",
     ],
+    "transfer-pricing-expert-witness": [
+      "What does a transfer pricing expert witness analyze?",
+      "How is expert testimony presented in the Tax Court?",
+    ],
     "expert-rebuttal-and-report-review": [
       "What does a rebuttal review test in an opposing report?",
     ],
@@ -298,6 +305,7 @@ describe("ServicePillar", () => {
     "business-valuation": "How business valuation applies to the specific demands of each case type",
     "life-care-plan-cost-projection": "How life care plan costing applies to the specific demands of each case type",
     "expert-rebuttal-and-report-review": "How rebuttal analysis applies to the specific demands of each case type",
+    "transfer-pricing-expert-witness": "How transfer pricing analysis applies to the specific demands of each case type",
   };
   for (const [slug, phrase] of Object.entries(CASE_TYPE_INTRO_PINS)) {
     it(`${slug}: the by-Case-Type intro names the work performed`, () => {
@@ -322,6 +330,8 @@ describe("ServicePillar", () => {
     expect(render("lost-earnings-and-earning-capacity").title).toBe(`Lost Earnings and Earning Capacity Expert | ${ORG_NAME}`);
     expect(render("life-care-plan-cost-projection").title).toBe(`Life Care Plan Cost Projection Expert | ${ORG_NAME}`);
     expect(render("business-valuation").title).toBe(`Business Valuation Expert | ${ORG_NAME}`);
+    // The pillar whose name already carries the role keeps it once.
+    expect(render("transfer-pricing-expert-witness").title).toBe(`Transfer Pricing Expert Witness | ${ORG_NAME}`);
   });
 
   it("a non-pillar cross-sell renders the hand-off card, not the pillar body", () => {

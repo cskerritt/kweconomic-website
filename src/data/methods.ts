@@ -682,6 +682,63 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["BLS_CPS","CENSUS_ACS","BLS_OES"]),
   },
+  // Transfer pricing (owner request 2026-10-05): the specified methods of the
+  // section 482 regulations and their OECD counterparts. The name ends in
+  // "Methodology" so the <title> reads "Transfer Pricing Methodology" rather
+  // than "Transfer Pricing Methods Method".
+  {
+    slug: "transfer-pricing-methods",
+    name: "Transfer Pricing Methodology",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    metaDescription: "Transfer pricing methods test an intercompany price against comparable prices, margins, or profits; the best method rule picks the most reliable for the facts.",
+    summary:
+      "Transfer pricing methodology is the set of methods used to test whether a price charged between companies under common control matches what unrelated parties would have agreed to. Some methods compare the price itself with prices in comparable uncontrolled transactions; some compare the gross margin a reseller or a manufacturer earned with the margins of comparable independent firms; some compare the operating profit of the simpler party with the profits of comparable companies; and the profit split divides the combined profit by each party's contribution. The best method rule selects the method that gives the most reliable measure of an arm's length result on the facts, and where several comparables are equally reliable the result is a range, narrowed to the interquartile range when the comparables are inexact.",
+    whenUsed:
+      "The methodology applies wherever an intercompany price is in question: [[/case-types/tax-and-transfer-pricing-dispute|an IRS examination]] or a [[/guides/transfer-pricing-disputes-explained|transfer pricing dispute]] in the Tax Court, a state audit of related-party royalties and fees, a mutual agreement proceeding between two tax authorities, and commercial litigation in which a price between affiliates moved profit away from a minority owner, a joint venture partner, a buyer, or a spouse, as in a [[/case-types/partnership-and-shareholder-dispute|shareholder dispute]] or a [[/case-types/divorce-and-marital-dissolution|divorce]] involving a business with foreign affiliates. The regulations specify the methods by the kind of transaction: for tangible goods, the comparable uncontrolled price, resale price, cost plus, comparable profits, and profit split methods; for intangibles, the comparable uncontrolled transaction, comparable profits, and profit split methods, applied to royalties as the [[/guides/intercompany-royalty-rates-in-litigation|intercompany royalty guide]] describes; and for services, a parallel set that includes a services cost method under which certain routine support services may be charged at cost. Once the arm's length price is established, the restated profit feeds a [[/services/business-valuation|business valuation]] or a [[/services/lost-profits-and-commercial-damages|commercial damages]] calculation.",
+    steps: [
+      "Delineate the controlled transactions from the intercompany agreements, invoices, and general ledger entries, and test the written terms against the parties' conduct, since a contractual allocation of risk is respected only where the conduct is consistent with it",
+      "Perform the functional analysis: which company performs the research, manufacturing, marketing, distribution, and support functions, which owns or controls the valuable intangibles and other assets, and which bears and controls the market, inventory, credit, and currency risks",
+      "Evaluate each specified method for the type of transaction under the best method rule, weighing the degree of comparability and the completeness and accuracy of the data and assumptions, and state why each alternative was rejected",
+      "For a one-sided method (the comparable profits method or its OECD counterpart, the transactional net margin method, and the resale price or cost plus method), select the tested party, ordinarily the least complex participant and one that owns no valuable intangibles, and for the comparable profits method a profit level indicator suited to its functions, such as an operating margin for a distributor or a markup on total costs for a contract manufacturer or a service provider; the profit split has no tested party, because it evaluates the contributions of both sides",
+      "Search for comparables with stated screens on industry, functions, independence, and data availability, document the rejected candidates as carefully as the accepted ones, and make the comparability adjustments the data support, such as balance sheet adjustments for differences in receivables, payables, and inventory",
+      "Compute the comparables' results over a period of several years, establish the arm's length range, ordinarily the interquartile range where the comparables are not exact, and compare the tested party's result with it",
+      "Where the result falls outside the range, quantify the adjustment to the point the framework uses, ordinarily the median for a federal tax adjustment, and express it as the price, royalty, or profit the dispute concerns; in a commercial matter, carry the restated figure into the damages or valuation schedule",
+      "Show the sensitivity of the result to the method, the tested party, the comparable set, and the adjustments, so the reader can see which choices drive the conclusion",
+    ],
+    dataSources: [
+      "Intercompany agreements, invoices, transfer pricing policies, and the general ledger entries that record the controlled transactions",
+      "Legal-entity and segmented financial statements, which isolate the profit of the business activity the controlled transactions belong to",
+      "Financial data on independent companies from commercial databases of company filings, for the comparables search under the profit-based methods",
+      "License agreements between unrelated parties disclosed in public filings and collected in licensing databases, for royalty benchmarks",
+      "The group's contemporaneous transfer pricing documentation and any advance pricing agreement, which show the method the group itself applied",
+      "The Treasury regulations under section 482 and the OECD Transfer Pricing Guidelines, which define the methods, the comparability factors, and the range",
+    ],
+    limitations:
+      "Every method rests on comparables that differ from the controlled transaction in some respect, and the reliability of the result falls as the differences, and the adjustments needed to bridge them, grow. The comparable profits method is the one the IRS's own advance pricing agreement reports show applied most often, because data on independent public companies are available, but it tests the profit of a whole tested party rather than the price of a specific transaction, so a tested party whose results were driven by a downturn, a start-up phase, or a product failure can look mispriced when it is not, and a mispriced one can look reasonable in a good year. The comparable set is only as good as its screens, and a set assembled to place the tested party within the range proves nothing. Ranges can be wide, and the point within the range that a dispute turns on is a question of method and law as much as of data. The profit split depends on a measure of each party's relative contribution that is rarely observable directly, and capitalized spending used as a proxy for the value of intangibles carries its own assumptions about useful lives. Finally, the regulations and the OECD Guidelines are tax rules: outside a tax forum an arm's length result is evidence of what unrelated parties would have done, not the measure a contract or a fiduciary duty prescribes, as the [[/guides/transfer-pricing-disputes-explained|transfer pricing disputes guide]] explains.",
+    admissibilityHistory:
+      "The methods are prescribed by the Treasury regulations and described in the OECD Guidelines, so a challenge seldom attacks a method as such; it attacks the choice of method under the best method rule, the tested party, the comparables, the adjustments, or the point in the range. In the Tax Court, transfer pricing cases are tried to a judge, and each expert's written report is received as that expert's direct testimony, so the report itself is the evidence the court weighs, and the court may adopt either side's analysis, adjust it, or reach its own result from the evidence. In a district court, a commercial dispute that relies on a transfer pricing analysis meets the ordinary reliability standard for expert testimony, and the questions are the familiar ones: whether the method fits the transaction, whether the comparables are comparable, and whether the method was reliably applied to the facts of the case. A report that states the methods rejected and why, shows every screen, and presents the result under the opposing expert's tested party or comparable set is positioned to be examined on its inputs rather than excluded, in a [[/case-types/commercial-contract-dispute/new-york|New York commercial contract dispute]] as in any venue. The [[/compare/transfer-pricing-documentation-vs-expert-report|documentation versus expert report]] comparison explains why the tax documentation and the litigation report are judged differently, and the [[/guides/how-to-rebut-an-economic-damages-report|rebuttal guide]] lists the questions an opposing expert asks.",
+    relevantServices: ["transfer-pricing-expert-witness", "business-valuation", "lost-profits-and-commercial-damages", "divorce-and-marital-financial-analysis", "expert-rebuttal-and-report-review"],
+    faqs: [
+      {
+        question: "What is the best method rule in transfer pricing?",
+        answer:
+          "The requirement in the Treasury regulations that the arm's length result be determined under whichever method gives the most reliable measure on the facts. There is no fixed order of methods; the two primary factors are how comparable the uncontrolled transactions are and the quality of the data and assumptions. A method may be applied without first showing that the others are inapplicable, but a method later shown to be more reliable must be used. Describing the alternatives considered and why they were rejected is a requirement of the penalty documentation, and a litigation report that does the same shows the tribunal why the method chosen is the more reliable one.",
+      },
+      {
+        question: "Why is a transfer pricing range narrowed to the interquartile range?",
+        answer:
+          "When the comparables are not close enough for every material difference to be identified and adjusted, the regulations call for a statistical method to make the range more reliable, and the interquartile range, the middle half of the comparables' results, ordinarily serves. For a federal tax adjustment, a result outside it is ordinarily moved to the median of the comparables.",
+      },
+      {
+        question: "How is the tested party chosen under the comparable profits method?",
+        answer:
+          "It is the participant whose operating profit from the controlled transactions can be verified with the most reliable data and the fewest adjustments, and for which reliable comparables can be found. In most cases that is the least complex company, one that owns no valuable intangibles or unique assets; choosing a party that does makes the comparables unreliable.",
+      },
+    ],
+    sources: refsToSources(["TREAS_REG_1_482_1", "TREAS_REG_1_482_3", "TREAS_REG_1_482_4", "TREAS_REG_1_482_5", "TREAS_REG_1_482_6", "TREAS_REG_1_482_9", "OECD_TP_GUIDELINES", "IRS_APMA_REPORT_2025"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

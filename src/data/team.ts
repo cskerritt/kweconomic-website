@@ -28,7 +28,7 @@ export const team: TeamMember[] = [
       // credentials the economics work rests on).
       "The jurisdictions listed above are the states in which he has served retaining counsel; the list describes experience, not licensure, since no state licenses forensic economists, and the practice accepts engagements in all 50 states, the District of Columbia, and U.S. territories. The rehabilitation counseling, life care planning, and Medicare set-aside designations listed above are background credentials from related disciplines; the work the practice is retained for, and the work he testifies to, is forensic economics.",
     ].join("\n\n"),
-    specialties: ["Forensic Economics", "Economic Damages", "Earning Capacity Analysis", "Wrongful Death Analysis", "Household Services", "Employment Damages", "Business Valuation", "Expert Testimony"],
+    specialties: ["Forensic Economics", "Economic Damages", "Earning Capacity Analysis", "Wrongful Death Analysis", "Household Services", "Employment Damages", "Business Valuation", "Transfer Pricing", "Expert Testimony"],
     statesServed: ["NJ", "NY", "MA", "VA", "RI", "CT", "PA"],
     imageUrl: "/team/christopher-skerritt.jpg",
     education: [
@@ -41,10 +41,10 @@ export const team: TeamMember[] = [
   {
     slug: "zachary-sperling",
     name: "Zachary Sperling",
-    title: "Economics Associate / Expert Liaison",
+    title: "Economic Associate / Expert Liaison",
     credentials: [],
     role: "support",
-    bio: "Zachary Sperling serves as Economics Associate and Expert Liaison, supporting forensic economic analyses and coordinating between the economics team and retaining counsel.",
+    bio: "Zachary Sperling serves as Economic Associate and Expert Liaison, supporting forensic economic analyses and coordinating between the economics team and retaining counsel.",
     // The profile explains what the support role does for counsel and what
     // the jurisdictions list means (site audit 2026-09-05, T01). Written
     // around the role's function on this site: the associate does not author
@@ -52,13 +52,36 @@ export const team: TeamMember[] = [
     // engagement steps named here are the ones /schedule-consultation and the
     // service process pages describe.
     fullBio: [
-      "Zachary Sperling serves as Economics Associate and Expert Liaison for the practice. The liaison role is the coordinating point of contact between retaining counsel and the economics team: scheduling, the records the analysis needs, and the status of an engagement run through him, so counsel has one person to reach while the analysis is under way. The associate role supports the forensic economic analyses the practice prepares for plaintiff and defense counsel, under the direction of the Chief of Economic Services.",
+      "Zachary Sperling serves as Economic Associate and Expert Liaison for the practice. The liaison role is the coordinating point of contact between retaining counsel and the economics team: scheduling, the records the analysis needs, and the status of an engagement run through him, so counsel has one person to reach while the analysis is under way. The associate role supports the forensic economic analyses the practice prepares for plaintiff and defense counsel, under the direction of the Chief of Economic Services.",
       "He does not author the practice's opinions and is not retained as a testifying expert. Every analysis is directed by the Chief of Economic Services, who is responsible for the report and is available to testify to it. Counsel retaining the practice therefore works with the economist on the substance of the analysis and with the liaison on the coordination around it: scheduling, records, and status.",
       "The jurisdictions listed above are the states in which he coordinates engagements between counsel and the economics team. The list describes where that coordination takes place; it is not a set of professional licenses or certifications, and the profile lists no credential of that kind.",
     ].join("\n\n"),
     specialties: ["Forensic Economics", "Expert Liaison", "Economic Analysis"],
     statesServed: ["NJ", "NY"],
     imageUrl: "/team/zachary-sperling.jpg",
+  },
+  {
+    slug: "francis-kumah",
+    name: "Francis Kumah",
+    title: "Forensic Accountant",
+    credentials: [],
+    role: "support",
+    bio: "Francis Kumah is a forensic accountant on the economics team, analyzing the financial records, earnings histories, and business documentation that support the practice's forensic economic analyses and damages calculations.",
+    // Same footing as the associate's profile: the forensic accountant
+    // prepares the financial analysis behind a report but does not author the
+    // opinion or testify (no expertTier; see retainableExperts). The scope is
+    // the source roster entry's (forensic accounting, financial analysis,
+    // economic damages): no transfer pricing specialty, record, or schedule is
+    // attributed to him until the owner confirms one (README, facts to
+    // confirm).
+    fullBio: [
+      "Francis Kumah is a forensic accountant on the economics team. He analyzes the financial records an economic analysis rests on: tax returns, payroll and W-2 histories, general ledgers, financial statements, and bank records. His work turns those records into the earnings bases, normalized financial statements, and traced transactions the practice's lost earnings, lost profits, business valuation, and fraud tracing analyses are built on.",
+      "He does not author the practice's opinions and is not retained as a testifying expert. Every analysis is directed by the Chief of Economic Services, who is responsible for the report and is available to testify to it. The accounting work is documented so that each figure in the report traces to the record it came from and opposing counsel can check it.",
+      "The jurisdictions listed above are the states in which he has supported engagements. The list describes experience, not licensure, and the profile lists no professional license or certification.",
+    ].join("\n\n"),
+    specialties: ["Forensic Accounting", "Financial Analysis", "Economic Damages"],
+    statesServed: ["NJ", "NY"],
+    imageUrl: "/team/francis-kumah.jpg",
   },
 ];
 

@@ -194,24 +194,40 @@ export function buildStateNarrative(input) {
   ]
     .filter(Boolean)
     .join(" ");
+  // The transfer pricing pillar: the federal tax forums hear a federal
+  // dispute wherever the business is based (under one statute and one set of
+  // regulations, though the business's location decides which circuit's
+  // appellate decisions govern), so the paragraph names them first, then the
+  // state's own forum for the civil claims and its tax appeal process, then
+  // the appellate and federal sentences.
+  const legalContextTax = [
+    "Federal transfer pricing disputes are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; the same statute and regulations apply wherever the business is based, but where it is based decides which federal court of appeals' decisions govern.",
+    `${forumPhrase(stateName, forum)} is the primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price, and a dispute over ${place}'s own tax follows its administrative and appeal process.`,
+    appeals,
+    federal,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
-  return { directAnswer, economicContext, legalContext, legalContextCommercial, legalContextFamily };
+  return { directAnswer, economicContext, legalContext, legalContextCommercial, legalContextFamily, legalContextTax };
 }
 
 /**
  * The legal-context paragraph a service x state page prints under its hero
  * (ServiceState.tsx + prerender): the shared tort-and-compensation paragraph
  * on the personal-loss and rebuttal pillars, the commercial variant on the
- * valuation, lost profits, and fraud pillars, and the matrimonial variant on
- * the family-financial pillar. Takes the raw Service.shortName.
+ * valuation, lost profits, and fraud pillars, the matrimonial variant on the
+ * family-financial pillar, and the tax variant on the transfer pricing
+ * pillar. Takes the raw Service.shortName.
  * @param {string | undefined} serviceShortName
- * @param {{ legalContext: string, legalContextCommercial: string, legalContextFamily: string }} stateNarrative
+ * @param {{ legalContext: string, legalContextCommercial: string, legalContextFamily: string, legalContextTax: string }} stateNarrative
  * @returns {string}
  */
 export function serviceStateLegalContext(serviceShortName, stateNarrative) {
   const category = serviceGeoCategory(serviceShortName);
   if (category === "commercial") return stateNarrative.legalContextCommercial;
   if (category === "family-financial") return stateNarrative.legalContextFamily;
+  if (category === "tax") return stateNarrative.legalContextTax;
   return stateNarrative.legalContext;
 }
 
@@ -226,7 +242,9 @@ export function serviceStateLegalContext(serviceShortName, stateNarrative) {
  * or matrimonial hero (audit F09). The anchor is written to hold for every
  * pillar: it says which area's data an analysis uses where it uses local data
  * at all, never that earnings or household services are being measured. The
- * hero also takes `venue` or `familyVenue`.
+ * transfer pricing pillar takes `taxAnchor` instead (where a tax dispute for
+ * a business based in the city is heard). The hero also takes `venue` or
+ * `familyVenue`.
  * @param {{ orgName: string, stateName: string, cityName: string, county?: string,
  *   msaName?: string, employers?: string[], hasMetroData?: boolean,
  *   trialCourtName?: string }} input
@@ -259,6 +277,11 @@ export function buildCityNarrative(input) {
     anchor,
     "Plaintiff and defense.",
   ].join(" ");
+  // The transfer pricing pillar's place sentence: its comparables are chosen
+  // for the transactions rather than the city, so the labor-market anchor
+  // has nothing to say about its number; where a dispute for a business based
+  // in the city is heard does. The civil venue sentence stays in the hero.
+  const taxAnchor = `A federal tax dispute for a business based in ${cityName} is heard in the United States Tax Court, which holds trials in cities across the country, or, on a refund claim, in a federal district court or the Court of Federal Claims; a dispute over ${placeName(stateName)}'s own tax follows its administrative and appeal process.`;
 
   const blurbParts = [];
   // The venue sentence is also returned on its own (`venue`, "" when the city
@@ -300,7 +323,7 @@ export function buildCityNarrative(input) {
   );
   const blurb = blurbParts.join(" ");
 
-  return { directAnswer, anchor, blurb, venue, familyVenue };
+  return { directAnswer, anchor, taxAnchor, blurb, venue, familyVenue };
 }
 
 /**
@@ -311,15 +334,20 @@ export function buildCityNarrative(input) {
  * this paragraph never opens with the hub's "prepares economic damages
  * analyses" sentence (audit F09: that sentence printed under every valuation,
  * tracing, and matrimonial hero). The family-financial pillar closes with the
- * matrimonial sides sentence its FAQ uses; every other pillar keeps
- * "Plaintiff and defense." Takes the raw Service.shortName.
+ * matrimonial sides sentence its FAQ uses; the transfer pricing pillar prints
+ * the narrative's `taxAnchor` (its comparables are chosen for the
+ * transactions, not the city, so the labor-market anchor does not apply to
+ * it) and closes on "Either side."; every other pillar keeps "Plaintiff and
+ * defense." Takes the raw Service.shortName.
  * @param {string | undefined} serviceShortName
- * @param {{ anchor: string }} cityNarrative
+ * @param {{ anchor: string, taxAnchor?: string }} cityNarrative
  * @returns {string}
  */
 export function serviceCityPlaceParagraph(serviceShortName, cityNarrative) {
+  const category = serviceGeoCategory(serviceShortName);
+  if (category === "tax") return `${cityNarrative.taxAnchor ?? cityNarrative.anchor} Either side.`;
   const sides =
-    serviceGeoCategory(serviceShortName) === "family-financial"
+    category === "family-financial"
       ? "The report can be prepared for one spouse, for both, or for the court."
       : "Plaintiff and defense.";
   return `${cityNarrative.anchor} ${sides}`;
@@ -354,7 +382,9 @@ export function serviceCityPlaceParagraph(serviceShortName, cityNarrative) {
 //   wage data), "commercial" (valuation, lost profits, fraud and tracing: the
 //   local market enters only through normalization, comparables, and the
 //   but-for projection, and not at all in a tracing), "family-financial"
-//   (actual income, business cash flow, tracing; the matrimonial forum), and
+//   (actual income, business cash flow, tracing; the matrimonial forum),
+//   "tax" (transfer pricing: the group's own agreements and records and
+//   comparables chosen for the transactions; the federal tax forums), and
 //   "rebuttal". serviceGeoCategory() reads it; the EconomicContextWidget
 //   drops the workers' compensation forum outside personal-loss and rebuttal.
 // state(place, attr): one or two sentences after the hero's first sentence.
@@ -375,6 +405,10 @@ export function serviceCityPlaceParagraph(serviceShortName, cityNarrative) {
 // context(place, attr): the sidebar panel's caption on the service x state
 //   page (EconomicContextWidget), saying how local data enters this pillar's
 //   number; the personal-loss pillars share the default earnings caption.
+// disclosure(orgName, place, attr): replaces the shared answer of the state
+//   FAQ "When is expert disclosure due ...?" on a pillar whose disputes are
+//   tried in a forum whose own rule fixes the report date (transfer pricing:
+//   the Tax Court).
 // ---------------------------------------------------------------------------
 
 export const SERVICE_GEO = {
@@ -501,6 +535,32 @@ export const SERVICE_GEO = {
     context: (place, attr) =>
       `Income available for support is measured from the spouse's own tax, business, and account records, a marital business from its own statements and the ${attr}-area market it serves, and separate and marital funds by tracing; the source behind each figure is documented in the report.`,
   },
+  "Transfer Pricing": {
+    category: "tax",
+    state: (place) =>
+      `The analysis tests the prices charged between related companies, for goods, services, the use of intangibles, and intercompany loans, against the arm's length standard: the transactions are delineated from the intercompany agreements and the companies' actual conduct, the method that gives the most reliable result is selected, and the comparables and the arm's length range are documented screen by screen. A federal transfer pricing dispute applies the same statute and regulations wherever the business is based, though where it is based decides which federal court of appeals' decisions govern; in ${place}, the analysis also meets the jurisdiction's own tax on related-party income, where it reaches the transactions, and the commercial, shareholder, and matrimonial claims that turn on an intercompany price.`,
+    city: (cityName, cityA) =>
+      `For a business based in ${cityName}, the analysis runs on the group's own intercompany agreements, financial statements, and ledger and on comparable transactions and companies selected for the transactions at issue rather than for the city, so ${cityA}-area market conditions enter only where a comparability adjustment calls for them. Each transaction, screen, and adjustment is documented so the arm's length result can be tested at deposition.`,
+    records:
+      "the intercompany agreements, the transfer pricing documentation, legal-entity financial statements, and the general ledger detail of the intercompany accounts",
+    engagement: (records) =>
+      `A transfer pricing engagement typically includes a records request (${records}), the delineation of the controlled transactions and a functional analysis built from the agreements, the operating records, and interviews, the selection of the method under the best method rule with the rejected alternatives explained, a documented comparables search and arm's length range, a report that states the adjustment or restated profit by year and the result under the opposing analysis, and deposition and trial testimony when required. Scope and turnaround are calibrated to the forum, the case posture, and the governing disclosure framework.`,
+    coverage: () =>
+      "with the analysis sized to the engagement scope and built from the group's own intercompany agreements and financial records and from comparable transactions and companies selected for the transactions at issue rather than from data for the venue.",
+    deliverables: (orgName) =>
+      `${orgName} provides transfer pricing expert reports for tax and civil forums, preliminary reviews of a group's documentation or of a proposed adjustment, reviews and rebuttals of opposing transfer pricing analyses, and deposition and trial testimony. The appropriate deliverable depends on the forum and the case posture.`,
+    cityFaq: (cityName) => ({
+      question: `What records drive a transfer pricing analysis for a business based in ${cityName}?`,
+      answer: `The intercompany agreements and their amendments, the transfer pricing documentation for each year at issue, legal-entity and segmented financial statements, and the general ledger detail of the intercompany accounts, together with the operating records and interviews the functional analysis rests on. The comparables come from financial data on independent companies and from license agreements between unrelated parties, selected for the transactions at issue rather than for the city.`,
+    }),
+    context: (place, attr) =>
+      `The arm's length result rests on the group's own agreements and financial records and on comparables selected for the transactions at issue; ${place} enters as the forum for a state or local tax dispute or a civil claim and, where a comparability adjustment calls for it, through ${attr}-area market conditions.`,
+    // Most transfer pricing disputes are tried in the Tax Court, whose rules
+    // fix the report exchange (thirty days before the call of the trial
+    // calendar, the report received as direct testimony).
+    disclosure: (orgName, place, attr) =>
+      `In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony. In a refund suit in a federal district court or the Court of Federal Claims, or a commercial, shareholder, or matrimonial case in the ${attr} trial courts, the court's scheduling order ordinarily sets the date. ${orgName} confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.`,
+  },
   Rebuttal: {
     category: "rebuttal",
     state: (place, attr) =>
@@ -521,11 +581,12 @@ export const SERVICE_GEO = {
 
 /**
  * The kind of analysis a pillar performs (see the SERVICE_GEO `category`
- * field): "personal-loss", "commercial", "family-financial", or "rebuttal".
- * A short name without an entry, or none at all (the state hub and city
- * pages), reads as personal-loss, the framing the shared narratives carry.
+ * field): "personal-loss", "commercial", "family-financial", "tax", or
+ * "rebuttal". A short name without an entry, or none at all (the state hub
+ * and city pages), reads as personal-loss, the framing the shared narratives
+ * carry.
  * @param {string | undefined} serviceShortName
- * @returns {"personal-loss" | "commercial" | "family-financial" | "rebuttal"}
+ * @returns {"personal-loss" | "commercial" | "family-financial" | "tax" | "rebuttal"}
  */
 export function serviceGeoCategory(serviceShortName) {
   return (serviceShortName && SERVICE_GEO[serviceShortName]?.category) || "personal-loss";
@@ -601,7 +662,7 @@ export function stateGeographicFaqs(orgName, stateName) {
   return [
     {
       question: `Does ${orgName} provide forensic economics services for ${attr} cases?`,
-      answer: `Yes. ${orgName} prepares lost earnings, wrongful death economic loss, household services, employment damages, lost profits, and business valuation analyses, and reviews and rebuts opposing economic reports, for attorneys handling matters venued in ${place}, for plaintiff and defense counsel alike. Every projection is anchored to the plaintiff's own records and to wage data for the area of ${place} where the plaintiff actually worked.`,
+      answer: `Yes. ${orgName} prepares lost earnings, wrongful death economic loss, household services, employment damages, lost profits, business valuation, and transfer pricing analyses, and reviews and rebuts opposing economic reports, for attorneys handling matters venued in ${place}, for plaintiff and defense counsel alike. Every projection is anchored to the plaintiff's own records and to wage data for the area of ${place} where the plaintiff actually worked.`,
     },
     {
       question: `How does a forensic economist account for ${attr} wage levels in a lost earnings claim?`,
@@ -670,12 +731,16 @@ export function serviceStateGeographicFaqs(orgName, service, stateName) {
       answer: engagement,
     },
     {
-      // Jurisdiction-neutral and identical on every pillar by design: the
-      // date is set case by case, so the answer explains who sets it and how
-      // the engagement is sized to it. "${attr} trial courts" rather than
-      // "state court" so the District and the territories read correctly.
+      // Jurisdiction-neutral and identical on every pillar by design, except
+      // where a pillar's disputes are tried in a forum whose own rule fixes
+      // the date (the transfer pricing pillar and the Tax Court): the date is
+      // set case by case, so the answer explains who sets it and how the
+      // engagement is sized to it. "${attr} trial courts" rather than "state
+      // court" so the District and the territories read correctly.
       question: `When is expert disclosure due for a case venued in ${place}?`,
-      answer: `Expert disclosure in ${place} is scheduled case by case: in the ${attr} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. ${orgName} confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.`,
+      answer: angle?.disclosure
+        ? angle.disclosure(orgName, place, attr)
+        : `Expert disclosure in ${place} is scheduled case by case: in the ${attr} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. ${orgName} confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.`,
     },
   ];
 }

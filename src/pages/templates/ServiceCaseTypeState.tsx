@@ -6,12 +6,20 @@ import {
   caseTypeStateFramework,
   caseTypeStateStepsIntro,
   caseTypeSectionHeadings,
+  caseTypePairStateLead,
+  caseTypeStateCourts,
+  caseTypeExpertStandard,
+  caseTypePairStateFrameworkTail,
+  caseTypeCourtSelection,
+  caseTypeVenuesHeading,
+  caseTypePairStateExpertQuestion,
+  caseTypeStateForums,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
 import { releasedStates, serviceCaseStatePath } from "@/data/serviceCaseTypeStates";
-import { federalDistricts } from "@/data/courts/federal-districts";
-import { getCourtsByState, selectTrialCourts, courtSystemLabel, type CourtSelection } from "@/data/courts/state-courts";
+import { federalDistricts, circuitOfState } from "@/data/courts/federal-districts";
+import { getCourtsByState, selectTrialCourts, courtSystemLabel } from "@/data/courts/state-courts";
 import { getRegulationsByState } from "@/data/regulations/state-regs";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
@@ -31,10 +39,12 @@ const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hove
 // The state modules are keyed on the case type's category, the same way
 // CaseTypeState.tsx keys them: injury and death matters get the wrongful
 // death / survival / collateral source paragraph (damagesContext) and the
-// compensation forum; employment, commercial, and family matters get the
-// fault, interest, and cap paragraph (generalContext).
+// compensation forum; employment, commercial, family, and tax matters get the
+// fault, interest, and cap paragraph (generalContext), which a framing entry
+// replaces with its own framework paragraph. The trial courts listed follow
+// the category (caseTypes.ts caseTypeCourtSelection: tax matters take the
+// business selection, after the federal tax forums the entry lists).
 const INJURY_CATEGORIES: ReadonlySet<CaseTypeCategory> = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
-const COURT_SELECTION: Partial<Record<CaseTypeCategory, CourtSelection>> = { family: "family", commercial: "commercial" };
 
 const listNames = (names: string[]) => {
   if (names.length <= 1) return names.join("");
@@ -86,17 +96,25 @@ export default function ServiceCaseTypeState() {
   const note = service.caseTypeNotes[caseType.slug];
   const courts = getCourtsByState(state.slug);
   const regulations = getRegulationsByState(state.slug);
-  const trialCourts = courts ? selectTrialCourts(courts, COURT_SELECTION[caseType.category] ?? "general") : [];
+  const selection = caseTypeCourtSelection(caseType);
+  const trialCourts = courts ? selectTrialCourts(courts, selection.kind, selection.limit) : [];
+  // A matter heard outside the state's courts lists its own forums first
+  // (the federal tax forums and the state's tax appeal process).
+  const venues = [...caseTypeStateForums(caseType, place, attr), ...trialCourts];
   const districts = federalDistricts.filter((d) => d.stateSlug === state.slug);
   const headings = caseTypeSectionHeadings(caseType);
   const frameworkText = regulations
-    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext)
+    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuitOfState(state.slug))
     : "";
+  // The state's expert standard closes on how an economic damages report
+  // meets it; a framing entry prints the state's inquiry with its own close.
+  const expertStandard = regulations ? caseTypeExpertStandard(caseType, place, regulations) : "";
   const finalStep = service.process?.at(-1);
   const h1 = `${service.name} for ${caseType.name} Cases in ${place}`;
-  const lead = caseType.framing
-    ? `${ORG_NAME} prepares ${work} for ${lower} matters venued in ${place}: the income, valuation, and tracing questions the matter raises, the records that answer them, and a presentation built to the way ${attr} courts decide them. Either party.`
-    : `${ORG_NAME} prepares ${work} for ${lower} cases venued in ${place}: what the loss claim consists of, the records that drive it, and a present value built to ${attr} damages rules and venues. Plaintiff and defense.`;
+  // The entry's framing block supplies the lead for a matter that is not a
+  // damages claim (caseTypes.ts caseTypePairStateLead; the prerender reads
+  // the same helper).
+  const lead = caseTypePairStateLead(caseType, ORG_NAME, work, place, attr);
   const courtList = listNames(trialCourts.map((c) => `the ${c.name} (${c.description})`));
   const federalList = listNames(districts.map((d) => d.name));
 
@@ -120,12 +138,12 @@ export default function ServiceCaseTypeState() {
     ...(regulations && courts
       ? [
           {
-            question: `What do ${attr} courts ask of ${work} before it reaches the fact finder?`,
+            question: caseTypePairStateExpertQuestion(caseType, attr, place, work),
             answer: [
-              regulations.expertStandard,
+              expertStandard,
               caseType.category === "workers-comp"
                 ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`
-                : `${caseType.name} cases venued in ${place} are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`,
+                : caseTypeStateCourts(caseType, { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug }, "clause"),
               districts.length > 0 ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
             ]
               .filter(Boolean)
@@ -137,7 +155,7 @@ export default function ServiceCaseTypeState() {
       ? [
           {
             question: `How does the ${attr} ${headings.framework.toLowerCase()} shape ${work} in ${withArticle(lower)} case?`,
-            answer: `${frameworkText} The report presents past and future amounts separately, states every rate and table with its source, and shows the result under the alternatives the other side is likely to argue, so counsel can apply the ${attr} rules to a documented figure.`,
+            answer: `${frameworkText} ${caseTypePairStateFrameworkTail(caseType, attr)}`,
           },
         ]
       : []),
@@ -157,7 +175,7 @@ export default function ServiceCaseTypeState() {
       <p className="kw-lead text-lg text-neutral-700 mb-8">{lead}</p>
 
       <section id="application" className="mb-6">
-        <h2 className="font-serif text-2xl text-navy mb-2">How {service.name} applies to {caseType.name} in {place}</h2>
+        <h2 className="font-serif text-2xl text-navy mb-2">How {work} applies to {caseType.name} in {place}</h2>
         {note && <p className="text-neutral-700 mb-3">{note.summary}</p>}
         <p className="text-neutral-700">{service.description}</p>
       </section>
@@ -169,13 +187,13 @@ export default function ServiceCaseTypeState() {
 
       {(courts || regulations) && (
         <section id="jurisdictional-notes" className="mb-6">
-          <h2 className="font-serif text-2xl text-navy mb-2">{state.name} courts and expert standards</h2>
-          {regulations && <p className="text-neutral-700 mb-3">{regulations.expertStandard}</p>}
+          <h2 className="font-serif text-2xl text-navy mb-2">{caseTypeVenuesHeading(caseType, state.name)}</h2>
+          {regulations && <p className="text-neutral-700 mb-3">{expertStandard}</p>}
           {courts && (
             <div className="mb-3">
               <h3 className="font-semibold text-navy mb-1">Where these cases are heard</h3>
               <ul className="list-disc ml-5 text-neutral-700 space-y-1">
-                {trialCourts.map((c) => (
+                {venues.map((c) => (
                   <li key={c.name}><strong>{c.name}</strong> - {c.description}</li>
                 ))}
               </ul>

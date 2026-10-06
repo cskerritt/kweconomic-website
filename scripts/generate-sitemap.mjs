@@ -219,7 +219,7 @@ states.forEach((st) => {
 // from. They ride the locations child with the /jurisdictions hub (sectionOf).
 for (const d of data.federal.federalDistricts) urls.add(`/jurisdictions/federal/${d.slug}`);
 
-// Attorney journey pages: 4 stage index pages + 4 stages x 14 case types
+// Attorney journey pages: 4 stage index pages + 4 stages x every case type (15)
 ["considering", "retaining", "preparing-deposition", "trial"].forEach((stage) => {
   urls.add(`/attorneys/${stage}`);
   caseTypes.forEach((c) => urls.add(`/attorneys/${stage}/${c}`));

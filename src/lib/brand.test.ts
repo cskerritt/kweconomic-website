@@ -30,5 +30,9 @@ describe("brand constants", () => {
     expect(JSON.stringify(org)).not.toContain("MedicalBusiness");
     expect(KNOWS_ABOUT).toContain("Forensic Economics");
     expect(KNOWS_ABOUT).toContain("Business Valuation");
+    // The firm carries the transfer pricing topic the pillar and the
+    // directing economist's Person node carry (review fix 2026-10-05).
+    expect(KNOWS_ABOUT).toContain("Transfer Pricing");
+    expect(KNOWS_ABOUT).toContain("Arm's Length Analysis");
   });
 });

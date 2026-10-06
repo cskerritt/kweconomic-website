@@ -1,10 +1,12 @@
 import type { Faq, Source } from "./types";
 import { refsToSources } from "./references";
+import { expertInquiryOf } from "./regulations/state-regs";
+import type { CourtSelection } from "./courts/state-courts";
 
 /**
  * KW Economics case types.
  *
- * Fourteen matters in which counsel retain a forensic economist. Each entry
+ * Fifteen matters in which counsel retain a forensic economist. Each entry
  * is written from the economist's standpoint: what the economic loss claim
  * consists of (`lossComponents`), which components usually dominate and why
  * (`damagesExposure`), and how the economist builds the number
@@ -33,7 +35,8 @@ export type CaseTypeCategory =
   | "wrongful-death"
   | "employment"
   | "commercial"
-  | "family";
+  | "family"
+  | "tax";
 
 /**
  * Page framing for a matter that is not a damages claim. The case-type hub
@@ -41,13 +44,20 @@ export type CaseTypeCategory =
  * and the static shells (scripts/prerender.mjs) describe every case type in
  * economic-damages terms: "<name> Economic Damages Analysis", "What the
  * economic claim consists of", "Where the damages concentrate". A family-law
- * matter is an income, valuation, and tracing assignment, so its entry sets
- * these strings, and both render paths read them through the helpers at the
- * bottom of this file (caseTypeHubHeading, caseTypeStateDescription, ...) and
- * through src/lib/page-titles.mjs for the <title> stems, in place of the
- * shared damages framing wherever an entry carries them (site audit
- * 2026-09-05, F08). `{place}` and `{org}` are slots the helpers fill with the
- * place name (src/data/geo-prose.mjs placeName) and the organization name.
+ * matter is an income, valuation, and tracing assignment, and a tax or
+ * transfer pricing dispute is an arm's length or valuation question, so
+ * those entries set these strings, and both render paths read them through
+ * the helpers at the bottom of this file (caseTypeHubHeading,
+ * caseTypeStateDescription, ...) and through src/lib/page-titles.mjs for the
+ * <title> stems, in place of the shared damages framing wherever an entry
+ * carries them (site audit 2026-09-05, F08). `{place}` and `{org}` are slots
+ * the helpers fill with the place name (src/data/geo-prose.mjs placeName) and
+ * the organization name; the service x case type x state lead also takes
+ * `{work}` (the pillar's work phrase), `{matter}` (the lowercased case-type
+ * name), and `{attr}` (the attributive place name), the courts sentence
+ * takes `{courts}` (the trial courts the page lists), `{supremeCourt}`, and
+ * `{stateSlug}`, the expert standard takes `{inquiry}` (the state's own
+ * inquiry), and the framework paragraph takes `{circuitNote}`.
  */
 export interface CaseTypeFraming {
   /** Hub <title> stem in place of titleBase ("Divorce Financial Analysis");
@@ -86,6 +96,63 @@ export interface CaseTypeFraming {
   /** Section headings over lossComponents, damagesExposure, economicImpact,
    * and the state framework block. */
   sections: { components: string; concentration: string; method: string; framework: string };
+  /** Lead of the service x case type x state page with `{org}`, `{work}`,
+   * `{matter}`, `{place}`, and `{attr}` slots, in place of the shared "what
+   * the loss claim consists of ... a present value built to <state> damages
+   * rules" lead (src/pages/templates/ServiceCaseTypeState.tsx and
+   * scripts/prerender.mjs, through caseTypePairStateLead). */
+  pairStateLead: string;
+  /** The courts answer of the state-tier courts FAQ and the service x case
+   * type x state expert FAQ, as complete sentences with `{place}`,
+   * `{courts}`, `{supremeCourt}`, and `{stateSlug}` slots, in place of
+   * "<name> cases venued in {place} are heard in {courts}" and the appeal
+   * sentence the templates add to it, where the matter is not heard only in
+   * the state's trial courts (caseTypeStateCourts). It carries its own
+   * appeals, so neither template appends the state's highest court. */
+  courtsSentence?: string;
+  /** The expert-standard paragraph of the state tier and the service x case
+   * type x state page (the courts section and the FAQ that repeats it), in
+   * place of the state's own text (src/data/regulations/state-regs.ts
+   * expertStandard), whose closing sentence says how an economic damages
+   * report meets the inquiry. `{inquiry}` is the state's inquiry alone
+   * (expertInquiryOf), `{place}` the place name (caseTypeExpertStandard). */
+  expertStandard: string;
+  /** The close of the service x case type x state framework FAQ, with an
+   * optional `{attr}` slot, in place of "The report presents past and future
+   * amounts separately, states every rate and table with its source, ..."
+   * (caseTypePairStateFrameworkTail). */
+  pairStateFrameworkTail: string;
+  /** Text the framework paragraph's `{circuitNote}` slot takes, with
+   * `{place}` and `{circuit}` slots ("the Second Circuit"); empty where the
+   * place sits in no federal circuit (caseTypeStateFramework). */
+  circuitNote?: string;
+  /** For a matter whose forums are not the state's courts: the venue
+   * vocabulary and the forums listed ahead of the state's trial courts. */
+  forums?: CaseTypeForums;
+}
+
+/**
+ * The forums a framing entry lists ahead of the state's trial courts, and the
+ * headings and questions that name them (caseTypeVenuesHeading,
+ * caseTypeStateCourtsQuestion, caseTypePairStateExpertQuestion,
+ * caseTypeStateForums). Each list item is `label` and `description`, never
+ * `slug` or `name`, because build scripts read this file as text.
+ */
+export interface CaseTypeForums {
+  /** Noun of the courts section heading: "<State> {noun} and expert standards". */
+  noun: string;
+  /** The state-tier courts FAQ question, with a `{place}` slot, in place of
+   * "Which <State> courts hear <matter> cases?". */
+  courtsQuestion: string;
+  /** The service x case type x state expert FAQ question, with `{place}` and
+   * `{work}` slots, in place of "What do <attr> courts ask of <work> before
+   * it reaches the fact finder?". */
+  expertQuestion: string;
+  /** Forums printed before the state's trial courts under "Where these cases
+   * are heard"; `{place}` and `{attr}` slots. */
+  list: { label: string; description: string }[];
+  /** How many of the state's trial courts follow the forums. */
+  trialCourtLimit: number;
 }
 
 export interface CaseType {
@@ -100,6 +167,12 @@ export interface CaseType {
    * where the name already fits; otherwise a whole-word part of the name or
    * a standard short form ("Auto Accident", "Workers' Comp"). */
   shortName: string;
+  /** Short form the attorney journey headings and descriptions take in place
+   * of `shortName`, where the pair titles' short form would leave the
+   * journey's query term out ("Transfer Pricing: Economist at Deposition"
+   * rather than "Tax Dispute: ..."); at most SHORT_NAME_MAX characters
+   * (src/lib/attorney-stages.ts). */
+  journeyShortName?: string;
   category: CaseTypeCategory;
   /** SERP title stem, always `${name} Economist` ("Wrongful Death
    * Economist"): the hub appends the brand, so the full keyword stays on the
@@ -133,7 +206,8 @@ export interface CaseType {
   faqs: Faq[];
   sources: Source[];
   /** Set only where the shared economic-damages framing misdescribes the
-   * matter (family law); entries without it keep the templates' defaults. */
+   * matter (family law, tax and transfer pricing); entries without it keep
+   * the templates' defaults. */
   framing?: CaseTypeFraming;
 }
 
@@ -655,7 +729,7 @@ export const caseTypes: CaseType[] = [
     category: "commercial",
     titleBase: "Commercial Contract Dispute Economist",
     datePublished: "2026-08-27",
-    dateModified: "2026-09-02",
+    dateModified: "2026-10-05",
     summaryShort:
       "A commercial contract damages claim measures the profits a business lost, or the costs it incurred, because the other party did not perform, as the difference between the performed-contract path and what the business actually earned or could have earned by mitigating.",
     inShort: [
@@ -677,7 +751,7 @@ export const caseTypes: CaseType[] = [
       "The size of the claim depends on the contract's remaining term, the profit margin the business would have realized, and how much of the lost volume was or could have been replaced. Incremental cost treatment is the usual battleground: whether a given cost would have been avoided when the revenue disappeared changes the margin and therefore the loss. For a new venture or a contract without a performance history, the reasonableness of the projected revenue is the central dispute, and the period over which lost profits are claimed is scrutinized against the contract's terms and the market.",
     economicImpact:
       "The economist establishes the but-for revenue from the contract terms, the pre-dispute projections, and the business's own history, then identifies the incremental costs that would have been incurred to earn that revenue so that only the lost margin is claimed. Actual results after the breach are analyzed to separate the effect of the breach from market conditions and other causes, and mitigation revenue is credited. Past lost profits are brought forward and future lost profits are discounted to present value at a rate that reflects the risk of the earnings stream, with the rate stated and its effect shown. The report is organized so each element of the claim ties to a document and can be tested independently.",
-    relevantServices: ["lost-profits-and-commercial-damages", "business-valuation", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"],
+    relevantServices: ["lost-profits-and-commercial-damages", "business-valuation", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "expert-rebuttal-and-report-review"],
     relevantCredentials: ["Forensic Economist", "MBA", "NAFE", "AAEFE", "PhD"],
     faqs: [
       {
@@ -710,7 +784,7 @@ export const caseTypes: CaseType[] = [
     category: "commercial",
     titleBase: "Partnership and Shareholder Dispute Economist",
     datePublished: "2026-08-27",
-    dateModified: "2026-09-02",
+    dateModified: "2026-10-05",
     summaryShort:
       "A partnership or shareholder dispute turns on what an ownership interest is worth under the standard of value that applies and whether the business's earnings have been fairly shared, both answered from the agreements and the financial records.",
     inShort: [
@@ -732,7 +806,7 @@ export const caseTypes: CaseType[] = [
       "The valuation date and the standard of value control the result: a fair value standard may exclude the minority and marketability discounts that a fair market value standard applies, and the gap between the two can be substantial for a minority interest in a closely held company. Normalizing adjustments to owner compensation and related-party dealings often decide whether the business shows earnings to value at all. Where the claim includes diverted profits, the amount depends on how far back the records permit reconstruction and on whether the business's actual results can be separated from market conditions.",
     economicImpact:
       "The economist reviews the agreements to identify the valuation date, the standard of value, and any buyout formula, then normalizes the financial statements for owner compensation, related-party transactions, and non-recurring items. The interest is valued using the income, market, and asset approaches as the facts support, with the weighting and any discounts or premiums explained. Where profits were diverted, the report traces the transactions through the ledger and bank records and quantifies the amounts by year. The result is presented as a value or a damages figure tied to the agreements and the records, with the effect of the principal assumptions shown.",
-    relevantServices: ["business-valuation", "lost-profits-and-commercial-damages", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"],
+    relevantServices: ["business-valuation", "lost-profits-and-commercial-damages", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "expert-rebuttal-and-report-review"],
     relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
     faqs: [
       {
@@ -765,7 +839,7 @@ export const caseTypes: CaseType[] = [
     category: "family",
     titleBase: "Divorce and Marital Dissolution Economist",
     datePublished: "2026-08-27",
-    dateModified: "2026-09-05",
+    dateModified: "2026-10-05",
     // A family-law matter is an income, valuation, and tracing assignment, not
     // a damages claim; these strings replace the shared damages framing on the
     // hub and state pages (see CaseTypeFraming).
@@ -799,6 +873,14 @@ export const caseTypes: CaseType[] = [
         method: "How the analysis is built",
         framework: "Legal framework",
       },
+      pairStateLead:
+        "{org} prepares {work} for {matter} matters venued in {place}: the income, valuation, and tracing questions the matter raises, the records that answer them, and a presentation built to the way {attr} courts decide them. Either party.",
+      // The state's own inquiry, closed by the work a family-law analysis
+      // shows (the shared closing sentence speaks of a damages report).
+      expertStandard:
+        "{inquiry} A financial analysis for a divorce meets that inquiry by listing each normalization adjustment, valuation input, and tracing step with the record behind it.",
+      pairStateFrameworkTail:
+        "The report lists each normalization adjustment, valuation input, and tracing step with its source and shows the result under each spouse's position, so counsel can apply the {attr} rules to a documented figure.",
     },
     summaryShort:
       "A divorce or marital dissolution matter asks what income each spouse has available for support, what the marital assets, including any business interest, are worth for the division of the estate, and which assets are separate rather than marital. Each is answered from the business books, tax returns, and account histories rather than from the tax return alone.",
@@ -821,7 +903,7 @@ export const caseTypes: CaseType[] = [
       "The business valuation is usually the largest and most contested figure in the marital estate, and the valuation date, the standard of value, the treatment of personal and enterprise goodwill, and the normalization of owner compensation each move it materially. Income available for support for a self-employed spouse can differ substantially from the reported figure once personal expenses paid by the business and cash flow retained in it are considered, and the owner compensation adjustment has to be carried consistently into the valuation and the income determination, because the same stream of earnings appears in both. Tracing outcomes depend on the completeness of the account records and on how the governing framework, whether equitable distribution or community property, treats commingled funds and the appreciation of separate assets during the marriage.",
     economicImpact:
       "The economist starts from the business's financial statements and normalizes them for owner compensation, personal expenses paid through the business, related-party dealings, and non-recurring items, listing each adjustment with its source. The business or practice is then valued as of the date the governing framework requires, under the income, market, and asset approaches as the facts support, with personal and enterprise goodwill addressed where the framework distinguishes them. Income available for support is determined from the same normalized statements, adding distributions, perquisites, and cash flow retained in the business beyond reported salary, so the valuation and the income figure reconcile. Separate property is traced through the account statements from the date of contribution to the current holding, with each step documented and commingled funds classified under the framework counsel identifies. Pensions and deferred compensation are reduced to present value with the mortality and discount assumptions stated. Where the question is what a spouse who is not working, or is working below prior earnings, could reasonably earn, employability and attainable occupations are a vocational discipline: the affiliated vocational practice prepares that opinion, and the economist applies it to the support calculation together with published wage data. The report presents the valuation, the income determination, and the tracing as separate sections so each can be examined and used on its own by either spouse or the court.",
-    relevantServices: ["divorce-and-marital-financial-analysis", "business-valuation", "fraud-and-asset-tracing", "expert-rebuttal-and-report-review"],
+    relevantServices: ["divorce-and-marital-financial-analysis", "business-valuation", "fraud-and-asset-tracing", "transfer-pricing-expert-witness", "expert-rebuttal-and-report-review"],
     relevantCredentials: ["Forensic Economist", "MBA", "NAFE"],
     faqs: [
       {
@@ -967,6 +1049,133 @@ export const caseTypes: CaseType[] = [
     ],
     sources: refsToSources(["BLS_CPS", "BLS_ECEC", "BLS_ATUS", "CDC_LIFE_TABLES", "TREASURY_YIELD"]),
   },
+  {
+    slug: "tax-and-transfer-pricing-dispute",
+    name: "Tax and Transfer Pricing Dispute",
+    shortName: "Tax Dispute",
+    // The journey headings keep the query term ("Transfer Pricing: Economist
+    // at Deposition"); the pair titles keep "Tax Dispute" so the pillar's own
+    // pair never reads "Transfer Pricing Expert for Transfer Pricing".
+    journeyShortName: "Transfer Pricing",
+    category: "tax",
+    titleBase: "Tax and Transfer Pricing Dispute Economist",
+    datePublished: "2026-10-05",
+    dateModified: "2026-10-05",
+    // A tax or transfer pricing dispute is an arm's length or valuation
+    // question, not a damages claim; these strings replace the shared damages
+    // framing on the hub, state, and service x case type x state pages (see
+    // CaseTypeFraming). Owner request 2026-10-05: written from the
+    // economist's standpoint, neutral between taxpayer and government and
+    // between the parties to a civil claim, citation-free, with the statute,
+    // the regulations, and the forums' rules carried by the registry sources.
+    framing: {
+      // The hub keeps the full keyword ("Tax and Transfer Pricing Dispute
+      // Economist | KW Economics", 57 characters). The full stem cannot sit
+      // beside a place name inside the 60-character tag, so the state tier
+      // takes "Transfer Pricing Economist", which no pillar label shares (the
+      // pillar's state pages read "Transfer Pricing in <place>").
+      titleStem: "Tax and Transfer Pricing Dispute Economist",
+      stateTitleStems: ["Transfer Pricing Economist"],
+      hubHeading: "Economic Analysis for Tax and Transfer Pricing Disputes",
+      hubDescription:
+        "Arm's length analysis for tax and transfer pricing disputes: the controlled transactions, the method and comparables, and the forums that decide them.",
+      stateHeadingStem: "Economic Analysis for Tax and Transfer Pricing Disputes",
+      stateDescription:
+        "Arm's length analysis for tax and transfer pricing disputes in {place}: the transactions, the comparables, the forums, and expert witness work.",
+      stateLead:
+        "{org} prepares the economic analysis in tax and transfer pricing disputes involving businesses in {place}: the controlled transactions at issue, the functional analysis and comparables that test their prices, and a report written for the forum that decides the dispute, whether a federal tax forum, a state tax appeal, or a court in {place}, for either side.",
+      stateStepsIntro:
+        "The same four steps apply to a tax or transfer pricing dispute involving {place}; the forum that hears the dispute and the rule of decision it applies decide how the result is used.",
+      // The statute and regulations are uniform, but the circuit is not: a
+      // corporation's Tax Court appeal lies to the circuit of its principal
+      // place of business, whose precedent the Tax Court follows, and a
+      // refund suit is brought where the business is based.
+      stateFramework:
+        "A federal transfer pricing dispute applies the same statute and regulations wherever the business is based, but where it is based decides which appellate decisions govern: an appeal from the Tax Court ordinarily goes to the federal court of appeals for the circuit where a corporation has its principal place of business{circuitNote}, whose precedent the Tax Court follows, and a refund suit is filed in the federal district where the business is based or in the Court of Federal Claims. Whether {place} reallocates income between related companies under its own tax, requires royalties or interest paid to an affiliate to be added back, or combines affiliates in one return, and whether a commercial, shareholder, or matrimonial claim in {place} adopts an arm's length benchmark, are questions counsel confirms; the report presents the analysis so it can be applied under either party's position.",
+      circuitNote: " (for a business based in {place}, {circuit})",
+      stateFrameworkQuestion: "Which rules govern a tax or transfer pricing dispute involving {place}?",
+      sections: {
+        components: "What the economic analysis consists of",
+        concentration: "Which choices move the result",
+        method: "How the analysis is built",
+        framework: "Tax and legal framework",
+      },
+      pairStateLead:
+        "{org} prepares {work} for {matter} matters involving businesses in {place}: the controlled transactions and prices at issue, the records and comparables that test them, and a report written for the forum that decides the dispute. Either side.",
+      // The federal forums and their appeals first, then the state's own tax
+      // process, then the state courts with the state's appeal: commercial
+      // and shareholder claims in the courts the page lists (the business
+      // selection: chancery, business, and general-jurisdiction courts), a
+      // divorce in the court that hears divorce.
+      courtsSentence:
+        "Federal income tax disputes over related-party prices are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; appeals from the Tax Court and the district courts ordinarily go to the federal court of appeals for the circuit where the business is based, and appeals from the Court of Federal Claims to the Federal Circuit. A dispute over {place}'s own tax follows its administrative and appeal process. Commercial and shareholder claims in {place} that turn on an intercompany price are heard in {courts}, with final appeals to the {supremeCourt}, and a divorce in which one bears on income or the value of a business is heard in [[/case-types/divorce-and-marital-dissolution/{stateSlug}|the court that hears divorce in {place}]].",
+      // The federal tax forums apply the federal rules of evidence (the Tax
+      // Court by statute); the state's own inquiry governs only the claims
+      // heard in its courts.
+      expertStandard:
+        "Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute: whether the expert is qualified, whether the testimony rests on sufficient facts or data and on reliable methods, and whether those methods were reliably applied to the facts of the case. The commercial, shareholder, and matrimonial claims heard in {place}'s courts are tested under its own standard, and a state tax appeal follows the rules of the forum that hears it. {inquiry} A transfer pricing report meets each of these inquiries by stating every method choice and naming the data behind every comparable.",
+      pairStateFrameworkTail:
+        "The report states each transaction, method choice, and comparable screen with its source and shows the result under the opposing method, tested party, and comparables, so counsel can apply the rule of decision of the forum that hears the dispute to a documented result.",
+      forums: {
+        noun: "forums",
+        courtsQuestion: "Which forums hear a tax or transfer pricing dispute involving {place}?",
+        expertQuestion: "What do the forums that hear a tax or transfer pricing dispute involving {place} ask of {work}?",
+        list: [
+          { label: "United States Tax Court", description: "Hears a challenge to an IRS notice of deficiency before the tax is paid; a national court that holds trials in cities across the country" },
+          { label: "United States District Courts", description: "Hear a refund suit after the tax is paid, in the district where the business is based, with a jury available" },
+          { label: "United States Court of Federal Claims", description: "Hears a refund suit after the tax is paid, without a jury; appeals go to the Federal Circuit" },
+          { label: "{attr} tax appeals", description: "A dispute over {place}'s own tax, through its administrative and appeal process" },
+        ],
+        trialCourtLimit: 2,
+      },
+    },
+    summaryShort:
+      "A tax or transfer pricing dispute asks whether the prices one company in a group charged another for goods, services, intangibles, or loans match what unrelated parties would have agreed to, and how much income moves if they do not, answered from the intercompany agreements, the companies' conduct, and comparable transactions.",
+    inShort: [
+      "The analysis consists of the delineation of the controlled transactions, the functional analysis, the arm's length range under the most reliable method, and any adjustment or restated profit.",
+      "The intercompany agreements, the transfer pricing documentation, legal-entity and segmented financial statements, and the ledger detail of the intercompany accounts drive the result.",
+      "The same economics serves an examination, the Tax Court, a refund suit, a state tax appeal, and a commercial, shareholder, or divorce case, under each forum's own rule of decision.",
+    ],
+    steps: [
+      "Delineate the controlled transactions from the intercompany agreements, invoices, and ledger, and test the written terms against what the companies actually did.",
+      "Establish which company performed each function, owned each valuable asset, and bore and controlled each risk, from the operating records and interviews.",
+      "Select the method that gives the most reliable measure of an arm's length result, search for comparables with stated screens, and compute the range from several years of data.",
+      "Compare the controlled result with the range, quantify any adjustment or restated profit by year, and show how the result moves under the opposing method, tested party, and comparables.",
+    ],
+    summary:
+      "Tax and transfer pricing disputes turn on prices that no market set: what one company in a commonly controlled group charged another for goods, services, the use of intangibles, or financing, and whether that price, or the profit it left in each company, matches what unrelated parties would have agreed to in the same transaction under the same circumstances. The economist rebuilds the transactions from the agreements and the record, measures them against comparable transactions or companies under the most reliable method, and states the arm's length result and any adjustment so that a tax authority, a court, or the other side can test every choice behind it.",
+    lossComponents:
+      "The analysis consists of the delineation of each controlled transaction at issue, whether a sale of goods, a service, a license of patents, trademarks, software, or know-how, or an intercompany loan or guarantee; the functional analysis of what each company did, owned, and risked; the arm's length range under the method that gives the most reliable measure; and the adjustment, or the restated profit, that follows from comparing the controlled result with that range, by year and by entity. Where a tax dispute concerns the value of property rather than a recurring price, such as intangibles transferred to a foreign affiliate or a closely held interest transferred by gift or at death, the analysis is a valuation under the standard the tax framework applies. The drivers are the intercompany agreements and their amendments, the transfer pricing policy and documentation for each year, legal-entity and segmented financial statements, the general ledger detail of the intercompany accounts and any year-end adjustments, the tax returns and information returns that report related-party transactions, and any advance pricing agreement.",
+    damagesExposure:
+      "The result usually turns on a few choices: the method, and whether a comparable price or a profit-based method is the more reliable on the facts; the tested party, and whether it is truly the simpler participant; the comparables and the screens that admitted or excluded them; the profit level indicator; the years of data; and the point within the range the forum uses. For intangibles, who owns them, who performed the functions that created their value, and whether the royalty base and terms match the comparables move the result most. Penalty exposure in a federal case depends on whether the documentation that existed when the return was filed supported a reasonable method, a separate question from whether the price was arm's length, and in commercial, shareholder, and divorce cases the restated profit carries into a damages claim or a valuation, where the governing contract or duty decides how it is used.",
+    economicImpact:
+      "The economist starts from the intercompany agreements and tests their terms against the invoices, the ledger, and the companies' conduct, because a contractual allocation of risk is respected only where the conduct is consistent with it. The functional analysis follows, from organization charts, operating records, and interviews, to establish which company performed the research, manufacturing, marketing, distribution, and support functions, which owned the valuable intangibles, and which bore the market, inventory, credit, and currency risks. The method is selected under the best method rule with the rejected alternatives explained, the comparables are searched for and screened with every criterion stated, comparability adjustments are made where the data support them, and the arm's length range is computed from several years of data. The controlled result is compared with the range, the adjustment or restated profit is quantified by year, and the report shows the result under the opposing method, tested party, and comparable set, written for the forum that decides the dispute: as direct testimony in the Tax Court, as a disclosed report in a refund suit or a commercial case, or as the economic position put to an appeals officer or a competent authority.",
+    relevantServices: ["transfer-pricing-expert-witness", "business-valuation", "expert-rebuttal-and-report-review"],
+    relevantCredentials: ["Forensic Economist", "MBA", "PhD"],
+    faqs: [
+      {
+        question: "Where are tax and transfer pricing disputes decided?",
+        answer:
+          "A federal dispute usually begins in an IRS examination, can go to the IRS Independent Office of Appeals, and, if it is not resolved, is heard in the United States Tax Court without first paying the tax or, on a refund claim, in a federal district court or the Court of Federal Claims. A cross-border adjustment can be taken to the treaty partner through the mutual agreement procedure, a state tax dispute follows the state's own appeal process, and commercial, shareholder, and divorce claims that turn on an intercompany price are heard in the civil courts.",
+      },
+      {
+        question: "Does the economist decide whether a price was arm's length, or only measure it?",
+        answer:
+          "The economist measures it and states the basis: the transactions as delineated, the method and why it is the most reliable, the comparables, and the range. Whether that result governs is for the tribunal. In a tax forum the arm's length standard is the rule of decision; in a commercial, shareholder, or divorce case the court decides whether to adopt the arm's length result as the measure, adjust it, or give it limited weight.",
+      },
+      {
+        question: "What happens when two countries tax the same profit?",
+        answer:
+          "An adjustment by one country raises the income reported there without lowering the income the affiliate on the other side of the transaction reported, so the same profit is taxed twice. Under a tax treaty the taxpayer can ask the two competent authorities to resolve the double taxation through the mutual agreement procedure, and an advance pricing agreement can fix the method for future years; in either setting the economic analysis is the one a court would see, presented to tax authorities who can agree on a point, a range, or a method.",
+      },
+      {
+        question: "When does a transfer pricing adjustment carry a penalty?",
+        answer:
+          "A large net transfer pricing adjustment can carry a penalty unless the taxpayer had documentation, in existence when the return was filed and produced on request, showing that it reasonably selected and applied a method. A separate penalty can apply to a single transaction whose price on the return is far from the arm's length price, whatever the size of the net adjustment, unless the taxpayer shows reasonable cause and good faith; documentation that meets the net adjustment rules is treated as showing it. Whether either protection holds is a different question from whether the price was arm's length, so the economist addresses the two separately and states which records each conclusion rests on.",
+      },
+    ],
+    sources: refsToSources(["IRC_482", "TREAS_REG_1_482_1", "TREAS_REG_1_6662_6", "TAX_COURT_RULE_143", "IRS_TP_EXAM_PROCESS", "IRS_MAP_OVERVIEW", "OECD_TP_GUIDELINES"]),
+  },
 ];
 
 export function getCaseType(slug: string): CaseType | undefined {
@@ -983,9 +1192,50 @@ export function getCaseType(slug: string): CaseType | undefined {
 // District of Columbia"); `orgName` is the brand.
 // ---------------------------------------------------------------------------
 
-/** Fill the `{org}` and `{place}` slots of a framing string. */
-const fillSlots = (s: string, slots: { org?: string; place?: string }): string =>
-  s.replace(/\{org\}/g, slots.org ?? "").replace(/\{place\}/g, slots.place ?? "");
+/** The slots a framing string may carry (see CaseTypeFraming). */
+interface FramingSlots {
+  org?: string;
+  place?: string;
+  work?: string;
+  matter?: string;
+  attr?: string;
+  courts?: string;
+  supremeCourt?: string;
+  stateSlug?: string;
+  inquiry?: string;
+  circuit?: string;
+  circuitNote?: string;
+}
+
+/** Fill the slots of a framing string (see FramingSlots); a slot with no value renders empty. */
+const fillSlots = (s: string, slots: FramingSlots): string =>
+  s.replace(
+    /\{(org|place|work|matter|attr|courts|supremeCourt|stateSlug|inquiry|circuit|circuitNote)\}/g,
+    (_, key: keyof FramingSlots) => slots[key] ?? "",
+  );
+
+/**
+ * Which of a state's trial courts the case-type x state and service x case
+ * type x state pages list, by category (shared by CaseTypeState.tsx,
+ * ServiceCaseTypeState.tsx, and scripts/prerender.mjs): the family and
+ * equity courts for a divorce, the chancery and business courts for a
+ * commercial dispute, the chancery, business, and general-jurisdiction
+ * courts alone for the commercial and shareholder claims of a tax or
+ * transfer pricing dispute (no limited court and no court for claims against
+ * the state, such as a Court of Claims), and the general-jurisdiction courts
+ * otherwise. A framing entry with forums of its own also caps the list
+ * (CaseTypeForums.trialCourtLimit).
+ */
+export const CASE_TYPE_COURT_SELECTION: Partial<Record<CaseTypeCategory, CourtSelection>> = {
+  family: "family",
+  commercial: "commercial",
+  tax: "business",
+};
+
+/** The court selection and list length for a case type (see CASE_TYPE_COURT_SELECTION). */
+export function caseTypeCourtSelection(c: CaseType): { kind: CourtSelection; limit?: number } {
+  return { kind: CASE_TYPE_COURT_SELECTION[c.category] ?? "general", limit: c.framing?.forums?.trialCourtLimit };
+}
 
 /** Hub H1. */
 export function caseTypeHubHeading(c: CaseType): string {
@@ -1032,10 +1282,38 @@ export function caseTypeStateStepsIntro(c: CaseType, place: string): string {
 /**
  * State-tier framework paragraph: the entry's own where it carries one, else
  * the state module's text the caller selected (damagesContext for the injury
- * and death categories, generalContext otherwise).
+ * and death categories, generalContext otherwise). `circuit` is the federal
+ * circuit the place sits in (src/data/courts/federal-districts.ts
+ * circuitOfState: "Second", "D.C."), which fills the entry's circuitNote; a
+ * place in no circuit takes none.
  */
-export function caseTypeStateFramework(c: CaseType, place: string, stateFrameworkText: string): string {
-  return c.framing ? fillSlots(c.framing.stateFramework, { place }) : stateFrameworkText;
+export function caseTypeStateFramework(c: CaseType, place: string, stateFrameworkText: string, circuit?: string): string {
+  if (!c.framing) return stateFrameworkText;
+  const circuitNote =
+    circuit && c.framing.circuitNote ? fillSlots(c.framing.circuitNote, { place, circuit: `the ${circuit} Circuit` }) : "";
+  return fillSlots(c.framing.stateFramework, { place, circuitNote });
+}
+
+/**
+ * The expert-standard paragraph of the state tier and the service x case
+ * type x state page: the state's own text (`regulation.expertStandard`,
+ * which closes on how an economic damages report meets the inquiry), or for
+ * a framing entry its own paragraph around the state's inquiry alone
+ * (src/data/regulations/state-regs.ts expertInquiryOf).
+ */
+export function caseTypeExpertStandard(
+  c: CaseType,
+  place: string,
+  regulation: { expertStandard: string; expertInquiry?: string },
+): string {
+  return c.framing ? fillSlots(c.framing.expertStandard, { place, inquiry: expertInquiryOf(regulation) }) : regulation.expertStandard;
+}
+
+/** The close of the service x case type x state framework FAQ answer (`attr` is the attributive place name). */
+export function caseTypePairStateFrameworkTail(c: CaseType, attr: string): string {
+  return c.framing
+    ? fillSlots(c.framing.pairStateFrameworkTail, { attr })
+    : `The report presents past and future amounts separately, states every rate and table with its source, and shows the result under the alternatives the other side is likely to argue, so counsel can apply the ${attr} rules to a documented figure.`;
 }
 
 /** The local FAQ question over the framework paragraph. */
@@ -1050,6 +1328,81 @@ export function caseTypeStateServiceDescription(c: CaseType, place: string): str
   return c.framing
     ? fillSlots(c.framing.stateDescription, { place })
     : `Economic damages analysis for ${c.name.toLowerCase()} matters in ${place}.`;
+}
+
+/**
+ * Lead of the service x case type x state page. `work` is the pillar's work
+ * phrase (src/lib/service-prose.mjs workPhrase), `place` the place name, and
+ * `attr` its attributive form (geo-prose.mjs placeAttr).
+ */
+export function caseTypePairStateLead(c: CaseType, orgName: string, work: string, place: string, attr: string): string {
+  const matter = c.name.toLowerCase();
+  return c.framing
+    ? fillSlots(c.framing.pairStateLead, { org: orgName, work, matter, place, attr })
+    : `${orgName} prepares ${work} for ${matter} cases venued in ${place}: what the loss claim consists of, the records that drive it, and a present value built to ${attr} damages rules and venues. Plaintiff and defense.`;
+}
+
+/** The state facts the courts answer reads. */
+export interface CaseTypeCourtsInput {
+  /** The place name (geo-prose.mjs placeName). */
+  place: string;
+  /** The trial courts the page lists ("the Superior Court (...) and the ..."). */
+  courtList: string;
+  /** The state's highest court ("Supreme Court of New Jersey"). */
+  supremeCourt: string;
+  stateSlug: string;
+}
+
+/**
+ * The courts answer of the state-tier courts FAQ and of the service x case
+ * type x state expert FAQ, as complete sentences with the state's appeal:
+ * "<name> cases venued in <place> are heard in <courts>." then "Final
+ * appeals run to the <court>." on the case-type x state page (`appeal`
+ * "sentence"), or ", with final appeals to the <court>." on the pair x state
+ * page ("clause"). A framing entry whose matter is not heard only in the
+ * state's trial courts supplies its own answer, which carries the federal
+ * forums' appeals and the state's (the tax and transfer pricing dispute).
+ */
+export function caseTypeStateCourts(c: CaseType, input: CaseTypeCourtsInput, appeal: "sentence" | "clause"): string {
+  const { place, courtList, supremeCourt, stateSlug } = input;
+  if (c.framing?.courtsSentence) return fillSlots(c.framing.courtsSentence, { place, courts: courtList, supremeCourt, stateSlug });
+  const heard = `${c.name} cases venued in ${place} are heard in ${courtList}`;
+  return appeal === "clause" ? `${heard}, with final appeals to the ${supremeCourt}.` : `${heard}. Final appeals run to the ${supremeCourt}.`;
+}
+
+/** H2 of the courts section on the state tier and the service x case type x state page. */
+export function caseTypeVenuesHeading(c: CaseType, stateName: string): string {
+  return `${stateName} ${c.framing?.forums?.noun ?? "courts"} and expert standards`;
+}
+
+/** The state-tier courts FAQ question. */
+export function caseTypeStateCourtsQuestion(c: CaseType, stateName: string, place: string): string {
+  return c.framing?.forums
+    ? fillSlots(c.framing.forums.courtsQuestion, { place })
+    : `Which ${stateName} courts hear ${c.name.toLowerCase()} cases?`;
+}
+
+/** The service x case type x state expert FAQ question (`work` is the pillar's work phrase). */
+export function caseTypePairStateExpertQuestion(c: CaseType, attr: string, place: string, work: string): string {
+  return c.framing?.forums
+    ? fillSlots(c.framing.forums.expertQuestion, { place, work })
+    : `What do ${attr} courts ask of ${work} before it reaches the fact finder?`;
+}
+
+/** The forums a framing entry lists ahead of the state's trial courts, in the trial-court shape the venue lists render; none otherwise. */
+export function caseTypeStateForums(c: CaseType, place: string, attr: string): { name: string; description: string }[] {
+  return (c.framing?.forums?.list ?? []).map((f) => ({
+    name: fillSlots(f.label, { place, attr }),
+    description: fillSlots(f.description, { place, attr }),
+  }));
+}
+
+/** Anchor text of the service x case type page's link to the case-type hub: the hub's own three section headings where the entry carries a framing block. */
+export function caseTypeHubLinkLabel(c: CaseType): string {
+  if (!c.framing) return `${c.name}: the economic claim, where the damages concentrate, and how the analysis is built`;
+  const lowerFirst = (t: string) => `${t.charAt(0).toLowerCase()}${t.slice(1)}`;
+  const { components, concentration, method } = c.framing.sections;
+  return `${c.name}: ${lowerFirst(components)}, ${lowerFirst(concentration)}, and ${lowerFirst(method)}`;
 }
 
 /** Section headings over lossComponents, damagesExposure, economicImpact, and the framework block. */

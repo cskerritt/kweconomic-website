@@ -56,6 +56,13 @@ export interface Service {
    * longest city name, and it keeps the label's leading keyword. Headings,
    * links, prose, and every title that fits keep `shortName`. */
   titleShortName?: string;
+  /** Labels the service x state and service x city titles try before the
+   * heading labels, longest first, and whose first form the H1 of those
+   * pages prints (src/lib/page-titles.mjs serviceGeoTitleLabels,
+   * serviceGeoHeadingLabel): set only where `shortName` drops the role the
+   * pillar's local queries carry ("Transfer Pricing" for "transfer pricing
+   * expert witness <place>"). The pair titles keep `shortName`. */
+  geoTitleLabels?: string[];
   pillar: boolean; // false = cross-sell only, excluded from geo/case/cost enumeration
   description: string;
   icon: string;

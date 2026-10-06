@@ -20,6 +20,7 @@ const PILLARS = [
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
+  "transfer-pricing-expert-witness",
   "divorce-and-marital-financial-analysis",
   "expert-rebuttal-and-report-review",
 ];
@@ -39,7 +40,7 @@ function render(citySlug: string): string {
 describe("CityServiceLinks for a city with service-city pages", () => {
   const html = render("hackensack");
 
-  it("links all eleven co-located pillar service x city pages", () => {
+  it("links all twelve co-located pillar service x city pages", () => {
     for (const slug of PILLARS) {
       expect(html).toContain(`href="/services/${slug}/new-jersey/hackensack"`);
     }

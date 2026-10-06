@@ -8,8 +8,8 @@ import { ICONS } from "@/lib/icons";
 import { VOC_SITE_URL, LCP_SITE_URL, VOC_SERVICE_URL, LCP_SERVICE_URL, LEGACY_BRAND_PATTERN } from "@/lib/brand";
 import { DOUBLED_WORD, MIS_ARTICLE, excerpt } from "@/test-utils/markup";
 
-const PILLARS = ["lost-earnings-and-earning-capacity","wrongful-death-economic-loss","personal-injury-economic-damages","household-services-valuation","life-care-plan-cost-projection","employment-and-wage-loss-damages","business-valuation","lost-profits-and-commercial-damages","fraud-and-asset-tracing","divorce-and-marital-financial-analysis","expert-rebuttal-and-report-review"];
-const CASE_TYPES = new Set(["personal-injury","wrongful-death","medical-malpractice","motor-vehicle-accident","traumatic-brain-injury","spinal-cord-injury","workers-compensation","employment-discrimination","wrongful-termination","commercial-contract-dispute","partnership-and-shareholder-dispute","divorce-and-marital-dissolution","fraud-and-embezzlement","product-liability"]);
+const PILLARS = ["lost-earnings-and-earning-capacity","wrongful-death-economic-loss","personal-injury-economic-damages","household-services-valuation","life-care-plan-cost-projection","employment-and-wage-loss-damages","business-valuation","lost-profits-and-commercial-damages","fraud-and-asset-tracing","transfer-pricing-expert-witness","divorce-and-marital-financial-analysis","expert-rebuttal-and-report-review"];
+const CASE_TYPES = new Set(["personal-injury","wrongful-death","medical-malpractice","motor-vehicle-accident","traumatic-brain-injury","spinal-cord-injury","workers-compensation","employment-discrimination","wrongful-termination","commercial-contract-dispute","partnership-and-shareholder-dispute","divorce-and-marital-dissolution","fraud-and-embezzlement","product-liability","tax-and-transfer-pricing-dispute"]);
 
 // House rules shared with caseTypes.test.ts and credentials.test.ts: no
 // sister-brand forms, no LCP or vocational vocabulary outside the carve-out
@@ -35,8 +35,8 @@ function pillarText(s: (typeof services)[number]): string[] {
 }
 
 describe("economics services taxonomy", () => {
-  it("has 13 entries, 11 pillars in canonical order", () => {
-    expect(services.length).toBe(13);
+  it("has 14 entries, 12 pillars in canonical order", () => {
+    expect(services.length).toBe(14);
     expect(pillarServices().map((s) => s.slug)).toEqual(PILLARS);
     expect(getAllServiceSlugs()).toEqual(PILLARS);
   });
@@ -258,6 +258,11 @@ describe("service x case-type declarations agree with the case-type hubs", () =>
       "lost-earnings-and-earning-capacity",
       "personal-injury-economic-damages",
       "household-services-valuation",
+      "expert-rebuttal-and-report-review",
+    ]);
+    expect(servicesForCaseType("tax-and-transfer-pricing-dispute").map((s) => s.slug)).toEqual([
+      "business-valuation",
+      "transfer-pricing-expert-witness",
       "expert-rebuttal-and-report-review",
     ]);
     expect(servicesForCaseType("no-such-type")).toEqual([]);

@@ -60,6 +60,11 @@ export function getFederalDistrict(slug: string): FederalDistrict | undefined {
   return federalDistricts.find((d) => d.slug === slug);
 }
 
+/** The federal circuit a state or territory sits in ("Second", "D.C."); undefined for American Samoa, which has no district court. */
+export function circuitOfState(stateSlug: string): string | undefined {
+  return CIRCUIT_BY_STATE[stateSlug];
+}
+
 /** Districts grouped by circuit, circuits in CIRCUIT_ORDER, districts in state-courts.ts order. */
 export function districtsByCircuit(): Record<string, FederalDistrict[]> {
   const out: Record<string, FederalDistrict[]> = {};
@@ -74,6 +79,9 @@ export const FEDERAL_SERVICE_SLUGS = [
   "employment-and-wage-loss-damages",
   "lost-profits-and-commercial-damages",
   "business-valuation",
+  // The transfer pricing pillar is not listed: federal transfer pricing
+  // litigation is heard mostly in the Tax Court, and nothing supports
+  // calling it work "most often retained" in a federal district court.
   "expert-rebuttal-and-report-review",
 ] as const;
 

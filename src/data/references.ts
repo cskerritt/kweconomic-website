@@ -42,6 +42,16 @@ import type { Source, SourceType } from "./types";
  * non-browser fetches, so those URLs are confirmed in a headless browser
  * session; aaefe.org serves a bot challenge to curl but renders in a browser;
  * the remaining URLs were confirmed HTTP 200 with curl on the date recorded.
+ *
+ * LIVE-CHECK NOTES (2026-10-05, transfer pricing sources): the eCFR section
+ * permalinks (ecfr.gov/current/title-26/section-<n>) return HTTP 200 after
+ * eCFR's own redirect to the section's canonical page, and each page's title
+ * was matched to the section heading in `apa`; law.cornell.edu, irs.gov, and
+ * ustaxcourt.gov returned HTTP 200 with curl and the cited text was read on
+ * the page or in the PDF. The OECD DOI resolves through doi.org to the OECD
+ * publication page, which serves a bot challenge to curl; its title, date,
+ * and DOI were confirmed in a headless browser session and in the Crossref
+ * registration record.
  */
 
 export type ReferenceTier = "verified" | "anchor" | "live-verified";
@@ -297,6 +307,133 @@ export const REFERENCES: Record<string, Reference> = {
     "org",
     "Association of Certified Fraud Examiners. (n.d.). Association of Certified Fraud Examiners. Retrieved August 27, 2026.",
     "https://www.acfe.com/",
+  ),
+  // Transfer pricing primary sources (live-verified 2026-10-05; see the
+  // LIVE-CHECK NOTES above). The statute and the Treasury regulations are
+  // legal materials, cited Bluebook-style with "sec." in place of the section
+  // sign (house rule); the regulations link to the current eCFR text.
+  IRC_482: R(
+    "IRC_482",
+    "live-verified",
+    "case-law",
+    "26 U.S.C. sec. 482 (allocation of income and deductions among taxpayers).",
+    "https://www.law.cornell.edu/uscode/text/26/482",
+  ),
+  TREAS_REG_1_482_1: R(
+    "TREAS_REG_1_482_1",
+    "live-verified",
+    "case-law",
+    "Treas. Reg. sec. 1.482-1 (allocation of income and deductions among taxpayers).",
+    "https://www.ecfr.gov/current/title-26/section-1.482-1",
+  ),
+  TREAS_REG_1_482_3: R(
+    "TREAS_REG_1_482_3",
+    "live-verified",
+    "case-law",
+    "Treas. Reg. sec. 1.482-3 (methods to determine taxable income in connection with a transfer of tangible property).",
+    "https://www.ecfr.gov/current/title-26/section-1.482-3",
+  ),
+  TREAS_REG_1_482_4: R(
+    "TREAS_REG_1_482_4",
+    "live-verified",
+    "case-law",
+    "Treas. Reg. sec. 1.482-4 (methods to determine taxable income in connection with a transfer of intangible property).",
+    "https://www.ecfr.gov/current/title-26/section-1.482-4",
+  ),
+  TREAS_REG_1_482_5: R(
+    "TREAS_REG_1_482_5",
+    "live-verified",
+    "case-law",
+    "Treas. Reg. sec. 1.482-5 (comparable profits method).",
+    "https://www.ecfr.gov/current/title-26/section-1.482-5",
+  ),
+  TREAS_REG_1_482_6: R(
+    "TREAS_REG_1_482_6",
+    "live-verified",
+    "case-law",
+    "Treas. Reg. sec. 1.482-6 (profit split method).",
+    "https://www.ecfr.gov/current/title-26/section-1.482-6",
+  ),
+  TREAS_REG_1_482_9: R(
+    "TREAS_REG_1_482_9",
+    "live-verified",
+    "case-law",
+    "Treas. Reg. sec. 1.482-9 (methods to determine taxable income in connection with a controlled services transaction).",
+    "https://www.ecfr.gov/current/title-26/section-1.482-9",
+  ),
+  TREAS_REG_1_6662_6: R(
+    "TREAS_REG_1_6662_6",
+    "live-verified",
+    "case-law",
+    "Treas. Reg. sec. 1.6662-6 (transactions between persons described in section 482 and net section 482 transfer price adjustments).",
+    "https://www.ecfr.gov/current/title-26/section-1.6662-6",
+  ),
+  TAX_COURT_RULE_143: R(
+    "TAX_COURT_RULE_143",
+    "live-verified",
+    "case-law",
+    "Tax Ct. R. Prac. & Proc. 143(g) (expert witness reports).",
+    "https://ustaxcourt.gov/files/documents/rule-143.pdf",
+  ),
+  OECD_TP_GUIDELINES: R(
+    "OECD_TP_GUIDELINES",
+    "live-verified",
+    "org",
+    "OECD. (2022). OECD transfer pricing guidelines for multinational enterprises and tax administrations 2022. OECD Publishing.",
+    "https://doi.org/10.1787/0e655865-en",
+  ),
+  IRS_TP_EXAM_PROCESS: R(
+    "IRS_TP_EXAM_PROCESS",
+    "live-verified",
+    "gov",
+    "Internal Revenue Service. (2020). Transfer pricing examination process (Publication 5300, Rev. 9-2020). U.S. Department of the Treasury.",
+    "https://www.irs.gov/pub/irs-pdf/p5300.pdf",
+  ),
+  IRS_TP_DOCUMENTATION_FAQS: R(
+    "IRS_TP_DOCUMENTATION_FAQS",
+    "live-verified",
+    "gov",
+    "Internal Revenue Service. (n.d.). Transfer pricing documentation best practices frequently asked questions (FAQs). U.S. Department of the Treasury. Retrieved October 5, 2026.",
+    "https://www.irs.gov/businesses/international-businesses/transfer-pricing-documentation-best-practices-frequently-asked-questions-faqs",
+  ),
+  IRS_MAP_OVERVIEW: R(
+    "IRS_MAP_OVERVIEW",
+    "live-verified",
+    "gov",
+    "Internal Revenue Service. (n.d.). Overview of the MAP process. U.S. Department of the Treasury. Retrieved October 5, 2026.",
+    "https://www.irs.gov/businesses/overview-of-the-map-process",
+  ),
+  // Rev. Proc. 2015-40, the competent authority procedures; section 10
+  // (arbitration) says a case the competent authorities cannot resolve in
+  // the treaty's time goes to the panel, the taxpayer's analysis reaches the
+  // panel through the U.S. competent authority as the treaty permits, and
+  // the determination binds only if the taxpayer accepts it. Read on the
+  // Internal Revenue Bulletin page 2026-10-05 (the review fixes); the IRS
+  // MAP overview cites the same sections.
+  IRS_REV_PROC_2015_40: R(
+    "IRS_REV_PROC_2015_40",
+    "live-verified",
+    "gov",
+    "Rev. Proc. 2015-40, 2015-35 I.R.B. 236 (procedures for requesting U.S. competent authority assistance under tax treaties).",
+    "https://www.irs.gov/irb/2015-35_IRB#RP-2015-40",
+  ),
+  IRS_APMA: R(
+    "IRS_APMA",
+    "live-verified",
+    "gov",
+    "Internal Revenue Service. (n.d.). Advance Pricing and Mutual Agreement (APMA) Program. U.S. Department of the Treasury. Retrieved October 5, 2026.",
+    "https://www.irs.gov/businesses/corporations/apma",
+  ),
+  // The calendar-year 2025 report, dated March 30, 2026, as listed on the
+  // IRS "Annual APA statutory reports" page. Cited for how the methods,
+  // tested parties, and ranges are applied in executed agreements; the pages
+  // that cite it carry none of its figures.
+  IRS_APMA_REPORT_2025: R(
+    "IRS_APMA_REPORT_2025",
+    "live-verified",
+    "gov",
+    "Internal Revenue Service. (2026). Announcement and report concerning advance pricing agreements [2025 APMA statutory report]. U.S. Department of the Treasury.",
+    "https://www.irs.gov/pub/irs-drop/a-26-08.pdf",
   ),
 };
 

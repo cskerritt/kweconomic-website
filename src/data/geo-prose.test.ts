@@ -50,10 +50,14 @@ const DOUBLED_ARTICLE = /\b(a|an|the) (a|an|the)\b/i;
 const MISARTICLED = /\ba [AEIO]\w|\ban [B-DF-HJ-NP-TV-Z]\w/;
 const DOUBLED_WORD = /\b([a-z]{3,}) \1\b/i;
 
+// The transfer pricing pillar ("tax", 2026-10-05) is held to the same
+// standard: its pages build from the group's own records and comparables,
+// never from the personal-loss template's wage framing.
 const COMMERCIAL_AND_FAMILY = [
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
+  "transfer-pricing-expert-witness",
   "divorce-and-marital-financial-analysis",
 ] as const;
 
@@ -123,6 +127,7 @@ describe("service categories", () => {
     expect(serviceGeoCategory("Lost Profits")).toBe("commercial");
     expect(serviceGeoCategory("Fraud & Tracing")).toBe("commercial");
     expect(serviceGeoCategory("Divorce Financial Analysis")).toBe("family-financial");
+    expect(serviceGeoCategory("Transfer Pricing")).toBe("tax");
     expect(serviceGeoCategory("Rebuttal")).toBe("rebuttal");
     // No service (the hub pages) and an unknown short name read as the shared framing.
     expect(serviceGeoCategory(undefined)).toBe("personal-loss");
@@ -132,7 +137,7 @@ describe("service categories", () => {
   it("gives every pillar a category and every commercial or family-financial pillar its own engagement, deliverables, and caption", () => {
     for (const s of pillarServices()) {
       const angle = SERVICE_GEO[s.shortName];
-      expect(angle?.category, s.slug).toMatch(/^(personal-loss|commercial|family-financial|rebuttal)$/);
+      expect(angle?.category, s.slug).toMatch(/^(personal-loss|commercial|family-financial|tax|rebuttal)$/);
     }
     for (const slug of COMMERCIAL_AND_FAMILY) {
       const angle = SERVICE_GEO[getServiceBySlug(slug)!.shortName];
@@ -301,6 +306,63 @@ describe("divorce financial analysis pages", () => {
       "Matrimonial matters in Washington are typically heard in the family or domestic relations part of the Superior Court of the District of Columbia.",
     );
     expect(cityHero).not.toMatch(/sitting in District of Columbia/);
+  });
+});
+
+describe("transfer pricing pages", () => {
+  it("test intercompany prices against the arm's length standard from the group's own records, and name the federal tax forums before the state's (Houston)", () => {
+    const { stateHero, stateLegal, cityHero, cityPlace, cityFaqs, stateFaqs } = renderedProse("transfer-pricing-expert-witness", "texas", texasCities, "houston");
+    expect(serviceGeoCategory("Transfer Pricing")).toBe("tax");
+    expect(stateHero.startsWith("KW Economics provides transfer pricing analysis for matters venued in Texas. The analysis tests the prices charged between related companies")).toBe(true);
+    expect(stateHero).toContain("against the arm's length standard");
+    // One statute and one set of regulations, but the business's location
+    // decides which circuit's appellate decisions govern (the review fix of
+    // 2026-10-05 retired "the same federal rules wherever the business is
+    // based").
+    expect(stateHero).toContain(
+      "A federal transfer pricing dispute applies the same statute and regulations wherever the business is based, though where it is based decides which federal court of appeals' decisions govern; in Texas, the analysis also meets the jurisdiction's own tax on related-party income",
+    );
+    // The federal tax forums lead the legal context; the state's trial court
+    // hears the civil claims, and the compensation forum never appears.
+    expect(stateLegal).toBe(
+      "Federal transfer pricing disputes are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; the same statute and regulations apply wherever the business is based, but where it is based decides which federal court of appeals' decisions govern. Texas's District Court is the primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price, and a dispute over Texas's own tax follows its administrative and appeal process. Final appeals in the Texas court system run to the Supreme Court of Texas. Texas is served by 4 federal district courts, where the same analyses are offered under the federal expert-disclosure framework.",
+    );
+    for (const text of [stateHero, stateLegal]) expect(text).not.toMatch(/same federal rules|same federal arm's length rules/);
+    // The city place paragraph says where a tax dispute for a business based
+    // in the city is heard, not which employers shape its labor market.
+    expect(cityPlace).toBe(
+      "A federal tax dispute for a business based in Houston is heard in the United States Tax Court, which holds trials in cities across the country, or, on a refund claim, in a federal district court or the Court of Federal Claims; a dispute over Texas's own tax follows its administrative and appeal process. Either side.",
+    );
+    expect(cityPlace).not.toMatch(/Employers such as|labor market/);
+    // The disclosure FAQ names the Tax Court's report exchange.
+    expect(stateFaqs[2].answer).toContain("no later than thirty days before the call of the trial calendar");
+    expect(stateFaqs[0].answer).toBe(
+      "Yes. KW Economics provides transfer pricing analysis for attorneys handling matters venued in Texas, for plaintiff and defense counsel, with the analysis sized to the engagement scope and built from the group's own intercompany agreements and financial records and from comparable transactions and companies selected for the transactions at issue rather than from data for the venue.",
+    );
+    expect(stateFaqs[1].answer).toContain(
+      "(the intercompany agreements, the transfer pricing documentation, legal-entity financial statements, and the general ledger detail of the intercompany accounts)",
+    );
+    expect(stateFaqs[1].answer).toContain("the selection of the method under the best method rule with the rejected alternatives explained");
+    expect(cityHero).toContain("selected for the transactions at issue rather than for the city, so Houston-area market conditions enter only where a comparability adjustment calls for them.");
+    expect(cityHero).toMatch(/Civil claims arising in Houston are typically heard in the District Court sitting in Harris County\./);
+    expect(cityFaqs[1].question).toBe("What records drive a transfer pricing analysis for a business based in Houston?");
+    expect(cityFaqs[2].answer).toContain("transfer pricing expert reports for tax and civil forums");
+    expect(economicContextCaption("Transfer Pricing", "Texas")).toBe(
+      "The arm's length result rests on the group's own agreements and financial records and on comparables selected for the transactions at issue; Texas enters as the forum for a state or local tax dispute or a civil claim and, where a comparability adjustment calls for it, through Texas-area market conditions.",
+    );
+    for (const text of [stateHero, stateLegal, cityHero, cityPlace, JSON.stringify(stateFaqs), JSON.stringify(cityFaqs)]) {
+      expect(text).not.toMatch(/wage|worklife|household|Bureau of Labor Statistics/i);
+      expect(text).not.toMatch(/\bSection \d|\bRule \d|U\.S\.C\.|C\.F\.R\.|[–—§]/);
+      expect(text).not.toMatch(/maximi[sz]e|minimi[sz]e|avoid tax|tax shelter|win your/i);
+    }
+  });
+
+  it("read the District with its article in the legal context and the hero (Washington)", () => {
+    const { stateHero, stateLegal } = renderedProse("transfer-pricing-expert-witness", "district-of-columbia", districtOfColumbiaCities, "washington");
+    expect(stateLegal).toContain("The Superior Court of the District of Columbia is the primary trial-level forum for the commercial, shareholder, and matrimonial claims");
+    expect(stateLegal).toContain("a dispute over the District of Columbia's own tax follows its administrative and appeal process");
+    expect(stateHero).toContain("in the District of Columbia, the analysis also meets the jurisdiction's own tax on related-party income");
+    for (const text of [stateHero, stateLegal]) expect(text).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia/i);
   });
 });
 

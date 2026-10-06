@@ -326,6 +326,7 @@ const COMMERCIAL_AND_REBUTTAL = [
   "business-valuation",
   "lost-profits-and-commercial-damages",
   "fraud-and-asset-tracing",
+  "transfer-pricing-expert-witness",
   "divorce-and-marital-financial-analysis",
   "expert-rebuttal-and-report-review",
 ];
@@ -418,8 +419,13 @@ describe("pillar angles on the service x geo templates", () => {
     for (const s of pillars) {
       const faq = serviceStateGeographicFaqs(s, tx.name)[2];
       expect(faq.question, s.slug).toBe("When is expert disclosure due for a case venued in Texas?");
+      // The transfer pricing pillar's disputes are mostly tried in the Tax
+      // Court, whose own rule fixes the report exchange; every other pillar
+      // keeps the shared answer.
       expect(faq.answer, s.slug).toBe(
-        "Expert disclosure in Texas is scheduled case by case: in the Texas trial courts by the case management or scheduling order, and in the federal district courts serving Texas by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
+        s.slug === "transfer-pricing-expert-witness"
+          ? "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony. In a refund suit in a federal district court or the Court of Federal Claims, or a commercial, shareholder, or matrimonial case in the Texas trial courts, the court's scheduling order ordinarily sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case."
+          : "Expert disclosure in Texas is scheduled case by case: in the Texas trial courts by the case management or scheduling order, and in the federal district courts serving Texas by the federal expert-disclosure framework, under which the written report, the materials considered, and the testimony history are served together. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
       );
     }
     const dc = serviceStateGeographicFaqs(getServiceBySlug("wrongful-death-economic-loss")!, "District of Columbia")[2];
@@ -545,14 +551,26 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
     expect(serviceStateVenueParagraph(getServiceBySlug("lost-profits-and-commercial-damages")!, nj)).toContain(
       "Lost profits claims arising in New Jersey are heard in the Superior Court, Law Division and, where jurisdiction allows, in the federal district courts serving New Jersey.",
     );
+    // The transfer pricing pillar names the federal tax forums, the state's
+    // own tax process, and the civil court, in that order.
+    expect(serviceStateVenueParagraph(getServiceBySlug("transfer-pricing-expert-witness")!, nj)).toBe(
+      "Transfer pricing disputes that involve New Jersey reach several forums: the United States Tax Court and, on a refund claim, the federal district courts serving New Jersey or the Court of Federal Claims for federal income tax; the New Jersey tax authority and its appeal process for a dispute over New Jersey tax; and the Superior Court, Law Division for the commercial, shareholder, and matrimonial claims that turn on an intercompany price. The arm's length analysis is built the same way for each forum; the forum sets the rule of decision, which counsel confirms, and the report presents the result so it can be applied under it.",
+    );
   });
 
   it("names what each pillar measures in the city context paragraph", () => {
     const paragraphs = pillars.map((s) => serviceCityContextParagraph(s, nj, hackensack));
     expect(new Set(paragraphs).size).toBe(pillars.length);
-    for (const p of paragraphs) {
+    for (const [i, p] of paragraphs.entries()) {
       expect(p.startsWith("KW Economics serves counsel throughout Hackensack and the surrounding Bergen County area. Our economists ")).toBe(true);
-      expect(p).toMatch(/engagements in New Jersey\.$/);
+      // The transfer pricing pillar's forums are mostly federal, so its
+      // paragraph names the forums for disputes involving the state's
+      // businesses rather than the state's court system.
+      expect(p).toMatch(
+        pillars[i].slug === "transfer-pricing-expert-witness"
+          ? /are familiar with the forums and disclosure rules that apply to transfer pricing disputes involving New Jersey businesses\.$/
+          : /engagements in New Jersey\.$/,
+      );
       expect(p).not.toMatch(TYPOGRAPHY);
       expect(p).not.toMatch(CARE_COST);
       expect(p).not.toContain("&");

@@ -96,6 +96,32 @@ export function serviceTitleLabels(service) {
 }
 
 /**
+ * The labels the service x state and service x city tags try first, longest
+ * first: a pillar whose short name drops the role its queries carry
+ * ("Transfer Pricing", where the query is "transfer pricing expert witness
+ * <place>") sets `geoTitleLabels` ("Transfer Pricing Expert Witness",
+ * "Transfer Pricing Expert"), and the heading labels follow
+ * (serviceTitleLabels), so the ladder still ends where every other pillar's
+ * does. The pair tags keep serviceTitleLabels alone.
+ * @param {{ shortName: string; titleShortName?: string; geoTitleLabels?: readonly string[] }} service
+ * @returns {string[]}
+ */
+export function serviceGeoTitleLabels(service) {
+  return forms([...(service.geoTitleLabels ?? []), ...serviceTitleLabels(service)]);
+}
+
+/**
+ * The label the service x state and service x city H1s print before
+ * " in <place>": the fullest geo label where the pillar sets one (an H1 has
+ * no length budget), else the short name as written.
+ * @param {{ shortName: string; geoTitleLabels?: readonly string[] }} service
+ * @returns {string}
+ */
+export function serviceGeoHeadingLabel(service) {
+  return service.geoTitleLabels?.[0] ?? service.shortName;
+}
+
+/**
  * The service names the pillar hub and the cost/process/timeline tags may
  * carry, longest first: the full name, then the shorter titleName where the
  * data sets one, which the builders take only where the full name cannot fit.
@@ -142,16 +168,25 @@ export const cityHubTitle = (city, state, orgName) => cityTitle("Forensic Econom
 /** /case-types/<case>/<state>: the case type's stems plus the place. */
 export const caseTypeStateTitle = (caseType, state, orgName) => placeTitle(caseTypeTitleStems(caseType), state, orgName);
 
-/** /services/<pillar>/<state> */
-export const serviceStateTitle = (service, state, orgName) => placeTitle(serviceTitleLabels(service), state, orgName);
+/** /services/<pillar>/<state> (serviceGeoTitleLabels: a pillar's geo labels first). */
+export const serviceStateTitle = (service, state, orgName) => placeTitle(serviceGeoTitleLabels(service), state, orgName);
 
-/** /services/<pillar>/<state>/<city> */
+/** /services/<pillar>/<state>/<city> (serviceGeoTitleLabels: a pillar's geo labels first). */
 export const serviceCityTitle = (service, city, state, orgName) =>
-  cityTitle(serviceTitleLabels(service), city, state, orgName);
+  cityTitle(serviceGeoTitleLabels(service), city, state, orgName);
 
-/** /services/<pillar>: "<name> Expert". */
+/**
+ * The pillar title label: "<name> Expert", or the name as written where it
+ * already ends in the role ("Transfer Pricing Expert Witness"), so no title
+ * reads "Expert Witness Expert".
+ * @param {string} name
+ * @returns {string}
+ */
+export const expertLabel = (name) => (/\bExpert(?: Witness)?$/.test(name) ? name : `${name} Expert`);
+
+/** /services/<pillar>: "<name> Expert" (see expertLabel). */
 export const pillarTitle = (service, orgName) =>
-  fitTitle(orgName, ...serviceTitleNames(service).map((name) => `${name} Expert`));
+  fitTitle(orgName, ...serviceTitleNames(service).map(expertLabel));
 
 /** /services/<pillar>/<cost|process|timeline>: "<name> Cost", "<name> Process", "<name> Timeline". */
 export const variantTitle = (service, variantLabel, orgName) =>

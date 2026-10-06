@@ -79,8 +79,9 @@ export default function About() {
               {ORG_NAME} is a forensic economics practice. We measure economic losses for
               litigation - lost earnings, wrongful death losses, household services, the present
               value of future care, employment damages, lost profits, and the value of business
-              interests - for attorneys and their clients across all U.S. jurisdictions, and we
-              testify to that work when the case requires it.
+              interests - and test the prices charged between related companies in transfer
+              pricing disputes, for attorneys and their clients across all U.S. jurisdictions, and
+              we testify to that work when the case requires it.
             </p>
           </div>
         </div>
@@ -217,11 +218,12 @@ export default function About() {
       {/* Leadership Teaser */}
       <section className="py-16 bg-neutral-50 border-y border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Economists</h2>
+          <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Team</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto mb-8">
             The practice is led by a Chief of Economic Services who directs every analysis and
-            is available to testify to it, supported by an economics associate who coordinates
-            each engagement with counsel. Read the background and practice areas of each member
+            is available to testify to it, supported by an economic associate who coordinates
+            each engagement with counsel and a forensic accountant who analyzes the financial
+            records. Read the background and practice areas of each member
             of the team.
           </p>
           <Link

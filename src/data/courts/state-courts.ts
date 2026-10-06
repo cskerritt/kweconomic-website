@@ -1007,9 +1007,12 @@ export function getCourtsByState(stateSlug: string): StateCourtSystemEntry | und
 export type TrialCourt = StateCourtSystem["trialCourts"][number];
 
 /** Which courts a page should list: the civil courts a damages claim is heard
- * in, the family and equity courts for a divorce, or the chancery and business
- * courts for a commercial dispute. */
-export type CourtSelection = "general" | "family" | "commercial";
+ * in, the family and equity courts for a divorce, the chancery and business
+ * courts for a commercial dispute, or, for the commercial and shareholder
+ * claims of a tax or transfer pricing dispute ("business"), the chancery and
+ * business courts and the general-jurisdiction courts alone: no
+ * limited-jurisdiction court and no court for claims against the state. */
+export type CourtSelection = "general" | "family" | "commercial" | "business";
 
 const GENERAL_JURISDICTION = /general jurisdiction|general civil/i;
 const SPECIALIZED = /family|probate|juvenile|traffic|municipal|tax|surrogate|orphans|water|land court|housing|environmental|workers' compensation|criminal court/i;
@@ -1027,14 +1030,19 @@ const courtText = (c: TrialCourt) => `${c.name} ${c.description}`;
  * otherwise show the family and probate divisions. General-jurisdiction
  * courts are always eligible; specialized courts are dropped for the general
  * selection and preferred for the family and commercial selections, and
- * small-claims-tier courts never back-fill either. Falls back to the first
- * `limit` courts only when nothing is eligible.
+ * small-claims-tier courts never back-fill either. The business selection
+ * takes the chancery and business courts and then the general-jurisdiction
+ * courts, with no back-fill at all. Falls back to the first `limit` courts
+ * only when nothing is eligible.
  */
 export function selectTrialCourts(courts: StateCourtSystem, kind: CourtSelection = "general", limit = 3): TrialCourt[] {
   const all = courts.trialCourts;
   const general = all.filter((c) => GENERAL_JURISDICTION.test(c.description));
   let ranked: TrialCourt[];
-  if (kind === "family" || kind === "commercial") {
+  if (kind === "business") {
+    const preferred = all.filter((c) => COMMERCIAL.test(courtText(c)));
+    ranked = [...preferred, ...general.filter((c) => !preferred.includes(c))];
+  } else if (kind === "family" || kind === "commercial") {
     const wanted = kind === "family" ? FAMILY : COMMERCIAL;
     const preferred = all.filter((c) => wanted.test(courtText(c)));
     const generalRest = general.filter((c) => !preferred.includes(c));
