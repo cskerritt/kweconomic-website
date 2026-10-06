@@ -10,7 +10,7 @@ import { ORG_NAME } from "@/lib/brand";
 import { ORG_URL } from "@/lib/schema";
 import { serviceCaseStateTitle, TITLE_MAX } from "@/lib/page-titles.mjs";
 import { serviceCaseStateDescription } from "@/lib/service-prose.mjs";
-import { placeName } from "@/data/geo-prose.mjs";
+import { placeName, prosePlace } from "@/data/geo-prose.mjs";
 import { expectServiceIdentity } from "@/test-utils/jsonld";
 import { renderRoute, visibleText, jsonLdBlocks, faqLdStrings, faqText, DOUBLED_WORD, MIS_ARTICLE, excerpt } from "@/test-utils/markup";
 
@@ -97,8 +97,13 @@ describe("ServiceCaseTypeState template", () => {
         const title = serviceCaseStateTitle(service, caseType, st, ORG_NAME);
         expect(title.length, `${serviceSlug}/${typeSlug}/${st.slug}: ${title}`).toBeLessThanOrEqual(TITLE_MAX);
         expect(title).not.toMatch(/&|[–—§]/);
-        const description = serviceCaseStateDescription(service, caseType, placeName(st.name));
+        // The page passes the place's type and federal district count, which
+        // set the courts a venue-framed case type's tail names.
+        const geo = { type: st.type, federalDistrictCount: federalDistricts.filter((d) => d.stateSlug === st.slug).length };
+        const description = serviceCaseStateDescription(service, caseType, placeName(st.name), geo);
         expect(description.length, `${serviceSlug}/${typeSlug}/${st.slug}`).toBeLessThanOrEqual(160);
+        if (caseType.venueFraming && st.type !== "state") expect(description, `${serviceSlug}/${typeSlug}/${st.slug}`).not.toContain("state courts");
+        if (caseType.venueFraming && geo.federalDistrictCount === 0) expect(description, `${serviceSlug}/${typeSlug}/${st.slug}`).not.toMatch(/federal and/);
         // The builder takes the first candidate inside the band (review fix
         // 2026-10-05: four transfer pricing x shareholder pages fell to 139).
         expect(description.length, `${serviceSlug}/${typeSlug}/${st.slug}: ${description}`).toBeGreaterThanOrEqual(140);
@@ -178,14 +183,29 @@ describe("ServiceCaseTypeState template", () => {
     for (const serviceSlug of pillars) {
       for (const st of states) {
         const label = `${serviceSlug}/${st.slug}`;
-        const place = placeName(st.name);
+        // Running prose takes the article the plural island names need.
+        const place = prosePlace(st.name);
         const { html, description } = render(serviceSlug, "intellectual-property-infringement", st.slug);
         const text = visibleText(html);
         const faqs = faqLdStrings(html);
         expect(description.length, label).toBeGreaterThanOrEqual(140);
         expect(description.length, label).toBeLessThanOrEqual(160);
         expect(description, label).toContain("courts");
+        // The District and the territories have local courts, not state
+        // courts; American Samoa has no federal district court of its own.
+        if (st.type !== "state") expect(description, label).not.toContain("state courts");
+        if (st.slug === "american-samoa") expect(description, label).not.toMatch(/federal and/);
         expect(text, label).toContain(`cases involving ${place}: the measure each patent, trademark, copyright, or trade secret claim carries`);
+        // The build FAQ answers from the pillar's own note for the pair.
+        const service = pillarServices().find((x) => x.slug === serviceSlug)!;
+        const buildQ = faqs.findIndex((q) => q.startsWith("How is ") && q.endsWith(` case in ${placeName(st.name)}?`));
+        expect(faqs[buildQ + 1], label).toBe(service.caseTypeNotes["intellectual-property-infringement"].summary);
+        // The References block carries the case type's state list beside the pillar's.
+        const refs = html.slice(html.indexOf('id="sources-heading"'));
+        const ipVenue = getCaseType("intellectual-property-infringement")!.venueFraming!;
+        for (const src of [...ipVenue.stateSources, ...ipVenue.exposureSources]) {
+          expect(refs, `${label} ${src.url}`).toContain(`href="${src.url.replace(/&/g, "&amp;")}"`);
+        }
         const expertQ = faqs.findIndex((q) => q.startsWith(`What do the courts that hear an intellectual property case involving ${place} ask of`));
         expect(expertQ, label).toBeGreaterThan(-1);
         const expertAnswer = faqs[expertQ + 1];
@@ -195,6 +215,7 @@ describe("ServiceCaseTypeState template", () => {
         for (const t of [text, faqs.join(" ")]) {
           expect(t, label).not.toMatch(/damages rules and venues|a present value built|past and future amounts separately|contributory negligence|comparative fault/);
           expect(t, label).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia|for the District Court (of|for)/i);
+          expect(t, label).not.toMatch(/Islands's|construes the claims and/);
         }
         if (st.slug === "american-samoa") {
           expect(expertAnswer, label).toContain("American Samoa has no federal district court of its own");

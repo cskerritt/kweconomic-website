@@ -99,6 +99,9 @@ const [
     caseTypeStateForums,
     caseTypePairStateFrameworkQuestion,
     caseTypeCourtsNameFederalCourts,
+    caseTypeStateSources,
+    caseTypePairStateSources,
+    caseTypePairStateBuildAnswer,
   },
   { credentials, credentialStateHeadings, credentialStateAngle },
   { methods },
@@ -2181,7 +2184,9 @@ for (const [i, c] of caseTypes.entries()) {
         `<section id="other-case-types">${h2(`Other case types in ${place}`)}${linkList(caseTypes.filter((ct) => ct.slug !== c.slug).map((ct) => ({ href: `/case-types/${ct.slug}/${s.slug}`, label: ct.name })))}</section>` +
         renderFaqHtml(localFaqs, `Frequently asked: ${lower} cases in ${place}`) +
         `<section id="more-questions">${h2(`More questions about ${lower} analysis`)}${linkList(c.faqs.map((f) => ({ href: `/case-types/${c.slug}#faq-heading`, label: f.question })))}</section>` +
-        sourcesHtml(c.sources.slice(0, 5)) +
+        // Mirrors CaseTypeState.tsx: the first five hub sources, or a
+        // venue-framed entry's state list.
+        sourcesHtml(caseTypeStateSources(c)) +
         navLinks([{ href: `/case-types/${c.slug}`, label: `${c.name} overview` }, { href: "/case-types", label: "All case types" }, { href: "/contact", label: "Contact" }]),
       ctaContext: `${lower} cases in ${place}`,
       jsonLd: [
@@ -2762,10 +2767,14 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
       .filter((slug) => slug !== st.slug)
       .map((slug) => states.find((x) => x.slug === slug))
       .filter(Boolean);
+    // Mirrors ServiceCaseTypeState.tsx: the place's type and federal
+    // district count set the courts a venue-framed description names.
+    const descriptionGeo = { type: st.type, federalDistrictCount: districts.length };
     const faqs = [
       {
+        // Mirrors ServiceCaseTypeState.tsx: the pillar's own note for the pair.
         question: `How is ${work} built for ${prose.withArticle(lower)} case in ${place}?`,
-        answer: `${caseTypeStateStepsIntro(c, place)} ${(c.steps ?? []).join(" ")}`,
+        answer: caseTypePairStateBuildAnswer(c, place, note),
       },
       ...(regulations && courts
         ? [
@@ -2821,7 +2830,7 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
       // serviceCaseStateDescription builders, wrapped in template literals so
       // the parity guard can slot them.
       title: `${serviceCaseStateTitle(s, c, st, ORG_NAME)}`,
-      description: `${serviceCaseStateDescription(s, c, placeName(st.name))}`,
+      description: `${serviceCaseStateDescription(s, c, placeName(st.name), descriptionGeo)}`,
       breadcrumbs: [
         { name: "Home", path: "/" },
         { name: "Services", path: "/services" },
@@ -2860,7 +2869,8 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
             )}</section>`
           : "") +
         renderFaqHtml(faqs, `Frequently asked: ${prose.capFirst(work)} in ${place} ${lower} matters`) +
-        sourcesHtml((s.sources ?? []).slice(0, 5)) +
+        // Mirrors ServiceCaseTypeState.tsx (caseTypePairStateSources).
+        sourcesHtml(caseTypePairStateSources(c, s.sources ?? [])) +
         navLinks([
           { href: `/services/${s.slug}/case/${c.slug}`, label: `${s.shortName} for ${c.name}` },
           { href: `/services/${s.slug}`, label: s.name },
@@ -2874,7 +2884,7 @@ for (const { service: s, caseTypeSlug } of serviceCaseTypePairs()) {
         schema.serviceSchema({
           url,
           name: h1,
-          description: serviceCaseStateDescription(s, c, place),
+          description: serviceCaseStateDescription(s, c, place, descriptionGeo),
           areaServed: { "@type": st.type === "state" ? "State" : "AdministrativeArea", name: st.name },
           dateModified: s.dateModified,
         }),

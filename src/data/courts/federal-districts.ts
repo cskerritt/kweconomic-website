@@ -83,8 +83,9 @@ export const FEDERAL_SERVICE_SLUGS = [
   // litigation is heard mostly in the Tax Court, and nothing supports
   // calling it work "most often retained" in a federal district court.
   // Intellectual property damages is listed (2026-10-06): patent and
-  // copyright claims are heard only in the federal district courts, and
-  // trademark and trade secret claims are often filed there.
+  // copyright claims between private parties are heard only in the federal
+  // district courts, and trademark and trade secret claims are often filed
+  // there.
   "intellectual-property-damages",
   "expert-rebuttal-and-report-review",
 ] as const;

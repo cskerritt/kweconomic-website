@@ -88,18 +88,25 @@ const DESCRIPTION_MAX = 160;
  * the financial questions instead of a loss claim and closes on "Either
  * side." rather than "Plaintiff and defense."; a damages claim heard first in
  * the federal courts (a `venueFraming` block: intellectual property) names
- * the federal and state courts rather than a state damages framework. The
- * candidates run from the fullest form down, the audience tag riding along
- * where it fits, and the first inside the 140-160 band wins; the first
- * inside the window stands in only where none lands in the band.
+ * the federal and state courts rather than a state damages framework (the
+ * federal and local courts in the District and the territories, and the
+ * courts alone in a place with no federal district court of its own, which
+ * `geo` gives: the place's states.ts `type` and its federal district count;
+ * a state where `geo` is omitted). The candidates run from the fullest form
+ * down, the audience tag riding along where it fits, and the first inside
+ * the 140-160 band wins; the first inside the window stands in only where
+ * none lands in the band.
  * @param {{ shortName: string }} service
  * @param {{ name: string; framing?: object; venueFraming?: object }} caseType
  * @param {string} place the place name as geo-prose.mjs placeName() spells it
+ * @param {{ type?: string; federalDistrictCount?: number }} [geo]
  * @returns {string}
  */
-export function serviceCaseStateDescription(service, caseType, place) {
+export function serviceCaseStateDescription(service, caseType, place, geo = {}) {
   const stem = `${capFirst(workPhrase(service.shortName))} for ${caseType.name.toLowerCase()} cases in ${place}`;
   const sides = caseType.framing ? " Either side." : " Plaintiff and defense.";
+  const { type = "state", federalDistrictCount = 1 } = geo;
+  const courts = federalDistrictCount === 0 ? "courts" : type === "state" ? "federal and state courts" : "federal and local courts";
   const tails = caseType.framing
     ? [
         "the financial questions, the records that answer them, and the state framework.",
@@ -109,9 +116,9 @@ export function serviceCaseStateDescription(service, caseType, place) {
       ]
     : caseType.venueFraming
       ? [
-          "the damages claim, the records that drive it, and the federal and state courts.",
-          "the damages claim, the records behind it, and the federal and state courts.",
-          "the damages claim, its records, and the federal and state courts.",
+          `the damages claim, the records that drive it, and the ${courts}.`,
+          `the damages claim, the records behind it, and the ${courts}.`,
+          `the damages claim, its records, and the ${courts}.`,
           "the damages claim, its records, and the courts.",
           "damages claim, records, and courts.",
         ]

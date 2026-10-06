@@ -29,7 +29,22 @@ export function extractStateFacts(srcData) {
   return map;
 }
 
-/** courts/state-courts.ts -> { [slug]: { trialCourtName, supremeCourt, federalDistrictCount } } */
+// Mirrors selectTrialCourts(courts, "business", 2) in
+// src/data/courts/state-courts.ts, the selection the intellectual property
+// case type takes (src/data/caseTypes.ts caseTypeCourtSelection): the
+// chancery and business courts first, then the general-jurisdiction courts,
+// two deep, with no back-fill. narratives.parity.test.mjs pins it to the TS
+// selection through the narratives that name the courts.
+const GENERAL_JURISDICTION = /general jurisdiction|general civil/i;
+const COMMERCIAL = /chancery|business|commercial/i;
+function businessCourtNames(trialCourts, limit = 2) {
+  const preferred = trialCourts.filter((c) => COMMERCIAL.test(`${c.name} ${c.description}`));
+  const general = trialCourts.filter((c) => GENERAL_JURISDICTION.test(c.description) && !preferred.includes(c));
+  const picked = [...preferred, ...general].slice(0, limit);
+  return (picked.length ? picked : trialCourts.slice(0, limit)).map((c) => c.name);
+}
+
+/** courts/state-courts.ts -> { [slug]: { trialCourtName, ipTrialCourtNames, supremeCourt, federalDistrictCount } } */
 export function extractStateCourtsMap(srcData) {
   const content = readFileSync(join(srcData, "courts", "state-courts.ts"), "utf-8");
   const map = {};
@@ -38,9 +53,13 @@ export function extractStateCourtsMap(srcData) {
     if (!slug) continue;
     const federalDistricts =
       (block.match(/federalDistricts:\s*\[([\s\S]*?)\]/)?.[1] ?? "").match(/\bname:\s*"/g)?.length ?? 0;
+    const trialCourts = [
+      ...(block.match(/trialCourts:\s*\[([\s\S]*?)\]/)?.[1] ?? "").matchAll(/\{\s*name:\s*"([^"]+)",\s*description:\s*"([^"]+)"\s*\}/g),
+    ].map((m) => ({ name: m[1], description: m[2] }));
     map[slug] = {
       supremeCourt: block.match(/supremeCourt:\s*"([^"]+)"/)?.[1],
       trialCourtName: block.match(/trialCourts:\s*\[\s*\{\s*name:\s*"([^"]+)"/)?.[1],
+      ipTrialCourtNames: businessCourtNames(trialCourts),
       federalDistrictCount: federalDistricts,
     };
   }
@@ -129,6 +148,7 @@ export function createGeoNarrators(srcData, orgName) {
       region: facts.region,
       population: facts.population,
       trialCourtName: courts?.trialCourtName,
+      ipTrialCourtNames: courts?.ipTrialCourtNames ?? [],
       supremeCourt: courts?.supremeCourt,
       federalDistrictCount: courts?.federalDistrictCount ?? 0,
       compensationForum: regs?.compensationForum,
@@ -148,6 +168,7 @@ export function createGeoNarrators(srcData, orgName) {
       employers: geoProse.majorEmployers(metro?.topEmployers),
       hasMetroData: metro !== undefined,
       trialCourtName: courts?.trialCourtName,
+      ipTrialCourtNames: courts?.ipTrialCourtNames ?? [],
     });
   }
 

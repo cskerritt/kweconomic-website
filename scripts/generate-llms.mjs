@@ -391,9 +391,10 @@ async function main() {
         // block) is paired with the state's governing framework, not its
         // damages framework; a damages claim heard first in the federal
         // courts (a venue-framed case type: intellectual property) with the
-        // federal and state courts that hear it.
+        // federal courts and the place's own courts that hear it (the
+        // District and the territories have local courts, not state courts).
         const framework = s.caseTypes.some((ct) => caseTypeBySlug[ct]?.framing) ? "governing framework" : "damages framework";
-        const courts = s.caseTypes.some((ct) => caseTypeBySlug[ct]?.venueFraming) ? "the federal and state courts that hear it" : "the state's courts";
+        const courts = s.caseTypes.some((ct) => caseTypeBySlug[ct]?.venueFraming) ? "the federal courts and the place's own courts that hear it" : "the state's courts";
         p(`Case-type pages by state: ${SITE}/services/${s.slug}/case/{case-type}/{state} (each pairs the case type with ${courts}, expert standard, and ${framework}; ${releasedStateSlugs.length} states published so far)`);
       }
     }

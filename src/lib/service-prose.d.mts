@@ -9,9 +9,10 @@ export function workPhrase(shortName: string): string;
 export function withArticle(phrase: string): string;
 /** Sentence-initial form ("Wrongful death analysis ..."). */
 export function capFirst(text: string): string;
-/** Meta description of a service x case type x state page (at most 160 characters; the tail shortens only where the sentence would run past the window). */
+/** Meta description of a service x case type x state page (at most 160 characters; the tail shortens only where the sentence would run past the window). `geo` is the place's states.ts `type` and federal district count, which set the courts a venue-framed case type's tail names (a state when omitted). */
 export function serviceCaseStateDescription(
   service: { shortName: string },
   caseType: { name: string; framing?: object; venueFraming?: object },
   place: string,
+  geo?: { type?: string; federalDistrictCount?: number },
 ): string;

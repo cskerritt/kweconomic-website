@@ -92,6 +92,22 @@ const ECONOMICS_KEYS: Record<string, ReferenceTier> = {
   ON_DAVIS_V_GAP: "live-verified",
   // Corrective advertising as trademark actual damages (pillar stage, live-verified 2026-10-06).
   BIG_O_TIRES: "live-verified",
+  // Review fixes (live-verified 2026-10-06): the forums, copyright
+  // registration, the Texas exemplary damages rule, the royalty base, the
+  // trademark royalty, and the avoided-costs split.
+  GOVERNMENT_USE_1498: "live-verified",
+  PATENT_VENUE_1400: "live-verified",
+  DIVERSITY_1332: "live-verified",
+  SUPPLEMENTAL_1367: "live-verified",
+  COPYRIGHT_CLAIMS_BOARD_1502: "live-verified",
+  COPYRIGHT_412: "live-verified",
+  TEXAS_UTSA_134A: "live-verified",
+  CSIRO_CISCO: "live-verified",
+  EXMARK: "live-verified",
+  SANDS_TAYLOR_WOOD: "live-verified",
+  SYNTEL_TRIZETTO: "live-verified",
+  MOTOROLA_HYTERA: "live-verified",
+  CSC_TATA: "live-verified",
 };
 
 // Life-care-planning-only and vocational-only sources have no place on an
@@ -221,6 +237,12 @@ describe("REFERENCES registry integrity", () => {
       ["DTSA_1839", "18", "1839"],
       ["JURISDICTION_1338", "28", "1338"],
       ["FEDERAL_CIRCUIT_1295", "28", "1295"],
+      ["GOVERNMENT_USE_1498", "28", "1498"],
+      ["PATENT_VENUE_1400", "28", "1400"],
+      ["DIVERSITY_1332", "28", "1332"],
+      ["SUPPLEMENTAL_1367", "28", "1367"],
+      ["COPYRIGHT_CLAIMS_BOARD_1502", "17", "1502"],
+      ["COPYRIGHT_412", "17", "412"],
     ]) {
       expect(REFERENCES[id].url, id).toBe(`https://www.law.cornell.edu/uscode/text/${title}/${section}`);
       expect(REFERENCES[id].apa, id).toMatch(new RegExp(`^${title} U\\.S\\.C\\. sec\\. ${section} \\(`));
@@ -249,6 +271,10 @@ describe("REFERENCES registry integrity", () => {
       ["LASERDYNAMICS", "f3d/694/html/0051-01", "694 F.3d 51 (Fed. Cir. 2012)"],
       ["ON_DAVIS_V_GAP", "f3d/246/html/0152-01", "246 F.3d 152 (2d Cir. 2001)"],
       ["BIG_O_TIRES", "f2d/561/html/1365-01", "561 F.2d 1365 (10th Cir. 1977)"],
+      ["CSIRO_CISCO", "f3d/809/html/1295-01", "809 F.3d 1295 (Fed. Cir. 2015)"],
+      // Decided January 12, 2018; the Caselaw Access Project carries it.
+      ["EXMARK", "f3d/879/html/1332-01", "879 F.3d 1332 (Fed. Cir. 2018)"],
+      ["SANDS_TAYLOR_WOOD", "f2d/978/html/0947-01", "978 F.2d 947 (7th Cir. 1992)"],
     ]) {
       expect(REFERENCES[id].url, id).toBe(`https://static.case.law/${reporterPath}.html`);
       expect(REFERENCES[id].apa, id).toContain(cite);
@@ -258,6 +284,18 @@ describe("REFERENCES registry integrity", () => {
     expect(REFERENCES.ECOFACTOR_GOOGLE.url).toMatch(/^https:\/\/www\.cafc\.uscourts\.gov\/opinions-orders\/23-1101\.OPINION\.5-21-2025_\d+\.pdf$/);
     expect(REFERENCES.ECOFACTOR_GOOGLE.apa).toContain("137 F.4th 1333 (Fed. Cir. 2025) (en banc)");
     expect(REFERENCES.UNIFORM_TRADE_SECRETS_ACT.url).toMatch(/^https:\/\/www\.uniformlaws\.org\//);
+    // The trade secret appellate opinions after 2018: the U.S. Courts collection on govinfo.gov.
+    for (const [id, pkg, cite] of [
+      ["SYNTEL_TRIZETTO", "USCOURTS-ca2-21-01370", "68 F.4th 792 (2d Cir. 2023)"],
+      ["MOTOROLA_HYTERA", "USCOURTS-ca7-22-02370", "108 F.4th 458 (7th Cir. 2024)"],
+      ["CSC_TATA", "USCOURTS-ca5-24-10749", "No. 24-10749 (5th Cir. Nov. 21, 2025)"],
+    ]) {
+      expect(REFERENCES[id].url, id).toBe(`https://www.govinfo.gov/content/pkg/${pkg}/pdf/${pkg}-0.pdf`);
+      expect(REFERENCES[id].apa, id).toContain(cite);
+    }
+    // The Texas Uniform Trade Secrets Act on the Legislature's statutes site.
+    expect(REFERENCES.TEXAS_UTSA_134A.url).toBe("https://statutes.capitol.texas.gov/Docs/CP/htm/CP.134A.htm");
+    expect(REFERENCES.TEXAS_UTSA_134A.apa).toMatch(/^Tex\. Civ\. Prac\. & Rem\. Code Ann\. sec\. 134A\.004 \(/);
     for (const id of ["USPTO_PATENT_ESSENTIALS", "USPTO_TRADE_SECRET_POLICY"]) {
       expect(REFERENCES[id].url, id).toMatch(/^https:\/\/www\.uspto\.gov\//);
       expect(REFERENCES[id].type, id).toBe("gov");

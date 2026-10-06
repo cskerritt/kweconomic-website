@@ -428,7 +428,7 @@ describe("pillar angles on the service x geo templates", () => {
         "transfer-pricing-expert-witness":
           "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony. In a refund suit in a federal district court or the Court of Federal Claims, or a commercial, shareholder, or matrimonial case in the Texas trial courts, the court's scheduling order ordinarily sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
         "intellectual-property-damages":
-          "In the federal district courts, which hear every patent and copyright claim, the court's scheduling order sets the dates for the expert reports, and in a patent case the damages reports usually follow the court's construction of the claims. In a case heard in the Texas trial courts, such as a dispute over royalties owed under a license, the case management or scheduling order sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
+          "In the federal district courts, which hear patent and copyright infringement claims between private parties, the court's scheduling order sets the dates for the expert reports, and in a patent case the damages reports usually follow the court's construction of the claims. In a case heard in the Texas trial courts, such as a dispute over royalties owed under a license, the case management or scheduling order sets the date. KW Economics confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.",
       };
       expect(faq.answer, s.slug).toBe(
         own[s.slug] ??
@@ -565,11 +565,16 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
     );
     // The intellectual property pillar names the federal district court
     // first, then the Federal Circuit and the state's own circuit, then the
-    // state's court for the claims under its law (2026-10-06).
+    // courts the case-type pages list for the claims under the state's law
+    // brought on their own (2026-10-06); only patent and trademark awards
+    // are enhanced by the court, and the measures do not change with the
+    // state though the regional circuit governs how two of them apply.
     const ip = getServiceBySlug("intellectual-property-damages")!;
     expect(serviceStateVenueParagraph(ip, nj)).toBe(
-      "Intellectual property claims that involve New Jersey reach several courts: the federal district court serving New Jersey for patent and copyright claims, which only the federal courts may hear, and for the trademark and trade secret claims filed in federal court; the United States Court of Appeals for the Federal Circuit for every appeal in a case with a patent claim, and the court of appeals for the Third Circuit for the others; and the Superior Court, Law Division for the trade secret, unfair competition, contract, and license claims under New Jersey law. The patent, trademark, and copyright measures are set by federal statute and are the same in every district; the court fixes the interest and decides any enhancement, and the report presents each measure so it can be applied to the claims the fact finder accepts.",
+      "Intellectual property claims that involve New Jersey reach several courts: the federal district court serving New Jersey for the patent and copyright claims filed there, which only the federal courts may hear, and for the trademark and trade secret claims filed in federal court; the United States Court of Appeals for the Federal Circuit for every appeal in a case with a patent claim, and the court of appeals for the Third Circuit for the others; and the Superior Court, Chancery Division and the Superior Court, Law Division for the trade secret, unfair competition, contract, and license claims under New Jersey law brought on their own. The federal patent, trademark, and copyright measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied, and New Jersey's own law can govern the contract and license claims; the court fixes the interest and decides any enhancement of a patent or trademark award, and the report presents each measure so it can be applied to the claims the fact finder accepts.",
     );
+    expect(serviceStateVenueParagraph(ip, getStateBySlug("us-virgin-islands")!)).toContain("Intellectual property claims that involve the U.S. Virgin Islands reach several courts: the federal district court serving the U.S. Virgin Islands");
+    expect(serviceStateVenueParagraph(ip, getStateBySlug("us-virgin-islands")!)).toContain("and the U.S. Virgin Islands' own law can govern");
     expect(serviceStateVenueParagraph(ip, getStateBySlug("district-of-columbia")!)).toContain("the court of appeals for the District of Columbia Circuit for the others");
     const asVenue = serviceStateVenueParagraph(ip, getStateBySlug("american-samoa")!)!;
     expect(asVenue).toContain("a federal district court where venue lies for patent and copyright claims, which only the federal courts may hear, since American Samoa has no federal district court of its own");
@@ -579,6 +584,7 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
       const v = serviceStateVenueParagraph(ip, st)!;
       expect(v.indexOf("federal district court"), st.slug).toBeLessThan(v.indexOf("Federal Circuit"));
       expect(v, st.slug).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia|\{[a-z]+\}/i);
+      expect(v, st.slug).not.toMatch(/same in every district|decides any enhancement,|Islands's/);
     }
   });
 
@@ -586,7 +592,12 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
     const paragraphs = pillars.map((s) => serviceCityContextParagraph(s, nj, hackensack));
     expect(new Set(paragraphs).size).toBe(pillars.length);
     for (const [i, p] of paragraphs.entries()) {
-      expect(p.startsWith("KW Economics serves counsel throughout Hackensack and the surrounding Bergen County area. Our economists ")).toBe(true);
+      // The intellectual property pillar, whose specialty only part of the
+      // roster lists, describes the analysis and the report rather than "our
+      // economists" and what they are familiar with.
+      expect(p.startsWith(
+        `KW Economics serves counsel throughout Hackensack and the surrounding Bergen County area. ${pillars[i].slug === "intellectual-property-damages" ? "The analysis measures " : "Our economists "}`,
+      ), pillars[i].slug).toBe(true);
       // The transfer pricing pillar's forums are mostly federal, and so are
       // the intellectual property pillar's, so their paragraphs name those
       // forums rather than the state's court system.
@@ -594,9 +605,10 @@ describe("page-only pillar prose, geo sources, and credential links", () => {
         pillars[i].slug === "transfer-pricing-expert-witness"
           ? /are familiar with the forums and disclosure rules that apply to transfer pricing disputes involving New Jersey businesses\.$/
           : pillars[i].slug === "intellectual-property-damages"
-            ? /are familiar with the federal and New Jersey courts that hear intellectual property claims and the disclosure rules that apply in them\.$/
+            ? /and the report is built for the federal and New Jersey courts that hear intellectual property claims and for their disclosure rules\.$/
             : /engagements in New Jersey\.$/,
       );
+      if (pillars[i].slug === "intellectual-property-damages") expect(p).not.toMatch(/Our economists|familiar with/);
       expect(p).not.toMatch(TYPOGRAPHY);
       expect(p).not.toMatch(CARE_COST);
       expect(p).not.toContain("&");

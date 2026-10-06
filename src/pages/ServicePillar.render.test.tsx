@@ -62,8 +62,13 @@ describe("ServicePillar", () => {
         // already ends in the role ("Transfer Pricing Expert Witness") is
         // used as written (expertLabel).
         expect(title).toBe(pillarTitle(service, ORG_NAME));
+        // A pillar whose name drops the role its queries carry sets its own
+        // title label ("Intellectual Property Damages Expert Witness").
+        const labelled = service.pillarTitleLabel ? `${service.pillarTitleLabel} | ${ORG_NAME}` : undefined;
         const full = `${expertLabel(service.name)} | ${ORG_NAME}`;
-        expect(title).toBe(full.length <= 60 ? full : `${expertLabel(service.titleName ?? service.name)} | ${ORG_NAME}`);
+        expect(title).toBe(
+          labelled && labelled.length <= 60 ? labelled : full.length <= 60 ? full : `${expertLabel(service.titleName ?? service.name)} | ${ORG_NAME}`,
+        );
         expect(title).not.toMatch(/Expert Witness Expert|Expert Expert/);
         expect(description).toBe(service.metaDescription);
         expect(description.length).toBeGreaterThanOrEqual(140);
@@ -342,8 +347,10 @@ describe("ServicePillar", () => {
     expect(render("business-valuation").title).toBe(`Business Valuation Expert | ${ORG_NAME}`);
     // The pillar whose name already carries the role keeps it once.
     expect(render("transfer-pricing-expert-witness").title).toBe(`Transfer Pricing Expert Witness | ${ORG_NAME}`);
-    // The intellectual property pillar spells the keyword out in its title.
-    expect(render("intellectual-property-damages").title).toBe(`Intellectual Property Damages Expert | ${ORG_NAME}`);
+    // The intellectual property pillar spells the keyword out in its title
+    // and carries the role its queries carry; its meta description names patents.
+    expect(render("intellectual-property-damages").title).toBe(`Intellectual Property Damages Expert Witness | ${ORG_NAME}`);
+    expect(render("intellectual-property-damages").description).toContain("patent royalty and lost profits");
   });
 
   it("a non-pillar cross-sell renders the hand-off card, not the pillar body", () => {

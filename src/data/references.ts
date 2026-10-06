@@ -71,6 +71,20 @@ import type { Source, SourceType } from "./types";
  * links to the Uniform Law Commission's final act page, whose attached PDF
  * (the act with the 1985 amendments and comments) was read; the USPTO pages
  * were read on uspto.gov.
+ *
+ * LIVE-CHECK NOTES (2026-10-06, intellectual property review fixes): the added
+ * statutes (17 U.S.C. 412 and 1502; 28 U.S.C. 1332, 1367, 1400, and 1498)
+ * link to LII, returned HTTP 200 with curl, and each page's title was matched
+ * to the section heading in `apa`. CSIRO, Exmark (decided January 12, 2018),
+ * and Sands, Taylor & Wood link to the Caselaw Access Project, whose pages
+ * carry the reporter, court, and decision date, and their cites resolved
+ * through CourtListener's citation resolver to the named cases. The three
+ * trade secret opinions decided after 2018 link to the U.S. Courts
+ * collection on govinfo.gov (the Government Publishing Office), whose PDFs
+ * returned HTTP 200 and were read; the Second Circuit's own links are
+ * session-bound, so govinfo serves all three. The Texas statute's public
+ * page renders the chapter text from the Legislature's statute service,
+ * where section 134A.004 and its amendment history were read.
  */
 
 export type ReferenceTier = "verified" | "anchor" | "live-verified";
@@ -732,6 +746,134 @@ export const REFERENCES: Record<string, Reference> = {
     "case-law",
     "Big O Tire Dealers, Inc. v. Goodyear Tire & Rubber Co., 561 F.2d 1365 (10th Cir. 1977).",
     "https://static.case.law/f2d/561/html/1365-01.html",
+  ),
+  // Review fixes (live-verified 2026-10-06; see the LIVE-CHECK NOTES above).
+  // The forums: a patent or copyright claim against the United States goes to
+  // the Court of Federal Claims for reasonable and entire compensation
+  // (sec. 1498(a) and (b)); patent venue lies where the defendant resides or
+  // has committed acts of infringement and has a regular and established
+  // place of business (sec. 1400(b)); state-law claims reach a district court
+  // on diverse citizenship (sec. 1332(a)) or as part of the same case or
+  // controversy (sec. 1367(a)); the Copyright Claims Board is an alternative
+  // forum the parties use voluntarily (17 U.S.C. sec. 1502(a)).
+  GOVERNMENT_USE_1498: R(
+    "GOVERNMENT_USE_1498",
+    "live-verified",
+    "case-law",
+    "28 U.S.C. sec. 1498 (patent and copyright cases).",
+    "https://www.law.cornell.edu/uscode/text/28/1498",
+  ),
+  PATENT_VENUE_1400: R(
+    "PATENT_VENUE_1400",
+    "live-verified",
+    "case-law",
+    "28 U.S.C. sec. 1400 (patents and copyrights, mask works, and designs).",
+    "https://www.law.cornell.edu/uscode/text/28/1400",
+  ),
+  DIVERSITY_1332: R(
+    "DIVERSITY_1332",
+    "live-verified",
+    "case-law",
+    "28 U.S.C. sec. 1332 (diversity of citizenship; amount in controversy; costs).",
+    "https://www.law.cornell.edu/uscode/text/28/1332",
+  ),
+  SUPPLEMENTAL_1367: R(
+    "SUPPLEMENTAL_1367",
+    "live-verified",
+    "case-law",
+    "28 U.S.C. sec. 1367 (supplemental jurisdiction).",
+    "https://www.law.cornell.edu/uscode/text/28/1367",
+  ),
+  COPYRIGHT_CLAIMS_BOARD_1502: R(
+    "COPYRIGHT_CLAIMS_BOARD_1502",
+    "live-verified",
+    "case-law",
+    "17 U.S.C. sec. 1502 (Copyright Claims Board).",
+    "https://www.law.cornell.edu/uscode/text/17/1502",
+  ),
+  // No statutory damages or fees for infringement of an unpublished work
+  // begun before registration, or for infringement begun after first
+  // publication and before registration unless the work was registered
+  // within three months after first publication.
+  COPYRIGHT_412: R(
+    "COPYRIGHT_412",
+    "live-verified",
+    "case-law",
+    "17 U.S.C. sec. 412 (registration as prerequisite to certain remedies for infringement).",
+    "https://www.law.cornell.edu/uscode/text/17/412",
+  ),
+  // Subsection (b): where willful and malicious misappropriation is proven
+  // by clear and convincing evidence, the fact finder may award exemplary
+  // damages of up to twice the award under subsection (a). The public page
+  // renders the chapter from the Legislature's statute service
+  // (tcss.legis.texas.gov/resources/CP/htm/CP.134A.htm), where the section
+  // and its 2017 amendment note were read.
+  TEXAS_UTSA_134A: R(
+    "TEXAS_UTSA_134A",
+    "live-verified",
+    "case-law",
+    "Tex. Civ. Prac. & Rem. Code Ann. sec. 134A.004 (damages).",
+    "https://statutes.capitol.texas.gov/Docs/CP/htm/CP.134A.htm",
+  ),
+  // The rule the Federal Circuit called untenable: that every damages model
+  // must begin with the smallest salable patent-practicing unit; licensing
+  // negotiations priced on the end product that already apportion to the
+  // patent are a reliable starting point.
+  CSIRO_CISCO: R(
+    "CSIRO_CISCO",
+    "live-verified",
+    "case-law",
+    "Commonwealth Scientific & Industrial Research Organisation v. Cisco Systems, Inc., 809 F.3d 1295 (Fed. Cir. 2015).",
+    "https://static.case.law/f3d/809/html/1295-01.html",
+  ),
+  // Decided January 12, 2018 (on the Caselaw Access Project): apportionment
+  // can be done through the royalty base, the royalty rate, or both, and
+  // using the accused product as the base and apportioning through the rate
+  // is an acceptable methodology.
+  EXMARK: R(
+    "EXMARK",
+    "live-verified",
+    "case-law",
+    "Exmark Manufacturing Co. v. Briggs & Stratton Power Products Group, LLC, 879 F.3d 1332 (Fed. Cir. 2018).",
+    "https://static.case.law/f3d/879/html/1332-01.html",
+  ),
+  // A Lanham Act award redetermined with a reasonable royalty "as a baseline
+  // or starting point" (the principles Judges Cudahy and Ripple joined).
+  SANDS_TAYLOR_WOOD: R(
+    "SANDS_TAYLOR_WOOD",
+    "live-verified",
+    "case-law",
+    "Sands, Taylor & Wood Co. v. Quaker Oats Co., 978 F.2d 947 (7th Cir. 1992).",
+    "https://static.case.law/f2d/978/html/0947-01.html",
+  ),
+  // Avoided costs under the federal trade secret statute: the Second Circuit
+  // allows them as unjust enrichment where the misappropriation injured the
+  // owner beyond its actual loss, such as by diminishing the secret's value
+  // (68 F.4th at 809-12); the Seventh Circuit agreed (108 F.4th, footnote 10);
+  // the Fifth Circuit declined to require that showing and removed the
+  // overlap with the injunction instead (slip op. at 25-34). Each opinion
+  // links to the copy in the U.S. Courts collection on govinfo.gov, and the
+  // F.4th cites were confirmed through CourtListener's citation resolver.
+  SYNTEL_TRIZETTO: R(
+    "SYNTEL_TRIZETTO",
+    "live-verified",
+    "case-law",
+    "Syntel Sterling Best Shores Mauritius Ltd. v. TriZetto Group, Inc., 68 F.4th 792 (2d Cir. 2023).",
+    "https://www.govinfo.gov/content/pkg/USCOURTS-ca2-21-01370/pdf/USCOURTS-ca2-21-01370-0.pdf",
+  ),
+  MOTOROLA_HYTERA: R(
+    "MOTOROLA_HYTERA",
+    "live-verified",
+    "case-law",
+    "Motorola Solutions, Inc. v. Hytera Communications Corp., 108 F.4th 458 (7th Cir. 2024).",
+    "https://www.govinfo.gov/content/pkg/USCOURTS-ca7-22-02370/pdf/USCOURTS-ca7-22-02370-0.pdf",
+  ),
+  CSC_TATA: R(
+    "CSC_TATA",
+    "live-verified",
+    "case-law",
+    "Computer Sciences Corp. v. Tata Consultancy Services Ltd., No. 24-10749 (5th Cir. Nov. 21, 2025).",
+    "https://www.govinfo.gov/content/pkg/USCOURTS-ca5-24-10749/pdf/USCOURTS-ca5-24-10749-0.pdf",
   ),
 };
 

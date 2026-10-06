@@ -4,7 +4,6 @@ import { pillarServices, servicesForCaseType } from "@/data/services";
 import {
   getCaseType,
   caseTypeStateFramework,
-  caseTypeStateStepsIntro,
   caseTypeSectionHeadings,
   caseTypePairStateLead,
   caseTypeStateCourts,
@@ -16,6 +15,8 @@ import {
   caseTypePairStateFrameworkQuestion,
   caseTypeStateForums,
   caseTypeCourtsNameFederalCourts,
+  caseTypePairStateBuildAnswer,
+  caseTypePairStateSources,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -75,6 +76,10 @@ export default function ServiceCaseTypeState() {
 
   const path = serviceCaseStatePath(serviceSlug, typeSlug, stateSlug);
   const url = ok ? `${ORG_URL}${path}` : "";
+  // The place's type and federal district count set the courts a
+  // venue-framed case type's description names (the federal and local
+  // courts outside the states; the courts alone in American Samoa).
+  const descriptionGeo = state ? { type: state.type, federalDistrictCount: federalDistricts.filter((d) => d.stateSlug === state.slug).length } : undefined;
   usePageMeta(
     service && caseType && state && declared
       ? {
@@ -83,7 +88,7 @@ export default function ServiceCaseTypeState() {
           // from src/lib/page-titles.mjs, and the description from the shared
           // prose helper.
           title: `${serviceCaseStateTitle(service, caseType, state, ORG_NAME)}`,
-          description: `${serviceCaseStateDescription(service, caseType, placeName(state.name))}`,
+          description: `${serviceCaseStateDescription(service, caseType, placeName(state.name), descriptionGeo)}`,
           canonical: url,
         }
       : null,
@@ -134,12 +139,14 @@ export default function ServiceCaseTypeState() {
     .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
   // Three FAQs that exist only for this pair in this state: how the analysis
-  // is built, what the state's courts ask of it, and how the state framework
-  // shapes it. The pair's own FAQs stay on the pair page.
+  // is built (the pillar's own note for the pair, so the answer describes
+  // the pillar's work rather than the case type's generic steps), what the
+  // state's courts ask of it, and how the state framework shapes it. The
+  // pair's own FAQs stay on the pair page.
   const faqs = [
     {
       question: `How is ${work} built for ${withArticle(lower)} case in ${place}?`,
-      answer: `${caseTypeStateStepsIntro(caseType, place)} ${caseType.steps.join(" ")}`,
+      answer: caseTypePairStateBuildAnswer(caseType, place, note),
     },
     ...(regulations && courts
       ? [
@@ -323,14 +330,16 @@ export default function ServiceCaseTypeState() {
       <ContactCTA context={service.shortName} />
 
       <FAQBlock faqs={faqs} title={`Frequently asked: ${capFirst(work)} in ${place} ${lower} matters`} />
-      <SourcesBlock sources={service.sources.slice(0, 5)} />
+      {/* The pillar's sources, and a venue-framed case type's state list
+          behind the forum, framework, and exposure copy printed above. */}
+      <SourcesBlock sources={caseTypePairStateSources(caseType, service.sources)} />
 
       <SchemaOrg data={graphSchema([
         // The page canonical is the Service entity's @id and url.
         serviceSchema({
           url,
           name: h1,
-          description: serviceCaseStateDescription(service, caseType, place),
+          description: serviceCaseStateDescription(service, caseType, place, descriptionGeo),
           areaServed: { "@type": state.type === "state" ? "State" : "AdministrativeArea", name: state.name },
           dateModified: service.dateModified,
         }),

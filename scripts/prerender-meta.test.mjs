@@ -293,7 +293,7 @@ describe("the family title/description builders are shared with the React templa
       "title: pairTitle(s, c, ORG_NAME)",
       "pairDescription(s, c)",
       "title: `${serviceCaseStateTitle(s, c, st, ORG_NAME)}`",
-      "description: `${serviceCaseStateDescription(s, c, placeName(st.name))}`",
+      "description: `${serviceCaseStateDescription(s, c, placeName(st.name), descriptionGeo)}`",
       "profileTitleFor(t)",
       // The case-type tiers read the entry's framing through the shared
       // helpers (src/data/caseTypes.ts) on both sides (audit F08).

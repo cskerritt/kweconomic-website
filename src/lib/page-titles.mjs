@@ -184,9 +184,14 @@ export const serviceCityTitle = (service, city, state, orgName) =>
  */
 export const expertLabel = (name) => (/\bExpert(?: Witness)?$/.test(name) ? name : `${name} Expert`);
 
-/** /services/<pillar>: "<name> Expert" (see expertLabel). */
+/**
+ * /services/<pillar>: the pillar's own title label where it sets one and the
+ * label fits ("Intellectual Property Damages Expert Witness", the role its
+ * queries carry, beside a name that drops it), then "<name> Expert" (see
+ * expertLabel).
+ */
 export const pillarTitle = (service, orgName) =>
-  fitTitle(orgName, ...serviceTitleNames(service).map(expertLabel));
+  fitTitle(orgName, ...forms([...(service.pillarTitleLabel ? [service.pillarTitleLabel] : []), ...serviceTitleNames(service).map(expertLabel)]));
 
 /** /services/<pillar>/<cost|process|timeline>: "<name> Cost", "<name> Process", "<name> Timeline". */
 export const variantTitle = (service, variantLabel, orgName) =>

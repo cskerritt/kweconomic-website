@@ -4,7 +4,8 @@ import CaseTypeState from "./CaseTypeState";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { getCaseType } from "@/data/caseTypes";
 import { getStateBySlug } from "@/data/states";
-import { placeName } from "@/data/geo-prose.mjs";
+import { placeName, placePossessive, prosePlace } from "@/data/geo-prose.mjs";
+import { refsToSources } from "@/data/references";
 import { ORG_NAME } from "@/lib/brand";
 import { ORG_URL } from "@/lib/schema";
 import { renderRoute, visibleText, faqLdStrings, jsonLdBlocks } from "@/test-utils/markup";
@@ -226,13 +227,16 @@ describe("the intellectual property hub keeps the damages framing and drops the 
 });
 
 describe("an intellectual property state page names the federal courts first", () => {
-  for (const stateSlug of ["texas", "district-of-columbia", "guam", "american-samoa", "delaware"]) {
+  for (const stateSlug of ["texas", "district-of-columbia", "guam", "american-samoa", "delaware", "us-virgin-islands"]) {
     const state = getStateBySlug(stateSlug)!;
     const place = placeName(state.name);
+    // Running prose takes the article the plural island names need ("the
+    // U.S. Virgin Islands"); the H1, title, and description keep `place`.
+    const placeP = prosePlace(state.name);
     const url = `${ORG_URL}/case-types/intellectual-property-infringement/${stateSlug}`;
     const { html, title, description, text } = render(`/case-types/intellectual-property-infringement/${stateSlug}`, STATE_ROUTE, CaseTypeState);
     const faqs = faqLdStrings(html);
-    const courtsAnswer = faqs[faqs.indexOf(`Which courts hear an intellectual property infringement case involving ${place}?`) + 1] ?? "";
+    const courtsAnswer = faqs[faqs.indexOf(`Which courts hear an intellectual property infringement case involving ${placeP}?`) + 1] ?? "";
 
     it(`/${stateSlug}: title, H1, description, and lead`, () => {
       expect(title).toMatch(/^IP Infringement Economist in /);
@@ -240,7 +244,7 @@ describe("an intellectual property state page names the federal courts first", (
       expect(description).toBe(ipVenue.stateDescription.replace("{place}", place));
       expect(description.length).toBeGreaterThanOrEqual(140);
       expect(description.length).toBeLessThanOrEqual(160);
-      expect(text).toContain(`${ORG_NAME} prepares economic damages analyses for intellectual property infringement cases involving ${place}:`);
+      expect(text).toContain(`${ORG_NAME} prepares economic damages analyses for intellectual property infringement cases involving ${placeP}:`);
       expect(text).not.toMatch(/damages rules and venues|a present value built/);
       expect(jsonLdBlocks(html)).toContain(`"@id":"${url}#service"`);
     });
@@ -283,11 +287,20 @@ describe("an intellectual property state page names the federal courts first", (
       }
       expect(listed.length).toBeLessThanOrEqual(5);
       expect(h3sOf(html)).toContain("Damages framework");
-      expect(text).toContain("Patent, copyright, and trademark damages are set by federal statute, so the measures are the same in every district");
-      expect(text).toContain("In the federal district courts, which hear every patent and copyright claim, damages testimony is tested under the federal rules of evidence");
-      expect(faqs).toContain(`Which damages rules apply to an intellectual property claim involving ${place}?`);
+      expect(text).toContain("Patent, copyright, and trademark damages are set by federal statute: a reasonable royalty at least");
+      expect(text).toContain("Those measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied.");
+      expect(text).toContain("In the federal district courts, which hear patent and copyright infringement claims between private parties, damages testimony is tested under the federal rules of evidence");
+      expect(text).toContain(`${placePossessive(state.name)} own law can govern the contract and license claims`);
+      expect(faqs).toContain(`Which damages rules apply to an intellectual property claim involving ${placeP}?`);
       expect(text).not.toMatch(/contributory negligence|comparative fault|collateral source|An economic damages report|lost earnings, household services/);
-      expect(text).not.toMatch(/a the |the the |in District of Columbia/);
+      expect(text).not.toMatch(/a the |the the |in District of Columbia|Islands's|same in every district/);
+    });
+
+    it(`/${stateSlug}: the References block lists the statutes and rules behind the forum, framework, and expert copy`, () => {
+      const refs = html.slice(html.indexOf('id="sources-heading"'));
+      for (const src of refsToSources(["JURISDICTION_1338", "PATENT_VENUE_1400", "GOVERNMENT_USE_1498", "DIVERSITY_1332", "FEDERAL_CIRCUIT_1295", "PATENT_284", "PATENT_286", "PATENT_287", "COPYRIGHT_412", "DTSA_1836", "FRE_702"])) {
+        expect(refs, src.url).toContain(`href="${src.url}"`);
+      }
     });
   }
 });

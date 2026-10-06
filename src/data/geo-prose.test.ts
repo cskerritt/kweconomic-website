@@ -22,6 +22,11 @@ import { newJerseyCities } from "./cities/new-jersey";
 import { texasCities } from "./cities/texas";
 import { americanSamoaCities } from "./cities/american-samoa";
 import { guamCities } from "./cities/guam";
+import { delawareCities } from "./cities/delaware";
+import { northCarolinaCities } from "./cities/north-carolina";
+import { usVirginIslandsCities } from "./cities/us-virgin-islands";
+import { northernMarianaIslandsCities } from "./cities/northern-mariana-islands";
+import { truncateAtWord } from "@/lib/text";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 import type { City } from "../types";
 
@@ -375,19 +380,31 @@ describe("intellectual property pages", () => {
   it("measure each statute's remedy from the parties' own records and name the federal courts first (Houston)", () => {
     const { stateHero, stateLegal, cityHero, cityPlace, cityFaqs, stateFaqs, cityNarrative } = renderedProse("intellectual-property-damages", "texas", texasCities, "houston");
     expect(serviceGeoCategory("IP Damages")).toBe("intellectual-property");
-    expect(stateHero.startsWith("KW Economics provides intellectual property damages analysis for matters venued in Texas. The analysis measures the remedy each claim carries:")).toBe(true);
+    // The hero opens on the four rights, so the meta description cut from it names them.
+    expect(stateHero.startsWith("KW Economics provides intellectual property damages analysis for matters venued in Texas. Patent, trademark, copyright, and trade secret damages, measured claim by claim, take the form each statute provides:")).toBe(true);
     expect(stateHero).toContain("each apportioned to the protected right and built from the parties' own sales, cost, and license records");
-    expect(stateHero).toContain("Patent, trademark, and copyright damages follow the same federal statutes in every district");
+    // The statutory measures do not change with the state, but the regional
+    // circuit's decisions govern how the copyright and trademark measures apply.
+    expect(stateHero).toContain(
+      "The federal patent, trademark, and copyright measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied; Texas's own law can govern the contract and license claims, whether they are brought with an infringement claim or on their own",
+    );
+    expect(stateHero).not.toMatch(/in every district|as it would be anywhere/);
     // The federal courts lead the legal context, with the Federal Circuit;
-    // the state's court hears the claims under its own law; no compensation forum.
+    // the state's court hears the claims under its own law brought on their
+    // own, and a claim joined with a patent or copyright claim goes with it
+    // to federal court; no compensation forum.
     expect(stateLegal).toBe(
-      "Patent and copyright claims are heard only in the federal courts, which for Texas means the federal district courts serving Texas, with appeals in patent cases to the United States Court of Appeals for the Federal Circuit; trademark and trade secret claims can be filed there or in Texas's own courts. Texas's District Court is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under Texas law that travel with an infringement claim. Final appeals in the Texas court system run to the Supreme Court of Texas.",
+      "Patent and copyright claims are heard only in the federal courts, which for a case filed in Texas means the federal district courts serving Texas, though a case involving a business there may be filed in another district where venue lies; appeals in patent cases go to the United States Court of Appeals for the Federal Circuit, and trademark and trade secret claims can be filed in federal court or in Texas's own courts. Texas's District Court is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under Texas law brought on their own; joined with a patent or copyright claim, they are usually heard with it in federal court. Final appeals in the Texas court system run to the Supreme Court of Texas.",
     );
-    // The city hero names federal court for the patent and copyright claims,
-    // never "Civil claims arising in Houston" as the forum.
+    // The city hero names federal court for the patent and copyright claims
+    // and the related claims joined with them, and the county's court for a
+    // license or royalty dispute brought on its own, never "Civil claims
+    // arising in Houston" as the forum.
     expect(cityHero).toContain(
-      "Patent and copyright claims involving a business in Houston are heard only in federal court, and the claims under Texas law that travel with them, such as a license or royalty dispute, are typically heard in the District Court sitting in Harris County.",
+      "Patent and copyright claims involving a business in Houston are heard only in federal court, usually together with the related claims under Texas law; a license or royalty dispute brought on its own is typically heard in the District Court sitting in Harris County.",
     );
+    expect(cityHero).toContain("KW Economics provides intellectual property damages analysis for cases venued in Houston, Texas. Patent, trademark, copyright, and trade secret damages, measured claim by claim, rest on the parties' own sales, cost, and license records");
+    expect(`${stateLegal} ${cityHero}`).not.toMatch(/travel with/);
     expect(cityHero).not.toContain("Civil claims arising in Houston");
     expect(cityNarrative.venue).toBe("Civil claims arising in Houston are typically heard in the District Court sitting in Harris County.");
     // The place paragraph says where the appeals that govern a patent case go, not who employs whom.
@@ -398,6 +415,8 @@ describe("intellectual property pages", () => {
     expect(stateFaqs[0].answer).toContain("built from the parties' own sales, cost, and license records and from comparable licenses and market data selected for the technology at issue");
     expect(stateFaqs[1].answer).toContain("a reasonable royalty built from the comparable licenses, the profit the protected feature made possible, and the user's alternatives");
     expect(stateFaqs[2].answer).toContain("in a patent case the damages reports usually follow the court's construction of the claims");
+    expect(stateFaqs[2].answer).toContain("In the federal district courts, which hear patent and copyright infringement claims between private parties,");
+    expect(stateFaqs[2].answer).not.toContain("every patent and copyright claim");
     expect(cityFaqs[1].question).toBe("What records drive an intellectual property damages analysis for a business based in Houston?");
     expect(cityFaqs[2].answer).toContain("expert reports on the damages in patent, trademark, copyright, and trade secret claims");
     expect(economicContextCaption("IP Damages", "Texas")).toBe(
@@ -412,21 +431,22 @@ describe("intellectual property pages", () => {
 
   it("read the District with its article and its single federal district court (Washington)", () => {
     const { stateHero, stateLegal, cityHero } = renderedProse("intellectual-property-damages", "district-of-columbia", districtOfColumbiaCities, "washington");
-    expect(stateLegal).toContain("which for the District of Columbia means the federal district court serving the District of Columbia");
-    expect(stateLegal).toContain("The Superior Court of the District of Columbia is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under District of Columbia law");
-    expect(cityHero).toContain("are typically heard in the Superior Court of the District of Columbia.");
+    expect(stateLegal).toContain("which for a case filed in the District of Columbia means the federal district court serving the District of Columbia");
+    expect(stateLegal).toContain("The Superior Court of the District of Columbia is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under District of Columbia law brought on their own");
+    expect(stateLegal).toContain("in the District of Columbia's own courts");
+    expect(cityHero).toContain("a license or royalty dispute brought on its own is typically heard in the Superior Court of the District of Columbia.");
     for (const text of [stateHero, stateLegal, cityHero]) expect(text).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia|sitting in District of Columbia/i);
   });
 
   it("say where a claim is filed for a place with no federal district court, and make no claim about local trade secret law, in American Samoa and Guam", () => {
     const as = renderedProse("intellectual-property-damages", "american-samoa", americanSamoaCities, americanSamoaCities[0].slug);
     expect(as.stateLegal).toContain("American Samoa has no federal district court of its own, so such a claim involving a business there is filed in a federal district court where venue lies");
-    expect(as.stateLegal).toContain("is the primary trial-level forum for the contract and license claims under American Samoa law");
-    expect(as.stateLegal).not.toMatch(/trade secret, unfair competition|serving American Samoa|can be filed there or in/);
+    expect(as.stateLegal).toContain("is the primary trial-level forum for the contract and license claims under American Samoa law brought on their own");
+    expect(as.stateLegal).not.toMatch(/trade secret, unfair competition|serving American Samoa|can be filed in federal court or in/);
     expect(as.cityPlace).toContain("wherever the case is filed");
     const gu = renderedProse("intellectual-property-damages", "guam", guamCities, guamCities[0].slug);
-    expect(gu.stateLegal).toContain("which for Guam means the federal district court serving Guam");
-    expect(gu.stateLegal).toContain("is the primary trial-level forum for the contract and license claims under Guam law");
+    expect(gu.stateLegal).toContain("which for a case filed in Guam means the federal district court serving Guam");
+    expect(gu.stateLegal).toContain("is the primary trial-level forum for the contract and license claims under Guam law brought on their own");
     expect(gu.stateLegal).not.toMatch(/trade secret, unfair competition, contract/);
     for (const text of [as.stateText, as.cityText, gu.stateText, gu.cityText]) {
       expect(text).not.toMatch(/trade secret act|Uniform Trade Secrets|own trade secret law/i);
@@ -441,6 +461,44 @@ describe("intellectual property pages", () => {
       expect(legal, st.slug).toContain("United States Court of Appeals for the Federal Circuit");
       expect(legal, st.slug).not.toMatch(/workers' compensation|wage-loss|personal injury, wrongful death/i);
       expect(legal.indexOf("Federal Circuit"), st.slug).toBeLessThan(legal.indexOf("primary trial-level forum"));
+      // State-law claims joined with a patent or copyright claim are heard with it in federal court.
+      expect(legal, st.slug).toContain("brought on their own; joined with a patent or copyright claim, they are usually heard with it in federal court.");
+      expect(legal, st.slug).not.toMatch(/travel with|Islands's|(for|serving|in) (U\.S\. Virgin|Northern Mariana) Islands\b/);
+      // The meta description cut from the hero names the rights.
+      const meta = truncateAtWord(serviceStateDirectAnswer(ORG_NAME, "IP Damages", st.name, getStateNarrative(st)));
+      expect(meta, st.slug).toMatch(/Patent, trademark, copyright, and trade/);
+      expect(meta.length, `${st.slug}: ${meta}`).toBeGreaterThanOrEqual(140);
+      expect(meta.length, `${st.slug}: ${meta}`).toBeLessThanOrEqual(160);
+    }
+  });
+
+  it("names the courts the case-type pages list, two deep, for the claims under the place's own law (Delaware, North Carolina)", () => {
+    const de = renderedProse("intellectual-property-damages", "delaware", delawareCities, "wilmington");
+    expect(de.stateLegal).toContain("Delaware's Court of Chancery and Superior Court are the primary trial-level forums for the trade secret, unfair competition, contract, and license claims under Delaware law brought on their own");
+    expect(de.cityHero).toContain("a license or royalty dispute brought on its own is typically heard in the Court of Chancery or the Superior Court sitting in New Castle County.");
+    const nc = renderedProse("intellectual-property-damages", "north-carolina", northCarolinaCities, "charlotte");
+    expect(nc.stateLegal).toContain("The North Carolina Business Court and North Carolina's Superior Court are the primary trial-level forums");
+    expect(nc.cityHero).toContain("is typically heard in the North Carolina Business Court or the Superior Court sitting in Mecklenburg County.");
+    // The single-court states keep the general-jurisdiction court.
+    const tx = renderedProse("intellectual-property-damages", "texas", texasCities, "houston");
+    expect(tx.stateLegal).toContain("Texas's District Court is the primary trial-level forum");
+  });
+
+  it("reads the plural island names with the article and the bare possessive (the U.S. Virgin Islands, the Northern Mariana Islands)", () => {
+    const vi = renderedProse("intellectual-property-damages", "us-virgin-islands", usVirginIslandsCities, usVirginIslandsCities[0].slug);
+    expect(vi.stateLegal).toContain("which for a case filed in the U.S. Virgin Islands means the federal district court serving the U.S. Virgin Islands");
+    expect(vi.stateLegal).toContain("in the U.S. Virgin Islands' own courts");
+    // The court that names the place takes the article, not a doubled place.
+    expect(vi.stateLegal).toContain("The Superior Court of the Virgin Islands is the primary trial-level forum");
+    expect(vi.stateHero).toContain("the U.S. Virgin Islands' own law can govern the contract and license claims");
+    const mp = renderedProse("intellectual-property-damages", "northern-mariana-islands", northernMarianaIslandsCities, northernMarianaIslandsCities[0].slug);
+    expect(mp.stateLegal).toContain("which for a case filed in the Northern Mariana Islands means the federal district court serving the Northern Mariana Islands");
+    expect(mp.stateHero).toContain("the Northern Mariana Islands' own law can govern");
+    const tp = renderedProse("transfer-pricing-expert-witness", "us-virgin-islands", usVirginIslandsCities, usVirginIslandsCities[0].slug);
+    expect(tp.stateLegal).toContain("a dispute over the U.S. Virgin Islands' own tax follows its administrative and appeal process");
+    expect(tp.stateLegal).toContain("The Superior Court of the Virgin Islands is the primary trial-level forum");
+    for (const text of [vi.stateText, vi.cityText, mp.stateText, mp.cityText, tp.stateText, tp.cityText]) {
+      expect(text).not.toMatch(/Islands's|U\.S\. Virgin Islands's Superior Court/);
     }
   });
 });

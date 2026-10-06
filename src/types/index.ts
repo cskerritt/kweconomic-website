@@ -63,6 +63,11 @@ export interface Service {
    * pillar's local queries carry ("Transfer Pricing" for "transfer pricing
    * expert witness <place>"). The pair titles keep `shortName`. */
   geoTitleLabels?: string[];
+  /** The pillar hub's <title> label, tried before "<name> Expert"
+   * (src/lib/page-titles.mjs pillarTitle), where the name the H1 keeps drops
+   * the role the pillar's queries carry ("Intellectual Property Damages
+   * Expert Witness"). */
+  pillarTitleLabel?: string;
   pillar: boolean; // false = cross-sell only, excluded from geo/case/cost enumeration
   description: string;
   icon: string;

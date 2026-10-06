@@ -1488,6 +1488,10 @@ export const services: ServiceEntry[] = [
     // neither fits (src/lib/page-titles.mjs). The pair titles keep "IP
     // Damages".
     geoTitleLabels: ["Intellectual Property Damages Expert", "IP Damages Expert"],
+    // The pillar hub's title carries the role the query carries, as the
+    // transfer pricing hub's does ("Intellectual Property Damages Expert
+    // Witness | KW Economics", 59 characters); the H1 keeps the name.
+    pillarTitleLabel: "Intellectual Property Damages Expert Witness",
     pillar: true,
     description: "Economic analysis and expert testimony on damages in patent, trademark, copyright, and trade secret cases and in license and royalty disputes, for the patentee or the accused infringer and for either side of every other claim. The work measures each remedy the governing statute allows: a reasonable royalty and the patentee's lost profits, including price erosion, apportioned to the patented feature; the defendant's profits, the owner's actual damages, and corrective advertising in a trademark case; actual damages and the infringer's profits in a copyright case, where the infringer carries the burden of its deductible expenses and of the profit owed to other factors; and actual loss, unjust enrichment, or a reasonable royalty for a misappropriated trade secret.",
     icon: "Lightbulb",
@@ -1511,7 +1515,7 @@ export const services: ServiceEntry[] = [
       { step: "Records and data request", description: "We request the accused products' unit sales, revenue, pricing, and cost data, the owner's financial and capacity records for its own products, every license to the rights in suit and to comparable technology with the negotiation files, the marking and notice records, and the business plans and forecasts from the date the infringement or misappropriation began, most of it produced under a protective order." },
       { step: "Analysis and modeling", description: "We build each measure the claims support: the reasonable royalty from the comparable licenses, the profit the protected feature made possible, and the user's alternatives; lost profits from the market and the owner's capacity; the infringer's profits with its claimed costs and apportionment tested; and unjust enrichment net of any overlap, with the damages period and prejudgment interest applied." },
       { step: "Draft report and counsel review", description: "We deliver a draft that states every input, the royalty base and the apportionment, the licenses relied on and the ones rejected, and the opinions of the technical and survey experts it relies on, and review it with counsel for completeness and factual accuracy before finalizing." },
-      { step: "Final report and testimony support", description: "We issue the final report on the disclosure schedule and provide deposition and trial testimony, critique of the opposing damages analysis, and updated calculations as the court construes the claims and the record develops." },
+      { step: "Final report and testimony support", description: "We issue the final report on the disclosure schedule and provide deposition and trial testimony, critique of the opposing damages analysis, and updated calculations as the court construes any patent claims and the record develops." },
     ],
     timeline: [
       { phase: "Retention and records intake", duration: "1 to 2 weeks" },
@@ -1519,7 +1523,7 @@ export const services: ServiceEntry[] = [
       { phase: "Draft and final report", duration: "2 to 3 weeks after the analysis" },
       { phase: "Deposition and trial support", duration: "As scheduled by counsel and the court" },
     ],
-    metaDescription: "Intellectual property damages expert for plaintiff and defense counsel nationwide: reasonable royalty, lost profits, infringer's profits, and trade secret loss.",
+    metaDescription: "Intellectual property damages expert for plaintiff and defense counsel nationwide: patent royalty and lost profits, infringer's profits, and trade secret loss.",
     dateModified: "2026-10-06",
     faqs: [
       {
@@ -1532,7 +1536,7 @@ export const services: ServiceEntry[] = [
       },
       {
         question: "What is apportionment, and why does it decide so many cases?",
-        answer: "Apportionment separates the value of the patented feature, the protected work or mark, or the trade secret from everything else that earned the profit: unpatented features, the infringer's brand and distribution, and its other technology. A royalty applied to the price of a whole multi-feature product overstates the damages unless the patented feature drives demand for the whole, so the economist builds the base on the smallest unit that practices the invention and uses the licenses, the infringer's own feature analyses, price comparisons, or survey evidence to separate the rest.",
+        answer: "Apportionment separates the value of the patented feature, the protected work or mark, or the trade secret from everything else that earned the profit: unpatented features, the infringer's brand and distribution, and its other technology. A royalty that takes the whole value of a multi-feature product overstates the damages unless the patented feature drives demand for the whole, so the economist often builds the base on the smallest salable patent-practicing unit, or, where the base is the whole product, apportions through the rate, and uses the licenses, the infringer's own feature analyses, price comparisons, or survey evidence to separate the rest.",
       },
       {
         question: "Who must prove what in a claim for the infringer's profits?",
@@ -1557,7 +1561,11 @@ export const services: ServiceEntry[] = [
       { title: "Reasonable Royalty Methodology", href: "/methods/reasonable-royalty-analysis", description: "Method" },
       { title: "Lost Profits vs. Reasonable Royalty", href: "/compare/lost-profits-vs-reasonable-royalty", description: "Comparison" },
     ],
-    sources: refsToSources(["PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "JURISDICTION_1338", "GEORGIA_PACIFIC", "BIG_O_TIRES", "FEDERAL_CIRCUIT_1295", "UNIFORM_TRADE_SECRETS_ACT", "FRE_702"]),
+    // The first five lead the pair pages' References blocks; the rest back the
+    // pillar FAQs (the base and the smallest salable unit, the named
+    // defendant's profits, no profits remedy for a utility patent, and the
+    // design patent's total profit).
+    sources: refsToSources(["PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "JURISDICTION_1338", "GEORGIA_PACIFIC", "BIG_O_TIRES", "FEDERAL_CIRCUIT_1295", "UNIFORM_TRADE_SECRETS_ACT", "FRE_702", "LASERDYNAMICS", "CSIRO_CISCO", "EXMARK", "DEWBERRY_GROUP", "ARO_MANUFACTURING", "PATENT_289"]),
     caseTypeNotes: {
       "intellectual-property-infringement": {
         summary: "In an infringement or misappropriation case the damages analysis follows the statute behind each claim. For a patent, the economist builds the reasonable royalty from the hypothetical negotiation at the start of the infringement and any lost profits from the market the patentee and the infringer shared; for a trademark, the defendant's profits from its sales of the infringing goods, with its claimed costs tested, the owner's actual damages, and the cost of corrective advertising; for a copyright, actual damages and the infringer's profits not already counted in them; and for a trade secret, actual loss and unjust enrichment net of their overlap, or a royalty in their place. Each measure is apportioned to the protected right, limited to the recoverable period, and presented claim by claim, so the fact finder can apply the measure it finds.",
@@ -1955,11 +1963,11 @@ export const services: ServiceEntry[] = [
       // carry an opposing royalty or lost profits number, and the
       // reliability questions courts decide on them before trial.
       "intellectual-property-infringement": {
-        summary: "An opposing intellectual property damages report is tested on the choices that carry its number: the royalty base and whether it is apportioned to the patented feature or reaches the whole product, the licenses offered as comparable and the adjustments made to them, the conversion of lump sums into rates, the alternatives available to the infringer, the market and capacity assumed in a lost profits claim, the costs deducted from the infringer's profits, and the damages period. The economist rebuilds each step from the report's own data and workpapers, recalculates the result under corrected inputs one at a time and together, and ranks each finding by its effect, so counsel can see which choices carry the number and the court can decide the reliability questions on the record.",
+        summary: "An opposing intellectual property damages report is tested on the choices that carry its number: the royalty base and whether the base and the rate together are apportioned to the patented feature or reach the whole product's value, the licenses offered as comparable and the adjustments made to them, the conversion of lump sums into rates, the alternatives available to the infringer, the market and capacity assumed in a lost profits claim, the costs deducted from the infringer's profits, and the damages period. The economist rebuilds each step from the report's own data and workpapers, recalculates the result under corrected inputs one at a time and together, and ranks each finding by its effect, so counsel can see which choices carry the number and the court can decide the reliability questions on the record.",
         faqs: [
           {
             question: "What does a review of an opposing royalty analysis look for first?",
-            answer: "Whether the royalty base is apportioned to the patented feature and whether the licenses relied on are comparable in technology, rights, and circumstances, since those two choices move the result more than most others. The review then checks how lump sums were converted to rates, whether settlement licenses were treated as market transactions, and whether the alternatives open to the infringer are accounted for.",
+            answer: "Whether the royalty base and rate are apportioned to the patented feature and whether the licenses relied on are comparable in technology, rights, and circumstances, since those two choices move the result more than most others. The review then checks how lump sums were converted to rates, whether settlement licenses were treated as market transactions, and whether the alternatives open to the infringer are accounted for.",
           },
           {
             question: "Can a rebuttal support a challenge to the admissibility of the opposing damages testimony?",

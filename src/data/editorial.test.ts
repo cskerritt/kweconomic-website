@@ -677,11 +677,14 @@ describe("intellectual property editorial: statements match the rules they descr
   it("frames the forums federal first: patent and copyright claims in the federal courts, patent appeals in the Federal Circuit, trade secret claims in either system", () => {
     const forum = patent.sections!.find((s) => s.id === "where-patent-cases-are-heard")!.bodyHtml;
     expect(forum).toContain(
-      "the federal district courts have exclusive jurisdiction over it: no court of any state, the District of Columbia, or a territory may hear a claim for relief arising under the patent laws, and the same is true of copyright claims",
+      "the federal courts have exclusive jurisdiction over it: no court of any state, the District of Columbia, or a territory may hear a claim for relief arising under the patent laws, and the same is true of copyright claims",
     );
+    // Between private parties in a district court; against the United States
+    // in the Court of Federal Claims (28 U.S.C. 1498).
+    expect(forum).toContain("A claim between private parties is heard in a federal district court, while the owner's remedy for an invention used or manufactured by or for the United States without a license is an action against the United States in the Court of Federal Claims for reasonable and entire compensation.");
     expect(forum).toContain("Appeals go to the U.S. Court of Appeals for the Federal Circuit rather than to the regional circuit that covers the district");
     expect(forum).toContain("usually a contract claim governed by state law, which a state court can hear");
-    cites(patent.sources, ["JURISDICTION_1338", "FEDERAL_CIRCUIT_1295"]);
+    cites(patent.sources, ["JURISDICTION_1338", "FEDERAL_CIRCUIT_1295", "GOVERNMENT_USE_1498"]);
     const tsForum = secrets.sections!.find((s) => s.id === "where-claims-are-heard")!.bodyHtml;
     expect(tsForum).toContain("the federal district courts have original jurisdiction of those claims");
     expect(tsForum).toContain("The federal statute does not preempt or displace state law");
@@ -713,16 +716,32 @@ describe("intellectual property editorial: statements match the rules they descr
     const t = prose(patent);
     expect(t).toContain("the list of fifteen factors from the Georgia-Pacific decision");
     expect(t).toContain("The parties are assumed to know that the patent is valid and infringed");
-    expect(t).toContain("the royalty is generally built on the smallest salable unit that practices the patent");
-    expect(t).toContain("applies when the patented feature drives the demand for the whole product");
+    // The base and the rate apportion together: the whole product's value
+    // only under the entire market value rule, a whole-product base where the
+    // rate apportions (Exmark), and no rule that every model start from the
+    // smallest salable patent-practicing unit (CSIRO).
+    expect(t).toContain("the royalty is often built on the smallest salable patent-practicing unit");
+    expect(t).toContain("the entire value of a multi-component product can be claimed without further apportionment only under the entire market value rule, a narrow exception that applies when the patented feature drives the demand for the whole product, and otherwise a whole-product base is acceptable only where the rate does the apportioning, as with comparable licenses priced on the same base");
+    expect(t).toContain("using the accused product as the royalty base and apportioning through the rate is an acceptable methodology");
+    expect(t).not.toMatch(/can serve as the base only under the entire market value rule|generally built on the smallest salable unit/);
+    for (const text of [method.steps.join(" "), method.admissibilityHistory, method.faqs.map((f) => `${f.question} ${f.answer}`).join(" ")]) {
+      expect(text).not.toMatch(/(may|can) (serve as|be) the base only|using the entire product only where/);
+      expect(text).toContain("smallest salable patent-practicing unit");
+    }
+    // The analytical method: the infringer's usual or acceptable net profit
+    // comes off its projected profit, and the remainder is the royalty.
+    expect(t).toContain("subtracts the infringer's usual or acceptable net profit from that projection, and treats the remainder as the royalty");
+    expect(t).not.toContain("to be divided between the parties");
+    // The licensee's ceiling is the invention's value over its next-best alternative.
+    expect(comparison.overlap).toContain("the profit the infringer expected the invention to add over its next-best alternative sets the most it would have paid");
     // The 25 percent rule appears only as the rule the Federal Circuit rejected.
     expect(t).toContain("the 25 percent rule of thumb, which assigned the patentee a fixed share of the infringer's expected profit, is a fundamentally flawed tool");
     expect(method.limitations).toContain("the Federal Circuit rejected the 25 percent rule of thumb as a starting point");
     for (const x of [patent, secrets, method, comparison, post]) {
       for (const m of prose(x).matchAll(/[^.]*25 percent[^.]*\./g)) expect(m[0], x.slug).toMatch(/Federal Circuit/);
     }
-    cites(patent.sources, ["GEORGIA_PACIFIC", "LUCENT_GATEWAY", "UNILOC", "LASERDYNAMICS"]);
-    cites(method.sources, ["PATENT_284", "GEORGIA_PACIFIC", "LUCENT_GATEWAY", "UNILOC", "LASERDYNAMICS", "GRAIN_PROCESSING"]);
+    cites(patent.sources, ["GEORGIA_PACIFIC", "LUCENT_GATEWAY", "UNILOC", "LASERDYNAMICS", "CSIRO_CISCO", "EXMARK"]);
+    cites(method.sources, ["PATENT_284", "GEORGIA_PACIFIC", "LUCENT_GATEWAY", "UNILOC", "LASERDYNAMICS", "CSIRO_CISCO", "EXMARK", "GRAIN_PROCESSING"]);
   });
 
   it("comparable licenses: the 2025 en banc decision and Rule 702 travel with the sources they rest on", () => {
@@ -748,6 +767,10 @@ describe("intellectual property editorial: statements match the rules they descr
     expect(t).toContain("the court may award exemplary damages of up to twice the compensatory award");
     expect(t).toContain("Reverse engineering and independent derivation are not improper means");
     cites(secrets.sources, ["DTSA_1839", "USPTO_TRADE_SECRET_POLICY", "GEORGIA_PACIFIC"]);
+    // Avoided costs under the federal statute split the circuits (Syntel,
+    // Motorola v. Hytera, and Computer Sciences v. Tata).
+    expect(t).toContain("Whether the federal statute allows avoided costs depends on the circuit: the Second and Seventh Circuits allow them as unjust enrichment only where the misappropriation harmed the owner beyond its actual loss, for example by diminishing the secret's value to the owner, while the Fifth Circuit has declined to require that showing");
+    cites(secrets.sources, ["SYNTEL_TRIZETTO", "MOTOROLA_HYTERA", "CSC_TATA"]);
     cites(comparison.sources, ["DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT"]);
   });
 
@@ -756,8 +779,13 @@ describe("intellectual property editorial: statements match the rules they descr
     expect(post.content).toContain("only the named defendant's profits can be awarded, not those of affiliates that are not parties");
     expect(post.content).toContain("the Second Circuit has held that the fair market value of a license covering the infringing use can be the owner's actual damages in appropriate circumstances");
     cites(post.sources, ["LANHAM_ACT_1117", "ROMAG_FASTENERS", "DEWBERRY_GROUP", "COPYRIGHT_504", "ON_DAVIS_V_GAP", "DTSA_1836"]);
-    expect(method.whenUsed).toContain("with a license fee entering a trademark case as evidence of the damages rather than as a measure of its own");
-    cites(method.sources, ["COPYRIGHT_504", "ON_DAVIS_V_GAP", "LANHAM_ACT_1117", "DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT"]);
+    // A reasonable royalty can measure Lanham Act damages or set their baseline (Sands, Taylor & Wood), though it is no floor.
+    expect(method.whenUsed).toContain("a reasonable royalty can measure those damages or set the baseline for an award, as where the owner had licensed the mark, though it is no statutory floor as it is for a patent");
+    expect(method.limitations).toContain("in a trademark case a reasonable royalty can measure the owner's damages or set the baseline for an award, but nothing makes it a floor");
+    expect(post.content).toContain("courts have used a reasonable royalty to measure those damages or as the baseline for an award");
+    for (const text of [method.whenUsed, method.limitations, post.content]) expect(text).not.toMatch(/rather than as a measure of its own|a license fee is evidence of the owner's damages\./);
+    cites(method.sources, ["COPYRIGHT_504", "ON_DAVIS_V_GAP", "LANHAM_ACT_1117", "SANDS_TAYLOR_WOOD", "DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT"]);
+    cites(post.sources, ["SANDS_TAYLOR_WOOD"]);
   });
 
   it("names both sides, no team member, and no figure, award, or outcome", () => {

@@ -18,6 +18,7 @@ import {
   caseTypeStateCourtsQuestion,
   caseTypeStateForums,
   caseTypeCourtsNameFederalCourts,
+  caseTypeStateSources,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -344,7 +345,9 @@ export default function CaseTypeState() {
           ))}
         </ul>
       </section>
-      <SourcesBlock sources={caseType.sources.slice(0, 5)} />
+      {/* The first five hub sources, or a venue-framed entry's state list
+          behind the forum, framework, and expert-standard copy above. */}
+      <SourcesBlock sources={caseTypeStateSources(caseType)} />
       <div className="mt-12">
         <NextSteps context={`${lower} cases in ${place}`} />
       </div>

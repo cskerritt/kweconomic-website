@@ -927,19 +927,28 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
     const tx = readShell("/services/intellectual-property-damages/texas");
     expect(titleOf(tx)).toBe(`Intellectual Property Damages Expert in Texas | ${ORG_NAME}`);
     expect(h1Of(tx)).toBe("Intellectual Property Damages Expert in Texas");
-    expect(textOf(tx)).toContain("Patent and copyright claims are heard only in the federal courts, which for Texas means the federal district courts serving Texas");
+    expect(textOf(tx)).toContain("Patent and copyright claims are heard only in the federal courts, which for a case filed in Texas means the federal district courts serving Texas, though a case involving a business there may be filed in another district where venue lies");
+    // State-law claims brought on their own go to the state's courts; joined
+    // with a patent or copyright claim they are heard with it in federal court.
+    expect(textOf(tx)).toContain("Texas's District Court is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under Texas law brought on their own; joined with a patent or copyright claim, they are usually heard with it in federal court.");
     expect(textOf(tx)).not.toMatch(/orkers' compensation|wage-loss benefits|personal injury, wrongful death, employment, and commercial damages claims/);
     for (const st of states) {
       const shell = readShell(`/services/intellectual-property-damages/${st.slug}`);
       expect(textOf(shell), st.slug).toContain("Patent and copyright claims are heard only in the federal courts");
       expect(descriptionOf(shell).length, st.slug).toBeGreaterThanOrEqual(140);
       expect(descriptionOf(shell).length, st.slug).toBeLessThanOrEqual(160);
+      // The description, cut from the hero, names the rights.
+      expect(descriptionOf(shell), st.slug).toContain("Patent, trademark, copyright, and trade");
+      expect(textOf(shell), st.slug).not.toMatch(/travel with an infringement claim|Islands's/);
       expect(hrefs(shell).has("/case-types/intellectual-property-infringement/" + st.slug), st.slug).toBe(true);
     }
+    // Delaware names the courts the case-type pages list, two deep.
+    expect(textOf(readShell("/services/intellectual-property-damages/delaware"))).toContain("Delaware's Court of Chancery and Superior Court are the primary trial-level forums");
     const houston = readShell("/services/intellectual-property-damages/texas/houston");
     expect(titleOf(houston)).toBe(`IP Damages Expert in Houston, TX | ${ORG_NAME}`);
     expect(h1Of(houston)).toBe("Intellectual Property Damages Expert in Houston, TX");
-    expect(textOf(houston)).toContain("Patent and copyright claims involving a business in Houston are heard only in federal court");
+    expect(textOf(houston)).toContain("Patent and copyright claims involving a business in Houston are heard only in federal court, usually together with the related claims under Texas law; a license or royalty dispute brought on its own is typically heard in the District Court sitting in Harris County.");
+    expect(descriptionOf(houston)).toContain("Patent, trademark, copyright, and trade secret damages");
     expect(textOf(houston)).toContain("An appeal in a patent case goes to the United States Court of Appeals for the Federal Circuit from every federal district court");
     expect(textOf(houston)).not.toMatch(/Civil claims arising in Houston|Employers such as [^.]* shape the Houston labor market/);
   });

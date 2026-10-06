@@ -2,7 +2,7 @@ import type { Faq, Source } from "./types";
 import { refsToSources } from "./references";
 import { expertInquiryOf } from "./regulations/state-regs";
 import type { CourtSelection } from "./courts/state-courts";
-import { LOCAL_TRADE_SECRET_LAW_UNSTATED } from "./geo-prose.mjs";
+import { LOCAL_TRADE_SECRET_LAW_UNSTATED, placePossessive, prosePlace } from "./geo-prose.mjs";
 
 /**
  * KW Economics case types.
@@ -176,9 +176,13 @@ export interface CaseTypeForums {
  * shells read the same helpers. Slots are CaseTypeFraming's, plus
  * `{federalCourts}` ("the United States District Court for the District of
  * New Jersey"), `{circuit}` ("the United States Court of Appeals for the
- * Third Circuit"), and `{stateClaims}` (the claims under the place's own law
- * that its courts hear, from `stateClaims`). Keys are never `slug` or `name`,
- * because build scripts read this file as text.
+ * Third Circuit"), `{stateClaims}` (the claims under the place's own law
+ * that its courts hear, from `stateClaims`), and the running-prose place
+ * forms `{placeP}` ("the U.S. Virgin Islands") and `{placePoss}` ("the U.S.
+ * Virgin Islands'", "Texas's"), which src/data/geo-prose.mjs prosePlace() and
+ * placePossessive() derive from `{place}`; the meta description keeps
+ * `{place}`. Keys are never `slug` or `name`, because build scripts read
+ * this file as text.
  */
 export interface CaseTypeVenueFraming {
   /** Hub meta description (140-160 characters) in place of "... how the present value is built". */
@@ -218,6 +222,16 @@ export interface CaseTypeVenueFraming {
   stateClaims: { stated: string; unstated: string };
   /** The courts the state tier lists ahead of the state's trial courts, and the questions that name them. */
   forums: CaseTypeForums;
+  /** The References block of the case-type x state page, and the case
+   * type's part of the service x case type x state page's block: the
+   * statutes and rules behind the forum, framework, and expert-standard copy
+   * both pages print (caseTypeStateSources, caseTypePairStateSources), in
+   * place of the first five hub sources. */
+  stateSources: Source[];
+  /** The sources behind the exposure paragraph (`damagesExposure`), which
+   * the service x case type x state page prints and the case-type x state
+   * page does not; caseTypePairStateSources adds them. */
+  exposureSources: Source[];
 }
 
 export interface CaseType {
@@ -1181,23 +1195,23 @@ export const caseTypes: CaseType[] = [
       // selection: chancery, business, and general-jurisdiction courts), a
       // divorce in the court that hears divorce.
       courtsSentence:
-        "Federal income tax disputes over related-party prices are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; appeals from the Tax Court and the district courts ordinarily go to the federal court of appeals for the circuit where the business is based, and appeals from the Court of Federal Claims to the Federal Circuit. A dispute over {place}'s own tax follows its administrative and appeal process. Commercial and shareholder claims in {place} that turn on an intercompany price are heard in {courts}, with final appeals to the {supremeCourt}, and a divorce in which one bears on income or the value of a business is heard in [[/case-types/divorce-and-marital-dissolution/{stateSlug}|the court that hears divorce in {place}]].",
+        "Federal income tax disputes over related-party prices are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; appeals from the Tax Court and the district courts ordinarily go to the federal court of appeals for the circuit where the business is based, and appeals from the Court of Federal Claims to the Federal Circuit. A dispute over {placePoss} own tax follows its administrative and appeal process. Commercial and shareholder claims in {placeP} that turn on an intercompany price are heard in {courts}, with final appeals to the {supremeCourt}, and a divorce in which one bears on income or the value of a business is heard in [[/case-types/divorce-and-marital-dissolution/{stateSlug}|the court that hears divorce in {placeP}]].",
       // The federal tax forums apply the federal rules of evidence (the Tax
       // Court by statute); the state's own inquiry governs only the claims
       // heard in its courts.
       expertStandard:
-        "Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute: whether the expert is qualified, whether the testimony rests on sufficient facts or data and on reliable methods, and whether those methods were reliably applied to the facts of the case. The commercial, shareholder, and matrimonial claims heard in {place}'s courts are tested under its own standard, and a state tax appeal follows the rules of the forum that hears it. {inquiry} A transfer pricing report meets each of these inquiries by stating every method choice and naming the data behind every comparable.",
+        "Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute: whether the expert is qualified, whether the testimony rests on sufficient facts or data and on reliable methods, and whether those methods were reliably applied to the facts of the case. The commercial, shareholder, and matrimonial claims heard in {placePoss} courts are tested under its own standard, and a state tax appeal follows the rules of the forum that hears it. {inquiry} A transfer pricing report meets each of these inquiries by stating every method choice and naming the data behind every comparable.",
       pairStateFrameworkTail:
         "The report states each transaction, method choice, and comparable screen with its source and shows the result under the opposing method, tested party, and comparables, so counsel can apply the rule of decision of the forum that hears the dispute to a documented result.",
       forums: {
         noun: "forums",
-        courtsQuestion: "Which forums hear a tax or transfer pricing dispute involving {place}?",
-        expertQuestion: "What do the forums that hear a tax or transfer pricing dispute involving {place} ask of {work}?",
+        courtsQuestion: "Which forums hear a tax or transfer pricing dispute involving {placeP}?",
+        expertQuestion: "What do the forums that hear a tax or transfer pricing dispute involving {placeP} ask of {work}?",
         list: [
           { label: "United States Tax Court", description: "Hears a challenge to an IRS notice of deficiency before the tax is paid; a national court that holds trials in cities across the country" },
           { label: "United States District Courts", description: "Hear a refund suit after the tax is paid, in the district where the business is based, with a jury available" },
           { label: "United States Court of Federal Claims", description: "Hears a refund suit after the tax is paid, without a jury; appeals go to the Federal Circuit" },
-          { label: "{attr} tax appeals", description: "A dispute over {place}'s own tax, through its administrative and appeal process" },
+          { label: "{attr} tax appeals", description: "A dispute over {placePoss} own tax, through its administrative and appeal process" },
         ],
         trialCourtLimit: 2,
       },
@@ -1275,39 +1289,45 @@ export const caseTypes: CaseType[] = [
       stateDescription:
         "Intellectual property infringement damages in {place}: the patent, trademark, copyright, and trade secret claims, the courts, and the analysis.",
       stateLead:
-        "{org} prepares economic damages analyses for intellectual property infringement cases involving {place}: the measure each patent, trademark, copyright, and trade secret claim carries, the sales, cost, and license records that drive it, and a report built for the federal district courts that hear every patent and copyright claim and for the {attr} courts that hear the claims under {attr} law. Plaintiff and defense.",
+        "{org} prepares economic damages analyses for intellectual property infringement cases involving {placeP}: the measure each patent, trademark, copyright, and trade secret claim carries, the sales, cost, and license records that drive it, and a report built for the federal courts, which alone hear patent and copyright claims, and for the {attr} courts that hear claims under {attr} law. Plaintiff and defense.",
       stateStepsIntro:
-        "The same four steps apply to an intellectual property infringement case involving {place}; the statute behind each claim, set out above, decides which measures enter the total.",
-      // The federal measures first (the same in every district), then the
-      // trade secret statutes without a claim about any one place's
-      // enactment, then the place's own law for the claims that travel with
-      // an infringement claim.
+        "The same four steps apply to an intellectual property infringement case involving {placeP}; the statute behind each claim, set out above, decides which measures enter the total.",
+      // The federal measures first (they do not change with the state,
+      // though the regional circuit's decisions govern how the copyright and
+      // trademark measures are applied; copyright statutory damages only for
+      // a work registered in time), then the trade secret statutes without a
+      // claim about any one place's enactment, then the place's own law for
+      // the contract and license claims.
       stateFramework:
-        "Patent, copyright, and trademark damages are set by federal statute, so the measures are the same in every district: a reasonable royalty at least, and lost profits where they are proven, for a patent, with recovery limited to six years before suit and, for unmarked products, to the period after notice; the defendant's profits, the owner's actual damages, and the costs of the action for a trademark; and actual damages and the infringer's profits, or statutory damages where the owner elects them, for a copyright. A trade secret claim can be brought under the federal statute, and most states, the District of Columbia, Puerto Rico, and the U.S. Virgin Islands have also enacted a version of the Uniform Trade Secrets Act; {place}'s own law governs the contract and license claims that travel with an infringement claim, and counsel confirms which trade secret law applies and the measures it allows.",
-      stateFrameworkQuestion: "Which damages rules apply to an intellectual property claim involving {place}?",
+        "Patent, copyright, and trademark damages are set by federal statute: a reasonable royalty at least, and lost profits where they are proven, for a patent, with recovery limited to six years before suit and, for unmarked products, to the period after notice; the defendant's profits, the owner's actual damages, and the costs of the action for a trademark; and actual damages and the infringer's profits for a copyright, or statutory damages the owner elects instead where the work was registered in time, before the infringement began or within three months after first publication. Those measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied. A trade secret claim can be brought under the federal statute, and most states, the District of Columbia, Puerto Rico, and the U.S. Virgin Islands have also enacted a version of the Uniform Trade Secrets Act; {placePoss} own law can govern the contract and license claims, whether they are brought with an infringement claim or on their own, and counsel confirms which trade secret law applies and the measures it allows.",
+      stateFrameworkQuestion: "Which damages rules apply to an intellectual property claim involving {placeP}?",
       pairStateLead:
-        "{org} prepares {work} for {matter} cases involving {place}: the measure each patent, trademark, copyright, or trade secret claim carries, the sales, cost, and license records that drive it, and a report built for the federal and {attr} courts that hear the claims. Plaintiff and defense.",
-      pairStateFrameworkQuestion: "Which damages rules shape {work} in an intellectual property case involving {place}?",
+        "{org} prepares {work} for {matter} cases involving {placeP}: the measure each patent, trademark, copyright, or trade secret claim carries, the sales, cost, and license records that drive it, and a report built for the federal and {attr} courts that hear the claims. Plaintiff and defense.",
+      pairStateFrameworkQuestion: "Which damages rules shape {work} in an intellectual property case involving {placeP}?",
       pairStateFrameworkTail:
         "The report presents each measure the claims support with its period, base, and apportionment, states every license, rate, and cost with its source, and shows the result under the alternatives the other side is likely to argue, so counsel can apply the federal statute or the {attr} law that governs each claim to a documented figure.",
-      // The federal district courts first (exclusive for patent and
-      // copyright claims), the Federal Circuit for patent appeals, the
-      // regional circuit otherwise, then the place's own courts for the
-      // claims under its law, with their appeal.
+      // The federal courts first (exclusive for patent and copyright claims:
+      // the place's district courts for a case filed there, another district
+      // where venue lies, the Court of Federal Claims for a claim against the
+      // United States), the Federal Circuit for patent appeals, the regional
+      // circuit otherwise, then the claims under the place's own law: with
+      // the infringement claim in federal court when joined with a patent or
+      // copyright claim, in federal court on diverse citizenship, and
+      // otherwise in the place's own courts, with their appeal.
       courtsSentence:
-        "Patent and copyright claims arise under federal law that only the federal courts may hear, so they are heard in {federalCourts}, and trademark and trade secret claims can be filed there or in {place}'s own courts. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit, and an appeal in any other case from the district court to {circuit}. Claims under {attr} law, such as {stateClaims}, are heard in {courts}, with final appeals to the {supremeCourt}.",
+        "Patent and copyright claims arise under federal law that only the federal courts may hear: a case filed in {placeP} is heard in {federalCourts}, a case involving a business based in {placeP} may be filed in another district where venue lies, and a claim against the United States goes to the Court of Federal Claims; trademark and trade secret claims can be filed in federal court or in {placePoss} own courts. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit, and an appeal in any other case from the district court to {circuit}. Claims under {attr} law, such as {stateClaims}, are usually heard with the infringement claim in federal court when they are joined with a patent or copyright claim, and can be heard there on their own where the parties' diverse citizenship brings them within federal jurisdiction; otherwise they are heard in {courts}, with final appeals to the {supremeCourt}.",
       courtsSentenceNoDistrict:
-        "Patent and copyright claims arise under federal law that only the federal courts may hear, and {place} has no federal district court of its own, so such a claim involving a business there is filed in a federal district court where venue lies, and a federal trademark or trade secret claim can be filed there as well. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit from whichever district court hears it. Claims under {attr} law, such as {stateClaims}, are heard in {courts}, with final appeals to the {supremeCourt}.",
+        "Patent and copyright claims arise under federal law that only the federal courts may hear, and {placeP} has no federal district court of its own, so such a claim involving a business there is filed in a federal district court where venue lies, or, against the United States, in the Court of Federal Claims, and a federal trademark or trade secret claim can be filed in a district court as well. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit from whichever district court hears it. Claims under {attr} law, such as {stateClaims}, are usually heard with the infringement claim when they are joined with a patent or copyright claim; brought on their own, they are heard in {courts}, with final appeals to the {supremeCourt}.",
       expertStandard:
-        "In the federal district courts, which hear every patent and copyright claim, damages testimony is tested under the federal rules of evidence: whether the expert is qualified, whether the testimony rests on sufficient facts or data, and whether reliable methods were reliably applied to the facts of the case, with the proponent showing each is more likely than not. Claims heard in {place}'s own courts are tested under its own standard. {inquiry} An intellectual property damages report meets each of these inquiries by tying every royalty input, apportionment step, and sales figure to the record or to another expert's stated opinion.",
+        "In the federal district courts, which hear patent and copyright infringement claims between private parties, damages testimony is tested under the federal rules of evidence: whether the expert is qualified, whether the testimony rests on sufficient facts or data, and whether reliable methods were reliably applied to the facts of the case, with the proponent showing each is more likely than not. Claims heard in {placePoss} own courts are tested under the standard those courts apply. {inquiry} An intellectual property damages report meets each of these inquiries by tying every royalty input, apportionment step, and sales figure to the record or to another expert's stated opinion.",
       stateClaims: {
         stated: "trade secret misappropriation, unfair competition, and disputes over royalties owed under a license",
         unstated: "disputes over royalties owed under a license",
       },
       forums: {
         noun: "courts",
-        courtsQuestion: "Which courts hear an intellectual property infringement case involving {place}?",
-        expertQuestion: "What do the courts that hear an intellectual property case involving {place} ask of {work}?",
+        courtsQuestion: "Which courts hear an intellectual property infringement case involving {placeP}?",
+        expertQuestion: "What do the courts that hear an intellectual property case involving {placeP} ask of {work}?",
         list: [
           {
             label: "{federalCourtsName}",
@@ -1326,6 +1346,30 @@ export const caseTypes: CaseType[] = [
         ],
         trialCourtLimit: 2,
       },
+      // The statutes and rules behind the state and pair x state copy: the
+      // forums and appeals (1338, 1400, 1498, 1332, 1367, 1295), the federal
+      // measures and their limits (284, 286, 287, 1117, 504, 412), the trade
+      // secret statutes (1836, the uniform act), and the federal expert
+      // standard; the pair x state page adds the exposure paragraph's Texas
+      // example of exemplary damages for the fact finder.
+      stateSources: refsToSources([
+        "JURISDICTION_1338",
+        "PATENT_VENUE_1400",
+        "GOVERNMENT_USE_1498",
+        "DIVERSITY_1332",
+        "SUPPLEMENTAL_1367",
+        "FEDERAL_CIRCUIT_1295",
+        "PATENT_284",
+        "PATENT_286",
+        "PATENT_287",
+        "LANHAM_ACT_1117",
+        "COPYRIGHT_504",
+        "COPYRIGHT_412",
+        "DTSA_1836",
+        "UNIFORM_TRADE_SECRETS_ACT",
+        "FRE_702",
+      ]),
+      exposureSources: refsToSources(["TEXAS_UTSA_134A"]),
     },
     summaryShort:
       "An intellectual property infringement claim measures what the unauthorized use of a patent, trademark, copyright, or trade secret cost the owner or gained the user, under the measure each statute provides, apportioned to the protected right and built from both sides' sales, cost, and license records.",
@@ -1343,9 +1387,9 @@ export const caseTypes: CaseType[] = [
     summary:
       "Intellectual property infringement cases turn on what a protected right was worth to the parties: what the owner lost because a patent, trademark, copyright, or trade secret was used without permission, and what the user gained by using it. Each statute supplies its own measure, from the reasonable royalty that is the floor of every patent award to the trademark owner's claim to the defendant's profits and the trade secret owner's claim to unjust enrichment, and each requires the damages to be tied to the protected right rather than to the rest of the product. The economist builds those measures from both sides' sales, cost, and license records and states every input, so the patentee and the accused infringer, or the owner and the party accused of taking the information, can test it.",
     lossComponents:
-      "Depending on the right, the claim consists of a reasonable royalty for the use made of a patent, at the least, and the patentee's lost profits on sales it would have made, including price erosion, and for a design patent the infringer's total profit on the article of manufacture; the defendant's profits, the owner's actual damages, and the cost of corrective advertising for an infringed trademark; the copyright owner's actual damages and the infringer's profits not already counted in them, or statutory damages within the range the statute fixes where the owner elects them instead; and the trade secret owner's actual loss and the misappropriator's unjust enrichment, or a reasonable royalty in their place. A license dispute adds the royalties owed under the contract's own terms. The drivers are the accused products' unit sales, revenue, prices, and costs, the owner's sales, margins, and capacity, the licenses to the rights in suit and to comparable technology, the marking, notice, and public disclosure records that set the damages period, the parties' forecasts and business plans from the date the infringement began, and the technical and survey experts' opinions on what the right covers and what it adds to the product.",
+      "Depending on the right, the claim consists of a reasonable royalty for the use made of a patent, at the least, and the patentee's lost profits on sales it would have made, including price erosion, and for a design patent the infringer's total profit on the article of manufacture; the defendant's profits, the owner's actual damages, and the cost of corrective advertising for an infringed trademark; the copyright owner's actual damages and the infringer's profits not already counted in them, or, where the work was registered in time (before the infringement began, or within three months after first publication), statutory damages within the range the statute fixes, which the owner can elect instead; and the trade secret owner's actual loss and the misappropriator's unjust enrichment, or a reasonable royalty in their place. A license dispute adds the royalties owed under the contract's own terms. The drivers are the accused products' unit sales, revenue, prices, and costs, the owner's sales, margins, and capacity, the licenses to the rights in suit and to comparable technology, the marking, notice, and public disclosure records that set the damages period, the parties' forecasts and business plans from the date the infringement began, and the technical and survey experts' opinions on what the right covers and what it adds to the product.",
     damagesExposure:
-      "Which measure dominates depends on the right and on how the parties compete. Where the owner and the infringer sell competing products and few substitutes exist, lost profits on the diverted sales and price erosion can exceed any royalty; where the owner licenses rather than sells, or many substitutes share the market, the reasonable royalty usually carries the claim, and the royalty base, the comparability of the licenses, and the cost of the infringer's alternatives move it most. In a trademark or copyright claim for the infringer's profits, the costs the infringer can deduct and the share of profit it can attribute to factors other than the protected right are the usual battleground, and in a trade secret case the length of the protection period and the head start, and whether the owner's loss and the misappropriator's gain overlap, often decide the size of the award. Across every right, apportionment to the protected feature is the most contested input, and enhanced damages for a patent and exemplary damages for a trade secret, where the statute allows them, are for the court on the defendant's conduct rather than part of the economic measure.",
+      "Which measure dominates depends on the right and on how the parties compete. Where the owner and the infringer sell competing products and few substitutes exist, lost profits on the diverted sales and price erosion can exceed any royalty; where the owner licenses rather than sells, or many substitutes share the market, the reasonable royalty usually carries the claim, and the royalty base, the comparability of the licenses, and the cost of the infringer's alternatives move it most. In a trademark or copyright claim for the infringer's profits, the costs the infringer can deduct and the share of profit it can attribute to factors other than the protected right are the usual battleground, and in a trade secret case the length of the protection period and the head start, and whether the owner's loss and the misappropriator's gain overlap, often decide the size of the award. Across every right, apportionment to the protected feature is the most contested input. Enhanced patent damages are for the court, and exemplary trade secret damages are for the court under the federal statute and the uniform act, though some state enactments, such as Texas's, give them to the fact finder; either way they turn on the defendant's conduct, not on the economic measure.",
     economicImpact:
       "The economist starts with the rights, the accused products, and the timeline: when the infringement or misappropriation began, when the owner gave notice or marked its products, when the information became public, and which part of the period is recoverable under the limitation rules each claim carries. The accused products' sales, prices, and costs are rebuilt from the accused party's records by product, period, and customer, and the owner's sales, margins, and capacity from its own. For a reasonable royalty, the economist reconstructs the hypothetical negotiation at the start of the infringement from the comparable licenses, read in full and adjusted for scope, form, and circumstances, from the profit the protected feature made possible, and from the cost of the user's next-best alternative, and settles the rate and the base within the bargaining range; for lost profits, the but-for market is rebuilt from demand, substitutes, and capacity, and the incremental profit is computed on the sales the owner would have made; for the infringer's profits, its claimed costs and the share owed to other factors are tested against its ledger. Each measure is apportioned to the protected right with the technical and survey experts' inputs stated, overlaps are removed, prejudgment interest is computed on the basis the court adopts, and the report shows the result under the opposing base, licenses, and alternatives.",
     relevantServices: ["intellectual-property-damages", "lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review"],
@@ -1354,7 +1398,7 @@ export const caseTypes: CaseType[] = [
       {
         question: "Which courts hear intellectual property infringement cases?",
         answer:
-          "Patent and copyright claims arise under federal law and are heard only in the federal district courts; no court of a state, the District of Columbia, or a territory may hear them. Trademark and trade secret claims can be brought in federal court or in a state court, and claims under state law, such as a trade secret claim under a state statute, unfair competition, or a dispute over the royalties owed under a license, are heard in the state's courts unless they are joined with a federal claim. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit; other appeals from the district courts go to the regional court of appeals.",
+          "Patent and copyright claims arise under federal law, and no court of a state, the District of Columbia, or a territory may hear them. The federal district courts hear patent and copyright infringement claims between private parties, a claim against the United States goes to the Court of Federal Claims, and a small copyright claim can also go, if both sides take part, to the Copyright Claims Board in the Copyright Office. Trademark and trade secret claims can be brought in federal court or in a state court, and claims under state law, such as a trade secret claim under a state statute, unfair competition, or a dispute over the royalties owed under a license, are heard in the state's courts unless they are joined with a federal claim or the parties' diverse citizenship brings them within federal jurisdiction. An appeal in a case with a claim or compulsory counterclaim under the patent laws goes to the United States Court of Appeals for the Federal Circuit; other appeals from the district courts go to the regional court of appeals.",
       },
       {
         question: "Does the economist decide whether the right was infringed?",
@@ -1377,7 +1421,24 @@ export const caseTypes: CaseType[] = [
           "Usually, and over a long damages period it can be a large part of the total. The patent statute provides for damages together with interest as the court fixes it, and the other intellectual property claims follow their own rules on whether and how interest runs. The court decides the rate and whether it compounds; the economist computes the interest on the basis the court adopts and shows it apart from the damages, so either can be adjusted.",
       },
     ],
-    sources: refsToSources(["JURISDICTION_1338", "FEDERAL_CIRCUIT_1295", "PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT", "PANDUIT", "GEORGIA_PACIFIC", "BIG_O_TIRES"]),
+    sources: refsToSources([
+      "JURISDICTION_1338",
+      "FEDERAL_CIRCUIT_1295",
+      "PATENT_284",
+      "LANHAM_ACT_1117",
+      "COPYRIGHT_504",
+      "COPYRIGHT_412",
+      "DTSA_1836",
+      "UNIFORM_TRADE_SECRETS_ACT",
+      "TEXAS_UTSA_134A",
+      "GOVERNMENT_USE_1498",
+      "COPYRIGHT_CLAIMS_BOARD_1502",
+      "DIVERSITY_1332",
+      "SUPPLEMENTAL_1367",
+      "PANDUIT",
+      "GEORGIA_PACIFIC",
+      "BIG_O_TIRES",
+    ]),
   },
 ];
 
@@ -1414,14 +1475,22 @@ interface FramingSlots {
   federalCourtsName?: string;
   circuitName?: string;
   stateClaims?: string;
+  /** Running-prose place ("the U.S. Virgin Islands"); derived from `place`. */
+  placeP?: string;
+  /** Its possessive ("the U.S. Virgin Islands'", "Texas's"); derived from `place`. */
+  placePoss?: string;
 }
 
-/** Fill the slots of a framing string (see FramingSlots); a slot with no value renders empty. */
-const fillSlots = (s: string, slots: FramingSlots): string =>
-  s.replace(
-    /\{(org|place|work|matter|attr|courts|supremeCourt|stateSlug|inquiry|circuit|circuitNote|federalCourts|federalCourtsName|circuitName|stateClaims)\}/g,
-    (_, key: keyof FramingSlots) => slots[key] ?? "",
+/** Fill the slots of a framing string (see FramingSlots); a slot with no value
+ * renders empty. `{placeP}` and `{placePoss}` are derived from `place`
+ * (geo-prose.mjs prosePlace and placePossessive). */
+const fillSlots = (s: string, slots: FramingSlots): string => {
+  const all: FramingSlots = slots.place ? { placeP: prosePlace(slots.place), placePoss: placePossessive(slots.place), ...slots } : slots;
+  return s.replace(
+    /\{(org|place|work|matter|attr|courts|supremeCourt|stateSlug|inquiry|circuit|circuitNote|federalCourts|federalCourtsName|circuitName|stateClaims|placeP|placePoss)\}/g,
+    (_, key: keyof FramingSlots) => all[key] ?? "",
   );
+};
 
 /** "a, b, and c" (two names take "and" alone). */
 const listNames = (names: string[]): string => {
@@ -1598,6 +1667,19 @@ export function caseTypePairStateLead(c: CaseType, orgName: string, work: string
     : `${orgName} prepares ${work} for ${matter} cases venued in ${place}: what the loss claim consists of, the records that drive it, and a present value built to ${attr} damages rules and venues. Plaintiff and defense.`;
 }
 
+/**
+ * The answer of the service x case type x state FAQ "How is <work> built for
+ * <matter> case in <place>?": the pillar's note for the pair, which says how
+ * the pillar's own analysis is built for the case type (every declared pair
+ * carries one), or the case type's steps under the state intro where a pair
+ * has none. The case type's generic steps would answer a different question
+ * wherever the pillar's work is not the case type's usual measure (a license
+ * royalty in a contract case, a valuation in an infringement case).
+ */
+export function caseTypePairStateBuildAnswer(c: CaseType, place: string, note?: { summary: string }): string {
+  return note?.summary ?? `${caseTypeStateStepsIntro(c, place)} ${c.steps.join(" ")}`;
+}
+
 /** The state facts the courts answer reads. */
 export interface CaseTypeCourtsInput {
   /** The place name (geo-prose.mjs placeName). */
@@ -1709,6 +1791,30 @@ export function caseTypeStateForums(c: CaseType, place: string, attr: string, ge
   return (forumsOf(c)?.list ?? [])
     .filter((f) => (f.requires === "districts" ? districts.length > 0 : f.requires === "circuit" ? Boolean(circuit) : true))
     .map((f) => ({ name: fillSlots(f.label, slots), description: fillSlots(f.description, slots) }));
+}
+
+/**
+ * The References block of the case-type x state page: the first five hub
+ * sources, or a venue-framed entry's own state list (the statutes and rules
+ * behind the forum, framework, expert-standard, and exposure copy the state
+ * page prints). Shared with scripts/prerender.mjs.
+ */
+export function caseTypeStateSources(c: CaseType): Source[] {
+  return c.venueFraming?.stateSources ?? c.sources.slice(0, 5);
+}
+
+/**
+ * The References block of the service x case type x state page: the pillar's
+ * first five sources, followed, for a venue-framed case type, by the case
+ * type's state list and its exposure sources (de-duplicated by URL), since
+ * the page prints the case type's forum, framework, and exposure copy beside
+ * the pillar's.
+ */
+export function caseTypePairStateSources(c: CaseType, serviceSources: readonly Source[]): Source[] {
+  const own = serviceSources.slice(0, 5);
+  if (!c.venueFraming) return own;
+  const seen = new Set(own.map((x) => x.url));
+  return [...own, ...[...c.venueFraming.stateSources, ...c.venueFraming.exposureSources].filter((x) => !seen.has(x.url))];
 }
 
 /** Anchor text of the service x case type page's link to the case-type hub: the hub's own three section headings where the entry carries a framing block. */

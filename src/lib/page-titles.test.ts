@@ -317,7 +317,13 @@ describe("the fallbacks shorten only what cannot fit", () => {
     // fits, "IP Damages Expert in <place>" elsewhere, and the pair tags keep
     // the heading label.
     const ip = pillarServices().find((s) => s.slug === "intellectual-property-damages")!;
-    expect(pillarTitle(ip, ORG_NAME)).toBe(`Intellectual Property Damages Expert | ${ORG_NAME}`);
+    // The hub title carries the role the query carries, from the pillar's
+    // own pillarTitleLabel, beside a name (and an H1) that drops it.
+    expect(pillarTitle(ip, ORG_NAME)).toBe(`Intellectual Property Damages Expert Witness | ${ORG_NAME}`);
+    expect(pillarTitle(ip, ORG_NAME).length).toBeLessThanOrEqual(60);
+    // A label that cannot fit falls back to "<name> Expert".
+    expect(pillarTitle({ ...ip, pillarTitleLabel: `${ip.name} Expert Witness Services Nationwide` }, ORG_NAME)).toBe(`Intellectual Property Damages Expert | ${ORG_NAME}`);
+    expect(pillarServices().filter((s) => s.pillarTitleLabel).map((s) => s.slug)).toEqual(["intellectual-property-damages"]);
     expect(variantTitle(ip, "Timeline", ORG_NAME)).toBe(`Intellectual Property Damages Timeline | ${ORG_NAME}`);
     expect(serviceGeoTitleLabels(ip)).toEqual(["Intellectual Property Damages Expert", "IP Damages Expert", "IP Damages"]);
     expect(serviceGeoHeadingLabel(ip)).toBe("Intellectual Property Damages Expert");

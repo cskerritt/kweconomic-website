@@ -2518,7 +2518,7 @@ export const journeys: JourneyStage[] = [
       "Assemble the reliance file: licenses, sales and cost data, forecasts, workpapers, and the opposing report",
     ],
     questionsToAsk: [
-      "Why is your royalty base the smallest unit that practices the patent, and what does it still include?",
+      "How do your royalty base and rate together apportion the value to the patented feature, and what does the base still include?",
       "How did you convert each lump-sum license into a rate, and what sales did you assume?",
       "What does the result look like if the opposing expert's design-around is accepted?",
       "Which of your inputs come from another expert, and what happens if that opinion is excluded?",
@@ -3382,10 +3382,10 @@ export const journeys: JourneyStage[] = [
       {
         question: "Does the economist testify about enhanced or exemplary damages?",
         answer:
-          "No. Enhanced damages for a patent and exemplary damages for a trade secret are for the court to decide on the defendant's conduct, and they are not part of the economic measure. The economist's testimony covers the compensatory damages and, where the court asks for it, the computation of prejudgment interest.",
+          "No. Enhanced patent damages are for the court, and exemplary trade secret damages are for the court under the federal statute and the uniform act, though some state enactments, such as Texas's, give them to the fact finder; either way they turn on the defendant's conduct, not on the economic measure. The economist's testimony covers the compensatory damages and, where the court asks for it, the computation of prejudgment interest.",
       },
     ],
-    sources: refsToSources(["GEORGIA_PACIFIC", "LUCENT_GATEWAY", "HALO_ELECTRONICS"]),
+    sources: refsToSources(["GEORGIA_PACIFIC", "LUCENT_GATEWAY", "HALO_ELECTRONICS", "DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT", "TEXAS_UTSA_134A"]),
   },
 ];
 

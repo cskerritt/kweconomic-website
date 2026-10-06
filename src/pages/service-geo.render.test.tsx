@@ -285,8 +285,10 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
               // The intellectual property variant: the federal courts that
               // alone hear patent and copyright claims, with the Federal
               // Circuit, ahead of the state's own forum.
-              expect(legal).toMatch(/^Patent and copyright claims are heard only in the federal courts, which for .* means the federal district courts? serving .*, with appeals in patent cases to the United States Court of Appeals for the Federal Circuit;/);
-              expect(legal).toContain("is the primary trial-level forum for the trade secret, unfair competition, contract, and license claims under");
+              expect(legal).toMatch(/^Patent and copyright claims are heard only in the federal courts, which for a case filed in .* means the federal district courts? serving .*, though a case involving a business there may be filed in another district where venue lies; appeals in patent cases go to the United States Court of Appeals for the Federal Circuit,/);
+              // The courts the case-type pages list, for the claims under the
+              // state's law brought on their own; joined claims go federal.
+              expect(legal).toMatch(/(is the primary trial-level forum|are the primary trial-level forums) for the trade secret, unfair competition, contract, and license claims under .* law brought on their own; joined with a patent or copyright claim, they are usually heard with it in federal court\./);
             } else {
               expect(legal).toContain("primary trial-level forum for the shareholder, partnership, contract, and fraud claims these analyses support.");
             }
@@ -311,7 +313,7 @@ describe("ServiceState hero, meta, credentials sidebar, and FAQ prose", () => {
             service.slug === "transfer-pricing-expert-witness"
               ? "In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony."
               : service.slug === "intellectual-property-damages"
-                ? "In the federal district courts, which hear every patent and copyright claim, the court's scheduling order sets the dates for the expert reports, and in a patent case the damages reports usually follow the court's construction of the claims."
+                ? "In the federal district courts, which hear patent and copyright infringement claims between private parties, the court's scheduling order sets the dates for the expert reports, and in a patent case the damages reports usually follow the court's construction of the claims."
                 : `Expert disclosure in ${place} is scheduled case by case: in the ${placeAttr(state.name)} trial courts by the case management or scheduling order, and in the federal district courts serving ${place} by the federal expert-disclosure framework,`,
           );
           expect(faqText(html)).not.toContain("Disclosure timing is typically set by the scheduling order in the case.");
@@ -433,7 +435,7 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
             service.slug === "transfer-pricing-expert-witness"
               ? `are familiar with the forums and disclosure rules that apply to transfer pricing disputes involving ${placeAttr(state.name)} businesses.`
               : service.slug === "intellectual-property-damages"
-                ? `are familiar with the federal and ${placeAttr(state.name)} courts that hear intellectual property claims and the disclosure rules that apply in them.`
+                ? `and the report is built for the federal and ${placeAttr(state.name)} courts that hear intellectual property claims and for their disclosure rules.`
                 : `requirements that affect ${proseName(service.shortName)} engagements in ${place}.`,
           );
         });
@@ -454,7 +456,13 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
         it("names what this pillar measures in the city context paragraph, under an H2 that does not repeat the H1", () => {
           const city = CITY_ROWS[`${stateSlug}/${citySlug}`];
           const paragraph = serviceCityContextParagraph(service, state, city);
-          expect(paragraph.startsWith(`${ORG_NAME} serves counsel throughout ${cityName} and the surrounding ${city.county} area. Our economists `)).toBe(true);
+          // The intellectual property paragraph describes the analysis, not
+          // the economists (only one profile lists the specialty).
+          expect(
+            paragraph.startsWith(
+              `${ORG_NAME} serves counsel throughout ${cityName} and the surrounding ${city.county} area. ${service.slug === "intellectual-property-damages" ? "The analysis measures " : "Our economists "}`,
+            ),
+          ).toBe(true);
           expect(text).toContain(paragraph);
           expect(html).not.toContain(`mb-4">${service.shortName.replace("&", "&amp;")} in ${cityName}</h2>`);
           // Only the pillars that measure earnings say so; a valuation, tracing,
