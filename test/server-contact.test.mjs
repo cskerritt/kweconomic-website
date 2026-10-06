@@ -62,6 +62,12 @@ describe("POST /api/contact end-to-end (no external services)", () => {
     expect(type).toBe("contact");
     expect(data.email).toBe("ann@firm.com");
     expect(typeof data.__submissionId).toBe("string");
+    // Stored rows share the sister site's raw_submissions table, so each names its site.
+    expect(data.__site).toBe("kweconomics.com");
+    const { insertRawSubmission } = await import("../lib/raw-submissions.server.mjs");
+    const row = insertRawSubmission.mock.calls.at(-1)[0];
+    expect(row.payload.__site).toBe("kweconomics.com");
+    expect(row.forwarded).toBe(true);
   });
 
   it("rejects a missing phone with the route message", async () => {

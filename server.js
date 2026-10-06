@@ -192,6 +192,9 @@ export function queueLeadEmail(type, data, deps = {}) {
     });
 }
 
+// Site tag stamped on every stored submission (see the __site comment below).
+export const LEAD_SITE = "kweconomics.com";
+
 // Form submission routes: type tag written to submissions.jsonl / raw_submissions
 // plus the fields a request must include. Every route is a human-facing lead
 // form, so every route is Turnstile-gated.
@@ -485,6 +488,10 @@ export async function requestHandler(req, res) {
       data.__submissionId = submissionId;
       data.__clientIp = clientIp(req);
       data.__userAgent = req.headers["user-agent"] || null;
+      // raw_submissions is shared with the sister site's Supabase project, so
+      // every row names the site it came from. Internal (__) fields never reach
+      // the lead email (lib/lead-mailer.server.mjs INTERNAL).
+      data.__site = LEAD_SITE;
       // Anti-spam layer 2 (behind Turnstile): a filled honeypot or >=2 gibberish
       // signals. QUARANTINE, never delete - store the submission durably (jsonl
       // breadcrumb + raw_submissions) with a _spam marker, then return the SAME
