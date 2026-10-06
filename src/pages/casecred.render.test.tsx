@@ -128,7 +128,7 @@ describe("CaseTypeHub /case-types/wrongful-death", () => {
   });
 });
 
-describe("CaseTypeHub across all 15 case types", () => {
+describe("CaseTypeHub across all 16 case types", () => {
   for (const ct of caseTypes) {
     it(`/case-types/${ct.slug} names the same retainable economist and fits the SERP`, () => {
       const { html, title, description } = render(`/case-types/${ct.slug}`, HUB_ROUTE, CaseTypeHub);
@@ -137,9 +137,12 @@ describe("CaseTypeHub across all 15 case types", () => {
       expect(title.length).toBeLessThanOrEqual(60);
       expect(description.length).toBeLessThanOrEqual(160);
       // The shared damages description ends "Plaintiff and defense."; a framing
-      // entry (the family-law matter) publishes its own (CaseTypeFraming.render.test.tsx).
+      // entry (the family-law matter) or a venue-framed entry (intellectual
+      // property, whose shared description would promise a present value)
+      // publishes its own (CaseTypeFraming.render.test.tsx).
       expect(description).toBe(caseTypeHubDescription(ct));
-      if (!ct.framing) expect(description).toMatch(/Plaintiff and defense\.$/);
+      if (!ct.framing && !ct.venueFraming) expect(description).toMatch(/Plaintiff and defense\.$/);
+      if (ct.venueFraming) expect(description.length).toBeGreaterThanOrEqual(140);
       expect(section(html, "in-short").match(/<li>/g)).toHaveLength(3);
       expect(section(html, "analysis").match(/<li>/g)).toHaveLength(4);
       expect(node(html, "Article")?.dateModified).toBe(ct.dateModified);
@@ -374,7 +377,9 @@ describe("CaseTypeState sweep of every case type x jurisdiction", () => {
         expect(stems.some((stem) => title.startsWith(`${stem} in `)), label).toBe(true);
         expect(title.length, label).toBeLessThanOrEqual(60);
         expect(description, label).toBe(caseTypeStateDescription(ct, placeName(st.name)));
-        if (!ct.framing) expect(description, label).toContain(`${ct.name} economic damages in ${placeName(st.name)}:`);
+        if (!ct.framing && !ct.venueFraming) expect(description, label).toContain(`${ct.name} economic damages in ${placeName(st.name)}:`);
+        // A venue-framed entry's own description sits in the 140-160 band beside every place.
+        if (ct.venueFraming) expect(description.length, label).toBeGreaterThanOrEqual(140);
         expect(description.length, label).toBeLessThanOrEqual(160);
         const service = node(html, "Service")!;
         expect(service["@id"], label).toBe(`${url}#service`);

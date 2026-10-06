@@ -210,7 +210,7 @@ async function main() {
   // Shared prose. Written once so llms.txt and llms-full.txt never disagree
   // about what the practice is.
   const ABOUT =
-    `${COMPANY} is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, transfer pricing, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.`;
+    `${COMPANY} is a forensic economics, forensic accounting, and business valuation practice serving plaintiff and defense attorneys in all 50 states, the District of Columbia, and U.S. territories. Its economists measure economic damages for litigation - lost earnings and earning capacity, wrongful death economic loss, household services, the present value of a life care plan, employment and wage-loss damages, lost profits and commercial damages, and the value of business interests - and prepare fraud and asset-tracing, transfer pricing, intellectual property damages, marital financial, and rebuttal analyses. Every report states the question asked, the records relied on, and the assumption behind each figure, and the economists are available for deposition and trial testimony on their own work.`;
   const CREDENTIALS_NOTE =
     "Reference pages on how a forensic economist is qualified to testify on damages: graduate training in economics, finance, and business, the professional standards of the national forensic economics associations, and a record of reports and testimony. No state licenses forensic economists. These pages describe the qualification and how courts weigh it; they do not list the roster and make no claim that the practice or any named person holds an association membership.";
   const SISTER_NOTE =
@@ -389,9 +389,13 @@ async function main() {
       if (releasedStateSlugs.length) {
         // A matter that is not a damages claim (a case type with a framing
         // block) is paired with the state's governing framework, not its
-        // damages framework.
+        // damages framework; a damages claim heard first in the federal
+        // courts (a venue-framed case type: intellectual property) with the
+        // federal courts and the place's own courts that hear it (the
+        // District and the territories have local courts, not state courts).
         const framework = s.caseTypes.some((ct) => caseTypeBySlug[ct]?.framing) ? "governing framework" : "damages framework";
-        p(`Case-type pages by state: ${SITE}/services/${s.slug}/case/{case-type}/{state} (each pairs the case type with the state's courts, expert standard, and ${framework}; ${releasedStateSlugs.length} states published so far)`);
+        const courts = s.caseTypes.some((ct) => caseTypeBySlug[ct]?.venueFraming) ? "the federal courts and the place's own courts that hear it" : "the state's courts";
+        p(`Case-type pages by state: ${SITE}/services/${s.slug}/case/{case-type}/{state} (each pairs the case type with ${courts}, expert standard, and ${framework}; ${releasedStateSlugs.length} states published so far)`);
       }
     }
     p(`Fees and process: ${SITE}/services/${s.slug}/cost, ${SITE}/services/${s.slug}/process, ${SITE}/services/${s.slug}/timeline`);

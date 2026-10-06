@@ -242,7 +242,9 @@ describe("JourneyStageIndex /attorneys/<stage>", () => {
       expect(sources.length, s.slug).toBeGreaterThanOrEqual(3);
       expect(new Set(sources.map((x) => x.url)).size, s.slug).toBe(sources.length);
       expect(page, s.slug).toContain("References</h2>");
-      for (const src of sources) expect(page, `${s.slug} cites ${src.url}`).toContain(`href="${src.url}"`);
+      // React writes an ampersand in an attribute as &amp; (the Uniform Trade
+      // Secrets Act page carries a query string).
+      for (const src of sources) expect(page, `${s.slug} cites ${src.url}`).toContain(`href="${src.url.replace(/&/g, "&amp;")}"`);
       // The dates span the stage's guides.
       const dates = journeys.filter((j) => j.stage === s.slug);
       expect(reviewer.datePublished).toBe(dates.map((j) => j.datePublished).sort()[0]);

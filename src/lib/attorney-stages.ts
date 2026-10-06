@@ -52,6 +52,12 @@ export interface CaseTypeName {
    */
   journeyShortName?: string;
   /**
+   * What the trial description says the economist explains, in place of
+   * "explaining present value", on a damages claim whose trial seldom turns
+   * on a present value (intellectual property: "explaining the royalty").
+   */
+  journeyTrialFocus?: string;
+  /**
    * Present on a matter that is not a damages claim (src/data/caseTypes.ts
    * CaseTypeFraming: the family-law and tax matters); the journey
    * descriptions then name the questions the analysis answers, not a loss,
@@ -105,28 +111,37 @@ const STAGE_PHRASE_MAX = Math.max(...Object.values(JOURNEY_HEADINGS).map((build)
 export const SHORT_NAME_MAX = TITLE_MAX - TITLE_SUFFIX.length - STAGE_PHRASE_MAX;
 
 // Journey page meta descriptions, before the audience tag journeyDescription
-// appends. The case-type name is lowercased mid-sentence and phrased without
-// an indefinite article, so no a/an choice is needed.
-const JOURNEY_DESCRIPTIONS: Record<string, (name: string) => string> = {
+// appends. The case-type name is lowercased mid-sentence (an acronym such as
+// "IP" keeps its capitals) and phrased without an indefinite article, so no
+// a/an choice is needed. The trial phrase takes the case type's
+// journeyTrialFocus where it sets one.
+const JOURNEY_DESCRIPTIONS: Record<string, (name: string, trialFocus?: string) => string> = {
   considering: (name) =>
     `When ${name} claims need a forensic economist: the loss threshold, records to request, and what to ask before retaining.`,
   retaining: (name) =>
     `Retaining a forensic economist in ${name} matters: scope, conflict check, the records request, and the report deadline.`,
   "preparing-deposition": (name) =>
     `The economist at deposition in ${name} cases: the assumptions that get tested, the reliance file, and the common attacks.`,
-  trial: (name) =>
-    `The economist at trial in ${name} cases: demonstratives, explaining present value, and rebutting the opposing economist.`,
+  trial: (name, trialFocus = "explaining present value") =>
+    `The economist at trial in ${name} cases: demonstratives, ${trialFocus}, and rebutting the opposing economist.`,
 };
 
 // The stages whose shared description names a loss or present value take a
 // form of their own on a matter that is not a damages claim; the retaining
 // and deposition descriptions already fit every matter.
-const JOURNEY_DESCRIPTIONS_FRAMED: Record<string, (name: string) => string> = {
+const JOURNEY_DESCRIPTIONS_FRAMED: Record<string, (name: string, trialFocus?: string) => string> = {
   considering: (name) =>
     `When ${name} matters need a forensic economist: the threshold questions, the records to request, and what to ask before retaining.`,
   trial: (name) =>
     `The economist at trial in ${name} cases: demonstratives, explaining the analysis, and rebutting the opposing economist.`,
 };
+
+/** A case-type name lowercased for mid-sentence use, an all-capitals acronym ("IP") kept as written. */
+const lowerName = (name: string): string =>
+  name
+    .split(" ")
+    .map((word) => (/^[A-Z]{2,}$/.test(word) ? word : word.toLowerCase()))
+    .join(" ");
 
 /** The audience tag every journey description closes on (see CaseTypeName.framing). */
 const journeySides = (caseType: CaseTypeName): string => (caseType.framing ? " Either side." : " Plaintiff and defense.");
@@ -152,8 +167,8 @@ export function journeyDescription(stage: string, caseType: CaseTypeName): strin
   const build = (caseType.framing && JOURNEY_DESCRIPTIONS_FRAMED[stage]) || JOURNEY_DESCRIPTIONS[stage];
   if (!build) return "";
   const sides = journeySides(caseType);
-  const full = `${build(caseType.name.toLowerCase())}${sides}`;
-  return full.length <= DESCRIPTION_MAX ? full : `${build(journeyShortName(caseType).toLowerCase())}${sides}`;
+  const full = `${build(lowerName(caseType.name), caseType.journeyTrialFocus)}${sides}`;
+  return full.length <= DESCRIPTION_MAX ? full : `${build(lowerName(journeyShortName(caseType)), caseType.journeyTrialFocus)}${sides}`;
 }
 
 // Per-stage index pages (/attorneys/<stage>).

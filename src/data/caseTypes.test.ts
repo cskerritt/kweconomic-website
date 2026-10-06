@@ -22,20 +22,26 @@ import {
   caseTypeStateCourtsQuestion,
   caseTypePairStateExpertQuestion,
   caseTypeStateForums,
+  caseTypePairStateFrameworkQuestion,
+  caseTypeCourtsNameFederalCourts,
+  caseTypeStateSources,
+  caseTypePairStateSources,
+  caseTypePairStateBuildAnswer,
 } from "./caseTypes";
+import { refsToSources } from "./references";
 import { stateRegulations, expertInquiryOf } from "./regulations/state-regs";
 import { circuitOfState } from "./courts/federal-districts";
 import { getCourtsByState, selectTrialCourts } from "./courts/state-courts";
 import { getAllServiceSlugs, pillarServices } from "./services";
 import { states } from "./states";
-import { placeName } from "./geo-prose.mjs";
+import { placeName, placeAttr, placePossessive } from "./geo-prose.mjs";
 import { LEGACY_BRAND_PATTERN, ORG_NAME } from "@/lib/brand";
 import { caseTypeHubTitle, caseTypeStateTitle, serviceTitleLabels } from "@/lib/page-titles.mjs";
 
-const SLUGS = ["commercial-contract-dispute","divorce-and-marital-dissolution","employment-discrimination","fraud-and-embezzlement","medical-malpractice","motor-vehicle-accident","partnership-and-shareholder-dispute","personal-injury","product-liability","spinal-cord-injury","tax-and-transfer-pricing-dispute","traumatic-brain-injury","workers-compensation","wrongful-death","wrongful-termination"];
+const SLUGS = ["commercial-contract-dispute","divorce-and-marital-dissolution","employment-discrimination","fraud-and-embezzlement","intellectual-property-infringement","medical-malpractice","motor-vehicle-accident","partnership-and-shareholder-dispute","personal-injury","product-liability","spinal-cord-injury","tax-and-transfer-pricing-dispute","traumatic-brain-injury","workers-compensation","wrongful-death","wrongful-termination"];
 
 describe("economics case types", () => {
-  it("has the 15 case types", () => {
+  it("has the 16 case types", () => {
     expect(caseTypes.map((c) => c.slug).sort()).toEqual(SLUGS);
     expect(getCaseType("business-valuation")).toBeUndefined();
   });
@@ -64,6 +70,16 @@ describe("economics case types", () => {
     expect(getCaseType("commercial-contract-dispute")!.relevantServices).toContain("transfer-pricing-expert-witness");
     expect(getCaseType("partnership-and-shareholder-dispute")!.relevantServices).toContain("transfer-pricing-expert-witness");
     expect(getCaseType("divorce-and-marital-dissolution")!.relevantServices).toContain("transfer-pricing-expert-witness");
+    // The intellectual property pillar declares the commercial contract and
+    // shareholder matters too (license disputes; a departing owner's use of
+    // the company's trade secrets), so their hubs list it, after transfer
+    // pricing and ahead of rebuttal.
+    expect(getCaseType("intellectual-property-infringement")!.relevantServices[0]).toBe("intellectual-property-damages");
+    for (const slug of ["commercial-contract-dispute", "partnership-and-shareholder-dispute"]) {
+      const listed = getCaseType(slug)!.relevantServices;
+      expect(listed, slug).toContain("intellectual-property-damages");
+      expect(listed.indexOf("intellectual-property-damages"), slug).toBe(listed.indexOf("transfer-pricing-expert-witness") + 1);
+    }
   });
 });
 
@@ -88,6 +104,10 @@ const STANDARD_SHORT_FORMS: Record<string, string> = {
   // label, and the pair titles would read "Transfer Pricing Expert for
   // Transfer Pricing"; the matter's standard short form keeps them distinct.
   "tax-and-transfer-pricing-dispute": "Tax Dispute",
+  // The standard abbreviation of the name; "Infringement" alone would drop
+  // the query term and "Intellectual Property" runs past the 20-character
+  // journey budget.
+  "intellectual-property-infringement": "IP Infringement",
 };
 const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const stateBySlug = (slug: string) => states.find((s) => s.slug === slug)!;
@@ -149,8 +169,13 @@ describe("case-type SERP fields", () => {
     // tax entry's ("Transfer Pricing Economist", added 2026-10-05: 53 full
     // stems and 3 abbreviations over the 14-type counts of 516, 205, 63), fit
     // beside every place but the District, the U.S. Virgin Islands, and the
-    // Northern Mariana Islands.
-    expect(rungs).toEqual({ fullStem: 569, shortStem: 205, abbreviated: 66 });
+    // Northern Mariana Islands. The intellectual property entry (2026-10-06)
+    // keeps the shared ladder: its 44-character stem fits beside no place,
+    // "IP Infringement Economist" fits beside 53, and the District, the U.S.
+    // Virgin Islands, and the Northern Mariana Islands take the abbreviation
+    // (53 short stems and 3 abbreviations over the 15-type counts of 205 and
+    // 66).
+    expect(rungs).toEqual({ fullStem: 569, shortStem: 258, abbreviated: 69 });
     const ed = getCaseType("employment-discrimination")!;
     expect(caseTypeStateTitle(ed, stateBySlug("texas"), ORG_NAME)).toBe(`Employment Discrimination Economist in Texas | ${ORG_NAME}`);
     expect(caseTypeStateTitle(ed, stateBySlug("north-carolina"), ORG_NAME)).toBe(`Discrimination Economist in North Carolina | ${ORG_NAME}`);
@@ -474,9 +499,13 @@ describe("tax and transfer pricing dispute case type: arm's length framing", () 
     expect(framing.courtsSentence).toMatch(/\{courts\}, with final appeals to the \{supremeCourt\}/);
     expect(framing.courtsSentence).toContain("[[/case-types/divorce-and-marital-dissolution/{stateSlug}|");
     expect(framing.courtsSentence).toContain("the Federal Circuit");
-    expect(framing.courtsSentence).not.toMatch(/\{(?!place\}|courts\}|supremeCourt\}|stateSlug\})/);
+    // {placeP} and {placePoss} are the running-prose forms the helpers derive
+    // from {place} ("the U.S. Virgin Islands", "the U.S. Virgin Islands'").
+    expect(framing.courtsSentence).not.toMatch(/\{(?!place\}|placeP\}|placePoss\}|courts\}|supremeCourt\}|stateSlug\})/);
+    expect(framing.courtsSentence).not.toMatch(/\{place\}'s/);
     expect(framing.expertStandard).toMatch(/\{inquiry\}/);
-    expect(framing.expertStandard).not.toMatch(/\{(?!place\}|inquiry\})/);
+    expect(framing.expertStandard).not.toMatch(/\{(?!place\}|placeP\}|placePoss\}|inquiry\})/);
+    expect(framing.expertStandard).not.toMatch(/\{place\}'s/);
     expect(framing.forums!.courtsQuestion).toMatch(/\?$/);
     expect(framing.forums!.expertQuestion).toMatch(/\?$/);
     expect(framing.stateFrameworkQuestion).toMatch(/\?$/);
@@ -612,7 +641,9 @@ describe("framing entries: expert standard, forums, and court selection", () => 
       const place = placeName(st.name);
       const taxStandard = caseTypeExpertStandard(tax, place, r);
       expect(taxStandard, r.stateSlug).toMatch(/^Federal tax forums test expert testimony under the federal rules of evidence, which the Tax Court applies by statute/);
-      expect(taxStandard, r.stateSlug).toContain(`heard in ${place}'s courts are tested under its own standard`);
+      // "the U.S. Virgin Islands' courts", never "U.S. Virgin Islands's courts".
+      expect(taxStandard, r.stateSlug).toContain(`heard in ${placePossessive(st.name)} courts are tested under its own standard`);
+      expect(taxStandard, r.stateSlug).not.toContain("Islands's");
       expect(taxStandard, r.stateSlug).toContain(expertInquiryOf(r));
       expect(taxStandard.endsWith("A transfer pricing report meets each of these inquiries by stating every method choice and naming the data behind every comparable."), r.stateSlug).toBe(true);
       const divorceStandard = caseTypeExpertStandard(divorce, place, r);
@@ -700,5 +731,328 @@ describe("framing entries: expert standard, forums, and court selection", () => 
     expect(tax.journeyShortName).toBe("Transfer Pricing");
     expect(caseTypes.filter((c) => c.journeyShortName).map((c) => c.slug)).toEqual(["tax-and-transfer-pricing-dispute"]);
     expect(tax.journeyShortName!.length).toBeLessThanOrEqual(20);
+  });
+});
+
+// Intellectual property infringement (owner request 2026-10-06) is a damages
+// claim, so it keeps the shared hub title, H1s, and section headings, but the
+// shared state-tier strings would misplace it: patent and copyright claims are
+// heard only in the federal courts, the federal statutes set the patent,
+// trademark, and copyright measures in every district, and a present value is
+// rarely the product. Its `venueFraming` block replaces those strings through
+// the same helpers the framing entries use; the courts answer names the
+// place's federal district courts first, then the Federal Circuit for patent
+// appeals and the regional circuit for the others, then the place's own
+// courts for the claims under its law, and makes no claim about the trade
+// secret law of Guam, the Northern Mariana Islands, or American Samoa.
+describe("intellectual property infringement case type: federal courts first", () => {
+  const ip = getCaseType("intellectual-property-infringement")!;
+  const venue = ip.venueFraming!;
+  const longText = [ip.summary, ip.summaryShort, ...ip.inShort, ...ip.steps, ip.lossComponents, ip.damagesExposure, ip.economicImpact, ...ip.faqs.map((f) => `${f.question} ${f.answer}`)].join(" ");
+  const venueText = [
+    venue.hubDescription,
+    venue.stateDescription,
+    venue.stateLead,
+    venue.stateStepsIntro,
+    venue.stateFramework,
+    venue.stateFrameworkQuestion,
+    venue.pairStateLead,
+    venue.pairStateFrameworkQuestion,
+    venue.pairStateFrameworkTail,
+    venue.courtsSentence,
+    venue.courtsSentenceNoDistrict,
+    venue.expertStandard,
+    venue.stateClaims.stated,
+    venue.stateClaims.unstated,
+    venue.forums.noun,
+    venue.forums.courtsQuestion,
+    venue.forums.expertQuestion,
+    ...venue.forums.list.flatMap((f) => [f.label, f.description]),
+  ].join(" ");
+  const ADVOCACY = /maximi[sz]e|minimi[sz]e|fight for|win your case|winning|aggressive|leverage|protect your/i;
+  const CITATION = /\bSection \d|\bRule \d|U\.S\.C\.|C\.F\.R\.|[–—§]/;
+  const NAMES = /Skerritt|Sperling|Kumah|Panduit|Georgia-Pacific|EcoFactor|Big O/;
+  const stateSlugOf = (slug: string) => stateBySlug(slug);
+  const courtsInput = (slug: string) => {
+    const st = stateSlugOf(slug);
+    const courts = getCourtsByState(slug)!;
+    const { kind, limit } = caseTypeCourtSelection(ip);
+    const courtList = selectTrialCourts(courts, kind, limit).map((c) => `the ${c.name}`).join(" and ");
+    return {
+      place: placeName(st.name),
+      courtList,
+      supremeCourt: courts.supremeCourt,
+      stateSlug: slug,
+      federalDistricts: courts.federalDistricts.map((d) => d.name),
+      circuit: circuitOfState(slug),
+    };
+  };
+
+  it("describes the statutory measures for both sides, citation-free, with no person, figure, or outcome", () => {
+    for (const phrase of ["reasonable royalty", "lost profits", "price erosion", "apportion", "defendant's profits", "corrective advertising", "infringer's profits", "unjust enrichment", "design patent", "statutory damages", "accused infringer"]) {
+      expect(longText, phrase).toContain(phrase);
+    }
+    for (const text of [longText, venueText]) {
+      expect(text).not.toMatch(ADVOCACY);
+      expect(text).not.toMatch(CITATION);
+      expect(text).not.toMatch(FIGURES);
+      expect(text).not.toMatch(NAMES);
+      expect(text).not.toMatch(LEGACY_BRAND_PATTERN);
+      expect(text).not.toMatch(SISTER_VOCABULARY);
+      expect(text).not.toMatch(/\bverdict|\bmillion|\bbillion|present value/i);
+    }
+  });
+
+  it("is a damages claim: no framing block, the shared headings, its own category, and the IP pillar first", () => {
+    expect(ip.framing).toBeUndefined();
+    expect(ip.category).toBe("intellectual-property");
+    expect(ip.titleBase).toBe("Intellectual Property Infringement Economist");
+    expect(caseTypeHubTitle(ip, ORG_NAME)).toBe(`Intellectual Property Infringement Economist | ${ORG_NAME}`);
+    expect(caseTypeHubHeading(ip)).toBe("Intellectual Property Infringement Economic Damages Analysis");
+    expect(caseTypeStateHeading(ip, "Texas")).toBe("Intellectual Property Infringement Economic Damages Expert in Texas");
+    expect(caseTypeSectionHeadings(ip)).toEqual(caseTypeSectionHeadings(getCaseType("wrongful-death")!));
+    expect(caseTypeHubLinkLabel(ip)).toBe("Intellectual Property Infringement: the economic claim, where the damages concentrate, and how the analysis is built");
+    expect(ip.relevantServices).toEqual(["intellectual-property-damages", "lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review"]);
+    expect(ip.datePublished).toBe("2026-10-06");
+    expect(caseTypes.filter((c) => c.venueFraming).map((c) => c.slug)).toEqual(["intellectual-property-infringement"]);
+    for (const c of caseTypes) expect(Boolean(c.framing && c.venueFraming), c.slug).toBe(false);
+    // The state tier keeps the shared ladder on the short form.
+    expect(caseTypeStateTitle(ip, stateBySlug("texas"), ORG_NAME)).toBe(`IP Infringement Economist in Texas | ${ORG_NAME}`);
+    expect(caseTypeStateTitle(ip, stateBySlug("north-carolina"), ORG_NAME)).toBe(`IP Infringement Economist in North Carolina | ${ORG_NAME}`);
+    expect(caseTypeStateTitle(ip, stateBySlug("district-of-columbia"), ORG_NAME)).toBe(`IP Infringement Economist in DC | ${ORG_NAME}`);
+    expect(caseTypeStateTitle(ip, stateBySlug("northern-mariana-islands"), ORG_NAME)).toBe(`IP Infringement Economist in MP | ${ORG_NAME}`);
+  });
+
+  it("publishes hub and state descriptions inside the 140-160 band in every state, the District, and every territory", () => {
+    const hub = caseTypeHubDescription(ip);
+    expect(hub).toBe(venue.hubDescription);
+    expect(hub.length).toBeGreaterThanOrEqual(140);
+    expect(hub.length).toBeLessThanOrEqual(160);
+    expect(hub).not.toMatch(/present value/);
+    expect(venue.stateDescription.match(/\{place\}/g)).toHaveLength(1);
+    for (const st of states) {
+      const d = caseTypeStateDescription(ip, placeName(st.name));
+      expect(d.length, `${st.slug}: ${d}`).toBeGreaterThanOrEqual(140);
+      expect(d.length, `${st.slug}: ${d}`).toBeLessThanOrEqual(160);
+      expect(d, st.slug).not.toMatch(/state damages rules/);
+    }
+  });
+
+  it("every slot is one the helpers fill, and no rendered string leaves a slot, a doubled article, or the shared damages-rule wording", () => {
+    const allowed = /\{(?!org\}|place\}|placeP\}|placePoss\}|attr\}|work\}|matter\}|courts\}|supremeCourt\}|stateSlug\}|inquiry\}|federalCourts\}|federalCourtsName\}|circuit\}|circuitName\}|stateClaims\})/;
+    // The meta description keeps the place as titles spell it; the running
+    // prose takes the article and the possessive the plural island names need.
+    expect(venue.stateDescription).not.toMatch(/\{placeP\}|\{placePoss\}/);
+    expect([venue.stateLead, venue.stateFramework, venue.courtsSentence, venue.expertStandard].join(" ")).not.toMatch(/\{place\}'s/);
+    expect(venueText).not.toMatch(allowed);
+    expect(venue.courtsSentence).toMatch(/\{federalCourts\}[\s\S]*\{circuit\}[\s\S]*\{courts\}, with final appeals to the \{supremeCourt\}\.$/);
+    expect(venue.courtsSentenceNoDistrict).not.toMatch(/\{federalCourts\}|\{circuit\}/);
+    for (const st of states) {
+      const place = placeName(st.name);
+      const attr = place.replace(/^the /, "");
+      const regs = stateRegulations.find((r) => r.stateSlug === st.slug)!;
+      const rendered = [
+        caseTypeStateLead(ip, ORG_NAME, place),
+        caseTypeStateStepsIntro(ip, place),
+        caseTypeStateFramework(ip, place, "shared fault text", circuitOfState(st.slug)),
+        caseTypeStateFrameworkQuestion(ip, place),
+        caseTypeExpertStandard(ip, place, regs),
+        caseTypePairStateLead(ip, ORG_NAME, "intellectual property damages analysis", place, attr),
+        caseTypePairStateFrameworkQuestion(ip, attr, place, "intellectual property damages analysis"),
+        caseTypePairStateFrameworkTail(ip, attr),
+        caseTypeStateCourtsQuestion(ip, st.name, place),
+        caseTypePairStateExpertQuestion(ip, attr, place, "lost profits analysis"),
+        caseTypeStateCourts(ip, courtsInput(st.slug), "sentence"),
+        ...caseTypeStateForums(ip, place, attr, { federalDistricts: courtsInput(st.slug).federalDistricts, circuit: circuitOfState(st.slug) }).flatMap((f) => [f.name, f.description]),
+      ];
+      for (const t of rendered) {
+        expect(t, st.slug).not.toMatch(/\{[a-zA-Z]+\}/);
+        expect(t, st.slug).not.toMatch(/\b(a|an|the) (a|an|the)\b|in District of Columbia|for the District Court (of|for)/i);
+        // "the U.S. Virgin Islands' own courts", never "U.S. Virgin Islands's" or "involving Northern Mariana Islands".
+        expect(t, st.slug).not.toMatch(/Islands's|(involving|in|serving|filed in) (U\.S\. Virgin|Northern Mariana) Islands/);
+        expect(t, st.slug).not.toMatch(/shared fault text|damages rules and venues|present value|Plaintiff and defense\. Plaintiff/);
+      }
+      // The expert standard keeps the state's own inquiry and drops its damages-report close.
+      const standard = caseTypeExpertStandard(ip, place, regs);
+      expect(standard, st.slug).toContain(expertInquiryOf(regs));
+      expect(standard, st.slug).toMatch(/^In the federal district courts, which hear patent and copyright infringement claims between private parties, damages testimony is tested under the federal rules of evidence/);
+      expect(standard, st.slug).toContain("own courts are tested under the standard those courts apply.");
+      expect(standard, st.slug).not.toMatch(/lost earnings|household services|worklife/i);
+    }
+  });
+
+  it("names the federal district courts first, then the Federal Circuit and the regional circuit, then the state's courts", () => {
+    const tx = caseTypeStateCourts(ip, courtsInput("texas"), "sentence");
+    // A case filed in the state is heard in its districts; one involving a
+    // business there may be filed where venue lies elsewhere, and a claim
+    // against the United States goes to the Court of Federal Claims.
+    expect(tx.startsWith("Patent and copyright claims arise under federal law that only the federal courts may hear: a case filed in Texas is heard in the United States District Courts for the Northern District of Texas, Southern District of Texas, Eastern District of Texas, and Western District of Texas, a case involving a business based in Texas may be filed in another district where venue lies, and a claim against the United States goes to the Court of Federal Claims; trademark and trade secret claims can be filed in federal court or in Texas's own courts.")).toBe(true);
+    expect(tx).toContain("goes to the United States Court of Appeals for the Federal Circuit, and an appeal in any other case from the district court to the United States Court of Appeals for the Fifth Circuit.");
+    // The state-law claims: with the infringement claim in federal court when
+    // joined, there on diverse citizenship, otherwise in the state's courts.
+    expect(tx).toContain("Claims under Texas law, such as trade secret misappropriation, unfair competition, and disputes over royalties owed under a license, are usually heard with the infringement claim in federal court when they are joined with a patent or copyright claim, and can be heard there on their own where the parties' diverse citizenship brings them within federal jurisdiction; otherwise they are heard in the District Court, with final appeals to the Supreme Court of Texas.");
+    expect(tx).not.toMatch(/\$|\d/);
+    expect(tx.indexOf("United States District Courts")).toBeLessThan(tx.indexOf("Federal Circuit"));
+    expect(tx.indexOf("Federal Circuit")).toBeLessThan(tx.indexOf("Fifth Circuit"));
+    expect(tx.indexOf("Fifth Circuit")).toBeLessThan(tx.indexOf("Claims under Texas law"));
+    // The answer carries its own appeals, so both appeal forms read the same.
+    expect(caseTypeStateCourts(ip, courtsInput("texas"), "clause")).toBe(tx);
+    expect(tx).not.toMatch(/Final appeals run to|cases venued in Texas are heard/);
+    expect(caseTypeCourtsNameFederalCourts(ip)).toBe(true);
+    expect(caseTypeCourtsNameFederalCourts(getCaseType("wrongful-death")!)).toBe(false);
+    expect(caseTypeCourtsNameFederalCourts(getCaseType("tax-and-transfer-pricing-dispute")!)).toBe(false);
+
+    const dc = caseTypeStateCourts(ip, courtsInput("district-of-columbia"), "sentence");
+    expect(dc).toContain(": a case filed in the District of Columbia is heard in the United States District Court for the District of Columbia, a case involving a business based in the District of Columbia may be filed in another district where venue lies");
+    expect(dc).toContain("trademark and trade secret claims can be filed in federal court or in the District of Columbia's own courts.");
+    // The plural island names take the article and the bare apostrophe.
+    const vi = caseTypeStateCourts(ip, courtsInput("us-virgin-islands"), "sentence");
+    expect(vi).toContain(": a case filed in the U.S. Virgin Islands is heard in the United States District Court of the Virgin Islands");
+    expect(vi).toContain("or in the U.S. Virgin Islands' own courts.");
+    expect(caseTypeStateCourts(ip, courtsInput("northern-mariana-islands"), "sentence")).toContain("or in the Northern Mariana Islands' own courts.");
+    expect(dc).toContain("to the United States Court of Appeals for the District of Columbia Circuit.");
+    // The territorial districts keep their own names; the Third, Ninth, and First Circuits hear their other appeals.
+    expect(caseTypeStateCourts(ip, courtsInput("guam"), "sentence")).toContain("heard in the United States District Court of Guam,");
+    expect(caseTypeStateCourts(ip, courtsInput("guam"), "sentence")).toContain("the United States Court of Appeals for the Ninth Circuit.");
+    expect(caseTypeStateCourts(ip, courtsInput("us-virgin-islands"), "sentence")).toContain("the United States Court of Appeals for the Third Circuit.");
+    expect(caseTypeStateCourts(ip, courtsInput("puerto-rico"), "sentence")).toContain("the United States Court of Appeals for the First Circuit.");
+    // American Samoa has no federal district court: the claim is filed where venue lies.
+    const as = caseTypeStateCourts(ip, courtsInput("american-samoa"), "sentence");
+    expect(as).toContain("American Samoa has no federal district court of its own, so such a claim involving a business there is filed in a federal district court where venue lies, or, against the United States, in the Court of Federal Claims");
+    expect(as).toContain("are usually heard with the infringement claim when they are joined with a patent or copyright claim; brought on their own, they are heard in the High Court of American Samoa (Trial Division)");
+    expect(as).not.toMatch(/United States District Court (for|of)|Circuit\b(?! from)/);
+  });
+
+  it("makes no claim about the trade secret law of Guam, the Northern Mariana Islands, or American Samoa", () => {
+    for (const slug of ["guam", "northern-mariana-islands", "american-samoa"]) {
+      const answer = caseTypeStateCourts(ip, courtsInput(slug), "sentence");
+      expect(answer, slug).toContain("such as disputes over royalties owed under a license, are usually heard with the infringement claim");
+      expect(answer.slice(answer.indexOf("Claims under")), slug).not.toMatch(/trade secret|unfair competition/);
+    }
+    for (const slug of ["texas", "district-of-columbia", "puerto-rico", "us-virgin-islands", "new-york"]) {
+      expect(caseTypeStateCourts(ip, courtsInput(slug), "sentence"), slug).toContain("such as trade secret misappropriation, unfair competition, and disputes over royalties owed under a license");
+    }
+    // The framework paragraph names no enactment count and no place's own trade secret statute.
+    expect(venue.stateFramework).toContain("most states, the District of Columbia, Puerto Rico, and the U.S. Virgin Islands have also enacted a version of the Uniform Trade Secrets Act");
+    expect(venue.stateFramework).not.toMatch(/\d+ states|forty|fifty|\{place\}'s trade secret/i);
+  });
+
+  it("lists the federal courts ahead of the state's chancery, business, and general-jurisdiction courts, two deep", () => {
+    expect(caseTypeCourtSelection(ip)).toEqual({ kind: "business", limit: 2 });
+    const forumsOf = (slug: string) =>
+      caseTypeStateForums(ip, placeName(stateBySlug(slug).name), placeAttr(stateBySlug(slug).name), {
+        federalDistricts: courtsInput(slug).federalDistricts,
+        circuit: circuitOfState(slug),
+      }).map((f) => f.name);
+    expect(forumsOf("new-jersey")).toEqual([
+      "United States District Court for the District of New Jersey",
+      "United States Court of Appeals for the Federal Circuit",
+      "United States Court of Appeals for the Third Circuit",
+    ]);
+    expect(forumsOf("district-of-columbia")).toEqual([
+      "United States District Court for the District of Columbia",
+      "United States Court of Appeals for the Federal Circuit",
+      "United States Court of Appeals for the District of Columbia Circuit",
+    ]);
+    expect(forumsOf("guam")[0]).toBe("United States District Court of Guam");
+    // American Samoa: no district court and no circuit, so only the Federal Circuit.
+    expect(forumsOf("american-samoa")).toEqual(["United States Court of Appeals for the Federal Circuit"]);
+    // Every other entry lists none, or its own (the tax forums).
+    expect(caseTypeStateForums(getCaseType("wrongful-death")!, "Texas", "Texas", { federalDistricts: ["Northern District of Texas"], circuit: "Fifth" })).toEqual([]);
+    expect(caseTypeStateForums(getCaseType("tax-and-transfer-pricing-dispute")!, "Texas", "Texas").map((f) => f.name)[0]).toBe("United States Tax Court");
+  });
+
+  it("asks its own questions and closes the pair x state FAQs on the federal statutes", () => {
+    expect(caseTypeStateCourtsQuestion(ip, "Texas", "Texas")).toBe("Which courts hear an intellectual property infringement case involving Texas?");
+    expect(caseTypeStateFrameworkQuestion(ip, "the District of Columbia")).toBe("Which damages rules apply to an intellectual property claim involving the District of Columbia?");
+    expect(caseTypePairStateExpertQuestion(ip, "Texas", "Texas", "lost profits analysis")).toBe(
+      "What do the courts that hear an intellectual property case involving Texas ask of lost profits analysis?",
+    );
+    expect(caseTypePairStateFrameworkQuestion(ip, "Texas", "Texas", "lost profits analysis")).toBe(
+      "Which damages rules shape lost profits analysis in an intellectual property case involving Texas?",
+    );
+    // Every other entry keeps the shared framework question.
+    expect(caseTypePairStateFrameworkQuestion(getCaseType("wrongful-death")!, "Texas", "Texas", "lost earnings analysis")).toBe(
+      "How does the Texas damages framework shape lost earnings analysis in a wrongful death case?",
+    );
+    expect(caseTypePairStateFrameworkQuestion(getCaseType("tax-and-transfer-pricing-dispute")!, "Texas", "Texas", "transfer pricing analysis")).toBe(
+      "How does the Texas tax and legal framework shape transfer pricing analysis in a tax and transfer pricing dispute case?",
+    );
+    expect(caseTypePairStateFrameworkTail(ip, "Texas")).toContain("so counsel can apply the federal statute or the Texas law that governs each claim to a documented figure");
+    expect(caseTypePairStateLead(ip, ORG_NAME, "lost profits analysis", "Texas", "Texas")).toBe(
+      "KW Economics prepares lost profits analysis for intellectual property infringement cases involving Texas: the measure each patent, trademark, copyright, or trade secret claim carries, the sales, cost, and license records that drive it, and a report built for the federal and Texas courts that hear the claims. Plaintiff and defense.",
+    );
+    expect(caseTypeStateServiceDescription(ip, "Texas")).toBe("Economic damages analysis for intellectual property infringement matters in Texas.");
+  });
+
+  it("the journey trial description explains the royalty, not a present value", () => {
+    expect(ip.journeyTrialFocus).toBe("explaining the royalty");
+    expect(caseTypes.filter((c) => c.journeyTrialFocus).map((c) => c.slug)).toEqual(["intellectual-property-infringement"]);
+  });
+
+  // Review fixes (2026-10-06): the remedies and forums as the statutes and
+  // the decisions state them.
+  it("conditions copyright statutory damages on timely registration and does not call the measures uniform", () => {
+    for (const text of [venue.stateFramework, ip.lossComponents]) {
+      expect(text).toMatch(/statutory damages[^.;]*registered in time|registered in time[^;]*statutory damages/);
+      expect(text).toContain("before the infringement began");
+      expect(text).toContain("within three months after first publication");
+    }
+    expect(venue.stateFramework).toContain("Those measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied.");
+    expect(venue.stateFramework).not.toMatch(/same in every district|as it would be anywhere/);
+  });
+
+  it("gives enhanced patent damages to the court and exemplary trade secret damages to the court or, under some state acts, the fact finder", () => {
+    expect(ip.damagesExposure).toContain(
+      "Enhanced patent damages are for the court, and exemplary trade secret damages are for the court under the federal statute and the uniform act, though some state enactments, such as Texas's, give them to the fact finder; either way they turn on the defendant's conduct, not on the economic measure.",
+    );
+    expect(ip.damagesExposure).not.toMatch(/are for the court on the defendant's conduct/);
+  });
+
+  it("names every federal forum and the diversity route in the hub courts answer", () => {
+    const courts = ip.faqs.find((f) => f.question === "Which courts hear intellectual property infringement cases?")!.answer;
+    expect(courts).toContain("no court of a state, the District of Columbia, or a territory may hear them");
+    expect(courts).toContain("The federal district courts hear patent and copyright infringement claims between private parties, a claim against the United States goes to the Court of Federal Claims");
+    expect(courts).toContain("Copyright Claims Board");
+    expect(courts).toContain("unless they are joined with a federal claim or the parties' diverse citizenship brings them within federal jurisdiction");
+    expect(courts).not.toMatch(/only in the federal district courts|\$|\d/);
+  });
+
+  it("lists the statutes behind the state copy on the state and pair x state pages", () => {
+    const urls = (ids: string[]) => refsToSources(ids).map((x) => x.url);
+    const state = caseTypeStateSources(ip).map((x) => x.url);
+    expect(state).toEqual(venue.stateSources.map((x) => x.url));
+    // The framework paragraph (six-year limit, marking, registration, the
+    // trade secret acts), the courts answer (venue, the Court of Federal
+    // Claims, diversity, supplemental jurisdiction), and the expert paragraph
+    // (Rule 702); the Texas example belongs to the exposure paragraph, which
+    // only the pair x state page prints.
+    for (const url of urls(["PATENT_286", "PATENT_287", "COPYRIGHT_412", "PATENT_VENUE_1400", "GOVERNMENT_USE_1498", "DIVERSITY_1332", "SUPPLEMENTAL_1367", "FRE_702", "DTSA_1836", "UNIFORM_TRADE_SECRETS_ACT"])) {
+      expect(state).toContain(url);
+    }
+    expect(state).not.toContain(urls(["TEXAS_UTSA_134A"])[0]);
+    // Every other entry keeps its first five hub sources.
+    const wd = getCaseType("wrongful-death")!;
+    expect(caseTypeStateSources(wd)).toEqual(wd.sources.slice(0, 5));
+    // The pair x state block: the pillar's five, then the case type's state list, once each.
+    const lp = pillarServices().find((x) => x.slug === "lost-profits-and-commercial-damages")!;
+    const pair = caseTypePairStateSources(ip, lp.sources).map((x) => x.url);
+    expect(pair.slice(0, Math.min(5, lp.sources.length))).toEqual(lp.sources.slice(0, 5).map((x) => x.url));
+    for (const url of state) expect(pair).toContain(url);
+    expect(pair).toContain(urls(["TEXAS_UTSA_134A"])[0]);
+    expect(new Set(pair).size).toBe(pair.length);
+    expect(caseTypePairStateSources(wd, lp.sources)).toEqual(lp.sources.slice(0, 5));
+  });
+
+  it("answers the pair x state build question from the pillar's own note", () => {
+    const ipPillar = pillarServices().find((x) => x.slug === "intellectual-property-damages")!;
+    const contract = getCaseType("commercial-contract-dispute")!;
+    const note = ipPillar.caseTypeNotes["commercial-contract-dispute"];
+    expect(caseTypePairStateBuildAnswer(contract, "Delaware", note)).toBe(note.summary);
+    expect(caseTypePairStateBuildAnswer(contract, "Delaware", note)).not.toContain(contract.steps[0]);
+    // Without a note the case type's steps answer, under the state intro.
+    expect(caseTypePairStateBuildAnswer(contract, "Delaware")).toBe(`${caseTypeStateStepsIntro(contract, "Delaware")} ${contract.steps.join(" ")}`);
+    // Every declared pair carries a note, so no pair x state page answers with another matter's steps.
+    for (const svc of pillarServices()) for (const slug of svc.caseTypes) expect(svc.caseTypeNotes[slug]?.summary, `${svc.slug} x ${slug}`).toBeTruthy();
   });
 });

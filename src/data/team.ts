@@ -28,7 +28,10 @@ export const team: TeamMember[] = [
       // credentials the economics work rests on).
       "The jurisdictions listed above are the states in which he has served retaining counsel; the list describes experience, not licensure, since no state licenses forensic economists, and the practice accepts engagements in all 50 states, the District of Columbia, and U.S. territories. The rehabilitation counseling, life care planning, and Medicare set-aside designations listed above are background credentials from related disciplines; the work the practice is retained for, and the work he testifies to, is forensic economics.",
     ].join("\n\n"),
-    specialties: ["Forensic Economics", "Economic Damages", "Earning Capacity Analysis", "Wrongful Death Analysis", "Household Services", "Employment Damages", "Business Valuation", "Transfer Pricing", "Expert Testimony"],
+    // "Transfer Pricing" (2026-10-05) and "Intellectual Property Damages"
+    // (2026-10-06) were added on the owner's instruction for this profile
+    // only; README "Facts to confirm" carries both.
+    specialties: ["Forensic Economics", "Economic Damages", "Earning Capacity Analysis", "Wrongful Death Analysis", "Household Services", "Employment Damages", "Business Valuation", "Transfer Pricing", "Intellectual Property Damages", "Expert Testimony"],
     statesServed: ["NJ", "NY", "MA", "VA", "RI", "CT", "PA"],
     imageUrl: "/team/christopher-skerritt.jpg",
     education: [

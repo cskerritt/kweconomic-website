@@ -10,13 +10,23 @@
 // loader, renders the same phrases the React pages do.
 
 /**
+ * Short names whose lowercase form would not read as prose: an acronym
+ * ("IP Damages" lowercases to "ip damages") is spelled out instead. Keyed by
+ * Service.shortName exactly as written in services.ts.
+ */
+const PROSE_NAME_OVERRIDES = {
+  "IP Damages": "intellectual property damages",
+};
+
+/**
  * Attributive prose form: lowercase with any ampersand spelled out
- * ("fraud and tracing engagements", "a full wrongful death report").
+ * ("fraud and tracing engagements", "a full wrongful death report"), or the
+ * spelled-out form of a short name in PROSE_NAME_OVERRIDES.
  * @param {string} shortName
  * @returns {string}
  */
 export function proseName(shortName) {
-  return shortName.toLowerCase().replace(/\s*&\s*/g, " and ");
+  return PROSE_NAME_OVERRIDES[shortName] ?? shortName.toLowerCase().replace(/\s*&\s*/g, " and ");
 }
 
 /**
@@ -76,18 +86,27 @@ const DESCRIPTION_MAX = 160;
  * place, and what the page covers. A matter that is not a damages claim (a
  * case type carrying a `framing` block: the family-law and tax matters) names
  * the financial questions instead of a loss claim and closes on "Either
- * side." rather than "Plaintiff and defense.". The candidates run from the
- * fullest form down, the audience tag riding along where it fits, and the
- * first inside the 140-160 band wins; the first inside the window stands in
- * only where none lands in the band.
+ * side." rather than "Plaintiff and defense."; a damages claim heard first in
+ * the federal courts (a `venueFraming` block: intellectual property) names
+ * the federal and state courts rather than a state damages framework (the
+ * federal and local courts in the District and the territories, and the
+ * courts alone in a place with no federal district court of its own, which
+ * `geo` gives: the place's states.ts `type` and its federal district count;
+ * a state where `geo` is omitted). The candidates run from the fullest form
+ * down, the audience tag riding along where it fits, and the first inside
+ * the 140-160 band wins; the first inside the window stands in only where
+ * none lands in the band.
  * @param {{ shortName: string }} service
- * @param {{ name: string; framing?: object }} caseType
+ * @param {{ name: string; framing?: object; venueFraming?: object }} caseType
  * @param {string} place the place name as geo-prose.mjs placeName() spells it
+ * @param {{ type?: string; federalDistrictCount?: number }} [geo]
  * @returns {string}
  */
-export function serviceCaseStateDescription(service, caseType, place) {
+export function serviceCaseStateDescription(service, caseType, place, geo = {}) {
   const stem = `${capFirst(workPhrase(service.shortName))} for ${caseType.name.toLowerCase()} cases in ${place}`;
   const sides = caseType.framing ? " Either side." : " Plaintiff and defense.";
+  const { type = "state", federalDistrictCount = 1 } = geo;
+  const courts = federalDistrictCount === 0 ? "courts" : type === "state" ? "federal and state courts" : "federal and local courts";
   const tails = caseType.framing
     ? [
         "the financial questions, the records that answer them, and the state framework.",
@@ -95,12 +114,20 @@ export function serviceCaseStateDescription(service, caseType, place) {
         "the financial questions, their records, and the state framework.",
         "financial questions, records, and state framework.",
       ]
-    : [
-        "the loss claim, the records that drive it, and the state damages framework.",
-        "the loss claim, the records behind it, and the state framework.",
-        "the loss claim, its records, and the state framework.",
-        "loss claim, records, and state framework.",
-      ];
+    : caseType.venueFraming
+      ? [
+          `the damages claim, the records that drive it, and the ${courts}.`,
+          `the damages claim, the records behind it, and the ${courts}.`,
+          `the damages claim, its records, and the ${courts}.`,
+          "the damages claim, its records, and the courts.",
+          "damages claim, records, and courts.",
+        ]
+      : [
+          "the loss claim, the records that drive it, and the state damages framework.",
+          "the loss claim, the records behind it, and the state framework.",
+          "the loss claim, its records, and the state framework.",
+          "loss claim, records, and state framework.",
+        ];
   const candidates = tails.flatMap((tail) => [`${stem}: ${tail}${sides}`, `${stem}: ${tail}`]);
   return (
     candidates.find((c) => c.length >= DESCRIPTION_MIN && c.length <= DESCRIPTION_MAX) ??

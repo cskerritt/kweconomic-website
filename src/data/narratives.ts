@@ -22,22 +22,27 @@
 import { ORG_NAME } from "@/lib/brand";
 import { proseName } from "@/lib/service-prose.mjs";
 import { getMetroLabor } from "./labor/metro-labor";
-import { getCourtsByState } from "./courts/state-courts";
+import { getCourtsByState, selectTrialCourts } from "./courts/state-courts";
+import { circuitOfState } from "./courts/federal-districts";
 import { getRegulationsByState } from "./regulations/state-regs";
 import { credentials } from "./credentials";
 import { refsToSources } from "./references";
+import { caseTypeCourtSelection, getCaseType } from "./caseTypes";
 import {
   buildCityNarrative,
   buildStateNarrative,
   cityAttr,
+  LOCAL_TRADE_SECRET_LAW_UNSTATED,
   majorEmployers,
   placeAttr,
   placeName,
+  placePossessive,
+  prosePlace,
   type CityNarrativeOutput,
   type StateNarrativeOutput,
 } from "./geo-prose.mjs";
 import type { Source } from "./types";
-import type { City, Service, State } from "../types";
+import type { City, Service, State, StateCourtSystem } from "../types";
 
 export {
   serviceStateDirectAnswer,
@@ -49,6 +54,19 @@ export {
 export type StateNarrative = StateNarrativeOutput;
 export type CityNarrative = CityNarrativeOutput;
 
+/**
+ * The courts the intellectual property case-type pages list for the claims
+ * under a place's own law (caseTypes.ts caseTypeCourtSelection: the chancery,
+ * business, and general-jurisdiction courts, two deep), so the pillar's state
+ * and city prose and the case-type pages name the same courts.
+ */
+function ipTrialCourtNames(courts: StateCourtSystem | undefined): string[] {
+  const ip = getCaseType("intellectual-property-infringement");
+  if (!courts || !ip) return [];
+  const { kind, limit } = caseTypeCourtSelection(ip);
+  return selectTrialCourts(courts, kind, limit).map((c) => c.name);
+}
+
 export function getStateNarrative(state: State): StateNarrative {
   const courts = getCourtsByState(state.slug);
   const regs = getRegulationsByState(state.slug);
@@ -59,6 +77,7 @@ export function getStateNarrative(state: State): StateNarrative {
     region: state.region,
     population: state.population,
     trialCourtName: courts?.trialCourts?.[0]?.name,
+    ipTrialCourtNames: ipTrialCourtNames(courts),
     supremeCourt: courts?.supremeCourt,
     federalDistrictCount: courts?.federalDistricts?.length ?? 0,
     compensationForum: regs?.compensationForum,
@@ -87,6 +106,7 @@ export function getCityNarrative(
     employers: majorEmployers(metro?.topEmployers),
     hasMetroData: metro !== undefined,
     trialCourtName: courts?.trialCourts?.[0]?.name,
+    ipTrialCourtNames: ipTrialCourtNames(courts),
   });
 }
 
@@ -114,7 +134,16 @@ interface VenueContext {
   attr: string;
   /** "the Superior Court, Law Division" or the generic fallback. */
   forum: string;
+  /** The courts the intellectual property case-type pages list for the
+   * claims under the place's own law ("the Court of Chancery and the Superior
+   * Court"), or `forum` where the place lists none. */
+  ipForum: string;
   compensationForum?: string;
+  stateSlug: string;
+  /** The federal circuit the place sits in ("Third", "D.C."); undefined for American Samoa. */
+  circuit?: string;
+  /** How many federal district courts serve the place (none for American Samoa). */
+  federalDistrictCount: number;
 }
 
 interface ServicePageProse {
@@ -134,6 +163,13 @@ interface ServicePageProse {
    * engagements in <state>" misplaces the pillar's forums (transfer pricing:
    * mostly federal). Takes the attributive state name. */
   familiar?: (attr: string) => string;
+  /** The whole second sentence of the city context paragraph, in place of
+   * "Our economists <measures>, and are familiar with <familiar>.", for a
+   * pillar whose work only part of the roster lists as a specialty
+   * (intellectual property: Christopher Skerritt's profile alone), so the
+   * sentence describes the analysis and the report rather than the
+   * economists. Takes the attributive city and state names. */
+  context?: (cityA: string, attr: string) => string;
 }
 
 const SERVICE_PAGE_PROSE: Record<string, ServicePageProse> = {
@@ -214,6 +250,32 @@ const SERVICE_PAGE_PROSE: Record<string, ServicePageProse> = {
       `Transfer pricing disputes that involve ${place} reach several forums: the United States Tax Court and, on a refund claim, the federal district courts serving ${place} or the Court of Federal Claims for federal income tax; the ${attr} tax authority and its appeal process for a dispute over ${attr} tax; and ${forum} for the commercial, shareholder, and matrimonial claims that turn on an intercompany price. The arm's length analysis is built the same way for each forum; the forum sets the rule of decision, which counsel confirms, and the report presents the result so it can be applied under it.`,
     familiar: (attr) => `the forums and disclosure rules that apply to transfer pricing disputes involving ${attr} businesses`,
   },
+  // Intellectual property damages (2026-10-06): the federal district courts
+  // first, the Federal Circuit and the place's regional circuit for the
+  // appeals, then the place's own court for the claims under its law, with
+  // no claim about the trade secret law of the territories in
+  // LOCAL_TRADE_SECRET_LAW_UNSTATED.
+  "intellectual-property-damages": {
+    measures: (cityA) =>
+      `measure patent, trademark, copyright, and trade secret damages from the parties' own sales, cost, and license records, apportioned to the protected right, with ${cityA}-area market conditions entering only where the market for the accused product is local`,
+    sources: ["PATENT_284", "LANHAM_ACT_1117", "COPYRIGHT_504", "DTSA_1836", "JURISDICTION_1338"],
+    venue: ({ place, attr, ipForum, stateSlug, circuit, federalDistrictCount }) => {
+      const placeP = prosePlace(place);
+      const localClaims = LOCAL_TRADE_SECRET_LAW_UNSTATED.has(stateSlug)
+        ? "the contract and license claims"
+        : "the trade secret, unfair competition, contract, and license claims";
+      const appeals = circuit
+        ? `the United States Court of Appeals for the Federal Circuit for every appeal in a case with a patent claim, and the court of appeals for the ${circuit === "D.C." ? "District of Columbia" : circuit} Circuit for the others`
+        : "the United States Court of Appeals for the Federal Circuit for every appeal in a case with a patent claim";
+      const federal =
+        federalDistrictCount > 0
+          ? `the federal district court${federalDistrictCount === 1 ? "" : "s"} serving ${placeP} for the patent and copyright claims filed there, which only the federal courts may hear, and for the trademark and trade secret claims filed in federal court`
+          : `a federal district court where venue lies for patent and copyright claims, which only the federal courts may hear, since ${placeP} has no federal district court of its own`;
+      return `Intellectual property claims that involve ${placeP} reach several courts: ${federal}; ${appeals}; and ${ipForum} for ${localClaims} under ${attr} law brought on their own. The federal patent, trademark, and copyright measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied, and ${placePossessive(place)} own law can govern the contract and license claims; the court fixes the interest and decides any enhancement of a patent or trademark award, and the report presents each measure so it can be applied to the claims the fact finder accepts.`;
+    },
+    context: (cityA, attr) =>
+      `The analysis measures patent, trademark, copyright, and trade secret damages from the parties' own sales, cost, and license records, apportioned to the protected right, with ${cityA}-area market conditions entering only where the market for the accused product is local, and the report is built for the federal and ${attr} courts that hear intellectual property claims and for their disclosure rules.`,
+  },
   "divorce-and-marital-financial-analysis": {
     measures: (cityA) =>
       `determine income available for support from the spouse's own records, value a marital business from its own statements and the ${cityA}-area market it serves, and trace separate and marital funds through accounts and assets`,
@@ -238,19 +300,26 @@ const defaultMeasures = (cityA: string) =>
 /**
  * The venue paragraph of a service x state page for the pillars whose forum
  * is not the tort damages framework (employment, the four commercial pillars,
- * transfer pricing, rebuttal). Returns undefined for the injury, death, household services, and
+ * transfer pricing, intellectual property, rebuttal). Returns undefined for the injury, death, household services, and
  * life care costing pillars, which print the state's damagesContext and
  * workers' compensation forum instead.
  */
 export function serviceStateVenueParagraph(service: Service, state: State): string | undefined {
   const venue = SERVICE_PAGE_PROSE[service.slug]?.venue;
   if (!venue) return undefined;
-  const trial = getCourtsByState(state.slug)?.trialCourts?.[0]?.name;
+  const courts = getCourtsByState(state.slug);
+  const trial = courts?.trialCourts?.[0]?.name;
+  const forum = trial ? `the ${trial}` : "the general-jurisdiction trial courts";
+  const ipNames = ipTrialCourtNames(courts);
   return venue({
     place: placeName(state.name),
     attr: placeAttr(state.name),
-    forum: trial ? `the ${trial}` : "the general-jurisdiction trial courts",
+    forum,
+    ipForum: ipNames.length ? ipNames.map((n) => `the ${n}`).join(" and ") : forum,
     compensationForum: getRegulationsByState(state.slug)?.compensationForum,
+    stateSlug: state.slug,
+    circuit: circuitOfState(state.slug),
+    federalDistrictCount: courts?.federalDistricts?.length ?? 0,
   });
 }
 
@@ -263,11 +332,13 @@ export function serviceStateVenueParagraph(service: Service, state: State): stri
 export function serviceCityContextParagraph(service: Service, state: State, city: City): string {
   const cityA = cityAttr(city.name);
   const prose = SERVICE_PAGE_PROSE[service.slug];
+  const lead = `${ORG_NAME} serves counsel throughout ${city.name} and the surrounding ${city.county || state.name} area.`;
+  if (prose?.context) return `${lead} ${prose.context(cityA, placeAttr(state.name))}`;
   const measures = prose?.measures(cityA) ?? defaultMeasures(cityA);
   const familiar =
     prose?.familiar?.(placeAttr(state.name)) ??
     `the court system and disclosure requirements that affect ${proseName(service.shortName)} engagements in ${placeName(state.name)}`;
-  return `${ORG_NAME} serves counsel throughout ${city.name} and the surrounding ${city.county || state.name} area. Our economists ${measures}, and are familiar with ${familiar}.`;
+  return `${lead} Our economists ${measures}, and are familiar with ${familiar}.`;
 }
 
 /**

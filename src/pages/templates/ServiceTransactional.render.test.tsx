@@ -108,7 +108,8 @@ describe("ServiceTransactional body", () => {
         it(`${variant}: carries the pillar's References block beside its billing, process, and timeline claims (C04)`, () => {
           expect(html).toContain('id="sources-heading"');
           expect(service.sources.length).toBeGreaterThanOrEqual(3);
-          for (const s of service.sources) expect(html).toContain(`href="${s.url}"`);
+          // React writes an ampersand in an attribute as &amp;.
+          for (const s of service.sources) expect(html).toContain(`href="${s.url.replace(/&/g, "&amp;")}"`);
           expect(html).toMatch(/href="https:\/\/[^"]+" target="_blank" rel="noopener"/);
         });
 

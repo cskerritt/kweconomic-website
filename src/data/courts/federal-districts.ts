@@ -73,7 +73,7 @@ export function districtsByCircuit(): Record<string, FederalDistrict[]> {
   return out;
 }
 
-/** The pillars most often retained in federal civil matters, in services.ts order. */
+/** The pillars most often retained in federal civil matters (the federal district pages list them in services.ts order). */
 export const FEDERAL_SERVICE_SLUGS = [
   "lost-earnings-and-earning-capacity",
   "employment-and-wage-loss-damages",
@@ -82,6 +82,11 @@ export const FEDERAL_SERVICE_SLUGS = [
   // The transfer pricing pillar is not listed: federal transfer pricing
   // litigation is heard mostly in the Tax Court, and nothing supports
   // calling it work "most often retained" in a federal district court.
+  // Intellectual property damages is listed (2026-10-06): patent and
+  // copyright claims between private parties are heard only in the federal
+  // district courts, and trademark and trade secret claims are often filed
+  // there.
+  "intellectual-property-damages",
   "expert-rebuttal-and-report-review",
 ] as const;
 

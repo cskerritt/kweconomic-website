@@ -10,7 +10,7 @@ import { ORG_NAME } from "@/lib/brand";
 // Lead definition: the extractable answer to "what is in a practitioner guide".
 // Rendered in the hero and reused as the CollectionPage description.
 const LEAD =
-  "A practitioner guide walks through one damages question from the economist's standpoint: what the claim consists of, which records drive it, how the number is built, and where it is tested at deposition and trial. The guides below cover lost earnings, wrongful death, household services, present value, expert disclosure, business valuation, lost profits, transfer pricing disputes, and rebutting an opposing report, for attorneys on either side of the claim.";
+  "A practitioner guide walks through one damages question from the economist's standpoint: what the claim consists of, which records drive it, how the number is built, and where it is tested at deposition and trial. The guides below cover lost earnings, wrongful death, household services, present value, expert disclosure, business valuation, lost profits, transfer pricing disputes, patent and trade secret damages, and rebutting an opposing report, for attorneys on either side of the claim.";
 
 // Sibling editorial hubs, minus this page.
 const LIBRARY_LINKS = [

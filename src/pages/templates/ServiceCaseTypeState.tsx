@@ -4,7 +4,6 @@ import { pillarServices, servicesForCaseType } from "@/data/services";
 import {
   getCaseType,
   caseTypeStateFramework,
-  caseTypeStateStepsIntro,
   caseTypeSectionHeadings,
   caseTypePairStateLead,
   caseTypeStateCourts,
@@ -13,7 +12,11 @@ import {
   caseTypeCourtSelection,
   caseTypeVenuesHeading,
   caseTypePairStateExpertQuestion,
+  caseTypePairStateFrameworkQuestion,
   caseTypeStateForums,
+  caseTypeCourtsNameFederalCourts,
+  caseTypePairStateBuildAnswer,
+  caseTypePairStateSources,
   type CaseTypeCategory,
 } from "@/data/caseTypes";
 import { states } from "@/data/states";
@@ -42,8 +45,9 @@ const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hove
 // compensation forum; employment, commercial, family, and tax matters get the
 // fault, interest, and cap paragraph (generalContext), which a framing entry
 // replaces with its own framework paragraph. The trial courts listed follow
-// the category (caseTypes.ts caseTypeCourtSelection: tax matters take the
-// business selection, after the federal tax forums the entry lists).
+// the category (caseTypes.ts caseTypeCourtSelection: tax and intellectual
+// property matters take the business selection, after the federal tax
+// forums or the federal courts the entry lists).
 const INJURY_CATEGORIES: ReadonlySet<CaseTypeCategory> = new Set(["personal-injury", "wrongful-death", "med-mal", "workers-comp"]);
 
 const listNames = (names: string[]) => {
@@ -72,6 +76,10 @@ export default function ServiceCaseTypeState() {
 
   const path = serviceCaseStatePath(serviceSlug, typeSlug, stateSlug);
   const url = ok ? `${ORG_URL}${path}` : "";
+  // The place's type and federal district count set the courts a
+  // venue-framed case type's description names (the federal and local
+  // courts outside the states; the courts alone in American Samoa).
+  const descriptionGeo = state ? { type: state.type, federalDistrictCount: federalDistricts.filter((d) => d.stateSlug === state.slug).length } : undefined;
   usePageMeta(
     service && caseType && state && declared
       ? {
@@ -80,7 +88,7 @@ export default function ServiceCaseTypeState() {
           // from src/lib/page-titles.mjs, and the description from the shared
           // prose helper.
           title: `${serviceCaseStateTitle(service, caseType, state, ORG_NAME)}`,
-          description: `${serviceCaseStateDescription(service, caseType, placeName(state.name))}`,
+          description: `${serviceCaseStateDescription(service, caseType, placeName(state.name), descriptionGeo)}`,
           canonical: url,
         }
       : null,
@@ -98,13 +106,16 @@ export default function ServiceCaseTypeState() {
   const regulations = getRegulationsByState(state.slug);
   const selection = caseTypeCourtSelection(caseType);
   const trialCourts = courts ? selectTrialCourts(courts, selection.kind, selection.limit) : [];
-  // A matter heard outside the state's courts lists its own forums first
-  // (the federal tax forums and the state's tax appeal process).
-  const venues = [...caseTypeStateForums(caseType, place, attr), ...trialCourts];
   const districts = federalDistricts.filter((d) => d.stateSlug === state.slug);
+  const circuit = circuitOfState(state.slug);
+  // A matter heard outside the state's courts lists its own forums first
+  // (the federal tax forums and the state's tax appeal process; the federal
+  // district courts serving the state and the courts of appeals for an
+  // intellectual property claim).
+  const venues = [...caseTypeStateForums(caseType, place, attr, { federalDistricts: districts.map((d) => d.name), circuit }), ...trialCourts];
   const headings = caseTypeSectionHeadings(caseType);
   const frameworkText = regulations
-    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuitOfState(state.slug))
+    ? caseTypeStateFramework(caseType, place, isInjury ? regulations.damagesContext : regulations.generalContext, circuit)
     : "";
   // The state's expert standard closes on how an economic damages report
   // meets it; a framing entry prints the state's inquiry with its own close.
@@ -128,12 +139,14 @@ export default function ServiceCaseTypeState() {
     .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
   // Three FAQs that exist only for this pair in this state: how the analysis
-  // is built, what the state's courts ask of it, and how the state framework
-  // shapes it. The pair's own FAQs stay on the pair page.
+  // is built (the pillar's own note for the pair, so the answer describes
+  // the pillar's work rather than the case type's generic steps), what the
+  // state's courts ask of it, and how the state framework shapes it. The
+  // pair's own FAQs stay on the pair page.
   const faqs = [
     {
       question: `How is ${work} built for ${withArticle(lower)} case in ${place}?`,
-      answer: `${caseTypeStateStepsIntro(caseType, place)} ${caseType.steps.join(" ")}`,
+      answer: caseTypePairStateBuildAnswer(caseType, place, note),
     },
     ...(regulations && courts
       ? [
@@ -143,8 +156,14 @@ export default function ServiceCaseTypeState() {
               expertStandard,
               caseType.category === "workers-comp"
                 ? `${caseType.name} claims in ${place} proceed before the ${regulations.compensationForum}, and third-party actions arising from the same injury are heard in ${courtList}, with final appeals to the ${courts.supremeCourt}.`
-                : caseTypeStateCourts(caseType, { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug }, "clause"),
-              districts.length > 0 ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
+                : caseTypeStateCourts(
+                    caseType,
+                    { place, courtList, supremeCourt: courts.supremeCourt, stateSlug: state.slug, federalDistricts: districts.map((d) => d.name), circuit },
+                    "clause",
+                  ),
+              // An answer that already names the federal district courts
+              // (intellectual property) takes no second federal sentence.
+              districts.length > 0 && !caseTypeCourtsNameFederalCourts(caseType) ? `Matters within federal jurisdiction proceed in the ${federalList}.` : "",
             ]
               .filter(Boolean)
               .join(" "),
@@ -154,7 +173,9 @@ export default function ServiceCaseTypeState() {
     ...(regulations
       ? [
           {
-            question: `How does the ${attr} ${headings.framework.toLowerCase()} shape ${work} in ${withArticle(lower)} case?`,
+            // "How does the <attr> damages framework shape ...?", or the
+            // entry's own question where federal statutes set the measures.
+            question: caseTypePairStateFrameworkQuestion(caseType, attr, place, work),
             answer: `${frameworkText} ${caseTypePairStateFrameworkTail(caseType, attr)}`,
           },
         ]
@@ -309,14 +330,16 @@ export default function ServiceCaseTypeState() {
       <ContactCTA context={service.shortName} />
 
       <FAQBlock faqs={faqs} title={`Frequently asked: ${capFirst(work)} in ${place} ${lower} matters`} />
-      <SourcesBlock sources={service.sources.slice(0, 5)} />
+      {/* The pillar's sources, and a venue-framed case type's state list
+          behind the forum, framework, and exposure copy printed above. */}
+      <SourcesBlock sources={caseTypePairStateSources(caseType, service.sources)} />
 
       <SchemaOrg data={graphSchema([
         // The page canonical is the Service entity's @id and url.
         serviceSchema({
           url,
           name: h1,
-          description: serviceCaseStateDescription(service, caseType, place),
+          description: serviceCaseStateDescription(service, caseType, place, descriptionGeo),
           areaServed: { "@type": state.type === "state" ? "State" : "AdministrativeArea", name: state.name },
           dateModified: service.dateModified,
         }),

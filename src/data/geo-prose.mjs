@@ -44,9 +44,28 @@ const fmtPopulation = (n) => {
   return (Math.round(n / 1000) * 1000).toLocaleString("en-US");
 };
 
-/** "New Jersey's Superior Court" but "the Superior Court of Guam" (no doubled possessive). */
+/** Whether a court's own name already names the place ("Superior Court of
+ * Guam", "Superior Court of the Virgin Islands" for the U.S. Virgin Islands). */
+const courtNamesPlace = (stateName, court) => {
+  const bare = placeAttr(stateName);
+  return court.includes(bare) || court.includes(bare.replace(/^U\.S\. /, ""));
+};
+
+/** "New Jersey's Superior Court" but "The Superior Court of Guam" and "The
+ * Superior Court of the Virgin Islands" (no doubled place). */
 const forumPhrase = (stateName, court) =>
-  court.includes(stateName) ? `The ${court}` : `${stateName}'s ${court}`;
+  courtNamesPlace(stateName, court) ? `The ${court}` : capFirst(`${placePossessive(stateName)} ${court}`);
+
+/** The local forum of the intellectual property state paragraph: one court
+ * as forumPhrase() reads it, or the two the case-type pages list ("Delaware's
+ * Court of Chancery and Superior Court", "The North Carolina Business Court
+ * and North Carolina's Superior Court"). */
+const forumListPhrase = (stateName, courts) => {
+  if (courts.length <= 1) return forumPhrase(stateName, courts[0]);
+  const [a, b] = courts;
+  if (!courtNamesPlace(stateName, a) && !courtNamesPlace(stateName, b)) return capFirst(`${placePossessive(stateName)} ${a} and ${b}`);
+  return `${forumPhrase(stateName, a)} and ${courtNamesPlace(stateName, b) ? `the ${b}` : `${placePossessive(stateName)} ${b}`}`;
+};
 
 const listNames = (names) => {
   if (names.length === 0) return "";
@@ -67,6 +86,17 @@ export const ISLAND_SLUGS = new Set([
   "northern-mariana-islands",
 ]);
 
+/** The places whose own trade secret law the intellectual property prose
+ * makes no claim about. The Uniform Law Commission's enactment record for the
+ * Uniform Trade Secrets Act covers most states, the District of Columbia,
+ * Puerto Rico, and the U.S. Virgin Islands, and the states that have not
+ * enacted it recognize the claim by their own statute or the common law; for
+ * these three territories the copy names only the contract and license
+ * claims their courts hear and leaves the trade secret law to counsel
+ * (src/data/caseTypes.ts CaseTypeVenueFraming.stateClaims reads the same
+ * set). */
+export const LOCAL_TRADE_SECRET_LAW_UNSTATED = new Set(["guam", "northern-mariana-islands", "american-samoa"]);
+
 /** "the District of Columbia" reads as a place name; every state name does as-is. */
 export const placeName = (stateName) =>
   stateName === "District of Columbia" ? "the District of Columbia" : stateName;
@@ -77,6 +107,24 @@ export const placeName = (stateName) =>
  * "a the" and "the the" cannot be rendered. Accepts a raw state name or a
  * placeName() result. */
 export const placeAttr = (name) => name.replace(/^the /, "");
+
+/** The two places whose plural names take the article in running prose. */
+const ARTICLE_PLACES = new Set(["U.S. Virgin Islands", "Northern Mariana Islands"]);
+
+/** Running-prose form of a place: placeName() plus the article the two
+ * plural island names take ("the U.S. Virgin Islands", "the Northern Mariana
+ * Islands"). Accepts a raw state name or a placeName() result. The titles,
+ * the meta descriptions, and the prose that predates it keep placeName();
+ * the intellectual property and transfer pricing prose reads this form. */
+export const prosePlace = (name) => (ARTICLE_PLACES.has(name) ? `the ${name}` : placeName(name));
+
+/** Possessive of the running-prose form: "Texas's", "the District of
+ * Columbia's", "the U.S. Virgin Islands'" (a plural name takes the apostrophe
+ * alone). Accepts a raw state name or a placeName() result. */
+export const placePossessive = (name) => {
+  const p = prosePlace(name);
+  return /Islands$/.test(p) ? `${p}'` : `${p}'s`;
+};
 
 /** Attributive form of a city name: "The Bronx" becomes "Bronx" so that "the
  * Bronx area" and "Bronx wage levels" read naturally. Non-attributive slots
@@ -107,8 +155,13 @@ const REGION_WAGES = {
 
 /**
  * State narrative.
+ * `ipTrialCourtNames` are the courts the intellectual property case-type
+ * pages list for the claims under the place's own law (the "business"
+ * selection, two deep: src/data/caseTypes.ts caseTypeCourtSelection), so the
+ * pillar's legal context names the same courts; it falls back to the
+ * general-jurisdiction court.
  * @param {{ orgName: string, stateName: string, stateSlug?: string, region?: string, population?: number,
- *   trialCourtName?: string, supremeCourt?: string, federalDistrictCount?: number,
+ *   trialCourtName?: string, ipTrialCourtNames?: string[], supremeCourt?: string, federalDistrictCount?: number,
  *   compensationForum?: string }} input
  * @returns {{ directAnswer: string, economicContext: string, legalContext: string }}
  */
@@ -120,6 +173,7 @@ export function buildStateNarrative(input) {
     region,
     population,
     trialCourtName,
+    ipTrialCourtNames,
     supremeCourt,
     federalDistrictCount = 0,
     compensationForum,
@@ -202,14 +256,40 @@ export function buildStateNarrative(input) {
   // the appellate and federal sentences.
   const legalContextTax = [
     "Federal transfer pricing disputes are heard in the United States Tax Court or, on a refund claim, in a federal district court or the Court of Federal Claims; the same statute and regulations apply wherever the business is based, but where it is based decides which federal court of appeals' decisions govern.",
-    `${forumPhrase(stateName, forum)} is the primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price, and a dispute over ${place}'s own tax follows its administrative and appeal process.`,
+    `${forumPhrase(stateName, forum)} is the primary trial-level forum for the commercial, shareholder, and matrimonial claims that turn on an intercompany price, and a dispute over ${placePossessive(stateName)} own tax follows its administrative and appeal process.`,
     appeals,
     federal,
   ]
     .filter(Boolean)
     .join(" ");
 
-  return { directAnswer, economicContext, legalContext, legalContextCommercial, legalContextFamily, legalContextTax };
+  // The intellectual property pillar: patent and copyright claims are heard
+  // only in the federal courts, so the paragraph names the federal district
+  // courts serving the place first, for a case filed there (a case involving
+  // a business in the place can be filed in another district where venue
+  // lies), or says the place has none, so the claim is filed where venue
+  // lies, with the Federal Circuit for patent appeals; then the place's own
+  // courts, the ones the case-type pages list, for the claims under its law
+  // brought on their own (joined with a patent or copyright claim, those
+  // claims are usually heard with it in federal court); then the appellate
+  // sentence. No claim is made about the trade secret law of the
+  // territories in LOCAL_TRADE_SECRET_LAW_UNSTATED.
+  const placeP = prosePlace(stateName);
+  const ipLocalClaims = LOCAL_TRADE_SECRET_LAW_UNSTATED.has(stateSlug ?? "")
+    ? "the contract and license claims"
+    : "the trade secret, unfair competition, contract, and license claims";
+  const ipForums = ipTrialCourtNames?.length ? ipTrialCourtNames : [forum];
+  const legalContextIp = [
+    federalDistrictCount > 0
+      ? `Patent and copyright claims are heard only in the federal courts, which for a case filed in ${placeP} means the federal district court${federalDistrictCount === 1 ? "" : "s"} serving ${placeP}, though a case involving a business there may be filed in another district where venue lies; appeals in patent cases go to the United States Court of Appeals for the Federal Circuit, and trademark and trade secret claims can be filed in federal court or in ${placePossessive(stateName)} own courts.`
+      : `Patent and copyright claims are heard only in the federal courts, and ${placeP} has no federal district court of its own, so such a claim involving a business there is filed in a federal district court where venue lies, with appeals in patent cases to the United States Court of Appeals for the Federal Circuit.`,
+    `${forumListPhrase(stateName, ipForums)} ${ipForums.length > 1 ? "are the primary trial-level forums" : "is the primary trial-level forum"} for ${ipLocalClaims} under ${placeAttr(stateName)} law brought on their own; joined with a patent or copyright claim, they are usually heard with it in federal court.`,
+    appeals,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return { directAnswer, economicContext, legalContext, legalContextCommercial, legalContextFamily, legalContextTax, legalContextIp };
 }
 
 /**
@@ -217,10 +297,11 @@ export function buildStateNarrative(input) {
  * (ServiceState.tsx + prerender): the shared tort-and-compensation paragraph
  * on the personal-loss and rebuttal pillars, the commercial variant on the
  * valuation, lost profits, and fraud pillars, the matrimonial variant on the
- * family-financial pillar, and the tax variant on the transfer pricing
- * pillar. Takes the raw Service.shortName.
+ * family-financial pillar, the tax variant on the transfer pricing pillar,
+ * and the federal-courts-first variant on the intellectual property pillar.
+ * Takes the raw Service.shortName.
  * @param {string | undefined} serviceShortName
- * @param {{ legalContext: string, legalContextCommercial: string, legalContextFamily: string, legalContextTax: string }} stateNarrative
+ * @param {{ legalContext: string, legalContextCommercial: string, legalContextFamily: string, legalContextTax: string, legalContextIp: string }} stateNarrative
  * @returns {string}
  */
 export function serviceStateLegalContext(serviceShortName, stateNarrative) {
@@ -228,6 +309,7 @@ export function serviceStateLegalContext(serviceShortName, stateNarrative) {
   if (category === "commercial") return stateNarrative.legalContextCommercial;
   if (category === "family-financial") return stateNarrative.legalContextFamily;
   if (category === "tax") return stateNarrative.legalContextTax;
+  if (category === "intellectual-property") return stateNarrative.legalContextIp;
   return stateNarrative.legalContext;
 }
 
@@ -243,12 +325,17 @@ export function serviceStateLegalContext(serviceShortName, stateNarrative) {
  * pillar: it says which area's data an analysis uses where it uses local data
  * at all, never that earnings or household services are being measured. The
  * transfer pricing pillar takes `taxAnchor` instead (where a tax dispute for
- * a business based in the city is heard). The hero also takes `venue` or
- * `familyVenue`.
+ * a business based in the city is heard), and the intellectual property
+ * pillar `ipAnchor` (where the appeals that govern its damages go). The hero
+ * also takes `venue`, `familyVenue`, or, on the intellectual property
+ * pillar, `ipVenue`.
+ * `ipTrialCourtNames` are the courts the intellectual property case-type
+ * pages list for the claims under the place's own law (see
+ * buildStateNarrative), which `ipVenue` names.
  * @param {{ orgName: string, stateName: string, cityName: string, county?: string,
  *   msaName?: string, employers?: string[], hasMetroData?: boolean,
- *   trialCourtName?: string }} input
- * @returns {{ directAnswer: string, anchor: string, blurb: string, venue: string, familyVenue: string }}
+ *   trialCourtName?: string, ipTrialCourtNames?: string[] }} input
+ * @returns {{ directAnswer: string, anchor: string, taxAnchor: string, ipAnchor: string, blurb: string, venue: string, familyVenue: string, ipVenue: string }}
  */
 export function buildCityNarrative(input) {
   const {
@@ -260,6 +347,7 @@ export function buildCityNarrative(input) {
     employers = [],
     hasMetroData = false,
     trialCourtName,
+    ipTrialCourtNames,
   } = input;
 
   const named = employers.slice(0, 3);
@@ -281,7 +369,13 @@ export function buildCityNarrative(input) {
   // for the transactions rather than the city, so the labor-market anchor
   // has nothing to say about its number; where a dispute for a business based
   // in the city is heard does. The civil venue sentence stays in the hero.
-  const taxAnchor = `A federal tax dispute for a business based in ${cityName} is heard in the United States Tax Court, which holds trials in cities across the country, or, on a refund claim, in a federal district court or the Court of Federal Claims; a dispute over ${placeName(stateName)}'s own tax follows its administrative and appeal process.`;
+  const taxAnchor = `A federal tax dispute for a business based in ${cityName} is heard in the United States Tax Court, which holds trials in cities across the country, or, on a refund claim, in a federal district court or the Court of Federal Claims; a dispute over ${placePossessive(stateName)} own tax follows its administrative and appeal process.`;
+  // The intellectual property pillar's place sentence: its licenses and
+  // market data are chosen for the technology rather than the city, so the
+  // labor-market anchor has nothing to say about its number; where the
+  // appeals that govern a case involving the city go does. True in every
+  // place, the District and the territories included.
+  const ipAnchor = `An appeal in a patent case goes to the United States Court of Appeals for the Federal Circuit from every federal district court, so its damages decisions govern a patent case involving a business in ${cityName} wherever the case is filed; appeals in copyright, trademark, and trade secret cases go to the regional court of appeals for the district that heard them.`;
 
   const blurbParts = [];
   // The venue sentence is also returned on its own (`venue`, "" when the city
@@ -294,6 +388,11 @@ export function buildCityNarrative(input) {
   // civil court by name.
   let venue = "";
   let familyVenue = "";
+  // The intellectual property form: patent and copyright claims are heard
+  // only in federal court, usually with the related claims under the place's
+  // own law, so the county's courts (the ones the case-type pages list) are
+  // named for a license or royalty dispute brought on its own.
+  let ipVenue = "";
   if (county) {
     // When the court's own name already names the county ("Superior Court of
     // the District of Columbia"), the "sitting in" clause would only repeat it.
@@ -311,6 +410,11 @@ export function buildCityNarrative(input) {
     }
     venue = `Civil claims arising in ${cityName} are typically heard in ${court}.`;
     familyVenue = `Matrimonial matters in ${cityName} are typically heard in ${familyCourt}.`;
+    const ipNames = ipTrialCourtNames?.length ? ipTrialCourtNames : trialCourtName ? [trialCourtName] : [];
+    const ipCourt = ipNames.length
+      ? `${ipNames.map((n) => `the ${n}`).join(" or ")}${ipNames.some((n) => n.includes(county)) ? "" : ` sitting in ${county}`}`
+      : court;
+    ipVenue = `Patent and copyright claims involving a business in ${cityName} are heard only in federal court, usually together with the related claims under ${placeAttr(stateName)} law; a license or royalty dispute brought on its own is typically heard in ${ipCourt}.`;
     blurbParts.push(venue);
   }
   blurbParts.push(
@@ -323,7 +427,7 @@ export function buildCityNarrative(input) {
   );
   const blurb = blurbParts.join(" ");
 
-  return { directAnswer, anchor, taxAnchor, blurb, venue, familyVenue };
+  return { directAnswer, anchor, taxAnchor, ipAnchor, blurb, venue, familyVenue, ipVenue };
 }
 
 /**
@@ -337,15 +441,19 @@ export function buildCityNarrative(input) {
  * matrimonial sides sentence its FAQ uses; the transfer pricing pillar prints
  * the narrative's `taxAnchor` (its comparables are chosen for the
  * transactions, not the city, so the labor-market anchor does not apply to
- * it) and closes on "Either side."; every other pillar keeps "Plaintiff and
- * defense." Takes the raw Service.shortName.
+ * it) and closes on "Either side."; the intellectual property pillar prints
+ * `ipAnchor` (where the appeals that govern its damages go); every other
+ * pillar keeps the anchor, and every pillar but the two whose sides are
+ * not plaintiff and defense closes on "Plaintiff and defense." Takes the raw
+ * Service.shortName.
  * @param {string | undefined} serviceShortName
- * @param {{ anchor: string, taxAnchor?: string }} cityNarrative
+ * @param {{ anchor: string, taxAnchor?: string, ipAnchor?: string }} cityNarrative
  * @returns {string}
  */
 export function serviceCityPlaceParagraph(serviceShortName, cityNarrative) {
   const category = serviceGeoCategory(serviceShortName);
   if (category === "tax") return `${cityNarrative.taxAnchor ?? cityNarrative.anchor} Either side.`;
+  if (category === "intellectual-property") return `${cityNarrative.ipAnchor ?? cityNarrative.anchor} Plaintiff and defense.`;
   const sides =
     category === "family-financial"
       ? "The report can be prepared for one spouse, for both, or for the court."
@@ -384,8 +492,10 @@ export function serviceCityPlaceParagraph(serviceShortName, cityNarrative) {
 //   but-for projection, and not at all in a tracing), "family-financial"
 //   (actual income, business cash flow, tracing; the matrimonial forum),
 //   "tax" (transfer pricing: the group's own agreements and records and
-//   comparables chosen for the transactions; the federal tax forums), and
-//   "rebuttal". serviceGeoCategory() reads it; the EconomicContextWidget
+//   comparables chosen for the transactions; the federal tax forums),
+//   "intellectual-property" (the parties' own sales, cost, and license
+//   records and licenses chosen for the technology; the federal courts that
+//   alone hear patent and copyright claims), and "rebuttal". serviceGeoCategory() reads it; the EconomicContextWidget
 //   drops the workers' compensation forum outside personal-loss and rebuttal.
 // state(place, attr): one or two sentences after the hero's first sentence.
 // city(cityName, cityA, place): one or two sentences after the city hero's
@@ -408,7 +518,7 @@ export function serviceCityPlaceParagraph(serviceShortName, cityNarrative) {
 // disclosure(orgName, place, attr): replaces the shared answer of the state
 //   FAQ "When is expert disclosure due ...?" on a pillar whose disputes are
 //   tried in a forum whose own rule fixes the report date (transfer pricing:
-//   the Tax Court).
+//   the Tax Court) or mostly in the federal courts (intellectual property).
 // ---------------------------------------------------------------------------
 
 export const SERVICE_GEO = {
@@ -561,6 +671,42 @@ export const SERVICE_GEO = {
     disclosure: (orgName, place, attr) =>
       `In the United States Tax Court each expert's report is served on the other side and submitted to the court no later than thirty days before the call of the trial calendar, and is received in evidence as the expert's direct testimony. In a refund suit in a federal district court or the Court of Federal Claims, or a commercial, shareholder, or matrimonial case in the ${attr} trial courts, the court's scheduling order ordinarily sets the date. ${orgName} confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.`,
   },
+  // Intellectual property damages (2026-10-06): the federal statutes set the
+  // patent, trademark, and copyright measures, which do not change with the
+  // state, though the regional circuit's decisions govern how the copyright
+  // and trademark measures are applied, and the numbers run on the parties'
+  // own sales, cost, and license records rather than on local wage or market
+  // data. No sentence names a place's trade secret law (the state(place)
+  // slot carries no state slug), and the place enters through the contract
+  // and license claims its own law can govern. Both angles open on the four
+  // rights, so the meta descriptions cut from the heroes name them.
+  "IP Damages": {
+    category: "intellectual-property",
+    state: (place) =>
+      `Patent, trademark, copyright, and trade secret damages, measured claim by claim, take the form each statute provides: a reasonable royalty and the patentee's lost profits for a patent, the defendant's profits, actual damages, and corrective advertising for a trademark, actual damages and the infringer's profits for a copyright, and actual loss, unjust enrichment, or a reasonable royalty for a trade secret, each apportioned to the protected right and built from the parties' own sales, cost, and license records. The federal patent, trademark, and copyright measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied; ${placePossessive(place)} own law can govern the contract and license claims, whether they are brought with an infringement claim or on their own, and counsel confirms which law governs each claim.`,
+    city: (cityName, cityA) =>
+      `Patent, trademark, copyright, and trade secret damages, measured claim by claim, rest on the parties' own sales, cost, and license records and on licenses and market data chosen for the technology and the accused products rather than for the city, so for a business based in ${cityName}, ${cityA}-area conditions enter only where the market for the accused product is local. Each royalty input, apportionment step, and sales figure is documented so the measure can be tested at deposition.`,
+    records:
+      "the accused products' sales, pricing, and cost data, the owner's sales and capacity records, and every license to the rights in suit and to comparable technology",
+    engagement: (records) =>
+      `An intellectual property damages engagement typically includes a records request (${records}), the identification of the rights, the accused products, and the recoverable period, a reasonable royalty built from the comparable licenses, the profit the protected feature made possible, and the user's alternatives, lost profits or the infringer's profits where the claims support them, apportionment to the protected right with the technical and survey experts' inputs stated, a report that shows the result under the opposing analysis, and deposition and trial testimony when required. Scope and turnaround are calibrated to the claims, the court's schedule, and the governing disclosure framework.`,
+    coverage: () =>
+      "with the analysis sized to the engagement scope and built from the parties' own sales, cost, and license records and from comparable licenses and market data selected for the technology at issue rather than from data for the venue.",
+    deliverables: (orgName) =>
+      `${orgName} provides expert reports on the damages in patent, trademark, copyright, and trade secret claims, royalty audits and damages analyses in license disputes, reviews and rebuttals of opposing damages reports, and deposition and trial testimony. The appropriate deliverable depends on the claims and the case posture.`,
+    cityFaq: (cityName) => ({
+      question: `What records drive an intellectual property damages analysis for a business based in ${cityName}?`,
+      answer: `The accused products' unit sales, revenue, prices, and costs, the owner's own sales, margins, and capacity, and every license to the rights in suit and to comparable technology, with the negotiation files, together with the marking and notice records and the parties' forecasts from the date the infringement began. The licenses and market data are selected for the technology and the products at issue rather than for the city.`,
+    }),
+    context: (place, attr) =>
+      `The damages rest on the parties' own sales, cost, and license records and on comparable licenses selected for the technology at issue; ${prosePlace(place)} enters as the forum for the claims under its own law and, where the market for the accused product is local, through ${attr}-area market conditions.`,
+    // Patent and copyright claims are heard only in the federal courts (the
+    // district courts between private parties), whose scheduling orders set
+    // the report dates; in a patent case the damages reports usually follow
+    // the construction of the claims.
+    disclosure: (orgName, place, attr) =>
+      `In the federal district courts, which hear patent and copyright infringement claims between private parties, the court's scheduling order sets the dates for the expert reports, and in a patent case the damages reports usually follow the court's construction of the claims. In a case heard in the ${attr} trial courts, such as a dispute over royalties owed under a license, the case management or scheduling order sets the date. ${orgName} confirms the disclosure date at retention and sizes the records request and turnaround to it; counsel confirms the governing deadline for the case.`,
+  },
   Rebuttal: {
     category: "rebuttal",
     state: (place, attr) =>
@@ -581,12 +727,12 @@ export const SERVICE_GEO = {
 
 /**
  * The kind of analysis a pillar performs (see the SERVICE_GEO `category`
- * field): "personal-loss", "commercial", "family-financial", "tax", or
- * "rebuttal". A short name without an entry, or none at all (the state hub
- * and city pages), reads as personal-loss, the framing the shared narratives
- * carry.
+ * field): "personal-loss", "commercial", "family-financial", "tax",
+ * "intellectual-property", or "rebuttal". A short name without an entry, or
+ * none at all (the state hub and city pages), reads as personal-loss, the
+ * framing the shared narratives carry.
  * @param {string | undefined} serviceShortName
- * @returns {"personal-loss" | "commercial" | "family-financial" | "tax" | "rebuttal"}
+ * @returns {"personal-loss" | "commercial" | "family-financial" | "tax" | "intellectual-property" | "rebuttal"}
  */
 export function serviceGeoCategory(serviceShortName) {
   return (serviceShortName && SERVICE_GEO[serviceShortName]?.category) || "personal-loss";
@@ -633,7 +779,9 @@ export function serviceStateDirectAnswer(orgName, serviceShortName, stateName, s
  * work-phrase rule as the state sentence; then the pillar's angle for the
  * city, the city narrative's venue sentence (the matrimonial one on the
  * family-financial pillar, the civil one everywhere else), and testimony
- * availability. The angle comes before the venue so the first 160 characters
+ * availability (the intellectual property pillar takes the narrative's
+ * `ipVenue`, which names federal court for the patent and copyright claims).
+ * The angle comes before the venue so the first 160 characters
  * (the shells' meta description) name the subject of the page. */
 export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, cityName, cityNarrative) {
   const place = placeName(stateName);
@@ -644,7 +792,11 @@ export function serviceCityDirectAnswer(orgName, serviceShortName, stateName, ci
     angle ? angle.city(cityName, cityA, place) : defaultCityAngle(cityA),
   ];
   const venue =
-    angle?.category === "family-financial" ? cityNarrative.familyVenue || cityNarrative.venue : cityNarrative.venue;
+    angle?.category === "family-financial"
+      ? cityNarrative.familyVenue || cityNarrative.venue
+      : angle?.category === "intellectual-property"
+        ? cityNarrative.ipVenue || cityNarrative.venue
+        : cityNarrative.venue;
   if (venue) parts.push(venue);
   parts.push(
     `Deposition and trial testimony are available for ${cityA} matters, in person or by remote appearance where the forum allows.`,
@@ -662,7 +814,7 @@ export function stateGeographicFaqs(orgName, stateName) {
   return [
     {
       question: `Does ${orgName} provide forensic economics services for ${attr} cases?`,
-      answer: `Yes. ${orgName} prepares lost earnings, wrongful death economic loss, household services, employment damages, lost profits, business valuation, and transfer pricing analyses, and reviews and rebuts opposing economic reports, for attorneys handling matters venued in ${place}, for plaintiff and defense counsel alike. Every projection is anchored to the plaintiff's own records and to wage data for the area of ${place} where the plaintiff actually worked.`,
+      answer: `Yes. ${orgName} prepares lost earnings, wrongful death economic loss, household services, employment damages, lost profits, business valuation, transfer pricing, and intellectual property damages analyses, and reviews and rebuts opposing economic reports, for attorneys handling matters venued in ${place}, for plaintiff and defense counsel alike. Every earnings projection is anchored to the plaintiff's own records and to wage data for the area of ${place} where the plaintiff actually worked.`,
     },
     {
       question: `How does a forensic economist account for ${attr} wage levels in a lost earnings claim?`,
@@ -670,7 +822,7 @@ export function stateGeographicFaqs(orgName, stateName) {
     },
     {
       question: `Which courts in ${place} hear the damages claims your reports support?`,
-      answer: `Personal injury, wrongful death, employment, and commercial damages claims are heard in ${place}'s general-jurisdiction trial courts and, where jurisdiction allows, in the federal district courts serving ${place}. Wage-loss disputes in workers' compensation matters proceed before the compensation forum rather than the civil courts. Attorneys are responsible for confirming the venue and the governing damages rules for their specific case.`,
+      answer: `Personal injury, wrongful death, employment, and commercial damages claims are heard in ${place}'s general-jurisdiction trial courts and, where jurisdiction allows, in the federal district courts serving ${place}. Patent and copyright damages claims are heard only in the federal courts. Wage-loss disputes in workers' compensation matters proceed before the compensation forum rather than the civil courts. Attorneys are responsible for confirming the venue and the governing damages rules for their specific case.`,
     },
     {
       question: `How is present value calculated for a wrongful death claim in ${place}?`,

@@ -4,7 +4,8 @@ import CaseTypeState from "./CaseTypeState";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { getCaseType } from "@/data/caseTypes";
 import { getStateBySlug } from "@/data/states";
-import { placeName } from "@/data/geo-prose.mjs";
+import { placeName, placePossessive, prosePlace } from "@/data/geo-prose.mjs";
+import { refsToSources } from "@/data/references";
 import { ORG_NAME } from "@/lib/brand";
 import { ORG_URL } from "@/lib/schema";
 import { renderRoute, visibleText, faqLdStrings, jsonLdBlocks } from "@/test-utils/markup";
@@ -179,6 +180,127 @@ describe("the commercial and shareholder hubs link the transfer pricing pair", (
     it(`/case-types/${slug}`, () => {
       const { html } = render(`/case-types/${slug}`, HUB_ROUTE, CaseTypeHub);
       expect(html).toContain(`href="/services/transfer-pricing-expert-witness/case/${slug}"`);
+    });
+  }
+  // The cap moved from four to five (2026-10-06) so the intellectual
+  // property pair, fifth on the commercial and shareholder hubs, is linked.
+  for (const slug of ["commercial-contract-dispute", "partnership-and-shareholder-dispute"]) {
+    it(`/case-types/${slug} links the intellectual property pair`, () => {
+      const { html } = render(`/case-types/${slug}`, HUB_ROUTE, CaseTypeHub);
+      expect(html).toContain(`href="/services/intellectual-property-damages/case/${slug}"`);
+    });
+  }
+});
+
+// Intellectual property infringement (2026-10-06) is a damages claim heard
+// first in the federal courts: the hub and state pages keep the shared damages
+// title, H1s, and headings, and the venue framing replaces the state-court
+// forum, the state damages rules, and the present value the shared strings
+// would print. The courts answer names the federal district courts first, the
+// Federal Circuit for patent appeals, the regional circuit otherwise, and then
+// the state's courts, and carries no second federal sentence.
+const ip = getCaseType("intellectual-property-infringement")!;
+const ipVenue = ip.venueFraming!;
+
+describe("the intellectual property hub keeps the damages framing and drops the present value", () => {
+  const { html, title, description, text } = render("/case-types/intellectual-property-infringement", HUB_ROUTE, CaseTypeHub);
+
+  it("publishes the full-keyword title, the damages H1, and its own description", () => {
+    expect(title).toBe(`Intellectual Property Infringement Economist | ${ORG_NAME}`);
+    expect(h1Of(html)).toBe("Intellectual Property Infringement Economic Damages Analysis");
+    expect(description).toBe(ipVenue.hubDescription);
+    expect(description.length).toBeGreaterThanOrEqual(140);
+    expect(description.length).toBeLessThanOrEqual(160);
+    expect(description).not.toMatch(/present value/);
+  });
+
+  it("heads its sections as a damages claim and links every declaring pillar's pair page", () => {
+    const h2s = h2sOf(html);
+    expect(h2s).toContain("What the economic claim consists of");
+    expect(h2s).toContain("Where the damages concentrate");
+    expect(text).toContain("the reasonable royalty that is the floor of every patent award");
+    for (const pillar of ["intellectual-property-damages", "lost-profits-and-commercial-damages", "business-valuation", "expert-rebuttal-and-report-review"]) {
+      expect(html, pillar).toContain(`href="/services/${pillar}/case/intellectual-property-infringement"`);
+    }
+    expect(text).not.toMatch(/Skerritt[^,]*(testified|retained)|\bverdict|\$\d/);
+  });
+});
+
+describe("an intellectual property state page names the federal courts first", () => {
+  for (const stateSlug of ["texas", "district-of-columbia", "guam", "american-samoa", "delaware", "us-virgin-islands"]) {
+    const state = getStateBySlug(stateSlug)!;
+    const place = placeName(state.name);
+    // Running prose takes the article the plural island names need ("the
+    // U.S. Virgin Islands"); the H1, title, and description keep `place`.
+    const placeP = prosePlace(state.name);
+    const url = `${ORG_URL}/case-types/intellectual-property-infringement/${stateSlug}`;
+    const { html, title, description, text } = render(`/case-types/intellectual-property-infringement/${stateSlug}`, STATE_ROUTE, CaseTypeState);
+    const faqs = faqLdStrings(html);
+    const courtsAnswer = faqs[faqs.indexOf(`Which courts hear an intellectual property infringement case involving ${placeP}?`) + 1] ?? "";
+
+    it(`/${stateSlug}: title, H1, description, and lead`, () => {
+      expect(title).toMatch(/^IP Infringement Economist in /);
+      expect(h1Of(html)).toBe(`Intellectual Property Infringement Economic Damages Expert in ${place}`);
+      expect(description).toBe(ipVenue.stateDescription.replace("{place}", place));
+      expect(description.length).toBeGreaterThanOrEqual(140);
+      expect(description.length).toBeLessThanOrEqual(160);
+      expect(text).toContain(`${ORG_NAME} prepares economic damages analyses for intellectual property infringement cases involving ${placeP}:`);
+      expect(text).not.toMatch(/damages rules and venues|a present value built/);
+      expect(jsonLdBlocks(html)).toContain(`"@id":"${url}#service"`);
+    });
+
+    it(`/${stateSlug}: the courts answer runs federal district court, Federal Circuit, regional circuit, then the state's courts, with no second federal sentence`, () => {
+      expect(courtsAnswer).toMatch(/^Patent and copyright claims arise under federal law that only the federal courts may hear/);
+      expect(courtsAnswer).toContain("United States Court of Appeals for the Federal Circuit");
+      expect(courtsAnswer).not.toContain("Matters within federal jurisdiction proceed in");
+      expect(courtsAnswer).not.toMatch(/cases venued in .* are heard in/);
+      if (stateSlug === "american-samoa") {
+        expect(courtsAnswer).toContain("American Samoa has no federal district court of its own");
+        expect(courtsAnswer).not.toMatch(/Ninth Circuit|District Court of American Samoa \(/);
+      } else {
+        const federal = courtsAnswer.indexOf("United States District Court");
+        const fedCircuit = courtsAnswer.indexOf("Federal Circuit");
+        const regional = courtsAnswer.search(/Court of Appeals for the (First|Second|Third|Fourth|Fifth|Sixth|Seventh|Eighth|Ninth|Tenth|Eleventh|District of Columbia) Circuit/);
+        const stateCourts = courtsAnswer.indexOf(`Claims under ${place.replace(/^the /, "")} law`);
+        expect(federal).toBeGreaterThan(-1);
+        expect(federal).toBeLessThan(fedCircuit);
+        expect(fedCircuit).toBeLessThan(regional);
+        expect(regional).toBeLessThan(stateCourts);
+      }
+      // No claim about the trade secret law of Guam or American Samoa.
+      if (stateSlug === "guam" || stateSlug === "american-samoa") {
+        expect(courtsAnswer.slice(courtsAnswer.indexOf("Claims under"))).not.toMatch(/trade secret|unfair competition/);
+      } else {
+        expect(courtsAnswer).toContain("such as trade secret misappropriation, unfair competition, and disputes over royalties owed under a license");
+      }
+    });
+
+    it(`/${stateSlug}: the venue list leads with the federal courts and the framework block names the federal statutes`, () => {
+      const juris = html.slice(html.indexOf('id="jurisdictional-notes"'), html.indexOf('id="analysis"'));
+      const listed = [...juris.matchAll(/<li><strong>([^<]+)<\/strong>/g)].map((m) => m[1]);
+      if (stateSlug === "american-samoa") {
+        expect(listed[0]).toBe("United States Court of Appeals for the Federal Circuit");
+      } else {
+        expect(listed[0]).toMatch(/^United States District Courts? (for the |of )/);
+        expect(listed[1]).toBe("United States Court of Appeals for the Federal Circuit");
+        expect(listed[2]).toMatch(/^United States Court of Appeals for the .* Circuit$/);
+      }
+      expect(listed.length).toBeLessThanOrEqual(5);
+      expect(h3sOf(html)).toContain("Damages framework");
+      expect(text).toContain("Patent, copyright, and trademark damages are set by federal statute: a reasonable royalty at least");
+      expect(text).toContain("Those measures do not change with the state, though the regional circuit's decisions govern how the copyright and trademark measures are applied.");
+      expect(text).toContain("In the federal district courts, which hear patent and copyright infringement claims between private parties, damages testimony is tested under the federal rules of evidence");
+      expect(text).toContain(`${placePossessive(state.name)} own law can govern the contract and license claims`);
+      expect(faqs).toContain(`Which damages rules apply to an intellectual property claim involving ${placeP}?`);
+      expect(text).not.toMatch(/contributory negligence|comparative fault|collateral source|An economic damages report|lost earnings, household services/);
+      expect(text).not.toMatch(/a the |the the |in District of Columbia|Islands's|same in every district/);
+    });
+
+    it(`/${stateSlug}: the References block lists the statutes and rules behind the forum, framework, and expert copy`, () => {
+      const refs = html.slice(html.indexOf('id="sources-heading"'));
+      for (const src of refsToSources(["JURISDICTION_1338", "PATENT_VENUE_1400", "GOVERNMENT_USE_1498", "DIVERSITY_1332", "FEDERAL_CIRCUIT_1295", "PATENT_284", "PATENT_286", "PATENT_287", "COPYRIGHT_412", "DTSA_1836", "FRE_702"])) {
+        expect(refs, src.url).toContain(`href="${src.url}"`);
+      }
     });
   }
 });

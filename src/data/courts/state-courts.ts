@@ -624,10 +624,15 @@ export const stateCourts: StateCourtSystemEntry[] = [
     trialCourts: [
       { name: "Superior Court", description: "General jurisdiction; larger civil cases, felonies" },
       { name: "District Court", description: "Smaller civil cases, misdemeanors, domestic relations, juvenile" },
+      // A special Superior Court, so a trial court (it sat under the
+      // appellate courts until the 2026-10-06 review). N.C. Gen. Stat.
+      // 7A-45.4(a) lets any party designate as a mandatory complex business
+      // case one that involves trademark law, intellectual property, or trade
+      // secrets, among others (read on ncleg.gov, 2026-10-06).
+      { name: "North Carolina Business Court", description: "Special Superior Court for designated complex business cases, including trade secret, intellectual property, and trademark disputes" },
     ],
     appellateCourts: [
       { name: "North Carolina Court of Appeals", description: "15-judge intermediate appellate court" },
-      { name: "North Carolina Business Court", description: "Specialized court for complex business cases" },
     ],
     supremeCourt: "Supreme Court of North Carolina",
     federalDistricts: [
@@ -1015,7 +1020,10 @@ export type TrialCourt = StateCourtSystem["trialCourts"][number];
 export type CourtSelection = "general" | "family" | "commercial" | "business";
 
 const GENERAL_JURISDICTION = /general jurisdiction|general civil/i;
-const SPECIALIZED = /family|probate|juvenile|traffic|municipal|tax|surrogate|orphans|water|land court|housing|environmental|workers' compensation|criminal court/i;
+// A business court (North Carolina's) hears only the complex business cases
+// designated to it, so the general and family selections skip it; the
+// commercial and business selections prefer it (COMMERCIAL).
+const SPECIALIZED = /family|probate|juvenile|traffic|municipal|tax|surrogate|orphans|water|land court|housing|environmental|workers' compensation|criminal court|business court/i;
 // Small-claims-tier courts never hear a case that carries economic damages
 // testimony, so they do not back-fill the list behind the general court.
 const SMALL_CLAIMS = /small claims|smaller civil|small civil|petty/i;

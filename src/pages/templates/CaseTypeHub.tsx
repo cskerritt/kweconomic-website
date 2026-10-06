@@ -71,13 +71,14 @@ export default function CaseTypeHub() {
 
   // "Related services" links the service x case pair pages, so only the linked
   // services that declare this case type in services.ts (the pairs that exist;
-  // an undeclared pair redirects to the pillar), the first four, so a pillar
-  // declared fourth (transfer pricing on the commercial and shareholder hubs)
-  // is still linked. The "Service pages" list below keeps every relevant
-  // pillar; scripts/prerender.mjs applies the same cap.
+  // an undeclared pair redirects to the pillar), the first five, so a pillar
+  // declared fourth or fifth (transfer pricing and intellectual property
+  // damages on the commercial and shareholder hubs) is still linked. The
+  // "Service pages" list below keeps every relevant pillar;
+  // scripts/prerender.mjs applies the same cap.
   const related = linkedServices
     .filter((s) => s.caseTypes.includes(caseType.slug))
-    .slice(0, 4)
+    .slice(0, 5)
     .map((s) => ({
       title: s.name,
       href: `/services/${s.slug}/case/${caseType.slug}`,

@@ -27,6 +27,8 @@ export interface TitleService {
   titleShortName?: string;
   /** Labels the service x state and service x city tags try before the heading labels, longest first. */
   geoTitleLabels?: readonly string[];
+  /** The pillar hub's title label, tried before "<name> Expert". */
+  pillarTitleLabel?: string;
 }
 
 /** The first candidate body whose branded title fits TITLE_MAX; the last candidate when none does. */
@@ -61,6 +63,7 @@ export function serviceStateTitle(service: TitleService, state: TitleState, orgN
 export function serviceCityTitle(service: TitleService, city: TitleCity, state: TitleState, orgName: string): string;
 /** "<name> Expert", or the name as written where it already ends in "Expert" or "Expert Witness". */
 export function expertLabel(name: string): string;
+/** /services/<pillar>: pillarTitleLabel where set and it fits, then "<name> Expert" (see expertLabel). */
 export function pillarTitle(service: TitleService, orgName: string): string;
 export function variantTitle(service: TitleService, variantLabel: string, orgName: string): string;
 export function pairTitle(service: TitleService, caseType: TitleCaseType, orgName: string): string;
