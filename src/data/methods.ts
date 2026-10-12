@@ -815,6 +815,60 @@ export const methods: Methodology[] = [
       "FRE_702",
     ]),
   },
+  // Wave 6 (2026-10-12), editorial batch 6: the single-period income method,
+  // kept distinct from the three-approach overview in
+  // business-valuation-approaches and from the discounted cash flow method
+  // still in the backlog.
+  {
+    slug: "capitalization-of-earnings",
+    name: "Capitalization of Earnings",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-12",
+    dateModified: "2026-10-12",
+    metaDescription: "Capitalization of earnings converts one sustainable earnings figure into a value by dividing it by a rate built from risk and growth; here is how it is done.",
+    summary:
+      "The capitalization of earnings method values a business by dividing a single representative measure of its earnings by a capitalization rate. The earnings figure is the level the business can be expected to sustain, built from its normalized history rather than from a projection; the capitalization rate is the rate of return a buyer would require for the risk of those earnings, less the rate at which they are expected to grow. Because one year's earnings and one rate produce the value, the method is the simplest form of the income approach, and everything turns on how well the two inputs are chosen and explained.",
+    whenUsed:
+      "The method fits a business whose earnings are stable or growing at a steady rate, whose history is long enough to show what it sustains, and for which no reliable multi-year projection exists or none is needed: an established professional practice, a service business with recurring customers, or a company that has reached its mature size. It is one of the income approach methods the [[/methods/business-valuation-approaches|business valuation approaches]] overview describes, and it is applied in [[/services/business-valuation|business valuation]] engagements for a [[/case-types/divorce-and-marital-dissolution|divorce]], where the marital interest in a closely held business has to be valued at a date with no transaction in sight, for a [[/case-types/partnership-and-shareholder-dispute/new-jersey|shareholder dispute venued in New Jersey]] or anywhere, where a departing owner's interest is appraised, and for a damages matter in which the measure of loss is the value of a business that was destroyed, as the [[/guides/lost-profits-vs-lost-business-value|lost profits versus lost business value]] guide explains. Where earnings are expected to change materially from year to year, a start-up, a company in a turnaround, or one with a contract that ends on a known date, a multi-period discounted cash flow is the better fit, and the report says why one was chosen over the other.",
+    steps: [
+      "Normalize the historical earnings: remove non-recurring gains and losses, restate the owner's compensation to what an outside manager would be paid, separate personal expenses run through the business, and adjust related-party rent or purchases to market terms, listing each adjustment with its source",
+      "Select the earnings measure and the base period: net income, pre-tax income, or a cash flow measure, and a single year, a simple average, or a weighted average of recent years that gives more weight to the latest, with the choice tied to the trend the normalized history shows",
+      "Build the discount rate from the risk of the earnings: a risk-free rate drawn from long-term government yields at the valuation date, a premium for equity investment generally, a premium for the size of the company, and a premium or discount for the company's own risks, each stated separately",
+      "Convert the discount rate to a capitalization rate by subtracting the long-term sustainable growth rate of the earnings, and state the growth rate and the evidence for it, since the same growth cannot also be embedded in the earnings figure",
+      "Divide the sustainable earnings by the capitalization rate to produce the value of the operating business, then add non-operating assets and subtract interest-bearing debt where the earnings measure is to the equity holders, to reach the value of the equity",
+      "Consider whether the interest being valued calls for a discount for lack of control or lack of marketability under the governing standard of value, and show the value before and after any discount with the basis for each",
+    ],
+    dataSources: [
+      "The company's financial statements, tax returns, and general ledger for the normalization and the earnings history",
+      "Compensation surveys for the occupation and region, to restate the owner's pay to a market level",
+      "Long-term government bond yields at the valuation date, for the risk-free component of the discount rate",
+      "Published equity, size, and industry risk premium studies, for the remaining components of the rate",
+      "Industry growth data and the company's own history, for the sustainable growth rate",
+    ],
+    limitations:
+      "The method assumes that one earnings figure represents the future, so it is only as good as the normalization and the choice of base period: a single strong or weak year, or an average that straddles a change in the business, produces a value for a company that no longer exists. It is also acutely sensitive to the capitalization rate, because a small change in the rate changes the value by a much larger proportion, and the rate's components, the size premium and the company-specific premium above all, rest on judgment that the report has to explain rather than assert. The growth rate can be counted twice, once in the earnings figure and again in the rate, and the earnings measure and the rate have to match: a pre-tax earnings figure needs a pre-tax rate, and a cash flow figure needs a rate built for cash flow. Finally, the method values the business as it stood at the valuation date and cannot value a company whose earnings are about to change for a known reason; a report that applies it to such a company has valued the past.",
+    admissibilityHistory:
+      "The capitalization of earnings method is described in the professional valuation standards and has been accepted in the courts for as long as closely held businesses have been valued in divorce, shareholder, and estate matters. Exclusions and reductions in weight follow from the inputs rather than the method: a capitalization rate asserted without its components, an owner compensation adjustment with no survey behind it, a base period chosen to reach a result, growth counted in both the earnings and the rate, or the method applied to a business whose earnings were plainly not stable. A report that lists its normalization adjustments, builds the rate from identified sources, and reconciles the result with a market approach where comparable transactions exist has generally been examined on cross rather than excluded, and the [[/compare/fair-market-value-vs-fair-value|fair market value versus fair value]] comparison explains the standard-of-value question that decides whether the discounts in the last step apply.",
+    relevantServices: ["business-valuation","divorce-and-marital-financial-analysis","lost-profits-and-commercial-damages"],
+    faqs: [
+      {
+        question: "When is capitalization of earnings used instead of a discounted cash flow?",
+        answer:
+          "When the business has reached a stable level of earnings that its history shows it can sustain, and no reliable year-by-year projection exists or is needed. A discounted cash flow is used where earnings are expected to change materially over the next several years for reasons that can be projected, and the report states which condition the company meets.",
+      },
+      {
+        question: "How is a capitalization rate built?",
+        answer:
+          "As a discount rate less a growth rate. The discount rate starts with the long-term government bond yield at the valuation date and adds premiums for equity investment, for the company's size, and for its own risks, each from an identified source. The expected long-term growth of the earnings is then subtracted, and the growth rate is stated so it cannot also be hidden in the earnings figure.",
+      },
+      {
+        question: "Which earnings figure is capitalized?",
+        answer:
+          "The level the business can sustain, after the reported figures are normalized for non-recurring items, owner compensation, personal expenses, and related-party terms. It may be the latest year, an average, or a weighted average favoring recent years, and the measure chosen, net income, pre-tax income, or cash flow, has to be the one the capitalization rate was built for.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1","NACVA_STANDARDS","TREASURY_YIELD"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

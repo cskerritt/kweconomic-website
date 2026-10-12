@@ -529,6 +529,65 @@ In a [[/case-types/intellectual-property-infringement|patent case]] the disputes
 
 Every license and covenant not to sue for the patents, secrets, marks, or works in suit and for comparable technology, with all amendments, side letters, and exhibits; the negotiation files, term sheets, drafts, and correspondence behind each; the royalty reports and payment records showing what was actually paid, on which products and on what base; any settlement agreements and the pleadings they resolved; the parties' licensing policies and offers to license, including any offer made to the accused party; and any valuation or licensing analyses either side prepared. Producing the set lets the economist test each license against the hypothetical license, convert lump sums with evidence rather than assumption, and reconcile the royalty with any lost profits claim, as the [[/compare/lost-profits-vs-reasonable-royalty|lost profits versus reasonable royalty]] comparison explains.`,
   },
+  // Wave 6 (2026-10-12), editorial batch 6: the Records series applied to the
+  // return a business files, as distinct from the owner's personal return the
+  // tax returns post covers. No person, figure, or outcome is named.
+  {
+    slug: "what-business-tax-returns-add-to-a-lost-profits-claim",
+    sources: refsToSources(["AICPA_SSVS1","NACVA_STANDARDS","ACFE"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-10-12",
+    title: "What Business Tax Returns Add to a Lost Profits Claim",
+    metaTitle: "Business Tax Returns in a Lost Profits Claim",
+    metaDescription:
+      "A business tax return shows revenue, expenses, owner pay, and depreciation as the business reported them to the government; here is how an economist reads one.",
+    excerpt:
+      "The return a business files each year is the one financial record prepared under penalty for a reader with no interest in making the business look good, and in a lost profits claim it is the record against which the financial statements, the projections, and the owner's account of the business are all tested. This post explains what each part of the return adds to the claim, where the tax figures differ from the economic ones, and which records the return points to next.",
+    category: "Records",
+    publishedDate: "2026-10-12",
+    related: [
+      link("Lost Profits for a New Business", "/guides/lost-profits-for-a-new-business", "What the projection rests on when the returns are few."),
+      link("Lost Profits But-For Analysis", "/methods/lost-profits-but-for-analysis", "The projection the returns anchor and test."),
+      link("Lost Profits and Commercial Damages", "/services/lost-profits-and-commercial-damages", "The analysis the returns feed."),
+    ],
+    content: `A business tax return is the annual statement of a company's revenue, costs, and income as the company reported them to the taxing authority, signed under penalty by an officer or the owner and prepared, in most cases, by an outside accountant. In a [[/services/lost-profits-and-commercial-damages|lost profits claim]] it is the record the economist reads first, before the internal financial statements and long before any projection, because it is the one account of the business that was not prepared for the litigation and that the business had every reason to keep conservative. What the return shows, what it hides by design, and how it reconciles to the books are the questions this post takes in order.
+
+## The return the entity files and the one the owner files
+
+Which return to ask for depends on how the business is organized. A sole proprietor reports the business on a schedule attached to the owner's personal return, and the [[/insights/what-tax-returns-add-to-a-lost-earnings-claim|tax returns post]] describes how that schedule is read. A partnership or a limited liability company taxed as one files an information return and issues each owner a statement of their share of the income; a corporation that has elected pass-through treatment does the same; and a corporation that has not files its own return and pays its own tax. The economist needs the entity's return in every case, with every schedule and statement attached, and for a pass-through entity the owners' statements as well, because the entity's income and the owner's share of it can differ when allocations, guaranteed payments, and distributions are involved. A business that changed its form during the period has two sets of returns, and the change itself is a fact about the business the claim has to account for.
+
+## Revenue as reported, and the accounting method behind it
+
+The first lines of the return state gross receipts, returns and allowances, cost of goods sold, and gross profit, and the first thing the economist establishes is the accounting method the return declares: cash or accrual. A cash-basis return reports revenue when it was collected, so a strong year of sales with slow collections looks weak and a weak year with a large collection looks strong, and a loss period measured on cash receipts can misdate the loss by months. An accrual return reports revenue when it was earned, which is closer to the economic measure but still subject to the year-end judgments the accountant made. The method matters most at the edges of the loss period, where a shift of revenue across a year-end can turn an apparent decline into an ordinary timing difference, and the economist tests the return's revenue against the sales ledger and the bank deposits before treating any year as the base.
+
+## Expenses, owner compensation, and what is not a cost of the business
+
+The expense lines show what it cost to produce the revenue, and the economist reads them for two things. The first is the cost structure: which costs rise and fall with sales and which do not, because a lost profits claim deducts only the costs the lost revenue would have carried, and the [[/methods/lost-profits-but-for-analysis|but-for analysis]] depends on that division. The second is the set of items that are deductible for tax but are not costs of running the business as a buyer or a court would see it: the owner's compensation set above or below a market salary, personal expenses run through the company, rent paid to an entity the owner also controls, salaries to family members, and vehicle, travel, and entertainment deductions that serve the owner more than the business. Each of these is a normalization adjustment, and the return is where the adjustments are found, because the return shows officer compensation, related-party transactions, and the owner's distributions on their own lines.
+
+## Depreciation and the gap between tax income and economic income
+
+Tax depreciation follows schedules and expensing elections that let a business deduct the cost of equipment far faster than it wears out, and a year in which the business bought a truck or a machine can show a tax loss for a business that was earning money. The depreciation schedule attached to the return lists each asset, its cost, the year it was placed in service, and the method and life applied, and the economist uses it to replace the tax deduction with an economic one that spreads the cost over the asset's useful life. The same schedule shows what the business invested in its own capacity and when, which is evidence of what the owner expected the business to do, and a company that stopped buying equipment two years before the event has told the reader something about its trend that the revenue line alone does not.
+
+## The balance sheet and the schedules that explain the year
+
+A corporate or partnership return carries a balance sheet at the beginning and end of the year, a reconciliation of the income reported on the books to the income reported for tax, and an analysis of the owners' capital or retained earnings showing distributions and contributions. These schedules are often skipped and are often the most useful part of the return. The book-to-tax reconciliation lists exactly where the accountant's income and the tax income diverged, which is a ready-made list of the adjustments the economist has to consider. The balance sheet shows loans to and from the owners, which can be compensation or capital in disguise, the level of receivables and inventory, which bears on the accounting method question, and the debt the business carried, which bears on whether the lost profits would have reached the owners at all. The distributions schedule shows what the owners actually took out, which is the plainest evidence of what the business was worth to them before the event.
+
+## Several years of returns make the trend
+
+One return is a snapshot; a run of returns is the history the projection is built on. Read together, the revenue lines show whether the business was growing, flat, or declining before the event, and at what rate; the expense lines show whether margins were stable; and the balance sheets show whether the business was investing in growth or drawing itself down. The trend is the single most contested fact in a lost profits claim, because the plaintiff's projection carries it forward and the defendant's economist will argue it had already turned, and the returns are the record both sides reach for first. For a business with only a year or two of returns, the history is too short to carry a projection on its own, and the [[/guides/lost-profits-for-a-new-business|new business guide]] describes what has to replace it.
+
+## What the returns cannot tell you
+
+A return is annual, so it cannot show the month the loss began or the seasonal pattern the loss interrupted; the monthly financial statements and the sales ledger show those. It reports the business as a whole, so it cannot isolate the product line, the location, or the customer the dispute concerns, and a claim about one part of a business needs the internal records that break the whole into parts. It reports what was taxable, not what was earned, so revenue that was not reported is not on it and a claim that argues the business earned more than it reported has a problem no projection can solve. It says nothing about the market, the competitors, or the capacity constraints that bound the but-for projection, and nothing about causation. And it was prepared to minimize tax within the law, so every judgment in it leans toward lower income, which is why the economist normalizes rather than adopts it.
+
+## Where the disputes start
+
+The disputes begin with the base year and the trend, as they do with every historical record, and continue with the normalization adjustments: whether the owner's salary should be restated, whether the related-party rent was at market, and whether the personal expenses were really personal. They continue with the accounting method at the edges of the loss period and with the treatment of depreciation. A report that extends the tax income without normalizing it, or that normalizes in one direction only, is exposed on each point, and the [[/compare/economist-vs-forensic-accountant-on-lost-profits|economist versus forensic accountant on lost profits]] comparison explains why the reconstruction of the returns and the projection built on them are often divided between two experts. In a [[/case-types/commercial-contract-dispute/texas|commercial contract dispute venued in Texas]], as anywhere, the returns are also the record the [[/services/business-valuation|valuation]] of the business rests on where the claim is for its lost value rather than its lost profits, and the same normalization serves both.
+
+## What to produce with it
+
+The entity's complete returns with every schedule, statement, and attachment for several years before the event and every year since; the owners' share statements for a pass-through entity; the depreciation schedules; any amended returns and the correspondence that prompted them; and the records the return reconciles to, the general ledger, the monthly financial statements, the sales ledger, and the bank statements. Producing the set together lets the economist establish the accounting method, normalize the income once, fix the trend from the full history, and tie every figure in the projection to a line on a return and a line in the books, which is what a lost profits analysis needs when the opposing expert reads the same returns and reaches a different number.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {

@@ -79,16 +79,16 @@ Railway service creation and the DNS cutover are separate follow-ups on Chris's 
 
 ## Page inventory
 
-From `npm run build` at this commit (13,989 prerendered `index.html` shells):
+From `npm run build` at this commit (13,994 prerendered `index.html` shells):
 
 | Family | Pages |
 |---|---|
-| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 58 |
+| Core pages (fixed routes, hubs, case-type and credential hubs, methods, team profiles) | 59 |
 | Service pillar pages | 13 |
 | Knowledge guides | 2 |
-| Insight posts | 9 |
-| Guide pages | 27 |
-| Comparison pages | 15 |
+| Insight posts | 10 |
+| Guide pages | 29 |
+| Comparison pages | 16 |
 | State pages | 56 |
 | City pages | 802 |
 | Service x State | 728 |
@@ -101,20 +101,20 @@ From `npm run build` at this commit (13,989 prerendered `index.html` shells):
 | Service x Case-type x State (`/services/<pillar>/case/<case-type>/<state>`, declared pairs x released state batches) | 4,032 |
 | Attorney journey (4 stage indexes + 4 x 16) | 68 |
 | White paper (hub + 2) | 3 |
-| **Total** | **13,989** |
+| **Total** | **13,994** |
 
 Sitemap index `public/sitemap.xml` (6 children + image sitemap; `news-sitemap.xml` is generated, listed in the index, and declared in robots.txt only while an insight post is inside the two-day Google News window), `<loc>` counts:
 
 | File | URLs |
 |---|---|
-| `sitemap-core.xml` | 157 |
+| `sitemap-core.xml` | 162 |
 | `sitemap-services.xml` | 4,428 (hub 1 + 13 pillars + 39 variants + 72 declared service x case pairs + 728 service x state + 3,575 gated city combos; the test ceiling is 4,450, see build notes) |
 | `sitemap-service-case-types.xml` | 4,032 (72 declared service x case-type pairs x all 56 states and territories, batches A to D released; `src/data/serviceCaseTypeStates.ts`; the test ceiling is 4,072) |
 | `sitemap-locations.xml` | 954 (the `/locations` subtree plus the `/jurisdictions` hub and the 94 federal district pages) |
 | `sitemap-case-types.xml` | 913 |
 | `sitemap-credentials.xml` | 229 |
 | `image-sitemap.xml` | 8 |
-| `news-sitemap.xml` | written only for posts published in the last two days (3 at the 2026-10-06 build; the next build after the window removes them) |
+| `news-sitemap.xml` | written only for posts published in the last two days (1 at the 2026-10-12 build; the next build after the window removes it) |
 
 Service x State x City pages are prerendered for the top slice of each state's cities (`SERVICE_CITY_PRERENDER_TOP = 10`, 6,851 pages) but only the content-ready subset is advertised in the sitemap (`SERVICE_CITY_SITEMAP_TOP = 5` plus prerendered cities with metro labor data, `src/data/contentReadiness.ts`; 3,575 combos). T08 decision (2026-09-05): the gate stays, on all three KW sites. The 2,772 gated combos the audit listed (3,024 since the twelfth pillar, 3,276 since the thirteenth) are prerendered, linked from the Service x State "Cities" grid, self-canonical, and indexable; they are simply not advertised until Search Console evidence supports widening (see "Facts to confirm"). `scripts/sitemap-index.test.mjs` pins the sitemap to the prerender list so no advertised URL is a 404, pins the gate constants, and, after a build, checks that the only shells the sitemap leaves out are the gated combos. Service x case-type pages exist only for the pairs a pillar declares in `services.ts` (`serviceCaseTypePairs()`); an undeclared pair's address 301s to the pillar (`lib/service-case-redirects.server.mjs`). `public/llms.txt` and `public/llms-full.txt` are regenerated from the data files on every build.
 
@@ -133,10 +133,10 @@ Service x State x City pages are prerendered for the top slice of each state's c
 | `local-content.ts` | 10 hand-written local essays for first-hand markets: the New York, Virginia, and Massachusetts state pages plus New York City, Brooklyn, Newark, Hackensack, Jersey City, Los Angeles, and Houston |
 | `geo-prose.mjs` | Templated state/city prose (wage levels, cost of living, local labor markets, venue) shared by the React pages and `scripts/prerender.mjs`; `geo-prose.d.mts` types it |
 | `geographicFaqs.ts`, `narratives.ts` | Thin React wrappers over `geo-prose.mjs`; `narratives.parity.test.mjs` pins the two sides |
-| `methods.ts` | 15 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets, personal consumption deduction, earnings growth rate selection, total offset discounting, below-market discount rate, age-earnings profile, transfer pricing methodology, reasonable royalty methodology) |
-| `guides.ts` | 27 attorney guides (including transfer pricing disputes and intercompany royalty rates, added 2026-10-05, and patent damages and trade secret damages, added 2026-10-06) |
-| `comparisons.ts` | 15 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner, back pay vs. front pay, lost earnings vs. earning capacity in workers' compensation, lost profits vs. diminished business value, fair value vs. fair market value in shareholder disputes, economist vs. forensic accountant on lost profits, transfer pricing documentation vs. expert report, lost profits vs. reasonable royalty) |
-| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 9 insight posts (Legal, Economics, Records; the sixth Records post covers intercompany agreements in a transfer pricing dispute, the seventh license agreements in an intellectual property damages claim), 2 email-gated white papers |
+| `methods.ts` | 16 methodology explainers (present value, worklife expectancy, wage growth, fringe benefits, household services, valuation approaches, lost profits but-for analysis, mitigation and offsets, personal consumption deduction, earnings growth rate selection, total offset discounting, below-market discount rate, age-earnings profile, transfer pricing methodology, reasonable royalty methodology, capitalization of earnings) |
+| `guides.ts` | 29 attorney guides (including transfer pricing disputes and intercompany royalty rates, added 2026-10-05, patent damages and trade secret damages, added 2026-10-06, and how to read an opposing economist's report and what an economic damages report costs, added in wave 6, 2026-10-12) |
+| `comparisons.ts` | 16 side-by-side comparisons (including economist vs. forensic accountant, vs. vocational expert, vs. life care planner, back pay vs. front pay, lost earnings vs. earning capacity in workers' compensation, lost profits vs. diminished business value, fair value vs. fair market value in shareholder disputes, economist vs. forensic accountant on lost profits, transfer pricing documentation vs. expert report, lost profits vs. reasonable royalty, gross vs. net earnings) |
+| `knowledge.ts`, `insights.ts`, `whitePapers.ts` | 2 knowledge guides, 10 insight posts (Legal, Economics, Records; the sixth Records post covers intercompany agreements in a transfer pricing dispute, the seventh license agreements in an intellectual property damages claim, the eighth the business tax return in a lost profits claim), 2 email-gated white papers |
 | `journeys.ts` | 64 attorney journey stages (considering, retaining, preparing-deposition, trial x 16 case types) |
 | `faqs.ts`, `home-faqs.mjs` | 18-question site FAQ and the 6-question homepage FAQ (shared with the prerender and the FAQPage JSON-LD) |
 | `references.ts` | 89-entry citation registry (NAFE ethics statement, Journal of Forensic Economics, BLS series, worklife tables, Treasury yields, AICPA SSVS No. 1, NACVA, federal rules, the transfer pricing primary sources: section 482 and its Treasury regulations on eCFR, Tax Court Rule 143(g), the OECD Transfer Pricing Guidelines, and the IRS examination, documentation, MAP, competent authority (Rev. Proc. 2015-40, added in the review fixes), and APMA publications, and the intellectual property damages primary sources added 2026-10-06: the patent, Lanham Act, copyright, trade secret, and jurisdiction statutes on LII, the Uniform Trade Secrets Act, two USPTO pages, and fourteen decisions, from Georgia-Pacific and Panduit to the 2025 en banc EcoFactor opinion, linked to LII, the Caselaw Access Project, and the Federal Circuit, plus, with the pillar, Big O Tires on corrective advertising, read on the Caselaw Access Project, and, with the pillar's review fixes, 28 U.S.C. 1332, 1367, 1400, and 1498 and 17 U.S.C. 412 and 1502 on LII, Texas's trade secret damages section on the Legislature's site, CSIRO, Exmark, and Sands, Taylor & Wood on the Caselaw Access Project, and the Second, Seventh, and Fifth Circuit avoided-cost opinions on govinfo.gov); the only path for sources |
@@ -178,7 +178,7 @@ Spec section 12, tracked here until Chris confirms each:
 
 ## Expansion program (weekly waves)
 
-`docs/superpowers/specs/2026-09-02-kweconomics-expansion-authority-program-design.md` and the plan beside it drive one auto-merged wave per week (a cloud routine, Mondays 10:00 UTC). Wave 1 (2026-09-07) added the federal district court family and the first editorial batch. Wave 2 (2026-09-14) added the service x case type x state scaffold with state batch A (840 pages) and the second editorial batch. Wave 3 (2026-09-21) released state batch B (1,680 pages in the family) and the third editorial batch. Wave 4 (2026-09-28) released state batch C (2,520 pages in the family) and the fourth editorial batch. Wave 5 (2026-10-05) released state batch D, completing the family at 3,360 pages, and the fifth editorial batch. On 2026-10-05 the owner added transfer pricing outside the wave schedule: an editorial batch (two guides, a method, a comparison, an insight, and 15 live-verified primary sources), then the `transfer-pricing-expert-witness` pillar and the `tax-and-transfer-pricing-dispute` case type with every family that enumerates them (933 new shells), and the review fixes of the same day declared the transfer pricing x divorce pair (57 more; the service x case type x state family is now 3,696 pages). On 2026-10-06 the owner added intellectual property damages the same way, editorial first: two guides (patent damages and the reasonable royalty; trade secret damages), a method (reasonable royalty methodology), a comparison (lost profits vs. reasonable royalty), a Records insight (license agreements), and 29 live-verified primary sources; the same day the `intellectual-property-damages` pillar and the `intellectual-property-infringement` case type followed with every family that enumerates them, in every state, the District of Columbia, and every territory (990 new shells; the service x case type x state family is now 4,032 pages). Every editorial piece cites the registry only; a new `references.ts` entry is added only when its URL can be live-verified from the build environment (the cloud egress policy blocks irs.gov, eeoc.gov, law.cornell.edu, and uscourts.gov, so wave 1 reused existing entries instead).
+`docs/superpowers/specs/2026-09-02-kweconomics-expansion-authority-program-design.md` and the plan beside it drive one auto-merged wave per week (a cloud routine, Mondays 10:00 UTC). Wave 1 (2026-09-07) added the federal district court family and the first editorial batch. Wave 2 (2026-09-14) added the service x case type x state scaffold with state batch A (840 pages) and the second editorial batch. Wave 3 (2026-09-21) released state batch B (1,680 pages in the family) and the third editorial batch. Wave 4 (2026-09-28) released state batch C (2,520 pages in the family) and the fourth editorial batch. Wave 5 (2026-10-05) released state batch D, completing the family at 3,360 pages, and the fifth editorial batch. On 2026-10-05 the owner added transfer pricing outside the wave schedule: an editorial batch (two guides, a method, a comparison, an insight, and 15 live-verified primary sources), then the `transfer-pricing-expert-witness` pillar and the `tax-and-transfer-pricing-dispute` case type with every family that enumerates them (933 new shells), and the review fixes of the same day declared the transfer pricing x divorce pair (57 more; the service x case type x state family is now 3,696 pages). On 2026-10-06 the owner added intellectual property damages the same way, editorial first: two guides (patent damages and the reasonable royalty; trade secret damages), a method (reasonable royalty methodology), a comparison (lost profits vs. reasonable royalty), a Records insight (license agreements), and 29 live-verified primary sources; the same day the `intellectual-property-damages` pillar and the `intellectual-property-infringement` case type followed with every family that enumerates them, in every state, the District of Columbia, and every territory (990 new shells; the service x case type x state family is now 4,032 pages). Wave 6 (2026-10-12) was the first editorial-only wave: how to read an opposing economist's report, what an economic damages report costs and why, capitalization of earnings, gross vs. net earnings, and the business tax returns Records post (five shells). Every editorial piece cites the registry only; a new `references.ts` entry is added only when its URL can be live-verified from the build environment (the cloud egress policy blocks irs.gov, eeoc.gov, law.cornell.edu, and uscourts.gov, so wave 1 reused existing entries instead).
 
 ## Related repos
 
