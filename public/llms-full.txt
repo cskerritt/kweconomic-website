@@ -1591,6 +1591,32 @@ A: The smallest component or product sold in the market that contains the patent
 Q: How does a design-around cost affect a reasonable royalty?
 A: It limits what the licensee would have paid. If the infringer could have switched to an available, acceptable noninfringing alternative at a known cost and delay, a rational licensee would not have paid much more than that to use the patent, so the cost of the alternative often anchors the top of the bargaining range, provided the evidence shows the alternative was truly available and acceptable.
 
+### Capitalization of Earnings
+URL: https://kweconomics.com/methods/capitalization-of-earnings
+
+The capitalization of earnings method values a business by dividing a single representative measure of its earnings by a capitalization rate. The earnings figure is the level the business can be expected to sustain, built from its normalized history rather than from a projection; the capitalization rate is the rate of return a buyer would require for the risk of those earnings, less the rate at which they are expected to grow. Because one year's earnings and one rate produce the value, the method is the simplest form of the income approach, and everything turns on how well the two inputs are chosen and explained.
+
+When used: The method fits a business whose earnings are stable or growing at a steady rate, whose history is long enough to show what it sustains, and for which no reliable multi-year projection exists or none is needed: an established professional practice, a service business with recurring customers, or a company that has reached its mature size. It is one of the income approach methods the business valuation approaches overview describes, and it is applied in business valuation engagements for a divorce, where the marital interest in a closely held business has to be valued at a date with no transaction in sight, for a shareholder dispute venued in New Jersey or anywhere, where a departing owner's interest is appraised, and for a damages matter in which the measure of loss is the value of a business that was destroyed, as the lost profits versus lost business value guide explains. Where earnings are expected to change materially from year to year, a start-up, a company in a turnaround, or one with a contract that ends on a known date, a multi-period discounted cash flow is the better fit, and the report says why one was chosen over the other.
+
+Steps:
+1. Normalize the historical earnings: remove non-recurring gains and losses, restate the owner's compensation to what an outside manager would be paid, separate personal expenses run through the business, and adjust related-party rent or purchases to market terms, listing each adjustment with its source
+2. Select the earnings measure and the base period: net income, pre-tax income, or a cash flow measure, and a single year, a simple average, or a weighted average of recent years that gives more weight to the latest, with the choice tied to the trend the normalized history shows
+3. Build the discount rate from the risk of the earnings: a risk-free rate drawn from long-term government yields at the valuation date, a premium for equity investment generally, a premium for the size of the company, and a premium or discount for the company's own risks, each stated separately
+4. Convert the discount rate to a capitalization rate by subtracting the long-term sustainable growth rate of the earnings, and state the growth rate and the evidence for it, since the same growth cannot also be embedded in the earnings figure
+5. Divide the sustainable earnings by the capitalization rate to produce the value of the operating business, then add non-operating assets and subtract interest-bearing debt where the earnings measure is to the equity holders, to reach the value of the equity
+6. Consider whether the interest being valued calls for a discount for lack of control or lack of marketability under the governing standard of value, and show the value before and after any discount with the basis for each
+
+Limitations: The method assumes that one earnings figure represents the future, so it is only as good as the normalization and the choice of base period: a single strong or weak year, or an average that straddles a change in the business, produces a value for a company that no longer exists. It is also acutely sensitive to the capitalization rate, because a small change in the rate changes the value by a much larger proportion, and the rate's components, the size premium and the company-specific premium above all, rest on judgment that the report has to explain rather than assert. The growth rate can be counted twice, once in the earnings figure and again in the rate, and the earnings measure and the rate have to match: a pre-tax earnings figure needs a pre-tax rate, and a cash flow figure needs a rate built for cash flow. Finally, the method values the business as it stood at the valuation date and cannot value a company whose earnings are about to change for a known reason; a report that applies it to such a company has valued the past.
+
+Q: When is capitalization of earnings used instead of a discounted cash flow?
+A: When the business has reached a stable level of earnings that its history shows it can sustain, and no reliable year-by-year projection exists or is needed. A discounted cash flow is used where earnings are expected to change materially over the next several years for reasons that can be projected, and the report states which condition the company meets.
+
+Q: How is a capitalization rate built?
+A: As a discount rate less a growth rate. The discount rate starts with the long-term government bond yield at the valuation date and adds premiums for equity investment, for the company's size, and for its own risks, each from an identified source. The expected long-term growth of the earnings is then subtracted, and the growth rate is stated so it cannot also be hidden in the earnings figure.
+
+Q: Which earnings figure is capitalized?
+A: The level the business can sustain, after the reported figures are normalized for non-recurring items, owner compensation, personal expenses, and related-party terms. It may be the latest year, an average, or a weighted average favoring recent years, and the measure chosen, net income, pre-tax income, or cash flow, has to be the one the capitalization rate was built for.
+
 ## Guides for Attorneys
 
 ### What Is a Forensic Economist?
@@ -2025,6 +2051,38 @@ A: For as long as the information would have remained protected, plus any head s
 Q: What happens to the damages if only some of the claimed trade secrets are found to qualify?
 A: The damages have to follow the secrets actually found to qualify and to have been misappropriated. An analysis that values the asserted secrets only as a group can leave the fact finder with no supported figure, so the report should show the measure for each secret, or for groups that track how the claims will be decided.
 
+### How to Read an Opposing Economist's Report
+URL: https://kweconomics.com/guides/how-to-read-an-opposing-economists-report
+
+Reading an opposing economist's report is a different task from rebutting it. The reading comes first, it is done by counsel or by the retained economist, and its product is a short list: the inputs that drive the total, the source each one rests on or lacks, the records the report did not consider, and the questions that follow. Done in a fixed order, from the summary schedule back through each input to the records list, the reading takes a report of any length apart into a handful of choices that can be tested one at a time. This guide sets out that order, what to mark at each step, how to separate the method from the inputs, and what the reading should produce before any decision about a rebuttal report is made.
+
+Sections: Start with the schedules, not the narrative; The records list and the assumptions page; Trace each input to its source; Check the arithmetic and the internal consistency; Separate the method from the inputs; What the reading produces
+
+Q: Which part of an opposing economist's report should be read first?
+A: The summary schedule, then the schedule behind each component of the total. The schedules are the calculation, and reading them first shows which inputs carry the figure before the narrative frames them. The records list and the assumptions page come next, and the narrative is read last, as the economist's explanation of choices the reader has already identified.
+
+Q: What should be marked while reading an opposing report?
+A: Each input with no stated source or no support in the record, each assumption that was supplied by counsel or the plaintiff rather than drawn from a document, each produced record the report does not list, and each place where two schedules make choices that contradict each other. Those marks become the deposition questions, the discovery requests, and the sensitivities a retained economist computes.
+
+Q: Does reading an opposing report require the economist's workpapers?
+A: Usually not for the reading itself, because a complete report states its inputs and sources on its face and the reading tests whether it does. The workpapers matter afterward, to see how a schedule was computed where the report does not show it, to find a data series the report names without an edition, and to confirm which records were actually examined.
+
+### What an Economic Damages Report Costs and Why
+URL: https://kweconomics.com/guides/what-an-economic-damages-report-costs
+
+An economic damages report is priced by the time it takes a qualified economist to build it, and that time is set by three things: the condition of the records, the number of loss components the claim carries, and the testimony the case will require. The fee is hourly, applied against a retainer, with a written estimate before the work begins and a disclosed compensation arrangement in the report itself; it is never contingent on the outcome. This guide explains what the hours are spent on, why one claim takes a fraction of the time another does, how testimony is priced and why it is the least predictable part, how the fee is structured, and what counsel can do to keep the cost in proportion to the claim.
+
+Sections: What is being paid for; The records set the first block of time; The loss components set the second; Testimony is priced separately and is the least predictable part; How the fee is structured and why it is never contingent; How counsel keeps the cost in proportion to the claim
+
+Q: Is a forensic economist's fee ever contingent on the outcome of the case?
+A: No. The fee is hourly for the work performed, applied against a retainer, and it is the same whether the figure the report reaches is large or small and whether the case is won, lost, or settled. The professional ethics statements of the forensic economics associations prohibit contingent compensation, and the compensation arrangement is disclosed in the report itself.
+
+Q: Why does a wrongful death report take more hours than a lost earnings report?
+A: Because it carries more components, each with its own records and data: the decedent's earnings and benefits, the household services, the support to each survivor over a different period, and the personal consumption deduction built for the household as it stood at the death. Each component is a separate model, and the schedules have to reconcile to one another before they reconcile to the total.
+
+Q: Can the cost of the report be estimated before all the records are produced?
+A: A written estimate is given at the outset from what is known about the claim: the components, the person's employment, and the records expected. It is revised once the records arrive and show the scope, and counsel is told before a revised estimate is exceeded. Testimony is estimated separately, because its timing and length depend on decisions outside the economist's control.
+
 ## Comparisons
 
 ### Forensic Economist vs. Forensic Accountant
@@ -2327,6 +2385,26 @@ A: It depends on the facts. A competitor's margin on a lost sale can exceed what
 Q: Does a reasonable royalty in a trade secret case work the same way as in a patent case?
 A: The framework is similar, a hypothetical negotiation dated when the misappropriation began, but the inputs differ. There is no patent term, so the license runs for the period the information would have stayed secret or the head start would have lasted, and the alternatives that bound the bargain include independent development and reverse engineering, which trade secret law treats as lawful.
 
+### Gross vs. Net Earnings in a Damages Claim
+URL: https://kweconomics.com/compare/gross-vs-net-earnings
+
+Gross Earnings compared with Net Earnings.
+
+When Gross Earnings applies: Gross earnings are the measure wherever the governing framework measures the loss before tax, which is the rule in most state courts for a personal injury or wrongful death claim: the jury is told the gross loss and nothing about the tax the person would have paid or the tax the award will not bear. Gross is also the right base for the components built on top of earnings, because the fringe benefit rate, the worklife horizon, and the growth rate are all published against gross pay, and a report that applies them to a net figure has mismatched its inputs. The lost earnings guide builds the base in gross terms for that reason and converts only where the venue requires it.
+
+When Net Earnings applies: Net earnings are the measure where the framework says so. The Supreme Court has held that in the federal statutory actions for injured railroad and maritime workers the lost earnings are measured after the taxes the worker would have paid, because the award itself is not taxed and a gross figure would overcompensate, and some states apply the same reasoning in their own tort actions or allow evidence of taxes to reach the jury. Net is also the measure in an employment matter where the award will be taxed as wages and the court adjusts for it, and in a wrongful termination matter venued in California, or anywhere, counsel should identify the rule before the report is built, because converting a finished gross report to net is a second engagement rather than a footnote.
+
+Where they overlap: The two measures are built from the same records and differ by one step, the tax computation, so a report prepared for either can show both: the but-for stream and the post-event stream in gross terms, then each netted for the income and payroll tax the person would have paid, with the loss stated on both bases. The economist does not choose between them; the venue does, and where the rule is unsettled the report presents both so the court can apply whichever it adopts. What the economist does control is consistency: whichever measure is used, it is applied to the but-for earnings and to the post-event earnings alike, the fringe benefits are added at the employer's cost either way, and the discount rate, which is a different gross-and-net question entirely, is chosen on its own terms. A report that nets one stream and not the other, or that treats the taxable wage box on the wage form as the gross figure, has made an error that is visible on the face of the schedules whichever measure the venue requires.
+
+Q: Are retirement deferrals part of gross earnings?
+A: Yes. Money the person elected to put into a retirement plan was earned and then saved, so it belongs in the earnings base, and the same is true of pre-tax health premiums. The wage form's taxable wage box leaves them out, which is why the Medicare wage box, or the gross figure on the pay records, is the base the economist reads.
+
+Q: Is net earnings the same as take-home pay?
+A: No. Take-home pay is what reached the person's bank account after taxes and after every voluntary deduction: retirement contributions, insurance premiums, union dues, and garnishments. Net earnings in a damages claim deduct only the income and payroll taxes, because the voluntary items are part of what the person lost rather than a reduction of it.
+
+Q: Does using net earnings always produce a smaller loss?
+A: Usually, but not by the full tax rate, because the post-event earnings are netted as well and the loss is the difference between two after-tax streams. Where the person has little or no post-event income the reduction approaches the tax on the but-for stream; where the person has returned to work at a lower wage, the netting of both streams narrows the gap between the gross and net figures.
+
 ## Knowledge Center
 
 ### Guide to Economic Damages
@@ -2407,6 +2485,13 @@ URL: https://kweconomics.com/insights/what-license-agreements-add-to-an-ip-damag
 Published: 2026-10-06
 
 A license agreement is the record of what someone actually agreed to pay for the right to use a patent, a trade secret, a trademark, or a copyrighted work: the rights granted, the royalty and the base it applies to, any lump sum, and the terms that changed the price. This post explains what each part of a license adds to an intellectual property damages claim, how a license is tested for comparability with the hypothetical license the claim requires, what it cannot show, and which records it points to next.
+
+### What Business Tax Returns Add to a Lost Profits Claim
+URL: https://kweconomics.com/insights/what-business-tax-returns-add-to-a-lost-profits-claim
+
+Published: 2026-10-12
+
+The return a business files each year is the one financial record prepared under penalty for a reader with no interest in making the business look good, and in a lost profits claim it is the record against which the financial statements, the projections, and the owner's account of the business are all tested. This post explains what each part of the return adds to the claim, where the tax figures differ from the economic ones, and which records the return points to next.
 
 ## White Papers
 

@@ -936,6 +936,67 @@ export const comparisons: Comparison[] = [
       { title: "Intellectual Property Damages", href: "/services/intellectual-property-damages", description: "The damages analysis for either side of a patent, trademark, copyright, or trade secret claim." },
     ],
   },
+  // Wave 6 (2026-10-12), editorial batch 6: the earnings measure, kept apart
+  // from the net-vs-gross-discount-rate comparison, which is about the rate.
+  {
+    slug: "gross-vs-net-earnings",
+    title: "Gross vs. Net Earnings in a Damages Claim",
+    answer:
+      "Gross earnings are pay before taxes; net earnings are what remains after them; which one a damages claim uses is set by the venue, not the economist.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-12",
+    dateModified: "2026-10-12",
+    a: {
+      label: "Gross Earnings",
+      summary:
+        "Gross earnings are everything the employer paid for the person's work before anything was taken out: wages, overtime, bonuses, and commissions, including the amounts the person chose to defer into a retirement plan or spend on pre-tax health premiums. In a [[/services/lost-earnings-and-earning-capacity|lost earnings claim]] the gross figure is the usual starting point because it is what the wage forms, the pay records, and the published wage series all report, and because most state tort frameworks treat the award as compensation for the gross loss without regard to the tax the person would have paid on it.",
+      url: "/services/lost-earnings-and-earning-capacity",
+    },
+    b: {
+      label: "Net Earnings",
+      summary:
+        "Net earnings, in a damages claim, are gross earnings less the income and payroll taxes the person would have paid on them. The figure is not take-home pay, which also deducts retirement deferrals, insurance premiums, and other voluntary items that are part of the loss rather than a reduction of it. Some frameworks measure the loss on this after-tax basis, reasoning that an award that is itself not taxed should replace what the person would have kept, and the [[/methods/mitigation-and-offsets|mitigation and offsets]] method describes how the tax is computed when the venue requires it.",
+      url: "/methods/mitigation-and-offsets",
+    },
+    rows: [
+      { dimension: "What it measures", a: "The employer's total pay for the work", b: "The pay less the taxes the person would have owed on it" },
+      { dimension: "Income and payroll taxes", a: "Not deducted; the award is measured before tax", b: "Deducted, computed from the person's filing status and the year's rates" },
+      { dimension: "Retirement deferrals and pre-tax premiums", a: "Included, because the person earned them", b: "Included, because they are deferred pay rather than tax" },
+      { dimension: "Fringe benefits", a: "Added as a separate component at the employer's cost", b: "Added the same way; they are not taxed to the employee and are not netted" },
+      { dimension: "Where it applies", a: "Most state tort actions, where tax is a matter the jury does not hear", b: "The federal statutory actions for injured railroad and maritime workers, and the states that follow that rule" },
+      { dimension: "Records that show it", a: "Wage forms, pay records, and the published wage series", b: "The same records plus the tax returns, for the filing status and the deductions" },
+      { dimension: "The usual error", a: "Using the taxable wage box, which omits deferrals, as if it were gross", b: "Netting the but-for stream but not the post-event stream, or treating take-home pay as net" },
+    ],
+    whenUseA:
+      "Gross earnings are the measure wherever the governing framework measures the loss before tax, which is the rule in most state courts for a [[/case-types/personal-injury|personal injury]] or [[/case-types/wrongful-death|wrongful death]] claim: the jury is told the gross loss and nothing about the tax the person would have paid or the tax the award will not bear. Gross is also the right base for the components built on top of earnings, because the fringe benefit rate, the worklife horizon, and the growth rate are all published against gross pay, and a report that applies them to a net figure has mismatched its inputs. The [[/guides/how-lost-earnings-are-calculated|lost earnings guide]] builds the base in gross terms for that reason and converts only where the venue requires it.",
+    whenUseB:
+      "Net earnings are the measure where the framework says so. The Supreme Court has held that in the federal statutory actions for injured railroad and maritime workers the lost earnings are measured after the taxes the worker would have paid, because the award itself is not taxed and a gross figure would overcompensate, and some states apply the same reasoning in their own tort actions or allow evidence of taxes to reach the jury. Net is also the measure in an [[/case-types/employment-discrimination|employment matter]] where the award will be taxed as wages and the court adjusts for it, and in a [[/case-types/wrongful-termination/california|wrongful termination matter venued in California]], or anywhere, counsel should identify the rule before the report is built, because converting a finished gross report to net is a second engagement rather than a footnote.",
+    overlap:
+      "The two measures are built from the same records and differ by one step, the tax computation, so a report prepared for either can show both: the but-for stream and the post-event stream in gross terms, then each netted for the income and payroll tax the person would have paid, with the loss stated on both bases. The economist does not choose between them; the venue does, and where the rule is unsettled the report presents both so the court can apply whichever it adopts. What the economist does control is consistency: whichever measure is used, it is applied to the but-for earnings and to the post-event earnings alike, the fringe benefits are added at the employer's cost either way, and the [[/compare/net-vs-gross-discount-rate|discount rate]], which is a different gross-and-net question entirely, is chosen on its own terms. A report that nets one stream and not the other, or that treats the taxable wage box on the wage form as the gross figure, has made an error that is visible on the face of the schedules whichever measure the venue requires.",
+    faqs: [
+      {
+        question: "Are retirement deferrals part of gross earnings?",
+        answer:
+          "Yes. Money the person elected to put into a retirement plan was earned and then saved, so it belongs in the earnings base, and the same is true of pre-tax health premiums. The wage form's taxable wage box leaves them out, which is why the Medicare wage box, or the gross figure on the pay records, is the base the economist reads.",
+      },
+      {
+        question: "Is net earnings the same as take-home pay?",
+        answer:
+          "No. Take-home pay is what reached the person's bank account after taxes and after every voluntary deduction: retirement contributions, insurance premiums, union dues, and garnishments. Net earnings in a damages claim deduct only the income and payroll taxes, because the voluntary items are part of what the person lost rather than a reduction of it.",
+      },
+      {
+        question: "Does using net earnings always produce a smaller loss?",
+        answer:
+          "Usually, but not by the full tax rate, because the post-event earnings are netted as well and the loss is the difference between two after-tax streams. Where the person has little or no post-event income the reduction approaches the tax on the but-for stream; where the person has returned to work at a lower wage, the netting of both streams narrows the gap between the gross and net figures.",
+      },
+    ],
+    sources: refsToSources(["JONES_LAUGHLIN_PFEIFER","BLS_CPS","BLS_ECEC"]),
+    related: [
+      { title: "How Lost Earnings Are Calculated", href: "/guides/how-lost-earnings-are-calculated", description: "Where the earnings base sits in the full calculation." },
+      { title: "Mitigation and Offsets", href: "/methods/mitigation-and-offsets", description: "How the post-event stream and the tax adjustment are computed." },
+      { title: "Net vs. Gross Discount Rate", href: "/compare/net-vs-gross-discount-rate", description: "The other gross-and-net question, about the rate rather than the earnings." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

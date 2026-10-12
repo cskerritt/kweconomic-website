@@ -2085,6 +2085,152 @@ export const guides: Guide[] = [
       { title: "Intellectual Property Infringement", href: "/case-types/intellectual-property-infringement" },
     ],
   },
+  // Wave 6 (2026-10-12), editorial batch 6. Written from the economist's
+  // standpoint for whichever side holds the opposing report; no person,
+  // figure, or outcome is named.
+  {
+    slug: "how-to-read-an-opposing-economists-report",
+    title: "How to Read an Opposing Economist's Report",
+    metaDescription: "An opposing economist's report is read in a fixed order, schedules first, so every input can be traced to a source; here is that order and what to mark.",
+    tldr:
+      "Reading an opposing economist's report is a different task from rebutting it. The reading comes first, it is done by counsel or by the retained economist, and its product is a short list: the inputs that drive the total, the source each one rests on or lacks, the records the report did not consider, and the questions that follow. Done in a fixed order, from the summary schedule back through each input to the records list, the reading takes a report of any length apart into a handful of choices that can be tested one at a time. This guide sets out that order, what to mark at each step, how to separate the method from the inputs, and what the reading should produce before any decision about a rebuttal report is made.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-12",
+    dateModified: "2026-10-12",
+    sections: [
+      {
+        id: "start-with-the-schedules",
+        heading: "Start with the schedules, not the narrative",
+        bodyHtml:
+          "<p>The narrative of a damages report explains; the schedules calculate. A reader who starts at page one reads the economist's account of the case, the qualifications, and the method before reaching the numbers, and by then the framing has done its work. Start instead at the summary schedule, usually the last exhibit, which states the total and divides it into its components: past and future lost earnings, fringe benefits, household services, and whatever else the claim carries. Note which component is largest, because the inputs behind it are the ones that matter, and note the split between past and future loss, because the future portion is where the growth, worklife, and discount assumptions live and the past portion is where the record either supports the figures or does not.</p><p>From the summary, work back to the schedule that produces each component. A well built report has one schedule per component, each showing the year, the but-for earnings, the actual or expected earnings, the difference, and the present value factor, with a total that ties to the summary. The <a href=\"/insights/components-of-an-economic-damages-report\">components of an economic damages report</a> post lists what each schedule should contain. A report whose schedules do not tie to its summary, or that presents a total with no schedules at all, has told the reader the first thing worth knowing about it.</p>",
+      },
+      {
+        id: "the-records-list-and-the-assumptions",
+        heading: "The records list and the assumptions page",
+        bodyHtml:
+          "<p>Every report built for litigation lists the materials the economist considered, and federal practice requires that list in the written disclosure. Read it against the production. Records that were produced but do not appear on the list were not considered, and the report's figures cannot reflect them; records on the list that have not been produced to the other side are a discovery item before they are anything else. A list that names the complaint, a deposition transcript, and a few years of wage forms, for a claim that turns on a self-employed person's business, tells the reader where the earnings base came from before the base is examined.</p><p>The assumptions page is read the same way. Mark each assumption as one of three things: a fact the record supports, a fact the economist was told by counsel or the plaintiff, or a choice the economist made from published data. The report should say which, and where it does not, the deposition will have to. An assumed retirement age, a promotion that had not occurred, a return-to-work date, a household size, and a post-event earning level are the usual entries, and the <a href=\"/guides/expert-witness-disclosure-rules\">disclosure rules guide</a> explains why an assumption supplied by counsel is not improper but has to be identified as such.</p>",
+      },
+      {
+        id: "trace-each-input-to-its-source",
+        heading: "Trace each input to its source",
+        bodyHtml:
+          "<p>The core of the reading is a table the reader builds, one row per input: the earnings base, the growth rate, the worklife horizon, the discount rate, the fringe benefit rate, the post-event earnings, and, in a death case, the personal consumption percentage. For each row, record the figure the report used, the record or published series it came from, the year or edition of that series, and whether the report explains the choice. Most of the rows will be filled in from the report's own text; the rows that cannot be filled in are the findings.</p><p>Each input has a known set of acceptable sources and a known set of questions. The earnings base should come from the wage forms, tax returns, and pay records, and the question is which years were used and why. The growth rate should come from a published wage or earnings series, and the question is whether it is nominal or real and whether it matches the discount rate's treatment of inflation, as the <a href=\"/methods/earnings-growth-rate-selection\">growth rate selection</a> method explains. The worklife horizon should come from a published table for the person's age, sex, and education, and the question is whether the table value was adjusted and on what evidence, which the <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> method covers. The discount rate should rest on a stated class of securities and a stated period, and the <a href=\"/methods/present-value-and-discounting\">present value</a> method lists the choices. Where a report gives a figure without a source, or a source without a figure, the row is marked and the question is written.</p>",
+      },
+      {
+        id: "check-the-arithmetic-and-the-consistency",
+        heading: "Check the arithmetic and the internal consistency",
+        bodyHtml:
+          "<p>Arithmetic errors are rarer than they once were, but they still occur, and a reader who recomputes one year of one schedule by hand, base times growth factor times discount factor, has either confirmed the schedule or found the most useful fact in the file. Beyond the arithmetic, the checks are for consistency. The growth rate and the discount rate must treat inflation the same way, both nominal or both real, and a report that grows earnings at a nominal rate and discounts at a real one has overstated the loss, while the reverse understates it; the <a href=\"/compare/net-vs-gross-discount-rate\">net versus gross discount rate</a> comparison shows what to look for. The valuation date, the date past loss ends and future loss begins, should be the same on every schedule and should match the expected trial date the report names.</p><p>Consistency extends to the facts. A report that assumes full-time work to the worklife horizon in the earnings schedule and a reduced household size in the consumption schedule, or that values employer health coverage at a family rate for a person the wage forms show as single, has made choices that do not fit together. Each such mismatch is a question, and the questions often matter more than any single input, because an opposing economist can defend a choice but cannot easily defend two choices that contradict each other.</p>",
+      },
+      {
+        id: "separate-the-method-from-the-inputs",
+        heading: "Separate the method from the inputs",
+        bodyHtml:
+          "<p>Nearly every dispute between economists is about inputs, not method. The method, projecting a but-for earnings stream, subtracting the expected actual stream, and discounting the difference, is the same in every competent report, and a challenge aimed at the method itself seldom succeeds under either the reliability framework or the general-acceptance framework, as the <a href=\"/guides/federal-vs-state-court-daubert\">federal versus state court admissibility</a> guide explains. What the frameworks do reach is an input with no support in the record or in published data, and that is what the reading has been looking for. A report that uses an accepted method with an unsupported earnings base is exposed on the base, not on the method, and the reading should say so plainly rather than describe the whole report as unreliable.</p><p>The one method question worth asking is whether the report used a method the venue does not permit or omitted one it requires: total offset where the venue has rejected it, gross earnings where the venue requires after-tax figures, a consumption deduction in an injury case, or no deduction in a death case. Those are legal framework questions, and the reader's note is that the framework was or was not followed, with the input that would change if it had been.</p>",
+      },
+      {
+        id: "what-the-reading-produces",
+        heading: "What the reading produces",
+        bodyHtml:
+          "<p>The product of the reading is three lists and a decision. The first list is the inputs with no source, no explanation, or no support in the record, each stated as a question for the opposing economist's deposition. The second is the records the report did not consider and the records it names that have not been produced, each a discovery request. The third is the sensitivities: for each contested input, what the total becomes if the input is replaced by the one the record supports, which a retained economist can compute in an afternoon from the report's own schedules and which tells counsel where the money is. In a <a href=\"/case-types/personal-injury/new-york\">personal injury matter venued in New York</a>, or in any venue, the sensitivities are what settle the question of whether the dispute is worth a second report.</p><p>The decision is whether a rebuttal report is needed, and the reading answers it. Where the opposing report's inputs are supported and its arithmetic is sound, the reading may show that the figure is defensible and that the dispute belongs elsewhere in the case. Where one or two inputs carry the total and the record does not support them, a <a href=\"/guides/how-to-rebut-an-economic-damages-report\">rebuttal report</a> that replaces those inputs and shows the result is the usual next step, and the <a href=\"/services/expert-rebuttal-and-report-review\">report review</a> service describes how that work proceeds from the lists the reading produced. The reading is the same whether the report under review was written for the plaintiff or for the defense; the questions do not change with the side that asks them.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Which part of an opposing economist's report should be read first?",
+        answer:
+          "The summary schedule, then the schedule behind each component of the total. The schedules are the calculation, and reading them first shows which inputs carry the figure before the narrative frames them. The records list and the assumptions page come next, and the narrative is read last, as the economist's explanation of choices the reader has already identified.",
+      },
+      {
+        question: "What should be marked while reading an opposing report?",
+        answer:
+          "Each input with no stated source or no support in the record, each assumption that was supplied by counsel or the plaintiff rather than drawn from a document, each produced record the report does not list, and each place where two schedules make choices that contradict each other. Those marks become the deposition questions, the discovery requests, and the sensitivities a retained economist computes.",
+      },
+      {
+        question: "Does reading an opposing report require the economist's workpapers?",
+        answer:
+          "Usually not for the reading itself, because a complete report states its inputs and sources on its face and the reading tests whether it does. The workpapers matter afterward, to see how a schedule was computed where the report does not show it, to find a data series the report names without an edition, and to confirm which records were actually examined.",
+      },
+    ],
+    sources: refsToSources(["FRCP_26","FRE_702","NAFE_ETHICS"]),
+    related: [
+      { title: "How to Rebut an Economic Damages Report", href: "/guides/how-to-rebut-an-economic-damages-report" },
+      { title: "Expert Rebuttal and Report Review", href: "/services/expert-rebuttal-and-report-review" },
+      { title: "Components of an Economic Damages Report", href: "/insights/components-of-an-economic-damages-report" },
+    ],
+  },
+  {
+    slug: "what-an-economic-damages-report-costs",
+    title: "What an Economic Damages Report Costs and Why",
+    metaTitle: "What an Economic Damages Report Costs",
+    metaDescription: "An economic damages report costs what its hours cost, and the records, the loss components, and the testimony set the hours; here is what drives each one.",
+    tldr:
+      "An economic damages report is priced by the time it takes a qualified economist to build it, and that time is set by three things: the condition of the records, the number of loss components the claim carries, and the testimony the case will require. The fee is hourly, applied against a retainer, with a written estimate before the work begins and a disclosed compensation arrangement in the report itself; it is never contingent on the outcome. This guide explains what the hours are spent on, why one claim takes a fraction of the time another does, how testimony is priced and why it is the least predictable part, how the fee is structured, and what counsel can do to keep the cost in proportion to the claim.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-12",
+    dateModified: "2026-10-12",
+    sections: [
+      {
+        id: "what-is-being-paid-for",
+        heading: "What is being paid for",
+        bodyHtml:
+          "<p>The fee for an economic damages report buys professional hours, and the hours fall into five kinds of work. Records review is the reading of every wage form, tax return, pay record, benefit document, business statement, and deposition transcript the claim rests on, and the reconciling of each figure to a second record. Data collection is the gathering of the published series the projection needs: the wage growth series, the worklife tables, the life tables, the benefit cost data, the consumption tables, and the yields that fix the discount rate, each in the edition that fits the valuation date. Modeling is the building of the schedules that carry the but-for and actual streams to the horizon and discount them. Report preparation is the writing of the narrative, the assumptions page, the records list, and the exhibits in the form the venue's disclosure rules require. Testimony is the deposition and the trial, with their preparation.</p><p>Nothing in that list is the number itself. The figure a report reaches has no bearing on what the report costs, and a report that concludes the loss is small takes as long to build as one that concludes it is large, because the same records have to be read and the same schedules built either way. The cost of a <a href=\"/services/lost-earnings-and-earning-capacity/cost\">lost earnings engagement</a> or a <a href=\"/services/wrongful-death-economic-loss/cost\">wrongful death engagement</a> is described on the service pages in the same terms: scope, drivers, and billing structure.</p>",
+      },
+      {
+        id: "the-records-set-the-first-block-of-time",
+        heading: "The records set the first block of time",
+        bodyHtml:
+          "<p>The single largest variable in the cost of a report is the state of the records when they arrive. A wage earner with a run of wage forms and tax returns, a current pay stub, and a benefits summary gives the economist an earnings base that can be built and reconciled in a short pass. A self-employed person whose business returns, general ledger, and bank statements have to be read together to separate the owner's labor from the return on the business, or a person whose records are incomplete, inconsistent, or still being produced, can take several times as long to reach the same point. The time is spent reconciling, and reconciling is what keeps a report from being revised after deposition when a late record changes a number.</p><p>Records that arrive in pieces cost more than the same records produced at once, because each new production reopens the base and the schedules that depend on it. A report built on a partial production and then updated twice has been built three times. The <a href=\"/insights/what-tax-returns-add-to-a-lost-earnings-claim\">tax returns</a> post and its companions in the Records series describe what each record adds and, by implication, what its absence costs.</p>",
+      },
+      {
+        id: "the-components-set-the-second",
+        heading: "The loss components set the second",
+        bodyHtml:
+          "<p>Each component of a claim is its own model with its own records and its own published data. A claim limited to lost earnings has one stream to project. Adding fringe benefits adds the plan documents and the employer cost data; adding household services adds the time-use data and the replacement cost series; adding a future medical cost stream adds the cost projection of each item in a care plan prepared by another professional. A wrongful death claim multiplies the work again, because the support to each survivor runs for a different period and the personal consumption deduction has to be built for the household as it stood at the death. The <a href=\"/guides/wrongful-death-damages-explained\">wrongful death guide</a> lists the components that claim usually carries, and each one on the list is a block of hours.</p><p>Contested inputs add time in a different way. Where the worklife horizon, the growth rate, or the discount rate is in dispute, the report presents the result under more than one assumption so the reader can see what each contributes, and the sensitivity schedules are built and explained like any other. A report that will face an opposing economist is built to answer the questions the opposing report will raise, and that is more work than a report prepared for a settlement conference where no one will cross-examine it.</p>",
+      },
+      {
+        id: "testimony-is-priced-separately",
+        heading: "Testimony is priced separately and is the least predictable part",
+        bodyHtml:
+          "<p>The report can be estimated closely once the records are in hand. Testimony cannot, because it depends on decisions the economist does not make. A deposition that is noticed, prepared for, and then postponed costs the preparation twice. A trial that settles on the morning of the economist's appearance costs the preparation and the travel and nothing more; one that runs long costs days of waiting. Deposition and trial time are billed as they are incurred, with preparation and travel, and the estimate separates them from the report so that counsel can see what the written work will cost whether or not the case is tried.</p><p>In federal practice, and in the many state courts that follow it, the written disclosure states the compensation to be paid for the study and the testimony, so the fee arrangement is a disclosed fact of the case rather than a private one, and the <a href=\"/guides/expert-witness-disclosure-rules\">disclosure rules guide</a> explains what the statement has to contain. Opposing counsel will read it, and a fee that is out of proportion to the work described is a cross-examination theme in its own right, which is one more reason the hours are recorded against the tasks that consumed them.</p>",
+      },
+      {
+        id: "how-the-fee-is-structured",
+        heading: "How the fee is structured and why it is never contingent",
+        bodyHtml:
+          "<p>The fee is hourly, with a retainer established at the outset and applied against time as it is incurred, a written fee schedule, and a cost estimate before work begins. The estimate is revised when the records show the scope to be wider or narrower than the engagement letter assumed, and counsel is told before the revised estimate is exceeded. Records review, data collection, modeling, and report preparation are billed as the work is done; testimony is billed when it occurs. A consulting engagement, in which the economist reviews the claim or an opposing report and advises counsel without being disclosed as a witness, is billed the same way and usually costs less because no report in disclosure form is written.</p><p>The fee is never contingent on the outcome of the case or on the size of the figure, and the professional ethics statements of the forensic economics associations say so in terms. An economist paid a share of the recovery has a stake in the number, and an opinion built by someone with a stake in the number is not an opinion a court should rely on. The point is not a formality: the first question asked of any damages expert at deposition is who is paying and how much, and the only answer that protects the opinion is an hourly fee for work actually performed, disclosed in the report, the same for the plaintiff's economist and the defendant's.</p>",
+      },
+      {
+        id: "how-counsel-keeps-the-cost-down",
+        heading: "How counsel keeps the cost in proportion to the claim",
+        bodyHtml:
+          "<p>The cost of a report is mostly within counsel's control. Produce the records at once and in full: the wage forms, the returns with every schedule, the pay records, the benefit documents, and, for a business, the returns, the ledger, and the statements, so the base is built once. Define the question before the engagement begins, because a report asked to value every conceivable component and then narrowed at deposition has paid for the components it dropped. Retain early enough that the report is built in the ordinary course rather than against a disclosure deadline, since compressed work is not cheaper and is more often revised. Where the dispute is narrow, ask whether a consulting review or a critique of the opposing report will serve before commissioning a full affirmative report; the <a href=\"/guides/when-do-you-need-an-economic-expert\">when to retain an economist</a> guide and the <a href=\"/services/expert-rebuttal-and-report-review\">report review</a> service describe the narrower engagements.</p><p>Finally, weigh the cost against the claim. A <a href=\"/case-types/motor-vehicle-accident/new-jersey\">motor vehicle matter venued in New Jersey</a>, or anywhere, with a short period of lost wages and a documented return to work may need a letter report or a consultation rather than a full study; a claim that will carry a case to trial needs the full study and the sensitivities, and the cost of building it well is small beside the cost of a report that an opposing economist takes apart. The estimate exists so that counsel can make that judgment with the figures in front of them.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a forensic economist's fee ever contingent on the outcome of the case?",
+        answer:
+          "No. The fee is hourly for the work performed, applied against a retainer, and it is the same whether the figure the report reaches is large or small and whether the case is won, lost, or settled. The professional ethics statements of the forensic economics associations prohibit contingent compensation, and the compensation arrangement is disclosed in the report itself.",
+      },
+      {
+        question: "Why does a wrongful death report take more hours than a lost earnings report?",
+        answer:
+          "Because it carries more components, each with its own records and data: the decedent's earnings and benefits, the household services, the support to each survivor over a different period, and the personal consumption deduction built for the household as it stood at the death. Each component is a separate model, and the schedules have to reconcile to one another before they reconcile to the total.",
+      },
+      {
+        question: "Can the cost of the report be estimated before all the records are produced?",
+        answer:
+          "A written estimate is given at the outset from what is known about the claim: the components, the person's employment, and the records expected. It is revised once the records arrive and show the scope, and counsel is told before a revised estimate is exceeded. Testimony is estimated separately, because its timing and length depend on decisions outside the economist's control.",
+      },
+    ],
+    sources: refsToSources(["NAFE_ETHICS","FRCP_26","FRE_702"]),
+    related: [
+      { title: "When Do You Need an Economic Expert?", href: "/guides/when-do-you-need-an-economic-expert" },
+      { title: "Expert Witness Disclosure Rules", href: "/guides/expert-witness-disclosure-rules" },
+      { title: "Lost Earnings and Earning Capacity", href: "/services/lost-earnings-and-earning-capacity" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
