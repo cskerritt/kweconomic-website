@@ -869,6 +869,60 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["AICPA_SSVS1","NACVA_STANDARDS","TREASURY_YIELD"]),
   },
+  // Wave 7 (2026-10-19), editorial batch 7: the multi-period income method,
+  // kept distinct from capitalization-of-earnings (one figure, one rate) and
+  // from the business-valuation-approaches overview.
+  {
+    slug: "discounted-cash-flow",
+    name: "Discounted Cash Flow",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-19",
+    dateModified: "2026-10-19",
+    metaDescription: "The discounted cash flow method values a business from a year-by-year projection of its cash flows and a terminal value; here is how each input is built.",
+    summary:
+      "The discounted cash flow method values a business as the present value of the cash flows it is expected to produce: a year-by-year projection over a discrete period, a terminal value for the years beyond it, and a discount rate that converts each amount to the valuation date. It is the income approach in its general form. Where the capitalization of earnings method compresses the future into one sustainable figure and one rate, the discounted cash flow method projects each year on its own, which lets it value a business whose cash flows are expected to change, and it puts the valuation's judgments where they can be seen, in the projection and in the rate.",
+    whenUsed:
+      "The method fits a business whose cash flows are expected to change materially over the next several years for reasons that can be projected: a company that is growing into its market, one with a contract or a lease that ends on a known date, one in a turnaround, one that has just made a capital investment whose return has not yet arrived, or a start-up with a plan but little history, as the [[/guides/lost-profits-for-a-new-business|new business guide]] explains. It is applied in [[/services/business-valuation|business valuation]] engagements for a [[/case-types/partnership-and-shareholder-dispute|shareholder dispute]], where a departing owner's interest is appraised at a date the parties contest, for a [[/case-types/divorce-and-marital-dissolution|divorce]], where the marital interest in a company with a visible growth path has to be valued, and for a [[/services/lost-profits-and-commercial-damages|lost profits]] matter in which the measure of loss is the value of a business that was destroyed or diminished, as the [[/compare/lost-profits-vs-diminished-business-value|lost profits versus diminished business value]] comparison describes. In a [[/case-types/partnership-and-shareholder-dispute/texas|shareholder dispute venued in Texas]], or anywhere, the method is also the one most often reconciled against a market approach, because its projection can be tested against what buyers have paid for comparable companies. Where the business has reached a stable level and no reliable projection exists, the [[/methods/capitalization-of-earnings|capitalization of earnings]] method is the simpler fit, and the report says which condition the company meets.",
+    steps: [
+      "Define the cash flow measure and to whom it flows: net cash flow to invested capital, before debt service, or net cash flow to equity, after it, and keep the discount rate consistent with the choice",
+      "Normalize the historical results as a base for the projection: remove non-recurring items, restate owner compensation to a market level, separate personal expenses, and adjust related-party terms, listing each adjustment and its source",
+      "Build the discrete projection year by year, revenue, margins, working capital, capital expenditures, and taxes, over a period long enough for the business to reach a stable state, and tie each driver to the history, to management's contemporaneous plans, to industry data, or to the capacity the business actually has",
+      "Compute the terminal value at the end of the discrete period, by capitalizing the final stable year's cash flow at the discount rate less a long-term growth rate, or by applying a market multiple, and state the growth rate and the evidence for it",
+      "Build the discount rate from the risk of the cash flows: a risk-free rate from long-term government yields at the valuation date, a premium for equity investment, a premium for size, and a premium or discount for the company's own risks, each stated separately, and, for cash flow to invested capital, blend the cost of equity with the after-tax cost of debt",
+      "Discount each year's cash flow and the terminal value to the valuation date, add non-operating assets, subtract interest-bearing debt where the measure is to invested capital, and show the value before and after any discount for lack of control or marketability the standard of value calls for",
+    ],
+    dataSources: [
+      "The company's financial statements, tax returns, and general ledger, for the normalized base and the historical drivers of the projection",
+      "Management's budgets, forecasts, and board materials prepared before the dispute, for the projection and for what the business expected of itself",
+      "Industry growth, margin, and capital intensity data, for testing the projection against the business's market",
+      "Long-term government bond yields at the valuation date, for the risk-free component of the discount rate",
+      "Published equity, size, and industry risk premium studies, for the remaining components of the rate",
+      "Comparable company and transaction data, for the terminal multiple where one is used and for reconciling the result with a market approach",
+    ],
+    limitations:
+      "The method's strength is its weakness: because every year is projected on its own, the value rests on a forecast, and a forecast prepared for the litigation carries the preparer's interest in the result. A projection that rises faster than the history, the industry, or the company's capacity supports is the most common defect, and the second is a terminal value that carries most of the total, which happens whenever the discrete period is short or the long-term growth rate is set close to the discount rate. The rate itself is built from components that rest on judgment, the company-specific premium above all, and a small change in it moves the value by a large proportion. The cash flow measure and the rate have to match, invested capital with a blended rate and equity with a cost of equity, and mixing them is an error that is visible on the face of the schedules. Finally, the method values the business at the valuation date from what was known or knowable then, and a projection that uses later results to confirm itself has valued the business in hindsight.",
+    admissibilityHistory:
+      "The discounted cash flow method is described in the professional valuation standards and is the income method the courts most often see in shareholder, divorce, estate, and damages matters. Exclusions and reductions in weight follow from the inputs rather than from the method: a projection prepared by the party or by counsel and adopted without testing, growth that the history and the industry do not support, a terminal value that dominates the total without explanation, a discount rate asserted without its components, or a projection built with knowledge the valuation date did not have. A report that ties each driver of the projection to a record or a published source, states the terminal value's share of the total, builds the rate from identified components, and reconciles the result with a market approach where comparable transactions exist has generally been examined on cross rather than excluded, and the [[/methods/business-valuation-approaches|valuation approaches]] overview explains how the reconciliation is presented.",
+    relevantServices: ["business-valuation","lost-profits-and-commercial-damages","divorce-and-marital-financial-analysis"],
+    faqs: [
+      {
+        question: "How long should the discrete projection period be in a discounted cash flow?",
+        answer:
+          "Long enough for the business to reach the stable state the terminal value assumes, which depends on the company rather than on a convention. A business growing into its market is projected until growth settles to a sustainable rate; one with a contract ending on a known date is projected through the end of that contract and the adjustment after it. The report states the period and why the final year is a fair base for the terminal value.",
+      },
+      {
+        question: "Why does the terminal value matter so much in a discounted cash flow?",
+        answer:
+          "Because it stands for every year after the discrete period and is often the largest part of the total. It is computed from one year's cash flow, one growth rate, and one discount rate, so the judgments in it are concentrated, and a growth rate set close to the discount rate inflates it without limit. A report states the terminal value's share of the total and shows how the value moves when the growth rate changes.",
+      },
+      {
+        question: "Whose projection does the economist use in a discounted cash flow?",
+        answer:
+          "Management's contemporaneous budgets and forecasts, prepared before the dispute, are the starting point because they show what the business expected of itself when no one had a stake in the answer. The economist tests them against the history, the industry, and the company's capacity, adjusts where the evidence requires, and states each adjustment. A projection prepared for the litigation is treated as a party's claim, not as evidence of the business's prospects.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1","NACVA_STANDARDS","TREASURY_YIELD"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {

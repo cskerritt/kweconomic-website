@@ -2231,6 +2231,164 @@ export const guides: Guide[] = [
       { title: "Lost Earnings and Earning Capacity", href: "/services/lost-earnings-and-earning-capacity" },
     ],
   },
+  // Wave 7 (2026-10-19), editorial batch 7: the timing question for a
+  // medical malpractice claim, beside the general when-do-you-need-an-
+  // economic-expert guide; the but-for path is the outcome proper care would
+  // have produced, and the medical opinions, not the economist, define it.
+  // No person, figure, or outcome is named.
+  {
+    slug: "when-to-retain-an-economist-in-a-medical-malpractice-case",
+    title: "When to Retain an Economist in a Medical Malpractice Case",
+    metaTitle: "An Economist in a Medical Malpractice Case",
+    metaDescription: "An economist in a medical malpractice case is retained once the causation and prognosis opinions exist, and this guide explains why that timing matters.",
+    tldr:
+      "The economist in a medical malpractice case measures the earnings, benefits, household services, and care costs the injury added to the outcome the patient would have had with proper care, and the right time to retain one is the point at which the medical opinions that define that outcome exist in some form: after the causation and prognosis opinions are available, and before the expert disclosure deadline leaves no room to build the schedules on them. Retained earlier, the economist works from assumptions the physicians have not yet made; retained later, the report is compressed into the disclosure window and revised as the medical opinions settle. This guide explains what the economist needs from the medical record before the work can begin, how the claim differs from an ordinary injury or death claim, what changes when the patient has died, what the defense retains an economist to do, and how the engagement proceeds from retention to report.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-19",
+    dateModified: "2026-10-19",
+    sections: [
+      {
+        id: "what-the-economist-measures",
+        heading: "What the economist measures in a malpractice claim",
+        bodyHtml:
+          "<p>A medical malpractice economic claim is a personal injury or wrongful death analysis with one added layer. The loss is not measured against perfect health; it is measured against the outcome the patient would have had if the care had met the standard. A patient who came to treatment with a condition that would have limited work on its own, or shortened life on its own, had an expected path before the negligence, and the economist's task is to measure what the injury added to that path, not what it took from a healthy person. The <a href=\"/case-types/medical-malpractice\">medical malpractice case type</a> page sets out the components: lost earnings and earning capacity, lost fringe benefits, the replacement cost of household services, the present value of the incremental future care, and, where the patient has died, the survivor and estate components of a <a href=\"/services/wrongful-death-economic-loss\">wrongful death analysis</a>.</p><p>Every one of those components is a difference between two paths, and the economist does not define either path. The physicians do. The but-for path comes from the causation opinions, which say what the condition would have done with proper treatment; the injured path comes from the prognosis opinions, which say what the patient can now do and for how long. The economist builds the earnings, benefit, household, and care streams along each path and subtracts, which is why the question of when to retain the economist is really the question of when the medical opinions are far enough along to be built on.</p>",
+      },
+      {
+        id: "what-must-exist-before-the-work-begins",
+        heading: "What must exist before the economic work can begin",
+        bodyHtml:
+          "<p>Three things have to exist, at least in draft, before the economist can produce a report rather than a set of placeholders. The first is a causation opinion that separates the injury from the underlying condition: whether the patient would have returned to work, and when, had the care been proper; whether the condition itself would have shortened the worklife or the life; and what care the condition would have required regardless. The second is a prognosis for the injured path: the present work capacity, as the treating and retained physicians state it, and the life expectancy the medical evidence supports where the injury has changed it. The third, where the injury has produced permanent care needs, is a care plan prepared by the professional who authors such plans, listing each item of future care with its frequency and duration, so that the <a href=\"/services/life-care-plan-cost-projection\">cost projection</a> has something to price.</p><p>None of these has to be final. A draft causation opinion that states the apportionment in general terms is enough for the economist to build the earnings and household schedules and to set up the alternative scenarios; the figures are refined when the opinion is. What cannot be done is to build the but-for path from counsel's description of the case, because an earnings projection that assumes a return to work the physicians later rule out is a report that has to be rebuilt, and the opposing economist will have the first draft.</p>",
+      },
+      {
+        id: "the-earnings-and-household-work-can-start-early",
+        heading: "The earnings and household work can start before the medical opinions settle",
+        bodyHtml:
+          "<p>The part of the engagement that does not wait on the physicians is the financial record. The earnings history from the wage forms, tax returns, and pay records, the fringe benefits from the plan documents, and the household services from the household composition can all be assembled and reconciled while the causation opinions are being written, and the <a href=\"/guides/how-lost-earnings-are-calculated\">lost earnings guide</a> describes what that base consists of. An economist retained once the medical theory of the case is clear, even before the opinions are in final form, uses the interval to build the base and to identify the records still missing, so that when the opinions arrive the only work left is the two paths and the difference between them.</p><p>That sequencing also protects the disclosure schedule. In federal practice and in most state courts the economist's report is due on a fixed date with the other expert disclosures, and the <a href=\"/guides/expert-witness-disclosure-rules\">disclosure rules guide</a> explains what the written report has to contain. A report whose base was built months earlier can absorb a late change in the apportionment opinion in days; a report that starts from nothing when the opinions arrive cannot, and the result is a disclosure that is either late or built on inputs no one has checked.</p>",
+      },
+      {
+        id: "how-the-claim-differs-from-an-ordinary-injury-claim",
+        heading: "How the claim differs from an ordinary injury claim",
+        bodyHtml:
+          "<p>The apportionment between the injury and the pre-existing condition is the assumption that most changes the total, and it is the one assumption the economist does not make. Where the physicians agree, the report takes their opinion as its baseline and says so. Where they differ, the report presents the loss under each opinion, so that the fact finder can attach a figure to whichever finding it makes rather than being asked to interpolate. A report that adopts one side's causation opinion without presenting the other has made a medical judgment it is not qualified to make, and that is the first thing an opposing economist will say about it.</p><p>Life expectancy is the second difference. In an ordinary injury claim the economist draws the horizon for future care and household services from the published life tables for the person's age and sex, and the <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> method describes how the earnings horizon is drawn separately. In a malpractice claim the condition being treated may have shortened life on its own, and the horizon for each stream has to be the one the medical evidence supports: the but-for life expectancy for the path with proper care, the injured life expectancy for the path without it, and each stream projected over its own horizon. A delayed-diagnosis case is the clearest example, since the loss there is often the difference between two outcome paths, each with its own earnings profile, care profile, and horizon, and the report has to carry both.</p>",
+      },
+      {
+        id: "when-the-patient-has-died",
+        heading: "When the patient has died",
+        bodyHtml:
+          "<p>Where the negligence caused or hastened a death, the analysis takes the structure of a wrongful death claim: the decedent's earnings and benefits, the household services, the support to each dependent over the period the dependent would have received it, and the personal consumption deduction built for the household as it stood at the death, as the <a href=\"/guides/wrongful-death-damages-explained\">wrongful death guide</a> explains. The malpractice layer sits on top. The decedent's life and worklife expectancy may already have been shortened by the condition being treated, and the analysis has to use the expectancy the medical evidence supports rather than the population tables alone; where the physicians disagree about how long the patient would have lived with proper care, the report presents the loss under each expectancy.</p><p>The timing question is the same as in an injury case, with one addition. The survivors' records, the household composition, and the dependency periods for each survivor can be assembled from the family's records at once, and the decedent's earnings base from the financial records, so the economist retained early has the whole of the support analysis built before the life expectancy opinions arrive. What waits on the physicians is the horizon, and the horizon is applied last.</p>",
+      },
+      {
+        id: "what-the-defense-retains-an-economist-to-do",
+        heading: "What the defense retains an economist to do, and when",
+        bodyHtml:
+          "<p>The defense economist's work is the same analysis from the other side, and the timing is driven by the plaintiff's disclosure. Once the plaintiff's economic report is served, the defense economist reads it in the order the <a href=\"/guides/how-to-read-an-opposing-economists-report\">reading guide</a> describes, traces each input to its source, and tests above all whether the but-for path in the report matches the causation opinions in the record or assumes a healthier patient than the physicians describe. Where the plaintiff's report has measured the loss against full health rather than against the outcome proper care would have produced, the defense report shows the difference, and that single correction is often the largest item in the case.</p><p>The defense economist should be retained before the plaintiff's report arrives, not after, for two reasons. The first is that the defense's own causation and prognosis experts are the source of the alternative but-for path, and the economist needs their opinions in the same form the plaintiff's economist needs the plaintiff's. The second is that the rebuttal report is usually due a short interval after the affirmative report, and an economist who already holds the financial records and the defense medical opinions can produce it in that interval; one retained on receipt of the plaintiff's report cannot. A consulting engagement, in which the economist advises counsel on the plaintiff's figures without being disclosed, is available on either side and is described in the <a href=\"/services/expert-rebuttal-and-report-review\">report review</a> service.</p>",
+      },
+      {
+        id: "how-the-engagement-proceeds",
+        heading: "How the engagement proceeds from retention to report",
+        bodyHtml:
+          "<p>The engagement begins with the records request: the earnings and benefit history, the tax returns, the household composition, the medical opinions in whatever form they exist, and the care plan if one has been prepared. The economist builds the base, states the assumptions the medical record supports and the ones that are still open, and returns a list of what is missing. When the causation and prognosis opinions settle, the two paths are built and the schedules are run under each scenario the physicians offer; the report presents the loss under each, with the apportionment, the horizon, and the discount rate stated so that any of them can be changed by the fact finder without rebuilding the analysis. In a <a href=\"/case-types/medical-malpractice/pennsylvania\">medical malpractice matter venued in Pennsylvania</a>, or anywhere, the venue's rules on discounting and on the measure of earnings are applied, and the <a href=\"/methods/present-value-and-discounting\">present value</a> method explains the choices a venue may direct.</p><p>What the economist does not do is read the medical record to decide what the condition would have done. That is the physicians' work, and a report that states clearly which medical opinion each path rests on is a report that survives the deposition question of where its assumptions came from. The economist's value in a malpractice case lies in converting the physicians' opinions into a loss figure that is traceable to them, and the earlier the economist is retained after those opinions take shape, the more of the report is built in the ordinary course rather than against the deadline.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can the economist be retained before the causation opinions are written?",
+        answer:
+          "Yes, and it is often useful, provided the economist is told which questions the physicians have not yet answered. The earnings base, the fringe benefits, the household services, and the records list can all be built from the financial record in the meantime. What waits is the but-for path and the injured path, which the economist builds only from the causation and prognosis opinions once they exist, in draft or final form.",
+      },
+      {
+        question: "Does the economist measure the loss against perfect health?",
+        answer:
+          "No. The loss in a medical malpractice claim is measured against the outcome the patient would have had with proper care, as the causation opinions describe it. A patient whose condition would have limited work or shortened life on its own has that limitation on the but-for path, and the report measures only what the negligence added. Where the physicians disagree about the but-for outcome, the report shows the loss under each opinion.",
+      },
+      {
+        question: "What happens to the economic report if the medical opinions change after it is served?",
+        answer:
+          "The schedules are rerun on the new opinion and a supplemental report is served, which is why the report is built with the apportionment, the horizon, and the care plan as stated inputs rather than buried assumptions. A report whose base was assembled early can absorb a changed opinion quickly; the disclosure rules in most venues require the supplement, and the opposing economist will have the earlier version in any event.",
+      },
+    ],
+    sources: refsToSources(["NCHS_LIFE_TABLES","CDC_LIFE_TABLES","FRCP_26","BLS_CPS"]),
+    related: [
+      { title: "Medical Malpractice Economist", href: "/case-types/medical-malpractice" },
+      { title: "When Do You Need an Economic Expert?", href: "/guides/when-do-you-need-an-economic-expert" },
+      { title: "Wrongful Death Damages Explained", href: "/guides/wrongful-death-damages-explained" },
+    ],
+  },
+  // Wave 7 (2026-10-19), editorial batch 7: the earnings projection for a
+  // child with no earnings history, built from the education the record
+  // supports and the published earnings by attainment. No person, figure, or
+  // outcome is named.
+  {
+    slug: "economic-damages-for-a-minor-plaintiff",
+    title: "Economic Damages for a Minor Plaintiff",
+    metaDescription: "A minor plaintiff has no earnings history, so the lost earning capacity is projected from the education the record supports; here is how the claim is built.",
+    tldr:
+      "A minor plaintiff's economic claim is built without the record that anchors every adult claim, the earnings history, so the economist projects what the child would likely have earned from the education the record supports and the published earnings of people with that education, then carries the projection across a worklife that has not yet begun. The claim consists of the lost earning capacity, the fringe benefits that would have come with it, the household services the child will be unable to perform as an adult, and the present value of the incremental future care, each measured against the path the child was on before the injury. This guide explains how the educational path is established, how the earnings base is built from published data rather than from records, why the long horizon makes the growth and discount assumptions decisive, how the care costs and the parents' claims are separated from the child's, and what each side should expect to see in a report.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-19",
+    dateModified: "2026-10-19",
+    sections: [
+      {
+        id: "what-is-different-about-a-child",
+        heading: "What is different when the plaintiff is a child",
+        bodyHtml:
+          "<p>An adult's lost earnings claim starts from the wage forms, the tax returns, and the pay records, and the dispute is over how to project them. A child has none of those, and the claim is for lost earning capacity in its purest form: the stream of earnings the child was on course to earn over a working life that had not started, measured against whatever the child can now be expected to earn. The <a href=\"/compare/lost-earnings-vs-lost-earning-capacity\">lost earnings versus lost earning capacity</a> comparison explains why the distinction matters; for a minor plaintiff it is the whole claim, because there is no actual earnings history to lose.</p><p>The components are otherwise the familiar ones. The <a href=\"/services/personal-injury-economic-damages\">personal injury analysis</a> carries the lost earning capacity, the fringe benefits that attach to it, the household services the child will be unable to perform as an adult, and the present value of the incremental future care the injury requires over the child's life. What changes is the evidence each component rests on: published data in place of records for the earnings, the medical opinions for the horizon and the care, and the family's circumstances for the path the child was on.</p>",
+      },
+      {
+        id: "establishing-the-educational-path",
+        heading: "Establishing the educational path the child was on",
+        bodyHtml:
+          "<p>Earnings in the published data vary more with education than with any other single characteristic the economist can observe, so the first question is what education the child would likely have completed. The evidence is indirect but not thin. The parents' education and occupations are the strongest predictors in the published research on attainment, and school records, grades, standardized test results, and any special education or gifted placement add to the picture for a child old enough to have them. For an infant, the family's education and circumstances are most of the evidence, and the report says so rather than assuming a particular degree.</p><p>The economist does not pick a single path and assert it. The usual practice is to present the loss under more than one educational outcome, for example a high school diploma, some college, and a bachelor's degree, each with its own earnings profile, and to state which outcome the record most supports and why. Where the record contains opinions from an educational or psychological expert on the child's prospects before and after the injury, the economist builds on those opinions rather than forming an independent view, in the same way that a malpractice report builds on the causation opinions. The <a href=\"/guides/how-lost-earnings-are-calculated\">lost earnings guide</a> describes the base an adult claim uses, and the educational path is what replaces it here.</p>",
+      },
+      {
+        id: "building-the-earnings-base-from-published-data",
+        heading: "Building the earnings base from published data",
+        bodyHtml:
+          "<p>With the educational path stated, the earnings base comes from the published series on earnings by age, sex, and educational attainment, which give the median or mean earnings of full-time workers at each stage of a career. The <a href=\"/methods/age-earnings-profile\">age-earnings profile</a> method describes how those series are used to shape an earnings stream that rises through the early and middle career and flattens later, which matters more for a child than for an adult, because the whole career is being projected rather than the remainder of one. The report states which series, which year, and which measure was used, and whether the figures are for all workers or full-time workers only.</p><p>Two choices in the base are contested often enough to be named. The first is whether to use the national series or the series for the region where the child will likely live and work, and the report should say which and why, since wage levels differ across the country. The second is whether to apply sex-specific earnings and worklife tables or combined tables; several venues have limited the use of sex-based or race-based tables in projecting a child's earnings, and the report should present the figures on the basis the venue directs and note the alternative where it does not. In a <a href=\"/case-types/personal-injury/new-york\">personal injury matter venued in New York</a>, or anywhere, counsel should settle that question before the report is written.</p>",
+      },
+      {
+        id: "the-horizon-and-the-long-projection",
+        heading: "The horizon and why the long projection makes the rates decisive",
+        bodyHtml:
+          "<p>A child's worklife has not begun, so the horizon runs from the expected age of labor force entry, which follows from the educational path, to the worklife expectancy the published tables give for a person of that education, as the <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> method explains. The fringe benefits run with the earnings over the same horizon; the household services and the care costs run over the life expectancy the medical evidence supports, which the injury may have changed. Each stream has its own start and end, and the report shows them.</p><p>The length of the horizon is what makes a minor plaintiff's claim sensitive to the growth and discount assumptions in a way an adult's claim is not. Earnings that begin in a decade or more and run for several decades after that are grown at a wage growth rate and discounted at an interest rate over the entire span, and a small change in the difference between the two rates changes the present value by a large proportion. The <a href=\"/methods/present-value-and-discounting\">present value</a> method and the <a href=\"/compare/present-value-vs-total-offset\">present value versus total offset</a> comparison explain the choices, and a report for a child should show the sensitivity of the total to the net discount rate so that the trier of fact can see what the assumption is worth.</p>",
+      },
+      {
+        id: "care-costs-and-the-parents-claims",
+        heading: "Care costs, household services, and the parents' claims",
+        bodyHtml:
+          "<p>Where the injury leaves permanent care needs, the care plan prepared by the professional who authors such plans lists each item with its frequency and duration, and the <a href=\"/services/life-care-plan-cost-projection\">cost projection</a> prices and discounts each item over the horizon the medical evidence supports. For a child the horizon is long, the items change as the child grows, and the plan usually sets out phases, childhood, adolescence, and adulthood, each with its own items; the economist projects each phase separately and the report shows them in sequence. The household services the child would have performed as an adult, for the child's own household, are valued from the time-use data and the replacement cost series like any other household services claim, beginning at the age the data show such work starting.</p><p>The parents' claims are separate from the child's and are kept separate in the report. The parents' lost earnings while caring for the child, the care they have provided themselves and will provide in place of paid care, and the past medical expenses they have paid belong to the parents under most frameworks, run until the child reaches majority or beyond as the venue allows, and are measured from the parents' records. The child's claim is for the child's own lost earning capacity, benefits, household services, and future care; a report that merges the two has made an error the opposing economist will find on the first schedule.</p>",
+      },
+      {
+        id: "what-each-side-should-expect",
+        heading: "What each side should expect in the report",
+        bodyHtml:
+          "<p>A report for a minor plaintiff cannot be tested against an earnings history, so it is tested against its own transparency. Each side should expect to see the educational outcomes considered and the evidence for the one the report favors; the published series behind each earnings profile, by name, year, and measure; the labor force entry age and the worklife horizon with the table they come from; the growth and discount rates with their sources; the medical opinions each horizon rests on; and the loss under each scenario the record supports. A report that presents a single educational outcome, a single set of rates, and a single total has made every contested choice silently, and the <a href=\"/guides/how-to-read-an-opposing-economists-report\">reading guide</a> explains how an opposing economist takes such a report apart.</p><p>The defense economist's work is the same analysis with the same evidence, and the usual differences are in the educational path, the choice of tables, and the net discount rate rather than in the method. Where the plaintiff's report has assumed a degree the record does not support, or applied a growth rate without a matching discount rate, the defense report shows the correction and its effect. Because a minor's settlement or judgment is usually subject to court approval and is often structured, both sides have reason to present the loss in a form the court can follow from the educational assumption to the present value, and the report is written for that reader.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "How is a child's future earning capacity estimated without any work history?",
+        answer:
+          "From the education the record supports and the published earnings of people with that education. The parents' education and occupations, the school records, and any expert opinions on the child's prospects establish the likely educational path; the published series on earnings by age and attainment supply the earnings profile for that path; and the worklife tables for that education supply the horizon. The report presents the loss under more than one educational outcome and states which the record favors.",
+      },
+      {
+        question: "Why is a minor plaintiff's claim so sensitive to the discount rate?",
+        answer:
+          "Because the earnings begin years in the future and run for decades after that, so every dollar is grown and discounted over a long span. A small change in the difference between the growth rate and the discount rate compounds across the whole horizon and moves the present value by a large proportion, which is why a report for a child shows the total under more than one net rate.",
+      },
+      {
+        question: "Are the parents' losses part of the child's economic claim?",
+        answer:
+          "They are separate claims and are reported separately. The parents' lost earnings while caring for the child, the value of the care they provide in place of paid care, and the medical expenses they have paid belong to the parents under most frameworks. The child's claim is for the child's own lost earning capacity, fringe benefits, household services, and future care.",
+      },
+    ],
+    sources: refsToSources(["CENSUS_ACS","BLS_CPS","SKOOG_CIECKA_KRUEGER_2011","NCHS_LIFE_TABLES"]),
+    related: [
+      { title: "Age-Earnings Profile", href: "/methods/age-earnings-profile" },
+      { title: "Personal Injury Economic Damages", href: "/services/personal-injury-economic-damages" },
+      { title: "Lost Earnings vs. Lost Earning Capacity", href: "/compare/lost-earnings-vs-lost-earning-capacity" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {

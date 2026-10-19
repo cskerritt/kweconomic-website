@@ -100,6 +100,7 @@ describe("economics editorial data", () => {
       "below-market-discount-rate",
       "business-valuation-approaches",
       "capitalization-of-earnings",
+      "discounted-cash-flow",
       "earnings-growth-rate-selection",
       "fringe-benefits-valuation",
       "household-services-methodology",
@@ -118,6 +119,7 @@ describe("economics editorial data", () => {
       "business-valuation-in-litigation",
       "collateral-source-rule-explained",
       "discounts-for-lack-of-marketability",
+      "economic-damages-for-a-minor-plaintiff",
       "expert-witness-disclosure-rules",
       "federal-vs-state-court-daubert",
       "fringe-benefits-in-a-lost-earnings-claim",
@@ -143,6 +145,7 @@ describe("economics editorial data", () => {
       "what-an-economic-damages-report-costs",
       "what-is-a-forensic-economist",
       "when-do-you-need-an-economic-expert",
+      "when-to-retain-an-economist-in-a-medical-malpractice-case",
       "wrongful-death-damages-explained",
     ]));
   it("comparisons", () =>
@@ -162,6 +165,7 @@ describe("economics editorial data", () => {
       "lost-profits-vs-reasonable-royalty",
       "net-vs-gross-discount-rate",
       "plaintiff-economist-vs-defense-economist",
+      "present-value-vs-total-offset",
       "transfer-pricing-documentation-vs-expert-report",
     ]));
   it("knowledge, insights, white papers", () => {
@@ -176,6 +180,7 @@ describe("economics editorial data", () => {
     expect(slugs(insights)).toContain("what-intercompany-agreements-add-to-a-transfer-pricing-dispute");
     expect(slugs(insights)).toContain("what-license-agreements-add-to-an-ip-damages-claim");
     expect(slugs(insights)).toContain("what-business-tax-returns-add-to-a-lost-profits-claim");
+    expect(slugs(insights)).toContain("what-general-ledgers-add-to-a-lost-profits-claim");
     expect(slugs(whitePapers)).toEqual(["business-valuation-standards-in-litigation", "daubert-ready-economic-damages-report"]);
     expect(whitePapers.every((w) => w.discipline === "Economic")).toBe(true);
   });
@@ -235,10 +240,10 @@ describe("author and date signals on every editorial page", () => {
       ...knowledge.map((k) => ({ page: `knowledge/${k.slug}`, ...k })),
       ...whitePapers.map((w) => ({ page: `white-papers/${w.slug}`, ...w })),
     ];
-    // 16 methods, 29 guides, 16 comparisons, 2 knowledge guides, 2 white papers (waves 1 to 6 each added one, two,
+    // 17 methods, 31 guides, 17 comparisons, 2 knowledge guides, 2 white papers (waves 1 to 7 each added one, two,
     // and one; the transfer pricing batch of 2026-10-05 and the intellectual property batch of 2026-10-06 each
     // added one, two, and one).
-    expect(dated.length).toBe(16 + 29 + 16 + 2 + 2);
+    expect(dated.length).toBe(17 + 31 + 17 + 2 + 2);
     for (const x of dated) {
       expect(ROSTER, `${x.page} authorSlug`).toContain(x.authorSlug);
       expect(x.datePublished, `${x.page} datePublished`).toMatch(ISO_DATE);
@@ -259,7 +264,7 @@ describe("author and date signals on every editorial page", () => {
 describe("titles and meta descriptions are written for the SERP", () => {
   it("every editorial <title> is 40-60 characters with the brand suffix", () => {
     const titles = pageTitles();
-    expect(titles.length).toBe(16 + 29 + 16 + 2 + 10 + 2);
+    expect(titles.length).toBe(17 + 31 + 17 + 2 + 11 + 2);
     for (const { page, title } of titles) {
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeLessThanOrEqual(60);
       expect(title.length, `${page}: "${title}" (${title.length})`).toBeGreaterThanOrEqual(40);
@@ -276,7 +281,7 @@ describe("titles and meta descriptions are written for the SERP", () => {
   });
   it("every meta description is a complete written sentence of 110-160 characters (no auto-cut, no markers)", () => {
     const descs = metaDescriptions();
-    expect(descs.length).toBe(16 + 29 + 16 + 2 + 10 + 2);
+    expect(descs.length).toBe(17 + 31 + 17 + 2 + 11 + 2);
     for (const { page, text } of descs) {
       expect(text.length, `${page} (${text.length})`).toBeLessThanOrEqual(160);
       expect(text.length, `${page} (${text.length})`).toBeGreaterThanOrEqual(110);
@@ -467,8 +472,8 @@ describe("insight posts", () => {
       expect(rel.map((r) => r.slug), p.slug).not.toContain(p.slug);
     }
     // The Economics post has no category sibling, so the fallback is what
-    // fills its block: the first three other posts, in file order. The eight
-    // Records posts (waves 1 to 6, the transfer pricing batch of 2026-10-05,
+    // fills its block: the first three other posts, in file order. The nine
+    // Records posts (waves 1 to 7, the transfer pricing batch of 2026-10-05,
     // and the intellectual property batch of 2026-10-06) are each other's
     // same-category match, in file order.
     expect(getRelatedPosts("components-of-an-economic-damages-report", "Economics").map((r) => r.slug)).toEqual([
@@ -484,6 +489,7 @@ describe("insight posts", () => {
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
       "what-license-agreements-add-to-an-ip-damages-claim",
       "what-business-tax-returns-add-to-a-lost-profits-claim",
+      "what-general-ledgers-add-to-a-lost-profits-claim",
     ]);
     expect(getRelatedPosts("what-pay-stubs-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -493,6 +499,7 @@ describe("insight posts", () => {
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
       "what-license-agreements-add-to-an-ip-damages-claim",
       "what-business-tax-returns-add-to-a-lost-profits-claim",
+      "what-general-ledgers-add-to-a-lost-profits-claim",
     ]);
     expect(getRelatedPosts("what-union-contracts-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -502,6 +509,7 @@ describe("insight posts", () => {
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
       "what-license-agreements-add-to-an-ip-damages-claim",
       "what-business-tax-returns-add-to-a-lost-profits-claim",
+      "what-general-ledgers-add-to-a-lost-profits-claim",
     ]);
     expect(getRelatedPosts("what-benefit-summaries-add-to-a-lost-earnings-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -511,6 +519,7 @@ describe("insight posts", () => {
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
       "what-license-agreements-add-to-an-ip-damages-claim",
       "what-business-tax-returns-add-to-a-lost-profits-claim",
+      "what-general-ledgers-add-to-a-lost-profits-claim",
     ]);
     expect(getRelatedPosts("what-intercompany-agreements-add-to-a-transfer-pricing-dispute", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -520,6 +529,7 @@ describe("insight posts", () => {
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
       "what-license-agreements-add-to-an-ip-damages-claim",
       "what-business-tax-returns-add-to-a-lost-profits-claim",
+      "what-general-ledgers-add-to-a-lost-profits-claim",
     ]);
     expect(getRelatedPosts("what-license-agreements-add-to-an-ip-damages-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -529,6 +539,7 @@ describe("insight posts", () => {
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
       "what-business-tax-returns-add-to-a-lost-profits-claim",
+      "what-general-ledgers-add-to-a-lost-profits-claim",
     ]);
     expect(getRelatedPosts("what-business-tax-returns-add-to-a-lost-profits-claim", "Records").map((r) => r.slug)).toEqual([
       "what-a-w-2-adds-to-a-lost-earnings-claim",
@@ -538,6 +549,17 @@ describe("insight posts", () => {
       "what-benefit-summaries-add-to-a-lost-earnings-claim",
       "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
       "what-license-agreements-add-to-an-ip-damages-claim",
+      "what-general-ledgers-add-to-a-lost-profits-claim",
+    ]);
+    expect(getRelatedPosts("what-general-ledgers-add-to-a-lost-profits-claim", "Records").map((r) => r.slug)).toEqual([
+      "what-a-w-2-adds-to-a-lost-earnings-claim",
+      "what-tax-returns-add-to-a-lost-earnings-claim",
+      "what-pay-stubs-add-to-a-lost-earnings-claim",
+      "what-union-contracts-add-to-a-lost-earnings-claim",
+      "what-benefit-summaries-add-to-a-lost-earnings-claim",
+      "what-intercompany-agreements-add-to-a-transfer-pricing-dispute",
+      "what-license-agreements-add-to-an-ip-damages-claim",
+      "what-business-tax-returns-add-to-a-lost-profits-claim",
     ]);
   });
   it("the admissibility post and its companion guide name Daubert and Frye", () => {

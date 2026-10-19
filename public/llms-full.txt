@@ -1617,6 +1617,32 @@ A: As a discount rate less a growth rate. The discount rate starts with the long
 Q: Which earnings figure is capitalized?
 A: The level the business can sustain, after the reported figures are normalized for non-recurring items, owner compensation, personal expenses, and related-party terms. It may be the latest year, an average, or a weighted average favoring recent years, and the measure chosen, net income, pre-tax income, or cash flow, has to be the one the capitalization rate was built for.
 
+### Discounted Cash Flow
+URL: https://kweconomics.com/methods/discounted-cash-flow
+
+The discounted cash flow method values a business as the present value of the cash flows it is expected to produce: a year-by-year projection over a discrete period, a terminal value for the years beyond it, and a discount rate that converts each amount to the valuation date. It is the income approach in its general form. Where the capitalization of earnings method compresses the future into one sustainable figure and one rate, the discounted cash flow method projects each year on its own, which lets it value a business whose cash flows are expected to change, and it puts the valuation's judgments where they can be seen, in the projection and in the rate.
+
+When used: The method fits a business whose cash flows are expected to change materially over the next several years for reasons that can be projected: a company that is growing into its market, one with a contract or a lease that ends on a known date, one in a turnaround, one that has just made a capital investment whose return has not yet arrived, or a start-up with a plan but little history, as the new business guide explains. It is applied in business valuation engagements for a shareholder dispute, where a departing owner's interest is appraised at a date the parties contest, for a divorce, where the marital interest in a company with a visible growth path has to be valued, and for a lost profits matter in which the measure of loss is the value of a business that was destroyed or diminished, as the lost profits versus diminished business value comparison describes. In a shareholder dispute venued in Texas, or anywhere, the method is also the one most often reconciled against a market approach, because its projection can be tested against what buyers have paid for comparable companies. Where the business has reached a stable level and no reliable projection exists, the capitalization of earnings method is the simpler fit, and the report says which condition the company meets.
+
+Steps:
+1. Define the cash flow measure and to whom it flows: net cash flow to invested capital, before debt service, or net cash flow to equity, after it, and keep the discount rate consistent with the choice
+2. Normalize the historical results as a base for the projection: remove non-recurring items, restate owner compensation to a market level, separate personal expenses, and adjust related-party terms, listing each adjustment and its source
+3. Build the discrete projection year by year, revenue, margins, working capital, capital expenditures, and taxes, over a period long enough for the business to reach a stable state, and tie each driver to the history, to management's contemporaneous plans, to industry data, or to the capacity the business actually has
+4. Compute the terminal value at the end of the discrete period, by capitalizing the final stable year's cash flow at the discount rate less a long-term growth rate, or by applying a market multiple, and state the growth rate and the evidence for it
+5. Build the discount rate from the risk of the cash flows: a risk-free rate from long-term government yields at the valuation date, a premium for equity investment, a premium for size, and a premium or discount for the company's own risks, each stated separately, and, for cash flow to invested capital, blend the cost of equity with the after-tax cost of debt
+6. Discount each year's cash flow and the terminal value to the valuation date, add non-operating assets, subtract interest-bearing debt where the measure is to invested capital, and show the value before and after any discount for lack of control or marketability the standard of value calls for
+
+Limitations: The method's strength is its weakness: because every year is projected on its own, the value rests on a forecast, and a forecast prepared for the litigation carries the preparer's interest in the result. A projection that rises faster than the history, the industry, or the company's capacity supports is the most common defect, and the second is a terminal value that carries most of the total, which happens whenever the discrete period is short or the long-term growth rate is set close to the discount rate. The rate itself is built from components that rest on judgment, the company-specific premium above all, and a small change in it moves the value by a large proportion. The cash flow measure and the rate have to match, invested capital with a blended rate and equity with a cost of equity, and mixing them is an error that is visible on the face of the schedules. Finally, the method values the business at the valuation date from what was known or knowable then, and a projection that uses later results to confirm itself has valued the business in hindsight.
+
+Q: How long should the discrete projection period be in a discounted cash flow?
+A: Long enough for the business to reach the stable state the terminal value assumes, which depends on the company rather than on a convention. A business growing into its market is projected until growth settles to a sustainable rate; one with a contract ending on a known date is projected through the end of that contract and the adjustment after it. The report states the period and why the final year is a fair base for the terminal value.
+
+Q: Why does the terminal value matter so much in a discounted cash flow?
+A: Because it stands for every year after the discrete period and is often the largest part of the total. It is computed from one year's cash flow, one growth rate, and one discount rate, so the judgments in it are concentrated, and a growth rate set close to the discount rate inflates it without limit. A report states the terminal value's share of the total and shows how the value moves when the growth rate changes.
+
+Q: Whose projection does the economist use in a discounted cash flow?
+A: Management's contemporaneous budgets and forecasts, prepared before the dispute, are the starting point because they show what the business expected of itself when no one had a stake in the answer. The economist tests them against the history, the industry, and the company's capacity, adjusts where the evidence requires, and states each adjustment. A projection prepared for the litigation is treated as a party's claim, not as evidence of the business's prospects.
+
 ## Guides for Attorneys
 
 ### What Is a Forensic Economist?
@@ -2083,6 +2109,38 @@ A: Because it carries more components, each with its own records and data: the d
 Q: Can the cost of the report be estimated before all the records are produced?
 A: A written estimate is given at the outset from what is known about the claim: the components, the person's employment, and the records expected. It is revised once the records arrive and show the scope, and counsel is told before a revised estimate is exceeded. Testimony is estimated separately, because its timing and length depend on decisions outside the economist's control.
 
+### When to Retain an Economist in a Medical Malpractice Case
+URL: https://kweconomics.com/guides/when-to-retain-an-economist-in-a-medical-malpractice-case
+
+The economist in a medical malpractice case measures the earnings, benefits, household services, and care costs the injury added to the outcome the patient would have had with proper care, and the right time to retain one is the point at which the medical opinions that define that outcome exist in some form: after the causation and prognosis opinions are available, and before the expert disclosure deadline leaves no room to build the schedules on them. Retained earlier, the economist works from assumptions the physicians have not yet made; retained later, the report is compressed into the disclosure window and revised as the medical opinions settle. This guide explains what the economist needs from the medical record before the work can begin, how the claim differs from an ordinary injury or death claim, what changes when the patient has died, what the defense retains an economist to do, and how the engagement proceeds from retention to report.
+
+Sections: What the economist measures in a malpractice claim; What must exist before the economic work can begin; The earnings and household work can start before the medical opinions settle; How the claim differs from an ordinary injury claim; When the patient has died; What the defense retains an economist to do, and when; How the engagement proceeds from retention to report
+
+Q: Can the economist be retained before the causation opinions are written?
+A: Yes, and it is often useful, provided the economist is told which questions the physicians have not yet answered. The earnings base, the fringe benefits, the household services, and the records list can all be built from the financial record in the meantime. What waits is the but-for path and the injured path, which the economist builds only from the causation and prognosis opinions once they exist, in draft or final form.
+
+Q: Does the economist measure the loss against perfect health?
+A: No. The loss in a medical malpractice claim is measured against the outcome the patient would have had with proper care, as the causation opinions describe it. A patient whose condition would have limited work or shortened life on its own has that limitation on the but-for path, and the report measures only what the negligence added. Where the physicians disagree about the but-for outcome, the report shows the loss under each opinion.
+
+Q: What happens to the economic report if the medical opinions change after it is served?
+A: The schedules are rerun on the new opinion and a supplemental report is served, which is why the report is built with the apportionment, the horizon, and the care plan as stated inputs rather than buried assumptions. A report whose base was assembled early can absorb a changed opinion quickly; the disclosure rules in most venues require the supplement, and the opposing economist will have the earlier version in any event.
+
+### Economic Damages for a Minor Plaintiff
+URL: https://kweconomics.com/guides/economic-damages-for-a-minor-plaintiff
+
+A minor plaintiff's economic claim is built without the record that anchors every adult claim, the earnings history, so the economist projects what the child would likely have earned from the education the record supports and the published earnings of people with that education, then carries the projection across a worklife that has not yet begun. The claim consists of the lost earning capacity, the fringe benefits that would have come with it, the household services the child will be unable to perform as an adult, and the present value of the incremental future care, each measured against the path the child was on before the injury. This guide explains how the educational path is established, how the earnings base is built from published data rather than from records, why the long horizon makes the growth and discount assumptions decisive, how the care costs and the parents' claims are separated from the child's, and what each side should expect to see in a report.
+
+Sections: What is different when the plaintiff is a child; Establishing the educational path the child was on; Building the earnings base from published data; The horizon and why the long projection makes the rates decisive; Care costs, household services, and the parents' claims; What each side should expect in the report
+
+Q: How is a child's future earning capacity estimated without any work history?
+A: From the education the record supports and the published earnings of people with that education. The parents' education and occupations, the school records, and any expert opinions on the child's prospects establish the likely educational path; the published series on earnings by age and attainment supply the earnings profile for that path; and the worklife tables for that education supply the horizon. The report presents the loss under more than one educational outcome and states which the record favors.
+
+Q: Why is a minor plaintiff's claim so sensitive to the discount rate?
+A: Because the earnings begin years in the future and run for decades after that, so every dollar is grown and discounted over a long span. A small change in the difference between the growth rate and the discount rate compounds across the whole horizon and moves the present value by a large proportion, which is why a report for a child shows the total under more than one net rate.
+
+Q: Are the parents' losses part of the child's economic claim?
+A: They are separate claims and are reported separately. The parents' lost earnings while caring for the child, the value of the care they provide in place of paid care, and the medical expenses they have paid belong to the parents under most frameworks. The child's claim is for the child's own lost earning capacity, fringe benefits, household services, and future care.
+
 ## Comparisons
 
 ### Forensic Economist vs. Forensic Accountant
@@ -2405,6 +2463,26 @@ A: No. Take-home pay is what reached the person's bank account after taxes and a
 Q: Does using net earnings always produce a smaller loss?
 A: Usually, but not by the full tax rate, because the post-event earnings are netted as well and the loss is the difference between two after-tax streams. Where the person has little or no post-event income the reduction approaches the tax on the but-for stream; where the person has returned to work at a lower wage, the netting of both streams narrows the gap between the gross and net figures.
 
+### Present Value Discounting vs. Total Offset
+URL: https://kweconomics.com/compare/present-value-vs-total-offset
+
+Present Value Discounting compared with Total Offset.
+
+When Present Value Discounting applies: Present value discounting is the method wherever the venue leaves the rates to the evidence, which is the position in federal practice and in most state courts for a lost earnings or wrongful death claim. The Supreme Court's guidance for the federal statutory actions leaves the choice of rate to the trial court on the evidence, and the trial courts have accepted market rates, real rates, and, where the parties agree, total offset. The method is also the right one whenever the loss streams grow at different rates: a report with lost earnings, fringe benefits, and future medical costs discounts each stream at its own net rate, which the total offset convention cannot do, and the net versus gross discount rate comparison explains the choice between stating the rates separately and stating only their difference.
+
+When Total Offset applies: Total offset is the method where the governing framework directs it, as the highest court of Pennsylvania has done for future lost earnings, and in that venue the economist applies it as the rule and presents the market-rate figure only on request. Elsewhere it is a presentation rather than a method: a personal injury schedule can be shown under a market net rate and again under total offset so that the trier of fact can see what the net rate assumption is worth, and counsel on either side may prefer the simpler presentation in a personal injury matter venued in Pennsylvania or in a venue that permits it. The convention is also a reasonable default for a short loss period, where the growth and discount rates have little room to diverge and the difference between the two methods is small.
+
+Where they overlap: The two methods are points on one scale, the net discount rate, and a report built for either can show the other in a single additional column: the present value method with a net rate of zero is total offset, and total offset with a stated net rate is the present value method. The economist's choice between them is the venue's where the venue has spoken and otherwise a matter of presentation, and the honest report shows the total under the venue's rule and under at least one alternative so that the fact finder is not asked to accept a single net rate on faith. What the economist controls is consistency: the growth rate and the discount rate treat inflation the same way, the same convention is applied to the but-for stream and the post-event stream, and each loss category that grows at its own rate is discounted at its own net rate rather than carried under a convention built for wages. The below-market discount rate method, which discounts at a real rate drawn from the history of safe yields net of inflation, sits between the two and is the form in which the dispute is most often argued.
+
+Q: Is total offset the same as not discounting at all?
+A: No. Total offset discounts the future losses, but at a rate assumed to equal the rate at which they grow, so the two steps cancel and the arithmetic looks like a simple sum. The losses are still stated in the dollars of the valuation date rather than in the inflated dollars of the future years, and the convention says nothing about losses that grow at a rate different from wages.
+
+Q: Which of the two methods produces the larger award?
+A: It depends on the net discount rate the present value method would use. Where safe yields exceed wage growth, the net rate is positive, discounting reduces the total, and total offset produces the larger figure; where wage growth exceeds the yields, the net rate is negative and the order reverses. Over a long horizon the difference compounds, so the two methods can diverge widely for a young plaintiff and barely at all for a short loss period.
+
+Q: Can a report show both present value discounting and total offset?
+A: Yes, and the better reports do, since the two differ by one input. The schedules carry the loss under the venue's rule and under the alternative in a separate column, with the net discount rate stated for each, so the trier of fact can see what the assumption is worth and apply whichever the law of the venue directs.
+
 ## Knowledge Center
 
 ### Guide to Economic Damages
@@ -2492,6 +2570,13 @@ URL: https://kweconomics.com/insights/what-business-tax-returns-add-to-a-lost-pr
 Published: 2026-10-12
 
 The return a business files each year is the one financial record prepared under penalty for a reader with no interest in making the business look good, and in a lost profits claim it is the record against which the financial statements, the projections, and the owner's account of the business are all tested. This post explains what each part of the return adds to the claim, where the tax figures differ from the economic ones, and which records the return points to next.
+
+### What the General Ledger Adds to a Lost Profits Claim
+URL: https://kweconomics.com/insights/what-general-ledgers-add-to-a-lost-profits-claim
+
+Published: 2026-10-19
+
+The general ledger is the record of every transaction a business posted, by date, account, and amount, and it is the one record from which the financial statements and the tax returns were both built. In a lost profits claim it is where the economist goes to test the annual figures, to find the month the loss began, to isolate the part of the business the dispute concerns, and to see what was changed after the fact. This post explains what the ledger adds, what it cannot show, and which records to produce with it.
 
 ## White Papers
 
