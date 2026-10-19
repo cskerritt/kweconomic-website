@@ -997,6 +997,68 @@ export const comparisons: Comparison[] = [
       { title: "Net vs. Gross Discount Rate", href: "/compare/net-vs-gross-discount-rate", description: "The other gross-and-net question, about the rate rather than the earnings." },
     ],
   },
+  // Wave 7 (2026-10-19), editorial batch 7: the two present value
+  // conventions side by side; the total-offset-method and present-value-and-
+  // discounting pages explain each mechanic on its own.
+  {
+    slug: "present-value-vs-total-offset",
+    title: "Present Value Discounting vs. Total Offset",
+    answer:
+      "Present value discounting grows future losses at one rate and discounts them at another; total offset assumes the two rates cancel and simply sums the losses.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-19",
+    dateModified: "2026-10-19",
+    a: {
+      label: "Present Value Discounting",
+      summary:
+        "Present value discounting is the general method for stating a future loss as a single sum at the valuation date. Each year's loss is projected forward at a growth rate drawn from a published wage or price series, then discounted back at an interest rate drawn from the yields on safe securities, and the two rates are chosen separately with their sources stated. The [[/methods/present-value-and-discounting|present value]] method explains the mechanic, and the [[/guides/present-value-explained-for-attorneys|present value guide]] explains why the award is a lump sum that has to be invested to replace a stream of income. The result depends on the difference between the two rates, the net discount rate, and the report shows the sensitivity of the total to it.",
+      url: "/methods/present-value-and-discounting",
+    },
+    b: {
+      label: "Total Offset",
+      summary:
+        "Total offset is the convention under which the growth rate and the discount rate are assumed to be equal, so that they cancel and the present value of a future loss stream is the sum of the annual losses stated in the dollars of the valuation date. It replaces two contested inputs with a single assumption, a net discount rate of zero, and it is directed by decision or statute in a few venues and offered as an alternative presentation elsewhere. The [[/methods/total-offset-method|total offset method]] page describes the convention and its partial variant, and the [[/methods/below-market-discount-rate|below-market discount rate]] method describes the real-rate approach that lies between the two.",
+      url: "/methods/total-offset-method",
+    },
+    rows: [
+      { dimension: "What it assumes", a: "Growth and discount rates chosen separately from published data", b: "The two rates are equal and cancel" },
+      { dimension: "The net discount rate", a: "The difference between the two chosen rates, stated and tested", b: "Zero, by assumption" },
+      { dimension: "Inputs the report has to defend", a: "The growth series, the discount securities, the period, and the match between them", b: "The assumption itself, and the venue's authority for it" },
+      { dimension: "Effect on the figure", a: "Usually a smaller present value when safe yields exceed wage growth; larger when they do not", b: "The undiscounted sum of the annual losses in valuation-date dollars" },
+      { dimension: "Where it is used", a: "The default in federal practice and in most state courts", b: "Directed by the highest court of Pennsylvania for future lost earnings, and permitted as a presentation in some other venues" },
+      { dimension: "Sensitivity shown", a: "The total under more than one net rate", b: "The total under the market-rate alternative where counsel asks for it" },
+      { dimension: "The usual error", a: "A nominal growth rate with a real discount rate, or the reverse", b: "Applying the convention to a loss stream, such as medical costs, that grows at a different rate from wages" },
+    ],
+    whenUseA:
+      "Present value discounting is the method wherever the venue leaves the rates to the evidence, which is the position in federal practice and in most state courts for a [[/services/lost-earnings-and-earning-capacity|lost earnings]] or [[/services/wrongful-death-economic-loss|wrongful death]] claim. The Supreme Court's guidance for the federal statutory actions leaves the choice of rate to the trial court on the evidence, and the trial courts have accepted market rates, real rates, and, where the parties agree, total offset. The method is also the right one whenever the loss streams grow at different rates: a report with lost earnings, fringe benefits, and future medical costs discounts each stream at its own net rate, which the total offset convention cannot do, and the [[/compare/net-vs-gross-discount-rate|net versus gross discount rate]] comparison explains the choice between stating the rates separately and stating only their difference.",
+    whenUseB:
+      "Total offset is the method where the governing framework directs it, as the highest court of Pennsylvania has done for future lost earnings, and in that venue the economist applies it as the rule and presents the market-rate figure only on request. Elsewhere it is a presentation rather than a method: a [[/services/personal-injury-economic-damages|personal injury]] schedule can be shown under a market net rate and again under total offset so that the trier of fact can see what the net rate assumption is worth, and counsel on either side may prefer the simpler presentation in a [[/case-types/personal-injury/pennsylvania|personal injury matter venued in Pennsylvania]] or in a venue that permits it. The convention is also a reasonable default for a short loss period, where the growth and discount rates have little room to diverge and the difference between the two methods is small.",
+    overlap:
+      "The two methods are points on one scale, the net discount rate, and a report built for either can show the other in a single additional column: the present value method with a net rate of zero is total offset, and total offset with a stated net rate is the present value method. The economist's choice between them is the venue's where the venue has spoken and otherwise a matter of presentation, and the honest report shows the total under the venue's rule and under at least one alternative so that the fact finder is not asked to accept a single net rate on faith. What the economist controls is consistency: the growth rate and the discount rate treat inflation the same way, the same convention is applied to the but-for stream and the post-event stream, and each loss category that grows at its own rate is discounted at its own net rate rather than carried under a convention built for wages. The [[/methods/below-market-discount-rate|below-market discount rate]] method, which discounts at a real rate drawn from the history of safe yields net of inflation, sits between the two and is the form in which the dispute is most often argued.",
+    faqs: [
+      {
+        question: "Is total offset the same as not discounting at all?",
+        answer:
+          "No. Total offset discounts the future losses, but at a rate assumed to equal the rate at which they grow, so the two steps cancel and the arithmetic looks like a simple sum. The losses are still stated in the dollars of the valuation date rather than in the inflated dollars of the future years, and the convention says nothing about losses that grow at a rate different from wages.",
+      },
+      {
+        question: "Which of the two methods produces the larger award?",
+        answer:
+          "It depends on the net discount rate the present value method would use. Where safe yields exceed wage growth, the net rate is positive, discounting reduces the total, and total offset produces the larger figure; where wage growth exceeds the yields, the net rate is negative and the order reverses. Over a long horizon the difference compounds, so the two methods can diverge widely for a young plaintiff and barely at all for a short loss period.",
+      },
+      {
+        question: "Can a report show both present value discounting and total offset?",
+        answer:
+          "Yes, and the better reports do, since the two differ by one input. The schedules carry the loss under the venue's rule and under the alternative in a separate column, with the net discount rate stated for each, so the trier of fact can see what the assumption is worth and apply whichever the law of the venue directs.",
+      },
+    ],
+    sources: refsToSources(["JONES_LAUGHLIN_PFEIFER","KACZKOWSKI_V_BOLUBASZ","TREASURY_YIELD"]),
+    related: [
+      { title: "Present Value and Discounting", href: "/methods/present-value-and-discounting", description: "The general mechanic and the choice of rates." },
+      { title: "Total Offset Method", href: "/methods/total-offset-method", description: "The convention, its partial variant, and where it is directed." },
+      { title: "Below-Market Discount Rate", href: "/methods/below-market-discount-rate", description: "The real-rate approach between the two." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

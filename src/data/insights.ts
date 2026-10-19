@@ -588,6 +588,65 @@ The disputes begin with the base year and the trend, as they do with every histo
 
 The entity's complete returns with every schedule, statement, and attachment for several years before the event and every year since; the owners' share statements for a pass-through entity; the depreciation schedules; any amended returns and the correspondence that prompted them; and the records the return reconciles to, the general ledger, the monthly financial statements, the sales ledger, and the bank statements. Producing the set together lets the economist establish the accounting method, normalize the income once, fix the trend from the full history, and tie every figure in the projection to a line on a return and a line in the books, which is what a lost profits analysis needs when the opposing expert reads the same returns and reaches a different number.`,
   },
+  // Wave 7 (2026-10-19), editorial batch 7: the Records series applied to the
+  // general ledger, the transaction-level record beneath the statements and
+  // the returns. No person, figure, or outcome is named.
+  {
+    slug: "what-general-ledgers-add-to-a-lost-profits-claim",
+    sources: refsToSources(["AICPA_SSVS1","NACVA_STANDARDS","ACFE"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-10-19",
+    title: "What the General Ledger Adds to a Lost Profits Claim",
+    metaTitle: "General Ledgers in a Lost Profits Claim",
+    metaDescription:
+      "The general ledger records every transaction behind a company's statements and returns, and in a lost profits claim it is where the economist tests both.",
+    excerpt:
+      "The general ledger is the record of every transaction a business posted, by date, account, and amount, and it is the one record from which the financial statements and the tax returns were both built. In a lost profits claim it is where the economist goes to test the annual figures, to find the month the loss began, to isolate the part of the business the dispute concerns, and to see what was changed after the fact. This post explains what the ledger adds, what it cannot show, and which records to produce with it.",
+    category: "Records",
+    publishedDate: "2026-10-19",
+    related: [
+      link("Lost Profits for a New Business", "/guides/lost-profits-for-a-new-business", "What replaces the history when the ledger is short."),
+      link("Lost Profits But-For Analysis", "/methods/lost-profits-but-for-analysis", "The projection the ledger's detail anchors."),
+      link("Lost Profits and Commercial Damages", "/services/lost-profits-and-commercial-damages", "The analysis the ledger feeds."),
+    ],
+    content: `A general ledger is the complete record of a company's transactions, each one posted to an account on a date in an amount, with the balance of every account carried forward through the period. The financial statements summarize it, the tax returns restate it for the taxing authority, and the [[/insights/what-business-tax-returns-add-to-a-lost-profits-claim|business tax returns post]] explains what the return adds; the ledger is what both were built from. In a [[/services/lost-profits-and-commercial-damages|lost profits claim]] it is the record the economist uses to test the annual figures, to date the loss, to isolate the product, location, or customer the dispute concerns, and to see which entries were made in the ordinary course and which were made afterward. It is the most detailed financial record a business keeps and the one most often produced last.
+
+## The chart of accounts and what the business chose to track
+
+The ledger begins with the chart of accounts, the list of every account the business posts to, and the chart is itself evidence. A business that tracks revenue by product line, by location, or by customer has a ledger that can answer a question about one part of the business directly; a business that posts all sales to a single revenue account cannot, and a claim about one product line will have to be built from the sales ledger or the invoices instead. The chart also shows how the business classified its costs, which costs it treated as cost of goods sold and which as overhead, and whether it separated the owner's compensation, distributions, and personal items from the operating accounts. The economist reads the chart first, because it sets what the rest of the ledger can and cannot show.
+
+## Revenue by date, and the month the loss began
+
+The annual return and the annual statements give a year's revenue in one figure. The ledger gives every sale on the date it was posted, and from it the economist builds the monthly revenue series that a lost profits claim actually runs on. The series shows the seasonal pattern the loss interrupted, the trend in the months before the event, and the month the revenue departed from that trend, which is the date the loss period begins and is often contested. It also shows whether the accounting method's year-end judgments shifted revenue across a period boundary, since the ledger carries the posting date and, under accrual accounting, the invoice date behind it. A loss that the annual figures place in one year may begin in the last months of the prior one, and only the ledger shows that.
+
+## Expenses, and the costs that would have been incurred
+
+A lost profits claim deducts from lost revenue only the costs that the lost revenue would have carried, and the division of costs into those that vary with sales and those that do not is the central step of the [[/methods/lost-profits-but-for-analysis|but-for analysis]]. The ledger is where that division is made. Read account by account over several years, the expense entries show which costs rose and fell with revenue and which held steady, and a regression or a simple comparison across months of differing volume gives the variable share of each. The ledger also shows the costs the business actually avoided during the loss period, the materials not bought, the overtime not paid, the commissions not earned, which is the direct evidence of what the lost revenue would have cost to produce.
+
+## Owner transactions and related parties
+
+The ledger records what the owner took out and put in: salary, draws, distributions, loans to and from the company, and expenses paid by the business for the owner's benefit. These entries are the basis of the normalization adjustments a lost profits or [[/services/business-valuation|valuation]] analysis makes to restate the owner's compensation to a market level and to remove personal expenses from the operating results, and the ledger shows them at the transaction level where the return shows only a total. Payments to entities the owner also controls, rent, management fees, purchases, appear here with the counterparty named, and whether those payments were at market terms is a question the ledger raises and other records answer.
+
+## Journal entries and what was changed after the fact
+
+Every ledger carries manual journal entries alongside the transactions posted from sales, purchases, and payroll, and the journal entries are where the economist looks for what was changed by hand. Year-end adjustments made by the accountant are ordinary; entries dated after the dispute began that move revenue between periods, reclassify costs, or write off receivables are not, and the ledger's audit trail, where the software keeps one, shows when each entry was made and by whom. An entry that moves a sale from the loss period into the period before it changes the trend the projection rests on, and a ledger that was closed and reopened after the event has a history the economist has to read before any figure in it is adopted.
+
+## The detail the statements and the returns cannot give
+
+The annual records report the business as a whole. The ledger, where the chart of accounts allows, reports it in parts: the revenue and costs of the location that was closed, the product line that was displaced, or the customer that was lost, which is what a claim about part of a business needs. It also carries the balance sheet accounts through time, so the economist can see receivables rising or falling, inventory building or clearing, and debt drawn or repaid, each of which bears on whether the lost profits would have been collected and on what the business was doing with its capital before the event. A projection that extends the company's history, as the [[/guides/lost-profits-for-a-new-business|new business guide]] explains for the case where the history is short, is only as reliable as the detail beneath it, and the ledger is that detail.
+
+## What the ledger cannot tell you
+
+The ledger records what was posted, not what happened. Revenue that was never invoiced is not in it, cash that was not deposited is not in it, and a claim that the business earned more than its books show is a claim the ledger cannot support. It records transactions, not causes, so it cannot say why revenue fell in a given month; the market, the competitors, the weather, and the dispute all have to be established from other evidence. It carries the classifications the business chose, and a cost posted to the wrong account stays there until someone finds it. And it is only as complete as the business's bookkeeping: a ledger kept irregularly, or reconstructed after the fact, is a record of the reconstruction, and the bank statements are then the better evidence of what the business actually received and paid.
+
+## Where the disputes start
+
+The disputes begin with the date the loss began and the trend before it, which the monthly series from the ledger fixes more precisely than the annual records and which each side's economist will read differently. They continue with the variable cost share, with the normalization of the owner's transactions, and with the journal entries made after the event, where the question is whether a change was a correction or a revision. In a [[/case-types/commercial-contract-dispute/florida|commercial contract dispute venued in Florida]], or anywhere, a report that adopts the ledger's figures without reading the journal entries, or that builds a monthly series without reconciling it to the annual returns, is exposed on the first schedule, and the [[/compare/economist-vs-forensic-accountant-on-lost-profits|economist versus forensic accountant on lost profits]] comparison explains why the reconstruction of the ledger and the projection built on it are often divided between two experts.
+
+## What to produce with it
+
+The complete general ledger for several years before the event and every period since, exported from the accounting system with the account, date, amount, counterparty, memo, and posting date for each entry; the chart of accounts; the journal entry listing with the audit trail where the software keeps one; the trial balances at each period end; and the records the ledger reconciles to, the bank statements, the sales ledger and invoices, the payroll records, and the annual financial statements and returns. Producing the set together lets the economist build the monthly series, divide the costs, normalize the owner's transactions, and tie every figure in the projection to a posted entry and to a line on a return, which is what the analysis needs when the opposing expert reads the same ledger and reaches a different number.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {
