@@ -221,8 +221,8 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-serif text-3xl font-bold text-navy mb-4">Our Team</h2>
           <p className="text-neutral-600 max-w-2xl mx-auto mb-8">
-            The practice is led by a Chief of Economic Services who directs every analysis and
-            is available to testify to it, supported by an economic associate who coordinates
+            The practice is led by a Chief Strategy Officer who directs every analysis and
+            is available to testify to it, supported by an associate economist who coordinates
             each engagement with counsel and a forensic accountant who analyzes the financial
             records. Read the background and practice areas of each member
             of the team.

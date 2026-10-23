@@ -163,7 +163,7 @@ export default function Team() {
   usePageMeta({
     title: `Forensic Economics Team | ${ORG_NAME}`,
     description:
-      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, an economic associate, and a forensic accountant.`,
+      `The ${ORG_NAME} team: a Chief Strategy Officer who directs each damages analysis and can testify to it, an associate economist, and a forensic accountant.`,
     canonical: `${SITE_URL}/team`,
   });
 
@@ -215,9 +215,9 @@ export default function Team() {
               The {ORG_NAME} Team
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
-              {ORG_NAME} is a focused practice: a Chief of Economic Services who
+              {ORG_NAME} is a focused practice: a Chief Strategy Officer who
               directs every forensic economic analysis and is available to testify
-              to it, an economic associate who coordinates each engagement
+              to it, an associate economist who coordinates each engagement
               between the economics team and retaining counsel, and a forensic
               accountant who analyzes the financial records each analysis rests
               on. Our analyses are
@@ -233,7 +233,7 @@ export default function Team() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <TeamSection
             title="Our Team"
-            description="The Chief of Economic Services who directs every damages analysis and is available for deposition and trial testimony, and the economics team that supports each analysis and coordinates the engagement with retaining counsel."
+            description="The Chief Strategy Officer who directs every damages analysis and is available for deposition and trial testimony, and the economics team that supports each analysis and coordinates the engagement with retaining counsel."
             members={roster}
             columns="lg:grid-cols-3"
           />

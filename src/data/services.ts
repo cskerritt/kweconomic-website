@@ -1327,7 +1327,7 @@ export const services: ServiceEntry[] = [
   },
   // Transfer pricing (owner request 2026-10-05). Written from the economist's
   // standpoint and neutral between taxpayer and government, plaintiff and
-  // defense; the work is directed by the Chief of Economic Services (the
+  // defense; the work is directed by the Chief Strategy Officer (the
   // ResponsibilityLine the templates print), and no person is said to hold a
   // transfer pricing credential, membership, testimony history, or prior
   // engagement. The statute and the regulations are described, never cited;
@@ -1472,7 +1472,7 @@ export const services: ServiceEntry[] = [
   // pillar, after transfer pricing. Written from the economist's standpoint
   // and neutral between the patentee and the accused infringer, the owner and
   // the party accused of taking a trade secret, plaintiff and defense; the
-  // work is directed by the Chief of Economic Services (the ResponsibilityLine
+  // work is directed by the Chief Strategy Officer (the ResponsibilityLine
   // the templates print), and no person is said to hold an intellectual
   // property credential, membership, testimony history, or prior engagement.
   // The statutes and decisions are described, never cited; the registry

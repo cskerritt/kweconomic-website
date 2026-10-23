@@ -4,8 +4,8 @@ import { practiceAreasFor } from "@/lib/practice-areas";
 
 // The tiered roster is editorial data; the guard is on the RULES (who may be
 // listed as a retainable expert, in what order), not on a frozen list. With a
-// two-person roster the only retainable expert is the Chief of Economic
-// Services; the associate is support and is never offered for retention.
+// two-person roster the only retainable expert is the Chief Strategy
+// Officer; the associate is support and is never offered for retention.
 describe("expert tiers", () => {
   it("lists the tiered members, senior first", () => {
     expect(retainableExperts().map((m) => m.slug)).toEqual(["christopher-skerritt"]);
