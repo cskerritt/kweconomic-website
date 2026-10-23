@@ -24,8 +24,8 @@ export default function ExpertProfile() {
   const { slug = "" } = useParams();
   const m = team.find((t) => t.slug === slug);
   const url = m ? `${ORG_URL}/team/${m.slug}` : "";
-  // The title carries the role, not the credentials ("Jane Roe, Chief of
-  // Economic Services | KW Economics"): post-nominals stay in the H1 and the
+  // The title carries the role, not the credentials ("Jane Roe, Chief
+  // Strategy Officer | KW Economics"): post-nominals stay in the H1 and the
   // credential chips. profileTitle is shared with scripts/prerender.mjs so the
   // static shell and the hydrated page advertise the same <title>.
   usePageMeta(

@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { team, activeTeam, retainableExperts, getMemoriam } from "./team";
@@ -48,18 +48,27 @@ describe("KW Economics team", () => {
     const chris = team.find((m) => m.slug === "christopher-skerritt")!;
     expect(`${chris.bio} ${chris.fullBio ?? ""}`).not.toMatch(/intellectual property|patent|trademark|copyright|trade secret|royalt/i);
   });
-  it("Christopher Skerritt leads as Chief of Economic Services", () => {
+  it("Christopher Skerritt leads as Chief Strategy Officer", () => {
     const c = team.find((m) => m.slug === "christopher-skerritt")!;
-    expect(c.title).toBe("Chief of Economic Services");
+    expect(c.title).toBe("Chief Strategy Officer");
     expect(c.role).toBe("leadership");
     expect(c.expertTier).toBe("senior");
     expect(c.credentials).toEqual(expect.arrayContaining(["M.Ed.", "MBA"]));
     expect(c.statesServed).toEqual(["NJ", "NY", "MA", "VA", "RI", "CT", "PA"]);
     expect(practiceAreasFor(c).map((s) => s.slug)).toContain("lost-earnings-and-earning-capacity");
   });
+  // The titles of 2026-10-23: no source or llms text keeps a replaced title;
+  // docs/superpowers are historical records.
+  it("no source file or llms text keeps a replaced title", () => {
+    const walk = (dir: string): string[] =>
+      readdirSync(dir).flatMap((f) => (statSync(join(dir, f)).isDirectory() ? walk(join(dir, f)) : [join(dir, f)]));
+    const files = [...walk("src"), ...walk("scripts"), "public/llms.txt", "public/llms-full.txt"].filter((p) => p !== join("src", "data", "team.test.ts"));
+    const replaced = /Chief\s+of\s+Economic\s+Services|Economic\s+Associate/i;
+    expect(files.filter((p) => replaced.test(readFileSync(p, "utf8")))).toEqual([]);
+  });
   it("Zachary Sperling is support and not retainable", () => {
     const z = team.find((m) => m.slug === "zachary-sperling")!;
-    expect(z.title).toBe("Economic Associate / Expert Liaison");
+    expect(z.title).toBe("Associate Economist / Expert Liaison");
     expect(z.role).toBe("support");
     expect(z.expertTier).toBeUndefined();
     expect(retainableExperts().map((m) => m.slug)).toEqual(["christopher-skerritt"]);
@@ -95,14 +104,18 @@ describe("KW Economics team", () => {
       expect(title, m.slug).not.toMatch(/[\u2013\u2014]/);
       expect(title.length, m.slug).toBeLessThanOrEqual(60);
     }
-    // "Christopher Skerritt, Chief of Economic Services | KW Economics" runs
-    // 63 characters, so the chief's profile carries the name alone.
+    // "Christopher Skerritt, Chief Strategy Officer | KW Economics" runs
+    // 59 characters, so the chief's profile carries the role.
     expect(
-      profileTitle({ name: "Christopher Skerritt, M.Ed., MBA", jobTitle: "Chief of Economic Services", orgName: ORG_NAME }),
-    ).toBe(`Christopher Skerritt | ${ORG_NAME}`);
+      profileTitle({ name: "Christopher Skerritt, M.Ed., MBA", jobTitle: "Chief Strategy Officer", orgName: ORG_NAME }),
+    ).toBe(`Christopher Skerritt, Chief Strategy Officer | ${ORG_NAME}`);
     expect(
-      profileTitle({ name: "Zachary Sperling", jobTitle: "Economic Associate / Expert Liaison", orgName: ORG_NAME }),
-    ).toBe(`Zachary Sperling, Economic Associate | ${ORG_NAME}`);
+      profileTitle({ name: "Zachary Sperling", jobTitle: "Associate Economist / Expert Liaison", orgName: ORG_NAME }),
+    ).toBe(`Zachary Sperling, Associate Economist | ${ORG_NAME}`);
+    // A role that cannot fit beside the name and the brand is dropped.
+    expect(
+      profileTitle({ name: "Jane Roe, Ph.D.", jobTitle: "Director of Forensic Economic and Valuation Services", orgName: ORG_NAME }),
+    ).toBe(`Jane Roe | ${ORG_NAME}`);
     expect(
       profileTitle({ name: "Jane Roe, Ph.D.", jobTitle: "Economist", orgName: ORG_NAME }),
     ).toBe(`Jane Roe, Economist | ${ORG_NAME}`);

@@ -45,8 +45,8 @@ describe("/team renders the three-person roster", () => {
     expect(zach).toBeGreaterThan(chris);
     expect(francis).toBeGreaterThan(zach);
     expect(html).toContain("Forensic Accountant");
-    expect(html).toContain("Chief of Economic Services");
-    expect(html).toContain("Economic Associate / Expert Liaison");
+    expect(html).toContain("Chief Strategy Officer");
+    expect(html).toContain("Associate Economist / Expert Liaison");
   });
 
   it("emits no In Memoriam section and no sister-roster copy", () => {
@@ -82,7 +82,7 @@ describe("/team/:slug profiles", () => {
 
   it("Zachary Sperling: support profile with no tier badge and no education block", () => {
     expect(zach).toContain('<section id="bio"');
-    expect(zach).toContain("Economic Associate and Expert Liaison");
+    expect(zach).toContain("Associate Economist and Expert Liaison");
     expect(zach).not.toContain('<section id="education"');
     expect(zach).not.toContain("Senior Expert");
     expect(zach).toContain("New Jersey, New York");

@@ -882,7 +882,7 @@ const corePages = [
       `<p>${esc(intake.FAMILY_SECTION.intro[0])}<a href="${VOC_SITE_URL}" rel="noopener">${hostOf(VOC_SITE_URL)}</a>${esc(intake.FAMILY_SECTION.intro[1])}<a href="${LCP_SITE_URL}" rel="noopener">${hostOf(LCP_SITE_URL)}</a>${esc(intake.FAMILY_SECTION.intro[2])}</p>` +
       `<ul>${intake.FAMILY_SECTION.bullets.map((b) => `<li><strong>${esc(b.lead)}</strong>${esc(b.text)}</li>`).join("")}</ul>` +
       `<p>${esc(intake.FAMILY_SECTION.intake[0])}<a href="/contact">${esc(intake.FAMILY_SECTION.contactFormLabel)}</a>${esc(intake.FAMILY_SECTION.intake[1])}<a href="mailto:${esc(brand.ORG_EMAIL)}">${esc(brand.ORG_EMAIL)}</a>${esc(intake.FAMILY_SECTION.intake[2])}</p></section>` +
-      `<section>${h2("Our Team")}<p>The practice is led by a Chief of Economic Services who directs every analysis and is available to testify to it, supported by an economic associate who coordinates each engagement with counsel and a forensic accountant who analyzes the financial records.</p>${linkList(activeTeam.map((m) => ({ href: `/team/${m.slug}`, label: m.name, blurb: m.title })))}</section>` +
+      `<section>${h2("Our Team")}<p>The practice is led by a Chief Strategy Officer who directs every analysis and is available to testify to it, supported by an associate economist who coordinates each engagement with counsel and a forensic accountant who analyzes the financial records.</p>${linkList(activeTeam.map((m) => ({ href: `/team/${m.slug}`, label: m.name, blurb: m.title })))}</section>` +
       navLinks([{ href: "/team", label: "Our Team" }, { href: "/services", label: "Services" }, { href: "/contact", label: "Contact" }]),
     jsonLd: [
       schema.organizationSchema(),
@@ -901,11 +901,11 @@ const corePages = [
     path: "/team",
     title: `Forensic Economics Team | ${ORG_NAME}`,
     description:
-      `The ${ORG_NAME} team: a Chief of Economic Services who directs each damages analysis and can testify to it, an economic associate, and a forensic accountant.`,
+      `The ${ORG_NAME} team: a Chief Strategy Officer who directs each damages analysis and can testify to it, an associate economist, and a forensic accountant.`,
     breadcrumbs: [{ name: "Home", path: "/" }, { name: "Team", path: "/team" }],
     innerHtml:
       `<h1>The ${ORG_NAME} Team</h1>` +
-      `<p>${ORG_NAME} is a focused practice: a Chief of Economic Services who directs every forensic economic analysis and is available to testify to it, an economic associate who coordinates each engagement between the economics team and retaining counsel, and a forensic accountant who analyzes the financial records each analysis rests on. Our analyses are prepared for plaintiff and defense attorneys and are built to be examined in the report, at deposition, and at trial.</p>` +
+      `<p>${ORG_NAME} is a focused practice: a Chief Strategy Officer who directs every forensic economic analysis and is available to testify to it, an associate economist who coordinates each engagement between the economics team and retaining counsel, and a forensic accountant who analyzes the financial records each analysis rests on. Our analyses are prepared for plaintiff and defense attorneys and are built to be examined in the report, at deposition, and at trial.</p>` +
       `<section>${h2("Our Team")}<ul>${activeTeam.map(memberSummaryHtml).join("")}</ul></section>` +
       navLinks([{ href: "/about", label: "About" }, { href: "/services", label: "Services" }, { href: "/contact", label: "Contact" }]),
     jsonLd: [schema.organizationSchema(), ...activeTeam.map(personNode)],

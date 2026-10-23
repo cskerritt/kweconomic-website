@@ -50,7 +50,7 @@ const articleNode = (html: string): Node => {
 };
 
 const BYLINE = "By </span><a";
-const AUTHOR = "Christopher Skerritt, M.Ed., MBA, Chief of Economic Services";
+const AUTHOR = "Christopher Skerritt, M.Ed., MBA, Chief Strategy Officer";
 // The rehabilitation-counseling, life-care-plan, and set-aside designations
 // never appear on an economics byline (src/pages/off-brand-copy.test.mjs bans
 // the middle one from rendered copy; team.ts is carved out, which is exactly
