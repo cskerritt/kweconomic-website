@@ -1059,6 +1059,69 @@ export const comparisons: Comparison[] = [
       { title: "Below-Market Discount Rate", href: "/methods/below-market-discount-rate", description: "The real-rate approach between the two." },
     ],
   },
+  // Wave 8 (2026-10-26), editorial batch 8: the inflation convention in the
+  // discount rate, beside the net-vs-gross comparison about how the rates are
+  // presented and the present-value-vs-total-offset comparison about whether
+  // they are assumed to cancel.
+  {
+    slug: "nominal-vs-real-discount-rates",
+    title: "Nominal vs. Real Discount Rates",
+    answer:
+      "A nominal discount rate includes expected inflation and pairs with nominal growth; a real rate removes it and pairs with real growth; matched pairs agree.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-26",
+    dateModified: "2026-10-26",
+    a: {
+      label: "Nominal Discount Rate",
+      summary:
+        "A nominal discount rate is the stated yield on a safe security, taken as the market quotes it, with the inflation the market expects over the security's term built in. It is applied to a loss stream that has been projected in the dollars of each future year, that is, a stream grown at a nominal rate that also carries expected inflation, so that the inflation in the stream and the inflation in the rate are the same inflation and cancel in the arithmetic. The [[/methods/present-value-and-discounting|present value]] method describes the mechanic, and the [[/methods/earnings-growth-rate-selection|earnings growth rate selection]] method describes how the matching nominal growth rate is built from the published wage series.",
+      url: "/methods/present-value-and-discounting",
+    },
+    b: {
+      label: "Real Discount Rate",
+      summary:
+        "A real discount rate is the return on a safe security after the inflation it will experience is removed. The economist obtains it either by subtracting an inflation measure from the nominal yield or by reading it directly from the yields on inflation-protected government securities, which are quoted in real terms. It is applied to a loss stream stated in the dollars of the valuation date and grown only at the real rate, the part of wage growth that exceeds inflation, so that neither the stream nor the rate carries inflation. The [[/methods/below-market-discount-rate|below-market discount rate]] method describes the real-rate approach as it is argued in the venues that have adopted it.",
+      url: "/methods/below-market-discount-rate",
+    },
+    rows: [
+      { dimension: "What the rate contains", a: "The real return plus the inflation the market expects", b: "The real return alone" },
+      { dimension: "The loss stream it pairs with", a: "Future-year dollars, grown at a nominal rate", b: "Valuation-date dollars, grown at a real rate" },
+      { dimension: "Where the rate is read", a: "Published par yields on government securities", b: "Inflation-protected security yields, or nominal yields less an inflation measure" },
+      { dimension: "What the report has to show", a: "That the growth rate carries the same inflation the yield does", b: "That inflation was removed from both the stream and the rate in the same way" },
+      { dimension: "The usual error", a: "A nominal yield applied to a stream grown at a real rate, which discounts away inflation the stream never had", b: "A real rate applied to a stream grown at a nominal rate, which leaves inflation in the stream and not in the rate" },
+      { dimension: "Relation to the net discount rate", a: "The net rate is the nominal yield less nominal growth", b: "The net rate is the real yield less real growth, and the two nets are the same number when the inflation measure is the same" },
+      { dimension: "Where each is the convention", a: "The usual presentation in federal practice and most state courts", b: "Directed or preferred in some venues, and the form in which the below-market debate is argued" },
+    ],
+    whenUseA:
+      "The nominal presentation is the usual one wherever the venue leaves the rates to the evidence, which is the position in federal practice and in most state courts for a [[/services/lost-earnings-and-earning-capacity|lost earnings]] or [[/services/wrongful-death-economic-loss|wrongful death]] claim. It fits a report that projects several loss streams at different growth rates, wages from the wage series, household replacement costs from the local wage for that work, and medical costs from the medical price series, because each stream can be grown on its own nominal series and the whole discounted at one nominal yield, with the growth assumption for each stream visible. It is also the form the reader checks most easily, since the yield is the number the market quotes and the growth rate is the number the published series reports, and neither has been adjusted before it appears in the schedule.",
+    whenUseB:
+      "The real presentation is the method where the venue directs it or where the parties argue the discount rate as a real rate, which is how the below-market debate has been framed in the venues that adopted it. It fits a report with one loss stream, or several that grow at about the same real rate, because a single real rate net of a single real growth rate states the whole relationship in one number and the inflation forecast drops out of the dispute. It is also the natural form when the rate is read from inflation-protected securities, whose yields are quoted in real terms and need no inflation adjustment, and in a [[/case-types/wrongful-death/new-jersey|wrongful death matter venued in New Jersey]], or anywhere counsel wants the inflation assumption out of the cross-examination, the real presentation puts it there, provided the growth rate was converted to real terms on the same basis.",
+    overlap:
+      "The two rates are one rate stated two ways, and the choice between them changes the presentation, not the present value, so long as the growth rate is stated in the same terms. A nominal yield that embeds a given expected inflation, applied to a stream grown at a nominal rate that embeds the same inflation, gives exactly the present value that the corresponding real yield gives when applied to the same stream grown at the real growth rate; the inflation cancels in the first case and was never there in the second. What the economist controls is the match. The report says which convention it uses, shows that the growth rate and the discount rate were drawn on that basis, states the inflation measure where one was used to convert a nominal series to real terms, and applies the same convention to every stream and to both the but-for and the post-event schedules. The [[/compare/net-vs-gross-discount-rate|net versus gross discount rate]] comparison explains the related choice between showing the two rates separately and showing only their difference, and the [[/compare/present-value-vs-total-offset|present value versus total offset]] comparison explains the convention under which the two are assumed to cancel entirely; both of those questions can be asked in either nominal or real terms, and the answer does not change.",
+    faqs: [
+      {
+        question: "Can a report pair a nominal growth rate with a real discount rate?",
+        answer:
+          "No, and the mismatch is the most common discounting error an opposing economist finds. A nominal growth rate carries expected inflation into the loss stream, and a real discount rate removes none of it, so the present value is overstated by the inflation left in the stream; the reverse pairing understates it by the same mechanism. The report has to show that the two rates were drawn on the same basis, both with inflation or both without.",
+      },
+      {
+        question: "Do inflation-protected government securities give a real discount rate directly?",
+        answer:
+          "Yes. Their yields are quoted after inflation because the principal adjusts with a price index, so the quoted yield is the real return and no inflation measure has to be subtracted. The report that reads its real rate from them still has to state the maturities used and the period over which the yields were observed, and to convert the growth rate to real terms on a consistent basis, since the growth series are published in nominal terms.",
+      },
+      {
+        question: "If nominal and real rates give the same present value, why does the choice matter?",
+        answer:
+          "Because the two presentations expose different assumptions to scrutiny. The nominal presentation puts the inflation forecast in both the growth rate and the yield, where a reader can check each against its published source but where a mismatch between them is easy to miss. The real presentation removes the forecast from both and leaves one net relationship to defend, which simplifies the cross-examination when the venue argues the rate in real terms but hides the conversion the economist made to get there.",
+      },
+    ],
+    sources: refsToSources(["TREASURY_YIELD","BLS_CPI","BLS_ECI","JONES_LAUGHLIN_PFEIFER"]),
+    related: [
+      { title: "Present Value and Discounting", href: "/methods/present-value-and-discounting", description: "The general mechanic and the choice of rates." },
+      { title: "Below-Market Discount Rate", href: "/methods/below-market-discount-rate", description: "The real-rate approach and where it is argued." },
+      { title: "Net vs. Gross Discount Rate", href: "/compare/net-vs-gross-discount-rate", description: "Showing the two rates separately or only their difference." },
+    ],
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

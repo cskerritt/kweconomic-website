@@ -923,6 +923,60 @@ export const methods: Methodology[] = [
     ],
     sources: refsToSources(["AICPA_SSVS1","NACVA_STANDARDS","TREASURY_YIELD"]),
   },
+  // Wave 8 (2026-10-26), editorial batch 8: the two ways but-for revenue is
+  // established from evidence outside the projection itself; the lost profits
+  // but-for method names them in one step and this page explains each.
+  {
+    slug: "yardstick-and-before-and-after-methods",
+    name: "Yardstick and Before-and-After",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-26",
+    dateModified: "2026-10-26",
+    metaDescription: "The before-and-after method projects but-for revenue from the business's own history, the yardstick method from a comparable; here is how each is tested.",
+    summary:
+      "The before-and-after method and the yardstick method are the two ways an economist establishes the revenue a business would have earned but for a wrongful act using evidence from outside the dispute. The before-and-after method uses the business's own results in the period before the act, and after it where the business recovered, to project what the interrupted period would have produced. The yardstick method uses the results of a comparable business, a comparable location, or the market as a whole over the same period to show what the business would have done had it moved with them. Both produce a but-for revenue stream that is then carried through the lost profits analysis, and the choice between them is decided by which evidence the record contains and which other causes have to be controlled for.",
+    whenUsed:
+      "Both methods serve the but-for revenue step of a [[/services/lost-profits-and-commercial-damages|lost profits]] claim, and the [[/methods/lost-profits-but-for-analysis|lost profits method]] places them beside the third source, the parties' own pre-dispute projections. The before-and-after method fits an established business with several years of stable or steadily trending results before the act and a loss period short enough that the business's own trend is a fair guide, as in a [[/case-types/commercial-contract-dispute|contract dispute]] that interrupted a continuing relationship. The yardstick method fits a business whose own history is short, as the [[/guides/lost-profits-for-a-new-business|new business guide]] explains, or whose history is itself contaminated by the act, or a loss period during which the market moved and the business's own trend would attribute the market's movement to the defendant; a second location of the same company, a franchise system's other units, or an industry series supplies the comparison. The same two methods establish a patentee's but-for sales in an [[/services/intellectual-property-damages|intellectual property damages]] claim, and in a [[/case-types/commercial-contract-dispute/illinois|commercial contract dispute venued in Illinois]], or anywhere, a report that uses one method and tests it against the other is the usual form.",
+    steps: [
+      "Fix the loss period from the date the act began to affect revenue to the date the business recovered or would have recovered, and confirm from the monthly series that the revenue departed from its pattern at the start of that period and not before",
+      "For the before-and-after method, build the monthly or quarterly revenue series for several years before the act, identify the trend and the seasonal pattern, and project both through the loss period, using the post-recovery results as a second anchor where the business recovered",
+      "For the yardstick method, select the comparison, another location, a comparable company, a franchise system's other units, or an industry series, and show that it matched the business's own results in the period before the act closely enough that its movement during the loss period is a fair proxy",
+      "Control for other causes in the loss period, market changes, competition, weather, management decisions, and the business's own capacity, by showing which the yardstick already absorbs and adjusting the before-and-after projection for the rest, and exclude the revenue those causes would have taken regardless",
+      "Convert the but-for revenue to but-for profits by deducting the costs the business would have incurred to earn it, as the lost profits method describes, and reconcile the result against the business's actual results in the loss period to measure the loss",
+      "Test the chosen method against the other, present the second as a check where the record supports both, and state the sensitivity of the loss to the trend, the comparison, and the loss period",
+    ],
+    dataSources: [
+      "The business's own monthly revenue and cost series from the general ledger and the sales records, for the before-and-after trend and the seasonal pattern",
+      "The financial results of the comparison business, location, or franchise system over the same years, for the yardstick",
+      "Industry revenue and sales series from trade associations and government surveys, for a market yardstick and for testing the comparison",
+      "Price indexes, for stating the series in constant dollars where the comparison spans a period of changing prices",
+      "Contracts, budgets, and forecasts prepared before the dispute, for testing either projection against what the parties expected",
+      "Evidence of the other events in the loss period, for the causation adjustments",
+    ],
+    limitations:
+      "The before-and-after method assumes the business would have continued on its own trend, and the assumption fails when the loss period contained a market change, a new competitor, a change in the business's capacity, or a shift in the owner's attention that would have moved the revenue regardless; a projection that extends a rising trend through a recession attributes the recession to the defendant. It also needs a history long enough to separate the trend from the seasonal pattern and from random variation, and a business with a year or two of results cannot supply it. The yardstick method assumes the comparison would have moved with the business, and the assumption fails when the comparison differs in size, market, product mix, or management, or when it was itself affected by the act or by the same outside events in a different degree; a yardstick chosen after the fact because it moved favorably is the method's characteristic abuse. Both methods establish revenue, not profits, and both are only as good as the cost analysis and the causation work that follow them. Neither method can supply a trend the business never had or a comparison the market does not contain, and where the record supports neither, the parties' own pre-dispute projections or the value of the business as a whole may be the better measure.",
+    admissibilityHistory:
+      "Both methods are long established in commercial litigation and are described in the professional guidance on economic damages. Exclusions and reductions in weight follow from the fit between the method and the record rather than from the method itself: a before-and-after projection built from too short a history or extended through a period when other causes plainly moved the revenue, a yardstick that was not shown to track the business before the act or that differed from it in ways the report did not address, a projection that ignored the business's capacity to produce the revenue claimed, or a report that assumed causation for the whole shortfall without separating the other causes in the period. A report that states why the chosen method fits the record, shows the comparison or the trend against the actual results before the act, adjusts for the other causes it can identify, and tests its result against the alternative method has generally been examined on cross rather than excluded, and the [[/compare/economist-vs-forensic-accountant-on-lost-profits|economist versus forensic accountant on lost profits]] comparison explains how the revenue projection and the cost analysis are often divided between two experts.",
+    relevantServices: ["lost-profits-and-commercial-damages","intellectual-property-damages","business-valuation"],
+    faqs: [
+      {
+        question: "What makes a yardstick business a fair comparison?",
+        answer:
+          "That it moved with the plaintiff's business before the act. The report shows the two revenue series side by side over the years before the loss period and demonstrates that they shared a trend and a seasonal pattern, then addresses the differences in size, market, product mix, and management that remain. A comparison selected because it performed well during the loss period, without that prior fit, is the method's characteristic abuse and the first thing the opposing economist will test.",
+      },
+      {
+        question: "How much history does the before-and-after method need?",
+        answer:
+          "Enough to separate the trend from the seasonal pattern and from ordinary variation, which in practice means several years of monthly results rather than a year or two of annual ones. A shorter history leaves the trend undetermined, and a projection built on it attributes to the defendant whatever the next years would have brought in any event. Where the history is too short, the yardstick method or the parties' own pre-dispute projections replace it.",
+      },
+      {
+        question: "Can a lost profits report use both the yardstick and the before-and-after method?",
+        answer:
+          "Yes, and the better reports do where the record supports both. One method carries the projection and the other tests it: a before-and-after trend checked against how the industry moved over the same period shows whether the trend was the business's own or the market's, and a yardstick checked against the business's prior trend shows whether the comparison fits. Agreement between the two is evidence that the but-for revenue is not an artifact of the method chosen.",
+      },
+    ],
+    sources: refsToSources(["AICPA_SSVS1","AAEFE_JLE","NAFE_JFE","BLS_CPI"]),
+  },
 ];
 
 export function getMethod(slug: string): Methodology | undefined {
