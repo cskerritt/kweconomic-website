@@ -647,6 +647,62 @@ The disputes begin with the date the loss began and the trend before it, which t
 
 The complete general ledger for several years before the event and every period since, exported from the accounting system with the account, date, amount, counterparty, memo, and posting date for each entry; the chart of accounts; the journal entry listing with the audit trail where the software keeps one; the trial balances at each period end; and the records the ledger reconciles to, the bank statements, the sales ledger and invoices, the payroll records, and the annual financial statements and returns. Producing the set together lets the economist build the monthly series, divide the costs, normalize the owner's transactions, and tie every figure in the projection to a posted entry and to a line on a return, which is what the analysis needs when the opposing expert reads the same ledger and reaches a different number.`,
   },
+  // Wave 8 (2026-10-26), editorial batch 8: the record of what was actually
+  // received and paid, beneath the forms, the returns, and the ledger. The
+  // post spans the earnings, lost profits, tracing, and divorce claims the
+  // statements serve, so its title names the damages claim generally.
+  {
+    slug: "what-bank-statements-add-to-a-damages-claim",
+    sources: refsToSources(["ACFE","AICPA_SSVS1","BLS_CPS"]),
+    authorSlug: "christopher-skerritt",
+    dateModified: "2026-10-26",
+    title: "What Bank Statements Add to an Economic Damages Claim",
+    metaTitle: "Bank Statements in a Damages Claim",
+    metaDescription:
+      "Bank statements record what was actually received and paid, and in a damages claim they are where the economist tests the figures the forms and ledger report.",
+    excerpt:
+      "A bank statement is the record of what actually moved: every deposit, withdrawal, transfer, and payment, dated and in an amount, kept by a third party with no stake in the dispute. In a lost earnings claim it corroborates income the forms do not show, in a lost profits claim it tests the ledger and the return against the cash, in a tracing engagement it is the trail itself, and in a divorce it shows the spending the stated income has to explain. This post explains what the statements add to each, what they cannot show, and which records to produce with them.",
+    category: "Records",
+    publishedDate: "2026-10-26",
+    related: [
+      link("Tracing Commingled Funds", "/guides/tracing-commingled-funds", "The engagement in which the statements are the whole record."),
+      link("Economic Damages for a Self-Employed Plaintiff", "/guides/economic-damages-for-a-self-employed-plaintiff", "The earnings claim the statements most often have to carry."),
+      link("Fraud and Asset Tracing", "/services/fraud-and-asset-tracing", "The analysis built on the statements."),
+    ],
+    content: `A bank statement records every transaction that touched an account in a period: deposits, with their source where the bank captures it; withdrawals and payments, with the payee; transfers between accounts; and the balance after each. It is prepared by the bank, not by the account holder, and it cannot be revised after the fact by the person whose conduct is in question. That is what makes it the record an economist reaches for when the other records disagree or are missing. The wage forms report what an employer chose to report, the returns what a preparer chose to file, and the [[/insights/what-general-ledgers-add-to-a-lost-profits-claim|general ledger]] what the bookkeeper chose to post; the statement shows what arrived and what left. In a [[/services/lost-earnings-and-earning-capacity|lost earnings]] claim, a [[/services/lost-profits-and-commercial-damages|lost profits]] claim, a tracing engagement, or a divorce, the statements are where every other figure is tested.
+
+## Deposits as the record of what was actually received
+
+The deposit side of a personal statement is a history of income that no form had to report. Payroll deposits confirm the net pay on the stubs and, by their regularity, the continuity of the employment; a gap in them dates a layoff or a leave more precisely than the annual form can. Deposits that match no payroll show income from other sources, a second job, side work, rental receipts, or a business, and their pattern, weekly cash deposits of similar amounts for example, tells the economist what kind of income it was. For a person paid in cash, or paid under a name or number not the person's own, the deposits are often the only documentary record of the earnings, and the [[/guides/economic-damages-for-an-undocumented-worker|undocumented worker guide]] explains how the base is built from them when the forms are absent. The economist does not treat every deposit as income; transfers from another account, loan proceeds, gifts, and refunds are deposits too, and the statement usually shows enough of the source to separate them.
+
+## Corroborating earnings the forms do not show
+
+Where a claimant's earnings history is thin on paper, the statements fill it in both directions. Deposits larger than the reported wages suggest unreported income the claim may be entitled to count, if the record otherwise supports it and the venue allows it; deposits smaller than the claimed earnings suggest the claim rests on testimony the money does not corroborate. Either way, the economist builds a monthly deposit series over the years before the event, removes the non-income items, and compares it to the earnings base from the forms and the testimony. Where the series and the base agree, the base is corroborated by a third-party record; where they diverge, the report says so and states which figure it adopts and why. A [[/guides/economic-damages-for-a-self-employed-plaintiff|self-employed plaintiff]] is the usual case, because the owner's draws, the business's receipts, and the household's income run through accounts that the return summarizes in a single net figure.
+
+## Testing the ledger and the return against the bank
+
+For a business, the statements are the independent check on the books. Every receipt the ledger records should appear as a deposit, every expense as a payment, and the reconciliation between the two is where the economist finds the receipts that were never posted, the deposits that were never invoiced, and the payments to the owner that the books call something else. A ledger that was closed and reopened after the dispute began can be tested against statements that could not be; a return that reports a loss can be set against a year of deposits that says otherwise. The [[/insights/what-business-tax-returns-add-to-a-lost-profits-claim|business tax returns post]] explains what the entity return reports, and the statements are what it is reconciled to. In a lost profits claim the monthly deposit series is also a second measure of the revenue trend before the event and of the month the loss began, the trend the [[/methods/yardstick-and-before-and-after-methods|before-and-after method]] projects, built from a record the business did not keep, and a report that presents both the ledger series and the deposit series and shows that they agree has answered the first question the opposing expert will ask.
+
+## Tracing where the money went
+
+In a [[/services/fraud-and-asset-tracing|fraud or asset tracing]] engagement the statements are not a check on the record; they are the record. Each transfer out of an account is followed into the account that received it, each payment is identified to a payee, and the chain is extended until the funds reach a destination that can be named: an asset, a third party, or a withdrawal in cash. Commingled accounts, in which funds from different sources were mixed before they were spent, are allocated by one of the tracing conventions, and the [[/guides/tracing-commingled-funds|tracing guide]] explains the conventions and the record each needs. The statements supply the dates and amounts; the deposit slips, wire confirmations, and check images supply the counterparties the statement abbreviates; and the gap in the chain, where money leaves as cash or enters an account whose statements were not produced, is identified as a gap rather than bridged by assumption.
+
+## Spending, lifestyle, and income determination in a divorce
+
+In a divorce, the payment side of the statements answers a question the income side cannot. A spouse whose stated income does not cover the household's documented spending has income the statements show was spent, whether or not the return reports it, and the economist builds the spending series from the payments to measure the income the lifestyle implies. The [[/guides/income-determination-in-divorce|income determination guide]] explains the analysis and its limits; the statements are its principal record, together with the credit card statements that carry the spending the bank account paid in one line. The same payment series separates the household's ordinary spending from the business expenses the owner paid personally, from the transfers to accounts the other spouse did not know about, and from the payments made to third parties in the period before the filing, which are the beginning of a dissipation claim.
+
+## What the statements cannot tell you
+
+The statements record money that passed through the account and nothing else. Cash earned and spent without being deposited is not in them, and a claim that a person earned more than the deposits show is a claim the statements cannot support. They record amounts and counterparties, not purposes, so a payment to a supplier does not say what was bought or for whom, and a deposit from a customer does not say what was sold. They abbreviate: a wire shows the sending bank and a reference, not always the sender, and a check deposit shows the amount without the drawer until the image is pulled. They cover only the accounts produced, and the account that was not produced is often the one that matters. And a deposit is not income until the economist has excluded the transfers, loans, refunds, and gifts that look like income on the statement and are not.
+
+## Where the disputes start
+
+The disputes begin with the classification of the deposits, since the side that wants a larger earnings base will read ambiguous deposits as income and the side that wants a smaller one will read them as transfers, and the report that states its rule for each type and applies it consistently is the one that holds. They continue with the accounts not produced, with the cash that left the chain, and with the period covered, because a series that begins after the event cannot show the trend before it. In a [[/case-types/fraud-and-embezzlement/new-york|fraud and embezzlement matter venued in New York]], or anywhere, a tracing that bridges a missing statement with an assumption, or an earnings base that counts every deposit without excluding the transfers, is exposed on the first schedule, and the [[/compare/forensic-economist-vs-forensic-accountant|economist versus forensic accountant]] comparison explains why the reconstruction of the accounts and the damages built on them are often divided between two experts.
+
+## What to produce with it
+
+Every statement for every account the person or the business held, personal and business, checking and savings, for several years before the event and every period since, with the credit card statements and the loan statements that complete the picture of what was paid; the deposit slips, check images, and wire confirmations that identify the counterparties the statements abbreviate; the merchant processor and payment application records for a business that takes payment electronically; and the records the statements reconcile to, the pay stubs and wage forms for a person, the general ledger and the returns for a business. Producing the set together lets the economist build the deposit series, classify each item from its own evidence rather than from testimony, reconcile the result to the forms and the books, and follow every transfer to an account whose statements are in the file, which is what the analysis needs when the opposing expert reads the same statements and classifies them differently.`,
+  },
 ];
 
 export function getPostBySlug(slug: string): InsightPost | undefined {

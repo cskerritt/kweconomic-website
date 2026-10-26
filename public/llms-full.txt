@@ -1643,6 +1643,32 @@ A: Because it stands for every year after the discrete period and is often the l
 Q: Whose projection does the economist use in a discounted cash flow?
 A: Management's contemporaneous budgets and forecasts, prepared before the dispute, are the starting point because they show what the business expected of itself when no one had a stake in the answer. The economist tests them against the history, the industry, and the company's capacity, adjusts where the evidence requires, and states each adjustment. A projection prepared for the litigation is treated as a party's claim, not as evidence of the business's prospects.
 
+### Yardstick and Before-and-After
+URL: https://kweconomics.com/methods/yardstick-and-before-and-after-methods
+
+The before-and-after method and the yardstick method are the two ways an economist establishes the revenue a business would have earned but for a wrongful act using evidence from outside the dispute. The before-and-after method uses the business's own results in the period before the act, and after it where the business recovered, to project what the interrupted period would have produced. The yardstick method uses the results of a comparable business, a comparable location, or the market as a whole over the same period to show what the business would have done had it moved with them. Both produce a but-for revenue stream that is then carried through the lost profits analysis, and the choice between them is decided by which evidence the record contains and which other causes have to be controlled for.
+
+When used: Both methods serve the but-for revenue step of a lost profits claim, and the lost profits method places them beside the third source, the parties' own pre-dispute projections. The before-and-after method fits an established business with several years of stable or steadily trending results before the act and a loss period short enough that the business's own trend is a fair guide, as in a contract dispute that interrupted a continuing relationship. The yardstick method fits a business whose own history is short, as the new business guide explains, or whose history is itself contaminated by the act, or a loss period during which the market moved and the business's own trend would attribute the market's movement to the defendant; a second location of the same company, a franchise system's other units, or an industry series supplies the comparison. The same two methods establish a patentee's but-for sales in an intellectual property damages claim, and in a commercial contract dispute venued in Illinois, or anywhere, a report that uses one method and tests it against the other is the usual form.
+
+Steps:
+1. Fix the loss period from the date the act began to affect revenue to the date the business recovered or would have recovered, and confirm from the monthly series that the revenue departed from its pattern at the start of that period and not before
+2. For the before-and-after method, build the monthly or quarterly revenue series for several years before the act, identify the trend and the seasonal pattern, and project both through the loss period, using the post-recovery results as a second anchor where the business recovered
+3. For the yardstick method, select the comparison, another location, a comparable company, a franchise system's other units, or an industry series, and show that it matched the business's own results in the period before the act closely enough that its movement during the loss period is a fair proxy
+4. Control for other causes in the loss period, market changes, competition, weather, management decisions, and the business's own capacity, by showing which the yardstick already absorbs and adjusting the before-and-after projection for the rest, and exclude the revenue those causes would have taken regardless
+5. Convert the but-for revenue to but-for profits by deducting the costs the business would have incurred to earn it, as the lost profits method describes, and reconcile the result against the business's actual results in the loss period to measure the loss
+6. Test the chosen method against the other, present the second as a check where the record supports both, and state the sensitivity of the loss to the trend, the comparison, and the loss period
+
+Limitations: The before-and-after method assumes the business would have continued on its own trend, and the assumption fails when the loss period contained a market change, a new competitor, a change in the business's capacity, or a shift in the owner's attention that would have moved the revenue regardless; a projection that extends a rising trend through a recession attributes the recession to the defendant. It also needs a history long enough to separate the trend from the seasonal pattern and from random variation, and a business with a year or two of results cannot supply it. The yardstick method assumes the comparison would have moved with the business, and the assumption fails when the comparison differs in size, market, product mix, or management, or when it was itself affected by the act or by the same outside events in a different degree; a yardstick chosen after the fact because it moved favorably is the method's characteristic abuse. Both methods establish revenue, not profits, and both are only as good as the cost analysis and the causation work that follow them. Neither method can supply a trend the business never had or a comparison the market does not contain, and where the record supports neither, the parties' own pre-dispute projections or the value of the business as a whole may be the better measure.
+
+Q: What makes a yardstick business a fair comparison?
+A: That it moved with the plaintiff's business before the act. The report shows the two revenue series side by side over the years before the loss period and demonstrates that they shared a trend and a seasonal pattern, then addresses the differences in size, market, product mix, and management that remain. A comparison selected because it performed well during the loss period, without that prior fit, is the method's characteristic abuse and the first thing the opposing economist will test.
+
+Q: How much history does the before-and-after method need?
+A: Enough to separate the trend from the seasonal pattern and from ordinary variation, which in practice means several years of monthly results rather than a year or two of annual ones. A shorter history leaves the trend undetermined, and a projection built on it attributes to the defendant whatever the next years would have brought in any event. Where the history is too short, the yardstick method or the parties' own pre-dispute projections replace it.
+
+Q: Can a lost profits report use both the yardstick and the before-and-after method?
+A: Yes, and the better reports do where the record supports both. One method carries the projection and the other tests it: a before-and-after trend checked against how the industry moved over the same period shows whether the trend was the business's own or the market's, and a yardstick checked against the business's prior trend shows whether the comparison fits. Agreement between the two is evidence that the but-for revenue is not an artifact of the method chosen.
+
 ## Guides for Attorneys
 
 ### What Is a Forensic Economist?
@@ -2141,6 +2167,38 @@ A: Because the earnings begin years in the future and run for decades after that
 Q: Are the parents' losses part of the child's economic claim?
 A: They are separate claims and are reported separately. The parents' lost earnings while caring for the child, the value of the care they provide in place of paid care, and the medical expenses they have paid belong to the parents under most frameworks. The child's claim is for the child's own lost earning capacity, fringe benefits, household services, and future care.
 
+### Economic Damages for an Undocumented Worker
+URL: https://kweconomics.com/guides/economic-damages-for-an-undocumented-worker
+
+An undocumented worker's economic claim is built from the same components as any other injury or death claim, lost earnings and earning capacity, fringe benefits, household services, and future care, but two questions that are settled in the ordinary case are open in this one. The first is evidentiary: the earnings history is often paid in cash, reported under another name, or not reported at all, so the base has to be proved from records other than the wage forms. The second is legal: whether the future loss is measured against the wages the person was earning in the United States or against the wages available in the country of origin, and that question belongs to the venue, not to the economist. This guide explains how the earnings base is documented when the usual forms are missing, how the two labor market paths are built, why the report presents the loss under each rather than choosing, how taxes, fringe benefits, household services, and the worklife horizon are treated, and what each side should expect to see in a report.
+
+Sections: What is different about the claim; Proving the earnings base without the usual forms; The two labor market paths and who decides between them; Taxes, fringe benefits, and household services; The worklife horizon and the earnings profile; When the worker has died; What each side should expect in the report
+
+Q: Can lost earnings be proved when the worker was paid in cash and filed no returns?
+A: Yes, from the other records of what was earned: the employer's pay records and testimony about the rate and the hours, bank deposits and remittance receipts that show the cash received over a period, and the published wage data for the occupation and the area, against which the person's own account is tested. The report states how far the base rests on documents and how far on testimony, and the opposing economist will test the testimony against the published wage.
+
+Q: Does the economist decide whether United States or home-country wages measure the loss?
+A: No. That is a legal question the venue answers, and venues differ. The economist builds the loss under each path the venue leaves open, the person's own United States earnings and the published wage for the occupation in the country of origin, with the departure assumption stated for the second, so that whichever path the court directs or the fact finder adopts has a figure attached to it.
+
+Q: Does the worker's status change the household services or the consumption deduction?
+A: Not the household services, which are measured from time-use data and the local replacement wage for every household in the same way. The personal consumption deduction in a death claim is built for the household as it actually stood, and where the worker lived alone and remitted support to dependents abroad, the report constructs the deduction for that arrangement rather than applying a table built for a co-resident household without comment.
+
+### Economic Damages for a Self-Employed Plaintiff
+URL: https://kweconomics.com/guides/economic-damages-for-a-self-employed-plaintiff
+
+A self-employed plaintiff's economic claim starts from a figure that is not earnings at all. The net income on a sole proprietor's schedule, or the distributions from a closely held company, combine what the owner's labor earned with what the owner's capital, the equipment, the goodwill, and the employees earned, and only the first is a lost earnings claim. The economist separates the return on the owner's labor from the return on the business, documents it from the business's records rather than from a single return, and then measures the loss along the path the business actually took after the injury: it hired a replacement for the owner's work, it declined while the owner worked less, or it closed. Each path has its own measure, the cost of the replacement labor, the lost profits, or the lost value of the business, and the report has to choose the one the record supports and avoid counting the same dollar twice. This guide explains the separation, the records, the three post-injury paths, the treatment of self-employment taxes and benefits, the worklife horizon for an owner, and what each side should expect to see.
+
+Sections: Why business income is not the same as earnings; The records the claim rests on; The three post-injury paths and the measure for each; The owner's own lost earnings on each path; Self-employment taxes, benefits, and the horizon; Household services and the family business; What each side should expect in the report
+
+Q: Is a self-employed plaintiff's lost earnings claim the net income on the tax return?
+A: No. The net income combines the return on the owner's labor with the return on the business's capital, goodwill, and employees, and the injury took away only the labor. The economist measures the owner's earnings as the reasonable compensation the business would have paid someone else to do the owner's work, benchmarked to the published wage for the occupation and the hours the record shows, and treats the remainder as the return on the business.
+
+Q: Can a self-employed plaintiff recover both lost earnings and the business's lost profits?
+A: Only if the two are measured so that no dollar appears in both. The owner's lost earnings are the reasonable compensation for the owner's work; the business's lost profits are what the business lost beyond that compensation, computed after deducting it. Adding the full business income as lost earnings and then adding lost profits on top counts the same income twice, and the report shows the deduction that prevents it.
+
+Q: How are a self-employed plaintiff's post-injury earnings measured when the owner still draws from the business?
+A: By asking what the owner's remaining hours and roles would command if the business paid for them at market. A draw that continues because the owner still owns the business is a return on capital, not earnings; a salary for supervisory or office work the business actually needs is earnings at the wage that work commands. The report fixes the post-injury figure from the owner's actual roles rather than from the amount drawn.
+
 ## Comparisons
 
 ### Forensic Economist vs. Forensic Accountant
@@ -2483,6 +2541,26 @@ A: It depends on the net discount rate the present value method would use. Where
 Q: Can a report show both present value discounting and total offset?
 A: Yes, and the better reports do, since the two differ by one input. The schedules carry the loss under the venue's rule and under the alternative in a separate column, with the net discount rate stated for each, so the trier of fact can see what the assumption is worth and apply whichever the law of the venue directs.
 
+### Nominal vs. Real Discount Rates
+URL: https://kweconomics.com/compare/nominal-vs-real-discount-rates
+
+Nominal Discount Rate compared with Real Discount Rate.
+
+When Nominal Discount Rate applies: The nominal presentation is the usual one wherever the venue leaves the rates to the evidence, which is the position in federal practice and in most state courts for a lost earnings or wrongful death claim. It fits a report that projects several loss streams at different growth rates, wages from the wage series, household replacement costs from the local wage for that work, and medical costs from the medical price series, because each stream can be grown on its own nominal series and the whole discounted at one nominal yield, with the growth assumption for each stream visible. It is also the form the reader checks most easily, since the yield is the number the market quotes and the growth rate is the number the published series reports, and neither has been adjusted before it appears in the schedule.
+
+When Real Discount Rate applies: The real presentation is the method where the venue directs it or where the parties argue the discount rate as a real rate, which is how the below-market debate has been framed in the venues that adopted it. It fits a report with one loss stream, or several that grow at about the same real rate, because a single real rate net of a single real growth rate states the whole relationship in one number and the inflation forecast drops out of the dispute. It is also the natural form when the rate is read from inflation-protected securities, whose yields are quoted in real terms and need no inflation adjustment, and in a wrongful death matter venued in New Jersey, or anywhere counsel wants the inflation assumption out of the cross-examination, the real presentation puts it there, provided the growth rate was converted to real terms on the same basis.
+
+Where they overlap: The two rates are one rate stated two ways, and the choice between them changes the presentation, not the present value, so long as the growth rate is stated in the same terms. A nominal yield that embeds a given expected inflation, applied to a stream grown at a nominal rate that embeds the same inflation, gives exactly the present value that the corresponding real yield gives when applied to the same stream grown at the real growth rate; the inflation cancels in the first case and was never there in the second. What the economist controls is the match. The report says which convention it uses, shows that the growth rate and the discount rate were drawn on that basis, states the inflation measure where one was used to convert a nominal series to real terms, and applies the same convention to every stream and to both the but-for and the post-event schedules. The net versus gross discount rate comparison explains the related choice between showing the two rates separately and showing only their difference, and the present value versus total offset comparison explains the convention under which the two are assumed to cancel entirely; both of those questions can be asked in either nominal or real terms, and the answer does not change.
+
+Q: Can a report pair a nominal growth rate with a real discount rate?
+A: No, and the mismatch is the most common discounting error an opposing economist finds. A nominal growth rate carries expected inflation into the loss stream, and a real discount rate removes none of it, so the present value is overstated by the inflation left in the stream; the reverse pairing understates it by the same mechanism. The report has to show that the two rates were drawn on the same basis, both with inflation or both without.
+
+Q: Do inflation-protected government securities give a real discount rate directly?
+A: Yes. Their yields are quoted after inflation because the principal adjusts with a price index, so the quoted yield is the real return and no inflation measure has to be subtracted. The report that reads its real rate from them still has to state the maturities used and the period over which the yields were observed, and to convert the growth rate to real terms on a consistent basis, since the growth series are published in nominal terms.
+
+Q: If nominal and real rates give the same present value, why does the choice matter?
+A: Because the two presentations expose different assumptions to scrutiny. The nominal presentation puts the inflation forecast in both the growth rate and the yield, where a reader can check each against its published source but where a mismatch between them is easy to miss. The real presentation removes the forecast from both and leaves one net relationship to defend, which simplifies the cross-examination when the venue argues the rate in real terms but hides the conversion the economist made to get there.
+
 ## Knowledge Center
 
 ### Guide to Economic Damages
@@ -2577,6 +2655,13 @@ URL: https://kweconomics.com/insights/what-general-ledgers-add-to-a-lost-profits
 Published: 2026-10-19
 
 The general ledger is the record of every transaction a business posted, by date, account, and amount, and it is the one record from which the financial statements and the tax returns were both built. In a lost profits claim it is where the economist goes to test the annual figures, to find the month the loss began, to isolate the part of the business the dispute concerns, and to see what was changed after the fact. This post explains what the ledger adds, what it cannot show, and which records to produce with it.
+
+### What Bank Statements Add to an Economic Damages Claim
+URL: https://kweconomics.com/insights/what-bank-statements-add-to-a-damages-claim
+
+Published: 2026-10-26
+
+A bank statement is the record of what actually moved: every deposit, withdrawal, transfer, and payment, dated and in an amount, kept by a third party with no stake in the dispute. In a lost earnings claim it corroborates income the forms do not show, in a lost profits claim it tests the ledger and the return against the cash, in a tracing engagement it is the trail itself, and in a divorce it shows the spending the stated income has to explain. This post explains what the statements add to each, what they cannot show, and which records to produce with them.
 
 ## White Papers
 

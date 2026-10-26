@@ -2389,6 +2389,169 @@ export const guides: Guide[] = [
       { title: "Lost Earnings vs. Lost Earning Capacity", href: "/compare/lost-earnings-vs-lost-earning-capacity" },
     ],
   },
+  // Wave 8 (2026-10-26), editorial batch 8: the earnings claim where the
+  // record is thin and the labor market the loss is measured in is itself a
+  // question for the venue. The economist presents the loss under each path
+  // the record and the venue support and does not decide the legal question.
+  {
+    slug: "economic-damages-for-an-undocumented-worker",
+    title: "Economic Damages for an Undocumented Worker",
+    metaDescription: "An undocumented worker's lost earnings claim turns on what the record proves was earned and which labor market measures the loss; here is how both are handled.",
+    tldr:
+      "An undocumented worker's economic claim is built from the same components as any other injury or death claim, lost earnings and earning capacity, fringe benefits, household services, and future care, but two questions that are settled in the ordinary case are open in this one. The first is evidentiary: the earnings history is often paid in cash, reported under another name, or not reported at all, so the base has to be proved from records other than the wage forms. The second is legal: whether the future loss is measured against the wages the person was earning in the United States or against the wages available in the country of origin, and that question belongs to the venue, not to the economist. This guide explains how the earnings base is documented when the usual forms are missing, how the two labor market paths are built, why the report presents the loss under each rather than choosing, how taxes, fringe benefits, household services, and the worklife horizon are treated, and what each side should expect to see in a report.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-26",
+    dateModified: "2026-10-26",
+    sections: [
+      {
+        id: "what-is-different-about-the-claim",
+        heading: "What is different about the claim",
+        bodyHtml:
+          "<p>An economic damages claim for an undocumented worker has the same structure as any <a href=\"/services/personal-injury-economic-damages\">personal injury</a> or wrongful death analysis: the earnings the person would have earned but for the event, less the earnings the person can still earn, plus the fringe benefits, household services, and care costs that follow from the injury, each reduced to present value. What differs is the evidence beneath the earnings base and the law that governs which earnings count. In most claims the wage forms and the tax returns fix the base and the dispute is over how to project it; here the base itself may have to be proved from other records, and the projection may have to be built along two labor market paths because the venue has not decided, or has decided differently from its neighbors, which one measures the loss.</p><p>The economist's role does not change. The report measures the loss under each set of assumptions the record and the venue support, states the source of every input, and leaves the legal question of which path applies to counsel and the court. A report that silently adopts one path, or that treats the person's status as a reason to apply a discount the published data do not contain, has made a legal judgment it is not qualified to make, and that is the first thing the opposing economist will say about it.</p>",
+      },
+      {
+        id: "proving-the-earnings-base-without-the-usual-forms",
+        heading: "Proving the earnings base without the usual forms",
+        bodyHtml:
+          "<p>The earnings base in an ordinary claim comes from the wage forms, the tax returns, and the pay records, and the <a href=\"/guides/how-lost-earnings-are-calculated\">lost earnings guide</a> describes how they are reconciled. An undocumented worker may have some of those records, filed under an individual taxpayer identification number or under a number that was not the person's own, or none of them. Where the records exist they are used, with the report noting whose name and number they carry and reconciling them to the other evidence; a return filed under another identity still records what was earned, and the tax reporting question is separate from the economic one.</p><p>Where the forms do not exist, the base is built from what does. Employer pay records and the testimony of the employer or a foreman establish the rate and the hours; bank deposits and remittance receipts establish the cash actually received over a period, as the <a href=\"/insights/what-pay-stubs-add-to-a-lost-earnings-claim\">pay stubs post</a> explains for the partial record; the person's own account of the rate, the hours, and the seasons worked is tested against those records and against the published wage data for the occupation and the area. The report states which records support each element of the base and how far the figure rests on testimony alone. A base that rests on testimony the records do not corroborate is presented as such, and the defense economist will test it against the published wage for the occupation.</p>",
+      },
+      {
+        id: "the-two-labor-market-paths",
+        heading: "The two labor market paths and who decides between them",
+        bodyHtml:
+          "<p>The question that distinguishes this claim from every other is which labor market measures the future loss. One path projects the earnings the person was earning in the United States, on the ground that the loss is measured by what the person was in fact earning and would have continued to earn. The other projects the earnings the person could lawfully earn, which in the ordinary case means the wages of the person's occupation in the country of origin, on the ground that the law should not award earnings the person had no legal right to receive. Venues differ: some direct one path, some leave the question to the fact finder on the evidence, some admit evidence of status only when the defense can show a likelihood that the person would have been removed, and some exclude the evidence altogether for the earnings question. The <a href=\"/services/lost-earnings-and-earning-capacity\">lost earnings and earning capacity</a> service describes the general analysis each path is built on.</p><p>The economist does not pick a path. The report builds the loss under each one the venue leaves open, with the inputs stated, so that whichever the court directs or the fact finder adopts has a figure attached to it. The United States path is built from the person's own earnings history and the published wage data for the occupation and the area. The country-of-origin path is built from the published wage data for the same occupation in that country, converted to United States dollars at the rate the report states and adjusted for the difference in price levels where the data allow, and the report is explicit that this path assumes a departure the record may or may not support and a date for it. Where the venue has settled the question, the report follows the venue and presents the alternative only on request, as it does in any other matter where the venue directs a convention. In a <a href=\"/case-types/personal-injury/california\">personal injury matter venued in California</a>, or anywhere, counsel should settle which paths the report must carry before it is written.</p>",
+      },
+      {
+        id: "taxes-benefits-and-household-services",
+        heading: "Taxes, fringe benefits, and household services",
+        bodyHtml:
+          "<p>Whether the loss is measured before or after income tax is the venue's rule, as it is in every earnings claim, and the report applies the venue's convention regardless of whether the person's earnings were reported. Where the venue requires after-tax figures, the economist computes the tax on the base as if it had been reported, and says so; the alternative, treating unreported earnings as untaxed and therefore larger, rewards the non-reporting and is not a measure of what the person would have kept. Where the earnings were reported and taxes and payroll contributions were withheld, the record shows it, and the fact that contributions were made toward benefits the person could not collect is a matter for counsel rather than an adjustment the economist makes.</p><p>Fringe benefits in such a claim are usually small, because the employment was often informal and carried no employer-paid health coverage or retirement contribution, and the report values only the benefits the record shows were provided, under the <a href=\"/methods/fringe-benefits-valuation\">fringe benefits method</a>. Household services are a different matter. The replacement cost of the work the person did for the household is measured from time-use data and the local wage for the replacement work, and it does not depend on the person's status in the labor market at all; the <a href=\"/services/household-services-valuation\">household services analysis</a> runs the same way for every household and is frequently a larger share of the total in this kind of claim than in others.</p>",
+      },
+      {
+        id: "the-worklife-horizon-and-the-earnings-profile",
+        heading: "The worklife horizon and the earnings profile",
+        bodyHtml:
+          "<p>The horizon for the earnings projection comes from the published worklife tables by age, sex, and education, as the <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> method explains, and the tables do not carry a status dimension. The report applies the table value for the person's characteristics and adjusts it only for facts in the record, in either direction: a history of continuous full-time work in physically demanding occupations supports the table value or more, while the defense may argue for a shorter horizon on the United States path if the record supports a likelihood of departure. Either adjustment is stated as an assumption with the evidence for it, not folded into the table value.</p><p>The earnings profile follows the occupation. Many claims of this kind involve construction, agriculture, food service, and other occupations in which earnings rise early and flatten, and the <a href=\"/methods/age-earnings-profile\">age-earnings profile</a> method describes how the published series shape the stream. A projection that applies a general wage growth rate to a base that already sits at the occupation's plateau overstates the loss, and one that applies the occupation's profile to a person with a documented path to a trade license or supervisory role understates it; the record decides, and the report shows the choice.</p>",
+      },
+      {
+        id: "when-the-worker-has-died",
+        heading: "When the worker has died",
+        bodyHtml:
+          "<p>Where the event was fatal, the analysis takes the form of a <a href=\"/guides/wrongful-death-damages-explained\">wrongful death claim</a>: the decedent's earnings and benefits over the worklife, less the personal consumption deduction, as the support the dependents lost, plus the household services and, where the framework allows, the other components the venue recognizes. The two labor market paths carry through to the support analysis, since the support depends on the earnings, and the report presents the dependents' loss under each. The dependents themselves are often in the country of origin, which changes nothing in the method and one thing in the inputs: the remittances the decedent sent are the direct record of the support actually provided, and the bank and transfer records that document them become the center of the file.</p><p>The personal consumption deduction is built for the household as it stood, which for a worker living apart from the dependents and remitting a share of earnings is a household of one in the United States with a dependent household abroad. The report explains how the deduction was constructed for that arrangement rather than applying a table built for a co-resident household without comment, and the <a href=\"/methods/personal-consumption-tables\">personal consumption</a> method describes the tables and their limits.</p>",
+      },
+      {
+        id: "what-each-side-should-expect",
+        heading: "What each side should expect in the report",
+        bodyHtml:
+          "<p>Each side should expect a report that separates the evidentiary question from the legal one and answers only the first. On the evidence, the report lists every record that supports the earnings base, states how far the base rests on testimony, and reconciles the testimony to the published wage for the occupation and the area. On the law, the report presents the loss under each labor market path the venue leaves open, with the departure assumption and its date stated for the country-of-origin path, and shows the fringe benefits, household services, taxes, and horizon under each. A report that carries one path only, in a venue that has not directed it, has decided the case's central legal question in a schedule.</p><p>The defense economist's work is the same analysis from the other side: testing the base against the records and the published wage, building the country-of-origin path where the venue admits it and the plaintiff's report omits it, and checking that the household services and the consumption deduction were built for the household that actually existed. Where the plaintiff's report has applied a growth profile or a horizon the record does not support, or has valued benefits the employment never provided, the defense report shows the correction and its effect. The <a href=\"/guides/how-to-read-an-opposing-economists-report\">reading guide</a> explains how either side takes the other's report apart, and in this kind of claim the schedule to read first is the one that states which labor market each figure assumes.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can lost earnings be proved when the worker was paid in cash and filed no returns?",
+        answer:
+          "Yes, from the other records of what was earned: the employer's pay records and testimony about the rate and the hours, bank deposits and remittance receipts that show the cash received over a period, and the published wage data for the occupation and the area, against which the person's own account is tested. The report states how far the base rests on documents and how far on testimony, and the opposing economist will test the testimony against the published wage.",
+      },
+      {
+        question: "Does the economist decide whether United States or home-country wages measure the loss?",
+        answer:
+          "No. That is a legal question the venue answers, and venues differ. The economist builds the loss under each path the venue leaves open, the person's own United States earnings and the published wage for the occupation in the country of origin, with the departure assumption stated for the second, so that whichever path the court directs or the fact finder adopts has a figure attached to it.",
+      },
+      {
+        question: "Does the worker's status change the household services or the consumption deduction?",
+        answer:
+          "Not the household services, which are measured from time-use data and the local replacement wage for every household in the same way. The personal consumption deduction in a death claim is built for the household as it actually stood, and where the worker lived alone and remitted support to dependents abroad, the report constructs the deduction for that arrangement rather than applying a table built for a co-resident household without comment.",
+      },
+    ],
+    sources: refsToSources(["BLS_OES","BLS_CPS","CENSUS_ACS","SKOOG_CIECKA_KRUEGER_2011"]),
+    related: [
+      { title: "Lost Earnings and Earning Capacity", href: "/services/lost-earnings-and-earning-capacity" },
+      { title: "How Lost Earnings Are Calculated", href: "/guides/how-lost-earnings-are-calculated" },
+      { title: "Valuing a Homemaker's Services", href: "/guides/valuing-a-homemakers-services" },
+    ],
+  },
+  // Wave 8 (2026-10-26), editorial batch 8: the owner whose income mixes the
+  // return on labor with the return on capital, and whose post-injury path is
+  // the business's as much as the person's. The guide separates the two
+  // returns and the three measures the record can support.
+  {
+    slug: "economic-damages-for-a-self-employed-plaintiff",
+    title: "Economic Damages for a Self-Employed Plaintiff",
+    metaTitle: "Damages for a Self-Employed Plaintiff",
+    metaDescription: "A self-employed plaintiff's income mixes the return on labor with the return on capital, and the economist separates them before measuring the lost earnings.",
+    tldr:
+      "A self-employed plaintiff's economic claim starts from a figure that is not earnings at all. The net income on a sole proprietor's schedule, or the distributions from a closely held company, combine what the owner's labor earned with what the owner's capital, the equipment, the goodwill, and the employees earned, and only the first is a lost earnings claim. The economist separates the return on the owner's labor from the return on the business, documents it from the business's records rather than from a single return, and then measures the loss along the path the business actually took after the injury: it hired a replacement for the owner's work, it declined while the owner worked less, or it closed. Each path has its own measure, the cost of the replacement labor, the lost profits, or the lost value of the business, and the report has to choose the one the record supports and avoid counting the same dollar twice. This guide explains the separation, the records, the three post-injury paths, the treatment of self-employment taxes and benefits, the worklife horizon for an owner, and what each side should expect to see.",
+    authorSlug: "christopher-skerritt",
+    datePublished: "2026-10-26",
+    dateModified: "2026-10-26",
+    sections: [
+      {
+        id: "why-business-income-is-not-earnings",
+        heading: "Why business income is not the same as earnings",
+        bodyHtml:
+          "<p>An employee's earnings are what the employer paid for the employee's work, and the wage forms record them. A self-employed person's income is what was left after the business paid its costs, and it was produced by everything the business had: the owner's hours and skill, the capital invested in equipment and inventory, the goodwill that brings customers back, and the employees who did part of the work. An injury to the owner takes away the owner's labor and nothing else. The equipment still runs, the customers still call, and the employees still work, so the <a href=\"/services/lost-earnings-and-earning-capacity\">lost earnings</a> claim is for the return on the owner's labor alone, not for the whole of the income the business reported.</p><p>The first task is therefore to divide the business income into the part that paid for the owner's work and the part that paid for everything else. The usual method is to ask what the business would have had to pay someone else to do what the owner did, the hours, the skills, and the responsibility, and to take that reasonable compensation as the owner's earnings, with the remainder treated as the return on the business. The published wage data for the owner's occupation supply the benchmark, adjusted for the hours the record shows the owner worked, and the <a href=\"/compare/lost-earnings-vs-lost-earning-capacity\">lost earnings versus lost earning capacity</a> comparison explains why the claim is often framed as capacity when the owner's hours and roles were many.</p>",
+      },
+      {
+        id: "the-records-the-claim-rests-on",
+        heading: "The records the claim rests on",
+        bodyHtml:
+          "<p>The personal tax return is the starting record, and the <a href=\"/insights/what-tax-returns-add-to-a-lost-earnings-claim\">tax returns post</a> explains what the schedules for a proprietor, a partner, or a shareholder each report. It is not the ending record. A proprietor's schedule nets the owner's labor against depreciation, the home office, vehicle expenses, and whatever else the preparer deducted, so the net figure can be well below what the owner's work was worth; an owner of a closely held company may have taken a modest salary and large distributions, or the reverse, for reasons that have nothing to do with the value of the owner's labor. The economist reads the entity's own return and its books to see what the business earned and what it paid the owner in every form, and the <a href=\"/insights/what-business-tax-returns-add-to-a-lost-profits-claim\">business tax returns post</a> describes the entity return for that purpose.</p><p>Beneath the returns are the records that show the owner's actual work: the general ledger and the bank statements for the cash the business took in and paid out, the invoices and job records that show which work the owner performed personally, the payroll records for the employees whose work the owner did not do, and, where the owner has since hired a replacement, the replacement's pay. Several years of records are needed because a self-employed income is more variable than a salary, and the report explains which years were used and why an unusual year was included or excluded. A base built from one year of one return, without the business records, is the first thing the opposing economist will set aside.</p>",
+      },
+      {
+        id: "the-three-post-injury-paths",
+        heading: "The three post-injury paths and the measure for each",
+        bodyHtml:
+          "<p>What happened to the business after the injury decides how the loss is measured, and the record, not the economist, says which path it took. Where the business hired someone to do the owner's work and continued, the loss is the cost of the replacement labor, less what the owner still contributes, over the period the replacement is needed; the business's profits are unaffected except by that cost, and a claim for lost profits on top of the replacement cost counts the same loss twice. Where the business continued but declined because the owner worked fewer hours or lost the roles no employee could fill, the loss is the difference between the profits the business would have earned and the profits it did earn, and the <a href=\"/methods/lost-profits-but-for-analysis\">lost profits method</a> describes how the but-for profits are built from the business's own history. Where the business closed, the loss is the value of the business as a going concern at the date it failed, together with the owner's lost earnings from that date forward, with care that the two measures do not overlap.</p><p>The <a href=\"/guides/lost-profits-vs-lost-business-value\">lost profits versus lost business value</a> guide explains the boundary between the second and third measures. The report states which path the record supports, measures the loss along it, and, where the path is contested, presents the loss under each so the fact finder can attach a figure to whichever finding it makes. The single most common error in these claims is to measure the owner's lost earnings at the full business income and then add the business's lost profits, which is the whole income twice over.</p>",
+      },
+      {
+        id: "the-owners-lost-earnings-on-each-path",
+        heading: "The owner's own lost earnings on each path",
+        bodyHtml:
+          "<p>Whatever the business did, the owner has a personal claim for the earning capacity the injury took, and it is measured as for any other person: the value of the owner's labor before the injury, from the reasonable compensation analysis, against what the owner can now earn, in the business or elsewhere, over the worklife horizon. The post-injury earnings are often the hardest input to fix, because an owner who still draws from the business may be drawing on the return to capital rather than earning the draw, and the report has to ask what the owner's reduced hours and roles would command if the business paid for them at market. Where the owner has moved into a supervisory or office role that the record shows the business needs, that work has a wage; where the owner is drawing a salary the business pays for reasons of its own, the draw is not earnings.</p><p>The interaction between the personal claim and the business claim is where the two have to be kept apart. On the replacement-labor path, the owner's personal lost earnings and the business's replacement cost are two views of the same dollar, and the report presents one of them. On the lost profits path, the owner's lost earnings are the reasonable compensation the business would have paid, and the lost profits are what the business lost beyond that, so the two can be added only if the compensation was deducted in computing the profits. The report shows the deduction so the reader can see that no dollar appears on both schedules.</p>",
+      },
+      {
+        id: "taxes-benefits-and-the-horizon",
+        heading: "Self-employment taxes, benefits, and the horizon",
+        bodyHtml:
+          "<p>A self-employed person pays both halves of the payroll contribution an employee shares with an employer, and where the venue measures the loss after tax the report computes the tax on the owner's compensation as self-employment income, which differs from the wage case. Fringe benefits are usually self-provided: health coverage the owner bought, a retirement plan the owner funded, and no paid leave at all. The <a href=\"/methods/fringe-benefits-valuation\">fringe benefits method</a> values what the record shows the owner actually provided for the household, and a report that applies the employer-paid benefit rate from the published series to an owner who had no such benefits has overstated the claim. Where the business itself paid for the owner's coverage and plan, those payments are part of the owner's compensation and are moved to the labor side of the division.</p><p>The worklife horizon comes from the published tables for the owner's age, sex, and education, as the <a href=\"/methods/worklife-expectancy\">worklife expectancy</a> method explains, and self-employment is a fact in the record that can support an adjustment. Owners of businesses often work past the age at which employees in the same occupation retire, and a documented history of the owner's parents or predecessors doing so, or a succession plan with a stated date, is evidence; a table value adopted without considering it, or extended without evidence, is equally open to challenge. In a <a href=\"/case-types/motor-vehicle-accident/texas\">motor vehicle accident matter venued in Texas</a>, or anywhere, the report states the horizon and the evidence that moved it from the table.</p>",
+      },
+      {
+        id: "household-services-and-the-family-business",
+        heading: "Household services and the family business",
+        bodyHtml:
+          "<p>Many self-employed plaintiffs run family businesses, and the family's unpaid work in the business complicates both the earnings claim and the household services claim. A spouse who kept the books or worked the counter without pay was contributing labor the business did not buy, which means the business income overstates the return to the owner's labor alone, and the report divides the compensation among the family members who earned it. After the injury, a spouse who took over the owner's work has supplied the replacement labor at no cost to the business, and that work is a loss to the household that belongs in the claim at its replacement value, even though the business's books show no expense for it.</p><p>The <a href=\"/methods/household-services-methodology\">household services method</a> measures the work the owner did at home before the injury and can no longer do, from the time-use data and the local replacement wage, and it is separate from the business claim. The two can be confused when the owner worked from home or when the business and the household shared a vehicle, a building, or a bank account, and the report keeps them apart by asking, for each hour and each dollar, whether it served the business or the household.</p>",
+      },
+      {
+        id: "what-each-side-should-expect",
+        heading: "What each side should expect in the report",
+        bodyHtml:
+          "<p>Each side should expect to see the division of the business income between the owner's labor and the return on the business, with the reasonable compensation benchmark named and the hours it assumes; the records behind the base, over several years, with the unusual years explained; the path the business took after the injury and the measure chosen for it; the owner's personal lost earnings with the post-injury earnings fixed at what the owner's remaining work commands; the deduction that keeps the personal and the business claims from overlapping; the tax, benefit, and horizon treatment; and the alternative measures where the path is contested. The <a href=\"/guides/how-to-read-an-opposing-economists-report\">reading guide</a> explains how to trace each of those inputs to its source.</p><p>The defense economist's usual corrections are to the division, where the plaintiff's report has treated the whole business income as the owner's earnings; to the overlap, where lost earnings and lost profits have been added without the deduction; and to the post-injury earnings, where the owner's draw has been treated as earnings or as nothing when the owner still contributes work the business needs. The plaintiff's economist, for the same reasons, documents the division, states the deduction, and fixes the post-injury earnings from the owner's actual roles, so that the figure survives the cross-examination that begins, in these claims, with the question of what the business would have paid someone else to do the owner's job.</p>",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a self-employed plaintiff's lost earnings claim the net income on the tax return?",
+        answer:
+          "No. The net income combines the return on the owner's labor with the return on the business's capital, goodwill, and employees, and the injury took away only the labor. The economist measures the owner's earnings as the reasonable compensation the business would have paid someone else to do the owner's work, benchmarked to the published wage for the occupation and the hours the record shows, and treats the remainder as the return on the business.",
+      },
+      {
+        question: "Can a self-employed plaintiff recover both lost earnings and the business's lost profits?",
+        answer:
+          "Only if the two are measured so that no dollar appears in both. The owner's lost earnings are the reasonable compensation for the owner's work; the business's lost profits are what the business lost beyond that compensation, computed after deducting it. Adding the full business income as lost earnings and then adding lost profits on top counts the same income twice, and the report shows the deduction that prevents it.",
+      },
+      {
+        question: "How are a self-employed plaintiff's post-injury earnings measured when the owner still draws from the business?",
+        answer:
+          "By asking what the owner's remaining hours and roles would command if the business paid for them at market. A draw that continues because the owner still owns the business is a return on capital, not earnings; a salary for supervisory or office work the business actually needs is earnings at the wage that work commands. The report fixes the post-injury figure from the owner's actual roles rather than from the amount drawn.",
+      },
+    ],
+    sources: refsToSources(["BLS_OES","BLS_CPS","AICPA_SSVS1","SKOOG_CIECKA_KRUEGER_2011"]),
+    related: [
+      { title: "Lost Profits vs. Lost Business Value", href: "/guides/lost-profits-vs-lost-business-value" },
+      { title: "Lost Profits and But-For Analysis", href: "/methods/lost-profits-but-for-analysis" },
+      { title: "Business Valuation", href: "/services/business-valuation" },
+    ],
+  },
 ];
 
 export function getGuide(slug: string): Guide | undefined {
