@@ -24,7 +24,7 @@ const LIBRARY_LINKS = [
   { href: "/insights", label: "Insights" },
 ];
 
-function PaperCard({ slug, title, subtitle, summary, discipline, icon, readingTime }: typeof whitePapers[number]) {
+function PaperCard({ slug, title, subtitle, summary, discipline, icon, readingTime, datePublished }: typeof whitePapers[number]) {
   const Icon = ICONS[icon] ?? FileText;
   return (
     <Link
@@ -50,6 +50,7 @@ function PaperCard({ slug, title, subtitle, summary, discipline, icon, readingTi
           Read white paper <ArrowRight className="w-4 h-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
         </span>
         <span className="block text-xs text-neutral-500 mt-2">{readingTime}</span>
+        <span className="sr-only">Published <time dateTime={datePublished}>{datePublished}</time></span>
       </div>
     </Link>
   );
