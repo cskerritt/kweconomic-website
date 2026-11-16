@@ -43,14 +43,12 @@ function PaperCard({ slug, title, subtitle, summary, discipline, icon, readingTi
         <h3 className="font-serif text-xl font-bold text-navy mb-2 group-hover:text-amber-dark transition-colors">
           {title}
         </h3>
-        <p className="text-sm text-neutral-600 mb-4 line-clamp-3">{subtitle}</p>
-        {/* The paper's own abstract, read by crawlers and screen readers; the card shows the subtitle. */}
-        <p className="sr-only">{summary}</p>
+        <p className="text-sm text-neutral-600 line-clamp-3">{subtitle}</p>
+        <p className="text-sm text-neutral-500 mt-2 mb-4 line-clamp-3">{summary}</p>
         <span className="inline-flex items-center gap-1 text-sm font-medium text-amber-dark">
           Read white paper <ArrowRight className="w-4 h-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
         </span>
-        <span className="block text-xs text-neutral-500 mt-2">{readingTime}</span>
-        <span className="sr-only">Published <time dateTime={datePublished}>{datePublished}</time></span>
+        <span className="block text-xs text-neutral-500 mt-2">{readingTime} · Published <time dateTime={datePublished}>{new Date(datePublished + "T00:00:00Z").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })}</time></span>
       </div>
     </Link>
   );
