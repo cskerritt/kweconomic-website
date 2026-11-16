@@ -26,8 +26,11 @@ function extract(file, pattern) {
 describe("SERVICE_CITY_TOP parity with the prerender pipeline", () => {
   const meshTop = extract("src/lib/geo-links.ts", /export const SERVICE_CITY_TOP = (\d+)/);
 
-  it("matches scripts/prerender.mjs", () => {
-    expect(extract("scripts/prerender.mjs", /const SERVICE_CITY_TOP = (\d+)/)).toBe(meshTop);
+  it("is the window scripts/lib/routes.mjs enumerates (it calls geo-links' serviceCityCities, no constant of its own)", () => {
+    const routes = readFileSync(join(ROOT, "scripts/lib/routes.mjs"), "utf8");
+    expect(routes).toContain("serviceCityCities(citiesByState[st.slug] ?? [])");
+    expect(routes).toContain("geoLinks.serviceCityCities");
+    expect(routes).not.toMatch(/SERVICE_CITY_TOP/);
   });
 
   it("matches src/data/contentReadiness.ts", () => {
