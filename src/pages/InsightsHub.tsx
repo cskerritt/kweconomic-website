@@ -27,7 +27,7 @@ function formatIsoDate(iso: string): string {
 const categoryColors: Record<string, string> = {
   Legal: "bg-navy/10 text-navy",
   Economics: "bg-amber/10 text-amber-dark",
-  Valuation: "bg-forest/10 text-forest",
+  Valuation: "bg-navy/10 text-navy",
 };
 
 // Lead definition: the extractable answer to "what are the Insights articles".
@@ -106,10 +106,10 @@ export default function InsightsHub() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Articles &amp; Analysis
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               Insights on Economic Damages and Expert Testimony
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">{LEAD}</p>
@@ -143,7 +143,7 @@ export default function InsightsHub() {
               <Link
                 key={post.slug}
                 to={`/insights/${post.slug}`}
-                className="group bg-white rounded-xl border border-neutral-200 hover:border-teal hover:shadow-md transition-all flex flex-col"
+                className="kw-lift group bg-white rounded-xl border border-neutral-300 hover:shadow-raised flex flex-col"
               >
                 <div className="p-6 flex flex-col flex-1">
                   <div className="flex items-center gap-3 mb-4">
@@ -158,13 +158,13 @@ export default function InsightsHub() {
                       {formatIsoDate(post.publishedDate)}
                     </time>
                   </div>
-                  <h2 className="font-serif text-lg font-bold text-navy group-hover:text-teal transition-colors leading-snug mb-3 flex-1">
+                  <h2 className="font-serif text-lg font-bold text-navy group-hover:text-amber-dark transition-colors leading-snug mb-3 flex-1">
                     {post.title}
                   </h2>
                   <p className="text-sm text-neutral-600 leading-relaxed mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
-                  <span className="text-sm text-teal font-medium flex items-center gap-1 group-hover:gap-2 transition-all mt-auto">
+                  <span className="text-sm text-amber-dark font-medium flex items-center gap-1 mt-auto">
                     Read article <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
@@ -173,7 +173,7 @@ export default function InsightsHub() {
           </Reveal>
 
           {filtered.length === 0 && (
-            <div className="text-center py-16 text-neutral-500">
+            <div className="text-center py-16 text-neutral-600">
               No posts in this category yet.
             </div>
           )}
@@ -183,7 +183,7 @@ export default function InsightsHub() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {LIBRARY_LINKS.filter((l) => l.href !== "/insights").map((l) => (
                 <li key={l.href}>
-                  <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-teal hover:text-teal">
+                  <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
                     {l.label}
                   </Link>
                 </li>

@@ -78,17 +78,17 @@ export default function WhitePaper() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
           <div className="flex items-center gap-3 mb-5">
-            <span className="kw-enter kw-float inline-flex w-14 h-14 rounded-2xl bg-amber/15 border border-amber/30 items-center justify-center text-amber shadow-lg shadow-amber/10">
+            <span className="inline-flex w-14 h-14 rounded-2xl bg-amber/15 border border-amber/30 items-center justify-center text-amber shadow-lg shadow-amber/10">
               <Icon className="w-7 h-7" />
             </span>
-            <span className="kw-enter text-amber-light text-xs font-semibold uppercase tracking-[0.18em]">
+            <span className="kw-label text-amber-light">
               {paper.discipline} &middot; {paper.readingTime}
             </span>
           </div>
-          <h1 className="kw-enter kw-enter-1 font-serif text-4xl lg:text-5xl font-bold leading-[1.08] mb-4">
+          <h1 className="font-serif text-4xl lg:text-5xl font-bold leading-[1.08] mb-4">
             {paper.title}
           </h1>
-          <p className="kw-enter kw-enter-2 text-lg text-neutral-300">{paper.subtitle}</p>
+          <p className="text-lg text-neutral-300">{paper.subtitle}</p>
         </div>
       </section>
 
@@ -140,7 +140,7 @@ export default function WhitePaper() {
               className="group inline-flex items-center gap-2 font-serif text-xl font-bold text-navy hover:text-amber-dark transition-colors"
             >
               {service.shortName}
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-5 h-5 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
             </Link>
           </div>
         )}

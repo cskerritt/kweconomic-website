@@ -57,7 +57,7 @@ export default function AnalyticsOptOut() {
           type="button"
           onClick={toggle}
           disabled={!ready}
-          className="mt-3 bg-teal hover:bg-teal-dark text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="kw-press min-h-11 mt-3 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white text-sm font-semibold px-4 py-2 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed"
         >
           {optedOut ? "Turn analytics back on" : "Turn analytics off for this browser"}
         </button>

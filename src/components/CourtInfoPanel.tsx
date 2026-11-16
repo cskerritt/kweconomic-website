@@ -20,10 +20,10 @@ export default function CourtInfoPanel({ courts, stateName }: CourtInfoPanelProp
         className="w-full flex items-center justify-between p-6 text-left hover:bg-neutral-50 transition-colors"
       >
         <div className="flex items-center gap-3">
-          <Building2 className="w-5 h-5 text-teal" />
+          <Building2 className="w-5 h-5 text-amber" />
           <h3 className="font-serif text-lg font-semibold text-navy">{stateName} Court System</h3>
         </div>
-        {expanded ? <ChevronUp className="w-5 h-5 text-neutral-500" /> : <ChevronDown className="w-5 h-5 text-neutral-500" />}
+        {expanded ? <ChevronUp className="w-5 h-5 text-neutral-600" /> : <ChevronDown className="w-5 h-5 text-neutral-600" />}
       </button>
       {expanded && (
         <div id="court-system-panel" className="px-6 pb-6 space-y-6 border-t border-neutral-100 pt-4">
@@ -46,7 +46,7 @@ export default function CourtInfoPanel({ courts, stateName }: CourtInfoPanelProp
             <h4 className="text-sm font-semibold text-neutral-700 mb-2">Federal Districts</h4>
             <ul className="space-y-1">
               {courts.federalDistricts.map((d) => (
-                <li key={d.abbreviation} className="text-sm text-neutral-600">{d.name} <span className="font-mono text-neutral-500">({d.abbreviation})</span></li>
+                <li key={d.abbreviation} className="text-sm text-neutral-600">{d.name} <span className="font-mono text-neutral-600">({d.abbreviation})</span></li>
               ))}
             </ul>
           </div>

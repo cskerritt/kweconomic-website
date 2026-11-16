@@ -74,9 +74,9 @@ export default function KnowledgeArticle() {
       {/* Breadcrumbs */}
       <nav className="bg-neutral-50 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <ol className="flex items-center gap-1.5 text-sm text-neutral-500">
+          <ol className="flex items-center gap-1.5 text-sm text-neutral-600">
             <li>
-              <Link to="/" className="hover:text-teal transition-colors">
+              <Link to="/" className="hover:text-amber-dark transition-colors">
                 Home
               </Link>
             </li>
@@ -84,7 +84,7 @@ export default function KnowledgeArticle() {
               <ChevronRight className="w-4 h-4" />
             </li>
             <li>
-              <Link to="/knowledge" className="hover:text-teal transition-colors">
+              <Link to="/knowledge" className="hover:text-amber-dark transition-colors">
                 Knowledge
               </Link>
             </li>
@@ -100,7 +100,7 @@ export default function KnowledgeArticle() {
       <section className="bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Knowledge Center
             </p>
             <h1 className="font-serif text-3xl md:text-5xl font-bold leading-tight mb-4">
@@ -121,7 +121,7 @@ export default function KnowledgeArticle() {
 
               {keyPoints.length > 0 && (
                 <section aria-labelledby="key-points-heading" className="not-prose mb-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
-                  <h2 id="key-points-heading" className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3">
+                  <h2 id="key-points-heading" className="kw-label text-neutral-500 mb-3">
                     Key points
                   </h2>
                   <ul className="list-disc ml-5 space-y-2 text-neutral-700 text-base">
@@ -165,7 +165,7 @@ export default function KnowledgeArticle() {
             {/* Sidebar - Table of Contents */}
             <aside className="hidden lg:block">
               <div className="sticky top-24 bg-white rounded-xl border border-neutral-200 p-6">
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+                <h3 className="kw-label text-neutral-500 mb-4">
                   In This Guide
                 </h3>
                 <nav aria-label="Guide sections" className="space-y-1">
@@ -182,7 +182,7 @@ export default function KnowledgeArticle() {
                           handleScrollTo(sectionId);
                           window.history.replaceState(null, "", `#${sectionId}`);
                         }}
-                        className="block w-full text-left text-sm text-neutral-600 hover:text-teal px-2 py-1.5 rounded hover:bg-teal/5 transition-colors leading-snug"
+                        className="block w-full text-left text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded hover:bg-navy/5 transition-colors leading-snug"
                       >
                         {section.heading}
                       </a>
@@ -193,7 +193,7 @@ export default function KnowledgeArticle() {
                 <div className="mt-6 pt-6 border-t border-neutral-200">
                   <Link
                     to="/knowledge"
-                    className="text-sm text-teal hover:text-teal-dark font-medium transition-colors"
+                    className="text-sm text-amber-dark hover:text-amber-darker font-medium transition-colors"
                   >
                     &larr; All Guides
                   </Link>

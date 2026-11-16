@@ -33,13 +33,13 @@ export default function CaseTypesHubPage() {
       <div className="relative isolate overflow-hidden rounded-2xl bg-gradient-to-br from-navy via-navy to-navy-dark text-white p-8 md:p-10 mb-10">
         <div className="kw-aurora" aria-hidden="true" />
         <div className="relative z-10">
-          <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-3">
+          <p className="kw-eyebrow text-amber-light">
             Practice Areas
           </p>
-          <h1 className="kw-enter kw-enter-1 font-serif text-3xl md:text-4xl font-bold leading-tight mb-3">
+          <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-3">
             Case Types We Analyze
           </h1>
-          <p className="kw-enter kw-enter-2 text-lg text-neutral-300 leading-relaxed max-w-2xl">{LEAD}</p>
+          <p className="text-lg text-neutral-300 leading-relaxed max-w-2xl">{LEAD}</p>
         </div>
       </div>
 

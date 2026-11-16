@@ -79,10 +79,10 @@ export default function ServicesHub() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-teal-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               What We Do
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               Forensic Economics and Damages Services
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">{LEAD}</p>
@@ -135,7 +135,7 @@ export default function ServicesHub() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {RELATED_RESOURCES.map((r) => (
                 <li key={r.href}>
-                  <Link to={r.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-teal hover:text-teal">
+                  <Link to={r.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
                     {r.label}
                   </Link>
                 </li>

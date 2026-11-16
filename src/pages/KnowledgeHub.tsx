@@ -77,10 +77,10 @@ export default function KnowledgeHub() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Educational Resources
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               Knowledge Center: Economic Damages Guides for Attorneys
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">{LEAD}</p>
@@ -104,14 +104,14 @@ export default function KnowledgeHub() {
               <Link
                 key={guide.slug}
                 to={`/knowledge/${guide.slug}`}
-                className="group bg-white rounded-xl border border-neutral-200 p-6 hover:border-teal hover:shadow-md transition-all"
+                className="kw-lift group bg-white rounded-xl border border-neutral-300 p-6 hover:shadow-raised"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0">
-                    <BookOpen className="w-5 h-5 text-teal" />
+                  <div className="w-10 h-10 rounded-lg bg-navy/10 flex items-center justify-center shrink-0">
+                    <BookOpen className="w-5 h-5 text-amber" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-serif text-xl font-bold text-navy group-hover:text-teal transition-colors leading-snug mb-2">
+                    <h3 className="font-serif text-xl font-bold text-navy group-hover:text-amber-dark transition-colors leading-snug mb-2">
                       {guide.title}
                     </h3>
                     <p className="text-sm text-neutral-600 leading-relaxed mb-4">
@@ -121,7 +121,7 @@ export default function KnowledgeHub() {
                       <span className="text-xs text-neutral-500 font-mono">
                         {guide.sections.length} sections
                       </span>
-                      <span className="text-sm text-teal font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
+                      <span className="text-sm text-amber-dark font-medium flex items-center gap-1">
                         Read guide <ArrowRight className="w-4 h-4" />
                       </span>
                     </div>
@@ -136,7 +136,7 @@ export default function KnowledgeHub() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {LIBRARY_LINKS.filter((l) => l.href !== "/knowledge").map((l) => (
                 <li key={l.href}>
-                  <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-teal hover:text-teal">
+                  <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
                     {l.label}
                   </Link>
                 </li>
@@ -158,7 +158,7 @@ export default function KnowledgeHub() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 to="/schedule-consultation"
-                className="inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark text-white font-medium px-6 py-3 rounded-lg transition-colors"
+                className="kw-press min-h-11 inline-flex items-center justify-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg"
               >
                 Schedule a Consultation <ArrowRight className="w-4 h-4" />
               </Link>

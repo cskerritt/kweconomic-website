@@ -48,17 +48,17 @@ export default function CityServiceLinks({
           <Link
             key={service.slug}
             to={href}
-            className="group flex items-center justify-between bg-white rounded-xl border border-neutral-200 px-6 py-5 hover:border-teal hover:shadow-md transition-all"
+            className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-300 px-6 py-5 hover:shadow-raised"
           >
             <div>
-              <span className="font-semibold text-navy group-hover:text-teal transition-colors">
+              <span className="font-semibold text-navy group-hover:text-amber-dark transition-colors">
                 {service.name}
               </span>
-              <p className="text-sm text-neutral-500 mt-0.5 line-clamp-1">
+              <p className="text-sm text-neutral-600 mt-0.5 line-clamp-1">
                 {service.description}
               </p>
             </div>
-            <ArrowRight className="w-5 h-5 text-neutral-500 group-hover:text-teal transition-colors shrink-0 ml-4" />
+            <ArrowRight className="w-5 h-5 text-neutral-600 group-hover:text-amber-dark transition-colors shrink-0 ml-4" />
           </Link>
         ))}
       </div>

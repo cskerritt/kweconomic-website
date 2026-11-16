@@ -17,7 +17,6 @@ import {
 } from "@/lib/geo-links";
 import LocationCard from "@/components/LocationCard";
 import Reveal from "@/components/Reveal";
-import { serviceMotion } from "@/lib/service-motion";
 import type { City, Service, State } from "@/types";
 
 /**
@@ -38,8 +37,6 @@ export default function ServiceCityCrossLinks({
   cities: City[];
 }) {
   if (!hasServiceCityPages(cities, city.slug)) return null;
-
-  const motion = serviceMotion(service.slug);
   const siblingServices = serviceCityServices(pillarServices()).filter(
     (s) => s.slug !== service.slug,
   );
@@ -58,7 +55,7 @@ export default function ServiceCityCrossLinks({
   return (
     <>
       {siblingServices.length > 0 && (
-        <Reveal as="section" variant={motion.reveal}>
+        <Reveal as="section">
           <h2 className="font-serif text-2xl font-bold text-navy mb-2">
             Other Services in {city.name}
           </h2>
@@ -70,12 +67,12 @@ export default function ServiceCityCrossLinks({
               <Link
                 key={s.slug}
                 to={`/services/${s.slug}/${state.slug}/${city.slug}`}
-                className="kw-lift group flex items-center justify-between bg-white rounded-lg border border-neutral-200 px-5 py-4 hover:border-teal hover:shadow-md"
+                className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-300 px-5 py-4 hover:shadow-raised"
               >
-                <span className="font-medium text-navy group-hover:text-teal transition-colors">
+                <span className="font-medium text-navy group-hover:text-amber-dark transition-colors">
                   {s.shortName} in {city.name}
                 </span>
-                <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-teal group-hover:translate-x-1 transition-all" />
+                <ArrowRight className="w-4 h-4 text-neutral-600 group-hover:text-amber-dark motion-safe:group-hover:translate-x-1 motion-safe:transition-transform" />
               </Link>
             ))}
           </div>
@@ -83,7 +80,7 @@ export default function ServiceCityCrossLinks({
       )}
 
       {otherCities.length > 0 && (
-        <Reveal as="section" variant={motion.reveal}>
+        <Reveal as="section">
           <h2 className="font-serif text-2xl font-bold text-navy mb-2">
             {service.shortName} in Nearby {state.name} Cities
           </h2>

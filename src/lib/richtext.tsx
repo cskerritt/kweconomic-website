@@ -39,7 +39,7 @@ export function renderTextWithLinks(text: string): ReactNode[] {
         <Link
           key={`kw-link-${key++}`}
           to={route}
-          className="text-teal underline underline-offset-2 decoration-teal/40 hover:decoration-teal"
+          className="kw-link"
         >
           {anchor}
         </Link>,

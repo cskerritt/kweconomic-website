@@ -9,7 +9,7 @@ export default function PrivacyNotice({ className = "" }: { className?: string }
   return (
     <p className={`text-xs text-neutral-500 ${className}`.trim()}>
       We use this information to respond to your request. See our{" "}
-      <Link to="/privacy" className="underline hover:text-teal transition-colors">
+      <Link to="/privacy" className="underline hover:text-amber-dark transition-colors">
         Privacy Policy
       </Link>
       .

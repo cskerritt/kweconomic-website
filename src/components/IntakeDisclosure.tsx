@@ -12,7 +12,7 @@ export default function IntakeDisclosure() {
   return (
     <>
       {INTAKE_DISCLOSURE.slice(0, at)}
-      <Link to="/privacy" className="underline hover:text-teal transition-colors">
+      <Link to="/privacy" className="underline hover:text-amber-dark transition-colors">
         {INTAKE_POLICY_LINK_TEXT}
       </Link>
       {INTAKE_DISCLOSURE.slice(at + INTAKE_POLICY_LINK_TEXT.length)}

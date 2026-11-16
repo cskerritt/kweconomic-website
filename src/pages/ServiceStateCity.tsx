@@ -38,8 +38,6 @@ import FAQBlock from "@/components/FAQBlock";
 import SourcesBlock from "@/components/SourcesBlock";
 import Reveal from "@/components/Reveal";
 import ServiceCityCrossLinks from "@/components/ServiceCityCrossLinks";
-import { serviceMotion } from "@/lib/service-motion";
-import { useMagnetic } from "@/hooks/use-pointer-fx";
 import { ArrowRight, Briefcase } from "lucide-react";
 import { ICONS } from "@/lib/icons";
 
@@ -82,8 +80,6 @@ export default function ServiceStateCity() {
       : null,
   );
 
-  const magnet = useMagnetic<HTMLAnchorElement>(0.25);
-
   // Redirect up the chain if any segment is unresolvable
   if (!service) return <Navigate to="/services" replace />;
   if (!service.pillar) return <Navigate to={`/services/${service.slug}`} replace />;
@@ -100,7 +96,6 @@ export default function ServiceStateCity() {
   const cityA = cityAttr(city.name);
   const directAnswer = serviceCityDirectAnswer(ORG_NAME, service.shortName, state.name, city.name, narrative);
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
-  const motion = serviceMotion(service.slug);
 
   return (
     <div className="min-h-screen bg-neutral-50 overflow-x-clip">
@@ -140,34 +135,34 @@ export default function ServiceStateCity() {
         <div className="kw-aurora" aria-hidden="true" />
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
-          <p className="kw-enter inline-flex items-center gap-2 text-amber-light text-xs font-semibold mb-5 uppercase tracking-[0.18em]">
+          <p className="kw-eyebrow text-amber-light inline-flex items-center gap-2">
             {city.name} &middot; {state.abbreviation}
           </p>
           <div className="flex items-start gap-5">
-            <div className="kw-enter kw-enter-1 kw-float hidden sm:flex shrink-0 w-16 h-16 rounded-2xl bg-amber/15 border border-amber/30 items-center justify-center text-amber shadow-lg shadow-amber/10">
+            <div className="hidden sm:flex shrink-0 w-16 h-16 rounded-2xl bg-amber/15 border border-amber/30 items-center justify-center text-amber shadow-lg shadow-amber/10">
               <ServiceIcon className="w-8 h-8" />
             </div>
             <div className="min-w-0">
-              <h1 className="kw-enter kw-enter-1 font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4">
-                <span className="kw-gradient-text">{serviceGeoHeadingLabel(service)}</span> in {city.name}, {state.abbreviation}
+              <h1 className="font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4">
+                {serviceGeoHeadingLabel(service)} in {city.name}, {state.abbreviation}
               </h1>
-              <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-3xl mb-3">
+              <p className="text-lg text-neutral-300 max-w-3xl mb-3">
                 {directAnswer}
               </p>
               {/* The place paragraph: which area's data an analysis uses where
                   it uses local data at all. The hero above already names the
                   pillar's work, so the hub's "prepares economic damages
                   analyses" opener never prints here (F09). */}
-              <p className="kw-enter kw-enter-2 text-base text-neutral-500 max-w-3xl mb-7">
+              <p className="text-base text-neutral-300 max-w-3xl mb-7">
                 {serviceCityPlaceParagraph(service.shortName, narrative)}
               </p>
-              <div className="kw-enter kw-enter-3 flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3">
                 <Link
-                  ref={magnet}
+                 
                   to="/contact"
-                  className="kw-magnetic group inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-teal/20"
+                  className="kw-press min-h-11 group inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg"
                 >
-                  Request a Consultation <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  Request a Consultation <ArrowRight className="w-4 h-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
                 </Link>
                 <Link
                   to={`/services/${service.slug}/${state.slug}`}
@@ -192,7 +187,7 @@ export default function ServiceStateCity() {
             {/* Service description in city context. The H2 states what the
                 section explains rather than repeating the H1; the paragraph
                 names what this pillar measures and against what. */}
-            <Reveal as="section" variant={motion.reveal} className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8">
+            <Reveal as="section" className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8">
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">
                 How {service.shortName} Work Is Built for {cityA} Cases
               </h2>
@@ -208,13 +203,13 @@ export default function ServiceStateCity() {
             </Reveal>
 
             {/* Case types */}
-            <Reveal as="section" variant={motion.reveal}>
+            <Reveal as="section">
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">Case Types</h2>
               <div className="flex flex-wrap gap-2">
                 {service.caseTypes.map((ct) => (
                   <span
                     key={ct}
-                    className="inline-block bg-teal/10 text-teal font-medium text-sm px-4 py-1.5 rounded-full border border-teal/20"
+                    className="inline-block bg-navy/10 text-navy font-medium text-sm px-4 py-1.5 rounded-full border border-navy/20"
                   >
                     {getCaseType(ct)?.name ?? ct}
                   </span>
@@ -226,16 +221,16 @@ export default function ServiceStateCity() {
                 the state's other service-city pages */}
             <ServiceCityCrossLinks service={service} state={state} city={city} cities={cities} />
 
-            <Reveal variant={motion.reveal}>
+            <Reveal>
               <FAQBlock faqs={faqs} title={`Frequently asked: ${service.shortName} in ${city.name}`} />
             </Reveal>
 
             {/* The pillar's data and standards, through the registry. */}
-            <Reveal variant={motion.reveal}>
+            <Reveal>
               <SourcesBlock sources={geoSources(service)} />
             </Reveal>
 
-            <Reveal variant={motion.reveal}>
+            <Reveal>
               <ContactCTA context={`${service.shortName} in ${city.name}`} />
             </Reveal>
           </div>
@@ -255,9 +250,9 @@ export default function ServiceStateCity() {
                 {service.relevantCredentials.map((cred) => {
                   const href = credentialPagePath(cred, state.slug);
                   const chip =
-                    "inline-block bg-forest/10 text-forest font-medium text-sm px-3 py-1 rounded-full border border-forest/20";
+                    "inline-block bg-navy/10 text-navy font-medium text-sm px-3 py-1 rounded-full border border-navy/20";
                   return href ? (
-                    <Link key={cred} to={href} className={`${chip} hover:bg-forest/20 transition-colors`}>
+                    <Link key={cred} to={href} className={`${chip} hover:bg-navy/20 transition-colors`}>
                       {cred}
                     </Link>
                   ) : (
@@ -274,25 +269,25 @@ export default function ServiceStateCity() {
               <h3 className="font-serif text-lg font-bold text-navy mb-1">Related Pages</h3>
               <Link
                 to={`/services/${service.slug}/${state.slug}`}
-                className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 <ArrowRight className="w-4 h-4" /> {service.shortName} in {place}
               </Link>
               <Link
                 to={`/locations/${state.slug}/${city.slug}`}
-                className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 <ArrowRight className="w-4 h-4" /> {city.name} Location Page
               </Link>
               <Link
                 to={`/locations/${state.slug}`}
-                className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 <ArrowRight className="w-4 h-4" /> {state.name} Locations
               </Link>
               <Link
                 to="/services"
-                className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 <ArrowRight className="w-4 h-4" /> All Services
               </Link>

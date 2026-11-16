@@ -109,10 +109,10 @@ export default function CaseStudies() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Illustrative Engagements
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               How an Economic Damages Analysis Is Built
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
@@ -199,17 +199,17 @@ export default function CaseStudies() {
             {caseStudies.map((cs) => (
               <article
                 key={cs.title}
-                className="bg-white rounded-xl border border-neutral-200 p-6 md:p-8 hover:border-amber hover:shadow-sm transition-all"
+                className="bg-white rounded-xl border border-neutral-300 p-6 md:p-8 hover:shadow-raised"
               >
-                <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2">
+                <p className="kw-label text-neutral-500 mb-2">
                   Illustrative engagement
                 </p>
                 <h2 className="font-serif text-xl md:text-2xl font-bold text-navy mb-3">{cs.title}</h2>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                <h3 className="kw-label text-neutral-500 mb-1">
                   Context
                 </h3>
                 <p className="text-sm text-neutral-700 leading-relaxed mb-5">{cs.context}</p>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2">
+                <h3 className="kw-label text-neutral-500 mb-2">
                   Approach
                 </h3>
                 <ul className="space-y-1.5 mb-5">
@@ -220,7 +220,7 @@ export default function CaseStudies() {
                     </li>
                   ))}
                 </ul>
-                <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">
+                <h3 className="kw-label text-neutral-500 mb-1">
                   What the analysis delivered
                 </h3>
                 <p className="text-sm text-neutral-700 leading-relaxed mb-5">{cs.result}</p>
@@ -251,7 +251,7 @@ export default function CaseStudies() {
             </div>
             <Link
               to="/services"
-              className="inline-flex items-center gap-2 bg-amber hover:bg-amber-dark text-white font-medium px-5 py-2.5 rounded-lg transition-colors text-sm whitespace-nowrap"
+              className="kw-press min-h-11 inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-5 py-2.5 rounded-lg text-sm whitespace-nowrap"
             >
               View All Services <ArrowRight className="w-4 h-4" />
             </Link>

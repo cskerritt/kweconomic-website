@@ -64,19 +64,43 @@ function Dropdown({
     }));
   };
   const ref = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const menuId = `nav-dropdown-${label.toLowerCase().replace(/\s+/g, "-")}`;
 
-  // Close on click outside
+  // Close on a press outside, for every pointer (mouse, touch and pen).
   useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
+    function handlePointerOutside(e: PointerEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setTracker((cur) => ({ open: false, path: cur.path }));
       }
     }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("pointerdown", handlePointerOutside);
+    return () => document.removeEventListener("pointerdown", handlePointerOutside);
   }, []);
+
+  // While a panel is open, Escape closes it and returns focus to its button only when focus was in the dropdown, so
+  // an Escape pressed elsewhere never moves focus; focus moving outside the dropdown closes it too. Document
+  // listeners, so the wrapper div carries no key or focus handler (jsx-a11y).
+  useEffect(() => {
+    if (!open) return;
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key !== "Escape") return;
+      setTracker((cur) => ({ open: false, path: cur.path }));
+      if (ref.current?.contains(document.activeElement)) buttonRef.current?.focus();
+    }
+    function handleFocusOutside(e: FocusEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setTracker((cur) => ({ open: false, path: cur.path }));
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("focusin", handleFocusOutside);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("focusin", handleFocusOutside);
+    };
+  }, [open]);
 
   const handleMouseEnter = () => {
     clearTimeout(timeoutRef.current);
@@ -88,33 +112,35 @@ function Dropdown({
     timeoutRef.current = setTimeout(() => setOpen(false), 300);
   };
 
+  // Hover opens and closes a panel for a mouse only; touch and pen use the click toggle alone.
   return (
     <div
       ref={ref}
       className="relative"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onPointerEnter={(e) => { if (e.pointerType === "mouse") handleMouseEnter(); }}
+      onPointerLeave={(e) => { if (e.pointerType === "mouse") handleMouseLeave(); }}
     >
       <button
+        ref={buttonRef}
         onClick={() => setOpen((prev) => !prev)}
-        className="text-sm hover:text-amber transition-colors flex items-center gap-1 py-4"
+        className="text-sm hover:text-amber-light transition-colors flex items-center gap-1 py-4"
         aria-expanded={open}
         aria-haspopup="true"
         aria-controls={menuId}
       >
-        {label} <ChevronDown className={`w-3 h-3 transition-transform ${open ? "rotate-180" : ""}`} />
+        {label} <ChevronDown className={`w-3 h-3 motion-safe:transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
         <>
           {/* Invisible bridge between button and dropdown - prevents close on diagonal mouse */}
           <div className="absolute top-full left-0 w-64 h-3" />
-          <div id={menuId} className="absolute top-full left-0 mt-3 w-64 bg-white rounded-lg shadow-xl border border-neutral-200 py-2 z-50">
+          <div id={menuId} className="kw-pop absolute top-full left-0 mt-3 w-64 rounded-xl border border-neutral-200 bg-white p-1.5 shadow-floating z-50">
             {links.map((link) => (
               <Link
                 key={link.href}
                 to={link.href}
                 onClick={() => setOpen(false)}
-                className="block px-4 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 hover:text-amber-dark transition-colors"
+                className="block rounded-md px-3 py-2 pointer-coarse:py-3 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-navy transition-colors"
               >
                 {link.name}
               </Link>
@@ -188,21 +214,21 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-6">
-            <Link to="/about" className="text-sm hover:text-amber transition-colors">
+            <Link to="/about" className="text-sm hover:text-amber-light transition-colors py-4">
               About
             </Link>
             <Dropdown label="Services" links={serviceLinks} />
-            <Link to="/case-types" className="text-sm hover:text-amber transition-colors">
+            <Link to="/case-types" className="text-sm hover:text-amber-light transition-colors py-4">
               Case Types
             </Link>
-            <Link to="/locations" className="text-sm hover:text-amber transition-colors">
+            <Link to="/locations" className="text-sm hover:text-amber-light transition-colors py-4">
               Locations
             </Link>
-            <Link to="/team" className="text-sm hover:text-amber transition-colors">
+            <Link to="/team" className="text-sm hover:text-amber-light transition-colors py-4">
               Team
             </Link>
             <Dropdown label="Resources" links={resourceLinks} />
-            <Link to="/contact" className="text-sm hover:text-amber transition-colors">
+            <Link to="/contact" className="text-sm hover:text-amber-light transition-colors py-4">
               Contact
             </Link>
           </nav>
@@ -217,7 +243,7 @@ export default function Header() {
             </a>
             <Link
               to="/schedule-consultation"
-              className="bg-amber hover:bg-amber-dark text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors whitespace-nowrap"
+              className="kw-press rounded-lg min-h-11 bg-amber-dark text-white font-semibold hover:bg-amber-darker active:bg-amber-darker inline-flex items-center text-sm px-4 py-2 whitespace-nowrap"
             >
               Schedule Consultation
             </Link>
@@ -227,12 +253,12 @@ export default function Header() {
             <a
               href={PHONE_HREF}
               aria-label={`Call ${ORG_SHORT} at ${PHONE_DISPLAY}`}
-              className="inline-flex items-center justify-center w-10 h-10 rounded-md hover:bg-white/10 transition-colors"
+              className="kw-press inline-flex size-11 items-center justify-center rounded-lg hover:bg-white/10"
             >
               <Phone className="w-5 h-5" />
             </a>
             <button
-              className="p-2"
+              className="kw-press inline-flex size-11 items-center justify-center rounded-lg hover:bg-white/10"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
               aria-expanded={mobileOpen}
@@ -257,17 +283,17 @@ export default function Header() {
           small screens. Same label and destination as the desktop CTA: the
           practice confirms scope and fee after a conflict check, so the action
           is a consultation request everywhere, never a quote. */}
-      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-2 border-t border-navy-dark bg-navy text-white shadow-[0_-4px_12px_rgba(0,0,0,0.15)]">
+      <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 grid grid-cols-2 border-t border-white/10 bg-navy text-white">
         <a
           href={PHONE_HREF}
-          className="flex items-center justify-center gap-2 py-3 text-sm font-medium hover:bg-navy-light transition-colors"
+          className="flex items-center justify-center gap-2 py-3 text-sm font-medium hover:bg-white/10 transition-colors"
         >
           <Phone className="w-4 h-4" />
           Call
         </a>
         <Link
           to="/schedule-consultation"
-          className="flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-amber text-white hover:bg-amber-dark transition-colors"
+          className="flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-amber-dark text-white hover:bg-amber-darker transition-colors"
         >
           Request a Consultation
         </Link>

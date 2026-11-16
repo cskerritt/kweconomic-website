@@ -47,10 +47,10 @@ export default function RelatedServices({ caseTypes, stateSlug }: RelatedService
           <Link
             key={service.slug}
             to={`/services/${service.slug}/${stateSlug}`}
-            className="group flex items-center justify-between bg-white rounded-xl border border-neutral-200 px-5 py-4 hover:border-teal hover:shadow-md transition-all"
+            className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-300 px-5 py-4 hover:shadow-raised"
           >
             <div>
-              <span className="font-semibold text-navy text-sm group-hover:text-teal transition-colors">
+              <span className="font-semibold text-navy text-sm group-hover:text-amber-dark transition-colors">
                 {service.shortName ?? service.name}
               </span>
               <div className="flex flex-wrap gap-1 mt-1">
@@ -60,14 +60,14 @@ export default function RelatedServices({ caseTypes, stateSlug }: RelatedService
                   .map((ct) => (
                     <span
                       key={ct}
-                      className="text-xs text-teal bg-teal/10 px-2 py-0.5 rounded-full"
+                      className="text-xs text-navy bg-navy/10 px-2 py-0.5 rounded-full"
                     >
                       {getCaseType(ct)?.name ?? ct}
                     </span>
                   ))}
               </div>
             </div>
-            <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-teal transition-colors shrink-0 ml-3" />
+            <ArrowRight className="w-4 h-4 text-neutral-600 group-hover:text-amber-dark transition-colors shrink-0 ml-3" />
           </Link>
         ))}
       </div>

@@ -36,7 +36,7 @@ import {
 const PAGE_URL = `${ORG_URL}/contact`;
 
 const INPUT =
-  "w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent";
+  "kw-field";
 
 export default function Contact() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error" | "invalid">("idle");
@@ -127,10 +127,10 @@ export default function Contact() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-teal-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Get in Touch
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               Contact {ORG_NAME}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
@@ -167,7 +167,7 @@ export default function Contact() {
           </p>
           <Link
             to="/schedule-consultation"
-            className="inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-medium px-5 py-3 rounded-lg transition-colors"
+            className="kw-press min-h-11 inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-5 py-3 rounded-lg"
           >
             Schedule a consultation
           </Link>
@@ -190,7 +190,7 @@ export default function Contact() {
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3 text-neutral-700">
-                    <MapPin className="w-5 h-5 text-teal shrink-0 mt-0.5" />
+                    <MapPin className="w-5 h-5 text-amber shrink-0 mt-0.5" />
                     <span>
                       {OFFICES[0].streetAddress}
                       <br />
@@ -198,14 +198,14 @@ export default function Contact() {
                     </span>
                   </li>
                   <li className="flex items-center gap-3 text-neutral-700">
-                    <Phone className="w-5 h-5 text-teal shrink-0" />
-                    <a href={telHref(ORG_PHONE)} className="hover:text-teal transition-colors font-medium">
+                    <Phone className="w-5 h-5 text-amber shrink-0" />
+                    <a href={telHref(ORG_PHONE)} className="hover:text-amber-dark transition-colors font-medium">
                       {ORG_PHONE_DISPLAY}
                     </a>
                   </li>
                   <li className="flex items-center gap-3 text-neutral-700">
-                    <Mail className="w-5 h-5 text-teal shrink-0" />
-                    <a href={`mailto:${ORG_EMAIL}`} className="hover:text-teal transition-colors">
+                    <Mail className="w-5 h-5 text-amber shrink-0" />
+                    <a href={`mailto:${ORG_EMAIL}`} className="hover:text-amber-dark transition-colors">
                       {ORG_EMAIL}
                     </a>
                   </li>
@@ -219,12 +219,12 @@ export default function Contact() {
                 </h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3 text-neutral-700">
-                    <MapPin className="w-5 h-5 text-teal shrink-0 mt-0.5" />
+                    <MapPin className="w-5 h-5 text-amber shrink-0 mt-0.5" />
                     <span>Richmond, Virginia</span>
                   </li>
                   <li className="flex items-center gap-3 text-neutral-700">
-                    <Phone className="w-5 h-5 text-teal shrink-0" />
-                    <a href={telHref(ORG_PHONE_VA)} className="hover:text-teal transition-colors font-medium">
+                    <Phone className="w-5 h-5 text-amber shrink-0" />
+                    <a href={telHref(ORG_PHONE_VA)} className="hover:text-amber-dark transition-colors font-medium">
                       {ORG_PHONE_VA_DISPLAY}
                     </a>
                   </li>
@@ -234,7 +234,7 @@ export default function Contact() {
               {/* Hours */}
               <div className="bg-white rounded-xl border border-neutral-200 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Clock className="w-5 h-5 text-teal" />
+                  <Clock className="w-5 h-5 text-amber" />
                   <h3 className="font-serif text-lg font-bold text-navy">Office Hours</h3>
                 </div>
                 <ul className="space-y-2 text-sm text-neutral-700">
@@ -244,7 +244,7 @@ export default function Contact() {
                   </li>
                   <li className="flex justify-between">
                     <span>Saturday - Sunday</span>
-                    <span className="font-medium text-neutral-500">Closed</span>
+                    <span className="font-medium text-neutral-600">Closed</span>
                   </li>
                 </ul>
                 <p className="text-xs text-neutral-500 mt-4">
@@ -258,11 +258,11 @@ export default function Contact() {
               <h2 className="font-serif text-2xl font-bold text-navy mb-3">Send Us a Message</h2>
               <a
                 href={telHref(ORG_PHONE)}
-                className="flex items-center gap-3 mb-5 rounded-lg border border-teal/40 bg-teal/5 px-4 py-3 text-sm text-navy hover:bg-teal/10 transition-colors"
+                className="flex items-center gap-3 mb-5 rounded-lg border border-navy/40 bg-navy/5 px-4 py-3 text-sm text-navy hover:bg-navy/10 transition-colors"
               >
-                <Phone className="w-5 h-5 text-teal shrink-0" />
+                <Phone className="w-5 h-5 text-amber shrink-0" />
                 <span>
-                  <strong className="text-teal-dark">Tap to call</strong> {ORG_PHONE_DISPLAY}
+                  <strong className="text-navy">Tap to call</strong> {ORG_PHONE_DISPLAY}
                 </span>
               </a>
 
@@ -297,7 +297,7 @@ export default function Contact() {
                 className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8 space-y-5 scroll-mt-24"
               >
                 {status === "sent" && (
-                  <div className="rounded-lg bg-teal/10 border border-teal/30 text-teal-dark px-4 py-3 text-sm font-medium">
+                  <div className="rounded-lg bg-navy/10 border border-navy/30 text-navy px-4 py-3 text-sm font-medium">
                     Thank you - your message has been received. We will follow up within one business day.
                   </div>
                 )}
@@ -310,7 +310,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Name <span className="text-teal">*</span>
+                    Name <span className="text-amber-dark">*</span>
                   </label>
                   <input
                     id="name"
@@ -326,7 +326,7 @@ export default function Contact() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Email Address <span className="text-teal">*</span>
+                      Email Address <span className="text-amber-dark">*</span>
                     </label>
                     <input
                       id="email"
@@ -340,7 +340,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <label htmlFor="phone" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Phone Number <span className="text-teal">*</span>
+                      Phone Number <span className="text-amber-dark">*</span>
                     </label>
                     <input
                       id="phone"
@@ -370,7 +370,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="case-type" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Case Type <span className="text-teal">*</span>
+                    Case Type <span className="text-amber-dark">*</span>
                   </label>
                   <select
                     id="case-type"
@@ -389,7 +389,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Message <span className="text-teal">*</span>
+                    Message <span className="text-amber-dark">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -415,7 +415,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="w-full bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="kw-press min-h-11 w-full bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {status === "sending" ? "Sending..." : "Send Message - Reply in 1 Business Day"}
                 </button>

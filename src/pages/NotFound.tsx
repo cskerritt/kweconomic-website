@@ -25,7 +25,7 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 text-center">
-      <p className="text-amber-dark text-xs font-semibold uppercase tracking-[0.18em] mb-3">Error 404</p>
+      <p className="kw-eyebrow text-amber-dark">Error 404</p>
       <h1 className="font-serif text-4xl md:text-5xl font-bold text-navy mb-4">Page not found</h1>
       <p className="text-neutral-600 text-lg mb-8 max-w-xl">
         The address may have changed, or the page may never have existed. These pages cover
@@ -36,7 +36,7 @@ export default function NotFound() {
           <li key={l.href}>
             <Link
               to={l.href}
-              className="kw-lift group block h-full rounded-lg border border-neutral-200 bg-white p-5 hover:border-amber hover:shadow-md"
+              className="kw-lift group block h-full rounded-xl border border-neutral-300 bg-white p-5 hover:shadow-raised"
             >
               <span className="block font-serif text-lg font-bold text-navy group-hover:text-amber-dark transition-colors">
                 {l.label}
@@ -55,7 +55,7 @@ export default function NotFound() {
       </p>
       <Link
         to="/"
-        className="bg-teal hover:bg-teal-dark text-white px-6 py-3 rounded-lg font-medium transition-colors"
+        className="kw-press min-h-11 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white px-6 py-3 rounded-lg font-semibold"
       >
         Return Home
       </Link>

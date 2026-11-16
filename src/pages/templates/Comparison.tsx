@@ -56,7 +56,7 @@ export default function Comparison() {
           <h2 className="font-semibold text-navy">{c.a.label}</h2>
           <p className="text-sm text-neutral-700 mt-2">{renderTextWithLinks(c.a.summary)}</p>
           {c.a.url && (
-            <Link to={c.a.url} className="mt-3 inline-block text-sm font-medium text-teal hover:text-teal-dark">
+            <Link to={c.a.url} className="mt-3 inline-block text-sm font-medium text-amber-dark hover:text-amber-darker">
               Learn more about {c.a.label} &rarr;
             </Link>
           )}
@@ -65,14 +65,15 @@ export default function Comparison() {
           <h2 className="font-semibold text-navy">{c.b.label}</h2>
           <p className="text-sm text-neutral-700 mt-2">{renderTextWithLinks(c.b.summary)}</p>
           {c.b.url && (
-            <Link to={c.b.url} className="mt-3 inline-block text-sm font-medium text-teal hover:text-teal-dark">
+            <Link to={c.b.url} className="mt-3 inline-block text-sm font-medium text-amber-dark hover:text-amber-darker">
               Learn more about {c.b.label} &rarr;
             </Link>
           )}
         </div>
       </div>
 
-      <table className="w-full border border-neutral-200 mb-8">
+      <div className="overflow-x-auto mb-8">
+      <table className="w-full border border-neutral-200">
         <caption className="sr-only">{c.a.label} compared with {c.b.label}, by dimension</caption>
         <thead className="bg-neutral-50">
           <tr>
@@ -91,6 +92,7 @@ export default function Comparison() {
           ))}
         </tbody>
       </table>
+      </div>
 
       <section id="when-a" className="mb-6">
         <h2 className="font-serif text-2xl text-navy mb-2">When to use {c.a.label}</h2>

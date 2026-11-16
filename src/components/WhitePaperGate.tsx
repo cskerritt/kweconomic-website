@@ -120,7 +120,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Full name"
-                className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:border-amber focus:ring-2 focus:ring-amber/30 outline-none"
+                className="kw-field"
               />
               <input
                 type="email"
@@ -129,14 +129,14 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Work email"
-                className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm focus:border-amber focus:ring-2 focus:ring-amber/30 outline-none"
+                className="kw-field"
               />
               <Turnstile onToken={setTurnstileToken} />
               <HoneypotField onChange={setCompanyWebsite} />
               <button
                 type="submit"
                 disabled={status === "submitting"}
-                className="kw-magnetic group w-full inline-flex items-center justify-center gap-2 bg-teal hover:bg-teal-dark disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+                className="kw-press min-h-11 group w-full inline-flex items-center justify-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker disabled:opacity-60 text-white font-semibold px-6 py-3 rounded-lg"
               >
                 {status === "submitting" ? "Unlocking..." : (
                   <>

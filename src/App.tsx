@@ -1,10 +1,9 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigationType } from "react-router-dom";
 import { lazy, Suspense, useEffect, type ReactNode } from "react";
 import { initAnalytics, trackPageView } from "@/lib/analytics";
 import Loading from "@/components/Loading";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import ScrollProgress from "@/components/ScrollProgress";
 
 const Home = lazy(() => import("@/pages/Home"));
 const About = lazy(() => import("@/pages/About"));
@@ -56,23 +55,37 @@ const JurisdictionsHubPage = lazy(() => import("@/pages/hubs/JurisdictionsHubPag
 const FederalDistrict = lazy(() => import("@/pages/templates/FederalDistrict"));
 const AttorneysHubPage = lazy(() => import("@/pages/hubs/AttorneysHubPage"));
 
-/** Re-keys on pathname so routed content replays a subtle fade-up on each navigation. */
+/**
+ * Re-keys on pathname so the routed content remounts on each navigation (no entrance runs, spec 3.2). ScrollToTop is
+ * its first child, so its effect runs once the route's own content, a lazy chunk included, is in the DOM (spec 5.10).
+ */
 function PageTransition({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   return (
-    <div key={pathname} className="kw-page-enter">
+    <div key={pathname}>
+      <ScrollToTop />
       {children}
     </div>
   );
 }
 
-/** Resets scroll on client-side navigation; in-page anchor links keep their hash target. */
+/**
+ * A client-side navigation lands at once at the top of the new page, or on its fragment's target, 80px down under the
+ * scroll padding (spec 5.10): Get a Quote's /contact#request-consultation lands on the form's heading from any page.
+ * Back, Forward and the first load keep the browser's own scroll restoration and fragment jump, and a native in-page
+ * fragment link (a guide's TOC) arrives as a POP too, so it stays the browser's, smooth where motion is allowed. It
+ * renders nothing, so the prerender and hydration are unchanged.
+ */
 function ScrollToTop() {
-  const { pathname, hash } = useLocation();
+  const { pathname, search, hash } = useLocation();
+  const navigationType = useNavigationType();
   useEffect(() => {
-    if (hash) return;
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [pathname, hash]);
+    // Back, Forward and the first load keep the browser's own scroll restoration and fragment jump.
+    if (navigationType === "POP") return;
+    const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+    if (target) target.scrollIntoView({ block: "start", behavior: "instant" });
+    else window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname, search, hash, navigationType]);
   return null;
 }
 
@@ -92,9 +105,7 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <a href="#main-content" className="skip-link">Skip to main content</a>
-      <ScrollToTop />
       <AnalyticsTracker />
-      <ScrollProgress />
       <Header />
       {/* min-h-screen: the prerendered shells are head-only, so on first paint the
           route content is still a lazy chunk. Without a reserved full viewport the

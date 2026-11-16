@@ -27,14 +27,14 @@ export default function PaginateNav({ prev, next, backLabel = "Home", backHref =
             &larr; Prev: {prev.label}
           </Link>
         ) : (
-          <span className="text-neutral-500">No previous</span>
+          <span className="text-neutral-600">No previous</span>
         )}
         {next ? (
           <Link to={next.href} className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
             Next: {next.label} &rarr;
           </Link>
         ) : (
-          <span className="text-neutral-500">No next</span>
+          <span className="text-neutral-600">No next</span>
         )}
       </div>
     </nav>

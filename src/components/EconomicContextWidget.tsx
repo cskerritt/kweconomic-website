@@ -53,19 +53,19 @@ export default function EconomicContextWidget({
       <dl className="space-y-3 text-sm">
         {hasPopulation && (
           <div className="flex justify-between gap-4">
-            <dt className="text-neutral-500">Population</dt>
+            <dt className="text-neutral-600">Population</dt>
             <dd className="font-mono font-medium text-navy">{population.toLocaleString("en-US")}</dd>
           </div>
         )}
         {msaName && (
           <div>
-            <dt className="text-neutral-500">Metropolitan area</dt>
+            <dt className="text-neutral-600">Metropolitan area</dt>
             <dd className="font-medium text-navy mt-0.5">{msaName}</dd>
           </div>
         )}
         {hasIncome && (
           <div className="flex justify-between gap-4">
-            <dt className="text-neutral-500">Median household income</dt>
+            <dt className="text-neutral-600">Median household income</dt>
             <dd className="font-mono font-medium text-navy">
               {medianHouseholdIncome.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 })}
             </dd>
@@ -73,7 +73,7 @@ export default function EconomicContextWidget({
         )}
         {forum && (
           <div>
-            <dt className="text-neutral-500">Workers' compensation forum</dt>
+            <dt className="text-neutral-600">Workers' compensation forum</dt>
             <dd className="font-medium text-navy mt-0.5">{forum}</dd>
           </div>
         )}

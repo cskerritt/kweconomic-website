@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Phone } from "lucide-react";
-import { useMagnetic } from "@/hooks/use-pointer-fx";
 import { ORG_NAME, ORG_PHONE, ORG_PHONE_DISPLAY, telHref } from "@/lib/brand";
 
 const CORE_SERVICES = [
@@ -20,12 +19,11 @@ interface NextStepsProps {
  * content template so no page is a dead end.
  */
 export default function NextSteps({ context }: NextStepsProps) {
-  const magnet = useMagnetic<HTMLAnchorElement>(0.25);
   return (
     <section className="relative isolate overflow-hidden rounded-xl bg-gradient-to-br from-navy via-navy to-navy-dark text-white p-8">
       <div className="kw-aurora opacity-60" aria-hidden="true" />
       <div className="relative z-10">
-        <p className="text-amber-light text-xs font-semibold uppercase tracking-[0.18em] mb-2">
+        <p className="kw-eyebrow text-amber-light">
           Recommended next step
         </p>
         <h2 className="font-serif text-2xl font-bold mb-3">
@@ -42,7 +40,7 @@ export default function NextSteps({ context }: NextStepsProps) {
             <Link
               key={s.slug}
               to={`/services/${s.slug}`}
-              className="kw-lift inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-medium transition-colors"
+              className="kw-lift inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-medium"
             >
               {s.label} <ArrowRight className="w-3.5 h-3.5 text-amber" />
             </Link>
@@ -51,11 +49,11 @@ export default function NextSteps({ context }: NextStepsProps) {
 
         <div className="flex flex-col sm:flex-row gap-3">
           <Link
-            ref={magnet}
+           
             to="/contact"
-            className="kw-magnetic group inline-flex items-center justify-center gap-2 bg-amber hover:bg-amber-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-amber/20"
+            className="kw-press min-h-11 group inline-flex items-center justify-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg"
           >
-            Request a Consultation <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            Request a Consultation <ArrowRight className="w-4 h-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
           </Link>
           <a
             href={telHref(ORG_PHONE)}

@@ -89,10 +89,10 @@ export default function FAQ() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-teal-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Common Questions
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               Frequently Asked Questions
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
@@ -134,9 +134,9 @@ export default function FAQ() {
                     >
                       <span>{faq.question}</span>
                       {isOpen ? (
-                        <ChevronUp className="w-5 h-5 text-teal shrink-0" aria-hidden="true" />
+                        <ChevronUp className="w-5 h-5 text-amber shrink-0" aria-hidden="true" />
                       ) : (
-                        <ChevronDown className="w-5 h-5 text-neutral-500 shrink-0" aria-hidden="true" />
+                        <ChevronDown className="w-5 h-5 text-neutral-600 shrink-0" aria-hidden="true" />
                       )}
                     </button>
                   </h3>

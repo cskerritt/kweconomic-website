@@ -38,10 +38,10 @@ export default function Privacy({ flags = PRIVACY_BUILD_FLAGS }: { flags?: Priva
             <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-3">
               Privacy Policy
             </h1>
-            <p className="text-sm text-neutral-500 font-mono">
+            <p className="text-sm text-neutral-300 font-mono">
               Effective Date: <time dateTime={EFFECTIVE_DATE.iso}>{EFFECTIVE_DATE.label}</time>
             </p>
-            <p className="text-sm text-neutral-500 font-mono mt-1">
+            <p className="text-sm text-neutral-300 font-mono mt-1">
               Last revised: <time dateTime={PRIVACY_LAST_REVISED.iso}>{PRIVACY_LAST_REVISED.label}</time>
             </p>
           </div>
@@ -72,12 +72,12 @@ export default function Privacy({ flags = PRIVACY_BUILD_FLAGS }: { flags?: Priva
             ))}
           </div>
 
-          <div className="mt-12 pt-8 border-t border-neutral-200 flex flex-wrap gap-4 text-sm text-neutral-500">
-            <Link to="/terms" className="hover:text-teal transition-colors">
+          <div className="mt-12 pt-8 border-t border-neutral-200 flex flex-wrap gap-4 text-sm text-neutral-600">
+            <Link to="/terms" className="hover:text-amber-dark transition-colors">
               Terms of Service
             </Link>
             <span>&middot;</span>
-            <Link to="/contact" className="hover:text-teal transition-colors">
+            <Link to="/contact" className="hover:text-amber-dark transition-colors">
               Contact Us
             </Link>
           </div>
