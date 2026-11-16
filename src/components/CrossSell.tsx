@@ -28,7 +28,7 @@ export default function CrossSell() {
         <p className="mt-2 max-w-2xl text-neutral-600">Economic damages rarely stand alone. When a matter also needs a vocational opinion on post-injury work capacity or a life care plan to be authored, our sister practices coordinate directly with the economist so the opinions reconcile.</p>
         <div className="mt-8 grid gap-6 md:grid-cols-2">
           {SISTER.map(({ name, href, blurb, Icon }) => (
-            <a key={href} href={href} rel="noopener" className="kw-lift group rounded-xl border border-neutral-300 bg-white p-6 hover:shadow-raised">
+            <a key={href} href={href} rel="noopener" className="kw-lift group rounded-xl border border-neutral-200 hover:border-neutral-300 bg-white p-6 hover:shadow-raised">
               <Icon className="h-6 w-6 text-amber" aria-hidden="true" />
               <h3 className="mt-3 font-semibold text-navy group-hover:text-amber-dark">{name}</h3>
               <p className="mt-1 text-sm text-neutral-600">{blurb}</p>

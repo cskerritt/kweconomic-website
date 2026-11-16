@@ -6,7 +6,7 @@ export interface RelatedItem {
   description?: string;
 }
 
-const CARD = "block rounded-lg border border-neutral-200 p-4 hover:border-navy hover:shadow transition";
+const CARD = "kw-lift block rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised p-4";
 
 // An absolute URL (a sister-practice page, an issuer site) renders as a plain
 // anchor: react-router's Link cannot take an external destination.

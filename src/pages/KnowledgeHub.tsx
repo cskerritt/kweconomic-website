@@ -104,7 +104,7 @@ export default function KnowledgeHub() {
               <Link
                 key={guide.slug}
                 to={`/knowledge/${guide.slug}`}
-                className="kw-lift group bg-white rounded-xl border border-neutral-300 p-6 hover:shadow-raised"
+                className="kw-lift group bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 p-6 hover:shadow-raised"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-10 h-10 rounded-lg bg-navy/10 flex items-center justify-center shrink-0">
@@ -136,7 +136,7 @@ export default function KnowledgeHub() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {LIBRARY_LINKS.filter((l) => l.href !== "/knowledge").map((l) => (
                 <li key={l.href}>
-                  <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+                  <Link to={l.href} className="font-medium kw-link">
                     {l.label}
                   </Link>
                 </li>

@@ -37,7 +37,7 @@ import { serviceCaseStateTitle } from "@/lib/page-titles.mjs";
 import { capFirst, withArticle, workPhrase, serviceCaseStateDescription } from "@/lib/service-prose.mjs";
 import NotFound from "@/pages/NotFound";
 
-const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK = "kw-link";
 
 // The state modules are keyed on the case type's category, the same way
 // CaseTypeState.tsx keys them: injury and death matters get the wrongful

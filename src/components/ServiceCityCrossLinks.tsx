@@ -67,7 +67,7 @@ export default function ServiceCityCrossLinks({
               <Link
                 key={s.slug}
                 to={`/services/${s.slug}/${state.slug}/${city.slug}`}
-                className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-300 px-5 py-4 hover:shadow-raised"
+                className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 px-5 py-4 hover:shadow-raised"
               >
                 <span className="font-medium text-navy group-hover:text-amber-dark transition-colors">
                   {s.shortName} in {city.name}

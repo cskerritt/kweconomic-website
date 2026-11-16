@@ -53,7 +53,7 @@ export default function MethodsHubPage() {
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {methods.map((m) => (
             <li key={m.slug}>
-              <Link to={`/methods/${m.slug}`} className="block rounded-lg border border-neutral-200 p-4 hover:border-navy hover:shadow transition">
+              <Link to={`/methods/${m.slug}`} className="kw-lift block rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised p-4">
                 <div className="font-semibold text-navy">{m.name}</div>
                 {m.summary && <div className="text-sm text-neutral-600 mt-1 line-clamp-2">{m.summary}</div>}
               </Link>
@@ -67,7 +67,7 @@ export default function MethodsHubPage() {
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {LIBRARY_LINKS.filter((l) => l.href !== "/methods").map((l) => (
             <li key={l.href}>
-              <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to={l.href} className="font-medium kw-link">
                 {l.label}
               </Link>
             </li>

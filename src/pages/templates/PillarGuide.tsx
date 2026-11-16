@@ -56,7 +56,7 @@ export default function PillarGuide() {
         {guide.sections?.map((s) => (
           <section key={s.id} id={s.id} className="mb-8">
             <h2 className="font-serif text-2xl text-navy mb-3">{s.heading}</h2>
-            <div className="prose prose-neutral max-w-none" dangerouslySetInnerHTML={{ __html: s.bodyHtml }} />
+            <div className="kw-prose" dangerouslySetInnerHTML={{ __html: s.bodyHtml }} />
           </section>
         ))}
 

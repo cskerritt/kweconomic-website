@@ -25,7 +25,7 @@ export default function ResponsibilityLine({ subject, plural = true, className =
       {line.lead}
       <Link
         to={`/team/${line.expert.slug}`}
-        className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+        className="font-semibold kw-link"
       >
         {line.expert.name}
       </Link>

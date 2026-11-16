@@ -30,7 +30,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import NotFound from "@/pages/NotFound";
 
 const LINK_CLASS =
-  "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+  "kw-link";
 
 export default function JourneyStage() {
   const { stage = "", caseTypeSlug = "" } = useParams();

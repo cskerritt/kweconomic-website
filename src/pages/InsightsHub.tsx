@@ -143,7 +143,7 @@ export default function InsightsHub() {
               <Link
                 key={post.slug}
                 to={`/insights/${post.slug}`}
-                className="kw-lift group bg-white rounded-xl border border-neutral-300 hover:shadow-raised flex flex-col"
+                className="kw-lift group bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised flex flex-col"
               >
                 <div className="p-6 flex flex-col flex-1">
                   <div className="flex items-center gap-3 mb-4">
@@ -183,7 +183,7 @@ export default function InsightsHub() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {LIBRARY_LINKS.filter((l) => l.href !== "/insights").map((l) => (
                 <li key={l.href}>
-                  <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+                  <Link to={l.href} className="font-medium kw-link">
                     {l.label}
                   </Link>
                 </li>

@@ -10,7 +10,7 @@ interface LocationCardProps {
 
 export default function LocationCard({ name, href, subtitle, stat }: LocationCardProps) {
   return (
-    <Link to={href} className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-300 px-5 py-4 hover:shadow-raised">
+    <Link to={href} className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 px-5 py-4 hover:shadow-raised">
       <div className="flex items-center gap-3">
         <MapPin className="w-5 h-5 text-amber shrink-0" />
         <div>

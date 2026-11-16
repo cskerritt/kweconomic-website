@@ -178,12 +178,12 @@ export default function CityPage() {
               </h2>
               <dl className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <dt className="text-xs text-neutral-500 uppercase tracking-wider mb-1">County</dt>
+                  <dt className="kw-label text-neutral-500 mb-1">County</dt>
                   <dd className="font-semibold text-navy">{city.county}</dd>
                 </div>
                 {city.msaName && (
                   <div>
-                    <dt className="text-xs text-neutral-500 uppercase tracking-wider mb-1">Metropolitan Area</dt>
+                    <dt className="kw-label text-neutral-500 mb-1">Metropolitan Area</dt>
                     <dd className="font-semibold text-navy text-sm">{city.msaName}</dd>
                   </div>
                 )}
@@ -303,7 +303,7 @@ export default function CityPage() {
                 </div>
                 <Link
                   to={`/locations/${stateSlug}`}
-                  className="inline-flex items-center gap-1 mt-4 text-sm text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark font-medium"
+                  className="inline-flex items-center gap-1 mt-4 text-sm kw-link font-medium"
                 >
                   All {state.name} locations <ArrowRight className="w-3 h-3" />
                 </Link>

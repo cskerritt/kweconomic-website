@@ -515,66 +515,21 @@ const NAMED_SHADOWS: Record<string, string[]> = {
 // known exception 2026-11-16: the guide TOC's click handler forces scrollIntoView({ behavior: "smooth" }), which ignores prefers-reduced-motion (KnowledgeArticle.tsx, spec 2.10: no script forces a smooth scroll).
 const SMOOTH_SCRIPTS: string[] = [];  // fixed 2026-11-16
 // known exception 2026-11-16: transition-all remains where spec 3.6 wants every transition to name its properties.
-const TRANSITION_ALL: string[] = [
-  "/src/pages/Team.tsx: \"inline-flex items-center gap-1 mt-auto pt-4 text-sm font-semibold text-navy group-hover:text-amber-dark transition-all\"",
-  "/src/pages/Team.tsx: \"w-full h-full object-cover object-top grayscale-[0.6] transition-all duration-500 group-hover:grayscale-0\"",
-];
+const TRANSITION_ALL: string[] = [];
 // known exception 2026-11-16: a duration over 400ms (spec 3.1: nothing runs longer than 400ms).
-const SLOW_UTILITIES: string[] = [
-  "/src/pages/Team.tsx: duration-500",
-];
+const SLOW_UTILITIES: string[] = [];
 // known exception 2026-11-16: a 30px-or-larger JetBrains Mono figure without tracking-normal (spec 4.1).
 const MONO_TRACKING: string[] = [];  // fixed 2026-11-16
 // known exception 2026-11-16: inline uppercase recipes where spec 4.5 wants kw-eyebrow (over a heading) or kw-label (in a card, list or table).
-const CAPITALS: string[] = [
-  "/src/components/SourcesBlock.tsx: \"ml-2 text-xs uppercase text-neutral-500\"",
-  "/src/components/SourcesBlock.tsx: \"ml-2 text-xs uppercase text-neutral-500\"",
-  "/src/components/TOCSidebar.tsx: \"text-sm font-semibold uppercase text-neutral-600 mb-3\"",
-  "/src/components/WhitePaperGate.tsx: \"text-xs font-semibold uppercase tracking-[0.14em]\"",
-  "/src/pages/CityPage.tsx: \"text-xs text-neutral-500 uppercase tracking-wider mb-1\"",
-  "/src/pages/CityPage.tsx: \"text-xs text-neutral-500 uppercase tracking-wider mb-1\"",
-  "/src/pages/Contact.tsx: \"text-xs uppercase tracking-[0.14em] text-navy font-semibold mb-3\"",
-  "/src/pages/Home.tsx: \"text-amber-dark font-semibold uppercase tracking-wider hover:underline\"",
-];
+const CAPITALS: string[] = [];
 // known exception 2026-11-16: a dead Tailwind typography class (prose / prose-*) remains; the plugin is not used (spec 4.3).
-const DEAD_PROSE: string[] = [
-  "/src/components/WhitePaperGate.tsx",
-  "/src/pages/KnowledgeArticle.tsx",
-  "/src/pages/StateHub.tsx",
-  "/src/pages/templates/PillarGuide.tsx",
-];
+const DEAD_PROSE: string[] = [];
 // known exception 2026-11-16: a kw-lift on a button-sized link with rounded-lg corners (NextSteps) and one with no hover:shadow-raised (WhitePaperGate's hover:shadow-md); spec 4.9 wants a 12px card and the raised shadow.
-const LIFT_EXCEPTIONS: string[] = [
-  "/src/components/NextSteps.tsx: \"kw-lift inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-medium\"",
-  "/src/components/WhitePaperGate.tsx: \"kw-lift inline-flex items-center gap-2 rounded-lg border border-navy/20 bg-white px-5 py-3 text-sm font-semibold text-navy hover:border-navy hover:shadow-md print:hidden\"",
-];
+const LIFT_EXCEPTIONS: string[] = [];
 // known exception 2026-11-16: shadows no spec role names: the bare hover:shadow on the hub and template cards (spec 4.9: hover:shadow-raised on a kw-lift card), the white paper gate's, About's and Contact's photo shadows (spec 5.8 removed /contact's).
-const SHADOWS: string[] = [
-  "/src/components/RelatedContent.tsx: hover:shadow",
-  "/src/components/WhitePaperGate.tsx: hover:shadow-md",
-  "/src/components/WhitePaperGate.tsx: shadow-xl",
-  "/src/pages/About.tsx: shadow-lg",
-  "/src/pages/Contact.tsx: shadow-xl",
-  "/src/pages/ServicePillar.tsx: hover:shadow",
-  "/src/pages/hubs/AttorneysHubPage.tsx: hover:shadow",
-  "/src/pages/hubs/CaseTypesHubPage.tsx: hover:shadow",
-  "/src/pages/hubs/ComparisonsHubPage.tsx: hover:shadow",
-  "/src/pages/hubs/CredentialsHubPage.tsx: hover:shadow",
-  "/src/pages/hubs/GuidesHubPage.tsx: hover:shadow",
-  "/src/pages/hubs/MethodsHubPage.tsx: hover:shadow",
-  "/src/pages/templates/CaseTypeHub.tsx: hover:shadow",
-  "/src/pages/templates/JourneyStageIndex.tsx: hover:shadow",
-  "/src/pages/templates/ServiceCaseType.tsx: hover:shadow",
-];
+const SHADOWS: string[] = [];
 // known exception 2026-11-16: plain rounded / rounded-md left on tags (spec 4.7: pills, rounded-full) and rows (spec 4.11: 6px rows only in a card or a dropdown panel).
-const ROUNDED: string[] = [
-  "/src/pages/Contact.tsx: \"text-xs text-neutral-600 leading-relaxed bg-neutral-50 border border-neutral-200 rounded-md p-3\"",
-  "/src/pages/InsightPost.tsx: \"block text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded hover:bg-navy/5 transition-colors leading-snug\"",
-  "/src/pages/KnowledgeArticle.tsx: \"block w-full text-left text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded hover:bg-navy/5 transition-colors leading-snug\"",
-  "/src/pages/Team.tsx: \"inline-block bg-navy/10 text-navy text-xs font-semibold px-2 py-0.5 rounded\"",
-  "/src/pages/Team.tsx: \"inline-block bg-neutral-200/70 text-neutral-600 text-xs font-semibold px-2 py-0.5 rounded\"",
-  "/src/pages/templates/ExpertProfile.tsx: \"inline-block bg-white/10 text-white text-xs font-semibold px-2.5 py-1 rounded ring-1 ring-white/15\"",
-];
+const ROUNDED: string[] = [];
 // The phone bar's edge-to-edge Get a Quote cell is the one amber primary that does not press (spec 4.8; same on the reference site).
 const PRIMARY_EXCEPTIONS: string[] = [
   "/src/components/layout/Header.tsx: \"flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-amber-dark text-white hover:bg-amber-darker transition-colors\"",
@@ -712,7 +667,7 @@ describe("one way for a link to look (spec 4.6)", () => {
   // known exception 2026-11-16: about 25 to 40 in-text links per site still wear the old house recipe (text-navy
   // underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark; lcp's richtext.tsx
   // wears text-teal underline decoration-teal/40) instead of kw-link. Rule kept whole, pending the source fix.
-  it.skip("no class string holds the old house recipe or richtext's, and richtext's links are kw-link", () => {
+  it("no class string holds the old house recipe or richtext's, and richtext's links are kw-link", () => {
     const old = Object.entries(SOURCES).flatMap(([path, source]) =>
       classSets(source).filter((set) => set.includes("decoration-neutral-300") || set.includes("decoration-teal/40")).map((set) => `${path}: "${set.join(" ")}"`),
     );
@@ -722,7 +677,7 @@ describe("one way for a link to look (spec 4.6)", () => {
 
   // known exception 2026-11-16: the same old-recipe links, plus a few bare "underline" links (privacy notices, the white
   // paper gate, the FAQ page's white link on navy). Rule kept whole, pending the source fix.
-  it.skip("a link underlined at rest is a kw-link", () => {
+  it("a link underlined at rest is a kw-link", () => {
     const underlined = Object.entries(SOURCES).flatMap(([path, source]) =>
       classSets(source).filter((set) => set.includes("underline") && !set.includes("kw-link")).map((set) => `${path}: "${set.join(" ")}"`),
     );
@@ -758,7 +713,7 @@ describe("one corner and one depth per role (spec 4.7, 4.9)", () => {
   // known exception 2026-11-16: the reference site cards rest on border-neutral-200 and take hover:border-neutral-300; this site's
   // cards carry border-neutral-300 at rest and no hover border, so the border does not change on hover. The visible
   // border is the same neutral-300 under hover, so this may be an accepted variance; rule kept whole as ported.
-  it.skip("every kw-lift takes the neutral-300 border on hover (hover:border-neutral-300 over a neutral-200 rest border)", () => {
+  it("every kw-lift takes the neutral-300 border on hover (hover:border-neutral-300 over a neutral-200 rest border)", () => {
     const off = Object.entries(SOURCES).flatMap(([path, source]) =>
       classSets(source)
         .filter((set) => set.includes("kw-lift") && set.includes("border") && !set.includes("hover:border-neutral-300"))

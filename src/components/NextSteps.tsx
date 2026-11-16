@@ -40,7 +40,7 @@ export default function NextSteps({ context }: NextStepsProps) {
             <Link
               key={s.slug}
               to={`/services/${s.slug}`}
-              className="kw-lift inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-medium"
+              className="kw-lift inline-flex items-center gap-1.5 rounded-xl border border-white/20 hover:border-neutral-300 hover:shadow-raised bg-white/5 hover:bg-white/10 px-4 py-2 text-sm font-medium"
             >
               {s.label} <ArrowRight className="w-3.5 h-3.5 text-amber" />
             </Link>

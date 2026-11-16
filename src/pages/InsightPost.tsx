@@ -165,7 +165,7 @@ export default function InsightPost() {
                         <a
                           key={h.id}
                           href={`#${h.id}`}
-                          className="block text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded hover:bg-navy/5 transition-colors leading-snug"
+                          className="block text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded-lg hover:bg-navy/5 transition-colors leading-snug"
                         >
                           {h.text}
                         </a>

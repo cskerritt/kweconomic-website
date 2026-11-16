@@ -18,7 +18,7 @@ import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME } from "@/lib/brand";
 import NotFound from "@/pages/NotFound";
 
-const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK = "kw-link";
 
 /**
  * /jurisdictions/federal/<district>: one page per federal district court

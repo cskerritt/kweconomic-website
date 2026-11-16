@@ -41,7 +41,7 @@ import { ORG_NAME } from "@/lib/brand";
 import { caseTypeStateTitle } from "@/lib/page-titles.mjs";
 import NotFound from "@/pages/NotFound";
 
-const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK = "kw-link";
 
 // The state modules are keyed on the case type's category: injury and death
 // matters get the wrongful death / survival / collateral source paragraph

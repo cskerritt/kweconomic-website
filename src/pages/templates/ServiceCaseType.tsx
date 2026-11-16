@@ -28,7 +28,7 @@ import { pairTitle } from "@/lib/page-titles.mjs";
 import { capFirst, workPhrase } from "@/lib/service-prose.mjs";
 import NotFound from "@/pages/NotFound";
 
-const LINK_CLASS = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK_CLASS = "kw-link";
 
 /**
  * Meta description: 126-158 characters on every declared pair (pinned by the
@@ -178,7 +178,7 @@ export default function ServiceCaseType() {
             <li key={stage.slug}>
               <Link
                 to={`/attorneys/${stage.slug}/${caseType.slug}`}
-                className="block rounded-lg border border-neutral-200 p-3 hover:border-navy hover:shadow transition"
+                className="kw-lift block rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised p-3"
               >
                 <div className="font-semibold text-navy">{stage.label}</div>
                 <div className="text-sm text-neutral-600 mt-1">{caseType.name} cases</div>

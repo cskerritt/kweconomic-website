@@ -66,7 +66,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
       <section key={s.heading} className="mb-8">
         <h2 className="font-serif text-2xl font-bold text-navy mb-3">{s.heading}</h2>
         <div
-          className="prose prose-neutral max-w-none text-neutral-700"
+          className="kw-prose"
           dangerouslySetInnerHTML={{ __html: s.bodyHtml }}
         />
       </section>
@@ -83,7 +83,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
           {gated.map((s) => renderSection(s))}
           <button
             onClick={() => window.print()}
-            className="kw-lift inline-flex items-center gap-2 rounded-lg border border-navy/20 bg-white px-5 py-3 text-sm font-semibold text-navy hover:border-navy hover:shadow-md print:hidden"
+            className="kw-lift inline-flex items-center gap-2 rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised bg-white px-5 py-3 text-sm font-semibold text-navy print:hidden"
           >
             <Download className="w-4 h-4" /> Print / Save as PDF
           </button>
@@ -100,10 +100,10 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
           </div>
           <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-neutral-50 via-neutral-50/90 to-transparent" />
 
-          <div className="relative -mt-24 mx-auto max-w-xl rounded-2xl border border-neutral-200 bg-white p-7 shadow-xl">
+          <div className="relative -mt-24 mx-auto max-w-xl rounded-2xl border border-neutral-200 bg-white p-7">
             <div className="flex items-center gap-2 text-amber-dark mb-2">
               <Lock className="w-4 h-4" />
-              <span className="text-xs font-semibold uppercase tracking-[0.14em]">Full white paper</span>
+              <span className="kw-label">Full white paper</span>
             </div>
             <h3 className="font-serif text-xl font-bold text-navy mb-2">
               Read the complete paper
@@ -149,7 +149,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
               {status === "error" && (
                 <p className="text-sm text-red-600">
                   Something went wrong. Please try again or call{" "}
-                  <a href={telHref(ORG_PHONE)} className="underline">
+                  <a href={telHref(ORG_PHONE)} className="kw-link">
                     {ORG_PHONE_DISPLAY}
                   </a>
                   .

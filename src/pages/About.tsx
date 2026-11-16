@@ -17,7 +17,7 @@ const VALUES = [
 ];
 
 const PAGE_URL = `${ORG_URL}/about`;
-const LINK = "text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK = "font-semibold kw-link";
 // The sister practices are named only through the brand constants (the
 // visible label is the host of each link, as Footer.tsx does) and through the
 // CrossSell card, the one component allowed to spell their names
@@ -143,7 +143,7 @@ export default function About() {
                 alt="Economist reviewing a damages analysis with a colleague"
                 width={800}
                 height={533}
-                className="rounded-xl shadow-lg w-full object-cover"
+                className="rounded-xl w-full object-cover"
                 loading="lazy"
               />
               {/* Mission */}

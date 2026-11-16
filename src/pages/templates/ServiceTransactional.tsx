@@ -33,7 +33,7 @@ const LINK_LABEL: Record<Variant, string> = {
   timeline: "Typical timeline",
 };
 
-const LINK_CLASS = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK_CLASS = "kw-link";
 
 /** "2 to 4 weeks after records are received" -> "2 to 4 weeks"; "About 1 week" -> "about 1 week". */
 function span(duration: string, fallback: string): string {
