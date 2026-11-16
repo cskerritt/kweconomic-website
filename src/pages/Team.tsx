@@ -34,7 +34,7 @@ function TeamCard({ member }: { member: TeamMember }) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-navy/5">
-            <span className="text-5xl font-bold text-navy/20">{initials}</span>
+            <span aria-hidden="true" className="text-5xl font-bold text-navy/20">{initials}</span>
           </div>
         )}
       </div>
@@ -98,7 +98,7 @@ function MemoriamCard({ member }: { member: TeamMember }) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-navy/5">
-            <span className="text-5xl font-bold text-navy/20">{initials}</span>
+            <span aria-hidden="true" className="text-5xl font-bold text-navy/20">{initials}</span>
           </div>
         )}
       </div>

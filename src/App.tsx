@@ -76,11 +76,25 @@ function PageTransition({ children }: { children: ReactNode }) {
  * fragment link (a guide's TOC) arrives as a POP too, so it stays the browser's, smooth where motion is allowed. It
  * renders nothing, so the prerender and hydration are unchanged.
  */
+/**
+ * The first load mounts with createRoot (src/main.tsx), which replaces the prerendered shell, so the browser's own
+ * fragment jump lands on the shell's layout, hundreds of pixels off (2026-11-16 scroll review). The first mount with a
+ * fragment therefore scrolls to its target once, after the route's content is in the DOM; later Back and Forward
+ * stay the browser's.
+ */
+let firstLoadHandled = false;
+
 function ScrollToTop() {
   const { pathname, search, hash } = useLocation();
   const navigationType = useNavigationType();
   useEffect(() => {
-    // Back, Forward and the first load keep the browser's own scroll restoration and fragment jump.
+    if (!firstLoadHandled) {
+      firstLoadHandled = true;
+      const first = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+      if (first) first.scrollIntoView({ block: "start", behavior: "instant" });
+      return;
+    }
+    // Back and Forward keep the browser's own scroll restoration and fragment jump.
     if (navigationType === "POP") return;
     const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
     if (target) target.scrollIntoView({ block: "start", behavior: "instant" });

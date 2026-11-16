@@ -285,7 +285,7 @@ export default function Contact() {
                     <span><strong className="text-navy">Engagement letter</strong> and records-request checklist.</span>
                   </li>
                 </ol>
-                <p className="text-xs text-neutral-500 mt-3 italic">
+                <p className="text-xs text-neutral-600 mt-3 italic">
                   Communications with {ORG_SHORT} prior to retention are handled confidentially; work-product
                   protection depends on the terms of the retention and the rules of the forum.
                 </p>
