@@ -1,3 +1,4 @@
+import ContactCTA from "@/components/ContactCTA";
 import { Link } from "react-router-dom";
 import { BookOpen, ArrowRight, Phone } from "lucide-react";
 import { usePageMeta } from "@/hooks/use-page-meta";
@@ -177,6 +178,11 @@ export default function KnowledgeHub() {
               </Link>
             </div>
           </div>
+        </div>
+      </section>
+      <section className="py-16">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ContactCTA />
         </div>
       </section>
     </>

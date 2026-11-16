@@ -207,12 +207,13 @@ export default function ServiceStateCity() {
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">Case Types</h2>
               <div className="flex flex-wrap gap-2">
                 {service.caseTypes.map((ct) => (
-                  <span
+                  <Link
                     key={ct}
-                    className="inline-block bg-navy/10 text-navy font-medium text-sm px-4 py-1.5 rounded-full border border-navy/20"
+                    to={`/case-types/${ct}/${state.slug}`}
+                    className="inline-block bg-navy/10 text-navy font-medium text-sm px-4 py-1.5 rounded-full border border-navy/20 hover:bg-navy/15"
                   >
                     {getCaseType(ct)?.name ?? ct}
-                  </span>
+                  </Link>
                 ))}
               </div>
             </Reveal>

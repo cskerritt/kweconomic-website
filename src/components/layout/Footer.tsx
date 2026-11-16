@@ -137,6 +137,11 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link to="/services" className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3">
+                  All services
+                </Link>
+              </li>
             </ul>
           </div>
 

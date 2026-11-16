@@ -45,6 +45,8 @@ function TeamCard({ member }: { member: TeamMember }) {
           {member.name}
         </h3>
         <p className="text-amber-dark font-medium text-sm mt-1">{member.title}</p>
+        {/* The member's biography, read by crawlers and screen readers; the card shows title, credentials and specialties. */}
+        <p className="sr-only">{member.bio}</p>
 
         {/* Credentials - all of them */}
         {member.credentials.length > 0 && (

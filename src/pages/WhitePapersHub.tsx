@@ -24,7 +24,7 @@ const LIBRARY_LINKS = [
   { href: "/insights", label: "Insights" },
 ];
 
-function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typeof whitePapers[number]) {
+function PaperCard({ slug, title, subtitle, summary, discipline, icon, readingTime }: typeof whitePapers[number]) {
   const Icon = ICONS[icon] ?? FileText;
   return (
     <Link
@@ -44,6 +44,8 @@ function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typ
           {title}
         </h3>
         <p className="text-sm text-neutral-600 mb-4 line-clamp-3">{subtitle}</p>
+        {/* The paper's own abstract, read by crawlers and screen readers; the card shows the subtitle. */}
+        <p className="sr-only">{summary}</p>
         <span className="inline-flex items-center gap-1 text-sm font-medium text-amber-dark">
           Read white paper <ArrowRight className="w-4 h-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
         </span>

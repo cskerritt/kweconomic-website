@@ -33,6 +33,9 @@ export default function InsightPost() {
           title: `${post.metaTitle ?? post.title} | ${ORG_NAME}`,
           description: post.metaDescription,
           canonical: `${ORG_URL}/insights/${post.slug}`,
+          ogType: "article",
+          articlePublished: post.publishedDate,
+          articleModified: post.dateModified ?? post.publishedDate,
         }
       : { title: `Insights | ${ORG_NAME}`, description: `Insights and articles from ${ORG_NAME}`, canonical: `${ORG_URL}/insights` }
   );

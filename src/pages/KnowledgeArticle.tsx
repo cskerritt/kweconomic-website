@@ -26,6 +26,9 @@ export default function KnowledgeArticle() {
           title: `${guide.metaTitle ?? guide.title} | ${ORG_NAME}`,
           description: guide.metaDescription,
           canonical: `${ORG_URL}/knowledge/${guide.slug}`,
+          ogType: "article",
+          articlePublished: guide.datePublished ?? guide.dateModified ?? "2026-05-03",
+          articleModified: guide.dateModified ?? "2026-05-03",
         }
       : { title: `Knowledge Center | ${ORG_NAME}`, description: `Educational resources from ${ORG_NAME}`, canonical: `${ORG_URL}/knowledge` }
   );

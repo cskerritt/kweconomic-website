@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, ORG_PHONE_DISPLAY, SITE_URL } from "@/lib/brand";
+import { ORG_PHONE, ORG_PHONE_DISPLAY, telHref } from "@/lib/brand";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import SchemaOrg from "@/components/SchemaOrg";
+import { graphSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
 
 const DOMAIN = SITE_URL.replace(/^https?:\/\//, "");
 const PHONE_DISPLAY = ORG_PHONE_DISPLAY;
@@ -78,6 +82,20 @@ export default function Terms() {
 
   return (
     <>
+      <SchemaOrg
+        data={graphSchema([
+          breadcrumbSchema([
+            { name: "Home", url: `${ORG_URL}/` },
+            { name: "Terms of Service", url: `${ORG_URL}/terms` },
+          ]),
+        ])}
+      />
+      <div className="border-b border-neutral-200 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
+          <Breadcrumbs items={[{ name: "Home", url: "/" }, { name: "Terms of Service", url: "/terms" }]} />
+        </div>
+      </div>
+
       {/* Hero */}
       <section className="bg-gradient-to-br from-navy via-navy to-navy-dark text-white py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,6 +142,14 @@ export default function Terms() {
               Contact Us
             </Link>
           </div>
+        </div>
+      </section>
+      <section className="pb-12 md:pb-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-neutral-700">
+            <Link to="/contact" className="font-semibold kw-link">Request a consultation</Link> or call{" "}
+            <a href={telHref(ORG_PHONE)} className="font-semibold kw-link">{ORG_PHONE_DISPLAY}</a>.
+          </p>
         </div>
       </section>
     </>

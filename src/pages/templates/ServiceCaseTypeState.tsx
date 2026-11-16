@@ -280,6 +280,11 @@ export default function ServiceCaseTypeState() {
             </Link>
           </li>
           <li>
+            <Link to={`/case-types/${caseType.slug}`} className={LINK}>
+              {caseType.name} cases: the case type overview
+            </Link>
+          </li>
+          <li>
             <Link to={`/case-types/${caseType.slug}/${state.slug}`} className={LINK}>
               {caseType.name} cases in {place}: courts, framework, and the analysis
             </Link>

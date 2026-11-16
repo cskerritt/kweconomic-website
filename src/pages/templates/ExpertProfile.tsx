@@ -16,6 +16,12 @@ import { graphSchema, personSchema, organizationSchema, breadcrumbSchema, ORG_UR
 import { usePageMeta } from "@/hooks/use-page-meta";
 import NotFound from "@/pages/NotFound";
 
+// Share-image pixel sizes of the portraits that have known dimensions (og:image:width/height).
+const PORTRAIT_SIZES: Record<string, { width: number; height: number }> = {
+  "christopher-skerritt": { width: 798, height: 1200 },
+  "zachary-sperling": { width: 900, height: 1200 },
+};
+
 const STATE_NAMES: Record<string, string> = Object.fromEntries(
   states.map((s) => [s.abbreviation, s.name]),
 );
@@ -36,6 +42,14 @@ export default function ExpertProfile() {
             ? truncateAtWord(m.bio)
             : `${bareName(m.name)} is ${m.title} at ${ORG_NAME}.`,
           canonical: url,
+          ...(m.imageUrl
+            ? {
+                ogImage: `${ORG_URL}${m.imageUrl}`,
+                ogImageWidth: PORTRAIT_SIZES[m.slug]?.width,
+                ogImageHeight: PORTRAIT_SIZES[m.slug]?.height,
+                ogImageAlt: m.name,
+              }
+            : {}),
         }
       : null,
   );

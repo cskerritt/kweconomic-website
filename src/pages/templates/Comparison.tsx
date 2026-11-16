@@ -31,6 +31,9 @@ export default function Comparison() {
           // Article description (the /compare hub cards are to adopt it too).
           description: c.answer,
           canonical: url,
+          ogType: "article",
+          articlePublished: c.datePublished,
+          articleModified: c.dateModified,
         }
       : null,
   );
