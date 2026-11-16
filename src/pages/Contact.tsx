@@ -294,7 +294,7 @@ export default function Contact() {
               <form
                 id="contact-form"
                 onSubmit={handleSubmit}
-                className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8 space-y-5 scroll-mt-24"
+                className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8 space-y-5"
               >
                 {status === "sent" && (
                   <div className="rounded-lg bg-navy/10 border border-navy/30 text-navy px-4 py-3 text-sm font-medium">

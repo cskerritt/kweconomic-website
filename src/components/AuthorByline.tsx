@@ -37,7 +37,7 @@ export default function AuthorByline({ slug, datePublished, dateModified }: Auth
   return (
     <div className="text-sm text-neutral-600 mb-6">
       <span>By </span>
-      <Link to={linkTo} className="text-navy hover:underline">
+      <Link to={linkTo} className="kw-link text-navy">
         {displayName}
       </Link>
       {datePublished && (

@@ -72,7 +72,8 @@ export default function Comparison() {
         </div>
       </div>
 
-      <div className="overflow-x-auto mb-8">
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a table that scrolls sideways on a phone must be reachable by keyboard (WCAG 2.1.1; axe scrollable-region-focusable), so its labelled region takes focus */}
+      <div className="overflow-x-auto mb-8" tabIndex={0} role="region" aria-label="Comparison table">
       <table className="w-full border border-neutral-200">
         <caption className="sr-only">{c.a.label} compared with {c.b.label}, by dimension</caption>
         <thead className="bg-neutral-50">

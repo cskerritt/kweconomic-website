@@ -130,7 +130,7 @@ export default function InsightPost() {
                     <h2
                       key={block.id}
                       id={block.id}
-                      className="font-serif text-2xl md:text-3xl font-bold text-navy pt-4 leading-snug scroll-mt-24"
+                      className="font-serif text-2xl md:text-3xl font-bold text-navy pt-4 leading-snug"
                     >
                       {block.text}
                     </h2>

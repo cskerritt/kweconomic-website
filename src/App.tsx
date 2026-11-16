@@ -78,11 +78,91 @@ function PageTransition({ children }: { children: ReactNode }) {
  */
 /**
  * The first load mounts with createRoot (src/main.tsx), which replaces the prerendered shell, so the browser's own
- * fragment jump lands on the shell's layout, hundreds of pixels off (2026-11-16 scroll review). The first mount with a
- * fragment therefore scrolls to its target once, after the route's content is in the DOM; later Back and Forward
- * stay the browser's.
+ * fragment jump lands on the shell's layout, hundreds of pixels off (2026-11-16 scroll review). A first mount that
+ * came from a fresh navigation (not a reload or a history move, whose restored position the browser keeps) and
+ * carries a fragment therefore scrolls to its target once, after the route's content is in the DOM.
  */
 let firstLoadHandled = false;
+
+/** The element a fragment names, or null; a malformed escape (an inbound "#100%") never throws. */
+function fragmentTarget(hash: string): HTMLElement | null {
+  if (!hash) return null;
+  let id = hash.slice(1);
+  try {
+    id = decodeURIComponent(id);
+  } catch {
+    // keep the raw fragment
+  }
+  return document.getElementById(id);
+}
+
+function navigationKind(): string {
+  const entry = performance.getEntriesByType?.("navigation")[0] as PerformanceNavigationTiming | undefined;
+  return entry?.type ?? "navigate";
+}
+
+function freshNavigation(): boolean {
+  return navigationKind() === "navigate";
+}
+
+/**
+ * A reload, or a Back or Forward into a fresh document, gets the browser's restored position on the prerendered
+ * shell, which createRoot then replaces, so the reader lost their place (2026-11-16 scroll review). The position is
+ * kept per page in sessionStorage when the page is left and put back after the first mount; storage that is blocked
+ * or empty leaves the browser's own behavior.
+ */
+const SCROLL_KEY = "kw:scroll:";
+if (typeof window !== "undefined") {
+  window.addEventListener("pagehide", () => {
+    try {
+      sessionStorage.setItem(SCROLL_KEY + location.pathname + location.search, String(Math.round(window.scrollY)));
+    } catch {
+      // storage blocked: nothing to restore later
+    }
+  });
+}
+
+/**
+ * Back and Forward inside the app: the browser restores the position while the keyed route is still remounting (a
+ * lazy chunk shows its fallback first), so the page is too short and the reader lands hundreds of pixels early
+ * (2026-11-16 scroll review). Each history entry's position is recorded as the reader scrolls, under React Router's
+ * entry key (or index) in history.state, read at popstate before the new route's layout can clamp it, and put back after the
+ * route's content mounts.
+ */
+const entryPositions = new Map<string, number>();
+let popTarget: number | null = null;
+// The first entry carries only React Router's index (no key), so the index stands in for it.
+const entryKey = (): string | undefined => {
+  const state = window.history.state as { key?: string; idx?: number } | null;
+  return state?.key ?? (typeof state?.idx === "number" ? `idx:${state.idx}` : undefined);
+};
+if (typeof window !== "undefined") {
+  // This file restores every position itself (a reload or a Back into a fresh document from sessionStorage, an
+  // in-app Back or Forward from entryPositions), so the browser's own restore, which lands after it on the
+  // pre-remount layout, is switched off.
+  if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
+  window.addEventListener(
+    "scroll",
+    () => {
+      const key = entryKey();
+      if (key) entryPositions.set(key, window.scrollY);
+    },
+    { passive: true },
+  );
+  window.addEventListener("popstate", () => {
+    const key = entryKey();
+    popTarget = key !== undefined ? (entryPositions.get(key) ?? null) : null;
+  });
+}
+
+function savedScroll(pathname: string, search: string): number | null {
+  try {
+    const value = sessionStorage.getItem(SCROLL_KEY + pathname + search);
+    return value === null ? null : Number(value);
+  } catch {
+    return null;
+  }
+}
 
 function ScrollToTop() {
   const { pathname, search, hash } = useLocation();
@@ -90,13 +170,61 @@ function ScrollToTop() {
   useEffect(() => {
     if (!firstLoadHandled) {
       firstLoadHandled = true;
-      const first = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
-      if (first) first.scrollIntoView({ block: "start", behavior: "instant" });
+      const first = freshNavigation() ? fragmentTarget(hash) : null;
+      if (first) {
+        first.scrollIntoView({ block: "start", behavior: "instant" });
+        // The content above the target is still settling (web fonts, the lazy route's late layout), and the fresh
+        // root gets none of the browser's own scroll anchoring, so land again once fonts are in and once more shortly
+        // after, each time only if the visitor has not scrolled meanwhile.
+        let landedAt = window.scrollY;
+        const landAgain = () => {
+          if (Math.abs(window.scrollY - landedAt) >= 2) return;
+          first.scrollIntoView({ block: "start", behavior: "instant" });
+          landedAt = window.scrollY;
+        };
+        document.fonts?.ready.then(landAgain);
+        window.setTimeout(() => {
+          landAgain();
+          // index.html turned smooth scrolling off for a load with a fragment, so the browser's own jump to the
+          // prerendered shell's layout is instant and never still animating over this landing; it is back on now.
+          document.documentElement.style.scrollBehavior = "";
+        }, 600);
+      } else {
+        if (hash) document.documentElement.style.scrollBehavior = "";
+        const restore = navigationKind() !== "navigate" ? savedScroll(pathname, search) : null;
+        if (restore !== null && Number.isFinite(restore) && restore > 0) {
+          window.scrollTo({ top: restore, behavior: "instant" });
+          let restoredAt = window.scrollY;
+          const restoreAgain = () => {
+            if (Math.abs(window.scrollY - restoredAt) >= 2) return;
+            window.scrollTo({ top: restore, behavior: "instant" });
+            restoredAt = window.scrollY;
+          };
+          document.fonts?.ready.then(restoreAgain);
+          window.setTimeout(restoreAgain, 600);
+        }
+      }
       return;
     }
-    // Back and Forward keep the browser's own scroll restoration and fragment jump.
-    if (navigationType === "POP") return;
-    const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null;
+    // Back and Forward: put back the position recorded for that entry (an in-page fragment link also arrives as a
+    // POP, a new entry with nothing recorded, so the browser's own fragment jump stands).
+    if (navigationType === "POP") {
+      const restore = popTarget;
+      popTarget = null;
+      if (restore !== null) {
+        window.scrollTo({ top: restore, behavior: "instant" });
+        // If the page was still too short to reach it, try once more after layout settles, unless the reader has
+        // scrolled meanwhile.
+        const landedAt = window.scrollY;
+        window.setTimeout(() => {
+          if (Math.abs(window.scrollY - landedAt) < 2 && Math.abs(window.scrollY - restore) > 2) {
+            window.scrollTo({ top: restore, behavior: "instant" });
+          }
+        }, 300);
+      }
+      return;
+    }
+    const target = fragmentTarget(hash);
     if (target) target.scrollIntoView({ block: "start", behavior: "instant" });
     else window.scrollTo({ top: 0, behavior: "instant" });
   }, [pathname, search, hash, navigationType]);

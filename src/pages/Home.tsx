@@ -155,7 +155,7 @@ export default function Home() {
 
             {/* Report contents card: follows the hero copy on small screens,
                 fills the right column at lg+. */}
-            <div className="">
+            <div>
               <ReportContentsCard />
             </div>
           </div>

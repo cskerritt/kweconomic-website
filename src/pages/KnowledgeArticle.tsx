@@ -135,7 +135,7 @@ export default function KnowledgeArticle() {
               {guide.sections.map((section, idx) => {
                 const sectionId = `section-${idx}`;
                 return (
-                  <div key={idx} id={sectionId} className="mb-12 scroll-mt-24">
+                  <div key={idx} id={sectionId} className="mb-12">
                     <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-4 leading-snug">
                       {section.heading}
                     </h2>
