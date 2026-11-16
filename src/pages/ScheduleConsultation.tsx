@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { markFormReady } from "@/lib/form-ready";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { Phone, Mail, MapPin, Clock, CheckCircle } from "lucide-react";
 import { isEmail, isPhone } from "@/lib/validation";
@@ -240,6 +241,8 @@ export default function ScheduleConsultation() {
             <div>
               <h2 className="font-serif text-2xl font-bold text-navy mb-6">Request a Consultation</h2>
               <form
+                method="post"
+                ref={markFormReady}
                 onSubmit={handleSubmit}
                 className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8 space-y-5"
               >

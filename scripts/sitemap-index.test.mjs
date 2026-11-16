@@ -276,10 +276,10 @@ describe("service x state x city sitemap gating (contentReadiness)", () => {
     expect(total).toBeLessThanOrEqual(4450);
   });
 
-  it("prerender.mjs's SERVICE_CITY_TOP matches contentReadiness's prerender constant", () => {
-    const prerenderSrc = readFileSync(join(ROOT, "scripts", "prerender.mjs"), "utf8");
-    expect(prerenderSrc).toContain(
-      `const SERVICE_CITY_TOP = ${SERVICE_CITY_PRERENDER_TOP};`,
+  it("the prerender takes its service x city window from src/lib/geo-links.ts, which matches contentReadiness's prerender constant", () => {
+    const geoLinks = readFileSync(join(ROOT, "src", "lib", "geo-links.ts"), "utf8");
+    expect(geoLinks).toContain(
+      `export const SERVICE_CITY_TOP = ${SERVICE_CITY_PRERENDER_TOP};`,
     );
     expect(SERVICE_CITY_SITEMAP_TOP).toBeLessThanOrEqual(SERVICE_CITY_PRERENDER_TOP);
   });

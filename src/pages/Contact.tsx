@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { markFormReady } from "@/lib/form-ready";
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
@@ -293,6 +294,8 @@ export default function Contact() {
 
               <form
                 id="contact-form"
+                method="post"
+                ref={markFormReady}
                 onSubmit={handleSubmit}
                 className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8 space-y-5"
               >

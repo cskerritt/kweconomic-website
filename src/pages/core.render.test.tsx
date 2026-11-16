@@ -256,14 +256,13 @@ describe("/resources/faq", () => {
     // The accordion runs from its H2 to the References block; the CTA below
     // carries its own H3 and is not a question.
     const accordion = html.slice(html.indexOf('id="faq-list-heading"'), html.indexOf('id="sources-heading"'));
-    const h3s = headings(accordion, 3);
-    expect(h3s).toHaveLength(faqs.length);
-    expect(h3s).toEqual(faqs.map((f) => f.question));
-    expect(ldNames).toEqual(h3s);
-    // WAI-ARIA accordion: heading > button[aria-expanded][aria-controls], and
-    // the answer panels stay in the DOM when closed.
-    expect(html.match(/<h3 class="m-0"><button /g)?.length).toBe(faqs.length);
-    expect(html).toContain('id="faq-panel-0" role="region" aria-labelledby="faq-button-0" hidden=""');
+    const summaries = [...accordion.matchAll(/<summary[^>]*>([\s\S]*?)<\/summary>/g)].map((m) => m[1].replace(/<[^>]+>/g, "").replace(/&#x27;/g, "'").trim());
+    expect(summaries).toHaveLength(faqs.length);
+    expect(summaries).toEqual(faqs.map((f) => f.question));
+    expect(ldNames).toEqual(summaries);
+    // Native disclosure widgets: every answer is in the markup and opens without JavaScript.
+    expect(accordion.match(/<details[ >]/g)?.length).toBe(faqs.length);
+    expect(accordion).not.toContain("aria-controls");
   });
 
   it("phrases the questions the way attorneys ask them, not brand-led, and covers the fee question", () => {

@@ -30,6 +30,9 @@ export default function PillarGuide() {
           title: `${guide.metaTitle ?? guide.title} | ${ORG_NAME}`,
           description: guide.metaDescription,
           canonical: url,
+          ogType: "article",
+          articlePublished: guide.datePublished,
+          articleModified: guide.dateModified,
         }
       : null,
   );

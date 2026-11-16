@@ -33,6 +33,9 @@ export default function MethodologyExplainer() {
           title: `${m.name.endsWith("Methodology") ? m.name : `${m.name} Method`} | ${ORG_NAME}`,
           description: m.metaDescription,
           canonical: url,
+          ogType: "article",
+          articlePublished: m.datePublished,
+          articleModified: m.dateModified,
         }
       : null,
   );

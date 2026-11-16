@@ -10,14 +10,14 @@ import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import { graphSchema, organizationSchema, websiteSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
 import { ORG_NAME, SITE_URL } from "@/lib/brand";
 
-// Format an ISO "YYYY-MM-DD" as a calendar date. `new Date("2026-08-27")`
-// parses as UTC midnight, which toLocaleDateString renders as August 26 for
-// every US visitor; the visible date must match the datePublished in the
-// post's JSON-LD and the sitemap lastmod, so the parts are read as local
-// calendar fields instead.
+// Format an ISO "YYYY-MM-DD" as a calendar date. The parts are read as calendar
+// fields and formatted in UTC, so the visible date matches the post's
+// datePublished (JSON-LD, sitemap) in every time zone, and the prerendered
+// text equals what any browser renders (hydration determinism).
 function formatIsoDate(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number);
-  return new Date(y, m - 1, d).toLocaleDateString("en-US", {
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-US", {
+    timeZone: "UTC",
     year: "numeric",
     month: "long",
     day: "numeric",

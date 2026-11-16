@@ -48,6 +48,9 @@ export default function JourneyStage() {
           title: journeyTitle(stage, caseType),
           description,
           canonical: url,
+          ogType: "article",
+          articlePublished: j.datePublished,
+          articleModified: j.dateModified,
         }
       : null,
   );

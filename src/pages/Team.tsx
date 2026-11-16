@@ -45,7 +45,6 @@ function TeamCard({ member }: { member: TeamMember }) {
           {member.name}
         </h3>
         <p className="text-amber-dark font-medium text-sm mt-1">{member.title}</p>
-
         {/* Credentials - all of them */}
         {member.credentials.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-3">

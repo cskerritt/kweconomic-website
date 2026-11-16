@@ -154,7 +154,7 @@ const h1Of = (html) => textOf(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? ""
 const ldScripts = (html) => [...html.matchAll(/<script type="application\/ld\+json"([^>]*)>([\s\S]*?)<\/script>/g)];
 const ldBlocks = (html) => ldScripts(html).map((m) => JSON.parse(m[2]));
 const nodesOf = (html) => ldBlocks(html).flatMap((b) => b["@graph"] ?? [b]);
-const hrefs = (html) => new Set([...html.matchAll(/<a href="([^"]+)"/g)].map((m) => m[1]));
+const hrefs = (html) => new Set([...html.matchAll(/<a\s[^>]*?href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, "&")));
 const metaContent = (html, attr, name) => html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)" />`))?.[1];
 
 function render(path, routePath, Page, props) {
@@ -272,9 +272,10 @@ const ROUTES = [
   { route: `/attorneys/${ATTORNEY_STAGES[0].slug}/personal-injury`, pattern: "/attorneys/:stage/:caseTypeSlug", Page: JourneyStage },
 ];
 
-// Keys a shell node may legitimately differ on: the /team Person nodes list
-// the degree credentials only (the background certifications stay off the
-// economics shells by rule) while the hydrated page lists them all.
+// Keys a rendered node may legitimately differ on. The page is now the one
+// source of the graph, so this only absorbs the /team Person nodes'
+// hasCredential list, which the test's mocked render orders differently from
+// the build; it no longer hides a shell-versus-page difference.
 const IGNORED_KEYS = new Set(["hasCredential"]);
 
 function findMatch(shellNodes, node) {
@@ -343,17 +344,18 @@ describe.skipIf(!hasDist)("static shells mirror the hydrated page (requires dist
     expect(shell).toContain('<meta name="robots" content="noindex,follow" />');
     expect(shell).not.toContain('rel="canonical"');
     expect(ldScripts(shell)).toHaveLength(0);
-    expect(shell).toContain('href="tel:');
+    expect(mainOf(shell)).toContain('href="tel:');
   });
 });
 
 describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () => {
   const sample = ROUTES.map((r) => r.route);
 
-  it("every shell JSON-LD block is tagged for removal on hydration and is a schema.org graph", () => {
+  it("every page carries exactly one JSON-LD graph (nothing tagged for removal) and it is a schema.org graph", () => {
     for (const route of sample) {
+      expect(ldScripts(readShell(route)).length, `${route}: ld+json blocks`).toBe(1);
       for (const m of ldScripts(readShell(route))) {
-        expect(m[1], `${route}: ld+json attributes`).toContain('data-prerender="ld"');
+        expect(m[1], `${route}: ld+json attributes`).not.toContain("data-prerender");
         const parsed = JSON.parse(m[2]);
         expect(parsed["@context"], route).toBe("https://schema.org");
         expect(Array.isArray(parsed["@graph"]), route).toBe(true);
@@ -364,15 +366,15 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
   it("every shell but the home page carries a visible breadcrumb trail and a BreadcrumbList", () => {
     for (const route of sample.filter((r) => r !== "/")) {
       const shell = readShell(route);
-      expect(shell, route).toContain('<nav aria-label="Breadcrumb">');
+      expect(shell, route).toMatch(/<nav[^>]*aria-label="Breadcrumb"/);
       expect(nodesOf(shell).some((n) => n["@type"] === "BreadcrumbList"), route).toBe(true);
     }
   });
 
   it("every content shell ends with a consultation line and a tel: link", () => {
-    const skip = new Set(["/contact", "/schedule-consultation", "/privacy", "/terms"]);
+    const skip = new Set(["/contact", "/schedule-consultation"]);
     for (const route of sample.filter((r) => !skip.has(r))) {
-      const shell = readShell(route);
+      const shell = mainOf(readShell(route));
       expect(shell, route).toContain('href="tel:');
       expect(shell, route).toMatch(/Request a consultation|Request a Consultation/);
     }
@@ -403,17 +405,18 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
     expect(metaContent(readShell("/services"), "property", "og:type")).toBe("website");
   });
 
-  it("/resources/faq renders every site FAQ as <details> and marks the same set up as FAQPage", () => {
+  it("/resources/faq renders every site FAQ as <details> (answers open without JS) and marks the same set up as FAQPage", () => {
     const shell = readShell("/resources/faq");
-    expect((shell.match(/<details>/g) ?? []).length).toBe(siteFaqs.length);
+    expect((shell.match(/<details[ >]/g) ?? []).length).toBe(siteFaqs.length);
     const faqNode = nodesOf(shell).find((n) => n["@type"] === "FAQPage");
     expect(faqNode.mainEntity.map((q) => q.name)).toEqual(siteFaqs.map((f) => f.question.replace(/\[\[\/[^|\]]*\|([^\]]+)\]\]/g, "$1")));
     expect(faqNode.dateModified).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
   it("hub shells link every child page (derived from the data files, not hard-coded counts)", () => {
-    const expectLinks = (route, expected) => {
-      const found = hrefs(readShell(route));
+    // Child links must be in <main>: the header and footer chrome cannot satisfy a hub check.
+    const expectLinks = (route, expected, { chrome = false } = {}) => {
+      const found = hrefs(chrome ? readShell(route) : mainOf(readShell(route)));
       const missing = expected.filter((h) => !found.has(h));
       expect(missing, `${route} is missing child links`).toEqual([]);
     };
@@ -457,7 +460,7 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
       "/services", "/case-types", "/locations", "/team", "/about", "/contact", "/knowledge", "/guides",
       "/white-papers", "/insights", "/case-studies", "/credentials", "/methods", "/compare", "/attorneys",
       "/jurisdictions", "/resources/faq",
-    ]);
+    ], { chrome: true });
   });
 
   it("no shell outside the city tiers carries a sister-practice credential abbreviation, an em or en dash, or a section sign", () => {
@@ -465,6 +468,8 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
     // every other shell (core, hubs, editorial, team, pillars, variants,
     // pairs, states, service x state, case-type and credential tiers).
     const BANNED = /CLCP|CNLCP|\bCRC\b|MSCC|[–—§]/;
+    // The team roster pages print the members' background credentials (the page labels which are from another discipline); see prerender-meta.test.mjs.
+    const teamPage = (r) => /^team(\/[^/]+)?\/index\.html$/.test(r);
     const skipDir = (rel) => /^(locations|services)\/[^/]+\/[^/]+$/.test(rel);
     const offenders = [];
     const walk = (dir, rel) => {
@@ -477,7 +482,7 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
           walk(p, r);
         } else if (entry === "index.html" || entry === "404.html") {
           const html = readFileSync(p, "utf8");
-          const m = html.match(BANNED);
+          const m = html.match(teamPage(r) ? /[–—§]/ : BANNED);
           if (m) offenders.push(`${r}: ${m[0]}`);
         }
       }
@@ -500,14 +505,34 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
 // the paper abstracts, and the profile biography. "Body text" is the root
 // content minus the breadcrumb and the nav link rows.
 const THIN_SHELLS = ["/privacy", "/terms", "/schedule-consultation", "/white-papers", "/team/zachary-sperling"];
-const rootOf = (html) => html.match(/<div id="root">([\s\S]*)<\/div>\s*<\/body>/)?.[1] ?? "";
-const bodyTextOf = (html) => textOf(rootOf(html).replace(/<nav[\s>][\s\S]*?<\/nav>/g, " "));
+// The page's own content: <main> only, so the header and footer chrome cannot satisfy a check.
+const mainOf = (html) => html.match(/<main\b[^>]*>([\s\S]*)<\/main>/)?.[1] ?? "";
+const bodyTextOf = (html) => textOf(mainOf(html).replace(/<nav[\s>][\s\S]*?<\/nav>/g, " ").replace(/<script[\s\S]*?<\/script>/g, " "));
+// Visible markup of <main>: the inline JSON-LD (knowsAbout lists and the like) is data, not page text.
+const visibleMain = (html) => mainOf(html).replace(/<script[\s\S]*?<\/script>/g, " ");
+const hasTime = (html, iso, label) => new RegExp(`<time[^>]*datetime="${iso}"[^>]*>${label ? label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : ""}`, "i").test(html);
 const wordCount = (text) => text.split(/\s+/).filter(Boolean).length;
 const h2TextsOf = (html) => [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map((m) => textOf(m[1]));
 const expectText = (haystack, needle, label) => expect(haystack, label).toContain(decode(needle));
 const paragraphsOf = (content) => content.split("\n\n").map((p) => p.trim()).filter(Boolean);
 
 describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (requires dist/)", () => {
+  it("each white paper page carries the ungated teaser but none of the gated sections' text (owner decision: gated copy stays out of the static HTML)", () => {
+    const plain = (h) => decode(h.replace(/<[^>]+>/g, " "));
+    const sentence = (h) => plain(h).split(/(?<=[.?!])\s+/).find((s) => s.length > 60 && !s.includes("<"));
+    for (const w of whitePapers) {
+      const text = textOf(mainOf(readShell(`/white-papers/${w.slug}`)));
+      const [teaser, ...gated] = w.sections;
+      expect(text, `${w.slug} teaser`).toContain(sentence(teaser.bodyHtml));
+      expect(gated.length, `${w.slug} has gated sections`).toBeGreaterThan(0);
+      for (const g of gated) {
+        const s = sentence(g.bodyHtml);
+        expect(s, `${w.slug}: ${g.heading} has a sentence to pin`).toBeTruthy();
+        expect(text, `${w.slug}: gated "${g.heading}" must not be in the static HTML`).not.toContain(s);
+      }
+    }
+  });
+
   it("each carries at least 120 words of body text outside the breadcrumb and nav rows", () => {
     for (const route of THIN_SHELLS) {
       expect(wordCount(bodyTextOf(readShell(route))), route).toBeGreaterThanOrEqual(120);
@@ -521,9 +546,9 @@ describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (r
     ]) {
       const shell = readShell(route);
       const text = bodyTextOf(shell);
-      expect(shell, route).toContain(`<time datetime="${date.iso}">${date.label}</time>`);
+      expect(hasTime(shell, date.iso, date.label), `${route}: effective date`).toBe(true);
       if (route === "/privacy") {
-        expect(shell, route).toContain(`Last revised: <time datetime="${PRIVACY_LAST_REVISED.iso}">${PRIVACY_LAST_REVISED.label}</time>`);
+        expect(hasTime(shell, PRIVACY_LAST_REVISED.iso, PRIVACY_LAST_REVISED.label), "last revised").toBe(true);
       }
       expectText(text, intro, route);
       const h2s = h2TextsOf(shell);
@@ -552,10 +577,10 @@ describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (r
     for (const o of consultationOffices) {
       expectText(text, o.heading, o.heading);
       expectText(text, o.location, o.heading);
-      expect(shell, o.heading).toContain(`href="tel:${o.phone.replace(/-/g, "")}"`);
-      if (o.email) expect(shell, o.heading).toContain(`href="mailto:${o.email}"`);
+      expect(mainOf(shell), o.heading).toContain(`href="tel:${o.phone.replace(/-/g, "")}"`);
+      if (o.email) expect(mainOf(shell), o.heading).toContain(`href="mailto:${o.email}"`);
     }
-    for (const h of OFFICE_HOURS) expectText(text, `${h.days}: ${h.hours}`, h.days);
+    for (const h of OFFICE_HOURS) { expectText(text, h.days, h.days); expectText(text, h.hours, h.days); }
     expectText(text, AFTER_HOURS_NOTE, "after hours");
   });
 
@@ -568,7 +593,7 @@ describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (r
       expectText(text, w.subtitle, w.slug);
       expectText(text, w.summary, w.slug);
       expect(links, w.slug).toContain(`/white-papers/${w.slug}`);
-      expect(shell, w.slug).toContain(`<time datetime="${w.datePublished}">`);
+      expect(hasTime(shell, w.datePublished), w.slug).toBe(true);
     }
   });
 
@@ -750,7 +775,8 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
     const offenders = [];
     for (const pillar of COMMERCIAL_AND_FAMILY) {
       for (const st of states) {
-        const shell = readShell(`/services/${pillar}/${st.slug}`);
+        // The state court panel lists the state's courts as data (Rhode Island has a Workers' Compensation Court); the rule is about the page's own copy.
+        const shell = readShell(`/services/${pillar}/${st.slug}`).replace(/<div id="court-system-panel"[\s\S]*?Federal Districts/, " ");
         if (/orkers' compensation|wage-loss benefits/.test(decode(shell))) offenders.push(`${pillar}/${st.slug}: compensation forum`);
         if (shell.includes("personal injury, wrongful death, employment, and commercial damages claims")) offenders.push(`${pillar}/${st.slug}: tort forum`);
       }
@@ -877,14 +903,14 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
 
   it("Francis Kumah's profile, /about, and the federal district shells carry no transfer pricing claim (review fixes 2026-10-05)", () => {
     const francis = readShell("/team/francis-kumah");
-    expect(rootOf(francis)).not.toMatch(/transfer pricing|intercompany/i);
-    expect(hrefs(francis).has("/services/transfer-pricing-expert-witness")).toBe(false);
-    expect(hrefs(readShell("/team/christopher-skerritt")).has("/services/transfer-pricing-expert-witness")).toBe(true);
+    expect(visibleMain(francis)).not.toMatch(/transfer pricing|intercompany/i);
+    expect(hrefs(mainOf(francis)).has("/services/transfer-pricing-expert-witness")).toBe(false);
+    expect(hrefs(mainOf(readShell("/team/christopher-skerritt"))).has("/services/transfer-pricing-expert-witness")).toBe(true);
     const about = readShell("/about");
-    expect(about).toContain("<h2>Our Team</h2>");
-    expect(about).not.toContain("<h2>Our Economists</h2>");
+    expect(h2TextsOf(about)).toContain("Our Team");
+    expect(h2TextsOf(about)).not.toContain("Our Economists");
     for (const d of ["district-court-of-guam", "southern-district-of-new-york"]) {
-      expect(hrefs(readShell(`/jurisdictions/federal/${d}`)).has("/services/transfer-pricing-expert-witness"), d).toBe(false);
+      expect(hrefs(mainOf(readShell(`/jurisdictions/federal/${d}`))).has("/services/transfer-pricing-expert-witness"), d).toBe(false);
     }
     // The territorial district names keep their own form in the courts answer.
     expect(textOf(readShell("/case-types/wrongful-death/guam"))).toContain("Matters within federal jurisdiction proceed in the United States District Court of Guam.");
@@ -965,11 +991,11 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
       expect(hrefs(readShell(`/jurisdictions/federal/${d.slug}`)).has("/services/intellectual-property-damages"), d.slug).toBe(true);
     }
     // Only the directing economist's profile lists the practice area.
-    expect(hrefs(readShell("/team/christopher-skerritt")).has("/services/intellectual-property-damages")).toBe(true);
+    expect(hrefs(mainOf(readShell("/team/christopher-skerritt"))).has("/services/intellectual-property-damages")).toBe(true);
     for (const slug of ["zachary-sperling", "francis-kumah"]) {
       const profile = readShell(`/team/${slug}`);
-      expect(hrefs(profile).has("/services/intellectual-property-damages"), slug).toBe(false);
-      expect(rootOf(profile), slug).not.toMatch(/intellectual property|patent|trademark|copyright|trade secret/i);
+      expect(hrefs(mainOf(profile)).has("/services/intellectual-property-damages"), slug).toBe(false);
+      expect(visibleMain(profile), slug).not.toMatch(/intellectual property|patent|trademark|copyright|trade secret/i);
     }
   });
 
@@ -996,19 +1022,20 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
       expect(textOf(shell), route).toContain(`${expert.title}, who is available to testify to`);
     }
     const pillar = readShell("/services/business-valuation");
-    expect(pillar).toMatch(/By <a href="\/team">KW Economics Editorial Team<\/a> &middot; Updated <time/);
+    expect(decode(pillar.replace(/<!-- -->/g, "").replace(/<[^>]+>/g, " "))).toMatch(/By KW Economics Editorial Team · Updated/);
+    expect(pillar).toMatch(/<a[^>]*href="\/team"[^>]*>KW Economics Editorial Team<\/a>/);
     expect(pillar).not.toContain("Reviewed <time");
   });
 
   it("C04: the variant and stage-index shells carry a References block; the stage index names its reviewer", () => {
     for (const variant of ["cost", "process", "timeline"]) {
       const shell = readShell(`/services/business-valuation/${variant}`);
-      expect(shell, variant).toContain("<h2>References</h2>");
-      expect(shell, variant).toMatch(/<a href="https:\/\/[^"]+" rel="noopener">/);
+      expect(h2TextsOf(shell), variant).toContain("References");
+      expect(shell, variant).toMatch(/<a href="https:\/\/[^"]+"[^>]*rel="noopener[^"]*"/);
     }
     for (const stage of ATTORNEY_STAGES) {
       const shell = readShell(`/attorneys/${stage.slug}`);
-      expect(shell, stage.slug).toContain("<h2>References</h2>");
+      expect(h2TextsOf(shell), stage.slug).toContain("References");
       expect(hrefs(shell).has(`/team/${expert.slug}`), `${stage.slug} names its reviewer`).toBe(true);
     }
   });

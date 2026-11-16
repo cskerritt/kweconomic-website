@@ -10,7 +10,7 @@ import type { City, Service } from "@/types";
  */
 
 // Number of cities per state that receive /services/<service>/<state>/<city>
-// pages. MUST match `SERVICE_CITY_TOP` in scripts/prerender.mjs and
+// pages. MUST match `SERVICE_CITY_TOP` consumed by scripts/lib/routes.mjs (the prerender route list, through serviceCityCities below) and
 // `SERVICE_CITY_PRERENDER_TOP` in src/data/contentReadiness.ts - all slice
 // each state's city file to its first N entries in file order. (The sitemap
 // advertises a readiness-gated subset of these pages; the rest stay live,

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { caseTypes } from "@/data/caseTypes";
-import { ATTORNEY_STAGES } from "@/lib/attorney-stages";
+import { ATTORNEY_STAGES, stageIndexDescription } from "@/lib/attorney-stages";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
 import SchemaOrg from "@/components/SchemaOrg";
@@ -54,6 +54,7 @@ export default function AttorneysHubPage() {
               {stage.label}
             </Link>
           </h2>
+          <p className="text-neutral-600 mb-4 max-w-3xl">{stageIndexDescription(stage.slug)}</p>
           <ul className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {caseTypes.map((c) => (
               <li key={c.slug}>

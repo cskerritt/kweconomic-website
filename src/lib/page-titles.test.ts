@@ -11,7 +11,8 @@
 // the React pages. The build-output check over the written shells lives in
 // scripts/prerender-meta.test.mjs.
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+// @ts-expect-error plain .mjs helper without types
+import { FIXED_ROUTES, pageMetaFromSource } from "../../scripts/lib/page-source-meta.mjs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { City } from "@/types";
@@ -30,7 +31,7 @@ import { whitePapers } from "@/data/whitePapers";
 import { profileTitle } from "@/data/team-meta.mjs";
 import { placeName } from "@/data/geo-prose.mjs";
 import { ATTORNEY_STAGES, journeyTitle, stageIndexTitle } from "@/lib/attorney-stages";
-import { ORG_NAME, ORG_SHORT, SITE_URL } from "@/lib/brand";
+import { ORG_NAME } from "@/lib/brand";
 import {
   TITLE_MAX,
   fitTitle,
@@ -54,7 +55,6 @@ import {
 } from "./page-titles.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
-const prerenderSrc = readFileSync(join(ROOT, "scripts", "prerender.mjs"), "utf8");
 
 // Every state's city file, keyed by state slug (the prerender loads the same
 // files eagerly; the app code-splits them per state).
@@ -77,19 +77,9 @@ function allTitles(): Map<string, string> {
     titles.set(route, title);
   };
 
-  // Fixed routes: the prerender's own literals, resolved the way the shells
-  // resolve them (brand tokens only; data-driven literals are rebuilt below).
-  const TOKENS: Record<string, string> = { ORG_NAME, ORG_SHORT, SITE_URL, DOMAIN: new URL(SITE_URL).host };
-  for (const m of prerenderSrc.matchAll(/path: (`[^`]*`|"[^"]*"),(?:\s*\/\/[^\n]*)*\s*title: (`[^`]*`|"[^"]*")/g)) {
-    const path = m[1].slice(1, -1);
-    const literal = m[2].slice(1, -1);
-    if (/\$\{/.test(path)) continue; // templated families are rebuilt from data below
-    const tokens = [...literal.matchAll(/\$\{([^}]*)\}/g)].map((t) => t[1]);
-    if (!tokens.every((t) => t in TOKENS)) continue;
-    add(path, literal.replace(/\$\{(\w+)\}/g, (_, k: string) => TOKENS[k]));
-  }
-  expect(titles.has("/"), "home page literal read from prerender.mjs").toBe(true);
-  expect(titles.size, "fixed-route literals read from prerender.mjs").toBeGreaterThanOrEqual(20);
+  // Fixed routes: the literals in the React pages that own them.
+  for (const [route, file] of Object.entries(FIXED_ROUTES)) add(route, pageMetaFromSource(ROOT, file).title);
+  expect(titles.has("/"), "home page literal read from the React page").toBe(true);
 
   const pillars = pillarServices();
   for (const s of pillars) {

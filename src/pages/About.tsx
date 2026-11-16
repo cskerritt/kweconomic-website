@@ -5,6 +5,7 @@ import { FAMILY_SECTION } from "@/data/intake";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
 import CrossSell from "@/components/CrossSell";
+import { team } from "@/data/team";
 import SchemaOrg from "@/components/SchemaOrg";
 import { Picture } from "@/components/Picture";
 import { graphSchema, organizationSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
@@ -227,6 +228,15 @@ export default function About() {
             records. Read the background and practice areas of each member
             of the team.
           </p>
+          <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8 text-sm">
+            {team.map((m) => (
+              <li key={m.slug}>
+                <Link to={`/team/${m.slug}`} className="font-semibold kw-link">
+                  {m.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <Link
             to="/team"
             className="kw-press min-h-11 inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-8 py-3 rounded-lg"

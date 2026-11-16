@@ -29,6 +29,9 @@ export default function WhitePaper() {
           title: `${paper.metaTitle ?? paper.title} | White Paper | ${ORG_NAME}`,
           description: paper.metaDescription,
           canonical: `${ORG_URL}/white-papers/${paper.slug}`,
+          ogType: "article",
+          articlePublished: paper.datePublished,
+          articleModified: paper.dateModified,
         }
       : null,
   );

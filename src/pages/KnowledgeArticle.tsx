@@ -26,6 +26,9 @@ export default function KnowledgeArticle() {
           title: `${guide.metaTitle ?? guide.title} | ${ORG_NAME}`,
           description: guide.metaDescription,
           canonical: `${ORG_URL}/knowledge/${guide.slug}`,
+          ogType: "article",
+          articlePublished: guide.datePublished ?? guide.dateModified ?? "2026-05-03",
+          articleModified: guide.dateModified ?? "2026-05-03",
         }
       : { title: `Knowledge Center | ${ORG_NAME}`, description: `Educational resources from ${ORG_NAME}`, canonical: `${ORG_URL}/knowledge` }
   );
@@ -72,7 +75,7 @@ export default function KnowledgeArticle() {
         ])}
       />
       {/* Breadcrumbs */}
-      <nav className="bg-neutral-50 border-b border-neutral-200">
+      <nav aria-label="Breadcrumb" className="bg-neutral-50 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <ol className="flex items-center gap-1.5 text-sm text-neutral-600">
             <li>

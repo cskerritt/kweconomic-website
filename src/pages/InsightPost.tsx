@@ -33,6 +33,9 @@ export default function InsightPost() {
           title: `${post.metaTitle ?? post.title} | ${ORG_NAME}`,
           description: post.metaDescription,
           canonical: `${ORG_URL}/insights/${post.slug}`,
+          ogType: "article",
+          articlePublished: post.publishedDate,
+          articleModified: post.dateModified ?? post.publishedDate,
         }
       : { title: `Insights | ${ORG_NAME}`, description: `Insights and articles from ${ORG_NAME}`, canonical: `${ORG_URL}/insights` }
   );
@@ -69,7 +72,7 @@ export default function InsightPost() {
         ])}
       />
       {/* Breadcrumbs */}
-      <nav className="bg-neutral-50 border-b border-neutral-200">
+      <nav aria-label="Breadcrumb" className="bg-neutral-50 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
           <ol className="flex items-center gap-1.5 text-sm text-neutral-600">
             <li>

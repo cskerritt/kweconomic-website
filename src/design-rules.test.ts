@@ -479,7 +479,7 @@ describe("PR2's inert motion names are gone (spec 3.2)", () => {
 // This site's own lists for the ported rules: its form files and the named exceptions. Each exception is exact (file and
 // class), so it fails the day the source is fixed and the entry must then be removed.
 const FIELD_FORMS = ["/src/pages/Contact.tsx", "/src/pages/ScheduleConsultation.tsx", "/src/components/WhitePaperGate.tsx"];
-const DETAILS_AT = ["/src/components/FAQBlock.tsx", "/src/pages/Home.tsx"];
+const DETAILS_AT = ["/src/components/FAQBlock.tsx", "/src/pages/FAQ.tsx", "/src/pages/Home.tsx"];
 const NAMED_SHADOWS: Record<string, string[]> = {
   "/src/components/layout/Header.tsx": [
     "shadow-lg",

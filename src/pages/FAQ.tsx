@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import AuthorByline from "@/components/AuthorByline";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import ContactCTA from "@/components/ContactCTA";
@@ -47,12 +45,6 @@ export default function FAQ() {
       "Answers for attorneys retaining a forensic economist: records, how the number is built, fees, timing, admissibility, and coverage in all 50 states.",
     canonical: `${SITE_URL}/resources/faq`,
   });
-
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
 
   return (
     <>
@@ -114,46 +106,17 @@ export default function FAQ() {
           <h2 id="faq-list-heading" className="font-serif text-2xl md:text-3xl font-bold text-navy mb-6">
             Questions attorneys ask
           </h2>
-          {/* WAI-ARIA accordion: each trigger is a heading-wrapped button so the
-              question/answer unit is a real outline entry, not a styled span. */}
+          {/* Native disclosure widgets, as in FAQBlock: the answers open without
+              JavaScript and are in the markup for every reader and crawler. */}
           <div className="space-y-3">
-            {faqs.map((faq, index) => {
-              const isOpen = openIndex === index;
-              return (
-                <div
-                  key={faq.question}
-                  className="bg-white rounded-xl border border-neutral-200 overflow-hidden"
-                >
-                  <h3 className="m-0">
-                    <button
-                      onClick={() => toggle(index)}
-                      className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left text-base font-semibold text-navy leading-snug hover:bg-neutral-50 transition-colors"
-                      aria-expanded={isOpen}
-                      aria-controls={`faq-panel-${index}`}
-                      id={`faq-button-${index}`}
-                    >
-                      <span>{faq.question}</span>
-                      {isOpen ? (
-                        <ChevronUp className="w-5 h-5 text-amber shrink-0" aria-hidden="true" />
-                      ) : (
-                        <ChevronDown className="w-5 h-5 text-neutral-600 shrink-0" aria-hidden="true" />
-                      )}
-                    </button>
-                  </h3>
-                  {/* Always rendered (hidden when closed) so aria-controls resolves
-                      and the answers stay in the DOM for crawlers. */}
-                  <div
-                    id={`faq-panel-${index}`}
-                    role="region"
-                    aria-labelledby={`faq-button-${index}`}
-                    hidden={!isOpen}
-                    className="px-6 pb-6 text-neutral-700 leading-relaxed border-t border-neutral-100 pt-4"
-                  >
-                    {renderTextWithLinks(faq.answer)}
-                  </div>
-                </div>
-              );
-            })}
+            {faqs.map((faq) => (
+              <details key={faq.question} className="kw-disclosure rounded-xl border border-neutral-200 bg-white">
+                <summary className="kw-ring-inset rounded-[11px] px-4 py-4 font-semibold text-navy">
+                  {faq.question}
+                </summary>
+                <div className="px-4 pt-1 pb-4 text-neutral-700 leading-relaxed">{renderTextWithLinks(faq.answer)}</div>
+              </details>
+            ))}
           </div>
         </div>
       </section>

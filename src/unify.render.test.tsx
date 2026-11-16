@@ -54,7 +54,7 @@ describe("home page map links", () => {
   it("resolves to a registered /locations/:stateSlug route that the sitemap and prerender cover", () => {
     expect(appSrc).toContain('path="/locations/:stateSlug"');
     expect(sitemapSrc).toContain("/locations/${st}");
-    expect(readFileSync("scripts/prerender.mjs", "utf8")).toContain("for (const state of states)");
+    expect(readFileSync("scripts/lib/routes.mjs", "utf8")).toContain("for (const st of states)");
   });
 });
 

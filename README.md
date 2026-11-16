@@ -1,6 +1,6 @@
 # KW Economics (kweconomics.com)
 
-Marketing and lead-capture site for **KW Economics**, the forensic economics, forensic accounting, and business valuation practice of the Kincaid Wolstein family of expert practices (legal line: Kincaid Wolstein Economics). Economics only: 13 pillar services (lost earnings and earning capacity, wrongful death economic loss, personal injury economic damages, household services, life care plan cost projection, employment and wage-loss damages, business valuation, lost profits, fraud and asset tracing, transfer pricing expert witness, intellectual property damages, divorce and marital financial analysis, expert rebuttal), 16 case types, and 4 credential pages across 56 states and territories and 802 metros, pre-rendered to static head-only HTML shells and served by a dependency-free Node server with a contact/lead API. Copy is written from the economist's standpoint (what the loss claim consists of, which records drive it, how the number is built), citation-free, hyphens only, with sources routed through `src/data/references.ts`.
+Marketing and lead-capture site for **KW Economics**, the forensic economics, forensic accounting, and business valuation practice of the Kincaid Wolstein family of expert practices (legal line: Kincaid Wolstein Economics). Economics only: 13 pillar services (lost earnings and earning capacity, wrongful death economic loss, personal injury economic damages, household services, life care plan cost projection, employment and wage-loss damages, business valuation, lost profits, fraud and asset tracing, transfer pricing expert witness, intellectual property damages, divorce and marital financial analysis, expert rebuttal), 16 case types, and 4 credential pages across 56 states and territories and 802 metros, pre-rendered as full server-rendered React pages that the browser hydrates in place and served by a dependency-free Node server with a contact/lead API. Copy is written from the economist's standpoint (what the loss claim consists of, which records drive it, how the number is built), citation-free, hyphens only, with sources routed through `src/data/references.ts`.
 
 Sister practices are linked, never duplicated: vocational work hands off to kwvrs.com and life care plan authorship to kwlcp.com. `src/lib/brand.ts` is the only place those URLs are spelled (`scripts/lib/site.mjs` and `lib/brand.server.mjs` mirror the brand constants for the build scripts and the runtime image), and `src/components/CrossSell.tsx` is the one component allowed to describe that work. The two `pillar: false` entries in `services.ts` resolve as short noindex cards that link out and are excluded from every enumeration, sitemap, and prerender.
 
@@ -13,7 +13,7 @@ npm run dev        # Vite dev server with HMR
 npm run build      # sitemaps -> llms.txt -> extra sitemaps -> tsc -> vite build -> prerender (writes dist/)
 npm test           # vitest (unit + guard tests; the sitemap-to-dist coverage check needs dist/ from a prior build)
 npm run lint       # eslint .
-npm run preview    # serve the vite build without the prerendered shells
+npm run preview    # serve the vite build without the prerendered pages
 ```
 
 Full gate before pushing: `npx tsc -b && npx eslint . && npx vitest run && npm run build`, then the Docker smoke below.
