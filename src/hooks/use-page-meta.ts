@@ -1,21 +1,21 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import type { PageMeta } from "@/types";
-import {
-  DEFAULT_OG_IMAGE,
-  DEFAULT_OG_IMAGE_ALT,
-  DEFAULT_OG_IMAGE_HEIGHT,
-  DEFAULT_OG_IMAGE_WIDTH,
-  SITE_URL,
-} from "@/lib/brand";
+import { PageMetaContext } from "@/lib/page-meta-context";
+import { resolvePageHead } from "@/lib/page-head";
 
-const DEFAULT_ROBOTS =
-  "index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1";
-
-// The head is written by scripts/prerender.mjs first (static shell) and by this
-// hook after hydration; both publish the same tag set so the two views of a
-// route never disagree. The site is single-language, so no hreflang alternates
-// are emitted on either side.
+/**
+ * Publishes a page's <head>. In the browser this runs in an effect on every
+ * route change. In the build's server render (src/entry-server.tsx) there is no
+ * document: the same PageMeta goes to the collector in PageMetaContext during
+ * render and scripts/prerender.mjs writes the head from resolvePageHead(meta),
+ * the function the effect below uses too, so the static head and the hydrated
+ * head publish the same tag set by construction. The site is single-language,
+ * so no hreflang alternates are emitted on either side.
+ */
 export function usePageMeta(meta: PageMeta | null) {
+  const collect = useContext(PageMetaContext);
+  if (collect && meta) collect(meta);
+
   const title = meta?.title;
   const description = meta?.description;
   const canonicalInput = meta?.canonical;
@@ -30,13 +30,9 @@ export function usePageMeta(meta: PageMeta | null) {
   const noindexInput = meta?.noindex;
   useEffect(() => {
     if (!meta) return;
-    document.title = meta.title;
-
-    // Normalize canonical - strip trailing slash except for root
-    const canonical =
-      meta.canonical.endsWith("/") && meta.canonical !== `${SITE_URL}/`
-        ? meta.canonical.slice(0, -1)
-        : meta.canonical;
+    const head = resolvePageHead(meta);
+    document.title = head.title;
+    const canonical = head.canonical;
 
     const setMeta = (name: string, content: string) => {
       let el = document.querySelector(`meta[name="${name}"]`);
@@ -68,31 +64,23 @@ export function usePageMeta(meta: PageMeta | null) {
       }
     };
 
-    const ogImage = meta.ogImage || DEFAULT_OG_IMAGE;
-    const isDefaultImage = ogImage === DEFAULT_OG_IMAGE;
-    const ogImageWidth = meta.ogImageWidth ?? (isDefaultImage ? DEFAULT_OG_IMAGE_WIDTH : undefined);
-    const ogImageHeight = meta.ogImageHeight ?? (isDefaultImage ? DEFAULT_OG_IMAGE_HEIGHT : undefined);
-    const ogImageAlt = meta.ogImageAlt ?? (isDefaultImage ? DEFAULT_OG_IMAGE_ALT : undefined);
-    const ogType = meta.ogType ?? "website";
+    setMeta("description", head.description);
+    setMeta("robots", head.robots);
 
-    setMeta("description", meta.description);
-    const robots = meta.robots ?? (meta.noindex ? "noindex, follow" : DEFAULT_ROBOTS);
-    setMeta("robots", robots);
-
-    setOg("og:title", meta.title);
-    setOg("og:description", meta.description);
+    setOg("og:title", head.title);
+    setOg("og:description", head.description);
     setOg("og:url", canonical);
-    setOg("og:type", ogType);
-    setOg("og:image", ogImage);
-    setOrRemoveOg("og:image:width", ogImageWidth);
-    setOrRemoveOg("og:image:height", ogImageHeight);
-    setOrRemoveOg("og:image:alt", ogImageAlt);
-    setOrRemoveOg("article:published_time", ogType === "article" ? meta.articlePublished : undefined);
-    setOrRemoveOg("article:modified_time", ogType === "article" ? meta.articleModified : undefined);
+    setOg("og:type", head.ogType);
+    setOg("og:image", head.ogImage);
+    setOrRemoveOg("og:image:width", head.ogImageWidth);
+    setOrRemoveOg("og:image:height", head.ogImageHeight);
+    setOrRemoveOg("og:image:alt", head.ogImageAlt);
+    setOrRemoveOg("article:published_time", head.articlePublished);
+    setOrRemoveOg("article:modified_time", head.articleModified);
 
-    setMeta("twitter:title", meta.title);
-    setMeta("twitter:description", meta.description);
-    setMeta("twitter:image", ogImage);
+    setMeta("twitter:title", head.title);
+    setMeta("twitter:description", head.description);
+    setMeta("twitter:image", head.ogImage);
 
     // Canonical link
     let link = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;

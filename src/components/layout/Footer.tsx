@@ -212,7 +212,7 @@ export default function Footer() {
         <div className="mt-10 pt-8 border-t border-white/10">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <p className="text-xs text-neutral-400">
-              &copy; {currentYear} {ORG_NAME}. All rights reserved.
+              &copy; <span suppressHydrationWarning>{currentYear}</span> {ORG_NAME}. All rights reserved.
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <Link to="/privacy" className="text-xs text-neutral-400 hover:text-neutral-300 transition-colors pointer-coarse:py-3.5">

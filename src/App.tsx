@@ -77,9 +77,9 @@ function PageTransition({ children }: { children: ReactNode }) {
  * renders nothing, so the prerender and hydration are unchanged.
  */
 /**
- * The first load mounts with createRoot (src/main.tsx), which replaces the prerendered shell, so the browser's own
- * fragment jump lands on the shell's layout, hundreds of pixels off (2026-11-16 scroll review). A first mount that
- * came from a fresh navigation (not a reload or a history move, whose restored position the browser keeps) and
+ * The first load hydrates the prerendered page (src/main.tsx; a URL without a matching stamp, the 404 page, mounts
+ * with createRoot instead and replaces it). The browser's own fragment jump runs before fonts and the lazy chunks
+ * settle, so it can land hundreds of pixels off (2026-11-16 scroll review). A first mount that came from a fresh navigation (not a reload or a history move, whose restored position the browser keeps) and
  * carries a fragment therefore scrolls to its target once, after the route's content is in the DOM.
  */
 let firstLoadHandled = false;
@@ -107,7 +107,7 @@ function freshNavigation(): boolean {
 
 /**
  * A reload, or a Back or Forward into a fresh document, gets the browser's restored position on the prerendered
- * shell, which createRoot then replaces, so the reader lost their place (2026-11-16 scroll review). The position is
+ * page before the route's content has settled, so the reader lost their place (2026-11-16 scroll review). The position is
  * kept per page in sessionStorage when the page is left and put back after the first mount; storage that is blocked
  * or empty leaves the browser's own behavior.
  */
@@ -194,7 +194,7 @@ function ScrollToTop() {
           landAgain();
           for (const type of VISITOR_INPUT) window.removeEventListener(type, markMoved);
           // index.html turned smooth scrolling off for a load with a fragment, so the browser's own jump to the
-          // prerendered shell's layout is instant and never still animating over this landing; it is back on now.
+          // prerendered page's layout is instant and never still animating over this landing; it is back on now.
           document.documentElement.style.scrollBehavior = "";
         }, 600);
       } else {
@@ -257,10 +257,9 @@ export default function App() {
       <a href="#main-content" className="skip-link">Skip to main content</a>
       <AnalyticsTracker />
       <Header />
-      {/* min-h-screen: the prerendered shells are head-only, so on first paint the
-          route content is still a lazy chunk. Without a reserved full viewport the
-          footer renders inside the fold and is shoved down when the page arrives -
-          a single ~0.33 CLS on every URL (Search Console CWV, Aug 2026). */}
+      {/* min-h-svh: reserves a full viewport so the footer never sits inside the fold while a
+          client-side navigation's lazy route chunk loads (Search Console CWV, Aug 2026). The
+          prerendered page already holds the route's content on first paint. */}
       <main id="main-content" className="flex-1 min-h-svh">
         <Suspense fallback={<Loading />}>
           <PageTransition>
