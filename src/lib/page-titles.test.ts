@@ -13,7 +13,6 @@
 import { describe, expect, it } from "vitest";
 // @ts-expect-error plain .mjs helper without types
 import { FIXED_ROUTES, pageMetaFromSource } from "../../scripts/lib/page-source-meta.mjs";
-import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { City } from "@/types";
@@ -32,7 +31,7 @@ import { whitePapers } from "@/data/whitePapers";
 import { profileTitle } from "@/data/team-meta.mjs";
 import { placeName } from "@/data/geo-prose.mjs";
 import { ATTORNEY_STAGES, journeyTitle, stageIndexTitle } from "@/lib/attorney-stages";
-import { ORG_NAME, ORG_SHORT, SITE_URL } from "@/lib/brand";
+import { ORG_NAME } from "@/lib/brand";
 import {
   TITLE_MAX,
   fitTitle,
