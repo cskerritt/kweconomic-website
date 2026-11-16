@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { usePageMeta } from "@/hooks/use-page-meta";
 import { ORG_NAME, ORG_SHORT, ORG_LEGAL, ORG_EMAIL, ORG_PHONE_DISPLAY, SITE_URL } from "@/lib/brand";
-import { ORG_PHONE, ORG_PHONE_DISPLAY, telHref } from "@/lib/brand";
+import { ORG_PHONE, telHref } from "@/lib/brand";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import SchemaOrg from "@/components/SchemaOrg";
 import { graphSchema, breadcrumbSchema, ORG_URL } from "@/lib/schema";
@@ -148,7 +148,7 @@ export default function Terms() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-neutral-700">
             <Link to="/contact" className="font-semibold kw-link">Request a consultation</Link> or call{" "}
-            <a href={telHref(ORG_PHONE)} className="font-semibold kw-link">{ORG_PHONE_DISPLAY}</a>.
+            <a href={telHref(ORG_PHONE)} className="font-semibold kw-link">{PHONE_DISPLAY}</a>.
           </p>
         </div>
       </section>
