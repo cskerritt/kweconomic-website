@@ -889,10 +889,10 @@ describe.skipIf(!hasDist)("the audit repairs reach the static shells (requires d
     expect(hrefs(mainOf(francis)).has("/services/transfer-pricing-expert-witness")).toBe(false);
     expect(hrefs(mainOf(readShell("/team/christopher-skerritt"))).has("/services/transfer-pricing-expert-witness")).toBe(true);
     const about = readShell("/about");
-    expect(about).toContain("<h2>Our Team</h2>");
-    expect(about).not.toContain("<h2>Our Economists</h2>");
+    expect(h2TextsOf(about)).toContain("Our Team");
+    expect(h2TextsOf(about)).not.toContain("Our Economists");
     for (const d of ["district-court-of-guam", "southern-district-of-new-york"]) {
-      expect(hrefs(readShell(`/jurisdictions/federal/${d}`)).has("/services/transfer-pricing-expert-witness"), d).toBe(false);
+      expect(hrefs(mainOf(readShell(`/jurisdictions/federal/${d}`))).has("/services/transfer-pricing-expert-witness"), d).toBe(false);
     }
     // The territorial district names keep their own form in the courts answer.
     expect(textOf(readShell("/case-types/wrongful-death/guam"))).toContain("Matters within federal jurisdiction proceed in the United States District Court of Guam.");

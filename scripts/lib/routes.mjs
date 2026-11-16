@@ -6,7 +6,7 @@
 // scripts/prerender.mjs feeds it modules loaded through vite (loadRouteData).
 // The set is exactly the one the hand-built prerender wrote before the move to
 // hydrateRoot: the same data and the same windows (every city for the city
-// tier, the first SERVICE_CITY_TOP cities per state for the service x city
+// tier, the first ten cities per state (geo-links serviceCityCities) for the service x city
 // tier, the released states for service x case type x state).
 
 export const CORE_PATHS = [
