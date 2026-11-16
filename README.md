@@ -20,9 +20,22 @@ Full gate before pushing: `npx tsc -b && npx eslint . && npx vitest run && npm r
 
 Other scripts: `generate:sitemaps`, `generate:llms`, `images:webp` (needs `cwebp`), `indexnow` (submits sitemap URLs; set `INDEXNOW_KEY`, optional `INDEXNOW_HOST`).
 
+## How pages render (since 2026-11-16)
+
+Every route is rendered by React at build time and hydrated in the browser, the way kwvrs.com and kwlcp.com work; the hand-built HTML shells (the old 3,200-line `scripts/prerender.mjs`) are gone, so crawlers and visitors get the same page from one source.
+
+- `src/entry-server.tsx` renders a route with `react-dom/static` `prerender` inside a `StaticRouter`, waiting for every lazy route. `scripts/prerender.mjs` drives it over the route list in `scripts/lib/routes.mjs` (the same enumeration the old script used, including the service x city top-10 window and declared service x case-type pairs), composes each page's head with `scripts/lib/page-head.mjs`, and fails the build through `scripts/lib/render-gate.mjs` (exactly one `<h1>`, no "Loading" in `<main>`, a real title, no noindex on a real route, a word floor).
+- `src/main.tsx` calls `hydrateRoot` when `#root` carries a `data-prerender-path` that matches the URL (`src/lib/hydration-mode.ts`); the 404 page falls back to `createRoot`.
+- Head tags come from one resolver (`src/lib/page-head.ts`) with this site's own tag set (og:image size and alt, og:type, article published/modified times, no hreflang): `usePageMeta` hands the meta to a collector during render (build time) and writes the same tags in an effect (browser).
+- City lists are preloaded: a context on the server, an inline `kw-cities-<state>` JSON script in the browser.
+- Nothing that differs between the build server and a visitor's browser is read during render: dates format in UTC, the footer year carries `suppressHydrationWarning`, and the white paper unlock goes through `useSyncExternalStore` with a locked server snapshot, so gated sections are never in the HTML. `src/hydration-determinism.render.test.tsx` pins this.
+- Forms are real HTML before React attaches, so the inline script in `index.html` cancels a native submit until the form has hydrated (`src/lib/form-ready.ts` sets `data-kw-ready`), and every form is `method="post"`. `src/components/form-guard.test.ts` fails if a new form lacks the flag.
+- `/resources/faq` uses native `<details>`, so answers open without JavaScript.
+- The crawler tests (`scripts/prerender-shells.test.mjs`, `scripts/prerender-meta.test.mjs`) read the built `dist/` pages and scope content checks to `<main>`; run them after `npm run build`.
+
 ## Production
 
-`node server.js` serves `dist/` (prerendered shells + assets), the three API routes (`/api/contact`, `/api/consultation`, `/api/whitepaper`), and `/healthz`. No framework; `http` module only. Lead delivery is `lib/lead-mailer.server.mjs` (Resend): the team notice is `[KW Economics] New <type> inquiry - <name>`, and consultation requests also get a visitor acknowledgement signed KW Economics.
+`node server.js` serves `dist/` (prerendered pages + assets), the three API routes (`/api/contact`, `/api/consultation`, `/api/whitepaper`), and `/healthz`. No framework; `http` module only. Lead delivery is `lib/lead-mailer.server.mjs` (Resend): the team notice is `[KW Economics] New <type> inquiry - <name>`, and consultation requests also get a visitor acknowledgement signed KW Economics.
 
 | Var | Required | Purpose |
 |---|---|---|
@@ -79,7 +92,7 @@ Railway service creation and the DNS cutover are separate follow-ups on Chris's 
 
 ## Page inventory
 
-From `npm run build` at this commit (14,004 prerendered `index.html` shells):
+From `npm run build` at this commit (14,004 prerendered `index.html` pages):
 
 | Family | Pages |
 |---|---|
