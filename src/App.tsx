@@ -175,18 +175,24 @@ function ScrollToTop() {
       const first = freshNavigation() ? fragmentTarget(hash) : null;
       if (first) {
         first.scrollIntoView({ block: "start", behavior: "instant" });
-        // The content above the target is still settling (web fonts, the lazy route's late layout), and the fresh
-        // root gets none of the browser's own scroll anchoring, so land again once fonts are in and once more shortly
-        // after, each time only if the visitor has not scrolled meanwhile.
-        let landedAt = window.scrollY;
+        // The content above the target is still settling (web fonts, the lazy route's late layout), and the browser
+        // can move the page itself while the load finishes (seen on kweconomics.com/contact#contact-form at 768px, a
+        // 79px shift that left the form under the header), so land again once fonts are in and once more shortly
+        // after, unless the visitor has scrolled meanwhile: their wheel, touch, key or pointer, never a position
+        // change the browser made.
+        let visitorMoved = false;
+        const VISITOR_INPUT = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
+        const markMoved = () => {
+          visitorMoved = true;
+        };
+        for (const type of VISITOR_INPUT) window.addEventListener(type, markMoved, { passive: true, once: true });
         const landAgain = () => {
-          if (Math.abs(window.scrollY - landedAt) >= 2) return;
-          first.scrollIntoView({ block: "start", behavior: "instant" });
-          landedAt = window.scrollY;
+          if (!visitorMoved) first.scrollIntoView({ block: "start", behavior: "instant" });
         };
         document.fonts?.ready.then(landAgain);
         window.setTimeout(() => {
           landAgain();
+          for (const type of VISITOR_INPUT) window.removeEventListener(type, markMoved);
           // index.html turned smooth scrolling off for a load with a fragment, so the browser's own jump to the
           // prerendered shell's layout is instant and never still animating over this landing; it is back on now.
           document.documentElement.style.scrollBehavior = "";
