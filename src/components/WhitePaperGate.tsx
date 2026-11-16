@@ -94,6 +94,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
           <div
             className="pointer-events-none select-none blur-[6px] opacity-60 max-h-72 overflow-hidden"
             aria-hidden="true"
+            inert
           >
             {gated.map((s) => renderSection(s))}
           </div>

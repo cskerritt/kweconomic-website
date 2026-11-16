@@ -151,7 +151,9 @@ if (typeof window !== "undefined") {
   );
   window.addEventListener("popstate", () => {
     const key = entryKey();
-    popTarget = key !== undefined ? (entryPositions.get(key) ?? null) : null;
+    // An entry with nothing recorded was never scrolled, so it goes back to the top; an entry with no key (a native
+    // in-page fragment link's) is left to the browser's fragment jump.
+    popTarget = key !== undefined ? (entryPositions.get(key) ?? 0) : null;
   });
 }
 
@@ -245,7 +247,7 @@ function AnalyticsTracker() {
 
 export default function App() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-svh flex flex-col">
       <a href="#main-content" className="skip-link">Skip to main content</a>
       <AnalyticsTracker />
       <Header />
@@ -253,7 +255,7 @@ export default function App() {
           route content is still a lazy chunk. Without a reserved full viewport the
           footer renders inside the fold and is shoved down when the page arrives -
           a single ~0.33 CLS on every URL (Search Console CWV, Aug 2026). */}
-      <main id="main-content" className="flex-1 min-h-screen">
+      <main id="main-content" className="flex-1 min-h-svh">
         <Suspense fallback={<Loading />}>
           <PageTransition>
           <Routes>
