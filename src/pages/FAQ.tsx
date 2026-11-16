@@ -98,7 +98,7 @@ export default function FAQ() {
             <p className="text-lg text-neutral-300 leading-relaxed">
               Answers to common questions about economic damages analysis, our process, the
               records we need, fees, and geographic coverage. Don't see your question?{" "}
-              <Link to="/contact" className="text-white underline underline-offset-2 decoration-white/40 hover:decoration-white">
+              <Link to="/contact" className="kw-link text-white hover:text-amber-light decoration-white/40">
                 Contact us directly
               </Link>
               .

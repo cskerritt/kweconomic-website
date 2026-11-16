@@ -116,11 +116,11 @@ export default function KnowledgeArticle() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-[1fr_280px] lg:gap-12 items-start">
             {/* Article content */}
-            <article className="prose prose-lg max-w-none">
+            <article className="kw-prose">
               <AuthorByline slug={guide.authorSlug} datePublished={publishedDate} dateModified={reviewedDate} />
 
               {keyPoints.length > 0 && (
-                <section aria-labelledby="key-points-heading" className="not-prose mb-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
+                <section aria-labelledby="key-points-heading" className="mb-12 rounded-xl border border-neutral-200 bg-neutral-50 p-6">
                   <h2 id="key-points-heading" className="kw-label text-neutral-500 mb-3">
                     Key points
                   </h2>
@@ -182,7 +182,7 @@ export default function KnowledgeArticle() {
                           handleScrollTo(sectionId);
                           window.history.replaceState(null, "", `#${sectionId}`);
                         }}
-                        className="block w-full text-left text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded hover:bg-navy/5 transition-colors leading-snug"
+                        className="block w-full text-left text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded-lg hover:bg-navy/5 transition-colors leading-snug"
                       >
                         {section.heading}
                       </a>

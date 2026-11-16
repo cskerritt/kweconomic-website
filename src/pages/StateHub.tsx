@@ -248,7 +248,7 @@ export default function StateHub() {
                   <li key={ct.slug}>
                     <Link
                       to={`/case-types/${ct.slug}/${state.slug}`}
-                      className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+                      className="kw-link"
                     >
                       {ct.name}
                     </Link>
@@ -272,7 +272,7 @@ export default function StateHub() {
                   <li key={cred.slug}>
                     <Link
                       to={`/credentials/${cred.slug}/${state.slug}`}
-                      className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+                      className="kw-link"
                     >
                       {cred.abbreviation} ({cred.name})
                     </Link>
@@ -287,7 +287,7 @@ export default function StateHub() {
                 <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-4">
                   {localContent.headline}
                 </h2>
-                <div className="prose prose-neutral max-w-none space-y-4">
+                <div className="kw-prose space-y-4">
                   {localContent.content.split("\n\n").map((para, i) => (
                     <p key={i} className="text-neutral-700 leading-relaxed">{para}</p>
                   ))}

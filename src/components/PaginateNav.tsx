@@ -23,14 +23,14 @@ export default function PaginateNav({ prev, next, backLabel = "Home", backHref =
       </Link>
       <div className="flex gap-4">
         {prev ? (
-          <Link to={prev.href} className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+          <Link to={prev.href} className="kw-link">
             &larr; Prev: {prev.label}
           </Link>
         ) : (
           <span className="text-neutral-600">No previous</span>
         )}
         {next ? (
-          <Link to={next.href} className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+          <Link to={next.href} className="kw-link">
             Next: {next.label} &rarr;
           </Link>
         ) : (

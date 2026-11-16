@@ -102,7 +102,7 @@ export default function ExpertProfile() {
                   {m.credentials.map((cred) => (
                     <span
                       key={cred}
-                      className="inline-block bg-white/10 text-white text-xs font-semibold px-2.5 py-1 rounded ring-1 ring-white/15"
+                      className="inline-block bg-white/10 text-white text-xs font-semibold px-2.5 py-1 rounded-full ring-1 ring-white/15"
                     >
                       {cred}
                     </span>
@@ -172,7 +172,7 @@ export default function ExpertProfile() {
                     <Link
                       key={svc.slug}
                       to={`/services/${svc.slug}`}
-                      className="kw-lift group flex items-center justify-between gap-3 rounded-xl border border-neutral-300 bg-white px-4 py-3 hover:shadow-raised"
+                      className="kw-lift group flex items-center justify-between gap-3 rounded-xl border border-neutral-200 hover:border-neutral-300 bg-white px-4 py-3 hover:shadow-raised"
                     >
                       <span className="font-medium text-navy group-hover:text-amber-dark transition-colors">
                         {practiceAreaLabel(m, svc)}
@@ -213,7 +213,7 @@ export default function ExpertProfile() {
                           href={p.url}
                           target="_blank"
                           rel="noopener"
-                          className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+                          className="kw-link"
                         >
                           {p.title}
                         </a>
@@ -246,7 +246,7 @@ export default function ExpertProfile() {
                 href={m.cvUrl}
                 target="_blank"
                 rel="noopener"
-                className="inline-flex items-center gap-2 text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+                className="inline-flex items-center gap-2 font-medium kw-link"
               >
                 Download CV (PDF) <ArrowRight className="w-4 h-4" />
               </a>

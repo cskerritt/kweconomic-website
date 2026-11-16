@@ -29,7 +29,7 @@ function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typ
   return (
     <Link
       to={`/white-papers/${slug}`}
-      className="kw-lift group relative block h-full rounded-xl border border-neutral-300 bg-white p-6 hover:shadow-raised"
+      className="kw-lift group relative block h-full rounded-xl border border-neutral-200 hover:border-neutral-300 bg-white p-6 hover:shadow-raised"
     >
       <div className="relative z-[2]">
         <div className="flex items-center justify-between mb-4">
@@ -132,7 +132,7 @@ export default function WhitePapersHub() {
           <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
             {LIBRARY_LINKS.filter((l) => l.href !== "/white-papers").map((l) => (
               <li key={l.href}>
-                <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+                <Link to={l.href} className="font-medium kw-link">
                   {l.label}
                 </Link>
               </li>

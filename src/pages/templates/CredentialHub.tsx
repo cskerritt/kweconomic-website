@@ -56,7 +56,7 @@ export default function CredentialHub() {
           <h2 className="font-serif text-2xl text-navy mb-2">Issued by</h2>
           <p className="text-neutral-700">
             {cred.issuerUrl ? (
-              <a href={cred.issuerUrl} target="_blank" rel="noopener" className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <a href={cred.issuerUrl} target="_blank" rel="noopener" className="kw-link">
                 {cred.issuer}
               </a>
             ) : cred.issuer}
@@ -86,7 +86,7 @@ export default function CredentialHub() {
           <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {experts.map((m) => (
               <li key={m.slug}>
-                <Link to={`/team/${m.slug}`} className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">{m.name}</Link>
+                <Link to={`/team/${m.slug}`} className="kw-link">{m.name}</Link>
                 <span className="text-neutral-600"> - {m.title}</span>
               </li>
             ))}
@@ -99,7 +99,7 @@ export default function CredentialHub() {
         <ul className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm">
           {states.map((s) => (
             <li key={s.slug}>
-              <Link to={`/credentials/${cred.slug}/${s.slug}`} className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to={`/credentials/${cred.slug}/${s.slug}`} className="kw-link">
                 {cred.abbreviation} in {s.name}
               </Link>
             </li>

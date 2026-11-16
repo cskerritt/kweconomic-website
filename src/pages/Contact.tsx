@@ -149,7 +149,7 @@ export default function Contact() {
             alt="Attorney reviewing case documents"
             width={1200}
             height={400}
-            className="rounded-2xl shadow-xl w-full object-cover max-h-72"
+            className="rounded-2xl w-full object-cover max-h-72"
             loading="lazy"
           />
         </div>
@@ -268,7 +268,7 @@ export default function Contact() {
 
               {/* What happens next - 3-step process explainer */}
               <div className="bg-navy/5 border border-navy/15 rounded-lg p-5 mb-6">
-                <p className="text-xs uppercase tracking-[0.14em] text-navy font-semibold mb-3">
+                <p className="kw-label text-navy mb-3">
                   What happens next
                 </p>
                 <ol className="space-y-2 text-sm text-neutral-700">
@@ -405,7 +405,7 @@ export default function Contact() {
                     /schedule-consultation, /about, the privacy policy, and the
                     static shell), so the form agrees with the actual routing
                     to the shared intake inbox (audit F06, F08 /contact). */}
-                <p className="text-xs text-neutral-600 leading-relaxed bg-neutral-50 border border-neutral-200 rounded-md p-3">
+                <p className="text-xs text-neutral-600 leading-relaxed bg-neutral-50 border border-neutral-200 rounded-lg p-3">
                   <strong>Response within 1 business day.</strong> <IntakeDisclosure />
                 </p>
 

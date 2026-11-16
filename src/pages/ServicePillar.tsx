@@ -62,7 +62,7 @@ const NON_PILLAR_RELATED: Record<string, { href: string; label: string }> = {
 };
 
 const CREDENTIAL_LINK_CLASS =
-  "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark text-sm";
+  "kw-link text-sm";
 
 export default function ServicePillar() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>();
@@ -154,7 +154,7 @@ export default function ServicePillar() {
               <a
                 href={service.handoff.href}
                 rel="noopener"
-                className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+                className="font-semibold kw-link"
               >
                 {service.handoff.linkLabel}
               </a>
@@ -232,7 +232,7 @@ export default function ServicePillar() {
                   <Link
                     key={slug}
                     to={`/services/${service.slug}/case/${slug}`}
-                    className="flex items-center justify-between rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-navy hover:border-navy hover:shadow transition"
+                    className="kw-lift flex items-center justify-between rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised bg-white px-4 py-2.5 text-sm font-medium text-navy"
                   >
                     {service.shortName} for {typeName} <ArrowRight className="w-4 h-4 text-amber" aria-hidden="true" />
                   </Link>

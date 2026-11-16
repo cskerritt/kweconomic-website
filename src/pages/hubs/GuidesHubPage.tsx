@@ -54,7 +54,7 @@ export default function GuidesHubPage() {
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {guides.map((g) => (
               <li key={g.slug}>
-                <Link to={`/guides/${g.slug}`} className="block rounded-lg border border-neutral-200 p-4 hover:border-navy hover:shadow transition">
+                <Link to={`/guides/${g.slug}`} className="kw-lift block rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised p-4">
                   <div className="font-semibold text-navy">{g.title}</div>
                   <div className="text-sm text-neutral-600 mt-1 line-clamp-2">{g.tldr}</div>
                 </Link>
@@ -69,7 +69,7 @@ export default function GuidesHubPage() {
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {LIBRARY_LINKS.filter((l) => l.href !== "/guides").map((l) => (
             <li key={l.href}>
-              <Link to={l.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to={l.href} className="font-medium kw-link">
                 {l.label}
               </Link>
             </li>

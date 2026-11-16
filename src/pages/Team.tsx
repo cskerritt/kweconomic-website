@@ -19,7 +19,7 @@ function TeamCard({ member }: { member: TeamMember }) {
     <Link
       to={`/team/${member.slug}`}
       aria-label={`View ${member.name}'s profile`}
-      className="kw-lift group flex flex-col h-full bg-white rounded-xl border border-neutral-300 overflow-hidden hover:shadow-raised"
+      className="kw-lift group flex flex-col h-full bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 overflow-hidden hover:shadow-raised"
     >
       {/* Photo or initials */}
       <div className="aspect-[3/4] bg-neutral-100 relative overflow-hidden">
@@ -52,7 +52,7 @@ function TeamCard({ member }: { member: TeamMember }) {
             {member.credentials.map((cred) => (
               <span
                 key={cred}
-                className="inline-block bg-navy/10 text-navy text-xs font-semibold px-2 py-0.5 rounded"
+                className="inline-block bg-navy/10 text-navy text-xs font-semibold px-2 py-0.5 rounded-full"
               >
                 {cred}
               </span>
@@ -68,7 +68,7 @@ function TeamCard({ member }: { member: TeamMember }) {
         )}
 
         {/* View profile affordance */}
-        <span className="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-semibold text-navy group-hover:text-amber-dark transition-all">
+        <span className="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-semibold text-navy group-hover:text-amber-dark transition-colors">
           View profile
           <ArrowRight className="w-4 h-4" />
         </span>
@@ -84,7 +84,7 @@ function MemoriamCard({ member }: { member: TeamMember }) {
     <Link
       to={`/team/${member.slug}`}
       aria-label={`Remember ${member.name}`}
-      className="kw-lift group flex flex-col h-full bg-neutral-50 rounded-xl border border-neutral-300 overflow-hidden hover:shadow-raised"
+      className="kw-lift group flex flex-col h-full bg-neutral-50 rounded-xl border border-neutral-200 hover:border-neutral-300 overflow-hidden hover:shadow-raised"
     >
       <div className="aspect-[3/4] bg-neutral-100 relative overflow-hidden">
         {member.imageUrl ? (
@@ -93,7 +93,7 @@ function MemoriamCard({ member }: { member: TeamMember }) {
             alt={member.name}
             width={400}
             height={533}
-            className="w-full h-full object-cover object-top grayscale-[0.6] transition-all duration-500 group-hover:grayscale-0"
+            className="w-full h-full object-cover object-top grayscale-[0.6] motion-safe:transition-[filter] motion-safe:duration-300 group-hover:grayscale-0"
             loading="lazy"
           />
         ) : (
@@ -113,7 +113,7 @@ function MemoriamCard({ member }: { member: TeamMember }) {
             {member.credentials.map((cred) => (
               <span
                 key={cred}
-                className="inline-block bg-neutral-200/70 text-neutral-600 text-xs font-semibold px-2 py-0.5 rounded"
+                className="inline-block bg-neutral-200/70 text-neutral-600 text-xs font-semibold px-2 py-0.5 rounded-full"
               >
                 {cred}
               </span>

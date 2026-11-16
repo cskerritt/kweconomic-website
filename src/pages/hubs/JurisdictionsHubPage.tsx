@@ -64,7 +64,7 @@ export default function JurisdictionsHubPage() {
         <h2 className="font-serif text-2xl text-navy mb-4">States & Territories</h2>
         <p className="text-neutral-700 mb-4">
           Each entry opens the state page with its venue context. The{" "}
-          <Link to="/locations" className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+          <Link to="/locations" className="font-medium kw-link">
             directory of forensic economists by state
           </Link>{" "}
           lists the same states by region.

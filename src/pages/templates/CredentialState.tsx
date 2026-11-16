@@ -45,7 +45,7 @@ const RECOGNITION_LABEL: Record<Credential["stateReciprocity"][string], (stateNa
   none: (stateName) => `Not recognized in ${stateName}`,
 };
 
-const LINK = "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK = "kw-link";
 
 export default function CredentialState() {
   const { credSlug = "", stateSlug = "" } = useParams();

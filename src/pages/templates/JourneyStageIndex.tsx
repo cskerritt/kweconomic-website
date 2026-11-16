@@ -87,7 +87,7 @@ export default function JourneyStageIndex() {
           <li key={c.slug}>
             <Link
               to={`/attorneys/${stage}/${c.slug}`}
-              className="block rounded-lg border border-neutral-200 p-3 hover:border-navy hover:shadow transition"
+              className="kw-lift block rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised p-3"
             >
               <div className="font-semibold text-navy">{journeyHeading(stage, c)}</div>
             </Link>
@@ -102,7 +102,7 @@ export default function JourneyStageIndex() {
             <li key={s.slug}>
               <Link
                 to={`/attorneys/${s.slug}`}
-                className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+                className="kw-link"
               >
                 {stageIndexHeading(s.slug)}
               </Link>

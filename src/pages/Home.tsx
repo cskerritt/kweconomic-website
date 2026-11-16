@@ -78,7 +78,7 @@ function ReportContentsCard() {
       </ul>
       <div className="border-t border-neutral-200 mt-5 pt-4 flex items-center justify-between text-xs">
         <span className="text-neutral-600">Same schedules in every venue, plaintiff or defense.</span>
-        <Link to="/methods" className="text-amber-dark font-semibold uppercase tracking-wider hover:underline">
+        <Link to="/methods" className="kw-label text-amber-dark hover:underline">
           See the methods
         </Link>
       </div>
@@ -200,15 +200,15 @@ export default function Home() {
           <Reveal className="mt-10 text-center">
             <p className="text-neutral-600 max-w-3xl mx-auto">
               Read about{" "}
-              <Link to="/about" className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to="/about" className="font-semibold kw-link">
                 the practice and how each analysis is built
               </Link>
               , meet{" "}
-              <Link to="/team" className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to="/team" className="font-semibold kw-link">
                 the economics team
               </Link>
               , and see{" "}
-              <Link to="/credentials" className="text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to="/credentials" className="font-semibold kw-link">
                 what qualifies a forensic economist to testify
               </Link>
               .
@@ -234,7 +234,7 @@ export default function Home() {
               <Reveal key={entry.href} delay={i * 60}>
                 <Link
                   to={entry.href}
-                  className="kw-lift group block h-full rounded-xl border border-neutral-300 hover:shadow-raised bg-white p-5"
+                  className="kw-lift group block h-full rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised bg-white p-5"
                 >
                   <h3 className="font-serif text-lg font-bold text-navy mb-1 group-hover:text-amber-dark transition-colors">
                     {entry.label}
@@ -362,7 +362,7 @@ export default function Home() {
               <Reveal as="li" key={r.href} delay={i * 60}>
                 <Link
                   to={r.href}
-                  className="kw-lift block h-full rounded-xl border border-neutral-300 bg-white px-5 py-4 hover:shadow-raised"
+                  className="kw-lift block h-full rounded-xl border border-neutral-200 hover:border-neutral-300 bg-white px-5 py-4 hover:shadow-raised"
                 >
                   <span className="block font-medium text-navy text-sm leading-snug">
                     {r.label}

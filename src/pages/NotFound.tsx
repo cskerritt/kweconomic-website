@@ -11,7 +11,7 @@ const HELPFUL_LINKS = [
   { label: "Contact", href: "/contact", blurb: "Reach the team; response within one business day" },
 ];
 
-const LINK = "text-navy font-semibold underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark";
+const LINK = "font-semibold kw-link";
 
 export default function NotFound() {
   // PageMeta requires a canonical; /404 is the conventional self-reference for
@@ -36,7 +36,7 @@ export default function NotFound() {
           <li key={l.href}>
             <Link
               to={l.href}
-              className="kw-lift group block h-full rounded-xl border border-neutral-300 bg-white p-5 hover:shadow-raised"
+              className="kw-lift group block h-full rounded-xl border border-neutral-200 hover:border-neutral-300 bg-white p-5 hover:shadow-raised"
             >
               <span className="block font-serif text-lg font-bold text-navy group-hover:text-amber-dark transition-colors">
                 {l.label}

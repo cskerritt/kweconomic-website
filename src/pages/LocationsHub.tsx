@@ -150,7 +150,7 @@ export default function LocationsHub() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {RELATED_RESOURCES.map((r) => (
                 <li key={r.href}>
-                  <Link to={r.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+                  <Link to={r.href} className="font-medium kw-link">
                     {r.label}
                   </Link>
                 </li>

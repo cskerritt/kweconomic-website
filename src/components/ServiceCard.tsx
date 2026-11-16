@@ -15,7 +15,7 @@ export default function ServiceCard({ name, shortName, description, icon, href }
   return (
     <Link
       to={href}
-      className="kw-lift group relative block bg-white rounded-xl border border-neutral-300 p-6 hover:shadow-raised"
+      className="kw-lift group relative block bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 p-6 hover:shadow-raised"
     >
       <div className="relative z-[2] flex items-start gap-4">
         <div className="w-12 h-12 rounded-lg bg-navy/10 flex items-center justify-center shrink-0">

@@ -60,7 +60,7 @@ export default function AttorneysHubPage() {
                 <Link
                   to={`/attorneys/${stage.slug}/${c.slug}`}
                   aria-label={`${stage.label}: ${c.name}`}
-                  className="block rounded-lg border border-neutral-200 p-3 hover:border-navy hover:shadow transition"
+                  className="kw-lift block rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised p-3"
                 >
                   <div className="font-semibold text-navy">{c.name}</div>
                 </Link>
@@ -75,7 +75,7 @@ export default function AttorneysHubPage() {
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {RELATED_RESOURCES.map((r) => (
             <li key={r.href}>
-              <Link to={r.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to={r.href} className="font-medium kw-link">
                 {r.label}
               </Link>
             </li>

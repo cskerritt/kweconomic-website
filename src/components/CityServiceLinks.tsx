@@ -48,7 +48,7 @@ export default function CityServiceLinks({
           <Link
             key={service.slug}
             to={href}
-            className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-300 px-6 py-5 hover:shadow-raised"
+            className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-200 hover:border-neutral-300 px-6 py-5 hover:shadow-raised"
           >
             <div>
               <span className="font-semibold text-navy group-hover:text-amber-dark transition-colors">

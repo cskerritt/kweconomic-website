@@ -40,11 +40,11 @@ export default function SourcesBlock({ sources }: { sources: Source[] }) {
                 href={s.url}
                 target="_blank"
                 rel="noopener"
-                className="whitespace-nowrap text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark"
+                className="whitespace-nowrap kw-link"
               >
                 {linkLabel(s.url)}
               </a>
-              <span className="ml-2 text-xs uppercase text-neutral-500">{TYPE_LABEL[s.type]}</span>
+              <span className="ml-2 kw-label text-neutral-500">{TYPE_LABEL[s.type]}</span>
             </li>
           ))}
         </ul>
@@ -52,8 +52,8 @@ export default function SourcesBlock({ sources }: { sources: Source[] }) {
         <ol className="list-decimal ml-5 space-y-2 text-neutral-700">
           {sources.map((s) => (
             <li key={s.url}>
-              <a href={s.url} target="_blank" rel="noopener" className="text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">{s.title}</a>
-              <span className="ml-2 text-xs uppercase text-neutral-500">{TYPE_LABEL[s.type]}</span>
+              <a href={s.url} target="_blank" rel="noopener" className="kw-link">{s.title}</a>
+              <span className="ml-2 kw-label text-neutral-500">{TYPE_LABEL[s.type]}</span>
             </li>
           ))}
         </ol>

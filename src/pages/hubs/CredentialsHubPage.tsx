@@ -50,7 +50,7 @@ export default function CredentialsHubPage() {
           deposition and trial. Membership in an association is an affiliation, not a certification, and
           a degree matters only as far as it covers the{" "}
           <strong className="text-navy">methods the report actually uses</strong>. Not sure what to ask?{" "}
-          <Link to="/contact" className="text-navy font-medium underline underline-offset-2 hover:text-amber-dark">Ask us and we will walk you through it</Link>.
+          <Link to="/contact" className="font-medium kw-link">Ask us and we will walk you through it</Link>.
         </p>
       </div>
 
@@ -59,7 +59,7 @@ export default function CredentialsHubPage() {
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {credentials.map((c) => (
             <li key={c.slug}>
-              <Link to={`/credentials/${c.slug}`} className="block rounded-lg border border-neutral-200 p-4 hover:border-navy hover:shadow transition">
+              <Link to={`/credentials/${c.slug}`} className="kw-lift block rounded-xl border border-neutral-200 hover:border-neutral-300 hover:shadow-raised p-4">
                 <div className="font-semibold text-navy">{c.name}</div>
                 {c.abbreviation !== c.name && (
                   <div className="text-sm text-neutral-600 mt-1">{c.abbreviation}</div>
@@ -75,7 +75,7 @@ export default function CredentialsHubPage() {
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           {RELATED_RESOURCES.map((r) => (
             <li key={r.href}>
-              <Link to={r.href} className="text-navy font-medium underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark">
+              <Link to={r.href} className="font-medium kw-link">
                 {r.label}
               </Link>
             </li>
