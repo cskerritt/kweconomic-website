@@ -45,7 +45,7 @@ import { getMetroLabor } from "./labor/metro-labor";
 
 /**
  * Cities per state that get a prerendered Service x State x City page.
- * Must match SERVICE_CITY_TOP in scripts/prerender.mjs (same file-order
+ * Must match SERVICE_CITY_TOP in src/lib/geo-links.ts (scripts/lib/routes.mjs enumerates it) (same file-order
  * slice); scripts/sitemap-index.test.mjs pins the two constants together.
  */
 export const SERVICE_CITY_PRERENDER_TOP = 10;

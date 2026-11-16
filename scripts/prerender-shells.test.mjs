@@ -272,9 +272,10 @@ const ROUTES = [
   { route: `/attorneys/${ATTORNEY_STAGES[0].slug}/personal-injury`, pattern: "/attorneys/:stage/:caseTypeSlug", Page: JourneyStage },
 ];
 
-// Keys a shell node may legitimately differ on: the /team Person nodes list
-// the degree credentials only (the background certifications stay off the
-// economics shells by rule) while the hydrated page lists them all.
+// Keys a rendered node may legitimately differ on. The page is now the one
+// source of the graph, so this only absorbs the /team Person nodes'
+// hasCredential list, which the test's mocked render orders differently from
+// the build; it no longer hides a shell-versus-page difference.
 const IGNORED_KEYS = new Set(["hasCredential"]);
 
 function findMatch(shellNodes, node) {
@@ -343,7 +344,7 @@ describe.skipIf(!hasDist)("static shells mirror the hydrated page (requires dist
     expect(shell).toContain('<meta name="robots" content="noindex,follow" />');
     expect(shell).not.toContain('rel="canonical"');
     expect(ldScripts(shell)).toHaveLength(0);
-    expect(shell).toContain('href="tel:');
+    expect(mainOf(shell)).toContain('href="tel:');
   });
 });
 
@@ -371,9 +372,9 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
   });
 
   it("every content shell ends with a consultation line and a tel: link", () => {
-    const skip = new Set(["/contact", "/schedule-consultation", "/privacy", "/terms"]);
+    const skip = new Set(["/contact", "/schedule-consultation"]);
     for (const route of sample.filter((r) => !skip.has(r))) {
-      const shell = readShell(route);
+      const shell = mainOf(readShell(route));
       expect(shell, route).toContain('href="tel:');
       expect(shell, route).toMatch(/Request a consultation|Request a Consultation/);
     }
@@ -404,17 +405,18 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
     expect(metaContent(readShell("/services"), "property", "og:type")).toBe("website");
   });
 
-  it("/resources/faq renders every site FAQ answer in the DOM (hidden when closed) and marks the same set up as FAQPage", () => {
+  it("/resources/faq renders every site FAQ as <details> (answers open without JS) and marks the same set up as FAQPage", () => {
     const shell = readShell("/resources/faq");
-    expect((shell.match(/id="faq-panel-\d+"/g) ?? []).length).toBe(siteFaqs.length);
+    expect((shell.match(/<details[ >]/g) ?? []).length).toBe(siteFaqs.length);
     const faqNode = nodesOf(shell).find((n) => n["@type"] === "FAQPage");
     expect(faqNode.mainEntity.map((q) => q.name)).toEqual(siteFaqs.map((f) => f.question.replace(/\[\[\/[^|\]]*\|([^\]]+)\]\]/g, "$1")));
     expect(faqNode.dateModified).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });
 
   it("hub shells link every child page (derived from the data files, not hard-coded counts)", () => {
-    const expectLinks = (route, expected) => {
-      const found = hrefs(readShell(route));
+    // Child links must be in <main>: the header and footer chrome cannot satisfy a hub check.
+    const expectLinks = (route, expected, { chrome = false } = {}) => {
+      const found = hrefs(chrome ? readShell(route) : mainOf(readShell(route)));
       const missing = expected.filter((h) => !found.has(h));
       expect(missing, `${route} is missing child links`).toEqual([]);
     };
@@ -458,7 +460,7 @@ describe.skipIf(!hasDist)("what a non-JS crawler is given (requires dist/)", () 
       "/services", "/case-types", "/locations", "/team", "/about", "/contact", "/knowledge", "/guides",
       "/white-papers", "/insights", "/case-studies", "/credentials", "/methods", "/compare", "/attorneys",
       "/jurisdictions", "/resources/faq",
-    ]);
+    ], { chrome: true });
   });
 
   it("no shell outside the city tiers carries a sister-practice credential abbreviation, an em or en dash, or a section sign", () => {
@@ -559,8 +561,8 @@ describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (r
     for (const o of consultationOffices) {
       expectText(text, o.heading, o.heading);
       expectText(text, o.location, o.heading);
-      expect(shell, o.heading).toContain(`href="tel:${o.phone.replace(/-/g, "")}"`);
-      if (o.email) expect(shell, o.heading).toContain(`href="mailto:${o.email}"`);
+      expect(mainOf(shell), o.heading).toContain(`href="tel:${o.phone.replace(/-/g, "")}"`);
+      if (o.email) expect(mainOf(shell), o.heading).toContain(`href="mailto:${o.email}"`);
     }
     for (const h of OFFICE_HOURS) { expectText(text, h.days, h.days); expectText(text, h.hours, h.days); }
     expectText(text, AFTER_HOURS_NOTE, "after hours");

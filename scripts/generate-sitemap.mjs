@@ -126,7 +126,7 @@ const CORE = [
 ];
 
 // Prerender window: cities per state that get a Service x State x City page
-// (scripts/prerender.mjs slices each state's city file to its first N entries
+// (scripts/lib/routes.mjs, through geo-links serviceCityCities, slices each state's city file to its first N entries
 // in file order; src/lib/geo-links.ts mirrors it for the React link mesh).
 // The readiness gate below advertises a SUBSET of this window in the sitemap
 // (src/data/contentReadiness.ts; the gate stays by the T08 decision of
@@ -139,7 +139,7 @@ if (SERVICE_CITY_PRERENDER_TOP !== SERVICE_CITY_TOP) {
   throw new Error(
     `SERVICE_CITY_PRERENDER_TOP (${SERVICE_CITY_PRERENDER_TOP}) in src/data/contentReadiness.ts ` +
       `!= SERVICE_CITY_TOP (${SERVICE_CITY_TOP}); the sitemap would advertise pages ` +
-      `prerender.mjs does not write. Realign the constants.`,
+      `scripts/lib/routes.mjs does not enumerate. Realign the constants.`,
   );
 }
 
@@ -157,13 +157,13 @@ caseTypes.forEach((c) => {
   states.forEach((st) => urls.add(`/case-types/${c}/${st}`));
 });
 // Service x case type: only the pairs a pillar declares in services.ts, from
-// the same helper scripts/prerender.mjs enumerates (serviceCaseTypePairs()).
+// the same helper scripts/lib/routes.mjs enumerates (serviceCaseTypePairs()).
 // An undeclared pair has no shell and server.js 301s its address to the
 // pillar, so it is never advertised.
 for (const { path } of data.services.serviceCaseTypePairs()) urls.add(path);
 // Service x case type x state (wave 2, 2026-09-14): every declared pair in
 // every RELEASED state batch (src/data/serviceCaseTypeStates.ts), the set
-// scripts/prerender.mjs writes shells for. They ride their own child
+// scripts/lib/routes.mjs enumerates. They ride their own child
 // (sitemap-service-case-types.xml) so the services child's crawl-budget
 // ceiling is untouched.
 const releasedStateSlugs = data.serviceCaseStates.releasedStates();

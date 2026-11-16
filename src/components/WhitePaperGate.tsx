@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { markFormReady } from "@/lib/form-ready";
 import { Lock, Download, Check } from "lucide-react";
 import Turnstile from "@/components/Turnstile";
 import HoneypotField from "@/components/HoneypotField";
@@ -113,7 +114,7 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
               print-ready version. We may follow up by email about this paper and our services. You
               can tell us to stop at any time.
             </p>
-            <form onSubmit={handleSubmit} className="space-y-3">
+            <form method="post" ref={markFormReady} onSubmit={handleSubmit} className="space-y-3">
               <input
                 type="text"
                 required

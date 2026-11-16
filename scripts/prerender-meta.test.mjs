@@ -179,9 +179,10 @@ describe.skipIf(!hasDist)("the FAQ page carries the site FAQ (requires dist/)", 
   it("renders every question as <details> and emits the FAQPage node from the same list", () => {
     const html = readShell("/resources/faq");
     const main = html.match(/<main\b[\s\S]*<\/main>/)[0];
-    // The accordion keeps every answer in the DOM (hidden when closed), so the text is there for a crawler.
-    const details = (main.match(/id="faq-panel-\d+"/g) ?? []).length;
+    // One native <details> per question: the answers open without JavaScript.
+    const details = (main.match(/<details[ >]/g) ?? []).length;
     expect(details).toBeGreaterThanOrEqual(10);
+    expect(main).not.toContain("aria-controls");
     const faqPage = JSON.parse(ldBlocks(html)[0])["@graph"].find((n) => n["@type"] === "FAQPage");
     expect(faqPage.mainEntity.length).toBe(details);
     for (const q of faqPage.mainEntity) expect(dec(main), q.name).toContain(dec(q.name).replace(/&/g, "&"));
