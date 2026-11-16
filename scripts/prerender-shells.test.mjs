@@ -517,6 +517,22 @@ const expectText = (haystack, needle, label) => expect(haystack, label).toContai
 const paragraphsOf = (content) => content.split("\n\n").map((p) => p.trim()).filter(Boolean);
 
 describe.skipIf(!hasDist)("the audited thin shells carry the page's substance (requires dist/)", () => {
+  it("each white paper page carries the ungated teaser but none of the gated sections' text (owner decision: gated copy stays out of the static HTML)", () => {
+    const plain = (h) => decode(h.replace(/<[^>]+>/g, " "));
+    const sentence = (h) => plain(h).split(/(?<=[.?!])\s+/).find((s) => s.length > 60 && !s.includes("<"));
+    for (const w of whitePapers) {
+      const text = textOf(mainOf(readShell(`/white-papers/${w.slug}`)));
+      const [teaser, ...gated] = w.sections;
+      expect(text, `${w.slug} teaser`).toContain(sentence(teaser.bodyHtml));
+      expect(gated.length, `${w.slug} has gated sections`).toBeGreaterThan(0);
+      for (const g of gated) {
+        const s = sentence(g.bodyHtml);
+        expect(s, `${w.slug}: ${g.heading} has a sentence to pin`).toBeTruthy();
+        expect(text, `${w.slug}: gated "${g.heading}" must not be in the static HTML`).not.toContain(s);
+      }
+    }
+  });
+
   it("each carries at least 120 words of body text outside the breadcrumb and nav rows", () => {
     for (const route of THIN_SHELLS) {
       expect(wordCount(bodyTextOf(readShell(route))), route).toBeGreaterThanOrEqual(120);

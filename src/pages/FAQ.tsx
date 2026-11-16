@@ -111,10 +111,10 @@ export default function FAQ() {
           <div className="space-y-3">
             {faqs.map((faq) => (
               <details key={faq.question} className="kw-disclosure rounded-xl border border-neutral-200 bg-white">
-                <summary className="kw-ring-inset rounded-[11px] px-6 py-5 text-base font-semibold text-navy leading-snug">
+                <summary className="kw-ring-inset rounded-[11px] px-4 py-4 font-semibold text-navy">
                   {faq.question}
                 </summary>
-                <div className="px-6 pb-6 text-neutral-700 leading-relaxed">{renderTextWithLinks(faq.answer)}</div>
+                <div className="px-4 pt-1 pb-4 text-neutral-700 leading-relaxed">{renderTextWithLinks(faq.answer)}</div>
               </details>
             ))}
           </div>

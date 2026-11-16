@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { markFormReady } from "@/lib/form-ready";
 import { Lock, Download, Check } from "lucide-react";
 import Turnstile from "@/components/Turnstile";
@@ -11,32 +11,51 @@ import type { WhitePaper } from "@/data/whitePapers";
 // only: sister-brand tokens are spelled solely in src/lib/brand.ts.
 const STORAGE_PREFIX = "kweconomics:wp:";
 
+// The unlock flag lives in localStorage, which the build's server render does not have.
+// It is read through useSyncExternalStore with a server snapshot of "locked", so the
+// prerendered HTML and the first client render agree and React switches to the real
+// value after hydrating. The gated sections are therefore never in the static HTML.
+const listeners = new Set<() => void>();
+const subscribeUnlock = (cb: () => void) => {
+  listeners.add(cb);
+  window.addEventListener("storage", cb);
+  return () => {
+    listeners.delete(cb);
+    window.removeEventListener("storage", cb);
+  };
+};
+function readUnlocked(slug: string): boolean {
+  try {
+    return localStorage.getItem(STORAGE_PREFIX + slug) === "1";
+  } catch {
+    return false; // localStorage unavailable - stay gated
+  }
+}
+
 interface WhitePaperGateProps {
   paper: WhitePaper;
 }
 
 /**
  * Email-gated reader for a white paper. The abstract, key takeaways, outline,
- * and the first section render openly (so the page stays useful and the content
- * remains in the DOM for crawlers). The remaining sections are visually gated
- * behind an email capture; once submitted the lead is stored server-side and
- * the full paper unlocks (remembered locally for return visits).
+ * and the first section render openly. The remaining sections are not rendered
+ * (and so are not in the prerendered HTML) until the visitor submits an email
+ * capture; the lead is then stored server-side and the full paper unlocks
+ * (remembered locally for return visits).
  */
 export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
-  const [unlocked, setUnlocked] = useState(false);
+  const [sessionUnlocked, setSessionUnlocked] = useState(false);
+  const storedUnlocked = useSyncExternalStore(
+    subscribeUnlock,
+    () => readUnlocked(paper.slug),
+    () => false,
+  );
+  const unlocked = storedUnlocked || sessionUnlocked;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
   const [companyWebsite, setCompanyWebsite] = useState("");
   const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
-
-  useEffect(() => {
-    try {
-      if (localStorage.getItem(STORAGE_PREFIX + paper.slug) === "1") setUnlocked(true);
-    } catch {
-      /* localStorage unavailable - stay gated */
-    }
-  }, [paper.slug]);
 
   const [teaser, ...gated] = paper.sections;
 
@@ -56,7 +75,8 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
       } catch {
         /* ignore */
       }
-      setUnlocked(true);
+      setSessionUnlocked(true);
+      listeners.forEach((cb) => cb());
     } catch {
       setStatus("error");
     }
@@ -91,14 +111,9 @@ export default function WhitePaperGate({ paper }: WhitePaperGateProps) {
         </>
       ) : (
         <div className="relative">
-          {/* Remaining content stays in the DOM (crawlable) but is visually gated. */}
-          <div
-            className="pointer-events-none select-none blur-[6px] opacity-60 max-h-72 overflow-hidden"
-            aria-hidden="true"
-            inert
-          >
-            {gated.map((s) => renderSection(s))}
-          </div>
+          {/* The gated sections are not rendered until unlocked (they are not in the static HTML):
+              a neutral placeholder holds the space behind the form. */}
+          <div className="h-72 rounded-xl bg-neutral-100" aria-hidden="true" />
           <div className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-neutral-50 via-neutral-50/90 to-transparent" />
 
           <div className="relative -mt-24 mx-auto max-w-xl rounded-2xl border border-neutral-200 bg-white p-7">
