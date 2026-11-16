@@ -24,7 +24,7 @@ export default function NotFound() {
   });
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-16 text-center">
+    <div className="min-h-[calc(100svh-4rem)] flex flex-col items-center justify-center px-4 py-16 text-center">
       <p className="kw-eyebrow text-amber-dark">Error 404</p>
       <h1 className="font-serif text-4xl md:text-5xl font-bold text-navy mb-4">Page not found</h1>
       <p className="text-neutral-600 text-lg mb-8 max-w-xl">
