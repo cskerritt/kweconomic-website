@@ -77,7 +77,7 @@ export default function JourneyStageIndex() {
           { name: stageLabel, url: `/attorneys/${stage}` },
         ]}
       />
-      <p className="text-amber-dark text-sm font-semibold uppercase tracking-wider mb-2">{stageLabel}</p>
+      <p className="kw-eyebrow text-amber-dark">{stageLabel}</p>
       <h1 className="font-serif text-4xl text-navy mb-4">{heading}</h1>
       {reviewer && <AuthorByline slug={reviewer.authorSlug} datePublished={reviewer.datePublished} dateModified={reviewer.dateModified} />}
       <p className="text-lg text-neutral-700 mb-8 max-w-3xl">{stageIndexIntro(stage)}</p>
@@ -109,7 +109,7 @@ export default function JourneyStageIndex() {
             </li>
           ))}
           <li>
-            <Link to="/attorneys" className="text-teal font-medium hover:underline">
+            <Link to="/attorneys" className="text-amber-dark font-medium hover:underline">
               Browse all attorney resources
             </Link>
           </li>

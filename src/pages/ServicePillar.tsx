@@ -62,7 +62,7 @@ const NON_PILLAR_RELATED: Record<string, { href: string; label: string }> = {
 };
 
 const CREDENTIAL_LINK_CLASS =
-  "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-teal hover:text-teal text-sm";
+  "text-navy underline underline-offset-2 decoration-neutral-300 hover:decoration-amber-dark hover:text-amber-dark text-sm";
 
 export default function ServicePillar() {
   const { serviceSlug } = useParams<{ serviceSlug: string }>();
@@ -164,7 +164,7 @@ export default function ServicePillar() {
           <div className="flex flex-wrap gap-3">
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-medium px-6 py-3 rounded-lg transition-colors"
+              className="kw-press min-h-11 inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg"
             >
               Request a Consultation <ArrowRight className="w-4 h-4" />
             </Link>
@@ -173,7 +173,7 @@ export default function ServicePillar() {
                 href={service.externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 border border-teal text-teal hover:bg-teal/10 font-medium px-6 py-3 rounded-lg transition-colors"
+                className="kw-press min-h-11 inline-flex items-center gap-2 border border-navy text-navy hover:bg-navy/10 font-semibold px-6 py-3 rounded-lg"
               >
                 Visit {new URL(service.externalUrl).hostname.replace(/^www\./, "")}
                 <ExternalLink className="w-4 h-4" />
@@ -234,7 +234,7 @@ export default function ServicePillar() {
                     to={`/services/${service.slug}/case/${slug}`}
                     className="flex items-center justify-between rounded-lg border border-neutral-200 bg-white px-4 py-2.5 text-sm font-medium text-navy hover:border-navy hover:shadow transition"
                   >
-                    {service.shortName} for {typeName} <ArrowRight className="w-4 h-4 text-teal" aria-hidden="true" />
+                    {service.shortName} for {typeName} <ArrowRight className="w-4 h-4 text-amber" aria-hidden="true" />
                   </Link>
                 ))}
               </div>
@@ -259,7 +259,7 @@ export default function ServicePillar() {
                   if (regionStates.length === 0) return null;
                   return (
                     <div key={key}>
-                      <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3">
+                      <h3 className="kw-label text-neutral-500 mb-3">
                         {label}
                       </h3>
                       <div className="grid gap-2 sm:grid-cols-2">
@@ -326,7 +326,7 @@ export default function ServicePillar() {
                   <li key={variant}>
                     <Link
                       to={`/services/${service.slug}/${variant}`}
-                      className="inline-flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                      className="inline-flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
                     >
                       {label} <ArrowRight className="w-4 h-4" />
                     </Link>
@@ -342,7 +342,7 @@ export default function ServicePillar() {
               </h3>
               <Link
                 to="/services"
-                className="inline-flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="inline-flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 View All Services <ArrowRight className="w-4 h-4" />
               </Link>
@@ -375,7 +375,7 @@ function NonPillarCard({ service }: { service: Service }) {
       </div>
       <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="bg-white rounded-xl border border-neutral-200 p-8">
-          <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-3">
+          <p className="kw-label text-neutral-500 mb-3">
             Offered through a sister practice
           </p>
           <h1 className="font-serif text-3xl lg:text-4xl text-navy font-bold mb-4">
@@ -393,14 +393,14 @@ function NonPillarCard({ service }: { service: Service }) {
                 href={external}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-medium px-6 py-3 rounded-lg transition-colors"
+                className="kw-press min-h-11 inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg"
               >
                 {service.shortName} at {host} <ExternalLink className="w-4 h-4" />
               </a>
             )}
             <Link
               to={related.href}
-              className="inline-flex items-center gap-2 border border-teal text-teal hover:bg-teal/10 font-medium px-6 py-3 rounded-lg transition-colors"
+              className="kw-press min-h-11 inline-flex items-center gap-2 border border-navy text-navy hover:bg-navy/10 font-semibold px-6 py-3 rounded-lg"
             >
               {related.label} <ArrowRight className="w-4 h-4" />
             </Link>

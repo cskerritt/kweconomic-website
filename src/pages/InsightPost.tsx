@@ -18,7 +18,7 @@ const SPEAKABLE = { speakable: { "@type": "SpeakableSpecification", cssSelector:
 const categoryColors: Record<string, string> = {
   Legal: "bg-navy/10 text-navy",
   Economics: "bg-amber/10 text-amber-dark",
-  Valuation: "bg-forest/10 text-forest",
+  Valuation: "bg-navy/10 text-navy",
 };
 
 export default function InsightPost() {
@@ -71,9 +71,9 @@ export default function InsightPost() {
       {/* Breadcrumbs */}
       <nav className="bg-neutral-50 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <ol className="flex items-center gap-1.5 text-sm text-neutral-500">
+          <ol className="flex items-center gap-1.5 text-sm text-neutral-600">
             <li>
-              <Link to="/" className="hover:text-teal transition-colors">
+              <Link to="/" className="hover:text-amber-dark transition-colors">
                 Home
               </Link>
             </li>
@@ -81,7 +81,7 @@ export default function InsightPost() {
               <ChevronRight className="w-4 h-4" />
             </li>
             <li>
-              <Link to="/insights" className="hover:text-teal transition-colors">
+              <Link to="/insights" className="hover:text-amber-dark transition-colors">
                 Insights
               </Link>
             </li>
@@ -105,7 +105,7 @@ export default function InsightPost() {
               >
                 {post.category}
               </span>
-              <time dateTime={post.publishedDate} className="text-sm text-neutral-500 font-mono">
+              <time dateTime={post.publishedDate} className="text-sm text-neutral-300 font-mono">
                 {formatPublishedDate(post.publishedDate)}
               </time>
             </div>
@@ -130,7 +130,7 @@ export default function InsightPost() {
                     <h2
                       key={block.id}
                       id={block.id}
-                      className="font-serif text-2xl md:text-3xl font-bold text-navy pt-4 leading-snug scroll-mt-24"
+                      className="font-serif text-2xl md:text-3xl font-bold text-navy pt-4 leading-snug"
                     >
                       {block.text}
                     </h2>
@@ -157,7 +157,7 @@ export default function InsightPost() {
                 {/* In-page contents */}
                 {headings.length > 0 && (
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+                    <h3 className="kw-label text-neutral-500 mb-4">
                       In This Article
                     </h3>
                     <nav aria-label="Article sections" className="space-y-1">
@@ -165,7 +165,7 @@ export default function InsightPost() {
                         <a
                           key={h.id}
                           href={`#${h.id}`}
-                          className="block text-sm text-neutral-600 hover:text-teal px-2 py-1.5 rounded hover:bg-teal/5 transition-colors leading-snug"
+                          className="block text-sm text-neutral-600 hover:text-navy px-2 py-1.5 rounded hover:bg-navy/5 transition-colors leading-snug"
                         >
                           {h.text}
                         </a>
@@ -177,7 +177,7 @@ export default function InsightPost() {
                 {/* Related posts */}
                 {related.length > 0 && (
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-4">
+                    <h3 className="kw-label text-neutral-500 mb-4">
                       Related Articles
                     </h3>
                     <div className="space-y-4">
@@ -187,7 +187,7 @@ export default function InsightPost() {
                           to={`/insights/${rp.slug}`}
                           className="block group"
                         >
-                          <p className="text-sm font-medium text-navy group-hover:text-teal transition-colors leading-snug mb-1">
+                          <p className="text-sm font-medium text-navy group-hover:text-amber-dark transition-colors leading-snug mb-1">
                             {rp.title}
                           </p>
                           <time dateTime={rp.publishedDate} className="block text-xs text-neutral-500 font-mono">
@@ -203,14 +203,14 @@ export default function InsightPost() {
                 <div className="bg-neutral-50 rounded-xl border border-neutral-200 p-5">
                   <Link
                     to="/insights"
-                    className="text-sm text-teal hover:text-teal-dark font-medium transition-colors flex items-center gap-1"
+                    className="text-sm text-amber-dark hover:text-amber-darker font-medium transition-colors flex items-center gap-1"
                   >
                     &larr; All Insights
                   </Link>
                   <div className="mt-4 pt-4 border-t border-neutral-200">
                     <Link
                       to="/knowledge"
-                      className="text-sm text-navy hover:text-teal font-medium transition-colors flex items-center gap-1"
+                      className="text-sm text-navy hover:text-amber-dark font-medium transition-colors flex items-center gap-1"
                     >
                       Knowledge Center <ArrowRight className="w-3.5 h-3.5" />
                     </Link>

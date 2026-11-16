@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <!-- Enable JS-gated motion before first paint. No-JS/crawlers keep fully visible content. -->
-    <script>document.documentElement.classList.add('js')</script>
+    <!-- Before first paint: the js class, and a passive touchstart listener so iOS paints a press (:active) from the first tap. -->
+    <script>document.documentElement.classList.add('js');document.addEventListener('touchstart',function(){},{passive:true});if(location.hash)document.documentElement.style.scrollBehavior='auto'</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#14223d" />
     <!-- Fonts are self-hosted (public/fonts/, @font-face in src/fonts.css): no

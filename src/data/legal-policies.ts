@@ -117,7 +117,7 @@ When you submit a form, we store the IP address and browser user-agent with that
       content: [
         `The site itself sets no cookies.`,
         cookiesAnalytics,
-        `The site uses your browser's local storage for two things: a flag remembering that you unlocked a white paper, which holds no identifier, and your analytics opt-out preference if you set one.`,
+        `The site uses your browser's local storage for two things: a flag remembering that you unlocked a white paper, which holds no identifier, and your analytics opt-out preference if you set one. For the length of a browsing session it also keeps the scroll position of each page you leave, so a reload or the Back button returns you to the same place. None of this is sent to us.`,
         cookiesTurnstile,
         `This site has no advertising pixels, no session recording, and no cross-site tracking.`,
       ]

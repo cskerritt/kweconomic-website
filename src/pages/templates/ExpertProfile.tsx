@@ -90,7 +90,7 @@ export default function ExpertProfile() {
             {/* Identity */}
             <div className="flex-1">
               {m.memoriam && (
-                <p className="text-amber-light text-sm font-semibold uppercase tracking-wider mb-3">
+                <p className="kw-eyebrow text-amber-light">
                   In Memoriam
                 </p>
               )}
@@ -150,7 +150,7 @@ export default function ExpertProfile() {
                   {m.specialties.map((s) => (
                     <li
                       key={s}
-                      className="inline-block bg-teal/10 text-teal text-sm font-medium px-3 py-1.5 rounded-lg"
+                      className="inline-block bg-navy/10 text-navy text-sm font-medium px-3 py-1.5 rounded-lg"
                     >
                       {s}
                     </li>
@@ -172,12 +172,12 @@ export default function ExpertProfile() {
                     <Link
                       key={svc.slug}
                       to={`/services/${svc.slug}`}
-                      className="group flex items-center justify-between gap-3 rounded-lg border border-neutral-200 bg-white px-4 py-3 hover:border-amber/50 hover:shadow-md transition-all"
+                      className="kw-lift group flex items-center justify-between gap-3 rounded-xl border border-neutral-300 bg-white px-4 py-3 hover:shadow-raised"
                     >
                       <span className="font-medium text-navy group-hover:text-amber-dark transition-colors">
                         {practiceAreaLabel(m, svc)}
                       </span>
-                      <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-amber-dark transition-all group-hover:translate-x-0.5 shrink-0" />
+                      <ArrowRight className="w-4 h-4 text-neutral-400 group-hover:text-amber-dark motion-safe:transition-transform motion-safe:group-hover:translate-x-0.5 shrink-0" />
                     </Link>
                   ))}
                 </div>
@@ -220,7 +220,7 @@ export default function ExpertProfile() {
                       ) : (
                         p.title
                       )}
-                      <span className="text-neutral-500">
+                      <span className="text-neutral-600">
                         {" "}
                         - {p.venue} ({p.year})
                       </span>

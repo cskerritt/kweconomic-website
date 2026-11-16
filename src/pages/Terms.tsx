@@ -85,7 +85,7 @@ export default function Terms() {
             <h1 className="font-serif text-3xl md:text-4xl font-bold leading-tight mb-3">
               Terms of Service
             </h1>
-            <p className="text-sm text-neutral-500 font-mono">
+            <p className="text-sm text-neutral-300 font-mono">
               Effective Date: <time dateTime={EFFECTIVE_DATE.iso}>{EFFECTIVE_DATE.label}</time>
             </p>
           </div>
@@ -115,12 +115,12 @@ export default function Terms() {
             ))}
           </div>
 
-          <div className="mt-12 pt-8 border-t border-neutral-200 flex flex-wrap gap-4 text-sm text-neutral-500">
-            <Link to="/privacy" className="hover:text-teal transition-colors">
+          <div className="mt-12 pt-8 border-t border-neutral-200 flex flex-wrap gap-4 text-sm text-neutral-600">
+            <Link to="/privacy" className="hover:text-amber-dark transition-colors">
               Privacy Policy
             </Link>
             <span>&middot;</span>
-            <Link to="/contact" className="hover:text-teal transition-colors">
+            <Link to="/contact" className="hover:text-amber-dark transition-colors">
               Contact Us
             </Link>
           </div>

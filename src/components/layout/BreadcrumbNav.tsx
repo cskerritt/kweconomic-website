@@ -13,13 +13,13 @@ interface BreadcrumbNavProps {
 export default function BreadcrumbNav({ items }: BreadcrumbNavProps) {
   return (
     <nav aria-label="Breadcrumb" className="py-3">
-      <ol className="flex items-center gap-1 text-sm text-neutral-500">
-        <li><Link to="/" className="hover:text-teal">Home</Link></li>
+      <ol className="flex items-center gap-1 text-sm text-neutral-600">
+        <li><Link to="/" className="hover:text-amber-dark">Home</Link></li>
         {items.map((item, i) => (
           <li key={i} className="flex items-center gap-1">
             <ChevronRight className="w-3 h-3" />
             {item.href ? (
-              <Link to={item.href} className="hover:text-teal">{item.label}</Link>
+              <Link to={item.href} className="hover:text-amber-dark">{item.label}</Link>
             ) : (
               <span className="text-neutral-900 font-medium">{item.label}</span>
             )}

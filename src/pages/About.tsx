@@ -69,10 +69,10 @@ export default function About() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Who We Are
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               About {ORG_NAME}
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
@@ -229,7 +229,7 @@ export default function About() {
           </p>
           <Link
             to="/team"
-            className="inline-flex items-center gap-2 bg-amber hover:bg-amber-dark text-white font-semibold px-8 py-3 rounded-lg transition-colors"
+            className="kw-press min-h-11 inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-8 py-3 rounded-lg"
           >
             Meet the Team
           </Link>

@@ -115,7 +115,7 @@ export default function StateHub() {
             />
           </div>
           <div className="max-w-3xl">
-            <p className="text-amber-light text-sm font-semibold uppercase tracking-wider mb-3">
+            <p className="kw-eyebrow text-amber-light">
               {jurisdictionLabel(state)} &middot; {state.abbreviation}
             </p>
             <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-4">
@@ -206,8 +206,8 @@ export default function StateHub() {
                   {/* Damages framework */}
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <Users className="w-5 h-5 text-teal" />
+                      <div className="w-10 h-10 rounded-lg bg-navy/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <Users className="w-5 h-5 text-amber" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-navy mb-1">Damages Framework</h3>
@@ -219,8 +219,8 @@ export default function StateHub() {
                   {/* Workers' compensation forum */}
                   <div className="bg-white rounded-xl border border-neutral-200 p-6">
                     <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-lg bg-teal/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <Award className="w-5 h-5 text-teal" />
+                      <div className="w-10 h-10 rounded-lg bg-navy/10 flex items-center justify-center shrink-0 mt-0.5">
+                        <Award className="w-5 h-5 text-amber" />
                       </div>
                       <div>
                         <h3 className="font-semibold text-navy mb-1">Workers' Compensation Forum</h3>
@@ -301,7 +301,7 @@ export default function StateHub() {
                 {localContent.commonCaseTypes && localContent.commonCaseTypes.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {localContent.commonCaseTypes.map((ct) => (
-                      <span key={ct} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal/10 text-teal border border-teal/20">
+                      <span key={ct} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-navy/10 text-navy border border-navy/20">
                         {ct}
                       </span>
                     ))}
@@ -352,15 +352,15 @@ export default function StateHub() {
               <h3 className="font-serif text-lg font-semibold text-navy mb-4">{state.name} Quick Facts</h3>
               <dl className="space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <dt className="text-neutral-500">Abbreviation</dt>
+                  <dt className="text-neutral-600">Abbreviation</dt>
                   <dd className="font-medium text-navy">{state.abbreviation}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-neutral-500">Capital</dt>
+                  <dt className="text-neutral-600">Capital</dt>
                   <dd className="font-medium text-navy">{state.capital}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-neutral-500">Largest City</dt>
+                  <dt className="text-neutral-600">Largest City</dt>
                   <dd className="font-medium text-navy">{state.largestCity}</dd>
                 </div>
               </dl>

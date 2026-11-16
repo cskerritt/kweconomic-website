@@ -215,7 +215,7 @@ describe("/ (home)", () => {
     expect(h2s).not.toContain("Frequently Asked Questions");
     expect(html).toContain("Direct answers for attorneys evaluating an economic damages engagement.");
     const faqCount = homepageFaqs(ORG_NAME, ORG_SHORT).length;
-    expect(html.match(/<details/g)?.length).toBe(faqCount);
+    expect(html.match(/<details class="kw-disclosure/g)?.length).toBe(faqCount);
     expect(faqLdStrings(html)).toHaveLength(faqCount * 2);
   });
 

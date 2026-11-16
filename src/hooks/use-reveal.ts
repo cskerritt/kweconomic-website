@@ -5,9 +5,10 @@ import { useEffect, useRef } from "react";
  * `kw-reveal` class. When the element scrolls into view, `is-visible` is added
  * once (then the observer disconnects, so it never re-hides).
  *
- * SEO/no-JS safe: the `kw-reveal` hidden state is gated behind `.js` in CSS, so
- * static/prerendered HTML stays visible. If IntersectionObserver is missing or
- * the user prefers reduced motion, we reveal immediately.
+ * SEO/no-JS safe: the hidden state is `.is-armed`, which only this effect adds
+ * and only below the viewport, so prerendered HTML is visible before, during
+ * and after hydration. If IntersectionObserver is missing or the user prefers
+ * reduced motion, we reveal immediately.
  */
 export function useReveal<T extends HTMLElement = HTMLDivElement>() {
   const ref = useRef<T>(null);
@@ -20,11 +21,19 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>() {
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-    if (prefersReduced || typeof IntersectionObserver === "undefined") {
+    // The prerendered markup is visible before hydration (the hidden state is
+    // .is-armed, which only this effect adds). An element already on screen
+    // when the effect runs is left visible and marked at once, so nothing that
+    // was painted blinks or fades; only an element below the viewport is
+    // armed for the scroll reveal. The 0.92 mirrors the observer's -8% margin.
+    const rect = el.getBoundingClientRect();
+    const onScreen = rect.top < window.innerHeight * 0.92 && rect.bottom > 0;
+    if (prefersReduced || typeof IntersectionObserver === "undefined" || onScreen) {
       el.classList.add("is-visible");
       return;
     }
 
+    el.classList.add("is-armed");
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {

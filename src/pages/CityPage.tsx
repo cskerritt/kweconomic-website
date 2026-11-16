@@ -138,7 +138,7 @@ export default function CityPage() {
       {/* Hero */}
       <div className="bg-navy text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-teal text-sm font-medium uppercase tracking-widest mb-2">
+          <p className="kw-eyebrow text-amber-light">
             {state.name}
           </p>
           {/* States the page's subject, and matches the meta title. */}
@@ -189,7 +189,7 @@ export default function CityPage() {
                 )}
               </dl>
               {city.isStateCapital && (
-                <p className="mt-4 text-sm text-teal font-medium">
+                <p className="mt-4 text-sm text-amber-dark font-medium">
                   {state.type === "district" ? "Seat of the federal government" : `State capital of ${state.name}`}
                 </p>
               )}
@@ -237,7 +237,7 @@ export default function CityPage() {
                 {localContent.commonCaseTypes && localContent.commonCaseTypes.length > 0 && (
                   <div className="mt-4 flex flex-wrap gap-2">
                     {localContent.commonCaseTypes.map((ct) => (
-                      <span key={ct} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-teal/10 text-teal border border-teal/20">
+                      <span key={ct} className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-navy/10 text-navy border border-navy/20">
                         {ct}
                       </span>
                     ))}

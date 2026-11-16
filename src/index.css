@@ -1,21 +1,24 @@
 @import "tailwindcss";
+@source not "../docs";
+@source not "../**/*.test.*";
+/* Tailwind reads class names from the code only: the specs and plans under docs/ quote classes the code no longer uses
+   or does not use yet, and the tests quote classes to check them, both of which would ship as dead CSS. */
 
 @theme {
-  /* KW Economics palette: navy primary (ink, hero, nav) with gold as the
-     single accent (primary CTAs, links, icons, underlines) - the house look
-     shared across the KW family of sites.
-     The teal and forest tokens survive because components reference them;
-     they all point at the gold so every accent renders gold. amber-light
-     (#d4922e) fails AA with white text - never a button background. */
+  /* Palette tightened 2026-05-27: 4 hues -> 2 + 1 accent.
+     Token names retained for code-stability; teal + forest collapse onto
+     navy variants so existing class usage stays valid while the visual
+     surface unifies to navy primary + amber accent. */
   --color-navy: #14223d;
   --color-navy-light: #2a3a5c;
   --color-navy-dark: #0c1729;
+  --color-teal: #14223d;
+  --color-teal-light: #2a3a5c;
+  --color-teal-dark: #0c1729;
   --color-amber: #b8731f;
   --color-amber-light: #d4922e;
   --color-amber-dark: #8a5612;
-  --color-teal: #b8731f;
-  --color-teal-light: #d4922e;
-  --color-teal-dark: #8a5612;
+  --color-amber-darker: #734810;
   --color-forest: #14223d;
   --color-neutral-50: #f9fafb;
   --color-neutral-100: #f3f4f6;
@@ -31,21 +34,59 @@
   --font-serif: "Source Serif 4", Georgia, serif;
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
+
+  /* Depth (spec 4.7): a resting card is flat; an interactive card is raised on
+     hover; a dropdown panel or any popover floats. */
+  --shadow-raised: 0 2px 4px rgb(20 34 61 / 0.05), 0 12px 28px -10px rgb(20 34 61 / 0.18);
+  --shadow-floating: 0 4px 8px rgb(20 34 61 / 0.06), 0 16px 40px -8px rgb(20 34 61 / 0.22);
+
+  /* Type (spec 4.1): each size carries its leading and tracking as a set, so
+     headings name no leading of their own; 17/28 for long-form text. */
+  --text-body: 1.0625rem; --text-body--line-height: 1.75rem;                      /* 17/28, long-form */
+  --text-2xl--line-height: 1.25;                                                   /* 24/30 */
+  --text-3xl--line-height: 1.2;  --text-3xl--letter-spacing: -0.005em;            /* 30/36 */
+  --text-4xl--line-height: 1.12; --text-4xl--letter-spacing: -0.01em;             /* 36/40 */
+  --text-5xl--line-height: 1.1;  --text-5xl--letter-spacing: -0.01em;             /* 48/53 */
+  --text-6xl--line-height: 1.05; --text-6xl--letter-spacing: -0.015em;            /* 60/63 */
 }
 
-/* Mobile: reserve space for sticky bottom CTA bar (~48px). */
-@media (max-width: 1023px) {
-  body { padding-bottom: 52px; }
+/* Page edges (spec 2026-10-17, section 5.9): a rubber-band overscroll shows
+   navy at both ends of a page and the page itself is white. Below 1024px the
+   footer, not the body, reserves the phone bar's 52px (max-lg:pb-13 on
+   <footer>), so no white strip shows under the navy footer. */
+@layer base {
+  html { background-color: var(--color-navy); }
+  body { background-color: #fff; }
 }
 
 /* ============================================================================
    Accessibility: visible keyboard focus + skip link
+   ----------------------------------------------------------------------------
+   Unlayered on purpose: the focus rules beat any outline-none utility and
+   any per-field ring. Mid amber passes 3:1 on every flat surface the site
+   uses. No radius of its own (the outline follows each control's corners) and
+   no transition (keyboard feedback is instant). .kw-ring-inset draws the ring
+   inside a control that fills a clipping card or a scrolling panel edge to
+   edge. Spec 2.1 as amended (2026-10-18): on a surface that holds the glow (an
+   element with a direct .kw-aurora child: the dark heroes and the NextSteps
+   panel) the ring is amber-light, which clears 3:1 against the
+   glow, and a white card there keeps mid amber. Both color rules are (0,2,0),
+   the card's second so it wins; the map's own .kw-map a:focus-visible below
+   (0,2,1) still wins on its links.
    ========================================================================== */
-:focus-visible {
-  outline: 2px solid var(--color-amber-light);
-  outline-offset: 2px;
-  border-radius: 3px;
-}
+:focus-visible { outline: 2px solid var(--color-amber); outline-offset: 2px; }
+.kw-ring-inset:focus-visible { outline-offset: -2px; }
+:has(> .kw-aurora) :focus-visible { outline-color: var(--color-amber-light); }
+:has(> .kw-aurora) :where(.bg-white) :focus-visible { outline-color: var(--color-amber); }
+/* The ring never fades in (spec 3.1: keyboard feedback never animates).
+   Tailwind 4's transition-colors and transition also fade outline-color, so
+   on a control that carries one the ring faded in from the text color. Every
+   element carries its ring's color at rest instead, by these three rules in
+   the order of the three above, so focus changes only the outline's style,
+   width and offset, which no transition names. */
+* { outline-color: var(--color-amber); }
+:has(> .kw-aurora) * { outline-color: var(--color-amber-light); }
+:has(> .kw-aurora) :where(.bg-white) * { outline-color: var(--color-amber); }
 
 .skip-link {
   position: absolute;
@@ -58,26 +99,164 @@
   padding: 0.625rem 1rem;
   border-radius: 0.5rem;
   transform: translateY(-160%);
-  transition: transform 0.15s var(--kw-ease);
 }
+/* It answers a key press, so it appears at once (spec 3.1). */
 .skip-link:focus {
   transform: translateY(0);
 }
-@media (prefers-reduced-motion: reduce) {
-  .skip-link { transition: none; }
+
+/* Anchors, fragment jumps and keyboard focus land clear of the 64px header
+   and, below 1024px, of the 45px phone bar (WCAG 2.4.11). Nothing sets a
+   scroll margin: it would add to this padding. */
+@layer base {
+  html { scroll-padding-top: 5rem; }
+  @media (max-width: 1023px) { html { scroll-padding-bottom: 3.5rem; } }
+}
+
+/* Wrapping and the body's text color (spec 4.4), in the base layer so a
+   utility such as whitespace-nowrap still wins: headings balance their lines,
+   running text keeps a last word company, and unclassed text (the guide bodies
+   inherited pure black) is neutral-900. */
+@layer base {
+  h1, h2, h3, blockquote { text-wrap: balance; }
+  p, li, figcaption { text-wrap: pretty; }
+  body { color: var(--color-neutral-900); }
+}
+
+/* The press on touch screens (spec 4.8, O1). iOS paints :active once a
+   touchstart listener exists (index.html's head script adds one) and the tap
+   highlight stays off (Preflight). Buttons and cards press by scale (kw-press,
+   kw-lift); what cannot scale (a text link, a menu row, a summary, a phone-bar
+   cell) dims while held. Every control of the home map sits under .kw-map-area
+   and keeps its own tap states (ground rule 2). */
+@layer base {
+  @media (hover: none) {
+    :where(a, button, summary):not(.kw-press, .kw-lift, svg a, .kw-map-area *):active { opacity: 0.7; }
+  }
+}
+
+/* Under reduced motion a button or a card cannot scale either, so on a touch
+   screen it dims while held too (O1: every tappable element answers the
+   press); never a home map control. */
+@layer base {
+  @media (hover: none) and (prefers-reduced-motion: reduce) {
+    :where(.kw-press, .kw-lift):not(.kw-map-area *):active { opacity: 0.7; }
+  }
+}
+
+/* Form fields (spec 2026-10-17, section 2.6): 16px text at every width, so iOS
+   never zooms into a field; a 3:1 border (neutral-500), neutral-600 on hover
+   and navy on focus beside the focus ring. A select shows a navy chevron, and
+   its native arrow under forced colors. A disabled field keeps its border on
+   hover, and a disabled select's chevron is gray, so it never looks usable.
+   An error keeps its own border-red-600 utility, which beats these rules on
+   hover and focus too. The hover rule's :where() holds it to the focus rule's
+   specificity, so the focus rule, written after it, wins on a hovered field. */
+@layer components {
+  .kw-field {
+    display: block; width: 100%; min-height: 2.75rem; padding: 0.625rem 0.75rem;
+    border: 1px solid var(--color-neutral-500); border-radius: 0.5rem;
+    background-color: #fff; color: var(--color-neutral-900);
+    font-size: 1rem; line-height: 1.5rem;
+    transition: border-color 150ms ease;
+  }
+  .kw-field::placeholder { color: var(--color-neutral-500); }
+  @media (hover: hover) and (pointer: fine) { .kw-field:hover:where(:not(:disabled)) { border-color: var(--color-neutral-600); } }
+  .kw-field:focus { border-color: var(--color-navy); }
+  select.kw-field {
+    appearance: none; padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2314223d' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1rem;
+  }
+  select.kw-field:disabled {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%239ca3af' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+  }
+  @media (forced-colors: active) { select.kw-field, select.kw-field:disabled { appearance: auto; background-image: none; padding-right: 0.75rem; } }
+  textarea.kw-field { min-height: 8rem; resize: vertical; }
+}
+
+/* Long-form bodies (the guide and white paper sections' bodyHtml) and the text
+   link (spec 2026-10-17, section 2.8): list markers (Preflight strips them, and
+   VoiceOver then drops the list semantics), paragraph rhythm, and links told
+   apart by more than color (WCAG 1.3.1, 1.4.1). Bullets are graphics; list
+   numbers are text, so they take neutral-600. The type (section 4.3): 17px on
+   a 28px line in neutral-700, each paragraph and list held to 52ch (about 70
+   characters of Inter), and h3s that read as headings. */
+@layer components {
+  .kw-prose { font-size: var(--text-body); line-height: var(--text-body--line-height); color: var(--color-neutral-700); }
+  .kw-prose > :is(p, ul, ol, blockquote) { max-width: 52ch; }
+  .kw-prose h3 { font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.3; font-weight: 600; color: var(--color-navy); margin-top: 1.75em; }
+  .kw-prose h3 + * { margin-top: 0.5em; }
+  .kw-prose strong { font-weight: 600; color: var(--color-neutral-900); }
+  .kw-prose > * + * { margin-top: 1em; }
+  .kw-prose ul { list-style: disc; padding-left: 1.25em; }
+  .kw-prose ol { list-style: decimal; padding-left: 1.5em; }
+  .kw-prose li + li { margin-top: 0.375em; }
+  .kw-prose ul > li::marker { color: var(--color-neutral-400); }
+  .kw-prose ol > li::marker { color: var(--color-neutral-600); }
+
+  .kw-link, .kw-prose a {
+    color: var(--color-navy);
+    text-decoration-line: underline; text-decoration-thickness: 1px;
+    text-decoration-color: var(--color-neutral-400); text-underline-offset: 3px;
+    transition: color 150ms ease, text-decoration-color 150ms ease;
+  }
+  @media (hover: hover) {
+    .kw-link:hover, .kw-prose a:hover { color: var(--color-amber-dark); text-decoration-color: currentColor; }
+  }
+}
+
+/* Labels (spec 2026-10-17, section 4.5): the small capitals over a heading
+   (kw-eyebrow) and in a table, a list or a card (kw-label), Inter at 12px and
+   600 in CSS capitals, so screen readers read words. Eyebrow color: amber-light
+   on navy, amber-dark on white and neutral-50. Label color: neutral-500 on
+   white, neutral-400 on navy-dark, white for the footer's column heads. */
+@layer components {
+  .kw-eyebrow { font: 600 0.75rem/1rem var(--font-sans); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.75rem; text-wrap: balance; }
+  .kw-label { font: 600 0.75rem/1rem var(--font-sans); text-transform: uppercase; letter-spacing: 0.06em; }
+}
+
+/* One disclosure (spec 2026-10-17, section 4.10): every FAQ is a native
+   details and summary, so the keyboard, screen readers and find-in-page work
+   as they always have. The summary is the whole row, with a chevron on its
+   first line that turns over 200ms; where the browser can animate to auto
+   (interpolate-size), the answer's block size eases open and closed over
+   200ms, and elsewhere it opens at once. Neither moves under reduced motion.
+   Never overflow-hidden on a kw-disclosure: it would clip the focus ring. */
+@layer components {
+  .kw-disclosure > summary { list-style: none; cursor: pointer; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+  .kw-disclosure > summary::-webkit-details-marker { display: none; }
+  .kw-disclosure > summary::after {
+    content: ""; flex: none; width: 0.5rem; height: 0.5rem;
+    margin-top: 0.5rem; margin-top: calc(0.5lh - 0.25rem);
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: translateY(-2px) rotate(45deg); transition: transform 200ms var(--kw-ease);
+  }
+  .kw-disclosure[open] > summary::after { transform: translateY(2px) rotate(225deg); }
+  @supports (interpolate-size: allow-keywords) {
+    .kw-disclosure { interpolate-size: allow-keywords; }
+    .kw-disclosure::details-content { block-size: 0; overflow-y: clip; transition: block-size 200ms var(--kw-ease), content-visibility 200ms allow-discrete; }
+    .kw-disclosure[open]::details-content { block-size: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .kw-disclosure > summary::after, .kw-disclosure::details-content { transition: none; }
+  }
 }
 
 /* ============================================================================
-   Motion system
+   Motion (spec 2026-10-17, section 3)
    ----------------------------------------------------------------------------
-   SEO/no-JS safe: initial "hidden" states are scoped under `.js`, a class added
-   to <html> by an inline script before paint. Prerendered HTML and crawlers that
-   don't run the script see fully visible content. Everything is disabled under
-   prefers-reduced-motion so the experience stays accessible and professional.
+   Nothing moves unless a person caused it, apart from one calm fade-up as a
+   section below the fold comes into view; nothing hides content before
+   hydration, so prerendered HTML and crawlers see all of it. One curve and
+   three durations: entering things use --kw-ease, hover and color changes
+   ease; 150ms (press, hover, color, dropdown enter), 200ms (phone menu,
+   disclosure, card lift) and 400ms (the scroll reveal only), written as
+   literals. The rules sit in the components layer, so a utility on the same
+   element wins, and each sets only properties no utility on that element sets.
    ========================================================================== */
 
 :root {
-  --kw-spring: cubic-bezier(0.34, 1.42, 0.5, 1);  /* overshoot - "pop" */
   --kw-ease:   cubic-bezier(0.16, 1, 0.3, 1);      /* expo-out - smooth */
 }
 
@@ -85,193 +264,106 @@
   html { scroll-behavior: smooth; }
 }
 
-@keyframes kw-fade-up {
-  from { opacity: 0; transform: translateY(28px) scale(0.985); }
-  to   { opacity: 1; transform: none; }
-}
-@keyframes kw-fade-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes kw-aurora-a {
-  0%   { transform: translate3d(-8%, -6%, 0) scale(1.05) rotate(0deg); }
-  50%  { transform: translate3d(8%, 6%, 0) scale(1.3) rotate(12deg); }
-  100% { transform: translate3d(-8%, -6%, 0) scale(1.05) rotate(0deg); }
-}
-@keyframes kw-aurora-b {
-  0%   { transform: translate3d(6%, 8%, 0) scale(1.2) rotate(0deg); }
-  50%  { transform: translate3d(-6%, -4%, 0) scale(1) rotate(-14deg); }
-  100% { transform: translate3d(6%, 8%, 0) scale(1.2) rotate(0deg); }
-}
-@keyframes kw-shimmer { to { background-position: 200% center; } }
-@keyframes kw-sheen {
-  0%   { transform: translateX(-160%) skewX(-20deg); }
-  100% { transform: translateX(260%) skewX(-20deg); }
-}
-@keyframes kw-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
-}
-/* Gentle hover/bob for a hero motif (e.g. a service icon badge). */
-.kw-float { animation: kw-float 5s ease-in-out infinite; }
-
-/* Page-level entrance: applied to the routed content on every navigation. */
-.js .kw-page-enter { animation: kw-fade-up 0.5s var(--kw-ease) both; }
-
-/* Hero / above-the-fold entrance - springy "pop" with a staggered cascade. */
-.js .kw-enter      { animation: kw-fade-up 0.72s var(--kw-spring) both; }
-.js .kw-enter-slow { animation: kw-fade-up 0.95s var(--kw-spring) both; }
-.js .kw-enter-1 { animation-delay: 0.10s; }
-.js .kw-enter-2 { animation-delay: 0.20s; }
-.js .kw-enter-3 { animation-delay: 0.30s; }
-.js .kw-enter-4 { animation-delay: 0.40s; }
-
-/* Scroll reveal: hidden until the IntersectionObserver adds .is-visible.
-   Slides up, scales, and clears a blur for a cinematic "focus-in". */
-.js .kw-reveal {
-  opacity: 0;
-  transform: translateY(34px) scale(0.965);
-  filter: blur(8px);
-  transition: opacity 0.7s var(--kw-ease),
-              transform 0.8s var(--kw-spring),
-              filter 0.6s var(--kw-ease);
-  transition-delay: var(--kw-reveal-delay, 0ms);
-}
-.js .kw-reveal.is-visible { opacity: 1; transform: none; filter: none; }
-
-/* Per-service reveal choreography - the hidden-state direction differs so each
-   service's location pages animate in with their own signature. */
-.js .kw-reveal--left  { transform: translateX(-44px) scale(0.98); }
-.js .kw-reveal--right { transform: translateX(44px) scale(0.98); }
-.js .kw-reveal--scale { transform: translateY(0) scale(0.9); }
-
-/* Touch screens: drop the (expensive) blur + overshoot + horizontal travel
-   (would risk overflow), smaller travel, snappier timing, capped stagger. */
-@media (hover: none), (pointer: coarse) {
-  .js .kw-reveal,
-  .js .kw-reveal--left,
-  .js .kw-reveal--right,
-  .js .kw-reveal--scale {
-    transform: translateY(14px);
-    filter: none;
-    transition: opacity 0.45s var(--kw-ease), transform 0.45s var(--kw-ease);
+@layer components {
+  /* Scroll reveal. The prerendered markup is visible as written; after
+     hydration useReveal (src/hooks/use-reveal.ts) adds .is-armed ONLY to an
+     element still below the viewport, and .is-visible when it scrolls in (or
+     at once when it was already on screen). Nothing that was visible before
+     hydration is ever hidden, so the static page paints once and stays. It
+     rises 12px over 400ms, with a stagger capped at 120ms: no blur, no
+     overshoot. */
+  .kw-reveal.is-armed {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 400ms var(--kw-ease), transform 400ms var(--kw-ease);
     transition-delay: min(var(--kw-reveal-delay, 0ms), 120ms);
+  }
+  /* Revealed. Three classes, (0,3,0): it outranks the two-class hidden state
+     whatever the source order. */
+  .kw-reveal.is-armed.is-visible { opacity: 1; transform: none; filter: none; }
+
+  /* Card lift: 2px on hover with a fine pointer, a 0.99 press under any
+     pointer (spec 4.9), both only when motion is allowed. The individual
+     translate and scale properties compose with Tailwind's own transform
+     utilities. */
+  .kw-lift { transition: translate 200ms var(--kw-ease), scale 150ms var(--kw-ease), box-shadow 200ms ease, border-color 150ms ease; }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) { .kw-lift:hover { translate: 0 -2px; } }
+  @media (prefers-reduced-motion: no-preference) { .kw-lift:active { scale: 0.99; } }
+
+  /* Press (spec 4.8): a button or a chip dips to 0.97 while held, only when
+     motion is allowed, and its colors change over 150ms. An element with
+     kw-press carries no transition or scale utility (a utility would win). */
+  .kw-press { transition: scale 150ms var(--kw-ease), background-color 150ms ease, border-color 150ms ease, color 150ms ease; }
+  @media (prefers-reduced-motion: no-preference) { .kw-press:active { scale: 0.97; } }
+
+  /* The dropdown's enter (spec 4.11): the panel grows from the corner its
+     button sits at, from 0.98 and 4px up, never from scale(0); under reduced
+     motion it only fades. Browsers without @starting-style open it at once,
+     as before; closing is an instant unmount. */
+  .kw-pop { transform-origin: top left; transition: opacity 150ms var(--kw-ease), transform 150ms var(--kw-ease); }
+  @starting-style { .kw-pop { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+  @media (prefers-reduced-motion: reduce) { .kw-pop { transition-property: opacity; } }
+
+  /* The phone menu's enter (spec 5.3): the same kw-pop from 8px up with no
+     scale, over 200ms; under reduced motion it only fades (the rule above). */
+  #mobile-nav.kw-pop { transform-origin: top center; transition-duration: 200ms; }
+  @starting-style { #mobile-nav.kw-pop { transform: translateY(-8px); } }
+
+  /* The menu's groups center their label (items-center), so the chevron drops
+     kw-disclosure's first-line margin and centers on the row with it. */
+  #mobile-nav .kw-disclosure > summary::after { margin-top: 0; }
+}
+
+/* ---- The hero glow and its grid ---- */
+@layer components {
+  /* One still amber orb at the top right (spec 3.3): a gradient painted once,
+     with no filter, transform, animation or will-change (the wide stop stands
+     in for a blur), fainter below 1024px, where the copy spans the width and
+     the orb sits under it. */
+  .kw-aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+  .kw-aurora::before {
+    content: ""; position: absolute; border-radius: 50%;
+    width: 60vw; height: 60vw; right: -12%; top: -34%;
+    background: radial-gradient(circle, rgb(212 146 46 / 0.55) 0%, transparent 70%);
+  }
+  @media (max-width: 1023px) { .kw-aurora::before { background: radial-gradient(circle, rgb(212 146 46 / 0.15) 0%, transparent 70%); } }
+  /* A hero whose glow sample failed (spec 3.3, 7.4): a 0.15 center at every width. */
+  .kw-aurora--soft::before { background: radial-gradient(circle, rgb(212 146 46 / 0.15) 0%, transparent 70%); }
+  /* Faint engraved grid for depth, fading toward the edges. */
+  .kw-grid {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 30%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 30%, transparent 78%);
   }
 }
 
-/* ---- Hover lift (mouse/trackpad only) + touch press feedback ---- */
-.kw-lift {
-  transition: transform 0.25s var(--kw-ease),
-              box-shadow 0.3s var(--kw-ease),
-              border-color 0.25s ease;
+/* ---- Home page coverage map (src/components/UsStateMap.tsx) ----
+   A soft shadow under the whole map; the active state's top-layer copy grows
+   a little around its own centre and casts its own shadow as it comes in.
+   That amber lift is a map link's focus mark: the page-wide outline would box
+   the link's whole bounding rectangle across its neighbours. Transparent, not
+   none, so a forced-colors mode that repaints the fills draws the outline. */
+.kw-map { filter: drop-shadow(0 6px 10px rgb(12 23 41 / 0.22)); }
+.kw-map a:focus-visible { outline-color: transparent; }
+.kw-map-lift {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(1.05);
+  filter: drop-shadow(0 3px 4px rgb(12 23 41 / 0.45));
+  animation: kw-map-lift 0.18s var(--kw-ease);
 }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .kw-lift:hover { transform: translateY(-4px); }
-}
-@media (hover: none) { .kw-lift:active { transform: scale(0.99); } }
-
-/* ---- Animated underline reveal ---- */
-.kw-underline {
-  background-image: linear-gradient(currentColor, currentColor);
-  background-size: 0% 2px;
-  background-position: 0 100%;
-  background-repeat: no-repeat;
-  transition: background-size 0.3s var(--kw-ease);
-}
-.kw-underline:hover { background-size: 100% 2px; }
-
-/* ---- Aurora: drifting gradient orbs behind a dark hero ---- */
-.kw-aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-.kw-aurora::before, .kw-aurora::after {
-  content: ""; position: absolute; border-radius: 50%;
-  filter: blur(70px); opacity: 0.55; will-change: transform;
-}
-.kw-aurora::before {
-  width: 60vw; height: 60vw; left: -12%; top: -34%;
-  background: radial-gradient(circle, var(--color-amber-light) 0%, transparent 62%);
-  animation: kw-aurora-a 20s ease-in-out infinite;
-}
-.kw-aurora::after {
-  width: 55vw; height: 55vw; right: -12%; bottom: -38%;
-  background: radial-gradient(circle, #3c5da6 0%, transparent 62%);
-  animation: kw-aurora-b 26s ease-in-out infinite;
-}
-/* Faint engraved grid for depth, fading toward the edges. */
-.kw-grid {
-  position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 30%, transparent 78%);
-  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 40%, #000 30%, transparent 78%);
-}
-
-/* ---- Gold shimmer sweeping across a headline phrase ---- */
-.kw-gradient-text {
-  background: linear-gradient(100deg,
-    currentColor 0%, currentColor 38%,
-    var(--color-amber-light) 50%,
-    currentColor 62%, currentColor 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text; background-clip: text;
-  /* Clip the glyph fill so the gradient shows through. Do NOT set `color: transparent`
-     here: the gradient's base stops use `currentColor`, so a transparent `color` makes
-     the whole word transparent and only the narrow amber shimmer band paints (the word
-     reads as a broken fragment). text-fill-color handles the clip; color stays inherited
-     (white on the navy hero) as both the gradient base and the no-clip-support fallback. */
-  -webkit-text-fill-color: transparent;
-  animation: kw-shimmer 6.5s linear infinite;
-}
-
-/* ---- Scroll progress bar (width driven by --kw-progress: 0..1) ---- */
-.kw-progress {
-  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60;
-  transform: scaleX(var(--kw-progress, 0)); transform-origin: 0 50%;
-  background: linear-gradient(90deg, var(--color-amber-dark), var(--color-amber-light));
-  box-shadow: 0 0 12px color-mix(in srgb, var(--color-amber-light) 60%, transparent);
-}
-
-/* ---- 3D tilt + cursor-tracking glow for cards (vars set by useTilt) ---- */
-.kw-tilt {
-  transform: perspective(900px) rotateX(var(--kw-rx, 0deg)) rotateY(var(--kw-ry, 0deg));
-  transition: transform 0.4s var(--kw-ease);
-  transform-style: preserve-3d;
-}
-.kw-tilt-glow {
-  position: absolute; inset: 0; border-radius: inherit; z-index: 1;
-  opacity: 0; transition: opacity 0.35s var(--kw-ease); pointer-events: none;
-  background: radial-gradient(240px circle at var(--kw-gx, 50%) var(--kw-gy, 50%),
-    color-mix(in srgb, var(--color-amber) 26%, transparent), transparent 60%);
-}
-@media (hover: hover) and (pointer: fine) {
-  .kw-tilt:hover .kw-tilt-glow { opacity: 1; }
-}
-/* Touch devices get a press instead of tilt (useTilt no-ops on touch). */
-@media (hover: none) { .kw-tilt:active { transform: scale(0.99); } }
-
-/* ---- Magnetic CTA with a one-shot light sheen on hover ---- */
-.kw-magnetic { position: relative; overflow: hidden; transition: transform 0.2s var(--kw-ease); }
-.kw-magnetic::after {
-  content: ""; position: absolute; top: 0; left: 0; height: 100%; width: 55%;
-  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.4), transparent);
-  transform: translateX(-160%) skewX(-20deg); pointer-events: none;
-}
-@media (hover: hover) and (pointer: fine) {
-  .kw-magnetic:hover::after { animation: kw-sheen 0.85s var(--kw-ease); }
-}
+@keyframes kw-map-lift { from { transform: none; filter: none; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .js .kw-page-enter,
-  .js .kw-enter,
-  .js .kw-enter-slow,
-  .js .kw-reveal {
-    animation: none !important;
+  .kw-reveal.is-armed {
     transition: none !important;
     opacity: 1 !important;
     transform: none !important;
-    filter: none !important;
   }
-  .kw-aurora, .kw-gradient-text, .kw-float { animation: none !important; }
-  .kw-gradient-text { -webkit-text-fill-color: currentColor; color: inherit; }
-  .kw-tilt { transform: none !important; }
-  .kw-magnetic::after { display: none; }
+  .kw-map-lift { animation: none; transform: none; }
   html { scroll-behavior: auto; }
 }

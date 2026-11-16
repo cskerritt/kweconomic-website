@@ -19,7 +19,7 @@ function TeamCard({ member }: { member: TeamMember }) {
     <Link
       to={`/team/${member.slug}`}
       aria-label={`View ${member.name}'s profile`}
-      className="group flex flex-col h-full bg-white rounded-xl border border-neutral-200 overflow-hidden hover:shadow-lg hover:border-amber/40 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber focus-visible:ring-offset-2"
+      className="kw-lift group flex flex-col h-full bg-white rounded-xl border border-neutral-300 overflow-hidden hover:shadow-raised"
     >
       {/* Photo or initials */}
       <div className="aspect-[3/4] bg-neutral-100 relative overflow-hidden">
@@ -29,12 +29,12 @@ function TeamCard({ member }: { member: TeamMember }) {
             alt={member.name}
             width={400}
             height={533}
-            className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+            className="w-full h-full object-cover object-top"
             loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-navy/5">
-            <span className="text-5xl font-bold text-navy/20">{initials}</span>
+            <span aria-hidden="true" className="text-5xl font-bold text-navy/20">{initials}</span>
           </div>
         )}
       </div>
@@ -52,7 +52,7 @@ function TeamCard({ member }: { member: TeamMember }) {
             {member.credentials.map((cred) => (
               <span
                 key={cred}
-                className="inline-block bg-forest/10 text-forest text-xs font-semibold px-2 py-0.5 rounded"
+                className="inline-block bg-navy/10 text-navy text-xs font-semibold px-2 py-0.5 rounded"
               >
                 {cred}
               </span>
@@ -68,7 +68,7 @@ function TeamCard({ member }: { member: TeamMember }) {
         )}
 
         {/* View profile affordance */}
-        <span className="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-semibold text-navy group-hover:gap-2 group-hover:text-amber-dark transition-all">
+        <span className="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-semibold text-navy group-hover:text-amber-dark transition-all">
           View profile
           <ArrowRight className="w-4 h-4" />
         </span>
@@ -84,7 +84,7 @@ function MemoriamCard({ member }: { member: TeamMember }) {
     <Link
       to={`/team/${member.slug}`}
       aria-label={`Remember ${member.name}`}
-      className="group flex flex-col h-full bg-neutral-50 rounded-xl border border-neutral-200 overflow-hidden hover:shadow-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2"
+      className="kw-lift group flex flex-col h-full bg-neutral-50 rounded-xl border border-neutral-300 overflow-hidden hover:shadow-raised"
     >
       <div className="aspect-[3/4] bg-neutral-100 relative overflow-hidden">
         {member.imageUrl ? (
@@ -98,13 +98,13 @@ function MemoriamCard({ member }: { member: TeamMember }) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-navy/5">
-            <span className="text-5xl font-bold text-navy/20">{initials}</span>
+            <span aria-hidden="true" className="text-5xl font-bold text-navy/20">{initials}</span>
           </div>
         )}
       </div>
 
       <div className="p-5 flex flex-col flex-1">
-        <p className="text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-2">In Memoriam</p>
+        <p className="kw-label text-neutral-500 mb-2">In Memoriam</p>
         <h3 className="font-serif text-lg font-bold text-navy leading-tight">{member.name}</h3>
         <p className="text-neutral-600 font-medium text-sm mt-1">{member.title}</p>
 
@@ -121,7 +121,7 @@ function MemoriamCard({ member }: { member: TeamMember }) {
           </div>
         )}
 
-        <span className="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-medium text-neutral-500 group-hover:text-navy transition-colors">
+        <span className="inline-flex items-center gap-1 mt-auto pt-4 text-sm font-medium text-neutral-600 group-hover:text-navy transition-colors">
           Remember {member.name.split(" ")[0]}
           <ArrowRight className="w-4 h-4" />
         </span>
@@ -208,10 +208,10 @@ export default function Team() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-amber-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Our People
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               The {ORG_NAME} Team
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">

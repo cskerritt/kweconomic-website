@@ -168,10 +168,10 @@ export default function ScheduleConsultation() {
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="kw-enter text-teal-light text-sm font-semibold uppercase tracking-wider mb-4">
+            <p className="kw-eyebrow text-amber-light">
               Get in Touch
             </p>
-            <h1 className="kw-enter kw-enter-1 font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
+            <h1 className="font-serif text-4xl md:text-5xl font-bold leading-tight mb-6">
               Schedule a Consultation
             </h1>
             <p className="text-lg text-neutral-300 leading-relaxed">
@@ -207,7 +207,7 @@ export default function ScheduleConsultation() {
               <div className="space-y-5 mb-10">
                 {whatToExpect.map((item) => (
                   <div key={item.step} className="flex gap-4">
-                    <div className="w-8 h-8 rounded-full bg-teal/10 text-teal flex items-center justify-center text-sm font-bold shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-navy/10 text-navy flex items-center justify-center text-sm font-bold shrink-0">
                       {item.step}
                     </div>
                     <div>
@@ -229,7 +229,7 @@ export default function ScheduleConsultation() {
               <ul className="space-y-2.5">
                 {infoToHaveReady.map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-neutral-700">
-                    <CheckCircle className="w-4 h-4 text-teal shrink-0 mt-0.5" />
+                    <CheckCircle className="w-4 h-4 text-amber shrink-0 mt-0.5" />
                     {item}
                   </li>
                 ))}
@@ -244,7 +244,7 @@ export default function ScheduleConsultation() {
                 className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8 space-y-5"
               >
                 {status === "sent" && (
-                  <div className="rounded-lg bg-teal/10 border border-teal/30 text-teal px-4 py-3 text-sm font-medium">
+                  <div className="rounded-lg bg-navy/10 border border-navy/30 text-navy px-4 py-3 text-sm font-medium">
                     Thank you - your consultation request has been received. We will follow up within one business day.
                   </div>
                 )}
@@ -259,7 +259,7 @@ export default function ScheduleConsultation() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="first-name" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      First Name <span className="text-teal">*</span>
+                      First Name <span className="text-amber-dark">*</span>
                     </label>
                     <input
                       id="first-name"
@@ -267,13 +267,13 @@ export default function ScheduleConsultation() {
                       type="text"
                       required
                       autoComplete="given-name"
-                      className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+                      className="kw-field"
                       placeholder="Jane"
                     />
                   </div>
                   <div>
                     <label htmlFor="last-name" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Last Name <span className="text-teal">*</span>
+                      Last Name <span className="text-amber-dark">*</span>
                     </label>
                     <input
                       id="last-name"
@@ -281,7 +281,7 @@ export default function ScheduleConsultation() {
                       type="text"
                       required
                       autoComplete="family-name"
-                      className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+                      className="kw-field"
                       placeholder="Smith"
                     />
                   </div>
@@ -290,7 +290,7 @@ export default function ScheduleConsultation() {
                 {/* Email */}
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Email Address <span className="text-teal">*</span>
+                    Email Address <span className="text-amber-dark">*</span>
                   </label>
                   <input
                     id="email"
@@ -298,7 +298,7 @@ export default function ScheduleConsultation() {
                     type="email"
                     required
                     autoComplete="email"
-                    className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+                    className="kw-field"
                     placeholder="jane@lawfirm.com"
                   />
                 </div>
@@ -306,7 +306,7 @@ export default function ScheduleConsultation() {
                 {/* Phone */}
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Phone Number <span className="text-teal">*</span>
+                    Phone Number <span className="text-amber-dark">*</span>
                   </label>
                   <input
                     id="phone"
@@ -314,7 +314,7 @@ export default function ScheduleConsultation() {
                     type="tel"
                     required
                     autoComplete="tel"
-                    className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+                    className="kw-field"
                     placeholder="(201) 555-0100"
                   />
                 </div>
@@ -322,14 +322,14 @@ export default function ScheduleConsultation() {
                 {/* Firm */}
                 <div>
                   <label htmlFor="firm-name" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Firm / Organization Name <span className="text-teal">*</span>
+                    Firm / Organization Name <span className="text-amber-dark">*</span>
                   </label>
                   <input
                     id="firm-name"
                     name="firm-name"
                     type="text"
                     required
-                    className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+                    className="kw-field"
                     placeholder="Smith &amp; Associates, LLP"
                   />
                 </div>
@@ -338,14 +338,14 @@ export default function ScheduleConsultation() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                   <div>
                     <label htmlFor="case-type" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Case Type <span className="text-teal">*</span>
+                      Case Type <span className="text-amber-dark">*</span>
                     </label>
                     <select
                       id="case-type"
                       name="case-type"
                       required
                       defaultValue=""
-                      className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+                      className="kw-field"
                     >
                       <option value="" disabled>Select case type</option>
                       {CASE_TYPE_OPTIONS.map((ct) => (
@@ -355,14 +355,14 @@ export default function ScheduleConsultation() {
                   </div>
                   <div>
                     <label htmlFor="jurisdiction" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                      Jurisdiction / State <span className="text-teal">*</span>
+                      Jurisdiction / State <span className="text-amber-dark">*</span>
                     </label>
                     <select
                       id="jurisdiction"
                       name="jurisdiction"
                       required
                       defaultValue=""
-                      className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent"
+                      className="kw-field"
                     >
                       <option value="" disabled>Select state</option>
                       {statesAndTerritories.map((s) => (
@@ -375,14 +375,14 @@ export default function ScheduleConsultation() {
                 {/* Description */}
                 <div>
                   <label htmlFor="description" className="block text-sm font-medium text-neutral-700 mb-1.5">
-                    Brief Description of the Matter <span className="text-teal">*</span>
+                    Brief Description of the Matter <span className="text-amber-dark">*</span>
                   </label>
                   <textarea
                     id="description"
                     name="description"
                     rows={4}
                     required
-                    className="w-full border border-neutral-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-teal focus:border-transparent resize-none"
+                    className="kw-field resize-none"
                     placeholder="Describe the loss claim, the records you have, and the analysis you need..."
                   />
                 </div>
@@ -401,7 +401,7 @@ export default function ScheduleConsultation() {
                             name="language"
                             value={lang}
                             defaultChecked={i === 0}
-                            className="accent-teal"
+                            className="accent-navy"
                           />
                           {lang}
                         </label>
@@ -424,7 +424,7 @@ export default function ScheduleConsultation() {
                             name="contact-method"
                             value={method.toLowerCase()}
                             defaultChecked={method === "Email"}
-                            className="accent-teal"
+                            className="accent-navy"
                           />
                           {method}
                         </label>
@@ -439,7 +439,7 @@ export default function ScheduleConsultation() {
                 <button
                   type="submit"
                   disabled={status === "sending"}
-                  className="w-full bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="kw-press min-h-11 w-full bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {status === "sending" ? "Submitting..." : "Submit Consultation Request"}
                 </button>
@@ -469,18 +469,18 @@ export default function ScheduleConsultation() {
               <h3 className="font-semibold text-navy mb-3">New Jersey - Headquarters</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li className="flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 text-teal shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-amber shrink-0 mt-0.5" />
                   Hackensack, New Jersey
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-teal shrink-0" />
-                  <a href={telHref(ORG_PHONE)} className="hover:text-teal transition-colors font-medium">
+                  <Phone className="w-4 h-4 text-amber shrink-0" />
+                  <a href={telHref(ORG_PHONE)} className="hover:text-amber-dark transition-colors font-medium">
                     {ORG_PHONE_DISPLAY}
                   </a>
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <Mail className="w-4 h-4 text-teal shrink-0" />
-                  <a href={`mailto:${ORG_EMAIL}`} className="hover:text-teal transition-colors">
+                  <Mail className="w-4 h-4 text-amber shrink-0" />
+                  <a href={`mailto:${ORG_EMAIL}`} className="hover:text-amber-dark transition-colors">
                     {ORG_EMAIL}
                   </a>
                 </li>
@@ -492,12 +492,12 @@ export default function ScheduleConsultation() {
               <h3 className="font-semibold text-navy mb-3">Virginia - Richmond Office</h3>
               <ul className="space-y-2 text-sm text-neutral-700">
                 <li className="flex items-start gap-2.5">
-                  <MapPin className="w-4 h-4 text-teal shrink-0 mt-0.5" />
+                  <MapPin className="w-4 h-4 text-amber shrink-0 mt-0.5" />
                   Richmond, Virginia
                 </li>
                 <li className="flex items-center gap-2.5">
-                  <Phone className="w-4 h-4 text-teal shrink-0" />
-                  <a href={telHref(ORG_PHONE_VA)} className="hover:text-teal transition-colors font-medium">
+                  <Phone className="w-4 h-4 text-amber shrink-0" />
+                  <a href={telHref(ORG_PHONE_VA)} className="hover:text-amber-dark transition-colors font-medium">
                     {ORG_PHONE_VA_DISPLAY}
                   </a>
                 </li>
@@ -507,7 +507,7 @@ export default function ScheduleConsultation() {
             {/* Hours */}
             <div className="bg-white rounded-xl border border-neutral-200 p-5">
               <h3 className="font-semibold text-navy mb-3 flex items-center gap-2">
-                <Clock className="w-4 h-4 text-teal" />
+                <Clock className="w-4 h-4 text-amber" />
                 Office Hours
               </h3>
               <ul className="space-y-1.5 text-sm text-neutral-700">
@@ -517,7 +517,7 @@ export default function ScheduleConsultation() {
                 </li>
                 <li className="flex justify-between">
                   <span>Saturday - Sunday</span>
-                  <span className="text-neutral-500">Closed</span>
+                  <span className="text-neutral-600">Closed</span>
                 </li>
               </ul>
               <p className="text-xs text-neutral-500 mt-3">

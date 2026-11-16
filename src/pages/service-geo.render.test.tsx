@@ -382,7 +382,7 @@ describe("ServiceStateCity hero, meta, credentials sidebar, FAQ, and cross-link 
           expect(html).not.toContain("Loading...");
           // The H1 keeps the short name as written (static markup escapes its
           // "&"), or the pillar's fullest geo label where it sets one.
-          expect(html).toContain(`${serviceGeoHeadingLabel(service).replace("&", "&amp;")}</span> in ${cityName},`);
+          expect(html.replace(/<!-- -->/g, "")).toContain(`${serviceGeoHeadingLabel(service).replace("&", "&amp;")} in ${cityName},`);
           expect(html).toContain("Expert Credentials");
           for (const cred of service.relevantCredentials) expect(html).toContain(`>${cred}<`);
         });

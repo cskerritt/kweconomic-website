@@ -47,8 +47,6 @@ import LocationCard from "@/components/LocationCard";
 import FAQBlock from "@/components/FAQBlock";
 import SourcesBlock from "@/components/SourcesBlock";
 import Reveal from "@/components/Reveal";
-import { serviceMotion } from "@/lib/service-motion";
-import { useMagnetic } from "@/hooks/use-pointer-fx";
 import { ArrowRight, Briefcase } from "lucide-react";
 import { ICONS } from "@/lib/icons";
 
@@ -82,8 +80,6 @@ export default function ServiceState() {
     description: truncateAtWord(directAnswerForMeta),
     canonical: `${ORG_URL}/services/${serviceSlug ?? ""}/${stateSlug ?? ""}`,
   });
-
-  const magnet = useMagnetic<HTMLAnchorElement>(0.25);
   // Secondary "cities we serve" list; lazy-loaded per state (fills in on load).
   const { cities: stateCities } = useStateCities(stateSlug);
 
@@ -96,7 +92,6 @@ export default function ServiceState() {
   }
 
   const ServiceIcon = ICONS[service.icon] ?? Briefcase;
-  const motion = serviceMotion(service.slug);
 
   const courts = getCourtsByState(state.slug);
   const regulations = getRegulationsByState(state.slug);
@@ -155,33 +150,33 @@ export default function ServiceState() {
         <div className="kw-aurora" aria-hidden="true" />
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
-          <p className="kw-enter inline-flex items-center gap-2 text-amber-light text-xs font-semibold mb-5 uppercase tracking-[0.18em]">
+          <p className="kw-eyebrow text-amber-light inline-flex items-center gap-2">
             {state.name} &middot; {state.abbreviation}
           </p>
           <div className="flex items-start gap-5">
-            <div className="kw-enter kw-enter-1 kw-float hidden sm:flex shrink-0 w-16 h-16 rounded-2xl bg-amber/15 border border-amber/30 items-center justify-center text-amber shadow-lg shadow-amber/10">
+            <div className="hidden sm:flex shrink-0 w-16 h-16 rounded-2xl bg-amber/15 border border-amber/30 items-center justify-center text-amber shadow-lg shadow-amber/10">
               <ServiceIcon className="w-8 h-8" />
             </div>
             <div className="min-w-0">
-              <h1 className="kw-enter kw-enter-1 font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4">
-                <span className="kw-gradient-text">{serviceGeoHeadingLabel(service)}</span> in {place}
+              <h1 className="font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4">
+                {serviceGeoHeadingLabel(service)} in {place}
               </h1>
-              <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-3xl mb-3">
+              <p className="text-lg text-neutral-300 max-w-3xl mb-3">
                 {directAnswer}
               </p>
               {/* The legal context for this pillar's category: the commercial
                   and family-financial pillars never print the workers'
                   compensation forum, which hears no claim of theirs (F09). */}
-              <p className="kw-enter kw-enter-2 text-base text-neutral-500 max-w-3xl mb-7">
+              <p className="text-base text-neutral-300 max-w-3xl mb-7">
                 {serviceStateLegalContext(service.shortName, narrative)}
               </p>
-              <div className="kw-enter kw-enter-3 flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-3">
                 <Link
-                  ref={magnet}
+                 
                   to="/contact"
-                  className="kw-magnetic group inline-flex items-center gap-2 bg-teal hover:bg-teal-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors shadow-lg shadow-teal/20"
+                  className="kw-press min-h-11 group inline-flex items-center gap-2 bg-amber-dark hover:bg-amber-darker active:bg-amber-darker text-white font-semibold px-6 py-3 rounded-lg"
                 >
-                  Request a Consultation <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  Request a Consultation <ArrowRight className="w-4 h-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
                 </Link>
                 <Link
                   to={`/services/${service.slug}`}
@@ -205,7 +200,7 @@ export default function ServiceState() {
 
             {/* Service description + state-specific forum context. The H2
                 states what the section explains rather than repeating the H1. */}
-            <Reveal as="section" variant={motion.reveal} className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8">
+            <Reveal as="section" className="bg-white rounded-xl border border-neutral-200 p-6 lg:p-8">
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">
                 How {service.shortName} Work Is Built for {placeAttr(state.name)} Cases
               </h2>
@@ -228,7 +223,7 @@ export default function ServiceState() {
             </Reveal>
 
             {/* Case type badges */}
-            <Reveal as="section" variant={motion.reveal}>
+            <Reveal as="section">
               <h2 className="font-serif text-2xl font-bold text-navy mb-4">
                 Case Types
               </h2>
@@ -236,7 +231,7 @@ export default function ServiceState() {
                 {service.caseTypes.map((ct) => (
                   <span
                     key={ct}
-                    className="inline-block bg-teal/10 text-teal font-medium text-sm px-4 py-1.5 rounded-full border border-teal/20"
+                    className="inline-block bg-navy/10 text-navy font-medium text-sm px-4 py-1.5 rounded-full border border-navy/20"
                   >
                     {getCaseType(ct)?.name ?? ct}
                   </span>
@@ -246,7 +241,7 @@ export default function ServiceState() {
 
             {/* Cities */}
             {cities.length > 0 && (
-              <Reveal as="section" variant={motion.reveal}>
+              <Reveal as="section">
                 <h2 className="font-serif text-2xl font-bold text-navy mb-2">
                   {service.shortName} Across {place}
                 </h2>
@@ -267,7 +262,7 @@ export default function ServiceState() {
                   <div className="mt-4">
                     <Link
                       to={`/locations/${state.slug}`}
-                      className="inline-flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                      className="inline-flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
                     >
                       View all {state.name} locations <ArrowRight className="w-4 h-4" />
                     </Link>
@@ -278,7 +273,7 @@ export default function ServiceState() {
 
             {/* Related services in this state */}
             {relatedServices.length > 0 && (
-              <Reveal as="section" variant={motion.reveal}>
+              <Reveal as="section">
                 <h2 className="font-serif text-2xl font-bold text-navy mb-2">
                   Related Services in {place}
                 </h2>
@@ -290,12 +285,12 @@ export default function ServiceState() {
                     <Link
                       key={s.slug}
                       to={`/services/${s.slug}/${state.slug}`}
-                      className="kw-lift group flex items-center justify-between bg-white rounded-lg border border-neutral-200 px-5 py-4 hover:border-teal hover:shadow-md"
+                      className="kw-lift group flex items-center justify-between bg-white rounded-xl border border-neutral-300 px-5 py-4 hover:shadow-raised"
                     >
-                      <span className="font-medium text-navy group-hover:text-teal transition-colors">
+                      <span className="font-medium text-navy group-hover:text-amber-dark transition-colors">
                         {s.shortName}
                       </span>
-                      <ArrowRight className="w-4 h-4 text-neutral-500 group-hover:text-teal group-hover:translate-x-1 transition-all" />
+                      <ArrowRight className="w-4 h-4 text-neutral-600 group-hover:text-amber-dark motion-safe:group-hover:translate-x-1 motion-safe:transition-transform" />
                     </Link>
                   ))}
                 </div>
@@ -303,17 +298,17 @@ export default function ServiceState() {
             )}
 
             {/* Frequently asked */}
-            <Reveal variant={motion.reveal}>
+            <Reveal>
               <FAQBlock faqs={faqs} title={`Frequently asked: ${service.shortName} in ${place}`} />
             </Reveal>
 
             {/* The pillar's data and standards, through the registry. */}
-            <Reveal variant={motion.reveal}>
+            <Reveal>
               <SourcesBlock sources={geoSources(service)} />
             </Reveal>
 
             {/* Contact CTA */}
-            <Reveal variant={motion.reveal}>
+            <Reveal>
               <ContactCTA context={`${service.shortName} in ${place}`} />
             </Reveal>
           </div>
@@ -324,7 +319,7 @@ export default function ServiceState() {
             {/* Economic context, captioned for this pillar's own work (the
                 widget drops the wage-loss forum on the commercial and
                 family-financial pillars). */}
-            <Reveal variant="up">
+            <Reveal>
               <EconomicContextWidget
                 areaName={state.name}
                 population={state.population}
@@ -335,7 +330,7 @@ export default function ServiceState() {
 
             {/* Court Info Panel */}
             {courts && (
-              <Reveal variant="up" delay={80}>
+              <Reveal delay={80}>
                 <CourtInfoPanel courts={courts} stateName={state.name} />
               </Reveal>
             )}
@@ -354,9 +349,9 @@ export default function ServiceState() {
                 {service.relevantCredentials.map((cred) => {
                   const href = credentialPagePath(cred, state.slug);
                   const chip =
-                    "inline-block bg-forest/10 text-forest font-medium text-sm px-3 py-1 rounded-full border border-forest/20";
+                    "inline-block bg-navy/10 text-navy font-medium text-sm px-3 py-1 rounded-full border border-navy/20";
                   return href ? (
-                    <Link key={cred} to={href} className={`${chip} hover:bg-forest/20 transition-colors`}>
+                    <Link key={cred} to={href} className={`${chip} hover:bg-navy/20 transition-colors`}>
                       {cred}
                     </Link>
                   ) : (
@@ -373,19 +368,19 @@ export default function ServiceState() {
               <h3 className="font-serif text-lg font-bold text-navy mb-1">Quick Links</h3>
               <Link
                 to={`/services/${service.slug}`}
-                className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 <ArrowRight className="w-4 h-4" /> All {service.shortName} Locations
               </Link>
               <Link
                 to={`/locations/${state.slug}`}
-                className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 <ArrowRight className="w-4 h-4" /> {state.name} Locations Hub
               </Link>
               <Link
                 to="/services"
-                className="flex items-center gap-2 text-teal hover:text-teal-dark font-medium text-sm transition-colors"
+                className="flex items-center gap-2 text-amber-dark hover:text-amber-darker font-medium text-sm transition-colors"
               >
                 <ArrowRight className="w-4 h-4" /> All Services
               </Link>

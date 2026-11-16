@@ -8,7 +8,6 @@ import ContactCTA from "@/components/ContactCTA";
 import { graphSchema, organizationSchema, websiteSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import Reveal from "@/components/Reveal";
-import { useTilt } from "@/hooks/use-pointer-fx";
 import { ORG_NAME } from "@/lib/brand";
 
 // The hero already leads with the definition; it doubles as the
@@ -26,21 +25,18 @@ const LIBRARY_LINKS = [
 ];
 
 function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typeof whitePapers[number]) {
-  const tiltRef = useTilt<HTMLAnchorElement>();
   const Icon = ICONS[icon] ?? FileText;
   return (
     <Link
-      ref={tiltRef}
       to={`/white-papers/${slug}`}
-      className="kw-tilt group relative block h-full rounded-xl border border-neutral-200 bg-white p-6 hover:border-amber hover:shadow-xl transition-shadow"
+      className="kw-lift group relative block h-full rounded-xl border border-neutral-300 bg-white p-6 hover:shadow-raised"
     >
-      <span className="kw-tilt-glow" aria-hidden="true" />
       <div className="relative z-[2]">
         <div className="flex items-center justify-between mb-4">
-          <span className="inline-flex w-12 h-12 rounded-lg bg-navy/5 items-center justify-center text-navy transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">
+          <span className="inline-flex w-12 h-12 rounded-lg bg-navy/5 items-center justify-center text-navy">
             <Icon className="w-6 h-6" />
           </span>
-          <span className="text-xs font-semibold uppercase tracking-wider text-amber-dark">
+          <span className="kw-label text-amber-dark">
             {discipline}
           </span>
         </div>
@@ -49,7 +45,7 @@ function PaperCard({ slug, title, subtitle, discipline, icon, readingTime }: typ
         </h3>
         <p className="text-sm text-neutral-600 mb-4 line-clamp-3">{subtitle}</p>
         <span className="inline-flex items-center gap-1 text-sm font-medium text-amber-dark">
-          Read white paper <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+          Read white paper <ArrowRight className="w-4 h-4 motion-safe:transition-transform motion-safe:group-hover:translate-x-1" />
         </span>
         <span className="block text-xs text-neutral-500 mt-2">{readingTime}</span>
       </div>
@@ -110,13 +106,13 @@ export default function WhitePapersHub() {
         <div className="kw-aurora" aria-hidden="true" />
         <div className="kw-grid" aria-hidden="true" />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
-          <p className="kw-enter text-amber-light text-xs font-semibold uppercase tracking-[0.18em] mb-5">
+          <p className="kw-eyebrow text-amber-light">
             Methodology &middot; Research
           </p>
-          <h1 className="kw-enter kw-enter-1 font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4 max-w-3xl">
-            <span className="kw-gradient-text">White papers</span> on defensible expert methodology
+          <h1 className="font-serif text-4xl lg:text-5xl font-bold leading-[1.05] mb-4 max-w-3xl">
+            White papers on defensible expert methodology
           </h1>
-          <p className="kw-enter kw-enter-2 text-lg text-neutral-300 max-w-2xl">{LEAD}</p>
+          <p className="text-lg text-neutral-300 max-w-2xl">{LEAD}</p>
         </div>
       </section>
 

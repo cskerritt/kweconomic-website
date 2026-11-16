@@ -179,7 +179,7 @@ describe("knowledge guides expose extractable units", () => {
         expect(html).toContain(s.heading);
       });
       expect(html).toContain("Frequently Asked Questions");
-      for (const f of k.faqs ?? []) expect(html).toContain(`<summary class="cursor-pointer font-semibold text-navy">${f.question.replace(/'/g, "&#x27;")}</summary>`);
+      for (const f of k.faqs ?? []) expect(html).toContain(`<summary class="kw-ring-inset rounded-[11px] px-4 py-4 font-semibold text-navy">${f.question.replace(/'/g, "&#x27;")}</summary>`);
       const faq = graphNodes(html).find((n) => n["@type"] === "FAQPage") as { mainEntity: unknown[] } | undefined;
       expect(faq, "FAQPage node").toBeDefined();
       expect(faq!.mainEntity.length).toBe(k.faqs?.length);
@@ -199,7 +199,7 @@ describe("insight posts are sectioned, dated, and cross-linked", () => {
         expect(html).toMatch(new RegExp(`<h2[^>]*id="${h.id}"[^>]*>${h.text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</h2>`));
       }
       expect(html).toContain("In This Article");
-      expect(html).toContain(`<time dateTime="${post.publishedDate}" class="text-sm text-neutral-500 font-mono">`);
+      expect(html).toContain(`<time dateTime="${post.publishedDate}" class="text-sm text-neutral-300 font-mono">`);
       // The hero prints the ISO calendar date, not the local-zone rendering of UTC midnight.
       const iso = new Date(`${post.publishedDate}T00:00:00Z`);
       const expected = iso.toLocaleDateString("en-US", { timeZone: "UTC", year: "numeric", month: "long", day: "numeric" });

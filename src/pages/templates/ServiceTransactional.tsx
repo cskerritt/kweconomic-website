@@ -175,7 +175,7 @@ export default function ServiceTransactional({ variant }: { variant: Variant }) 
               {s.timeline.map((p) => (
                 <li key={p.phase} className="py-3">
                   <strong>{p.phase}</strong>
-                  <span className="text-neutral-500 ml-2">{p.duration}</span>
+                  <span className="text-neutral-600 ml-2">{p.duration}</span>
                 </li>
               ))}
             </ul>

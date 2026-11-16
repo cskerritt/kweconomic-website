@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import {
   ORG_NAME,
   ORG_EMAIL,
-  ORG_PHONE,
-  ORG_PHONE_VA,
-  ORG_PHONE_DISPLAY,
-  ORG_PHONE_VA_DISPLAY,
-  ORG_CITY,
-  ORG_STATE,
+  OFFICES,
+  formatPhone,
   VOC_SITE_URL,
   LCP_SITE_URL,
   telHref,
@@ -82,11 +78,11 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-navy-dark text-white">
+    <footer className="bg-navy-dark text-white max-lg:pb-13">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8">
+        <div className="grid grid-cols-2 lg:grid-cols-6 gap-x-6 gap-y-10">
           {/* Column 1: Company Info */}
-          <div>
+          <div className="col-span-2 lg:col-span-1">
             <Link to="/">
               <img src="/images/logo.svg" alt={ORG_NAME} width={600} height={257} className="h-8 w-auto brightness-0 invert" />
             </Link>
@@ -96,32 +92,47 @@ export default function Footer() {
               for plaintiff and defense counsel.
             </p>
             <div className="mt-5 space-y-2">
-              <div className="flex items-center gap-2 text-sm text-neutral-400">
-                <MapPin className="w-4 h-4 shrink-0" />
-                <span>{ORG_CITY}, {ORG_STATE} (HQ)</span>
-              </div>
-              <a href={telHref(ORG_PHONE)} className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
-                <Phone className="w-4 h-4 shrink-0" />
-                <span>{ORG_PHONE_DISPLAY}</span>
-              </a>
-              <a href={telHref(ORG_PHONE_VA)} className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
-                <Phone className="w-4 h-4 shrink-0" />
-                <span>{ORG_PHONE_VA_DISPLAY}</span>
-              </a>
+              {/* Each office's city before its number; cities come from OFFICES in lib/brand. */}
+              {OFFICES.map((office, i) => (
+                <a key={office.id} href={telHref(office.telephone)} className="group flex items-start gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
+                  <Phone className="w-4 h-4 shrink-0 mt-0.5" />
+                  <span>
+                    <span className="block text-neutral-300 group-hover:text-white">
+                      {office.addressLocality}, {office.addressRegion}{i === 0 ? " (HQ)" : ""}
+                    </span>
+                    {formatPhone(office.telephone)}
+                  </span>
+                </a>
+              ))}
               <a href={`mailto:${ORG_EMAIL}`} className="flex items-center gap-2 text-sm text-neutral-400 hover:text-white transition-colors">
                 <Mail className="w-4 h-4 shrink-0" />
                 <span>{ORG_EMAIL}</span>
               </a>
             </div>
+            {/* LinkedIn as a labeled outline-on-navy button under the contact details (2026-11-16): the same placement
+                and recipe on all three Kincaid Wolstein sites, each linking the firm's one company page. */}
+            <a
+              href="https://www.linkedin.com/company/kwvrs"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow Kincaid Wolstein on LinkedIn (opens in a new tab)"
+              className="kw-press mt-6 inline-flex min-h-11 items-center gap-2.5 rounded-lg border border-white/30 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/10"
+            >
+              {/* LinkedIn's "in" mark (Simple Icons, CC0); lucide-react 1.x ships no brand icons. */}
+              <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 text-amber-light" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+              </svg>
+              Follow us on LinkedIn
+            </a>
           </div>
 
           {/* Column 2: Services */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Services</h3>
-            <ul className="mt-4 space-y-2">
+            <h3 className="kw-label text-white">Services</h3>
+            <ul className="mt-4 space-y-2 pointer-coarse:space-y-0">
               {serviceLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3">
                     {link.name}
                   </Link>
                 </li>
@@ -131,17 +142,17 @@ export default function Footer() {
 
           {/* Column 3: Locations */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Locations</h3>
-            <ul className="mt-4 space-y-2">
+            <h3 className="kw-label text-white">Locations</h3>
+            <ul className="mt-4 space-y-2 pointer-coarse:space-y-0">
               {locationLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3">
                     {link.name}
                   </Link>
                 </li>
               ))}
               <li>
-                <Link to="/locations" className="text-sm text-amber-light hover:text-amber transition-colors font-medium">
+                <Link to="/locations" className="text-sm text-amber-light hover:text-white transition-colors font-medium pointer-coarse:block pointer-coarse:py-3">
                   View All Locations &rarr;
                 </Link>
               </li>
@@ -150,11 +161,11 @@ export default function Footer() {
 
           {/* Column 4: Resources */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Resources</h3>
-            <ul className="mt-4 space-y-2">
+            <h3 className="kw-label text-white">Resources</h3>
+            <ul className="mt-4 space-y-2 pointer-coarse:space-y-0">
               {resourceLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3">
                     {link.name}
                   </Link>
                 </li>
@@ -164,11 +175,11 @@ export default function Footer() {
 
           {/* Column 5: Company */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Company</h3>
-            <ul className="mt-4 space-y-2">
+            <h3 className="kw-label text-white">Company</h3>
+            <ul className="mt-4 space-y-2 pointer-coarse:space-y-0">
               {companyLinks.map((link) => (
                 <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors">
+                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3">
                     {link.name}
                   </Link>
                 </li>
@@ -177,16 +188,16 @@ export default function Footer() {
           </div>
 
           {/* Column 6: KW family (sister sites) */}
-          <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Kincaid Wolstein Family</h3>
-            <ul className="mt-4 space-y-3">
+          <div className="col-span-2 lg:col-span-1">
+            <h3 className="kw-label text-white">Kincaid Wolstein Family</h3>
+            <ul className="mt-4 space-y-3 pointer-coarse:space-y-0">
               {familyLinks.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block text-sm text-neutral-400 hover:text-white transition-colors"
+                    className="block text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:py-3"
                   >
                     <span className="block font-medium text-neutral-300">{link.name}</span>
                     <span className="block text-xs">{link.blurb}</span>
@@ -204,10 +215,10 @@ export default function Footer() {
               &copy; {currentYear} {ORG_NAME}. All rights reserved.
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <Link to="/privacy" className="text-xs text-neutral-400 hover:text-neutral-300 transition-colors">
+              <Link to="/privacy" className="text-xs text-neutral-400 hover:text-neutral-300 transition-colors pointer-coarse:py-3.5">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-xs text-neutral-400 hover:text-neutral-300 transition-colors">
+              <Link to="/terms" className="text-xs text-neutral-400 hover:text-neutral-300 transition-colors pointer-coarse:py-3.5">
                 Terms of Service
               </Link>
               <p className="text-xs text-neutral-400">
