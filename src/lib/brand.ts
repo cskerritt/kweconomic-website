@@ -30,6 +30,10 @@ export const DEFAULT_OG_IMAGE_ALT = `${ORG_NAME} forensic economics and economic
 // read the Node-side mirror in scripts/lib/site.mjs.
 export const VOC_SITE_URL = "https://kwvrs.com";
 export const LCP_SITE_URL = "https://kwlcp.com";
+// The sister practices' names as the footer's Company column shows them, in
+// the "Kincaid Wolstein <practice>" form the vocational site uses (Chris, 2026-11-17).
+export const VOC_SITE_NAME = "Kincaid Wolstein Vocational Services";
+export const LCP_SITE_NAME = "Kincaid Wolstein Life Care Planning";
 export const SAME_AS = [VOC_SITE_URL, LCP_SITE_URL] as const;
 // The sister-site service pages this site hands off to. Verified live on
 // 2026-09-05 (curl): kwvrs.com/services/vocational-expert 200 and
