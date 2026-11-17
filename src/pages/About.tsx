@@ -20,7 +20,7 @@ const VALUES = [
 const PAGE_URL = `${ORG_URL}/about`;
 const LINK = "font-semibold kw-link";
 // The sister practices are named only through the brand constants (the
-// visible label is the host of each link, as Footer.tsx does) and through the
+// visible label is the host of each link) and through the
 // CrossSell card, the one component allowed to spell their names
 // (src/brand-strings.test.mjs).
 const hostOf = (url: string) => new URL(url).host;

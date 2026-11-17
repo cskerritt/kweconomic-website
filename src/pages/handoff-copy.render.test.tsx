@@ -120,8 +120,8 @@ describe("/about: sister practices and the combined-engagement handoff (F08, G01
 
   it("stays inside the brand and copy guards outside the CrossSell card", () => {
     // The visible host labels and the intake address derive from brand.ts
-    // (hostOf(VOC_SITE_URL), hostOf(LCP_SITE_URL), ORG_EMAIL), the way the
-    // Footer prints them; with those removed no sister form may remain.
+    // (hostOf(VOC_SITE_URL), hostOf(LCP_SITE_URL), ORG_EMAIL); with those
+    // removed no sister form may remain.
     const body = [hostOf(VOC_SITE_URL), hostOf(LCP_SITE_URL), ORG_EMAIL].reduce(
       (s, derived) => s.split(derived).join(""),
       visibleText(withoutJsonLd(withoutCrossSell(html))),

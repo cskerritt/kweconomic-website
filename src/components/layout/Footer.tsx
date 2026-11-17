@@ -6,7 +6,9 @@ import {
   OFFICES,
   formatPhone,
   VOC_SITE_URL,
+  VOC_SITE_NAME,
   LCP_SITE_URL,
+  LCP_SITE_NAME,
   telHref,
 } from "@/lib/brand";
 
@@ -58,20 +60,16 @@ const resourceLinks = [
 ];
 
 const companyLinks = [
-  { name: "About", href: "/about" },
-  { name: "Team", href: "/team" },
-  { name: "Contact", href: "/contact" },
-  { name: "Schedule Consultation", href: "/schedule-consultation" },
-  { name: "Privacy", href: "/privacy" },
-  { name: "Terms", href: "/terms" },
-];
-
-// Sister practices in the Kincaid Wolstein family (external, new tab). The
-// visible label is the host of the link so the domains are never spelled here.
-const hostOf = (url: string) => new URL(url).host;
-const familyLinks = [
-  { name: hostOf(VOC_SITE_URL), blurb: "Vocational practice", href: VOC_SITE_URL },
-  { name: hostOf(LCP_SITE_URL), blurb: "Life care plans", href: LCP_SITE_URL },
+  { name: "About", href: "/about", external: false },
+  { name: "Team", href: "/team", external: false },
+  { name: "Contact", href: "/contact", external: false },
+  { name: "Schedule Consultation", href: "/schedule-consultation", external: false },
+  { name: "Privacy", href: "/privacy", external: false },
+  { name: "Terms", href: "/terms", external: false },
+  // Sister practices: named links at the end of Company, opening in a new tab -
+  // the same placement and label style the vocational site uses (Chris, 2026-11-17).
+  { name: VOC_SITE_NAME, href: VOC_SITE_URL, external: true },
+  { name: LCP_SITE_NAME, href: LCP_SITE_URL, external: true },
 ];
 
 export default function Footer() {
@@ -80,7 +78,7 @@ export default function Footer() {
   return (
     <footer className="bg-navy-dark text-white max-lg:pb-13">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 lg:grid-cols-6 gap-x-6 gap-y-10">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-10">
           {/* Column 1: Company Info */}
           <div className="col-span-2 lg:col-span-1">
             <Link to="/">
@@ -182,33 +180,26 @@ export default function Footer() {
           <div>
             <h3 className="kw-label text-white">Company</h3>
             <ul className="mt-4 space-y-2 pointer-coarse:space-y-0">
-              {companyLinks.map((link) => (
-                <li key={link.href}>
-                  <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Column 6: KW family (sister sites) */}
-          <div className="col-span-2 lg:col-span-1">
-            <h3 className="kw-label text-white">Kincaid Wolstein Family</h3>
-            <ul className="mt-4 space-y-3 pointer-coarse:space-y-0">
-              {familyLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:py-3"
-                  >
-                    <span className="block font-medium text-neutral-300">{link.name}</span>
-                    <span className="block text-xs">{link.blurb}</span>
-                  </a>
-                </li>
-              ))}
+              {companyLinks.map((link) =>
+                link.external ? (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3"
+                    >
+                      {link.name}
+                    </a>
+                  </li>
+                ) : (
+                  <li key={link.href}>
+                    <Link to={link.href} className="text-sm text-neutral-400 hover:text-white transition-colors pointer-coarse:block pointer-coarse:py-3">
+                      {link.name}
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         </div>
