@@ -1,23 +1,14 @@
 import { Link } from "react-router-dom";
 import { states } from "@/data/states";
 import { usePageMeta } from "@/hooks/use-page-meta";
-import LocationCard from "@/components/LocationCard";
 import ContactCTA from "@/components/ContactCTA";
-import Reveal from "@/components/Reveal";
+import UsStateMap from "@/components/UsStateMap";
+import LocationSearch from "@/components/LocationSearch";
+import OfficeCards from "@/components/OfficeCards";
 import SchemaOrg from "@/components/SchemaOrg";
 import BreadcrumbNav from "@/components/layout/BreadcrumbNav";
 import { graphSchema, organizationSchema, websiteSchema, breadcrumbSchema, ORG_URL, ORG_ID, WEBSITE_ID } from "@/lib/schema";
 import { ORG_NAME, SITE_URL } from "@/lib/brand";
-
-const REGION_LABELS: Record<string, string> = {
-  northeast: "Northeast",
-  southeast: "Southeast",
-  midwest: "Midwest",
-  west: "West",
-  territory: "Territories & DC",
-};
-
-const REGION_ORDER = ["northeast", "southeast", "midwest", "west", "territory"];
 
 // The hero already leads with the definition; it doubles as the
 // CollectionPage description so the visible and structured-data summaries agree.
@@ -36,14 +27,6 @@ export default function LocationsHub() {
       "Lost earnings, wrongful death, household services, and business damages analyses in all 50 states, DC, and U.S. territories. Pick a state for venue context.",
     canonical: url,
   });
-
-  const stateOnly = states.filter((s) => s.type === "state");
-
-  const byRegion = REGION_ORDER.map((region) => ({
-    region,
-    label: REGION_LABELS[region],
-    items: states.filter((s) => s.region === region),
-  }));
 
   return (
     <>
@@ -101,51 +84,25 @@ export default function LocationsHub() {
         </div>
       </section>
 
-      {/* State Abbreviation Quick Grid */}
-      <section className="py-12 bg-neutral-50 border-b border-neutral-200">
+      <OfficeCards />
+
+      {/* Find a location (Chris, 2026-11-25): the three offices above stay in view; every other state, DC and
+          territory is one step away on the map or through the ZIP / city search, in place of the state grid and the
+          region lists, which together offered too many choices. The map's own list keeps a plain link to every hub. */}
+      <section aria-labelledby="find-location-heading" className="py-12 md:py-16 bg-neutral-50 border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-serif text-2xl font-bold text-navy mb-6 text-center">
-            Select a State
+          <h2 id="find-location-heading" className="font-serif text-3xl md:text-4xl font-bold text-navy mb-3 text-center">
+            Find a location
           </h2>
-          <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2">
-            {stateOnly.map((state) => (
-              <Link
-                key={state.slug}
-                to={`/locations/${state.slug}`}
-                className="bg-white rounded-xl border border-neutral-300 px-3 py-4 text-center text-sm font-semibold text-navy hover:text-amber-dark hover:shadow-raised"
-              >
-                {state.abbreviation}
-                {/* The visible label stays the abbreviation; the hidden span puts
-                    the state name in the anchor text for readers and crawlers. */}
-                <span className="sr-only">, {state.name}</span>
-              </Link>
-            ))}
+          <p className="text-neutral-600 max-w-[52ch] mx-auto text-center mb-10">
+            Search by ZIP code or city, or select a state, DC or a territory on the map.
+          </p>
+          <LocationSearch />
+          <div className="kw-map-area mt-6">
+            <UsStateMap />
           </div>
-        </div>
-      </section>
 
-      {/* States by Region */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
-          {byRegion.map(({ region, label, items }, ri) => (
-            <Reveal key={region} delay={ri * 80}>
-              <h2 className="font-serif text-2xl md:text-3xl font-bold text-navy mb-6 pb-2 border-b border-neutral-200">
-                {label}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {items.map((state) => (
-                  <LocationCard
-                    key={state.slug}
-                    name={state.name}
-                    href={`/locations/${state.slug}`}
-                    subtitle={`${state.abbreviation} - Capital: ${state.capital}`}
-                  />
-                ))}
-              </div>
-            </Reveal>
-          ))}
-
-          <nav aria-label="Related resources" className="border-t border-neutral-200 pt-6">
+          <nav aria-label="Related resources" className="mt-10 border-t border-neutral-200 pt-6">
             <h2 className="font-serif text-xl font-bold text-navy mb-3">Related resources</h2>
             <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
               {RELATED_RESOURCES.map((r) => (

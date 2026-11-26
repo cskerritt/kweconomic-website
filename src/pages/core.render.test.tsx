@@ -159,7 +159,7 @@ describe("JSON-LD on the core pages resolves its types", () => {
       ldNodes(html)
         .map((n) => String(n["@id"] ?? ""))
         .filter((id) => id.includes("#office-"));
-    expect(officeIds(rendered["/contact"]).sort()).toEqual([`${SITE_URL}/#office-nj`, `${SITE_URL}/#office-va`]);
+    expect(officeIds(rendered["/contact"]).sort()).toEqual([`${SITE_URL}/#office-nj`, `${SITE_URL}/#office-ri`, `${SITE_URL}/#office-va`]);
     expect(officeIds(rendered["/"])).toEqual([]);
     expect(officeIds(rendered["/about"])).toEqual([]);
   });

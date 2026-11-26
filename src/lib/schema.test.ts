@@ -296,8 +296,14 @@ describe("officeSchemas", () => {
   const va = offices.find((o) => (o["@id"] as string).endsWith("#office-va")) as Node;
 
   it("emits one node per office, each a child of the Organization", () => {
-    expect(offices).toHaveLength(2);
+    expect(offices).toHaveLength(3);
     for (const o of offices) expect(o.parentOrganization).toEqual({ "@id": ORG_ID });
+  });
+
+  it("the Rhode Island office (2026-11-25) carries its 401 line and no street line or map link", () => {
+    const ri = offices.find((o) => (o["@id"] as string).endsWith("#office-ri")) as Node;
+    expect(ri.telephone).toBe("+1-401-269-3270");
+    expect(JSON.stringify(ri)).not.toMatch(/streetAddress|hasMap/);
   });
 
   it("the New Jersey headquarters carries its street address and map", () => {

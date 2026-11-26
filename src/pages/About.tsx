@@ -121,7 +121,7 @@ export default function About() {
                   evidence.
                 </p>
                 <p>
-                  With offices in Hackensack, NJ and Richmond, VA, {ORG_SHORT} accepts engagements
+                  With offices in Hackensack, NJ, Richmond, VA and Smithfield, RI, {ORG_SHORT} accepts engagements
                   in all 50 states, the District of Columbia, and U.S. territories.
                 </p>
                 <p>

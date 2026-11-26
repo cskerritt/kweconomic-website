@@ -11,8 +11,8 @@ describe("brand constants", () => {
     expect(ORG_URL).toBe(SITE_URL);
     expect(ORG_LOGO).toBe("https://kweconomics.com/images/logo.png");
   });
-  it("keeps both offices and links both sister practices", () => {
-    expect(OFFICES.map((o) => o.addressRegion)).toEqual(["NJ", "VA"]);
+  it("keeps the three offices and links both sister practices", () => {
+    expect(OFFICES.map((o) => o.addressRegion)).toEqual(["NJ", "VA", "RI"]);
     expect(VOC_SITE_URL).toBe("https://kwvrs.com");
     expect(LCP_SITE_URL).toBe("https://kwlcp.com");
     expect(SAME_AS).toEqual([VOC_SITE_URL, LCP_SITE_URL]);
