@@ -200,16 +200,16 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center">
-            {/* Intrinsic 600x257 so the header reserves the wordmark's box before
+            {/* Intrinsic 600x272 so the header reserves the wordmark's box before
                 the file arrives (no layout shift on first paint); w-auto keeps
                 the CSS height in charge of the rendered size. */}
             <img
-              src="/images/logo.svg"
+              src="/images/logo-white-gold.svg"
               alt={ORG_NAME}
               width={600}
-              height={257}
+              height={272}
               fetchPriority="high"
-              className="h-10 w-auto brightness-0 invert"
+              className="h-10 w-auto"
             />
           </Link>
 
