@@ -16,6 +16,8 @@ import {
   ORG_PHONE_VA,
   ORG_PHONE_DISPLAY,
   ORG_PHONE_VA_DISPLAY,
+  ORG_PHONE_RI,
+  ORG_PHONE_RI_DISPLAY,
   SITE_URL,
   telHref,
 } from "@/lib/brand";
@@ -87,7 +89,7 @@ export default function Contact() {
   usePageMeta({
     title: `Contact a Forensic Economist | ${ORG_NAME}`,
     description:
-      `Contact ${ORG_NAME} about a lost earnings, wrongful death, household services, or business damages analysis. Offices in NJ and VA; reply in 1 business day.`,
+      `Contact ${ORG_NAME} about a lost earnings, wrongful death, household services, or business damages analysis. Offices in NJ, VA and RI; reply in 1 business day.`,
     canonical: `${SITE_URL}/contact`,
   });
 
@@ -227,6 +229,25 @@ export default function Contact() {
                     <Phone className="w-5 h-5 text-amber shrink-0" />
                     <a href={telHref(ORG_PHONE_VA)} className="hover:text-amber-dark transition-colors font-medium">
                       {ORG_PHONE_VA_DISPLAY}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+
+              {/* RI Office (Chris, 2026-11-25) */}
+              <div className="bg-white rounded-xl border border-neutral-200 p-6 mb-6">
+                <h3 className="font-serif text-lg font-bold text-navy mb-4">
+                  Rhode Island - Smithfield Office
+                </h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start gap-3 text-neutral-700">
+                    <MapPin className="w-5 h-5 text-amber shrink-0 mt-0.5" />
+                    <span>Smithfield, Rhode Island</span>
+                  </li>
+                  <li className="flex items-center gap-3 text-neutral-700">
+                    <Phone className="w-5 h-5 text-amber shrink-0" />
+                    <a href={telHref(ORG_PHONE_RI)} className="hover:text-amber-dark transition-colors font-medium">
+                      {ORG_PHONE_RI_DISPLAY}
                     </a>
                   </li>
                 </ul>

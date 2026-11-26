@@ -64,7 +64,9 @@ const CHIP = `inline-flex min-h-11 min-w-11 items-center justify-center rounded-
 const phoneLabel = (classes: string, code: string) => (PHONE_CHIPS.includes(code) ? `${classes} max-lg:hidden` : classes);
 
 const mapped = states.filter((s) => US_STATE_SHAPES[s.abbreviation]);
-const territories = states.filter((s) => s.type === "territory");
+// DC leads the territories' row (Chris, 2026-11-25: Territories and DC easy to find as separate options), so the
+// District has a named chip at every width beside its small shape on the map.
+const territories = states.filter((s) => s.type === "district" || s.type === "territory");
 
 /** The active state drawn again above every shape: amber, lifted (index.css .kw-map-lift), never a link. */
 export function LiftedState({ code }: { code: string }) {
@@ -213,7 +215,7 @@ export default function UsStateMap() {
         </div>
         {/* Below the legend, the map's only key to its colours, so map and legend fit a laptop screen together. */}
         <p id="map-territories" className="mt-5 text-center text-xs text-neutral-600">
-          US territories
+          District of Columbia and US territories
         </p>
         <ul aria-labelledby="map-territories" className="mt-1.5 flex flex-wrap justify-center gap-2">
           {territories.map((s) => (

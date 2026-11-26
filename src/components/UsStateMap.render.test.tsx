@@ -293,11 +293,12 @@ describe("UsStateMap", () => {
     }
   });
 
-  it("lists the five territories, which have no shape, as 44 px chip links with their names under their own caption at every width, below the legend", () => {
-    const territories = states.filter((s) => s.type === "territory");
-    expect(territories.map((s) => s.slug)).toEqual(["puerto-rico", "us-virgin-islands", "guam", "american-samoa", "northern-mariana-islands"]);
+  it("lists DC and the five territories as 44 px chip links with their names under their own caption at every width, below the legend", () => {
+    // DC leads the row (Chris, 2026-11-25: DC and the territories easy to find as separate options).
+    const territories = states.filter((s) => s.type === "district" || s.type === "territory");
+    expect(territories.map((s) => s.slug)).toEqual(["district-of-columbia", "puerto-rico", "us-virgin-islands", "guam", "american-samoa", "northern-mariana-islands"]);
     // The legend, the map's only key to its colours, comes first, so map and legend fit a laptop screen together.
-    const block = html.match(/<div role="group" aria-label="Highlight a region on the map"[^>]*>.*?<\/div><p id="([\w-]+)" class="([^"]*)">US territories<\/p><ul aria-labelledby="\1" class="([^"]*)">(.*?)<\/ul>/)!;
+    const block = html.match(/<div role="group" aria-label="Highlight a region on the map"[^>]*>.*?<\/div><p id="([\w-]+)" class="([^"]*)">District of Columbia and US territories<\/p><ul aria-labelledby="\1" class="([^"]*)">(.*?)<\/ul>/)!;
     expect(block[2].split(" ")).toEqual(expect.arrayContaining(["text-xs", "text-neutral-600"]));
     expect(html.match(new RegExp(` id="${block[1]}"`, "g"))).toHaveLength(1);
     // No breakpoint hides the caption, the list or a chip.

@@ -18,6 +18,8 @@ import {
   ORG_PHONE_VA,
   ORG_PHONE_DISPLAY,
   ORG_PHONE_VA_DISPLAY,
+  ORG_PHONE_RI,
+  ORG_PHONE_RI_DISPLAY,
   SITE_URL,
   telHref,
 } from "@/lib/brand";
@@ -502,6 +504,22 @@ export default function ScheduleConsultation() {
                   <Phone className="w-4 h-4 text-amber shrink-0" />
                   <a href={telHref(ORG_PHONE_VA)} className="hover:text-amber-dark transition-colors font-medium">
                     {ORG_PHONE_VA_DISPLAY}
+                  </a>
+                </li>
+              </ul>
+            </div>
+            {/* RI (2026-11-25) */}
+            <div className="bg-white rounded-xl border border-neutral-200 p-5">
+              <h3 className="font-semibold text-navy mb-3">Rhode Island - Smithfield Office</h3>
+              <ul className="space-y-2 text-sm text-neutral-700">
+                <li className="flex items-start gap-2.5">
+                  <MapPin className="w-4 h-4 text-amber shrink-0 mt-0.5" />
+                  Smithfield, Rhode Island
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Phone className="w-4 h-4 text-amber shrink-0" />
+                  <a href={telHref(ORG_PHONE_RI)} className="hover:text-amber-dark transition-colors font-medium">
+                    {ORG_PHONE_RI_DISPLAY}
                   </a>
                 </li>
               </ul>

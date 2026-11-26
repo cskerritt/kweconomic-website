@@ -227,12 +227,16 @@ describe("/locations and /jurisdictions", () => {
   const loc = render("/locations", LocationsHub);
   const jur = render("/jurisdictions", JurisdictionsHubPage);
 
-  it("abbreviation quick-grid links carry the state name in their anchor text (visually hidden)", () => {
-    for (const s of states.filter((st) => st.type === "state")) {
-      expect(loc).toMatch(
-        new RegExp(`<a[^>]*href="/locations/${s.slug}"[^>]*>${s.abbreviation}<span class="sr-only">, ${esc(s.name)}</span></a>`),
-      );
+  // Chris, 2026-11-25: the state grid and region lists gave way to the three offices, a ZIP / city search and the map,
+  // whose own list keeps a plain link to every state, DC and territory hub.
+  it("links every state, DC and territory hub, and shows the three offices and the search", () => {
+    for (const s of states) expect(loc).toContain(`href="/locations/${s.slug}"`);
+    for (const city of ["Hackensack, New Jersey headquarters", "Richmond, Virginia office", "Smithfield, Rhode Island office"]) {
+      expect(loc).toContain(city);
     }
+    expect(loc).toContain('href="tel:+14012693270"');
+    expect(loc).toMatch(/<div role="search" aria-label="Find a location"/);
+    expect(loc).not.toContain("Select a State");
   });
 
   it("cross-link each other", () => {

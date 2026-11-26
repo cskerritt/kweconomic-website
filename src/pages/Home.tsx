@@ -171,7 +171,7 @@ export default function Home() {
           </span>
           <span className="text-neutral-600">All 50 states + DC + U.S. territories</span>
           <span className="text-neutral-600">Reports built for deposition and trial</span>
-          <span className="text-neutral-600">Hackensack, NJ - Richmond, VA</span>
+          <span className="text-neutral-600">Hackensack, NJ - Richmond, VA - Smithfield, RI</span>
         </div>
       </section>
 

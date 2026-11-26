@@ -8,6 +8,8 @@ export const SITE_URL = "https://kweconomics.com";
 export const ORG_EMAIL = "info@kwvrs.com"; // facts-to-confirm: kweconomics.com mailbox
 export const ORG_PHONE = "+1-201-343-0700";
 export const ORG_PHONE_VA = "+1-804-282-4199";
+// The Smithfield, Rhode Island office line, the number kwvrs.com publishes (Chris, 2026-11-25).
+export const ORG_PHONE_RI = "+1-401-269-3270";
 export const ORG_CITY = "Hackensack";
 export const ORG_STATE = "NJ";
 export const ORG_COUNTRY = "US";
@@ -54,6 +56,7 @@ export function formatPhone(e164: string): string {
 export const telHref = (e164: string): string => `tel:${e164.replace(/-/g, "")}`;
 export const ORG_PHONE_DISPLAY = formatPhone(ORG_PHONE);
 export const ORG_PHONE_VA_DISPLAY = formatPhone(ORG_PHONE_VA);
+export const ORG_PHONE_RI_DISPLAY = formatPhone(ORG_PHONE_RI);
 
 /**
  * Sister-brand forms that must not leak into this site's copy. Guard tests
@@ -124,5 +127,18 @@ export const OFFICES: readonly OfficeRecord[] = [
     telephone: ORG_PHONE_VA,
     latitude: 37.5407,
     longitude: -77.436,
+  },
+  // Smithfield, Rhode Island (Chris, 2026-11-25): the office kwvrs.com lists, with its 401 line. Like Richmond it
+  // carries no streetAddress or hasMap: kwvrs.com publishes a PO Box mailing address only.
+  {
+    id: `${SITE_URL}/#office-ri`,
+    name: `${ORG_NAME} - Rhode Island`,
+    addressLocality: "Smithfield",
+    addressRegion: "RI",
+    postalCode: "02917",
+    addressCountry: "US",
+    telephone: ORG_PHONE_RI,
+    latitude: 41.9219,
+    longitude: -71.5495,
   },
 ];
